@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Soundboards</h2>
+<div width="100%" style="justify-content: space-evenly;">
+    {% for soundboard in soundboards %}
+    <a href="{% url 'soundboardsRead' soundboard.id %}" style="flex:1">
+        <span style="width: 180px; height: 180px; display: inline-block; background-color: {{ soundboard.color }};color :{{ soundboard.colorText }};">
+            {{ soundboard.name }} {{ soundboard.id }}</a>
+    </span>
+    </a>
+    {% endfor %}
+</div>
+
+<div>
+    <div style="float-right; color:red;">
+        <a href="{% url 'soundboardsNew' %}">Ajouter un Soundboard</a>
+    </div>
+</div>
+{% endblock %}

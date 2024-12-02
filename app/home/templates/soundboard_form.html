@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block javascript %}
+{% load static %}
+<script src="{% static 'js/form/soundboard_form.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<h2>
+    {% if form.instance.id %}
+    Modifier le SoundBoard {{ form.instance.name }}
+    {% else %}
+    Créer un nouveau SoundBoard
+    {% endif %}
+</h2>
+
+{% if form.instance.id %}
+<div>
+    <button onclick=confirmSuppression({delete_url:"{% url 'soundboardsDelete' form.instance.id %}",redirect_url:"{% url 'soundboardsList' %}"})>Supprimer</button>
+</div>
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+
+    <div>
+        <label for="name">Nom du SoundBoard :</label>
+        <input type="text" id="name" name="name" required value="{{ form.name.value|default_if_none:" SoundBoard" }}">
+    </div>
+    <div>
+        <label for="color">Couleur du SoundBoard :</label>
+        <input type="color" id="color" name="color" value="{{ form.color.value|default_if_none:" #000000" }}" />
+    </div>
+    <div>
+        <label for="color">Couleur du texte du SoundBoard :</label>
+        <input type="color" id="colorText" name="colorText" value="{{ form.colorText.value|default_if_none:" #ffffff" }}" />
+    </div>
+    <button type="submit">
+        {% if form.instance.id %}
+        Modifier le SoundBoard
+        {% else %}
+        Créer un nouveau SoundBoard
+        {% endif %}
+    </button>
+</form>
+
+
+
+{% endblock %}

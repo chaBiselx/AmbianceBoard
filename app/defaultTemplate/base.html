@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block metatitle %} Ambiance board {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/general.js' %}"></script>
+    
+    {% block javascript %} {% endblock %}
+</head>
+
+<body>
+    <header>
+        <h1>{% block tile %} Ambiance board {% endblock %}</h1>
+    </header>
+    <div class="container">
+        <div class="sidebar-button">
+            <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+        </div>
+        <nav class="sidebar ">
+            <ul>
+                <li><a class='link-sidebar' href="{% url 'home' %}">Accueil</a> </li>
+                <li><a class='link-sidebar' href="{% url 'soundboardsList' %}">Soundboards</a></li>
+                <li>Services</li>
+                <li>Contact</li>
+            </ul>
+        </nav>
+        <div class="main-content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <footer>
+        <p>© 2024 Mon Site. Tous droits réservés. {% block footer %}{% endblock %}</p>
+    </footer>
+
+</body>
+
+</html>

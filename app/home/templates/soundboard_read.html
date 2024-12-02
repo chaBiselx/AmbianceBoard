@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ soundboard.name }}</h2>
+
+<a href="{% url 'soundboardsUpdate' soundboard.id %}">Modifier le general du SoundBoard</a>
+{% endblock %}
