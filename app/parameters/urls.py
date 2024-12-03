@@ -3,9 +3,9 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from home.views import home
-from home.views import final_user_view
-from home.views import soundboard_list, soundboard_create,soundboard_read,soundboard_update, soundboard_delete
+from home.views.general.views import home
+from home.views.general.views import final_user_view
+from home.views.soundboard.views import soundboard_list, soundboard_create,soundboard_read,soundboard_update, soundboard_delete
 
 urlpatterns = [
     path("", home, name="home"),
