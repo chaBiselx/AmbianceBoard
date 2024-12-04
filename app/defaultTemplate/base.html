@@ -9,7 +9,7 @@
     <title>{% block metatitle %} Ambiance board {% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="{% static 'js/general.js' %}"></script>
-    
+
     {% block javascript %} {% endblock %}
 </head>
 
@@ -24,7 +24,13 @@
         <nav class="sidebar ">
             <ul>
                 <li><a class='link-sidebar' href="{% url 'home' %}">Accueil</a> </li>
+                {% if request.user.is_authenticated %}
+                <li><a class='link-sidebar' href="{% url 'logout' %}">Deconnexion</a> </li>
                 <li><a class='link-sidebar' href="{% url 'soundboardsList' %}">Soundboards</a></li>
+                {% else %}
+                <li><a class='link-sidebar' href="{% url 'login' %}">Connexion</a> </li>
+                {% endif %}
+
             </ul>
         </nav>
         <div class="main-content">

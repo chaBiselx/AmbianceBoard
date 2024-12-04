@@ -1,19 +1,24 @@
+import logging
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from ...models.FinalUser import FinalUser
 from ...models.SoundBoard import SoundBoard
 from ...service.SoundBoardService import SoundBoardService
 from ...forms.SoundBoardForm import SoundBoardForm
 from ...filters.SoundBoardFilter import SoundBoardFilter
-from django.contrib.auth.decorators import login_required
 
-tempUser = "uniqueID123"
 
 @login_required
 def soundboard_list(request):
-    _query_Set = SoundBoard.objects.all().order_by('id')
-    _filter = SoundBoardFilter(queryset=_query_Set)
-    soundboards = _filter.filter_by_user_id(tempUser)
+    logger = logging.getLogger(__name__)
+    logger.info(request.user)
+    try:
+        _query_Set = SoundBoard.objects.all().order_by('id')
+        _filter = SoundBoardFilter(queryset=_query_Set)
+        soundboards = _filter.filter_by_user(request.user)
+    except:
+        soundboards = []
+
     
     return render(request, 'Soundboard/soundboard_list.html', {'soundboards': soundboards})
 
@@ -23,7 +28,7 @@ def soundboard_create(request):
         form = SoundBoardForm(request.POST)
         if form.is_valid():
             soundboard = form.save(commit=False)
-            soundboard.finalUser = FinalUser.objects.get(userID=tempUser)
+            soundboard.user = request.user
             soundboard.save()
             return redirect('soundboardsList')
     else:
@@ -32,7 +37,7 @@ def soundboard_create(request):
 
 @login_required
 def soundboard_read(request, soundboard_id):
-    soundboard = SoundBoardService().get_soundboard(soundboard_id, tempUser)
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
     if not soundboard :
         return render(request, '404.html', status=404)
     else:   
@@ -40,7 +45,7 @@ def soundboard_read(request, soundboard_id):
 
 @login_required
 def soundboard_update(request, soundboard_id):
-    soundboard = SoundBoardService().get_soundboard(soundboard_id, tempUser)
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
     if request.method == 'POST':
         if not soundboard:
             return render(request, '404.html', status=404)
@@ -58,7 +63,7 @@ def soundboard_update(request, soundboard_id):
 
 @login_required
 def soundboard_delete(request, soundboard_id) -> JsonResponse:
-    soundboard = SoundBoardService().get_soundboard(soundboard_id, tempUser)
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
     if request.method == 'POST':
         if not soundboard:
             return JsonResponse({"error": "SoundBoard introuvable."}, status=404)

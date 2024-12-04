@@ -1,4 +1,8 @@
-function confirmSuppression(config) {
+function confirmSuppression(el) {
+    config = {};
+    config.delete_url = el.dataset.deleteurl;
+    config.redirect_url = el.dataset.redirecturl;
+
     if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
         callAjax(config)
     } else {

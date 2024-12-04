@@ -3,7 +3,7 @@
 {% block javascript %}
 {% load static %}
 <script src="{% static 'js/form/soundboard_form.js' %}"></script>
-{% endblock %}
+{% endblock javascript %}
 
 {% block content %}
 
@@ -17,7 +17,7 @@
 
 {% if form.instance.id %}
 <div>
-    <button onclick=confirmSuppression({delete_url:"{% url 'soundboardsDelete' form.instance.id %}",redirect_url:"{% url 'soundboardsList' %}"})>Supprimer</button>
+    <button onclick=confirmSuppression(this) data-deleteurl="{% url 'soundboardsDelete' form.instance.id %}" data-redirecturl="{% url 'soundboardsList' %}">Supprimer</button>
 </div>
 {% endif %}
 <form method="post">
@@ -46,4 +46,4 @@
 
 
 
-{% endblock %}
+{% endblock content %}
