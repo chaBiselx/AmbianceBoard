@@ -10,7 +10,7 @@ urlpatterns = [
     path("", home, name="home"),
     path("admin/", admin.site.urls),
     
-    path("create-account/", create_account, name="create_account"),
+    path("create-account/", create_account, name="createAccount"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
     

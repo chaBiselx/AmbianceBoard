@@ -30,7 +30,7 @@ def create_account(request):
             return redirect('login')
     else:
         form = CreateUserForm()
-    return render(request, 'create_account.html', {'form': form})
+    return render(request, 'Account/create_account.html', {'form': form})
 
 
 
