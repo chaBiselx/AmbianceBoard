@@ -6,7 +6,7 @@
     {% for soundboard in soundboards %}
     <a href="{% url 'soundboardsRead' soundboard.id %}" style="flex:1">
         <span style="width: 180px; height: 180px; display: inline-block; background-color: {{ soundboard.color }};color :{{ soundboard.colorText }};">
-            {{ soundboard.name }} {{ soundboard.id }}</a>
+            {{ soundboard.name }}</a>
     </span>
     </a>
     {% endfor %}

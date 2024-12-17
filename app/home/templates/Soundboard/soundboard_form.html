@@ -8,7 +8,7 @@
 {% block content %}
 
 <h2>
-    {% if form.instance.id %}
+    {% if method == 'update' %}
     Modifier le SoundBoard {{ form.instance.name }}
     {% else %}
     Créer un nouveau SoundBoard
@@ -35,8 +35,12 @@
         <label for="color">Couleur du texte du SoundBoard :</label>
         <input type="color" id="colorText" name="colorText" value="{{ form.colorText.value|default_if_none:" #ffffff" }}" />
     </div>
+    <div>
+        <label for="color">Partager le soundboard :</label>
+        <input type="checkbox" id="is_public" name="is_public" {% if form.instance.is_public %}checked{% endif %}>
+    </div>
     <button type="submit">
-        {% if form.instance.id %}
+        {% if method == 'update' %}
         Modifier le SoundBoard
         {% else %}
         Créer un nouveau SoundBoard

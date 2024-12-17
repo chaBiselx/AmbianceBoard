@@ -27,6 +27,7 @@
                 {% if request.user.is_authenticated %}
                 <li><a class='link-sidebar' href="{% url 'logout' %}">Deconnexion</a> </li>
                 <li><a class='link-sidebar' href="{% url 'soundboardsList' %}">Soundboards</a></li>
+                <li><a class='link-sidebar' href="{% url 'playlistsAllList' %}">Listing playlist</a></li>
                 {% else %}
                 <li><a class='link-sidebar' href="{% url 'login' %}">Connexion</a> </li>
                 <li><a class='link-sidebar' href="{% url 'createAccount' %}">Creation de compte</a> </li>

@@ -3,5 +3,21 @@
 {% block content %}
 <h2>{{ soundboard.name }}</h2>
 
+<div width="100%" style="justify-content: space-evenly;">
+    {% for musicButton in soundboard.playlists.all %}
+    <p  style="flex:1">
+        <span style="width: 180px; height: 180px; display: inline-block; background-color: black;color :red;">
+            {{ musicButton.name }}
+        </span>
+    </p>
+    {% endfor %}
+</div>
+
+<div>
+    <div style="float:right; color:red;">
+        <a href="{% url 'addPlaylistWithSoundboard' soundboard.id %}">Ajouter un element</a>
+    </div>
+</div>
+
 <a href="{% url 'soundboardsUpdate' soundboard.id %}">Modifier le general du SoundBoard</a>
 {% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block javascript %}
+{% load static %}
+<script src="{% static 'js/form/playlist_form.js' %}"></script>
+{% endblock javascript %}
+
+{% block content %}
+
+<h2>
+    {% if method == 'update' %}
+    Modifier la playlist {{ form.instance.name }}
+    {% else %}
+    Créer une nouvelle playlist
+    {% endif %}
+</h2>
+
+{% if form.instance.id %}
+<div>
+    <button onclick=confirmSuppression(this) data-deleteurl="{% url 'playlistDelete' form.instance.id %}" data-redirecturl="{% url 'playlistsAllList' %}">Supprimer</button>
+</div>
+{% endif %}
+<form method="post">
+    {% csrf_token %}
+
+    <div>
+        {{ form.name.label }} * :<br /> {{ form.name }}
+        {% if form.name.errors %}
+        <ul>
+            {% for error in form.name.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+    <div>
+        {{ form.typePlaylist.label }} * :<br /> {{ form.typePlaylist }}
+        {% if form.typePlaylist.errors %}
+        <ul>
+            {% for error in form.typePlaylist.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+
+    <button type="submit">
+        {% if method == 'update' %}
+        Modifier
+        {% else %}
+        Créer
+        {% endif %}
+    </button>
+</form>
+
+
+
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Playlists</h2>
+<div width="100%" style="justify-content: space-evenly;">
+    {% for playlist in playlists %}
+    <a href="{% url 'playlistUpdate' playlist.id %}" style="flex:1">
+        <span style="width: 180px; height: 180px; display: inline-block; background-color: black; color :red;">
+            {{ playlist.name }}</a>
+    </span>
+    </a>
+    {% endfor %}
+</div>
+
+<div>
+    <div style="float-right; color:red;">
+        <a href="{% url 'addPlaylist' %}">Ajouter une playlist</a>
+    </div>
+</div>
+{% endblock %}
