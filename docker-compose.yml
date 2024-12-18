@@ -10,17 +10,18 @@ services:
       - ./.env.dev
     depends_on:
       - db
+
   db:
     image: postgres:15.8
     ports:
-    - 5432:5432 
+      - 5432:5432
     environment:
-       - POSTGRES_USER=postgres # user et mot de passe pour le super user postgres
-       - POSTGRES_PASSWORD=postgres
-       - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres # user et mot de passe pour le super user postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
     volumes:
        - ./db-data/:/var/lib/postgresql/data/ # les répertoire partagées pour stocker les données
     #    - ./init.sql:/docker-entrypoint-initdb.d/init.sql # emplacement d'un script d'init si nécessaire; à commenter sinon
 
 volumes:
-  postgres_data: null
+  db-data: null
