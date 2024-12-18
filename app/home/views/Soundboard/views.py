@@ -1,13 +1,18 @@
 import logging
+import random
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.http import require_http_methods
 from ...models.SoundBoard import SoundBoard
 from ...models.Playlist import Playlist
+from ...models.Music import Music
 from ...service.SoundBoardService import SoundBoardService
 from ...service.PlaylistService import PlaylistService
+from ...service.MusicService import MusicService
 from ...forms.SoundBoardForm import SoundBoardForm
 from ...forms.PlaylistForm import PlaylistForm
+from ...forms.MusicForm import MusicForm
 from ...filters.SoundBoardFilter import SoundBoardFilter
 from ...filters.PlaylistFilter import PlaylistFilter
 
@@ -144,4 +149,31 @@ def playlist_delete(request, playlist_id) -> JsonResponse:
             playlist.delete()
             return JsonResponse({'success': 'Suppression réussie'}, status=200)
     return JsonResponse({"error": "Méthode non supportée."}, status=405)
+    
+@login_required
+def music_create(request, playlist_id) -> JsonResponse:
+    playlist = (PlaylistService(request)).get_playlist(playlist_id)
+    if(playlist) : 
+        if request.method == 'POST':
+            form = MusicForm(request.POST, request.FILES)
+            if form.is_valid():
+                music = form.save(commit=False)
+                music.playlist = playlist
+                music.save()
+                return redirect('playlistUpdate', playlist_id=playlist_id)
+        else:
+            form = MusicForm()
+        return render(request, 'Music/add_music.html', {'form': form, "playlist":playlist, 'method' : 'create' })
+    return render(request, '404.html', status=404) 
+
+@login_required
+@require_http_methods(['GET'])
+def music_stream(request, playlist_id) -> HttpResponse:
+    music = (MusicService(request)).get_random_music(playlist_id)
+    if not music :
+        return HttpResponse("Musique introuvable.", status=404)
+    
+    response = HttpResponse(music.file, content_type='audio/*')
+    response['Content-Disposition'] = 'inline; filename="{}"'.format(music.fileName)
+    return response
     

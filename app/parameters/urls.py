@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from home.views.general.views import home, create_account, login_view, logout_view
 from home.views.Soundboard.views import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete
 from home.views.Soundboard.views import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete
+from home.views.Soundboard.views import music_create, music_stream
 
 urlpatterns = [
     path("", home, name="home"),
@@ -27,6 +28,8 @@ urlpatterns = [
     path("playlist/<uuid:playlist_id>/update", playlist_update, name="playlistUpdate"),
     path("playlist/<uuid:playlist_id>/delete", playlist_delete, name="playlistDelete"),
     
+    path("playlist/<uuid:playlist_id>/music/add", music_create, name="addMusic"),
+    path("playlist/<uuid:playlist_id>/stream", music_stream, name="streammMusic"),
     
 ]
 

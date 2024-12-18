@@ -15,9 +15,41 @@
     {% endif %}
 </h2>
 
-{% if form.instance.id %}
+<ul>
+    <li>
+        Son instantanné : TODO
+        <ul>
+            <li>choisi une musique aléatoire</li>
+            <li>sans fade in/out</li>
+            <li>Sans lecture suivante</li>
+            <li>peux etre jouer avec d'autre sons</li>
+        </ul>
+
+    </li>
+    <li>
+        son d'abiance : TODO
+        <ul>
+            <li>lit la playlist de musique de manière aléatoire</li>
+            <li>avec fade in/out</li>
+            <li>Avec lecture suivante</li>
+            <li>peux etre jouer avec d'autre sons</li>
+        </ul>
+    </li>
+    <li>
+        musique : TODO
+        <ul>
+            <li>lit la playlist de musique de manière aléatoire</li>
+            <li>avec fade in/out</li>
+            <li>Avec lecture suivante</li>
+            <li>1 playlist de type musique par fois</li>
+        </ul>
+    </li>
+</ul>
+
+{% if method == 'update' %}
 <div>
     <button onclick=confirmSuppression(this) data-deleteurl="{% url 'playlistDelete' form.instance.id %}" data-redirecturl="{% url 'playlistsAllList' %}">Supprimer</button>
+    <a href="{% url 'addMusic' form.instance.id %}">ajoute music</a>
 </div>
 {% endif %}
 <form method="post">
