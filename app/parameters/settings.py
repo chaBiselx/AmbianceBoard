@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    "django_cron",
     "home",
 ]
 
@@ -137,3 +138,30 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+#loggin 
+if DEBUG:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+            },
+      
+        },
+        'loggers': {
+            'home': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+            },
+            'cron': {
+                'level': 'DEBUG',
+            },
+        },
+    }
+
+# CRON JOBS
+CRON_CLASSES  = [
+   "home.cron.CleanMediaFolder.CleanMediaFolder",
+]

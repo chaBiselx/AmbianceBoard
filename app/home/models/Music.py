@@ -3,9 +3,10 @@ from django.db import models
 from .Playlist import Playlist
 
 class Music(models.Model):
+    MUSIC_FOLDER = 'musics/'
     fileName = models.CharField(max_length=63)
     alternativeName = models.CharField(max_length=63, default=None)
-    file = models.FileField(upload_to='musics/')
+    file = models.FileField(upload_to=MUSIC_FOLDER)
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
 
     def __str__(self):

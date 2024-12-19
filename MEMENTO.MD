@@ -15,6 +15,10 @@ Purge BDD
 python manage.py sqlflush
 
 
+lancer le cron 
+python manage.py runcrons
+
+
 psql -U postgres
 \l 
 \c postgres
