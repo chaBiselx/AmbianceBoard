@@ -14,5 +14,4 @@ class CleanMediaFolder(CronJobBase):
         logger = logging.getLogger(__name__)
         logger.info("Starting ClearMediaFolderCron")
         (MediaAudioService()).clear_media_audio()
-        
         logger.info("Ending ClearMediaFolderCron")

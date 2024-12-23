@@ -40,8 +40,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    "django_cron",
     "home",
+    "django_cron",
+    "django_crontab",
 ]
 
 MIDDLEWARE = [
@@ -163,5 +164,9 @@ if DEBUG:
 
 # CRON JOBS
 CRON_CLASSES  = [
-   "home.cron.CleanMediaFolder.CleanMediaFolder",
+   "home.cron.CleanMediaFolderCron.CleanMediaFolder",
+]
+
+CRONJOBS = [
+    ('*/1 * * * *', 'home.cron.CleanMediaFolderCron.CleanMediaFolder'),
 ]
