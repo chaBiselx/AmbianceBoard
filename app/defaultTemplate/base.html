@@ -22,6 +22,7 @@
             <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
         </div>
         <nav class="sidebar ">
+            {{request.user.username }}
             <ul>
                 <li><a class='link-sidebar' href="{% url 'home' %}">Accueil</a> </li>
                 {% if request.user.is_authenticated %}
