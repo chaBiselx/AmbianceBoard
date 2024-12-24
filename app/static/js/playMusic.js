@@ -14,11 +14,9 @@ function addEventListenerDom() {
 function eventTogglePlaylist(event) {
     const dataset = event.target.dataset;
     togglePlaylist(dataset);
-
 }
 
-
-function togglePlaylist(dataset){
+function togglePlaylist(dataset) {
     const audioElement = document.getElementById(`playlist-audio-${dataset.playlistId}`);
     if (!audioElement) {
         audio = createPlaylistLink(dataset);
@@ -32,8 +30,6 @@ function togglePlaylist(dataset){
 
 }
 
-
-
 function createPlaylistLink(dataset) {
     const audioElementDiv = document.getElementById(`players`);
     const audio = document.createElement('audio');
@@ -42,6 +38,12 @@ function createPlaylistLink(dataset) {
     audio.volume = dataset.playlistVolume / 100;
     audio.autoplay = true;
     audioElementDiv.appendChild(audio);
+    audio.addEventListener('error', function (event) {
+        console.log(event.target.error)
+        if (event.target.error.code === 4) { // => ERROR 404
+            createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'error', duration: 2000 });
+        }
+    });
     audio.play();
     return audio
 }
