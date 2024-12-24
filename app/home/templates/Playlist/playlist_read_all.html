@@ -5,7 +5,7 @@
 <div width="100%" style="justify-content: space-evenly;">
     {% for playlist in playlists %}
     <a href="{% url 'playlistUpdate' playlist.id %}" style="flex:1">
-        <span style="width: 180px; height: 180px; display: inline-block; background-color: black; color :red;">
+        <span style="width: 180px; height: 180px; display: inline-block; background-color:{{playlist.color}}; color :{{playlist.colorText}};">
             {{ playlist.name }}</a>
     </span>
     </a>

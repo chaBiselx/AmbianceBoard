@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from home.strategy.PlaylistStrategy import PlaylistStrategy
 
@@ -14,6 +15,9 @@ class Playlist(models.Model):
         (PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT, 'Son d\'ambiance'),
         (PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC, 'Musique'),
     ])
+    color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
+    colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
+    volume = models.IntegerField(default=75, validators=[MinValueValidator(0), MaxValueValidator(100)])
     
     def save(self, *args, **kwargs):
         if not self.user and self.request.user:

@@ -75,6 +75,24 @@
         </ul>
         {% endif %}
     </div>
+    <div>
+        {{ form.color.label }} * :<br /> 
+        <input type="color" id="color" name="color" value="{{ form.color.value|default_if_none:"#000000" }}" />
+    </div>
+    <div>
+        {{ form.colorText.label }} * :<br /> 
+        <input type="color" id="colorText" name="colorText" value="{{ form.colorText.value|default_if_none:"#ffffff" }}" />
+    </div>
+    <div>
+        {{ form.volume.label }} * :<br /> {{ form.volume }}
+        {% if form.volume.errors %}
+        <ul>
+            {% for error in form.volume.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
 
 
     <button type="submit">

@@ -10,8 +10,8 @@ class SoundBoard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     playlists = models.ManyToManyField(Playlist, related_name='soundboards')
     name = models.CharField(max_length=255)
-    color = models.CharField(max_length=7)  # Format hexa (ex: #FFFFFF)
-    colorText = models.CharField(max_length=7)  # Format hexa (ex: #FFFFFF)
+    color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
+    colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
     is_public = models.BooleanField(default=False)
     
     def save(self, *args, **kwargs):
