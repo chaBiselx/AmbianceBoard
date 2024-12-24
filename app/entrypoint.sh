@@ -1,5 +1,7 @@
 #!/bin/sh
 
+env >> /etc/environment # give environment variables to cron
+
 if [ "$DATABASE" = "postgres" ]
 then
     echo "Waiting for postgres..."
