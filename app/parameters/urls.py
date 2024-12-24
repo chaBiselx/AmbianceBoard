@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from home.views.general.views import home, create_account, login_view, logout_view
-from home.views.soundboard.views import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete
+from home.views.soundboard.views import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
 from home.views.soundboard.views import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete
 from home.views.soundboard.views import music_create, music_stream
 from home.views.manager.views import clean_media_folder
@@ -22,14 +22,16 @@ urlpatterns = [
     path("soundBoards/<uuid:soundboard_id>", soundboard_read, name="soundboardsRead"),
     path("soundBoards/<uuid:soundboard_id>/update", soundboard_update, name="soundboardsUpdate"),
     path("soundBoards/<uuid:soundboard_id>/delete", soundboard_delete, name="soundboardsDelete"),
+    path("soundBoards/<uuid:soundboard_id>/organize", soundboard_organize, name="organizeSoundboard"),
+    path("soundBoards/<uuid:soundboard_id>/organize/update", soundboard_organize_update, name="organizeSoundboardUpdate"),
     
-    path("soundBoards/<uuid:soundboard_id>/music/add", playlist_create_with_soundboard, name="addPlaylistWithSoundboard"),
+    path("soundBoards/<uuid:soundboard_id>/music/create", playlist_create_with_soundboard, name="addPlaylistWithSoundboard"),
     path("playlist/create", playlist_create, name="addPlaylist"),
     path("playlist/all", playlist_read_all, name="playlistsAllList"),
     path("playlist/<uuid:playlist_id>/update", playlist_update, name="playlistUpdate"),
     path("playlist/<uuid:playlist_id>/delete", playlist_delete, name="playlistDelete"),
     
-    path("playlist/<uuid:playlist_id>/music/add", music_create, name="addMusic"),
+    path("playlist/<uuid:playlist_id>/music/create", music_create, name="addMusic"),
     path("playlist/<uuid:playlist_id>/stream", music_stream, name="streammMusic"),
     
     path("manager/clean-media-folders", clean_media_folder, name="adminCleanMediaFolders"),

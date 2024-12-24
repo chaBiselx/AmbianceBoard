@@ -1,5 +1,6 @@
 import logging
 import random
+import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
@@ -7,6 +8,7 @@ from django.views.decorators.http import require_http_methods
 from ...models.SoundBoard import SoundBoard
 from ...models.Playlist import Playlist
 from ...models.Music import Music
+from ...manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
 from ...service.SoundBoardService import SoundBoardService
 from ...service.PlaylistService import PlaylistService
 from ...service.MusicService import MusicService
@@ -14,7 +16,6 @@ from ...forms.SoundBoardForm import SoundBoardForm
 from ...forms.PlaylistForm import PlaylistForm
 from ...forms.MusicForm import MusicForm
 from ...filters.SoundBoardFilter import SoundBoardFilter
-from ...filters.PlaylistFilter import PlaylistFilter
 
 
 
@@ -82,14 +83,41 @@ def soundboard_delete(request, soundboard_id) -> JsonResponse:
 
 
 @login_required
-def playlist_read_all(request):
-    try:
-        _query_Set = Playlist.objects.all().order_by('id')
-        _filter = PlaylistFilter(queryset=_query_Set)
-        playlists = _filter.filter_by_user(request.user)
-    except:
-        playlists = []
+def soundboard_organize(request, soundboard_id):
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
+    if not soundboard:
+        return render(request, '404.html', status=404)
     
+    soundboard_manager = SoundBoardPlaylistManager(request, soundboard)
+    return render(request, 'Soundboard/soundboard_organize.html', {'soundboard': soundboard, 'actualPlaylist': soundboard_manager.get_playlists, 'unassociatedPlaylists': soundboard_manager.get_unassociated_playlists})
+
+
+@login_required
+@require_http_methods(['POST', 'DELETE'])
+def soundboard_organize_update(request, soundboard_id) -> HttpResponse:
+    if request.method == 'POST' or request.method == 'DELETE':
+        try:
+            soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
+            data = json.loads(request.body.decode('utf-8'))
+            playlist = (PlaylistService(request)).get_playlist(data['idPlaylist'])
+            if not playlist:
+                raise exceptions.ObjectDoesNotExist
+            if request.method == 'POST':
+                    soundboard.playlists.add(playlist)
+                    soundboard.save()
+                    return JsonResponse({'success': 'playslist added'}, status=200)
+            if request.method == 'DELETE':
+                    soundboard.playlists.remove(playlist)
+                    soundboard.save()
+                    return JsonResponse({'success': 'playslist deleted'}, status=200)
+        except Exception:
+            return JsonResponse({"error": "playslist non trouvé."}, status=404)
+    return JsonResponse({"error": "Méthode non supportée."}, status=405)
+    
+
+@login_required
+def playlist_read_all(request):
+    playlists = (PlaylistService(request)).get_all_playlist()
     return render(request, 'Playlist/playlist_read_all.html', {'playlists': playlists})
 
 @login_required
@@ -109,6 +137,7 @@ def playlist_create_with_soundboard(request, soundboard_id):
         return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create'})
     return render(request, '404.html', status=404) 
 
+@login_required
 def playlist_create(request):
     if request.method == 'POST':
         form = PlaylistForm(request.POST)
@@ -122,6 +151,7 @@ def playlist_create(request):
     return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create'})
 
 
+@login_required
 def playlist_update(request, playlist_id):
     playlist = (PlaylistService(request)).get_playlist(playlist_id)
     if request.method == 'POST':

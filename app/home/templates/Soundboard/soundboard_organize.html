@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block javascript %}
+{% load static %}
+<script src="{% static 'js/template/soundboard_organize.js' %}"></script>
+{% endblock javascript %}
+
+{% block content %}
+<h2>Playlists</h2>
+<div>
+    <div style="width:45%;display:inline-block">
+        <h3>Playlists non associées</h3>
+        <div id="unassociated-playlists" style="height: 100%;min-height: 500px;">
+            <span class="unassociated-playlists-empty" hidden="true">Aucune playlist non associée</span>
+            {% for playlist in unassociatedPlaylists %}
+            <span class="playlist-dragAndDrop" style="flex:1" id="{{ playlist.id }}" draggable="true">
+                <span style="width: 180px; height: 180px; display: inline-block; background-color: black; color :red;">
+                    {{ playlist.name }}</span>
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+
+    
+    <div style="width:45%;display:inline-block">
+        <h3>Playlists associées</h3>
+        <div id="associated-playlists" style="height: 100%;min-height: 500px;" data-url="{% url 'organizeSoundboardUpdate' soundboard.id %}">
+            <span class="associated-playlists-empty" hidden="true">Aucune playlist associée</span>
+            {% for playlist in actualPlaylist %}
+            <span class="playlist-dragAndDrop" style="flex:1" id="{{ playlist.id }}" draggable="true">
+                <span style="width: 180px; height: 180px; display: inline-block; background-color: black; color :red;">
+                    {{ playlist.name }}</span>
+            </span>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

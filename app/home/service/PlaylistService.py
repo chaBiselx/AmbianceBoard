@@ -1,4 +1,5 @@
 from ..models.Playlist import Playlist
+from ..filters.PlaylistFilter import PlaylistFilter
 
 
 class PlaylistService:
@@ -16,4 +17,12 @@ class PlaylistService:
         except Playlist.DoesNotExist:
             return None
         
+    def get_all_playlist(self)-> list[Playlist] :
+        try:
+            _query_set = Playlist.objects.all().order_by('id')
+            _filter = PlaylistFilter(queryset=_query_set)
+            playlists = _filter.filter_by_user(self.request.user)
+        except Exception:
+            playlists = []
+        return playlists
         
