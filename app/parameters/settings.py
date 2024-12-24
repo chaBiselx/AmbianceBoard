@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "home",
-    "django_cron",
     "django_crontab",
 ]
 
@@ -164,9 +163,9 @@ if DEBUG:
 
 # CRON JOBS
 CRON_CLASSES  = [
-   "home.cron.CleanMediaFolderCron.CleanMediaFolder",
+   "home.cron.CleanMediaFolderCron.run",
 ]
 
 CRONJOBS = [
-    ('*/1 * * * *', 'home.cron.CleanMediaFolderCron.CleanMediaFolder'),
+    ('* * * * *', 'home.cron.CleanMediaFolderCron.run'), # evey minute
 ]

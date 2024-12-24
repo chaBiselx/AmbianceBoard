@@ -11,4 +11,10 @@ then
     echo "PostgreSQL started"
 fi
 
+python manage.py crontab add
+
+cron start
+
+
+
 exec "$@"

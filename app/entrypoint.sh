@@ -16,4 +16,8 @@ python manage.py migrate
 
 python manage.py crontab add
 
+cron start
+
+
+
 exec "$@"

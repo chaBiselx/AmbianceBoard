@@ -15,8 +15,22 @@ Purge BDD
 python manage.py sqlflush
 
 
-lancer le cron 
+lancer les commandes 
 python manage.py runcrons
+
+python manage.py crontab add
+python manage.py crontab show
+
+
+dauns premier console 
+killall cron
+cron -f -L 15 start
+
+
+ls -la /var/log
+
+crontab -e
+* * * * * echo "$(date +"%T") Hello from crontab" >> /var/log/test.log
 
 
 psql -U postgres

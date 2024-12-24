@@ -7,17 +7,6 @@ from ...forms.CreateUserForm import CreateUserForm
 tempUser = "uniqueID123"
 
 def home(request):
-    logger = logging.getLogger(__name__)
-    logger.info("Message de log")
-    # if request.method == "POST" and request.FILES["image_file"]:
-    #     image_file = request.FILES["image_file"]
-    #     fs = FileSystemStorage()
-    #     filename = fs.save(image_file.name, image_file)
-    #     image_url = fs.url(filename)
-    #     print(image_url)
-    #     return render(request, "home.html", {
-    #         "image_url": image_url
-    #     })
     return render(request, "home.html")
 
 
