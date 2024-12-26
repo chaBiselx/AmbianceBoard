@@ -6,7 +6,9 @@ class ConfigAmbient():
             "id":obj.id, 
             "type":PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT, 
             "fadeIn": True, 
+            "fadeInDuration": 3,
             "fadeOut": True, 
+            "fadeOutDuration": 3,
             "loop": True,
             "singleConcurrentRead":True,
             "volume" : obj.volume

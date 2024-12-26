@@ -6,7 +6,9 @@ class ConfigMusic():
             "id":obj.id, 
             "type":PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC, 
             "fadeIn": True, 
+            "fadeInDuration": 5,
             "fadeOut": True, 
+            "fadeOutDuration": 5,
             "loop": True,
             "singleConcurrentRead":True,
             "volume" : obj.volume
