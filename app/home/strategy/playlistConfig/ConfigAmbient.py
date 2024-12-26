@@ -3,6 +3,7 @@ from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 class ConfigAmbient():
     def get_data(self, obj):
         return {
+            "id":obj.id, 
             "type":PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT, 
             "fadeIn": True, 
             "fadeOut": True, 

@@ -10,22 +10,21 @@
 
 <div width="100%" style="justify-content: space-evenly;">
     {% for playlist in soundboard.playlists.all %}
-    <p  style="flex:1">
+    <p style="flex:1">
         <span 
             class="playlist-link" 
             style="width: 180px; height: 180px; display: inline-block; background-color:{{playlist.color}};color :{{playlist.colorText}};cursor: pointer;" 
             data-playlist-uri="{% url 'streammMusic' playlist.id %}" 
-            {% for key, value in playlist.getDataSet.items  %}
-                data-playlist-{{ key }}="{{ value }}"
-            {% endfor %}
-            >
-            {{ playlist.name }} 
+            {% for key, value in playlist.getDataSet.items %}
+            data-playlist-{{ key }}="{{ value }}" 
+            {% endfor %}>
+            {{ playlist.name }}
         </span>
     </p>
     {% endfor %}
 </div>
 
-<div style="dis--play:None;" id="players"></div> 
+<div style="display:None;" id="players"></div>
 
 <div>
     <div style="float:right; color:red;">
