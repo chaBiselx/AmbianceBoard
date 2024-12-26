@@ -14,7 +14,6 @@
         <span 
             class="playlist-link" 
             style="width: 180px; height: 180px; display: inline-block; background-color:{{playlist.color}};color :{{playlist.colorText}};cursor: pointer;" 
-            data-playlist-volume="20" 
             data-playlist-uri="{% url 'streammMusic' playlist.id %}" 
             {% for key, value in playlist.getDataSet.items  %}
                 data-playlist-{{ key }}="{{ value }}"

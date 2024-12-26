@@ -8,5 +8,6 @@ class ConfigInstant():
             "fadeIn": False, 
             "fadeOut": False, 
             "loop": False,
-            "singleConcurrentRead":False 
+            "singleConcurrentRead" : False,
+            "volume" : obj.volume
         }
