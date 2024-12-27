@@ -52,7 +52,7 @@ header {
 }
 
 .main-content {
-    margin-left:10px;
+    margin-left: 10px;
     flex: 1;
     padding: 20px;
     transition: margin-left 0.3s ease;
@@ -93,16 +93,20 @@ footer {
 
 /* Hover (au survol) */
 .link-sidebar:hover {
-    color: #ff9800; /* Change la couleur au survol */
+    color: #ff9800;
+    /* Change la couleur au survol */
 }
 
 /* Liens spécifiques à la barre de navigation */
 .sidebar a {
-    display: block; /* Permet un clic sur toute la largeur */
+    display: block;
+    /* Permet un clic sur toute la largeur */
     padding: 8px;
 }
 
 /* Barre de navigation : liens au survol */
 .sidebar a:hover {
-    background-color: #555; /* Change le fond au survol */
+    background-color: #555;
+    /* Change le fond au survol */
 }
+
