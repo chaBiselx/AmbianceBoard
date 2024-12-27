@@ -167,5 +167,5 @@ CRON_CLASSES  = [
 ]
 
 CRONJOBS = [
-    ('* * * * *', 'home.cron.CleanMediaFolderCron.run'), # evey minute
+    ('* 2 * * *', 'home.cron.CleanMediaFolderCron.run'), # evey minute
 ]
