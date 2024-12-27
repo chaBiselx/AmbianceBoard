@@ -1,3 +1,24 @@
+document.addEventListener("DOMContentLoaded", (event) => {
+    volumeInput = document.getElementById('id_volume');
+    setVolumeToAllMusic(volumeInput.value);
+    volumeInput.addEventListener('change', eventChangeVolume);
+
+});
+
+function eventChangeVolume(event) {
+    volume = event.target.value;
+    setVolumeToAllMusic(volume);
+}
+
+function setVolumeToAllMusic(volume) {
+    const listMusic = document.querySelectorAll('.music-player');
+    listMusic.forEach((music) => {
+        music.volume = volume / 100;
+    });
+}
+
+
+
 function confirmSuppression(el) {
     config = {};
     config.delete_url = el.dataset.deleteurl;

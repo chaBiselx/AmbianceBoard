@@ -134,7 +134,7 @@ def playlist_create_with_soundboard(request, soundboard_id):
                 return redirect('soundboardsRead', soundboard_id=soundboard.id)
         else:
             form = PlaylistForm()
-        return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create'})
+        return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', list_music:None})
     return render(request, '404.html', status=404) 
 
 @login_required
@@ -148,7 +148,7 @@ def playlist_create(request):
             return redirect('playlistsAllList')
     else:
         form = PlaylistForm()
-    return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create'})
+    return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', list_music: None})
 
 
 @login_required
@@ -167,7 +167,10 @@ def playlist_update(request, playlist_id):
             return render(request, '404.html', status=404) 
         else:
             form = PlaylistForm(instance=playlist)
-    return render(request, 'Playlist/playlist_create.html', {'form': form, 'method' : 'update'})
+            list_music = (MusicService(request)).get_list_music(playlist_id)
+            logger = logging.getLogger(__name__)
+            logger.warning(len(list_music))
+    return render(request, 'Playlist/playlist_create.html', {'form': form, 'method' : 'update', 'listMusic' : list_music})
 
 @login_required
 def playlist_delete(request, playlist_id) -> JsonResponse:

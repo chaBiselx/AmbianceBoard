@@ -17,5 +17,14 @@ class MusicService:
         except Playlist.DoesNotExist:
             return None
         
+    def get_list_music(self, playlist_id:int)-> list[Music]|None :
+        try:
+            music_filter = MusicFilter()
+            queryset = music_filter.filter_by_user(self.request.user)
+            queryset = music_filter.filter_by_playlist(playlist_id)
+            return queryset
+        except Playlist.DoesNotExist:
+            return None
+        
 
         

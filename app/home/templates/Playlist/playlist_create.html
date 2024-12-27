@@ -15,94 +15,128 @@
     {% endif %}
 </h2>
 
-<ul>
-    <li>
-        Son instantanné : TODO
-        <ul>
-            <li>choisi une musique aléatoire</li>
-            <li>sans fade in/out</li>
-            <li>Sans lecture suivante</li>
-            <li>peux etre jouer avec d'autre sons</li>
-        </ul>
+<div class="description">
+    <ul>
+        <li>
+            Son instantanné :
+            <ul>
+                <li>choisi une musique aléatoire</li>
+                <li>sans fade in/out</li>
+                <li>Sans lecture suivante</li>
+                <li>peux etre jouer avec d'autre sons</li>
+            </ul>
 
-    </li>
-    <li>
-        son d'abiance : TODO
-        <ul>
-            <li>lit la playlist de musique de manière aléatoire</li>
-            <li>avec fade in/out</li>
-            <li>Avec lecture suivante</li>
-            <li>peux etre jouer avec d'autre sons</li>
-        </ul>
-    </li>
-    <li>
-        musique : TODO
-        <ul>
-            <li>lit la playlist de musique de manière aléatoire</li>
-            <li>avec fade in/out</li>
-            <li>Avec lecture suivante</li>
-            <li>1 playlist de type musique par fois</li>
-        </ul>
-    </li>
-</ul>
-
-{% if method == 'update' %}
-<div>
-    <button onclick=confirmSuppression(this) data-deleteurl="{% url 'playlistDelete' form.instance.id %}" data-redirecturl="{% url 'playlistsAllList' %}">Supprimer</button>
-    <a href="{% url 'addMusic' form.instance.id %}">ajoute music</a>
+        </li>
+        <li>
+            son d'abiance :
+            <ul>
+                <li>lit la playlist de musique de manière aléatoire</li>
+                <li>avec fade in/out</li>
+                <li>Avec lecture suivante</li>
+                <li>peux etre jouer avec d'autre sons</li>
+            </ul>
+        </li>
+        <li>
+            musique :
+            <ul>
+                <li>lit la playlist de musique de manière aléatoire</li>
+                <li>avec fade in/out</li>
+                <li>Avec lecture suivante</li>
+                <li>1 playlist de type musique par fois</li>
+            </ul>
+        </li>
+    </ul>
 </div>
-{% endif %}
-<form method="post">
-    {% csrf_token %}
 
+<div class="form">
+    {% if method == 'update' %}
     <div>
-        {{ form.name.label }} * :<br /> {{ form.name }}
-        {% if form.name.errors %}
-        <ul>
-            {% for error in form.name.errors %}
-            <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+        <button onclick=confirmSuppression(this) data-deleteurl="{% url 'playlistDelete' form.instance.id %}" data-redirecturl="{% url 'playlistsAllList' %}">Supprimer</button>
     </div>
-    <div>
-        {{ form.typePlaylist.label }} * :<br /> {{ form.typePlaylist }}
-        {% if form.typePlaylist.errors %}
-        <ul>
-            {% for error in form.typePlaylist.errors %}
-            <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    </div>
-    <div>
-        {{ form.color.label }} * :<br /> 
-        <input type="color" id="color" name="color" value="{{ form.color.value|default_if_none:"#000000" }}" />
-    </div>
-    <div>
-        {{ form.colorText.label }} * :<br /> 
-        <input type="color" id="colorText" name="colorText" value="{{ form.colorText.value|default_if_none:"#ffffff" }}" />
-    </div>
-    <div>
-        {{ form.volume.label }} * :<br /> {{ form.volume }}
-        {% if form.volume.errors %}
-        <ul>
-            {% for error in form.volume.errors %}
-            <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+
+        <div>
+            {{ form.name.label }} * :<br /> {{ form.name }}
+            {% if form.name.errors %}
+            <ul>
+                {% for error in form.name.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.typePlaylist.label }} * :<br /> {{ form.typePlaylist }}
+            {% if form.typePlaylist.errors %}
+            <ul>
+                {% for error in form.typePlaylist.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.color.label }} * :<br />
+            <input type="color" id="color" name="color" value="{{ form.color.value|default_if_none:" #000000" }}" />
+        </div>
+        <div>
+            {{ form.colorText.label }} * :<br />
+            <input type="color" id="colorText" name="colorText" value="{{ form.colorText.value|default_if_none:" #ffffff" }}" />
+        </div>
+        <div>
+            {{ form.volume.label }} * :<br /> {{ form.volume }}
+            {% if form.volume.errors %}
+            <ul>
+                {% for error in form.volume.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
 
 
-    <button type="submit">
-        {% if method == 'update' %}
-        Modifier
-        {% else %}
-        Créer
+        <button type="submit">
+            {% if method == 'update' %}
+            Modifier
+            {% else %}
+            Créer
+            {% endif %}
+        </button>
+    </form>
+
+</div>
+
+<div class="gestion">
+    {% if method == 'update' %}
+    <div>
+        <a href="{% url 'addMusic' form.instance.id %}">ajoute music</a>
+    </div>
+    <div>
+        {% if listMusic is not null %}
+        {% for music in listMusic %}
+        <div class="music">
+            <div class="music-name">
+                {{ music.alternativeName }} <br />
+                <small>
+                    {{ music.fileName }}
+                </small>
+            </div>
+            <div>
+                <audio class="music-player" src="{{ music.file.url }}" controls ></audio>
+            </div>
+
+            <div class="music-delete">
+                {# <button onclick=confirmSuppression(this) data-deleteurl="{% url 'musicDelete' music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.id %}">Supprimer</button> #}
+            </div>
+        </div>
+        {% endfor %}
+
         {% endif %}
-    </button>
-</form>
+    </div>
+    {% endif %}
+</div>
 
 
 
