@@ -51,7 +51,7 @@
 <div class="form">
     {% if method == 'update' %}
     <div>
-        <button onclick=confirmSuppression(this) data-deleteurl="{% url 'playlistDelete' form.instance.id %}" data-redirecturl="{% url 'playlistsAllList' %}">Supprimer</button>
+        <button onclick=confirmSuppressionPlaylist(this) data-deleteurl="{% url 'playlistDelete' form.instance.id %}" data-redirecturl="{% url 'playlistsAllList' %}">Supprimer</button>
     </div>
     {% endif %}
     <form method="post">
@@ -128,7 +128,7 @@
             </div>
 
             <div class="music-delete">
-                {# <button onclick=confirmSuppression(this) data-deleteurl="{% url 'musicDelete' music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.id %}">Supprimer</button> #}
+                <button onclick=confirmSuppressionMusic(this) data-deleteurl="{% url 'deleteMusic' form.instance.id music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.id %}">Supprimer</button>
             </div>
         </div>
         {% endfor %}

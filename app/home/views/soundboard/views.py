@@ -134,7 +134,7 @@ def playlist_create_with_soundboard(request, soundboard_id):
                 return redirect('soundboardsRead', soundboard_id=soundboard.id)
         else:
             form = PlaylistForm()
-        return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', list_music:None})
+        return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic':None})
     return render(request, '404.html', status=404) 
 
 @login_required
@@ -148,7 +148,7 @@ def playlist_create(request):
             return redirect('playlistsAllList')
     else:
         form = PlaylistForm()
-    return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', list_music: None})
+    return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic': None})
 
 
 @login_required
@@ -168,14 +168,13 @@ def playlist_update(request, playlist_id):
         else:
             form = PlaylistForm(instance=playlist)
             list_music = (MusicService(request)).get_list_music(playlist_id)
-            logger = logging.getLogger(__name__)
-            logger.warning(len(list_music))
     return render(request, 'Playlist/playlist_create.html', {'form': form, 'method' : 'update', 'listMusic' : list_music})
 
 @login_required
+@require_http_methods(['DELETE'])
 def playlist_delete(request, playlist_id) -> JsonResponse:
-    playlist = (PlaylistService(request)).get_playlist(playlist_id)
-    if request.method == 'POST':
+    if request.method == 'DELETE':
+        playlist = (PlaylistService(request)).get_playlist(playlist_id)
         if not playlist:
             return JsonResponse({"error": "Playlist introuvable."}, status=404)
         else :
@@ -198,6 +197,22 @@ def music_create(request, playlist_id) -> JsonResponse:
             form = MusicForm()
         return render(request, 'Music/add_music.html', {'form': form, "playlist":playlist, 'method' : 'create' })
     return render(request, '404.html', status=404) 
+
+@login_required
+@require_http_methods(['DELETE'])
+def music_delete(request, playlist_id, music_id) -> JsonResponse:
+    if request.method == 'DELETE':
+        playlist = (PlaylistService(request)).get_playlist(playlist_id)
+        if not playlist:
+            return JsonResponse({"error": "Playlist introuvable."}, status=404)
+        
+        music = Music.objects.get(id=music_id)
+        if not music:
+            return JsonResponse({"error": "Musique introuvable."}, status=404)
+        music.file.delete()
+        music.delete()
+        return JsonResponse({'success': 'Suppression réussie'}, status=200)
+    return JsonResponse({"error": "Méthode non supportée."}, status=405)
 
 @login_required
 @require_http_methods(['GET'])
