@@ -20,6 +20,8 @@ function setEventDragAndDrop() {
     });
 
     playlistAssociees.addEventListener('drop', (e) => {
+        console.log(e);
+        
         e.preventDefault();
         const id = e.dataTransfer.getData('text');
         const playlist = document.getElementById(id);

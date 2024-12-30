@@ -2,19 +2,22 @@
 
 {% block content %}
 <h2>Soundboards</h2>
-<div width="100%" style="justify-content: space-evenly;">
-    {% for soundboard in soundboards %}
-    <a href="{% url 'soundboardsRead' soundboard.id %}" style="flex:1">
-        <span style="width: 180px; height: 180px; display: inline-block; background-color: {{ soundboard.color }};color :{{ soundboard.colorText }};">
-            {{ soundboard.name }}</a>
-    </span>
-    </a>
-    {% endfor %}
+<div class="row">
+    <div class="col-12 col-xl-10">
+        <div class="flex-container">
+            {% for soundboard in soundboards %}
+            <a href="{% url 'soundboardsRead' soundboard.id %}">
+                <div class="playlist-link playlist-element flex-item playlist-dim-200 m-1" style="background-color: {{ soundboard.color }};color :{{ soundboard.colorText }};">
+                    {{ soundboard.name }}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
+
 <div>
-    <div style="float-right; color:red;">
-        <a href="{% url 'soundboardsNew' %}">Ajouter un Soundboard</a>
-    </div>
+    <a class="btn btn-primary btn-block" href="{% url 'soundboardsNew' %}">Ajouter un Soundboard</a>
 </div>
 {% endblock %}

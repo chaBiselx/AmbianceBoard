@@ -1,4 +1,4 @@
-.playlist-zone{
+.flex-container{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -12,10 +12,18 @@
     height: 75px;
 }
 
+.playlist-dim-200 {
+    width: 150px;
+    height: 150px;
+}
+
+.flex-item {
+    display: inline-block;
+}
+
 
 /* base style */
 .playlist-element {
-    display: inline-block;
     cursor: pointer;
     overflow: hidden;
     border-width: 5px;
