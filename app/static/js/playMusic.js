@@ -52,7 +52,9 @@ function createPlaylistLink(dataset) {
     audioElementDiv.appendChild(audio);
     audio.addEventListener('error', function (event) {
         if (event.target.error.code === 4) { // => ERROR 404
-            createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'error', duration: 2000 });
+            removeClassActivePlaylist(dataset.playlistId);
+
+            createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000000 });
         }
     });
     if (dataset.playlistFadein == TRUE) {

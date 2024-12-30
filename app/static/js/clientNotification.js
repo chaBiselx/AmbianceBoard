@@ -24,18 +24,29 @@
 
     // Crée l'élément de notification
     const notification = document.createElement('div');
-    notification.className = `alert alert-${config.type} fade show`;
+    console.log(config.type);
+    
+    notification.className = `bg-${config.type} fade show`;
     notification.role = 'alert';
+    notification.style["border-radius"] = "3px";
     notification.innerText = config.message;
+    notification.style.padding = '7px';
     notification.style.marginBottom = '10px';
 
     // Ajoute la notification au conteneur
     notificationContainer.appendChild(notification);
 
-    // Supprime la notification après la durée spécifiée
-    setTimeout(() => {
+
+    // Disparition automatique
+    const fadeOut = () => {
         notification.classList.remove('show'); // Déclenche l'animation fade-out
         notification.classList.add('fade'); // Ajoute la classe fade
         setTimeout(() => notification.remove(), 150); // Supprime complètement après l'animation
-    }, config.duration);
+    };
+  
+    setTimeout(fadeOut, config.duration);
+  
+    // Permettre la fermeture au clic
+    notification.addEventListener('click', fadeOut);
+
 }

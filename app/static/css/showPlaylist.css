@@ -1,7 +1,20 @@
-/* base style */
-.playlist-element {
+.playlist-zone{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+
+}
+
+
+.playlist-dim-100 {
     width: 75px;
     height: 75px;
+}
+
+
+/* base style */
+.playlist-element {
     display: inline-block;
     cursor: pointer;
     overflow: hidden;

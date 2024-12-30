@@ -10,9 +10,6 @@ header {
     text-align: center;
 }
 
-.container {
-    display: flex;
-}
 
 /* Navigation latérale */
 .sidebar {
@@ -109,3 +106,7 @@ footer {
     /* Change le fond au survol */
 }
 
+.zone{
+    display: flex;
+    flex:auto !important;
+}
