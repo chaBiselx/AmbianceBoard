@@ -24,7 +24,6 @@
 
     // Crée l'élément de notification
     const notification = document.createElement('div');
-    console.log(config.type);
     
     notification.className = `bg-${config.type} fade show`;
     notification.role = 'alert';

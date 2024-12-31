@@ -21,6 +21,18 @@
     display: inline-block;
 }
 
+.flex-item-2{
+    flex-basis : 50%;
+}
+
+.flex-item-3{
+    flex-basis : 33.333%;
+}
+
+.flex-item-4{
+    flex-basis : 25%;
+}
+
 
 /* base style */
 .playlist-element {

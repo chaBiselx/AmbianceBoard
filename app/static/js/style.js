@@ -28,15 +28,22 @@ function modalShow(param = {
     title: "",
     body: "",
     footer: "",
-    width: "m"
+    width: ""
 }) {
+    defaultValues = {
+        title: "",
+        body: "",
+        footer: "",
+        width: ""
+    }
+    const config = {...defaultValues ,  ...param};
     const mainModal = new bootstrap.Modal(document.getElementById('mainModal'), {
         keyboard: false
     })
     document.getElementById('mainModal').classList.remove('modal-lg');
     document.getElementById('mainModal').classList.remove('modal-sm');
     document.getElementById('mainModal').classList.remove('modal-xl');
-    switch (param.width) {
+    switch (config.width) {
         case 'lg':
             width = 'modal-lg';
             break;
@@ -50,15 +57,12 @@ function modalShow(param = {
             width = null
             break;
     }
-    console.log(width);
-    console.log(document.getElementById('mainModal').classList);
-    
+
     document.getElementById('mainModal').classList.add(width);
 
-    
-    document.getElementById("mainModalTitle").innerHTML = param.title;
-    document.getElementById("mainModalBody").innerHTML = param.body;
-    document.getElementById("mainModalFooter").innerHTML = param.footer;
+    document.getElementById("mainModalTitle").innerHTML = config.title;
+    document.getElementById("mainModalBody").innerHTML = config.body;
+    document.getElementById("mainModalFooter").innerHTML = config.footer;
 
 
     mainModal.show();

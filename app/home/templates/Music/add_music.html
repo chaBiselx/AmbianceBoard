@@ -1,17 +1,7 @@
-{% extends 'base.html' %}
 
-
-{% block content %}
-
-<h2>
-    Ajouter musique {{ playlist.name}}
-</h2>
-
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" action="{% url 'addMusic' playlist.id %}">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Ajouter</button>
 </form>
 
-
-{% endblock content %}
