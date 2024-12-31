@@ -16,7 +16,7 @@
 </h2>
 
 <div class="row">
-    <div class="col-12 col-md-10 col-xl-8">
+    <div class="col-12 col-sm-11 col-md-10 col-xl-8">
         <div class="form">
             {% if method == 'update' %}
             <div>
@@ -78,7 +78,7 @@
         </div>
 
     </div>
-    <div class="col-12 col-md-2 col-xl-4">
+    <div class="col-12 col-sm-1 col-md-2 col-xl-4">
         <div class="playlist-link playlist-element playlist-dim-100 m-1" id="demo-playlist" >
             Lorem ipsum dolor
         </div>
@@ -86,12 +86,12 @@
 </div>
 
 
+{% if method == 'update' %}
 <div class="row mt-2">
     <div class="col">
         <div class="gestion">
-            {% if method == 'update' %}
             <div>
-                <btn class="btn btn-primary btn-block" onclick="showPopupAddMusic(this)" data-url="{% url 'addMusic' form.instance.id %}">add music</btn>
+                <btn class="btn btn-primary btn-block" title="Add a music to the playlist" onclick="showPopupMusic(this)" data-url="{% url 'addMusic' form.instance.id %}">add music</btn>
             </div>
             <div class"flex-container">
                 {% if listMusic is not null %}
@@ -107,7 +107,8 @@
                         <audio class="music-player" src="{{ music.file.url }}" controls></audio>
                     </div>
 
-                    <div class="music-delete">
+                    <div class="btn-group">
+                        <button class="btn btn-warning" title="Edit {{ music.fileName }}" onclick=showPopupMusic(this) data-url="{% url 'editMusic' form.instance.id music.id %}">Edit</button>
                         <button class="btn btn-danger" onclick=confirmSuppressionMusic(this) data-deleteurl="{% url 'deleteMusic' form.instance.id music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.id %}">Delete</button>
                     </div>
                 </div>
@@ -115,10 +116,10 @@
 
                 {% endif %}
             </div>
-            {% endif %}
         </div>
     </div>
 </div>
+{% endif %}
 
 
 

@@ -164,12 +164,9 @@ function showDescriptionType(){
     });
 }
 
-function showPopupAddMusic(el) {
+function showPopupMusic(el) {
     const url = el.dataset.url;
-    console.log(url);
-    console.log(el);
-
-
+    const title = el.title;
 
     fetch(url, {
         method: 'GET',
@@ -180,7 +177,7 @@ function showPopupAddMusic(el) {
         .then((body) => {
             console.log(body);
             modalShow({
-                title: 'Add a music to the playlist',
+                title: title,
                 body: body
             })
         })

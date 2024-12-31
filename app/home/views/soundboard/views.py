@@ -199,6 +199,23 @@ def music_create(request, playlist_id) -> JsonResponse:
     return render(request, '404.html', status=404) 
 
 @login_required
+def music_update(request, playlist_id, music_id):
+    playlist = (PlaylistService(request)).get_playlist(playlist_id)
+    music = Music.objects.get(id=music_id)
+    if not music or not playlist:
+        return render(request, '404.html', status=404) 
+    if request.method == 'POST':
+        form = MusicForm(request.POST, request.FILES, instance=music)
+        if form.is_valid():
+            form.save()
+            return redirect('playlistUpdate', playlist_id=playlist_id)
+    else:
+        form = MusicForm(instance=music)
+    return render(request, 'Music/add_music.html', {'form': form, "playlist":playlist, 'music': music, 'method' : 'update' })
+
+
+
+@login_required
 @require_http_methods(['DELETE'])
 def music_delete(request, playlist_id, music_id) -> JsonResponse:
     if request.method == 'DELETE':

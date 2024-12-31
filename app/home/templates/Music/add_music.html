@@ -1,7 +1,5 @@
-
-<form method="post" enctype="multipart/form-data" action="{% url 'addMusic' playlist.id %}">
+<form method="post" enctype="multipart/form-data" action="{% if method == 'update' %}{% url 'editMusic' playlist.id music.id %}{% else %}{% url 'addMusic' playlist.id %}{% endif %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Ajouter</button>
+    <button class="btn btn-primary" type="submit">Ajouter</button>
 </form>
-
