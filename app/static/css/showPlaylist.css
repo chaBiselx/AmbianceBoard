@@ -22,15 +22,15 @@
 }
 
 .flex-item-2{
-    flex-basis : 50%;
+    width : 50%;
 }
 
 .flex-item-3{
-    flex-basis : 33.333%;
+    width : 33%;
 }
 
 .flex-item-4{
-    flex-basis : 25%;
+    width : 25%;
 }
 
 

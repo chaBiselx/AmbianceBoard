@@ -1,6 +1,8 @@
 simulatePlaylistColor();
 document.getElementById('color').addEventListener('change', simulatePlaylistColor);
 document.getElementById('colorText').addEventListener('change', simulatePlaylistColor);
+document.getElementById('color').addEventListener('input', simulatePlaylistColor);
+document.getElementById('colorText').addEventListener('input', simulatePlaylistColor);
 
 document.addEventListener("DOMContentLoaded", (event) => {
     volumeInput = document.getElementById('id_volume');
