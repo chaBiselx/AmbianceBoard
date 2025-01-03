@@ -169,3 +169,47 @@ CRON_CLASSES  = [
 CRONJOBS = [
     ('* 2 * * *', 'home.cron.CleanMediaFolderCron.run'), # evey minute
 ]
+
+# auth 
+from home.enum.GroupEnum import GroupEnum
+
+GROUPS = {group.name: group.value for group in GroupEnum}
+
+from home.enum.PermissionEnum import PermissionEnum
+
+PERMISSIONS = {permission.name: permission.value for permission in PermissionEnum}
+
+ATTRIB_PERMISSIONS = {
+    GroupEnum.ADMIN.name: {
+        "inherited_permissions": [GroupEnum.MANAGER.name, GroupEnum.MODERATEUR.name , GroupEnum.USER_PREMIUM.name, GroupEnum.USER_STANDARD.name],
+        "permission" : []
+    },
+    GroupEnum.MANAGER.name: {
+        "inherited_permissions": [GroupEnum.MODERATEUR.name , GroupEnum.USER_PREMIUM.name, GroupEnum.USER_STANDARD.name],
+        "permission" : [
+            PermissionEnum.MANAGER_ATTRIBUTE_MODERATEUR_ROLE.name,
+            PermissionEnum.MANAGER_ACCESS_DASHBOARD.name
+        ]
+    },
+    GroupEnum.MODERATEUR.name: {
+        "inherited_permissions": [GroupEnum.USER_PREMIUM.name, GroupEnum.USER_STANDARD.name],
+        "permission" : [
+            PermissionEnum.MODERATEUR_ACCESS_ALL_MUSIC.name, 
+            PermissionEnum.MODERATEUR_ACCESS_ALL_PLAYLIST.name, 
+            PermissionEnum.MODERATEUR_ACCESS_ALL_SOUNDBOARD.name,
+            PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name
+        ]
+    },
+    GroupEnum.USER_PREMIUM.name: {
+        "inherited_permissions": [GroupEnum.USER_STANDARD.name],
+        "permission" : [
+            PermissionEnum.USER_PREMIUM_OVER_LIMIT_SOUNDBOARD.name,
+            PermissionEnum.USER_PREMIUM_OVER_LIMIT_PLAYLIST.name,
+            PermissionEnum.USER_PREMIUM_OVER_LIMIT_WEIGHT_MUSIC.name
+            ]
+    },
+    GroupEnum.USER_STANDARD.name: {
+        "inherited_permissions": [],
+        "permission" : [PermissionEnum.USER_STANDARD.name]
+    },
+}

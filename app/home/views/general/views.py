@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
+from django.contrib.auth.models import Group
+from ...enum.GroupEnum import GroupEnum
 from django.http import JsonResponse
 import logging
 from ...forms.CreateUserForm import CreateUserForm
@@ -14,8 +16,9 @@ def create_account(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            # Créer un nouveau compte pour l'utilisateur final
-            form.save()
+            user = form.save()
+            group = Group.objects.get(name=GroupEnum.USER_STANDARD.name)
+            group.user_set.add(user)
             return redirect('login')
     else:
         form = CreateUserForm()
