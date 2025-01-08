@@ -10,6 +10,7 @@ services:
       - ./.env.dev
     depends_on:
       - db
+      - rabbitmq  # Ajout de la dépendance à RabbitMQ
 
   db:
     image: postgres:15.8
@@ -20,8 +21,19 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
     volumes:
-       - ./db-data/:/var/lib/postgresql/data/ # les répertoire partagées pour stocker les données
-    #    - ./init.sql:/docker-entrypoint-initdb.d/init.sql # emplacement d'un script d'init si nécessaire; à commenter sinon
+       - ./db-data/:/var/lib/postgresql/data/
+
+  rabbitmq:
+    image: rabbitmq:3-management  # Version avec interface de gestion
+    ports:
+      - 5672:5672    # Port pour AMQP
+      - 15672:15672  # Port pour l'interface web de gestion
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest     # Utilisateur par défaut
+      - RABBITMQ_DEFAULT_PASS=guest     # Mot de passe par défaut
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq # Persistance des données
 
 volumes:
   db-data: null
+  rabbitmq-data: null 
