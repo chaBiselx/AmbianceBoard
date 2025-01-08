@@ -172,20 +172,29 @@ function showPopupMusic(el) {
 
     fetch(url, {
         method: 'GET',
-
     })
-
         .then(response => response.text())
         .then((body) => {
-            console.log(body);
             modalShow({
                 title: title,
                 body: body
             })
+            fileInput = document.getElementById('id_file');
+            if(fileInput){
+                fileInput.addEventListener('change', autoSetAlternateName);
+            }
+            
         })
         .catch (error => {
         console.error('Erreur lors de la requête AJAX:', error);
     });
+}
 
+function autoSetAlternateName(event){
+    fileDest = document.getElementById('id_alternativeName');
+    if(fileDest && fileDest.value == ''){
+        const regexExtenstion = /\.(.)*$/g;
+        fileDest.value = event.target.files[0].name.replace(regexExtenstion, '').substring(0,50);
+    }
 
 }

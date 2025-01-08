@@ -11,9 +11,9 @@ class Playlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     name = models.CharField(max_length=255)
     typePlaylist = models.CharField(max_length=64, choices=[
-        (PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT, 'Son instantanné'),
-        (PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT, 'Son d\'ambiance'),
-        (PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC, 'Musique'),
+        (PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT.name, 'Son instantanné'),
+        (PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.name, 'Son d\'ambiance'),
+        (PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name, 'Musique'),
     ])
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)

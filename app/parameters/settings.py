@@ -160,6 +160,9 @@ if DEBUG:
             },
         },
     }
+    
+#Message system 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # CRON JOBS
 CRON_CLASSES  = [

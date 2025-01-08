@@ -3,6 +3,7 @@ import random
 import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from ...models.SoundBoard import SoundBoard
@@ -183,7 +184,10 @@ def playlist_delete(request, playlist_id) -> JsonResponse:
     return JsonResponse({"error": "Méthode non supportée."}, status=405)
     
 @login_required
+@require_http_methods(['POST', 'GET'])
 def music_create(request, playlist_id) -> JsonResponse:
+    logger = logging.getLogger(__name__)
+    
     playlist = (PlaylistService(request)).get_playlist(playlist_id)
     if(playlist) : 
         if request.method == 'POST':
@@ -193,6 +197,12 @@ def music_create(request, playlist_id) -> JsonResponse:
                 music.playlist = playlist
                 music.save()
                 return redirect('playlistUpdate', playlist_id=playlist_id)
+            else :
+                logger.info("Message de log")
+                for(field, errors) in form.errors.items():
+                    for error in errors:
+                        messages.error(request, error)
+            return redirect('playlistUpdate', playlist_id=playlist_id)
         else:
             form = MusicForm()
         return render(request, 'Music/add_music.html', {'form': form, "playlist":playlist, 'method' : 'create' })

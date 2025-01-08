@@ -69,7 +69,9 @@
 
     </header>
     <div class="main-content px-0">
-        <section>
+        <div class="navbar-padding" style="padding-top: 5rem"></div>
+        {% include 'message.html' %}
+        <section class="pt-0 pb-0">
             {% if title is not None %}<h1>{{ title }}</h1>{% endif %}
             <div class="container">
                 {% block content %}{% endblock %}

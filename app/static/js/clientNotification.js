@@ -1,4 +1,4 @@
-  function createClientNotification(options = {}) {
+function createClientNotification(options = {}) {
     // Options par défaut
     const defaults = {
       message: 'Notification',

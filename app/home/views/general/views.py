@@ -6,8 +6,6 @@ from django.http import JsonResponse
 import logging
 from ...forms.CreateUserForm import CreateUserForm
 
-tempUser = "uniqueID123"
-
 def home(request):
     return render(request, "home.html")
 
