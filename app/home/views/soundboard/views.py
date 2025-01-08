@@ -1,23 +1,24 @@
 import logging
 import random
 import json
+from parameters import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
-from ...models.SoundBoard import SoundBoard
-from ...models.Playlist import Playlist
-from ...models.Music import Music
-from ...manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
-from ...service.SoundBoardService import SoundBoardService
-from ...service.PlaylistService import PlaylistService
-from ...service.MusicService import MusicService
-from ...forms.SoundBoardForm import SoundBoardForm
-from ...forms.PlaylistForm import PlaylistForm
-from ...forms.MusicForm import MusicForm
-from ...filters.SoundBoardFilter import SoundBoardFilter
-
+from home.models.SoundBoard import SoundBoard
+from home.models.Playlist import Playlist
+from home.models.Music import Music
+from home.manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
+from home.service.SoundBoardService import SoundBoardService
+from home.service.PlaylistService import PlaylistService
+from home.service.MusicService import MusicService
+from home.forms.SoundBoardForm import SoundBoardForm
+from home.forms.PlaylistForm import PlaylistForm
+from home.forms.MusicForm import MusicForm
+from home.filters.SoundBoardFilter import SoundBoardFilter
+from home.enum.PermissionEnum import PermissionEnum
 
 
 @login_required
@@ -33,14 +34,11 @@ def soundboard_list(request):
     return render(request, 'Soundboard/soundboard_list.html', {'soundboards': soundboards})
 
 @login_required
+@require_http_methods(['POST', 'GET'])
 def soundboard_create(request):
     if request.method == 'POST':
-        form = SoundBoardForm(request.POST)
-        if form.is_valid():
-            soundboard = form.save(commit=False)
-            soundboard.user = request.user
-            soundboard.save()
-            return redirect('soundboardsList')
+        (SoundBoardService(request)).save_form()
+        return redirect('soundboardsList')
     else:
         form = SoundBoardForm()
     return render(request, 'Soundboard/soundboard_form.html', {'form': form , 'method' : 'create'})
@@ -54,6 +52,7 @@ def soundboard_read(request, soundboard_id):
         return render(request, 'Soundboard/soundboard_read.html', {'soundboard': soundboard})
 
 @login_required
+@require_http_methods(['POST', 'GET'])
 def soundboard_update(request, soundboard_id):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
     if request.method == 'POST':
@@ -126,13 +125,11 @@ def playlist_create_with_soundboard(request, soundboard_id):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
     if(soundboard) : 
         if request.method == 'POST':
-            form = PlaylistForm(request.POST)
-            if form.is_valid():
-                playlist = form.save(commit=False)
-                playlist.user = request.user
-                playlist.save()
+            playlist = (PlaylistService(request)).save_form()
+            if(playlist):
+                logger.warning('add')
                 soundboard.playlists.add(playlist)
-                return redirect('soundboardsRead', soundboard_id=soundboard.id)
+            return redirect('soundboardsRead', soundboard_id=soundboard.id)
         else:
             form = PlaylistForm()
         return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic':None})
@@ -141,12 +138,8 @@ def playlist_create_with_soundboard(request, soundboard_id):
 @login_required
 def playlist_create(request):
     if request.method == 'POST':
-        form = PlaylistForm(request.POST)
-        if form.is_valid():
-            playlist = form.save(commit=False)
-            playlist.user = request.user
-            playlist.save()
-            return redirect('playlistsAllList')
+        (PlaylistService(request)).save_form()
+        return redirect('playlistsAllList')
     else:
         form = PlaylistForm()
     return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic': None})
@@ -186,22 +179,10 @@ def playlist_delete(request, playlist_id) -> JsonResponse:
 @login_required
 @require_http_methods(['POST', 'GET'])
 def music_create(request, playlist_id) -> JsonResponse:
-    logger = logging.getLogger(__name__)
-    
     playlist = (PlaylistService(request)).get_playlist(playlist_id)
     if(playlist) : 
         if request.method == 'POST':
-            form = MusicForm(request.POST, request.FILES)
-            if form.is_valid():
-                music = form.save(commit=False)
-                music.playlist = playlist
-                music.save()
-                return redirect('playlistUpdate', playlist_id=playlist_id)
-            else :
-                logger.info("Message de log")
-                for(field, errors) in form.errors.items():
-                    for error in errors:
-                        messages.error(request, error)
+            (MusicService(request)).save_form(playlist)
             return redirect('playlistUpdate', playlist_id=playlist_id)
         else:
             form = MusicForm()

@@ -191,7 +191,8 @@ ATTRIB_PERMISSIONS = {
         "inherited_permissions": [GroupEnum.MODERATEUR.name , GroupEnum.USER_PREMIUM.name, GroupEnum.USER_STANDARD.name],
         "permission" : [
             PermissionEnum.MANAGER_ATTRIBUTE_MODERATEUR_ROLE.name,
-            PermissionEnum.MANAGER_ACCESS_DASHBOARD.name
+            PermissionEnum.MANAGER_ACCESS_DASHBOARD.name,
+            PermissionEnum.MANAGER_EXECUTE_BATCHS.name
         ]
     },
     GroupEnum.MODERATEUR.name: {
@@ -208,7 +209,8 @@ ATTRIB_PERMISSIONS = {
         "permission" : [
             PermissionEnum.USER_PREMIUM_OVER_LIMIT_SOUNDBOARD.name,
             PermissionEnum.USER_PREMIUM_OVER_LIMIT_PLAYLIST.name,
-            PermissionEnum.USER_PREMIUM_OVER_LIMIT_WEIGHT_MUSIC.name
+            PermissionEnum.USER_PREMIUM_OVER_LIMIT_WEIGHT_MUSIC.name,
+            PermissionEnum.USER_PREMIUM_OVER_LIMIT_MUSIC_PER_PLAYLIST.name,
             ]
     },
     GroupEnum.USER_STANDARD.name: {
@@ -216,3 +218,14 @@ ATTRIB_PERMISSIONS = {
         "permission" : [PermissionEnum.USER_STANDARD.name]
     },
 }
+
+#LIMIT
+LIMIT_USER_PREMIUM_SOUNDBOARD = 25
+LIMIT_USER_PREMIUM_PLAYLIST = 1000
+LIMIT_USER_PREMIUM_MUSIC_PER_PLAYLIST = 25
+LIMIT_USER_PREMIUM_WEIGHT_MUSIC = 120 #Mo
+# LIMIT USER STANDARD
+LIMIT_USER_STANDARD_SOUNDBOARD = 5
+LIMIT_USER_STANDARD_PLAYLIST = 75
+LIMIT_USER_STANDARD_MUSIC_PER_PLAYLIST = 10
+LIMIT_USER_STANDARD_WEIGHT_MUSIC = 50 #Mo
