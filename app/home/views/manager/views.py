@@ -17,7 +17,7 @@ def clean_media_folder(request) -> JsonResponse:
         (MediaAudioService()).clear_media_audio()
         logger.warning("Ending ClearMediaFolderCron")
         return JsonResponse({"message": "OK"}, status=200)
-    except Exception:
-        return JsonResponse({"error": "Unexpected error"}, status=500)
+    except Exception as e:
+        return JsonResponse({"error": "Unexpected error", "message": str(e)}, status=500)
     
     

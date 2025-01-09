@@ -18,6 +18,9 @@ python manage.py migrate
 
 python manage.py crontab add
 
+# Démarrer Celery en arrière-plan
+celery -A home worker --loglevel=info &
+
 cron start
 
 

@@ -173,6 +173,14 @@ CRONJOBS = [
     ('* 2 * * *', 'home.cron.CleanMediaFolderCron.run'), # evey minute
 ]
 
+# message brokers 
+#TODO set credentials for RabbitMQ in ENV 
+CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672/'  # URL de RabbitMQ 
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+MEDIA_AUDIO_MESSENGER_NB_MAX_FILE = 25
+
 # auth 
 from home.enum.GroupEnum import GroupEnum
 

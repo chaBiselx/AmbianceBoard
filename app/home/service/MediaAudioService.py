@@ -1,7 +1,10 @@
 import os 
 import logging
 from django.core.files.storage import default_storage
-from ..models.Music import Music
+from parameters import settings
+from home.models.Music import Music
+from home.message.MediaAudioMessenger import clean_audio_messenger
+from home.message.test import addition
 
 logger = logging.getLogger(__name__)
 
@@ -23,17 +26,15 @@ class MediaAudioService:
         self.logger.info("NB media files " + str(len(self.list_media)) + "")
         
     def __generate_topic(self):
+        list_media_topic = []
+        limit = settings.MEDIA_AUDIO_MESSENGER_NB_MAX_FILE
         for media_file in self.list_media:
-            try:
-                file_path = Music.MUSIC_FOLDER + media_file
-                music_record = Music.objects.filter(file=file_path)
-                if not music_record.exists():
-                    raise Exception("File not found in the database")
-                self.logger.debug(f"File in database: Keep {media_file}")
-            except Exception:
-                self.logger.debug(f"File not in database: Deleting {media_file}")
-                os.remove(default_storage.location + "/" + Music.MUSIC_FOLDER + media_file)
-
-   
+            list_media_topic.append(media_file)
+            if len(list_media_topic) == limit:
+                clean_audio_messenger.delay(list_media_topic)
+                list_media_topic = []
+                
+        if len(list_media_topic) > 0:
+            clean_audio_messenger.delay(list_media_topic)
 
     
