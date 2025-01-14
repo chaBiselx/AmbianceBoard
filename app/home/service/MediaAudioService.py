@@ -4,7 +4,6 @@ from django.core.files.storage import default_storage
 from parameters import settings
 from home.models.Music import Music
 from home.message.MediaAudioMessenger import clean_audio_messenger
-from home.message.test import addition
 
 logger = logging.getLogger(__name__)
 
@@ -31,10 +30,10 @@ class MediaAudioService:
         for media_file in self.list_media:
             list_media_topic.append(media_file)
             if len(list_media_topic) == limit:
-                clean_audio_messenger.delay(list_media_topic)
+                clean_audio_messenger.apply_async(args=[list_media_topic], queue='default', priority=4 )
                 list_media_topic = []
                 
         if len(list_media_topic) > 0:
-            clean_audio_messenger.delay(list_media_topic)
+            clean_audio_messenger.apply_async(args=[list_media_topic], queue='default', priority=4)
 
     
