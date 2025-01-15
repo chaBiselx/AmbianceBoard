@@ -7,7 +7,7 @@ import logging
 from ...forms.CreateUserForm import CreateUserForm
 
 def home(request):
-    return render(request, "home.html")
+    return render(request, "home.html", {"title": "Accueil"})
 
 
 def create_account(request):
