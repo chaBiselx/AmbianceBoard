@@ -1,9 +1,9 @@
 from django.contrib import messages
 from home.enum.PermissionEnum import PermissionEnum
-from parameters import settings
 from home.models.Playlist import Playlist
 from home.filters.PlaylistFilter import PlaylistFilter
 from home.forms.PlaylistForm import PlaylistForm
+from home.factory.UserParametersFactory import UserParametersFactory
 
 
 
@@ -32,10 +32,8 @@ class PlaylistService:
         return playlists
     
     def save_form(self):
-        if(self.request.user.has_perm('auth.' + PermissionEnum.USER_PREMIUM_OVER_LIMIT_PLAYLIST.name)):  
-            limit_playlist = settings.LIMIT_USER_PREMIUM_PLAYLIST
-        else:
-            limit_playlist = settings.LIMIT_USER_STANDARD_PLAYLIST
+        user_parameters = UserParametersFactory(self.request.user)
+        limit_playlist = user_parameters.limit_playlist
         
         if len(Playlist.objects.filter(user=self.request.user)) >= limit_playlist:
             messages.error(self.request, "Vous avez atteint la limite de playlist total (" + str(limit_playlist) + ").")
