@@ -1,6 +1,6 @@
 from django.db.models import Q
-from django.contrib.auth.models import User
-from ..models.SoundBoard import SoundBoard
+from home.models.User import User
+from home.models.SoundBoard import SoundBoard
 
 class SoundBoardFilter:
     def __init__(self, queryset=None):

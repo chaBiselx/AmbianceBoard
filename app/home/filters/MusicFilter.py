@@ -1,6 +1,6 @@
 from django.db.models import Q
-from django.contrib.auth.models import User
-from ..models.Music import Music
+from home.models.User import User
+from home.models.Music import Music
 
 class MusicFilter:
     def __init__(self, queryset=None):

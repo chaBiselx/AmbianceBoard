@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import User
-from .Playlist import Playlist
+from home.models.User import User
+from home.models.Playlist import Playlist
 
 # Create your models here.
 

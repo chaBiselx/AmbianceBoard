@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import User
+from home.models.User import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from home.strategy.PlaylistStrategy import PlaylistStrategy

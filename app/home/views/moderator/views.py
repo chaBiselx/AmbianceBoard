@@ -7,7 +7,7 @@ from django.db.models import Avg, Count
 from django.db import models
 from home.models.Playlist import Playlist
 from home.enum.PermissionEnum import PermissionEnum
-from django.contrib.auth.models import User
+from home.models.User import User
 
 
 @login_required

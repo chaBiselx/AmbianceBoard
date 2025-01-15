@@ -23,7 +23,6 @@ def create_account(request):
     return render(request, 'Account/create_account.html', {'form': form})
 
 
-
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
