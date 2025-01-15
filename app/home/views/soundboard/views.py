@@ -126,7 +126,6 @@ def playlist_create_with_soundboard(request, soundboard_id):
         if request.method == 'POST':
             playlist = (PlaylistService(request)).save_form()
             if(playlist):
-                logger.warning('add')
                 soundboard.playlists.add(playlist)
             return redirect('soundboardsRead', soundboard_id=soundboard.id)
         else:
