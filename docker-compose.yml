@@ -1,5 +1,6 @@
 services:
   web:
+  
     build: ./app
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -7,7 +8,7 @@ services:
     ports:
       - 8000:8000
     env_file:
-      - ./.env.dev
+      - ./.env
     depends_on:
       - db
       - rabbitmq  # Ajout de la dépendance à RabbitMQ
@@ -15,22 +16,22 @@ services:
   db:
     image: postgres:15.8
     ports:
-      - 5432:5432
+      - $SQL_PORT:$SQL_PORT
     environment:
-      - POSTGRES_USER=postgres # user et mot de passe pour le super user postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_USER=${SQL_USER} # user et mot de passe pour le super user postgres
+      - POSTGRES_PASSWORD=${SQL_PASSWORD}
+      - POSTGRES_DB=${SQL_DATABASE}
     volumes:
        - ./db-data/:/var/lib/postgresql/data/
 
   rabbitmq:
     image: rabbitmq:3-management  # Version avec interface de gestion
     ports:
-      - 5672:5672    # Port pour AMQP
-      - 15672:15672  # Port pour l'interface web de gestion
+      - ${RABBIT_MQ_PORT_AMQP}:${RABBIT_MQ_PORT_AMQP}    # Port pour AMQP
+      - ${RABBIT_MQ_PORT_WEB}:${RABBIT_MQ_PORT_WEB}  # Port pour l'interface web de gestion
     environment:
-      - RABBITMQ_DEFAULT_USER=guest     # Utilisateur par défaut
-      - RABBITMQ_DEFAULT_PASS=guest     # Mot de passe par défaut
+      - RABBITMQ_DEFAULT_USER=${RABBIT_MQ_USER}     # Utilisateur par défaut
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_MQ_PASSWORD}      # Mot de passe par défaut
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq # Persistance des données
 

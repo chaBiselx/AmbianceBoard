@@ -174,8 +174,12 @@ CRONJOBS = [
 ]
 
 # message brokers 
-#TODO set credentials for RabbitMQ in ENV 
-CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq:5672/'  # URL de RabbitMQ 
+RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
+RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
+RABBIT_MQ_USER = os.environ.get("RABBIT_MQ_USER")
+RABBIT_MQ_PASSWORD = os.environ.get("RABBIT_MQ_PASSWORD")
+
+CELERY_BROKER_URL = f"amqp://{RABBIT_MQ_USER}:{RABBIT_MQ_PASSWORD}@{RABBIT_MQ_HOST}:{RABBIT_MQ_PORT}/"  # URL de RabbitMQ 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
