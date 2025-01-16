@@ -1,8 +1,11 @@
 simulatePlaylistColor();
-document.getElementById('color').addEventListener('change', simulatePlaylistColor);
-document.getElementById('colorText').addEventListener('change', simulatePlaylistColor);
-document.getElementById('color').addEventListener('input', simulatePlaylistColor);
-document.getElementById('colorText').addEventListener('input', simulatePlaylistColor);
+
+const DomElementAddEvent = ['id_name', 'id_color', 'id_colorText', 'id_icon'];
+for (let i = 0; i < DomElementAddEvent.length; i++) {
+    document.getElementById(DomElementAddEvent[i]).addEventListener('input', simulatePlaylistColor);
+    document.getElementById(DomElementAddEvent[i]).addEventListener('change', simulatePlaylistColor);
+}
+
 
 document.addEventListener("DOMContentLoaded", (event) => {
     volumeInput = document.getElementById('id_volume');
@@ -93,12 +96,28 @@ function callAjaxDeleteMusic(config) {
 }
 
 function simulatePlaylistColor() {
-    const demo =document.getElementById('demo-playlist')
-    demo.style.backgroundColor = document.getElementById('color').value;
-    demo.style.color = document.getElementById('colorText').value;
+    const demo = document.getElementById('demo-playlist')
+    demo.style.backgroundColor = document.getElementById('id_color').value;
+    demo.style.color = document.getElementById('id_colorText').value;
+
+    if (document.getElementById('id_icon').value != "") {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+            demo.innerHTML = "<img class='playlist-img' src=" + reader.result + " ></img>";
+        });
+        html =  reader.readAsDataURL(document.getElementById('id_icon').files[0]);
+        if(html){
+            demo.innerHTML = "<img class='playlist-img' src=" + html + " ></img>";
+        }
+    } else if(document.getElementById('id_icon_alreadyexist')){
+        demo.innerHTML = "<img class='playlist-img' src=" + document.getElementById('id_icon_alreadyexist').href + " ></img>";
+    } else {
+        demo.textContent = document.getElementById('id_name').value;
+    }
+
 }
 
-function showDescriptionType(){
+function showDescriptionType() {
     const div = document.createElement("div");
     const ul = document.createElement("ul");
 
@@ -180,21 +199,21 @@ function showPopupMusic(el) {
                 body: body
             })
             fileInput = document.getElementById('id_file');
-            if(fileInput){
+            if (fileInput) {
                 fileInput.addEventListener('change', autoSetAlternateName);
             }
-            
+
         })
-        .catch (error => {
-        console.error('Erreur lors de la requête AJAX:', error);
-    });
+        .catch(error => {
+            console.error('Erreur lors de la requête AJAX:', error);
+        });
 }
 
-function autoSetAlternateName(event){
+function autoSetAlternateName(event) {
     fileDest = document.getElementById('id_alternativeName');
-    if(fileDest && fileDest.value == ''){
+    if (fileDest && fileDest.value == '') {
         const regexExtenstion = /\.(.)*$/g;
-        fileDest.value = event.target.files[0].name.replace(regexExtenstion, '').substring(0,50);
+        fileDest.value = event.target.files[0].name.replace(regexExtenstion, '').substring(0, 50);
     }
 
 }

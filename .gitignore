@@ -7,3 +7,4 @@ __pycache
 
 #foilder
 app/mediafiles/musics/*
+app/mediafiles/playlistIcon/*

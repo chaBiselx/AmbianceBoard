@@ -11,21 +11,25 @@
     <div class="col-12 col-xl-10">
         <div style="display:None;" id="players"></div>
 
-        <div  class="flex-container">
+        <div class="flex-container">
             {% for playlist in soundboard.playlists.all %}
             <div class="playlist-link playlist-element flex-item playlist-dim-100 m-1" id="playlist-{{ playlist.id }}" style="background-color:{{playlist.color}};color :{{playlist.colorText}};" data-playlist-uri="{% url 'streammMusic' playlist.id %}" {% for key, value in playlist.getDataSet.items %}
                 data-playlist-{{ key }}="{{ value }}" {% endfor %}>
+                {% if playlist.icon %}
+                <img class="playlist-img" src="{{ playlist.icon.url }}" alt="{{ playlist.name }}"></img>
+                {% else %}
                 {{ playlist.name }}
+                {% endif %}
             </div>
             {% endfor %}
         </div>
 
-        
+
     </div>
     <div class="col-12 col-xl-2">
         <div>
             <a class="btn btn-primary btn-block" href="{% url 'addPlaylistWithSoundboard' soundboard.id %}">Créer une playlist</a>
-            <br/>
+            <br />
             <a class="btn btn-primary btn-block" href="{% url 'organizeSoundboard' soundboard.id %}">Organizer</a>
         </div>
     </div>

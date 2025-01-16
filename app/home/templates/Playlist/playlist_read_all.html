@@ -9,7 +9,11 @@
             {% for playlist in playlists %}
             <a href="{% url 'playlistUpdate' playlist.id %}">
                 <div class="playlist-link playlist-element flex-item playlist-dim-200 m-1" style="background-color: {{ playlist.color }};color :{{ playlist.colorText }};">
+                    {% if playlist.icon %}
+                    <img class="playlist-img" src="{{ playlist.icon.url }}" alt="{{ playlist.name }}"></img>
+                    {% else %}
                     {{ playlist.name }}
+                    {% endif %}
                 </div>
             </a>
             {% endfor %}

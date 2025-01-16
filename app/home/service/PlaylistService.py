@@ -6,7 +6,6 @@ from home.forms.PlaylistForm import PlaylistForm
 from home.factory.UserParametersFactory import UserParametersFactory
 
 
-
 class PlaylistService:
     
     def __init__(self, request):
@@ -38,8 +37,8 @@ class PlaylistService:
         if len(Playlist.objects.filter(user=self.request.user)) >= limit_playlist:
             messages.error(self.request, "Vous avez atteint la limite de playlist total (" + str(limit_playlist) + ").")
             return None
-        
-        form = PlaylistForm(self.request.POST)
+
+        form = PlaylistForm(self.request.POST, self.request.FILES)
         if form.is_valid():
             playlist = form.save(commit=False)
             playlist.user = self.request.user

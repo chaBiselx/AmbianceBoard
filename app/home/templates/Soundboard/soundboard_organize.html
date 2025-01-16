@@ -15,7 +15,12 @@
             {% for playlist in unassociatedPlaylists %}
             <div class="playlist-dragAndDrop flex-item" id="{{ playlist.id }}" draggable="true">
                 <div  class="playlist-link playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.color}}; color :{{playlist.colorText}};">
-                    {{ playlist.name }}</div>
+                    {% if playlist.icon %}
+                    <img class="playlist-img" src="{{ playlist.icon.url }}" alt="{{ playlist.name }}"></img>
+                    {% else %}
+                    {{ playlist.name }}
+                    {% endif %}
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -29,7 +34,12 @@
             {% for playlist in actualPlaylist %}
             <div class="playlist-dragAndDrop flex-item" id="{{ playlist.id }}" draggable="true">
                 <div class="playlist-link  playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.color}}; color :{{playlist.colorText}};">
-                    {{ playlist.name }}</div>
+                    {% if playlist.icon %}
+                    <img class="playlist-img" src="{{ playlist.icon.url }}" alt="{{ playlist.name }}"></img>
+                    {% else %}
+                    {{ playlist.name }}
+                    {% endif %}
+                </div>
             </div>
             {% endfor %}
 

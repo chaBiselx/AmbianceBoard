@@ -150,7 +150,7 @@ def playlist_update(request, playlist_id):
         if not playlist:
             return render(request, '404.html', status=404)
         else:
-            form = PlaylistForm(request.POST, instance=playlist)
+            form = PlaylistForm(request.POST, request.FILES, instance=playlist)
             if form.is_valid():
                 form.save()
                 return redirect('playlistsAllList')
@@ -159,7 +159,7 @@ def playlist_update(request, playlist_id):
             return render(request, '404.html', status=404) 
         else:
             form = PlaylistForm(instance=playlist)
-            list_music = (MusicService(request)).get_list_music(playlist_id)
+    list_music = (MusicService(request)).get_list_music(playlist_id)
     return render(request, 'Playlist/playlist_create.html', {'form': form, 'method' : 'update', 'listMusic' : list_music})
 
 @login_required

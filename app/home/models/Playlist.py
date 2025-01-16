@@ -7,6 +7,7 @@ from home.strategy.PlaylistStrategy import PlaylistStrategy
 
 
 class Playlist(models.Model):
+    PLAYLIST_FOLDER = 'playlistIcon/'
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     name = models.CharField(max_length=255)
@@ -18,15 +19,35 @@ class Playlist(models.Model):
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
     volume = models.IntegerField(default=75, validators=[MinValueValidator(0), MaxValueValidator(100)])
+    icon = models.FileField(upload_to=PLAYLIST_FOLDER, default=None, null=True, blank=True)
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._icon_original = self.icon if self.pk else None
+    
+    def clean(self):
+        if self.pk:
+            self._icon_changed = self.icon != self._icon_original
+        super().clean()
+
     def save(self, *args, **kwargs):
-        if not self.user and self.request.user:
-            self.user = self.request.user
+        if not hasattr(self, 'user') :
+            raise ValueError("Playlist must have a user")
+            
+        if self.icon and self.__is_new_file(): #Remplacement
+            self.__replace_name_by_uuid()
+
+            
         super().save(*args, **kwargs)
-        
+    
     def getDataSet(self):
         strategy = PlaylistStrategy().get_strategy(self.typePlaylist)
         return strategy.get_data(self)
     
-
+    def __replace_name_by_uuid(self):
+        new_uuid = uuid.uuid4()
+        self.icon.name = f"{new_uuid}.{self.icon.name.split('.')[-1]}"
+    
+    def __is_new_file(self) -> bool :
+        return hasattr(self, '_icon_changed') and self._icon_changed
     
