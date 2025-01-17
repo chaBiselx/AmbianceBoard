@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load Playlist %}
 
 {% block javascript %}
 {% load static %}
@@ -93,11 +94,7 @@
     <div class="col-12 col-sm-1 col-md-2 col-xl-4">
         <div class="playlist-link playlist-element playlist-dim-100 m-1" id="demo-playlist">
             {% if method == 'update' %}
-            {% if form.instance.icon %}
-            <img class="playlist-img" src="{{ form.instance.icon.url }}" alt="{{ form.instance.name }}"></img>
-            {% else %}
-            {{ form.instance.name }}
-            {% endif %}
+            {{ form.instance | applys_playlist_content}}
             {% endif %}
         </div>
     </div>
