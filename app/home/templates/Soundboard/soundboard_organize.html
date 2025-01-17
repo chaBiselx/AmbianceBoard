@@ -16,7 +16,7 @@
             <div class="playlist-dragAndDrop flex-item" id="{{ playlist.id }}" draggable="true">
                 <div  class="playlist-link playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.color}}; color :{{playlist.colorText}};">
                     {% if playlist.icon %}
-                    <img class="playlist-img" src="{{ playlist.icon.url }}" alt="{{ playlist.name }}"></img>
+                    <img class="playlist-img" src="{{ playlist.icon.url }}" alt="{{ playlist.name }}" draggable="false"></img>
                     {% else %}
                     {{ playlist.name }}
                     {% endif %}
@@ -35,7 +35,7 @@
             <div class="playlist-dragAndDrop flex-item" id="{{ playlist.id }}" draggable="true">
                 <div class="playlist-link  playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.color}}; color :{{playlist.colorText}};">
                     {% if playlist.icon %}
-                    <img class="playlist-img" src="{{ playlist.icon.url }}" alt="{{ playlist.name }}"></img>
+                    <img class="playlist-img" src="{{ playlist.icon.url }}" alt="{{ playlist.name }}" draggable="false" ></img>
                     {% else %}
                     {{ playlist.name }}
                     {% endif %}

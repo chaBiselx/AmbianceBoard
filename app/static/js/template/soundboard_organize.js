@@ -12,7 +12,8 @@ function setEventDragAndDrop() {
 
     // Définir les événements de drag and drop
     playlistAssociees.addEventListener('dragstart', (e) => {
-        e.dataTransfer.setData('text', e.target.id);
+        e.dataTransfer.setData('id', e.target.id);
+        e.dataTransfer.setData('dragstart', 'playlistAssociees');
     });
 
     playlistAssociees.addEventListener('dragover', (e) => {
@@ -20,10 +21,12 @@ function setEventDragAndDrop() {
     });
 
     playlistAssociees.addEventListener('drop', (e) => {
-        console.log(e);
-        
         e.preventDefault();
-        const id = e.dataTransfer.getData('text');
+        dragstart = e.dataTransfer.getData('dragstart');
+        if(dragstart == 'playlistAssociees') {
+            return 
+        }
+        const id = e.dataTransfer.getData('id');
         const playlist = document.getElementById(id);
         playlistAssociees.appendChild(playlist);
         checkEmptyPlaylist();
@@ -32,7 +35,8 @@ function setEventDragAndDrop() {
 
 
     playlistNonAssociees.addEventListener('dragstart', (e) => {
-        e.dataTransfer.setData('text', e.target.id);
+        e.dataTransfer.setData('id', e.target.id);
+        e.dataTransfer.setData('dragstart', 'playlistNonAssociees');
     });
 
 
@@ -42,7 +46,11 @@ function setEventDragAndDrop() {
 
     playlistNonAssociees.addEventListener('drop', (e) => {
         e.preventDefault();
-        const id = e.dataTransfer.getData('text');
+        dragstart = e.dataTransfer.getData('dragstart');
+        if(dragstart == 'playlistNonAssociees') {
+            return 
+        }
+        const id = e.dataTransfer.getData('id');
         const playlist = document.getElementById(id);
         playlistNonAssociees.appendChild(playlist);
         checkEmptyPlaylist();
