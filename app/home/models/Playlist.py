@@ -4,6 +4,7 @@ from home.models.User import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from home.strategy.PlaylistStrategy import PlaylistStrategy
+from home.message.ReduceSizeImgMessenger import reduce_size_img
 
 
 class Playlist(models.Model):
@@ -31,14 +32,18 @@ class Playlist(models.Model):
         super().clean()
 
     def save(self, *args, **kwargs):
+        new_file = False
         if not hasattr(self, 'user') :
             raise ValueError("Playlist must have a user")
             
         if self.icon and self.__is_new_file(): #Remplacement
             self.__replace_name_by_uuid()
+            new_file = True
 
             
         super().save(*args, **kwargs)
+        if new_file: 
+            reduce_size_img.apply_async(args=[self.icon.path], queue='default', priority=1 )
     
     def getDataSet(self):
         strategy = PlaylistStrategy().get_strategy(self.typePlaylist)
