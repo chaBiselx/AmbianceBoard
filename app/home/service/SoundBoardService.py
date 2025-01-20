@@ -27,7 +27,7 @@ class SoundBoardService:
             messages.error(self.request, "Vous avez atteint la limite de soundboard (" + str(limit_soundboard) + " max).")
             return None
         
-        form = SoundBoardForm(self.request.POST)
+        form = SoundBoardForm(self.request.POST, self.request.FILES)
         if form.is_valid():
             soundboard = form.save(commit=False)
             soundboard.user = self.request.user

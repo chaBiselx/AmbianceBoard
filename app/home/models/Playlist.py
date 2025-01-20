@@ -25,12 +25,7 @@ class Playlist(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._icon_original = self.icon if self.pk else None
-    
-    def clean(self):
-        if self.pk:
-            self._icon_changed = self.icon != self._icon_original
-        super().clean()
-
+        
     def save(self, *args, **kwargs):
         new_file = False
         if not hasattr(self, 'user') :
@@ -48,6 +43,11 @@ class Playlist(models.Model):
     def getDataSet(self):
         strategy = PlaylistStrategy().get_strategy(self.typePlaylist)
         return strategy.get_data(self)
+    
+    def clean(self):
+        if self.pk:
+            self._icon_changed = self.icon != self._icon_original
+        super().clean()
     
     def __replace_name_by_uuid(self):
         new_uuid = uuid.uuid4()

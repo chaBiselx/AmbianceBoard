@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load SoundBoard %}
 
 {% block javascript %}
 {% load static %}
@@ -15,38 +16,73 @@
     {% endif %}
 </h2>
 
-{% if form.instance.id %}
-<div>
-    <button class="btn btn-danger" onclick=confirmSuppression(this) data-deleteurl="{% url 'soundboardsDelete' form.instance.id %}" data-redirecturl="{% url 'soundboardsList' %}">Supprimer</button>
-</div>
-{% endif %}
-<form method="post">
-    {% csrf_token %}
 
-    <div>
-        <label for="name">Nom du SoundBoard :</label>
-        <input type="text" id="name" name="name" required value="{{ form.name.value|default_if_none:" SoundBoard" }}">
+<div class="row">
+    <div class="col-12 col-sm-11 col-md-10 col-xl-8">
+        <div>
+            {% if form.instance.id %}
+            <div>
+                <button class="btn btn-danger" onclick=confirmSuppression(this) data-deleteurl="{% url 'soundboardsDelete' form.instance.id %}" data-redirecturl="{% url 'soundboardsList' %}">Supprimer</button>
+            </div>
+            {% endif %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div>
+                    {{ form.name.label }} * :<br /> {{ form.name }}
+                    {% if form.name.errors %}
+                    <ul>
+                        {% for error in form.name.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+                <div>
+                    {{ form.color.label }} * :<br /> {{ form.color }}
+                </div>
+                <div>
+                    {{ form.colorText.label }} * :<br />{{ form.colorText }}
+                </div>
+                <div>
+                    {{ form.is_public.label }} * :<br />{{ form.is_public }}
+                </div>
+
+                <div>
+                    {{ form.icon.label }} :<br />
+                    {% if form.instance.icon %}
+                    {{ form.icon.help_text|safe }} | {{ form.clear_icon }} Supprimer le fichier <br />
+                    {% endif %}
+                    {{ form.icon }}
+                    {% if form.icon.errors %}
+                    <ul>
+                        {% for error in form.icon.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+
+                <button class="btn btn-primary" type="submit">
+                    {% if method == 'update' %}
+                    Modifier le SoundBoard
+                    {% else %}
+                    Créer un nouveau SoundBoard
+                    {% endif %}
+                </button>
+            </form>
+
+
+        </div>
     </div>
-    <div>
-        <label for="color">Couleur du SoundBoard :</label>
-        <input type="color" id="color" name="color" value="{{ form.color.value|default_if_none:"#000000" }}" />
+    <div class="col-12 col-sm-1 col-md-2 col-xl-4">
+        <div class="playlist-link playlist-element playlist-dim-200 m-1" id="demo-soundboard">
+            {% if method == 'update' %}
+            {{ form.instance | applys_soundboard_content}}
+            {% endif %}
+        </div>
     </div>
-    <div>
-        <label for="color">Couleur du texte du SoundBoard :</label>
-        <input type="color" id="colorText" name="colorText" value="{{ form.colorText.value|default_if_none:"#ffffff" }}" />
-    </div>
-    <div>
-        <label for="color">Partager le soundboard :</label>
-        <input type="checkbox" id="is_public" name="is_public" {% if form.instance.is_public %}checked{% endif %}>
-    </div>
-    <button class="btn btn-primary" type="submit">
-        {% if method == 'update' %}
-        Modifier le SoundBoard
-        {% else %}
-        Créer un nouveau SoundBoard
-        {% endif %}
-    </button>
-</form>
+</div>
 
 
 

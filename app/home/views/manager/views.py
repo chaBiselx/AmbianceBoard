@@ -5,6 +5,7 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from home.service.MediaAudioService import MediaAudioService
 from home.service.MediaImgPlaylistService import MediaImgPlaylistService
+from home.service.MediaImgSoundboardService import MediaImgSoundboardService
 from home.enum.PermissionEnum import PermissionEnum
 
 
@@ -17,6 +18,7 @@ def clean_media_folder(request) -> JsonResponse:
         logger.warning("Starting ClearMediaFolder View")
         (MediaAudioService()).clear_media_audio()
         (MediaImgPlaylistService()).clear_media_img()
+        (MediaImgSoundboardService()).clear_media_img()
         
         logger.warning("Ending ClearMediaFolder View")
         return JsonResponse({"message": "OK"}, status=200)

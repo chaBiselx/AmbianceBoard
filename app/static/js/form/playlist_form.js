@@ -6,6 +6,28 @@ for (let i = 0; i < DomElementAddEvent.length; i++) {
     document.getElementById(DomElementAddEvent[i]).addEventListener('change', simulatePlaylistColor);
 }
 
+function simulatePlaylistColor() {
+    const demo = document.getElementById('demo-playlist')
+    demo.style.backgroundColor = document.getElementById('id_color').value;
+    demo.style.color = document.getElementById('id_colorText').value;
+
+    if (document.getElementById('id_icon').value != "") {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+            demo.innerHTML = "<img class='playlist-img' src=" + reader.result + " ></img>";
+        });
+        html =  reader.readAsDataURL(document.getElementById('id_icon').files[0]);
+        if(html){
+            demo.innerHTML = "<img class='playlist-img' src=" + html + " ></img>";
+        }
+    } else if(document.getElementById('id_icon_alreadyexist')){
+        demo.innerHTML = "<img class='playlist-img' src=" + document.getElementById('id_icon_alreadyexist').href + " ></img>";
+    } else {
+        demo.textContent = document.getElementById('id_name').value;
+    }
+
+}
+
 
 document.addEventListener("DOMContentLoaded", (event) => {
     volumeInput = document.getElementById('id_volume');
@@ -95,27 +117,7 @@ function callAjaxDeleteMusic(config) {
         });
 }
 
-function simulatePlaylistColor() {
-    const demo = document.getElementById('demo-playlist')
-    demo.style.backgroundColor = document.getElementById('id_color').value;
-    demo.style.color = document.getElementById('id_colorText').value;
 
-    if (document.getElementById('id_icon').value != "") {
-        const reader = new FileReader();
-        reader.addEventListener("load", () => {
-            demo.innerHTML = "<img class='playlist-img' src=" + reader.result + " ></img>";
-        });
-        html =  reader.readAsDataURL(document.getElementById('id_icon').files[0]);
-        if(html){
-            demo.innerHTML = "<img class='playlist-img' src=" + html + " ></img>";
-        }
-    } else if(document.getElementById('id_icon_alreadyexist')){
-        demo.innerHTML = "<img class='playlist-img' src=" + document.getElementById('id_icon_alreadyexist').href + " ></img>";
-    } else {
-        demo.textContent = document.getElementById('id_name').value;
-    }
-
-}
 
 function showDescriptionType() {
     const div = document.createElement("div");

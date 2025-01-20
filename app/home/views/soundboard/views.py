@@ -58,7 +58,7 @@ def soundboard_update(request, soundboard_id):
         if not soundboard:
             return render(request, '404.html', status=404)
         else:
-            form = SoundBoardForm(request.POST, instance=soundboard)
+            form = SoundBoardForm(request.POST, request.FILES, instance=soundboard)
             if form.is_valid():
                 form.save()
                 return redirect('soundboardsList')

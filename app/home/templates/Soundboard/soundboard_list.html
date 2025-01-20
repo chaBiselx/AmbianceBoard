@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load SoundBoard %}
 
 {% block content %}
 <h2>Soundboards</h2>
@@ -8,7 +9,7 @@
             {% for soundboard in soundboards %}
             <a href="{% url 'soundboardsRead' soundboard.id %}">
                 <div class="playlist-link playlist-element flex-item playlist-dim-200 m-1" style="background-color: {{ soundboard.color }};color :{{ soundboard.colorText }};">
-                    {{ soundboard.name }}
+                    {{ soundboard | applys_soundboard_content}}
                 </div>
             </a>
             {% endfor %}

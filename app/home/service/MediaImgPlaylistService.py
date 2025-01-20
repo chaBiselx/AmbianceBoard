@@ -22,7 +22,7 @@ class MediaImgPlaylistService:
         
     def __get_list_media(self):
         self.list_media =os.listdir(self.media_dir)   
-        self.logger.info("NB media files " + str(len(self.list_media)) + "")
+        self.logger.info("NB media files " + Playlist.__name__ + " : " + str(len(self.list_media)) + "")
         
     def __generate_topic(self):
         list_media_topic = []

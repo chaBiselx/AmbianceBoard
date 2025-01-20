@@ -24,5 +24,4 @@ celery -A home worker --queues=default --concurrency=4 --loglevel=info &
 cron start
 
 
-
 exec "$@"
