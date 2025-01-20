@@ -2,8 +2,6 @@ from PIL import Image
 import os
 import logging
 
-        
-
  
 class ImageResizer:
     def __init__(self, input_path, output_path):
@@ -42,6 +40,8 @@ class ImageResizer:
                     # Sauvegarder l'image redimensionnée
                     resized_img.save(self.output_path)
                     self.logger.debug(f"L'image a été redimensionnée ({ratio}) et sauvegardée sous : {self.output_path}")
+                    return True
         except Exception as e:
             self.logger.error(f"Une erreur s'est produite : {e}") 
+            return False
  
