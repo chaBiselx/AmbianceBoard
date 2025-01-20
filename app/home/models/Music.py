@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from .Playlist import Playlist
+from home.models.Playlist import Playlist
 
 class Music(models.Model):
     MUSIC_FOLDER = 'musics/'
@@ -10,7 +10,7 @@ class Music(models.Model):
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.title
+        return self.alternativeName
     
     def save(self, *args, **kwargs):
         if self.file:

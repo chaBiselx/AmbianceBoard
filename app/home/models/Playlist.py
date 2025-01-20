@@ -1,4 +1,5 @@
 import uuid
+from home.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
 from home.models.User import User
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -31,7 +32,7 @@ class Playlist(models.Model):
         if not hasattr(self, 'user') :
             raise ValueError("Playlist must have a user")
             
-        if self.icon and self.__is_new_file(): #Remplacement
+        if self.icon and  (is_not_uuid_with_extension(self.icon.name) or self.__is_new_file()): #Remplacement
             self.__replace_name_by_uuid()
             new_file = True
 
