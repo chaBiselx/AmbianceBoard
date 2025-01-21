@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load SoundBoard %}
+{% load PaginationLinks %}
+
+{% block navbar %}
+{% include "navbar_moderator.html" %}
+{% endblock navbar %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+
+        <div class="flex-container">
+            {% for soundboard in page_objects %}
+            <div class="playlist-link playlist-element flex-item playlist-dim-200 m-1" style="background-color: {{ soundboard.color }};color :{{ soundboard.colorText }};">
+                {{ soundboard | applys_soundboard_content}}
+            </div>
+            {% endfor %}
+        </div>
+
+        {{ paginator|applys_pagination }}
+
+    </div>
+
+
+</div>
+
+
+
+
+{% endblock %}

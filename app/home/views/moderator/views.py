@@ -5,9 +5,12 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import Group, Permission
 from django.db.models import Avg, Count
 from django.db import models
+from django.core.paginator import Paginator
 from home.models.Playlist import Playlist
+from home.models.SoundBoard import SoundBoard
 from home.enum.PermissionEnum import PermissionEnum
 from home.models.User import User
+from home.utils.ExtractPaginator import extract_context_to_paginator
 
 
 @login_required
@@ -25,3 +28,24 @@ def moderator_dashboard(request) -> HttpResponse:
             'moy_music_per_playlist': moy_music_per_playlist
     })
     
+@login_required
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_listing_images_playlist(request) -> HttpResponse:
+    page_number = int(request.GET.get('page', 50))
+    
+    queryset = Playlist.objects.exclude(icon__isnull=False, icon__exact='')
+    paginator = Paginator(queryset, 1)  
+    context = extract_context_to_paginator(paginator, page_number)
+    
+    return render(request, 'Moderator/listing_playlist_img.html', context)
+
+@login_required
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_listing_images_soundboard(request) -> HttpResponse:
+    page_number = int(request.GET.get('page', 50))
+    
+    queryset = SoundBoard.objects.exclude(icon__isnull=False, icon__exact='')
+    paginator = Paginator(queryset, 1)  
+    context = extract_context_to_paginator(paginator, page_number)
+    
+    return render(request, 'Moderator/listing_soundboard_img.html', context)
