@@ -1,0 +1,25 @@
+<li class="nav-item dropdown  dropstart">
+    <span class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        {{request.user.username}}
+    </span>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="{% url 'home' %}">Accueil</a></li>
+        <li><a class="dropdown-item"  href="{% url 'logout' %}">Deconnexion</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="#">Settings</a></li>
+        {% if request.user.has_group == MODERATEUR %}
+        <li>
+            <hr class="dropdown-divider">    
+        </li>
+        <li><a class="dropdown-item" href="{% url 'moderatorDashboard' %}">Moderation</a></li>
+        {% endif %}
+        {% if request.user.has_group == MANAGER %}
+        <li>
+            <hr class="dropdown-divider">    
+        </li>
+        <li><a class="dropdown-item" href="{% url 'managerDashboard' %}">Manager</a></li>
+        {% endif %}
+    </ul>
+</li>

@@ -9,6 +9,11 @@ from home.service.MediaImgSoundboardService import MediaImgSoundboardService
 from home.enum.PermissionEnum import PermissionEnum
 
 
+@login_required
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def manager_dashboard(request) -> HttpResponse:
+    return render(request, 'Manager/dashboard.html')
+    
 
 @login_required
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
@@ -25,4 +30,4 @@ def clean_media_folder(request) -> JsonResponse:
     except Exception as e:
         return JsonResponse({"error": "Unexpected error", "message": str(e)}, status=500)
     
-    
+

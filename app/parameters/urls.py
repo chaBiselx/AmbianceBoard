@@ -7,8 +7,8 @@ from home.views.general.views import home, create_account, login_view, logout_vi
 from home.views.soundboard.views import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
 from home.views.soundboard.views import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete
 from home.views.soundboard.views import music_create, music_update, music_delete,music_stream
-from home.views.moderator.views import dashboard
-from home.views.manager.views import clean_media_folder
+from home.views.moderator.views import moderator_dashboard
+from home.views.manager.views import manager_dashboard, clean_media_folder
 
 urlpatterns = [
     path("", home, name="home"),
@@ -37,8 +37,10 @@ urlpatterns = [
     path("playlist/<uuid:playlist_id>/music/delete/<int:music_id>", music_delete, name="deleteMusic"),
     path("playlist/<uuid:playlist_id>/stream", music_stream, name="streammMusic"),
     
+    path("moderator/", moderator_dashboard, name="moderatorDashboard"),
+    
+    path("manager/", manager_dashboard, name="managerDashboard"),
     path("manager/clean-media-folders", clean_media_folder, name="adminCleanMediaFolders"),
-    path("moderator/", dashboard, name="moderatorDashboard"),
     
 ]
 
