@@ -23,7 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = bool(os.environ.get("DEBUG", default=0))
-DEBUG_EMAIL = bool(os.environ.get("DEBUG_EMAIL", default=None))
+
+EMAIL_DEBUG = bool(os.environ.get("EMAIL_DEBUG", default=None))
+EMAIL_SMTP_SERVEUR = str(os.environ.get("EMAIL_SMTP_SERVEUR"))
+EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT"))
+EMAIL_SMTP_USERNAME = str(os.environ.get("EMAIL_SMTP_USERNAME"))
+EMAIL_SMTP_PASSWORD = str(os.environ.get("EMAIL_SMTP_PASSWORD"))
 
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'

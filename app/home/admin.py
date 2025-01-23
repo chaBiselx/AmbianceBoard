@@ -1,6 +1,10 @@
 from django.contrib import admin
-# from .models import SoundBoard, Playlist
+from home.models.SoundBoard import SoundBoard
+from home.models.Playlist import Playlist
+from home.models.User import User
+from home.models.Music import Music
 
-# admin.site.register(SoundBoard)
-# admin.site.register(Playlist)
-# Register your models here.
+admin.site.register(SoundBoard)
+admin.site.register(Playlist)
+admin.site.register(User)
+admin.site.register(Music)
