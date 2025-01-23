@@ -39,12 +39,12 @@ function addPlaylist(dataset) {
 }
 
 function createPlaylistLink(dataset) {
-    if (DEBUG) console.log('createPlaylistLink');
+    if (DEBUG) console.log('createPlaylistLink', dataset);
 
     const audioElementDiv = document.getElementById(ID_DIV_PLAYER);
     const audio = document.createElement('audio');
     audio.id = `playlist-audio-${dataset.playlistId}`;
-    audio.src = dataset.playlistUri;
+    audio.src = dataset.playlistUri+"?i=" + Date.now(); // cache busting
     audio.volume = dataset.playlistVolume / 100;
     audio.autoplay = true;
     audio.dataset.idplaylist = dataset.playlistId;
@@ -99,7 +99,7 @@ function eventFadeOut(event) {
         audio.removeEventListener('timeupdate', eventFadeOut);
         addFadeOut(audio, dataset);
         if (dataset.playlistLoop == TRUE) {
-            if (DEBUG) console.log("loop");
+            if (DEBUG) console.log("eventFadeOut loop");
             createPlaylistLink(dataset); // don't use addPlaylist => delete  fade out 
         } else {
             removeClassActivePlaylist(dataset.playlistId);

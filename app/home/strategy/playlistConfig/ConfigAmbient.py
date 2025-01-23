@@ -10,6 +10,6 @@ class ConfigAmbient():
             "fadeOut": True, 
             "fadeOutDuration": 3,
             "loop": True,
-            "singleConcurrentRead":True,
+            "singleConcurrentRead":False,
             "volume" : obj.volume
         }
