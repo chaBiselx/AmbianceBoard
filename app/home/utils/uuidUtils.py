@@ -2,7 +2,7 @@ import os
 import uuid
 
 def is_not_uuid_with_extension(filename):
-    name, _ = os.path.splitext(filename)  # Sépare le nom de l'extension
+    name, _ = os.path.splitext(os.path.basename(filename))  # Sépare le nom de l'extension
     return is_not_uuid(name)
 
 
