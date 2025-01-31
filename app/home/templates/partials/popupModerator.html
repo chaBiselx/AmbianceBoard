@@ -1,0 +1,71 @@
+{% load Playlist %}
+{% load UserLog %}
+<div class="popupModerator">
+    {% if playlist is not None %}
+    <div class="row">
+        <div class="col-12">
+            <h3>Playlist</h3>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <dl>
+                <dt>Id</dt>
+                <dd>{{playlist.id}}</dd>
+                <dt>Titre</dt>
+                <dd>{{playlist.name}}</dd>
+                <dt>Type Playlist</dt>
+                <dd>{{playlist.typePlaylist}}</dd>
+                <dt>Volume</dt>
+                <dd>{{playlist.volume}}</dd>
+                <dt>Nombre de musique</dt>
+                <dd>{{playlist.music_set.count}}</dd>
+            </dl>
+
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <div class="playlist-link playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.color}}; color :{{playlist.colorText}};">
+                {{ playlist | applys_playlist_content}}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if user is not None %}
+    <div class="row">
+        <div class="col-12">
+            <h3>Utilisateur</h3>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <dl>
+                <dt>Id</dt>
+                <dd>{{user.id}}</dd>
+                <dt>Username</dt>
+                <dd>{{user.username}}</dd>
+                <dt>Admin</dt>
+                <dd>{{user.is_superuser}}</dd>
+            </dl>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            {% get_user_logs user as logs%}
+            {% if logs is empty %}
+            <p>Aucun logs</p>
+            {% else %}
+            <table class="table">
+                <thead>
+                    <th>Date</th>
+                    <th>Tag</th>
+                    <th>Message</th>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td><small>{{log.created_at|timesince}}</small></td>
+                        <td>{{log.tag}}</td>
+                        <td>{{log.message}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+          
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>

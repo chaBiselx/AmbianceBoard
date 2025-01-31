@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_moderator.html' %}
 {% load SoundBoard %}
 {% load PaginationLinks %}
 
@@ -14,7 +14,7 @@
 
         <div class="flex-container">
             {% for soundboard in page_objects %}
-            <div class="playlist-link playlist-element flex-item playlist-dim-200 m-1" style="background-color: {{ soundboard.color }};color :{{ soundboard.colorText }};">
+            <div class="playlist-link playlist-element flex-item playlist-dim-200 m-1" onclick="getDataSoundboard(this)" data-title="{{soundboard.name}}" data-url="{% url 'moderatorGetDataSoundboard' soundboard.id %}" style="background-color: {{ soundboard.color }};color :{{ soundboard.colorText }};">
                 {{ soundboard | applys_soundboard_content}}
             </div>
             {% endfor %}
