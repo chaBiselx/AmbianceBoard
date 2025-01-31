@@ -6,6 +6,15 @@
 
 }
 
+.playlist-dim-50 {
+    width: 37.5px;
+    height: 37.5px;
+}
+
+.playlist-dim-75 {
+    width: 56.25px;
+    height: 56.25px;
+}
 
 .playlist-dim-100 {
     width: 75px;

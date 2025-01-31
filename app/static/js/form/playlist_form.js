@@ -187,6 +187,75 @@ function showDescriptionType() {
     });
 }
 
+function getListingOtherColors(el){
+    const url = el.dataset.url;
+    const title = "Selectionner Couleur existantes";
+
+    fetch(url, {
+        method: 'GET',
+        responseType: 'json',
+    })
+        .then(response => response.json())
+        .then((body) => {
+            const divRow = document.createElement("div");
+            divRow.classList="row"
+            body.unique_playlists.forEach(playlist => {
+                const divCol1 = document.createElement("div");
+                divCol1.classList="col-4"
+                const divElement = document.createElement("div");
+                divElement.innerHTML = "<small>Lorem</small>";
+                divElement.style.backgroundColor = playlist.color;
+                divElement.style.color = playlist.colorText;
+                divElement.classList="playlist-element playlist-dim-75 m-1"
+
+                const divCol2 = document.createElement("div");
+                divCol2.classList="col-5"
+                divCol2.innerHTML = `<small>${ playlist.typePlaylist }</small>`;
+
+                const divCol3 = document.createElement("div");
+                divCol3.classList="col-3"
+
+                const button = document.createElement("button");
+                button.classList="btn btn-primary";
+                button.type = "button";
+                button.title = "choisir cette couleur";
+                button.textContent = "choisir";
+                button.setAttribute('onclick',  `selectColor("${ playlist.color }", "${ playlist.colorText }")`);
+                console.log(button);
+                
+                
+
+                divCol3.appendChild(button);
+                divCol1.appendChild(divElement);
+                divRow.appendChild(divCol1);
+                divRow.appendChild(divCol2);
+                divRow.appendChild(divCol3);
+
+           
+
+                
+            })
+
+            
+            modalShow({
+                title: title,
+                body: divRow.outerHTML
+            })
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête AJAX:', error);
+        });
+}
+
+function selectColor(color, colorText) {
+    const id_colorText = document.getElementById("id_colorText");
+    const id_color = document.getElementById("id_color");
+    id_color.value = color;
+    id_colorText.value = colorText;
+    modalHide();
+    simulatePlaylistColor();
+}
+
 function showPopupMusic(el) {
     const url = el.dataset.url;
     const title = el.title;

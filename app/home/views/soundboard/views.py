@@ -142,6 +142,12 @@ def playlist_create(request):
         form = PlaylistForm()
     return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic': None})
 
+@login_required
+@require_http_methods(['GET'])
+def playlist_listing_colors(request) -> JsonResponse:
+    unique_playlists = Playlist.objects.values('colorText', 'color', 'typePlaylist').distinct().all()
+    return JsonResponse({"unique_playlists": list(unique_playlists)}, status=200)
+
 
 @login_required
 def playlist_update(request, playlist_id):
