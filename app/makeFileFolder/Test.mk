@@ -9,6 +9,3 @@ test :
 		python manage.py test $(FILTER); \
 	fi
 
-test-failure : 
-	@# Help: lance l'ensemble des test unitaire et fonctionnel qui ont echoué
-	python manage.py test --failed

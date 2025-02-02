@@ -31,3 +31,12 @@ load:
 # Création du dossier de sauvegarde s'il n'existe pas
 .prepare:
 	mkdir -p $(BACKUP_DIR)
+
+
+update-db:
+	@# Help: Met a jour la base de données
+	@echo "$(GREEN)Migrations...$(NC)"
+	python manage.py makemigrations
+	@echo "$(GREEN)Migrate de la base de données...$(NC)"
+	python manage.py migrate
+	@echo "$(GREEN)Migrations terminées.$(NC)"
