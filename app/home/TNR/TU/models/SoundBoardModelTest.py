@@ -31,12 +31,12 @@ class SoundBoardModelTest(TestCase):
         """Test la création basique d'un SoundBoard"""
         soundboard = SoundBoard.objects.create(
             user=self.user,
-            name="Test SoundBoard"
+            name="Other Name"
         )
         soundboard.playlists.add(self.playlist)
         
         self.assertTrue(isinstance(soundboard, SoundBoard))
-        self.assertEqual(soundboard.name, "Test SoundBoard")
+        self.assertEqual(soundboard.name, "Other Name")
         self.assertEqual(soundboard.color, "#000000")  # Valeur par défaut
         self.assertEqual(soundboard.colorText, "#ffffff")  # Valeur par défaut
         self.assertFalse(soundboard.is_public)  # Valeur par défaut
@@ -46,7 +46,7 @@ class SoundBoardModelTest(TestCase):
         """Test que l'utilisateur est obligatoire"""
         with self.assertRaises(ValueError):
             SoundBoard.objects.create(
-                name="Test SoundBoard"
+                name="required Name"
             )
 
     @patch('uuid.uuid4')
@@ -58,7 +58,7 @@ class SoundBoardModelTest(TestCase):
         
         soundboard = SoundBoard.objects.create(
             user=self.user,
-            name="Test SoundBoard",
+            name="Test upload SoundBoard",
             icon=self.test_icon
         )
         
@@ -81,7 +81,7 @@ class SoundBoardModelTest(TestCase):
         
         soundboard = SoundBoard.objects.create(
             user=self.user,
-            name="Test SoundBoard"
+            name="test New uplood"
         )
         
         # Ensuite, ajouter l'icône
@@ -105,7 +105,7 @@ class SoundBoardModelTest(TestCase):
         # Créer d'abord un SoundBoard sans icône
         soundboard = SoundBoard.objects.create(
             user=self.user,
-            name="Test SoundBoard"
+            name="Icon Update SoundBoard"
         )
         
         # Mettre à jour avec une nouvelle icône
@@ -128,7 +128,7 @@ class SoundBoardModelTest(TestCase):
         """Test les relations many-to-many avec les playlists"""
         soundboard = SoundBoard.objects.create(
             user=self.user,
-            name="Test SoundBoard"
+            name="Playlist SoundBoard"
         )
         
         # Ajouter plusieurs playlists
@@ -144,7 +144,7 @@ class SoundBoardModelTest(TestCase):
         """Test la validation des couleurs au format hexadécimal"""
         soundboard = SoundBoard.objects.create(
             user=self.user,
-            name="Test SoundBoard",
+            name="Color SoundBoard",
             color="#FF0000",
             colorText="#00FF00"
         )
@@ -156,7 +156,7 @@ class SoundBoardModelTest(TestCase):
         """Test que l'UUID est généré automatiquement"""
         soundboard = SoundBoard.objects.create(
             user=self.user,
-            name="Test SoundBoard"
+            name="UUID Generation SoundBoard"
         )
         
         self.assertIsNotNone(soundboard.id)
@@ -166,10 +166,9 @@ class SoundBoardModelTest(TestCase):
         """Test que la suppression d'un utilisateur supprime ses soundboards"""
         soundboard = SoundBoard.objects.create(
             user=self.user,
-            name="Test SoundBoard"
+            name="Test Delete ID"
         )
         
-        user_id = self.user.id
         self.user.delete()
         
         # Vérifier que le soundboard a été supprimé
