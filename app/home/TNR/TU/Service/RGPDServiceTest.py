@@ -23,6 +23,23 @@ class RGPDServiceTestCase(TestCase):
         RGPDService().prevent_inactive_users()
         self.assertTrue(User.objects.filter(username='user1').exists())
         self.assertTrue(User.objects.filter(username='user2').exists())
+        
+    def test_delete_not_active_users(self):
+        # Créer des utilisateurs non actifs
+        user1 = User.objects.create_user(username='user1', email='user1@example.com')
+        user1.last_login = datetime.datetime.now() - datetime.timedelta(days=365*2 + 1)
+        user1.save()
+
+        user2 = User.objects.create_user(username='user2', email='user2@example.com')
+        user2.last_login = datetime.datetime.now() - datetime.timedelta(days=365*2 - 1)
+        user2.save()
+
+        # Appeler la méthode delete_not_active_users
+        RGPDService().delete_not_active_users()
+
+        # Vérifier que l'utilisateur non actif a été supprimé
+        self.assertFalse(User.objects.filter(username='user1').exists())
+        self.assertTrue(User.objects.filter(username='user2').exists())
 
     def test_calculate_cutoff_date(self):
         service = RGPDService()

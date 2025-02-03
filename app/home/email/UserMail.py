@@ -18,7 +18,6 @@ class UserMail:
         The recipient is the user's email address.
         """
         subject = 'Bienvenue sur notre site'
-        
         html_content = render_to_string('EmailTemplate/welcomEmail.html', {'title': "Bienvenue" ,'user': self.user})
         
         try:
@@ -36,7 +35,6 @@ class UserMail:
         The recipient is the user's email address.
         """
         subject = 'Votre compte a été supprimé'
-        
         html_content = render_to_string('EmailTemplate/autoDeletionAccount.html', {'title': "Account deleted" ,'user': self.user})
         
         try:
@@ -45,6 +43,24 @@ class UserMail:
             self.logger.info(f"Email de suppression automatique envoyé à {self.user.email}")
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de suppression  à {self.user.email}: {e}")
+            
+    def account_auto_deletion_never_login(self):
+        """
+        Sends an account deletion email to the user using a predefined HTML template.
+
+        The email's subject is 'Votre compte a été supprimé'
+        The recipient is the user's email address.
+        """
+        subject = 'Votre compte a été supprimé'
+        
+        html_content = render_to_string('EmailTemplate/autoDeletionAccountNeverLogin.html', {'title': "Account deleted" ,'user': self.user})
+        
+        try:
+            mailer = EmailSender()
+            mailer.send_email(subject, html_content, self.from_email, [self.user.email])
+            self.logger.info(f"Email de suppression automatique aucune connexion envoyé à {self.user.email}")
+        except Exception as e:
+            self.logger.error(f"Erreur lors de l'envoi de l'email de suppression aucune connexion  à {self.user.email}: {e}")
             
     def prevent_account_deletion(self):
         """
