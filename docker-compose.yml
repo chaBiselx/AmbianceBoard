@@ -2,11 +2,11 @@ services:
   web:
   
     build: ./app
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:${WEB_PORT}
     volumes:
       - ./app/:/usr/src/app/
     ports:
-      - 8000:8000
+      - ${WEB_PORT}:${WEB_PORT}
     env_file:
       - ./.env
     depends_on:
