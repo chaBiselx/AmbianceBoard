@@ -3,6 +3,7 @@ from parameters import settings
 from email.message import EmailMessage
 from typing import List, Optional
 from home.exceptions.EmailException import DebugModeActivedWitoutDebugMailException, AttachementException, SendException
+from email.mime.text import MIMEText
 
 class EmailSender:
     def __init__(
@@ -28,12 +29,6 @@ class EmailSender:
         self.username = username
         self.password = password
         self.use_tls = use_tls
-        self.debug_mode = False
-        self.debug_email = None
-        if settings.DEBUG :
-            self.debug_mode = True
-            self.debug_email = settings.EMAIL_DEBUG or None
-            
 
     def send_email(self, subject: str, body: str, from_email: str, to_emails: List[str], attachments: Optional[List[str]] = None):
         """
@@ -45,13 +40,7 @@ class EmailSender:
         :param to_emails: Liste des adresses des destinataires.
         :param attachments: Liste des chemins vers les fichiers à joindre.
         """
-        if self.debug_mode: 
-            if self.debug_email:
-                # En mode debug, redirige l'email vers debug_email
-                to_emails = [self.debug_email]
-            else :
-                raise DebugModeActivedWitoutDebugMailException("")
-        
+
         # Crée le message
         msg = EmailMessage()
         msg['Subject'] = subject

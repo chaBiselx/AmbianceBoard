@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.models import Group
-from ...enum.GroupEnum import GroupEnum
+from home.enum.GroupEnum import GroupEnum
 from django.http import JsonResponse
 import logging
-from ...forms.CreateUserForm import CreateUserForm
+from home.forms.CreateUserForm import CreateUserForm
+from home.email.UserMail import UserMail
 
 def home(request):
     return render(request, "home.html", {"title": "Accueil"})
@@ -17,6 +18,7 @@ def create_account(request):
             user = form.save()
             group = Group.objects.get(name=GroupEnum.USER_STANDARD.name)
             group.user_set.add(user)
+            UserMail(user).send_welcome_email()
             return redirect('login')
     else:
         form = CreateUserForm()

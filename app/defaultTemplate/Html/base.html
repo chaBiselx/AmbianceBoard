@@ -30,11 +30,11 @@
 <body id="page-top" class="bg-light">
     <!-- Navigation-->
     {% block navbar %}
-        {% include 'navbar.html' %}
+        {% include 'Html/navbar.html' %}
     {% endblock navbar %}
     <div class="main-content px-0">
         <div class="navbar-padding" style="padding-top: 5rem"></div>
-        {% include 'message.html' %}
+        {% include 'Html/message.html' %}
         <section class="pt-0 pb-0">
             <div class="container">
                 {% if title is not None %}<h1>{{ title }}</h1>{% endif %}
@@ -50,7 +50,7 @@
             </div>
         </div>
     </footer>
-    {% include 'modal.html'%}
+    {% include 'Html/modal.html'%}
 
    
     <!-- Bootstrap core JS-->
