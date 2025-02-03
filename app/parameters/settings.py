@@ -174,10 +174,12 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 # CRON JOBS
 CRON_CLASSES  = [
    "home.cron.CleanMediaFolderCron.run",
+   "home.cron.DeleteAccountCron.run",
 ]
 
 CRONJOBS = [
     ('* 2 * * *', 'home.cron.CleanMediaFolderCron.run'), # evey minute
+    ('* * 10 */1 *', 'home.cron.DeleteAccountCron.run'), # evey ten of each month
 ]
 
 # message brokers 

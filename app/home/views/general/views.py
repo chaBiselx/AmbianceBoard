@@ -41,9 +41,5 @@ def logout_view(request):
     return redirect('home')
 
 
-def logger(request):
-    logger = logging.getLogger(__name__)
-    logger.info("Message de log")
-    return JsonResponse({"error": "Méthode non supportée."}, status=405)
 
 

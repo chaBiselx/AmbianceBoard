@@ -1,0 +1,11 @@
+{% include "Email/base.html" %}
+
+
+{% block content %} 
+
+<div>
+    <h1>Bonjour {{ user.username }} !</h1>
+    <p>Suite a une inactivité de 24 mois, votre compte est supprimé de notre site.</p>
+</div>
+
+{% endblock content %}
