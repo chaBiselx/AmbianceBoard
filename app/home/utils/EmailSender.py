@@ -10,7 +10,8 @@ class EmailSender:
             smtp_server: str = settings.EMAIL_SMTP_SERVEUR, 
             smtp_port: int = settings.EMAIL_SMTP_PORT, 
             username: str = settings.EMAIL_SMTP_USERNAME, 
-            password: str = settings.EMAIL_SMTP_PASSWORD
+            password: str = settings.EMAIL_SMTP_PASSWORD,
+            use_tls: bool = settings.EMAIL_SMTP_PASSWORD
         ):
         """
         Initialise l'EmailSender.
@@ -26,6 +27,7 @@ class EmailSender:
         self.smtp_port = smtp_port
         self.username = username
         self.password = password
+        self.use_tls = use_tls
         self.debug_mode = False
         self.debug_email = None
         if settings.DEBUG :
@@ -71,7 +73,8 @@ class EmailSender:
         # Envoie l'email
         try:
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
-                server.starttls()  # Active la connexion sécurisée
+                if(self.use_tls) :
+                    server.starttls()  # Active la connexion sécurisée
                 server.login(self.username, self.password)
                 server.send_message(msg)
                 return True

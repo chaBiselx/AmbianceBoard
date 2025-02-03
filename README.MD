@@ -28,3 +28,14 @@ python manage.py createsuperuser
 ```
 
 
+
+# URL
+port a modificer selon .env
+## App
+http://localhost:8000/
+
+## RabbitMQ
+http://localhost:15672/
+
+## MailHog 
+http://localhost:8025/

@@ -35,6 +35,12 @@ services:
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq # Persistance des données
 
+  smtp:
+    image: mailhog/mailhog
+    ports:
+      - "${EMAIL_SMTP_PORT}:${EMAIL_SMTP_PORT}"  # Port SMTP pour envoyer les emails
+      - "8025:8025"  # Interface web de MailHog pour visualiser les emails
+
 volumes:
   db-data: null
   rabbitmq-data: null 

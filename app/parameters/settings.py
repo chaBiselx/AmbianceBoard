@@ -29,6 +29,7 @@ EMAIL_SMTP_SERVEUR = str(os.environ.get("EMAIL_SMTP_SERVEUR"))
 EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT"))
 EMAIL_SMTP_USERNAME = str(os.environ.get("EMAIL_SMTP_USERNAME"))
 EMAIL_SMTP_PASSWORD = str(os.environ.get("EMAIL_SMTP_PASSWORD"))
+EMAIL_SMTP_USE_TLS = bool(os.environ.get("EMAIL_SMTP_USE_TLS", default=True))
 
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'

@@ -13,6 +13,7 @@ class TestEmailSender(unittest.TestCase):
         self.smtp_port = 587
         self.username = "test@example.com"
         self.password = "password123"
+        self.use_tls = True  # Nouveau champ
         
     def test_init_normal_mode(self):
         """Test l'initialisation en mode normal"""
@@ -22,6 +23,23 @@ class TestEmailSender(unittest.TestCase):
                 self.smtp_port,
                 self.username,
                 self.password
+            )
+            self.assertEqual(sender.smtp_server, self.smtp_server)
+            self.assertEqual(sender.smtp_port, self.smtp_port)
+            self.assertEqual(sender.username, self.username)
+            self.assertEqual(sender.password, self.password)
+            self.assertFalse(sender.debug_mode)
+            self.assertIsNone(sender.debug_email)
+            
+    def test_init_normal_mode_with_tls(self):
+        """Test l'initialisation en mode normal"""
+        with patch('parameters.settings.DEBUG', False):
+            sender = EmailSender(
+                self.smtp_server,
+                self.smtp_port,
+                self.username,
+                self.password,
+                False
             )
             self.assertEqual(sender.smtp_server, self.smtp_server)
             self.assertEqual(sender.smtp_port, self.smtp_port)
