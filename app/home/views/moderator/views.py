@@ -32,7 +32,7 @@ def moderator_dashboard(request) -> HttpResponse:
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_images_playlist(request) -> HttpResponse:
-    page_number = int(request.GET.get('page', 50))
+    page_number = int(request.GET.get('page', 1))
     
     queryset = Playlist.objects.exclude(icon__isnull=False, icon__exact='')
     paginator = Paginator(queryset, 50)  
@@ -43,8 +43,8 @@ def moderator_listing_images_playlist(request) -> HttpResponse:
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_images_soundboard(request) -> HttpResponse:
-    page_number = int(request.GET.get('page', 50))
-    
+    page_number = int(request.GET.get('page', 1))
+
     queryset = SoundBoard.objects.exclude(icon__isnull=False, icon__exact='')
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
