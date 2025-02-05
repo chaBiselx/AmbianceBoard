@@ -6,6 +6,7 @@ from home.utils.ExtractPaginator import extract_context_to_paginator
 from home.models.SoundBoard import SoundBoard
 from home.service.SoundBoardService import SoundBoardService
 from home.service.MusicService import MusicService
+from home.decorator.detectBan import detect_ban
 
 
 def public_index(request):
@@ -20,7 +21,7 @@ def public_listing_soundboard(request):
     
     return render(request, 'Html/Public/listing_soundboard.html', context)
 
-
+@detect_ban
 def public_soundboard_read_playlist(request, soundboard_id):
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_id)
     if not soundboard:
@@ -28,6 +29,7 @@ def public_soundboard_read_playlist(request, soundboard_id):
     else:   
         return render(request, 'Html/Public/soundboard_read.html', {'soundboard': soundboard})
     
+@detect_ban
 def public_music_stream(request, soundboard_id, playlist_id) -> HttpResponse:
  
     music = (MusicService(request)).get_public_random_music(soundboard_id, playlist_id)
