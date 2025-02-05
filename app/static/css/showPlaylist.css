@@ -85,7 +85,6 @@
 
 .active-playlist {
     position: relative;
-    display: inline-block;
     background-clip: padding-box;
     animation: pulse-border 1.5s infinite ease-in-out;
 }
