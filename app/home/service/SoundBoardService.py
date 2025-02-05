@@ -18,6 +18,15 @@ class SoundBoardService:
             return soundboard
         except SoundBoard.DoesNotExist:
             return None
+    
+    def get_public_soundboard(self, soundboard_id:int)-> SoundBoard|None :
+        try:
+            soundboard = SoundBoard.objects.get(id=soundboard_id)
+            if not soundboard or not soundboard.is_public:
+                return None
+            return soundboard
+        except SoundBoard.DoesNotExist:
+            return None
         
     def save_form(self):
         user_parameters = UserParametersFactory(self.request.user)

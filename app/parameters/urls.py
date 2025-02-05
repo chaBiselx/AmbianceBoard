@@ -9,6 +9,7 @@ from home.views.soundboard.views import playlist_create, playlist_read_all, play
 from home.views.soundboard.views import music_create, music_update, music_delete,music_stream
 from home.views.moderator.views import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user
 from home.views.manager.views import manager_dashboard, clean_media_folder
+from home.views.public.views import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream
 
 urlpatterns = [
     path("", home, name="home"),
@@ -37,6 +38,12 @@ urlpatterns = [
     path("playlist/<uuid:playlist_id>/music/delete/<int:music_id>", music_delete, name="deleteMusic"),
     path("playlist/<uuid:playlist_id>/stream", music_stream, name="streammMusic"),
     path("playlist/other-colors", playlist_listing_colors, name="getListingOtherColors"),
+    
+    path("public/", public_index, name="publicIndex"),
+    path("public/soundboards", public_listing_soundboard, name="publicListingSoundboard"),
+    path("public/soundboards/<uuid:soundboard_id>", public_soundboard_read_playlist, name="publicReadSoundboard"),
+    path("public/soundboards/<uuid:soundboard_id>/<uuid:playlist_id>/stream", public_music_stream, name="publicStreammMusic"),
+    
     
     
     path("moderator/", moderator_dashboard, name="moderatorDashboard"),

@@ -1,0 +1,24 @@
+{% extends 'Html/base.html' %}
+{% load SoundBoard %}
+{% load PaginationLinks %}
+
+{% block content %}
+<h2>Soundboards</h2>
+<div class="row">
+    <div class="col-12">
+        <div class="flex-container">
+                {% for soundboard in page_objects %}
+                <a href="{% url 'publicReadSoundboard' soundboard.id %}">
+                    <div class="playlist-link playlist-element flex-item playlist-dim-200 m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};">
+                        {{ soundboard | applys_soundboard_content}}
+                    </div>
+                </a>
+                {% endfor %}
+        </div>
+    </div>
+    <div class="col-12">
+        {{ paginator|applys_pagination }}
+    </div>
+</div>
+{% endblock content %}
+

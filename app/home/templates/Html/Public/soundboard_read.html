@@ -1,0 +1,27 @@
+{% extends 'Html/base.html' %}
+{% load Playlist %}
+
+{% block javascript %}
+{% load static %}
+<script src="{% static 'js/playMusic.js' %}"></script>
+{% endblock javascript %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12 col-xl-10">
+        <div style="display:None;" id="players"></div>
+
+        <div class="flex-container">
+            {% for playlist in soundboard.playlists.all %}
+            <div class="playlist-link playlist-element flex-item playlist-dim-100 m-1" id="playlist-{{ playlist.id }}" style="background-color: {{playlist.color}};color: {{playlist.colorText}};" data-playlist-uri="{% url 'publicStreammMusic' soundboard.id  playlist.id %}" {% for key, value in playlist.getDataSet.items %}
+                data-playlist-{{ key }}="{{ value }}" {% endfor %}>
+                {{ playlist | applys_playlist_content}}
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

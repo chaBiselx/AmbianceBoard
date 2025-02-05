@@ -1,3 +1,4 @@
+import uuid
 from django.contrib import messages
 from home.enum.PermissionEnum import PermissionEnum
 from home.models.Playlist import Playlist
@@ -5,6 +6,7 @@ from home.models.Music import Music
 from home.filters.MusicFilter import MusicFilter
 from home.forms.MusicForm import MusicForm
 from home.factory.UserParametersFactory import UserParametersFactory
+from home.service.SoundBoardService import SoundBoardService
 
 
 class MusicService:
@@ -15,11 +17,25 @@ class MusicService:
     def get_random_music(self, playlist_id:int)-> Music|None :
         try:
             music_filter = MusicFilter()
-            queryset = music_filter.filter_by_user(self.request.user)
-            queryset = music_filter.filter_by_playlist(playlist_id)
-            return queryset.order_by('?').first()
+            music_filter.filter_by_user(self.request.user)
+            return self._get_random_music_from_playlist(music_filter, playlist_id)
         except Playlist.DoesNotExist:
             return None
+    
+    def get_public_random_music(self, soundboard_id:uuid, playlist_id:int)-> Music|None :
+        soundboard = (SoundBoardService(self.request)).get_public_soundboard(soundboard_id)
+        if not soundboard:
+            return None
+        try:
+            music_filter = MusicFilter()
+            return self._get_random_music_from_playlist(music_filter, playlist_id)
+        except Playlist.DoesNotExist:
+            return None
+        
+    def _get_random_music_from_playlist(self, music_filter:MusicFilter, playlist_id:int)-> Music|None :
+        queryset = music_filter.filter_by_playlist(playlist_id)
+        return queryset.order_by('?').first()
+        
         
     def get_list_music(self, playlist_id:int)-> list[Music]|None :
         try:
