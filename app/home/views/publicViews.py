@@ -16,7 +16,7 @@ def public_index(request):
 def public_listing_soundboard(request):
     page_number = int(request.GET.get('page', 1))
     
-    queryset = SoundBoard.objects.filter(is_public=True, user__isBan = False)
+    queryset = SoundBoard.objects.filter(is_public=True, user__isBan = False).order_by('id')
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     

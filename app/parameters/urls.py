@@ -3,13 +3,13 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from home.views.general.views import home, create_account, login_view, logout_view
-from home.views.soundboard.views import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
-from home.views.soundboard.views import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors
-from home.views.soundboard.views import music_create, music_update, music_delete,music_stream
-from home.views.moderator.views import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user
-from home.views.manager.views import manager_dashboard, clean_media_folder
-from home.views.public.views import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream
+from home.views.generalViews import home, create_account, login_view, logout_view
+from home.views.privateViews import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
+from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors
+from home.views.privateViews import music_create, music_update, music_delete,music_stream
+from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user
+from home.views.managerViews import manager_dashboard, clean_media_folder
+from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream
 
 urlpatterns = [
     path("", home, name="home"),
