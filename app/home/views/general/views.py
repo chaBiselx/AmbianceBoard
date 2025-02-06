@@ -6,6 +6,7 @@ from django.http import JsonResponse
 import logging
 from home.forms.CreateUserForm import CreateUserForm
 from home.email.UserMail import UserMail
+from home.service.FailedLoginAttemptService import FailedLoginAttemptService
 
 def home(request):
     return render(request, "home.html", {"title": "Accueil"})
@@ -24,16 +25,23 @@ def create_account(request):
         form = CreateUserForm()
     return render(request, 'Account/create_account.html', {'form': form})
 
-
 def login_view(request):
+    context = {}
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+        failed_login_attempt_service = FailedLoginAttemptService(request, username)
         if user is not None:
             login(request, user)
+            failed_login_attempt_service.purge()
             return redirect('home')
-    return render(request, 'Account/login.html')
+        # wrong password
+        failed_login_attempt_service.add_or_create_failed_login_attempt()
+        if(failed_login_attempt_service.is_timeout()) :
+            return render(request, '429.html', status=429)
+    
+    return render(request, 'Account/login.html', context)
 
 def logout_view(request):
     if request.user.is_authenticated:
