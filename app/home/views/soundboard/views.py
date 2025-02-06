@@ -18,6 +18,7 @@ from home.forms.PlaylistForm import PlaylistForm
 from home.forms.MusicForm import MusicForm
 from home.filters.SoundBoardFilter import SoundBoardFilter
 from home.enum.PermissionEnum import PermissionEnum
+from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 
 @login_required
@@ -48,7 +49,7 @@ def soundboard_read(request, soundboard_id):
     if not soundboard :
         return render(request, '404.html', status=404)
     else:   
-        return render(request, 'Soundboard/soundboard_read.html', {'soundboard': soundboard})
+        return render(request, 'Soundboard/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
 
 @login_required
 @require_http_methods(['POST', 'GET'])

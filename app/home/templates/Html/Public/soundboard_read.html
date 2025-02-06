@@ -1,5 +1,6 @@
 {% extends 'Html/base.html' %}
 {% load Playlist %}
+{% load Mixer %}
 
 {% block javascript %}
 {% load static %}
@@ -11,6 +12,8 @@
 <div class="row">
     <div class="col-12 col-xl-10">
         <div style="display:None;" id="players"></div>
+
+        {%  add_mixer PlaylistTypeEnum %}
 
         <div class="flex-container">
             {% for playlist in soundboard.playlists.all %}

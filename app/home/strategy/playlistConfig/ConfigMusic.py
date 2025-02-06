@@ -4,7 +4,7 @@ class ConfigMusic():
     def get_data(self, obj):
         return {
             "id":obj.id, 
-            "type":PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC, 
+            "type":PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.value, 
             "fadeIn": True, 
             "fadeInDuration": 5,
             "fadeOut": True, 

@@ -7,6 +7,7 @@ from home.models.SoundBoard import SoundBoard
 from home.service.SoundBoardService import SoundBoardService
 from home.service.MusicService import MusicService
 from home.decorator.detectBan import detect_ban
+from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 
 def public_index(request):
@@ -15,7 +16,7 @@ def public_index(request):
 def public_listing_soundboard(request):
     page_number = int(request.GET.get('page', 1))
     
-    queryset = SoundBoard.objects.filter(is_public=True)
+    queryset = SoundBoard.objects.filter(is_public=True, user__isBan = False)
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     
@@ -27,7 +28,7 @@ def public_soundboard_read_playlist(request, soundboard_id):
     if not soundboard:
         return render(request, '404.html', status=404)
     else:   
-        return render(request, 'Html/Public/soundboard_read.html', {'soundboard': soundboard})
+        return render(request, 'Html/Public/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
     
 @detect_ban
 def public_music_stream(request, soundboard_id, playlist_id) -> HttpResponse:

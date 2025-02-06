@@ -6,7 +6,36 @@ const INTERVAL_FADE = 50;
 
 document.addEventListener("DOMContentLoaded", (event) => {
     addEventListenerDom()
+    listMixer = document.getElementsByClassName('mixer-playlist');
+    for (let mixer of listMixer) {
+        mixer.addEventListener('change', eventChangeVolume);
+    };
+    if(DEBUG){
+        document.getElementById('players').style.display = 'block';
+    }
+
 });
+
+function eventChangeVolume(event) {
+    mixer = event.target
+    if (mixer.id == 'mixer-general') {
+        listType = document.getElementsByClassName('mixer-playlist-type')
+        for (let typeMixer of listType) {
+            changeSpecifiqueVolume(typeMixer.dataset.type);
+        }
+
+    } else {
+        changeSpecifiqueVolume(mixer.dataset.type);
+    }
+
+}
+
+function changeSpecifiqueVolume(type) {
+    listAudio = document.getElementsByClassName('audio-' + type);
+    for (let audio of listAudio) {
+        updateVolumeElement(audio)
+    };
+}
 
 
 function addEventListenerDom() {
@@ -24,16 +53,17 @@ function eventTogglePlaylist(event) {
 }
 
 function addPlaylist(dataset) {
-
-    const audioElement = document.getElementById(`playlist-audio-${dataset.playlistId}`);
-
-    if (!audioElement) {
+    let audioElement = document.getElementsByClassName(`playlist-audio-${dataset.playlistId}`);
+    if (audioElement.length == 0) {
         deleteSameTypePlaylist(dataset);
         createPlaylistLink(dataset);
 
     } else {
         removeClassActivePlaylist(dataset.playlistId);
-        audioElement.remove();
+        while (audioElement.length > 0) { // delete all playlist
+            console.log(audioElement[0]);
+            audioElement[0].remove();
+        }
     }
 
 }
@@ -43,25 +73,29 @@ function createPlaylistLink(dataset) {
 
     const audioElementDiv = document.getElementById(ID_DIV_PLAYER);
     const audio = document.createElement('audio');
-    audio.id = `playlist-audio-${dataset.playlistId}`;
-    audio.src = dataset.playlistUri+"?i=" + Date.now(); // cache busting
-    audio.volume = dataset.playlistVolume / 100;
+    audio.className = `playlist-audio-${dataset.playlistId}`;
+    audio.src = dataset.playlistUri + "?i=" + Date.now(); // cache busting
     audio.autoplay = true;
     audio.dataset.idplaylist = dataset.playlistId;
+    audio.dataset.defaultVolume = dataset.playlistVolume / 100;
+    audio.dataset.playlistType = dataset.playlistType;
+    audio.dataset.levelFade = 1;
+    if(DEBUG){
+        audio.controls = true;
+    }
+    updateVolumeElement(audio)
+
     audio.classList.add('audio-' + dataset.playlistType);
     audioElementDiv.appendChild(audio);
     audio.addEventListener('error', function (event) {
         if (event.target.error.code === 4) { // => ERROR 404
             removeClassActivePlaylist(dataset.playlistId);
-
-            createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000000 });
+            createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
+            event.target.remove();
         }
     });
     if (dataset.playlistFadein == TRUE) {
         addFadeIn(audio, dataset)
-        setTimeout(() => {
-            addFadeOut(audio, dataset)
-        }, 2000)
     }
     if (dataset.playlistFadeout == TRUE) {
 
@@ -69,10 +103,7 @@ function createPlaylistLink(dataset) {
             audio.remove();
         });
         audio.addEventListener('loadedmetadata', () => {
-
-            if (dataset.playlistLoop == TRUE) {
-                audio.addEventListener('timeupdate', eventFadeOut);
-            }
+            audio.addEventListener('timeupdate', eventFadeOut);
         });
     } else {
         audio.addEventListener('ended', () => {
@@ -92,10 +123,13 @@ function eventFadeOut(event) {
     audio = event.target
     dataset = document.getElementById(`playlist-${audio.dataset.idplaylist}`).dataset;
 
-
     const timeRemaining = audio.duration - audio.currentTime;
+    // console.log(`timeRemaining: ${timeRemaining} seconds / playlistFadeoutduration : ${dataset.playlistFadeoutduration}`); // timeRemaining);
+    // console.log(parseFloat(timeRemaining) <= dataset.playlistFadeoutduration); // timeRemaining);
+    // console.log(audio.dataset.fadeOut); // timeRemaining);
 
-    if (timeRemaining <= dataset.playlistFadeoutduration) {
+    if (parseFloat(timeRemaining) <= dataset.playlistFadeoutduration && audio.dataset.fadeOut != true) {
+        
         audio.removeEventListener('timeupdate', eventFadeOut);
         addFadeOut(audio, dataset);
         if (dataset.playlistLoop == TRUE) {
@@ -110,21 +144,22 @@ function eventFadeOut(event) {
 
 function addFadeIn(audio, dataset) {
     if (DEBUG) console.log('addFadeIn');
-    const volumeDest = dataset.playlistVolume / 100
-    audio.volume = 0;
+    audio.dataset.levelFade = 0;
     audio.dataset.fadeIn = true
 
     audio.addEventListener('play', () => {
         const fadeInDuration = dataset.playlistFadeinduration * 1000;
-        const step = volumeDest * (INTERVAL_FADE / fadeInDuration);
+        const step = (INTERVAL_FADE / fadeInDuration);
 
         const fadeIn = setInterval(() => {
-            if (audio.volume < volumeDest) {
-                audio.volume = Math.min(audio.volume + step, volumeDest);
+            if (audio.dataset.levelFade < 1) {
+                audio.dataset.levelFade = parseFloat(audio.dataset.levelFade) + step;
             } else {
+                audio.dataset.levelFade = 1;
                 delete audio.dataset.fadeIn
                 clearInterval(fadeIn);
             }
+            updateVolumeElement(audio)
         }, INTERVAL_FADE);
     })
 
@@ -136,14 +171,17 @@ function addFadeOut(audio, dataset) {
         if (DEBUG) console.log('ignore fade out if fade in not finished');
         return // ignore fade out if fade in not finished
     }
-    const volumeDest = dataset.playlistVolume / 100
     const fadeOutDuration = dataset.playlistFadeoutduration * 1000;
-    const step = volumeDest * (INTERVAL_FADE / fadeOutDuration);
+    const step = (INTERVAL_FADE / fadeOutDuration);
+    audio.dataset.fadeOut = true
+
 
     const fadeOut = setInterval(() => {
-        if (audio.volume > 0) {
-            audio.volume = Math.max(audio.volume - step, 0);
+        if (audio.dataset.levelFade > 0) {
+            audio.dataset.levelFade = parseFloat(audio.dataset.levelFade) - step;
+            updateVolumeElement(audio)
         } else {
+            audio.dataset.levelFade = 0;
             clearInterval(fadeOut);
             audio.remove();
         }
@@ -175,4 +213,24 @@ function addClassActivePlaylist(idPlaylist) {
 function removeClassActivePlaylist(idPlaylist) {
     document.getElementById(`playlist-${idPlaylist}`).classList.remove("active-playlist")
 
+}
+
+function updateVolumeElement(audioDom) {
+    VolumeDefault = audioDom.dataset.defaultVolume
+    VolumeFade = audioDom.dataset.levelFade
+    VolumeMixerGeneral = getVolumeMixerGeneral()
+    VolumeMixerType = getVolumeMixerType(audioDom.dataset.playlistType)
+    // console.log(`VolumeDefault: ${VolumeDefault} VolumeFade: ${VolumeFade} VolumeMixerGeneral: ${VolumeMixerGeneral} VolumeMixerType: ${VolumeMixerType}`);
+    // console.log(VolumeDefault * VolumeFade * VolumeMixerGeneral * VolumeMixerType);
+    
+    audioDom.volume = Math.min(1, Math.max(0, VolumeDefault * VolumeFade * VolumeMixerGeneral * VolumeMixerType))
+    
+}
+
+function getVolumeMixerGeneral() {
+    return document.getElementById('mixer-general').value;
+}
+
+function getVolumeMixerType(type) {
+    return document.getElementById(`mixer-${type}`).value;
 }

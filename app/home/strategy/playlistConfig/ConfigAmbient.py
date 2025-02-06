@@ -4,7 +4,7 @@ class ConfigAmbient():
     def get_data(self, obj):
         return {
             "id":obj.id, 
-            "type":PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT, 
+            "type":PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.value, 
             "fadeIn": True, 
             "fadeInDuration": 3,
             "fadeOut": True, 

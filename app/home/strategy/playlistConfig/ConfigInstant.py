@@ -4,7 +4,7 @@ class ConfigInstant():
     def get_data(self, obj):
         return {
             "id":obj.id, 
-            "type":PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT, 
+            "type":PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT.value, 
             "fadeIn": False, 
             "fadeInDuration": 0,
             "fadeOut": False, 
