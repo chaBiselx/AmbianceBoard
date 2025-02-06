@@ -36,7 +36,7 @@ class RGPDService:
         cutoff_date = self._calculate_cuttoff_date(6)
 
         # Récupérer tous les utilisateurs qui ont une derniere connexion avant la date de coupure
-        inactive_users = User.objects.filter(last_login__lte=None, date_joined__lte=cutoff_date)
+        inactive_users = User.objects.filter(last_login=None, date_joined__lte=cutoff_date)
         
         for user in inactive_users:
             user.delete()

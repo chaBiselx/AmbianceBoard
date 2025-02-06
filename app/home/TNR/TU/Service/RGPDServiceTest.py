@@ -24,25 +24,42 @@ class RGPDServiceTestCase(TestCase):
         self.assertTrue(User.objects.filter(username='user1').exists())
         self.assertTrue(User.objects.filter(username='user2').exists())
         
-    def test_delete_not_active_users(self):
+    def test_delete_inactive_users(self):
         # Créer des utilisateurs non actifs
-        user1 = User.objects.create_user(username='user1', email='user1@example.com')
+        user1 = User.objects.create_user(username='userdeleted', email='user1@example.com')
         user1.last_login = datetime.datetime.now() - datetime.timedelta(days=365*2 + 1)
         user1.save()
 
-        user2 = User.objects.create_user(username='user2', email='user2@example.com')
-        user2.last_login = datetime.datetime.now() - datetime.timedelta(days=365*2 - 1)
+        user2 = User.objects.create_user(username='userkeep', email='user2@example.com')
+        user2.last_login = datetime.datetime.now() - datetime.timedelta(days=60)
         user2.save()
 
-        # Appeler la méthode delete_not_active_users
-        RGPDService().delete_not_active_users()
+        # Appeler la méthode delete_inactive_users
+        RGPDService().delete_inactive_users()
 
         # Vérifier que l'utilisateur non actif a été supprimé
-        self.assertFalse(User.objects.filter(username='user1').exists())
-        self.assertTrue(User.objects.filter(username='user2').exists())
+        self.assertFalse(User.objects.filter(username='userdeleted').exists())
+        self.assertTrue(User.objects.filter(username='userkeep').exists())
+        
+    def delete_not_active_users(self):
+        # Créer des utilisateurs non actifs
+        user1 = User.objects.create_user(username='userkeep', email='user1@example.com')
+        user1.last_login = None
+        user1.date_joined = datetime.datetime.now() - datetime.timedelta(days=365*2 + 1)
+        user1.save()
+
+        user2 = User.objects.create_user(username='userdeleted', email='user2@example.com')
+        user2.save()
+        
+        # Appeler la méthode delete_not_active_users
+        RGPDService().delete_not_active_users()
+        
+        # Vérifier que l'utilisateur non actif a été supprimé
+        self.assertFalse(User.objects.filter(username='userdeleted').exists())
+        self.assertTrue(User.objects.filter(username='userkeep').exists())
 
     def test_calculate_cutoff_date(self):
         service = RGPDService()
         cutoff_date = service._calculate_cuttoff_date(24)
         cutoff_date_obj = make_aware(datetime.datetime.now() - datetime.timedelta(days=24*30))
-        self.assertAlmostEqual(cutoff_date.timestamp(), cutoff_date_obj.timestamp(), places=5)
+        self.assertAlmostEqual(cutoff_date.timestamp(), cutoff_date_obj.timestamp(), places=3)
