@@ -16,8 +16,8 @@
         {%  add_mixer PlaylistTypeEnum %}
 
         <div class="flex-container">
-            {% for playlist in soundboard.playlists.all %}
-            <div class="playlist-link playlist-element flex-item playlist-dim-100 m-1" id="playlist-{{ playlist.id }}" style="background-color: {{playlist.color}};color: {{playlist.colorText}};" data-playlist-uri="{% url 'streammMusic' playlist.id %}" {% for key, value in playlist.getDataSet.items %}
+            {% for playlist in soundboard.get_list_playlist_ordered %}
+            <div class="playlist-link playlist-element flex-item playlist-dim-100 m-1" id="playlist-{{ playlist.id }}" style="background-color: {{playlist.color}};color: {{playlist.colorText}};" data-playlist-uri="{% url 'streammMusic' playlist.id %}" {% for key, value in playlist.get_data_set.items %}
                 data-playlist-{{ key }}="{{ value }}" {% endfor %}>
                 {{ playlist | applys_playlist_content}}
             </div>

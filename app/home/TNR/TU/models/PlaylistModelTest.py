@@ -132,7 +132,7 @@ class PlaylistModelTest(TestCase):
 
     @patch('home.strategy.PlaylistStrategy.PlaylistStrategy.get_strategy')
     def test_get_data_set(self, mock_get_strategy):
-        """Test la méthode getDataSet avec différents types de playlist"""
+        """Test la méthode get_data_set avec différents types de playlist"""
         # Créer une mock strategy qui retourne des données test
         mock_strategy = Mock()
         mock_strategy.get_data.return_value = {'test': 'data'}
@@ -146,7 +146,7 @@ class PlaylistModelTest(TestCase):
                 typePlaylist=playlist_type.name
             )
             
-            data = playlist.getDataSet()
+            data = playlist.get_data_set()
             
             # Vérifier que la stratégie appropriée a été appelée
             mock_get_strategy.assert_called_with(playlist_type.name)

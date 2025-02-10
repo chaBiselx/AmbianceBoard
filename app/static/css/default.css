@@ -135,3 +135,14 @@ footer {
     width: 100%;
    
 }
+
+.zone-dragAndDrop{
+    min-height: 70vh;
+}
+
+
+.playlist-dragAndDrop{
+    flex-grow: 0; /* Empêche les enfants de grandir */
+    flex-shrink: 0; /* Permet aux enfants de rétrécir si nécessaire */
+    align-self: flex-start;
+}

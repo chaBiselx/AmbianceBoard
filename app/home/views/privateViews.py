@@ -13,6 +13,7 @@ from home.manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
 from home.service.SoundBoardService import SoundBoardService
 from home.service.PlaylistService import PlaylistService
 from home.service.MusicService import MusicService
+from home.service.SoundboardPlaylistService import SoundboardPlaylistService
 from home.forms.SoundBoardForm import SoundBoardForm
 from home.forms.PlaylistForm import PlaylistForm
 from home.forms.MusicForm import MusicForm
@@ -93,26 +94,30 @@ def soundboard_organize(request, soundboard_id):
 
 
 @login_required
-@require_http_methods(['POST', 'DELETE'])
+@require_http_methods(['POST', 'DELETE', 'UPDATE'])
 def soundboard_organize_update(request, soundboard_id) -> HttpResponse:
-    if request.method == 'POST' or request.method == 'DELETE':
-        try:
-            soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
-            data = json.loads(request.body.decode('utf-8'))
-            playlist = (PlaylistService(request)).get_playlist(data['idPlaylist'])
-            if not playlist:
-                raise exceptions.ObjectDoesNotExist
-            if request.method == 'POST':
-                    soundboard.playlists.add(playlist)
-                    soundboard.save()
-                    return JsonResponse({'success': 'playslist added'}, status=200)
-            if request.method == 'DELETE':
-                    soundboard.playlists.remove(playlist)
-                    soundboard.save()
-                    return JsonResponse({'success': 'playslist deleted'}, status=200)
-        except Exception:
-            return JsonResponse({"error": "playslist non trouvé."}, status=404)
-    return JsonResponse({"error": "Méthode non supportée."}, status=405)
+    try:
+        soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
+        data = json.loads(request.body.decode('utf-8'))
+        playlist = (PlaylistService(request)).get_playlist(data['idPlaylist'])
+        new_order = None
+        if 'newOrder' in data.keys():
+            new_order = int(data['newOrder'])
+        soundboard_playlist_service = SoundboardPlaylistService(soundboard)
+        if not playlist:
+            raise exceptions.ObjectDoesNotExist
+        if request.method == 'POST':
+            soundboard_playlist_service.add(playlist, new_order)
+            return JsonResponse({'success': 'playslist added', 'order': playlist.get_order()}, status=200)
+        if request.method == 'UPDATE':
+            soundboard_playlist_service.update(playlist, new_order)
+            return JsonResponse({'success': 'playslist added', 'order': playlist.get_order()}, status=200)
+        if request.method == 'DELETE':
+            soundboard_playlist_service.remove(playlist)
+            return JsonResponse({'success': 'playslist deleted'}, status=200)
+    except Exception as e:
+        print(e)
+        return JsonResponse({"error": "playslist non trouvé."}, status=404)
     
 
 @login_required

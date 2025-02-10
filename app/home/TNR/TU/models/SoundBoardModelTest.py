@@ -6,6 +6,7 @@ import uuid
 from home.models.SoundBoard import SoundBoard
 from home.models.User import User
 from home.models.Playlist import Playlist
+from home.models.Soundboard_Playlist import Soundboard_Playlist
 
 class SoundBoardModelTest(TestCase):
     def setUp(self):
@@ -33,7 +34,11 @@ class SoundBoardModelTest(TestCase):
             user=self.user,
             name="Other Name"
         )
-        soundboard.playlists.add(self.playlist)
+        Soundboard_Playlist.objects.create(
+            SoundBoard=soundboard,
+            Playlist=self.playlist,
+            order=1  
+        )
         
         self.assertTrue(isinstance(soundboard, SoundBoard))
         self.assertEqual(soundboard.name, "Other Name")
@@ -133,7 +138,16 @@ class SoundBoardModelTest(TestCase):
         
         # Ajouter plusieurs playlists
         playlist2 = Playlist.objects.create(name="Test Playlist 2",user=self.user)
-        soundboard.playlists.add(self.playlist, playlist2)
+        Soundboard_Playlist.objects.create(
+            SoundBoard=soundboard,
+            Playlist=self.playlist,
+            order=1  
+        )
+        Soundboard_Playlist.objects.create(
+            SoundBoard=soundboard,
+            Playlist=playlist2,
+            order=2  
+        )
         
         # Vérifier les relations
         self.assertEqual(soundboard.playlists.count(), 2)

@@ -3,6 +3,7 @@ from home.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
 from home.models.User import User
 from home.models.Playlist import Playlist
+from home.models.Soundboard_Playlist import Soundboard_Playlist
 from home.message.ReduceSizeImgMessenger import reduce_size_img
 
 
@@ -12,7 +13,7 @@ class SoundBoard(models.Model):
     SOUNDBOARD_FOLDER = 'soundBoardIcon/'
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
-    playlists = models.ManyToManyField(Playlist, related_name='soundboards')
+    playlists = models.ManyToManyField(Playlist, through=Soundboard_Playlist, related_name='soundboards')
     name = models.CharField(max_length=255)
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
@@ -22,6 +23,10 @@ class SoundBoard(models.Model):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._icon_original = self.icon if self.pk else None
+        
+    def __str__(self):
+        return f"{self.name} ({self.id}) "    
+        
     def save(self, *args, **kwargs):
         new_file = False
         if not hasattr(self, 'user') :
@@ -40,6 +45,12 @@ class SoundBoard(models.Model):
         if self.pk:
             self._icon_changed = self.icon != self._icon_original
         super().clean()
+        
+    def get_list_playlist_ordered(self):
+        return Playlist.objects.filter(soundboards=self).order_by('soundboard_playlist__order')
+        
+
+        
  
     def __replace_name_by_uuid(self):
         new_uuid = uuid.uuid4()

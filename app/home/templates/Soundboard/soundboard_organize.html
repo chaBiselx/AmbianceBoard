@@ -11,10 +11,10 @@
 <div class="row">
     <div class="col-6">
         <h3>Playlists non associées</h3>
-        <div class="flex-container" id="unassociated-playlists" style="min-height: 500px;">
+        <div class="flex-container zone-dragAndDrop border border-secondary rounded" id="unassociated-playlists">
             <span class="unassociated-playlists-empty " hidden="true">Aucune playlist non associée</span>
             {% for playlist in unassociatedPlaylists %}
-            <div class="playlist-dragAndDrop flex-item" id="{{ playlist.id }}" draggable="true">
+            <div class="playlist-dragAndDrop flex-item position-relative" data-order="" id="{{ playlist.id }}" draggable="true">
                 <div  class="playlist-link playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.color}}; color: {{playlist.colorText}};">
                     {{ playlist | applys_playlist_content}}
                 </div>
@@ -26,10 +26,10 @@
     
     <div class="col-6">
         <h3>Playlists associées</h3>
-        <div class="flex-container" id="associated-playlists" style="min-height: 500px;" data-url="{% url 'organizeSoundboardUpdate' soundboard.id %}">
+        <div class="flex-container zone-dragAndDrop border border-primary rounded" id="associated-playlists" data-url="{% url 'organizeSoundboardUpdate' soundboard.id %}">
             <span class="associated-playlists-empty" hidden="true">Aucune playlist associée</span>
             {% for playlist in actualPlaylist %}
-            <div class="playlist-dragAndDrop flex-item" id="{{ playlist.id }}" draggable="true">
+            <div class="playlist-dragAndDrop flex-item position-relative" data-order="{{ playlist.get_order }}" id="{{ playlist.id }}" draggable="true">
                 <div class="playlist-link  playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.color}}; color: {{playlist.colorText}};">
                     {{ playlist | applys_playlist_content}}
                 </div>

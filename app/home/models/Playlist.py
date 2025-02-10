@@ -6,6 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from home.strategy.PlaylistStrategy import PlaylistStrategy
 from home.message.ReduceSizeImgMessenger import reduce_size_img
+from home.models.Soundboard_Playlist import Soundboard_Playlist
 
 
 class Playlist(models.Model):
@@ -27,6 +28,9 @@ class Playlist(models.Model):
         super().__init__(*args, **kwargs)
         self._icon_original = self.icon if self.pk else None
         
+    def __str__(self):
+        return f"{self.name} ({self.id}) "
+        
     def save(self, *args, **kwargs):
         new_file = False
         if not hasattr(self, 'user') :
@@ -41,9 +45,13 @@ class Playlist(models.Model):
         if new_file: 
             reduce_size_img.apply_async(args=[self.icon.path], queue='default', priority=1 )
     
-    def getDataSet(self):
+    def get_data_set(self):
         strategy = PlaylistStrategy().get_strategy(self.typePlaylist)
         return strategy.get_data(self)
+
+    def get_order(self):
+        soundboard_playlist = Soundboard_Playlist.objects.filter(Playlist=self).first()
+        return soundboard_playlist.order if soundboard_playlist and soundboard_playlist.order is not None else None
     
     def clean(self):
         if self.pk:
