@@ -2,7 +2,6 @@ const ID_DIV_PLAYER = 'players';
 const DEBUG = true;
 const TRUE = 'True';//TODO fix type soundboard_read
 const FALSE = 'False';
-const INTERVAL_FADE = 50;
 
 class FadeStrategy {
     calculateVolume(startVolume, endVolume, progress) {
@@ -34,6 +33,38 @@ class EaseOutFade extends FadeStrategy {
     }
 }
 
+class EaseInQuad extends FadeStrategy {
+    calculateVolume(startVolume, endVolume, progress) {
+      return startVolume + (endVolume - startVolume) * progress * progress;
+    }
+  }
+  
+  class EaseOutQuad extends FadeStrategy {
+    calculateVolume(startVolume, endVolume, progress) {
+      return startVolume + (endVolume - startVolume) * (1 - (1 - progress) * (1 - progress));
+    }
+  }
+  
+  class EaseInOutQuad extends FadeStrategy {
+    calculateVolume(startVolume, endVolume, progress) {
+      return progress < 0.5
+        ? startVolume + (endVolume - startVolume) * 2 * progress * progress
+        : startVolume + (endVolume - startVolume) * (1 - Math.pow(-2 * progress + 2, 2) / 2);
+    }
+  }
+  
+  class EaseInCubic extends FadeStrategy {
+    calculateVolume(startVolume, endVolume, progress) {
+      return startVolume + (endVolume - startVolume) * progress * progress * progress;
+    }
+  }
+  
+  class EaseOutCubic extends FadeStrategy {
+    calculateVolume(startVolume, endVolume, progress) {
+      return startVolume + (endVolume - startVolume) * (1 - Math.pow(1 - progress, 3));
+    }
+  }
+
 function selectTypeFade(fadeType) {
     switch (fadeType) {
         case 'linear':
@@ -44,6 +75,16 @@ function selectTypeFade(fadeType) {
             return new EaseInFade();
         case 'ease-out':
             return new EaseOutFade();
+        case 'ease-in-quad':
+            return new EaseInQuad();
+        case 'ease-out-quad':
+            return new EaseOutQuad();
+        case 'ease-in-out-quad':
+            return new EaseInOutQuad();
+        case 'ease-in-cubic':
+            return new EaseInCubic();
+        case 'ease-out-cubic':
+            return new EaseOutCubic();
         default:
             return new LinearFade();
     }
