@@ -4,13 +4,103 @@ const TRUE = 'True';//TODO fix type soundboard_read
 const FALSE = 'False';
 const INTERVAL_FADE = 50;
 
+class FadeStrategy {
+    calculateVolume(startVolume, endVolume, progress) {
+        throw new Error("Méthode calculateVolume doit être implémentée");
+    }
+}
+
+class LinearFade extends FadeStrategy {
+    calculateVolume(startVolume, endVolume, progress) {
+        return startVolume + (endVolume - startVolume) * progress;
+    }
+}
+
+class EaseFade extends FadeStrategy {
+    calculateVolume(startVolume, endVolume, progress) {
+        return startVolume + (endVolume - startVolume) * (progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2);
+    }
+}
+
+class EaseInFade extends FadeStrategy {
+    calculateVolume(startVolume, endVolume, progress) {
+        return startVolume + (endVolume - startVolume) * Math.pow(progress, 2);
+    }
+}
+
+class EaseOutFade extends FadeStrategy {
+    calculateVolume(startVolume, endVolume, progress) {
+        return startVolume + (endVolume - startVolume) * (1 - Math.pow(1 - progress, 2));
+    }
+}
+
+function selectTypeFade(fadeType) {
+    switch (fadeType) {
+        case 'linear':
+            return new LinearFade();
+        case 'ease':
+            return new EaseFade();
+        case 'ease-in':
+            return new EaseInFade();
+        case 'ease-out':
+            return new EaseOutFade();
+        default:
+            return new LinearFade();
+    }
+}
+
+class AudioFadeManager {
+    constructor(audioElement, fadeStrategy = new LinearFade(), isFadeIn = true, onComplete) {
+        this.audioElement = audioElement;
+        this.fadeStrategy = fadeStrategy;
+        this.isFadeIn = isFadeIn;
+        this.onComplete = onComplete;
+        this.duration = 1000; // Durée par défaut de 1 seconde
+        this.interval = 100; // Intervalle de mise à jour en millisecondes
+
+        this.startVolume = this.isFadeIn ? 0 : 1;
+        this.endVolume = this.isFadeIn ? 1 : 0;
+
+        this.audioElement.dataset.levelFade = this.startVolume;
+        updateVolumeElement(this.audioElement);
+    }
+
+    setDuration(durationInSec) {
+        this.duration = durationInSec * 1000;
+    }
+
+    setFadeStrategy(fadeStrategy) {
+        this.fadeStrategy = fadeStrategy;
+    }
+
+    start() {
+        let currentTime = 0;
+        const intervalId = setInterval(() => {
+            currentTime += this.interval;
+            const progress = currentTime / this.duration;
+
+            const volume = this.fadeStrategy.calculateVolume(this.startVolume, this.endVolume , progress);
+            this.audioElement.dataset.levelFade = volume;
+
+            if (currentTime >= this.duration) {
+                this.audioElement.dataset.levelFade = this.endVolume ;
+                clearInterval(intervalId);
+                if (this.onComplete) {
+                    this.onComplete();
+                }
+            }
+            updateVolumeElement(this.audioElement);
+        }, this.interval);
+    }
+}
+
 document.addEventListener("DOMContentLoaded", (event) => {
     addEventListenerDom()
     listMixer = document.getElementsByClassName('mixer-playlist');
     for (let mixer of listMixer) {
         mixer.addEventListener('change', eventChangeVolume);
     };
-    if(DEBUG){
+    if (DEBUG) {
         document.getElementById('players').style.display = 'block';
     }
 
@@ -61,7 +151,6 @@ function addPlaylist(dataset) {
     } else {
         removeClassActivePlaylist(dataset.playlistId);
         while (audioElement.length > 0) { // delete all playlist
-            console.log(audioElement[0]);
             audioElement[0].remove();
         }
     }
@@ -79,8 +168,10 @@ function createPlaylistLink(dataset) {
     audio.dataset.idplaylist = dataset.playlistId;
     audio.dataset.defaultVolume = dataset.playlistVolume / 100;
     audio.dataset.playlistType = dataset.playlistType;
+    audio.dataset.fadeintype = dataset.playlistFadeintype;
+    audio.dataset.fadeouttype = dataset.playlistFadeouttype;
     audio.dataset.levelFade = 1;
-    if(DEBUG){
+    if (DEBUG) {
         audio.controls = true;
     }
     updateVolumeElement(audio)
@@ -129,7 +220,7 @@ function eventFadeOut(event) {
     // console.log(audio.dataset.fadeOut); // timeRemaining);
 
     if (parseFloat(timeRemaining) <= dataset.playlistFadeoutduration && audio.dataset.fadeOut != true) {
-        
+
         audio.removeEventListener('timeupdate', eventFadeOut);
         addFadeOut(audio, dataset);
         if (dataset.playlistLoop == TRUE) {
@@ -147,20 +238,21 @@ function addFadeIn(audio, dataset) {
     audio.dataset.levelFade = 0;
     audio.dataset.fadeIn = true
 
-    audio.addEventListener('play', () => {
-        const fadeInDuration = dataset.playlistFadeinduration * 1000;
-        const step = (INTERVAL_FADE / fadeInDuration);
+    typeFade = selectTypeFade(audio.dataset.fadeintype)
+    audioFade = new AudioFadeManager(audio, typeFade, true, () => {
+        audio.dataset.levelFade = 1;
+        delete audio.dataset.fadeIn;
+    });
+    audioFade.setDuration(dataset.playlistFadeinduration)
 
-        const fadeIn = setInterval(() => {
-            if (audio.dataset.levelFade < 1) {
-                audio.dataset.levelFade = parseFloat(audio.dataset.levelFade) + step;
-            } else {
-                audio.dataset.levelFade = 1;
-                delete audio.dataset.fadeIn
-                clearInterval(fadeIn);
+    audio.addEventListener('playing', () => {
+        time = Date.now();
+        while(audio.readyState != 2) {
+            if(time + 2000 < Date.now()) {
+                break;
             }
-            updateVolumeElement(audio)
-        }, INTERVAL_FADE);
+        }
+        audioFade.start();
     })
 
 }
@@ -171,21 +263,14 @@ function addFadeOut(audio, dataset) {
         if (DEBUG) console.log('ignore fade out if fade in not finished');
         return // ignore fade out if fade in not finished
     }
-    const fadeOutDuration = dataset.playlistFadeoutduration * 1000;
-    const step = (INTERVAL_FADE / fadeOutDuration);
-    audio.dataset.fadeOut = true
 
-
-    const fadeOut = setInterval(() => {
-        if (audio.dataset.levelFade > 0) {
-            audio.dataset.levelFade = parseFloat(audio.dataset.levelFade) - step;
-            updateVolumeElement(audio)
-        } else {
-            audio.dataset.levelFade = 0;
-            clearInterval(fadeOut);
-            audio.remove();
-        }
-    }, INTERVAL_FADE);
+    typeFade = selectTypeFade(audio.dataset.fadeouttype)
+    audioFade = new AudioFadeManager(audio, typeFade, false, () => {
+        audio.dataset.levelFade = 1;
+        delete audio.dataset.fadeIn;
+    });
+    audioFade.setDuration(dataset.playlistFadeinduration)
+    audioFade.start();
 }
 
 function deleteSameTypePlaylist(dataset) {
@@ -222,9 +307,9 @@ function updateVolumeElement(audioDom) {
     VolumeMixerType = getVolumeMixerType(audioDom.dataset.playlistType)
     // console.log(`VolumeDefault: ${VolumeDefault} VolumeFade: ${VolumeFade} VolumeMixerGeneral: ${VolumeMixerGeneral} VolumeMixerType: ${VolumeMixerType}`);
     // console.log(VolumeDefault * VolumeFade * VolumeMixerGeneral * VolumeMixerType);
-    
+
     audioDom.volume = Math.min(1, Math.max(0, VolumeDefault * VolumeFade * VolumeMixerGeneral * VolumeMixerType))
-    
+
 }
 
 function getVolumeMixerGeneral() {
