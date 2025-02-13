@@ -9,24 +9,29 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
-RUN apt-get update && apt-get install -y cron \
+RUN apt-get update && apt-get install -y --purge cron \
+    ffmpeg \
     make \
     netcat \
     procps\
     rsyslog\
     systemd \
-    vim 
+    vim \
+    # clean cache
+    && apt-get clean 
+
+
     
 
 # install dependencies
-RUN pip install --upgrade pip
 COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh .
-RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
-RUN chmod +x /usr/src/app/entrypoint.sh
+RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh && \
+    chmod +x /usr/src/app/entrypoint.sh
 
 # copy project
 COPY . .
