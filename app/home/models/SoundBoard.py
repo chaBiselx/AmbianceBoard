@@ -12,6 +12,8 @@ from home.message.ReduceSizeImgMessenger import reduce_size_img
 class SoundBoard(models.Model):
     SOUNDBOARD_FOLDER = 'soundBoardIcon/'
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     playlists = models.ManyToManyField(Playlist, through=Soundboard_Playlist, related_name='soundboards')
     name = models.CharField(max_length=255)

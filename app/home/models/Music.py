@@ -4,6 +4,8 @@ from home.models.Playlist import Playlist
 
 class Music(models.Model):
     MUSIC_FOLDER = 'musics/'
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     fileName = models.CharField(max_length=63)
     alternativeName = models.CharField(max_length=63, default=None)
     file = models.FileField(upload_to=MUSIC_FOLDER)

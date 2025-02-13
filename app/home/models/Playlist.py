@@ -12,6 +12,8 @@ from home.models.Soundboard_Playlist import Soundboard_Playlist
 class Playlist(models.Model):
     PLAYLIST_FOLDER = 'playlistIcon/'
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     name = models.CharField(max_length=255)
     typePlaylist = models.CharField(max_length=64, choices=[
