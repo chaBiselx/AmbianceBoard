@@ -22,7 +22,7 @@ def moderator_dashboard(request) -> HttpResponse:
     moy_music_per_user = (User.objects.annotate(music_count=Count('playlist__music')).aggregate(avg_music=Avg('music_count')))['avg_music']
     moy_music_per_playlist = (Playlist.objects.annotate(music_count=models.Count('music')).aggregate(avg_musics=Avg('music_count')))['avg_musics']
 
-    return render(request, 'Moderator/dashboard.html', {
+    return render(request, 'Html/Moderator/dashboard.html', {
             'nb_users': nb_users, 
             'moy_playlist_per_user': moy_playlist_per_user, 
             'moy_music_per_user': moy_music_per_user, 
@@ -38,7 +38,7 @@ def moderator_listing_images_playlist(request) -> HttpResponse:
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
     
-    return render(request, 'Moderator/listing_playlist_img.html', context)
+    return render(request, 'Html/Moderator/listing_playlist_img.html', context)
 
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
@@ -49,26 +49,26 @@ def moderator_listing_images_soundboard(request) -> HttpResponse:
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
     
-    return render(request, 'Moderator/listing_soundboard_img.html', context)
+    return render(request, 'Html/Moderator/listing_soundboard_img.html', context)
 
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_playlist(request, playlist_id) -> HttpResponse:
     playlist = Playlist.objects.get(id=playlist_id)
-    return render(request, 'Moderator/info_playlist.html', {"playlist":playlist})
+    return render(request, 'Html/Moderator/info_playlist.html', {"playlist":playlist})
     
     
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_soundboard(request, soundboard_id) -> HttpResponse:
     soundboard = SoundBoard.objects.get(id=soundboard_id)
-    return render(request, 'Moderator/info_soundboard.html', {"soundboard":soundboard})
+    return render(request, 'Html/Moderator/info_soundboard.html', {"soundboard":soundboard})
     
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_soundboard(request, soundboard_id) -> HttpResponse:
     soundboard = SoundBoard.objects.get(id=soundboard_id)
-    return render(request, 'Moderator/info_soundboard.html', {"soundboard":soundboard})
+    return render(request, 'Html/Moderator/info_soundboard.html', {"soundboard":soundboard})
 
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
@@ -79,12 +79,12 @@ def moderator_listing_log_moderation(request) -> HttpResponse:
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     
-    return render(request, 'Moderator/listing_log.html', context)
+    return render(request, 'Html/Moderator/listing_log.html', context)
 
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_user(request, user_id) -> HttpResponse:
     user = User.objects.get(id=user_id)
-    return render(request, 'Moderator/info_user.html', {"user":user})
+    return render(request, 'Html/Moderator/info_user.html', {"user":user})
     
     

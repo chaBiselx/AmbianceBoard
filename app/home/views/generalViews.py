@@ -9,7 +9,7 @@ from home.email.UserMail import UserMail
 from home.service.FailedLoginAttemptService import FailedLoginAttemptService
 
 def home(request):
-    return render(request, "home.html", {"title": "Accueil"})
+    return render(request, "Html/General/home.html", {"title": "Accueil"})
 
 
 def create_account(request):
@@ -23,7 +23,7 @@ def create_account(request):
             return redirect('login')
     else:
         form = CreateUserForm()
-    return render(request, 'Account/create_account.html', {'form': form})
+    return render(request, 'Html/Account/create_account.html', {'form': form})
 
 def login_view(request):
     context = {}
@@ -39,9 +39,9 @@ def login_view(request):
         # wrong password
         failed_login_attempt_service.add_or_create_failed_login_attempt()
         if(failed_login_attempt_service.is_timeout()) :
-            return render(request, '429.html', status=429)
+            return render(request, 'Html/General/429.html', status=429)
     
-    return render(request, 'Account/login.html', context)
+    return render(request, 'Html/Account/login.html', context)
 
 def logout_view(request):
     if request.user.is_authenticated:

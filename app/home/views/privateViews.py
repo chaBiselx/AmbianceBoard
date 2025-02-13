@@ -32,7 +32,7 @@ def soundboard_list(request):
         soundboards = []
 
     
-    return render(request, 'Soundboard/soundboard_list.html', {'soundboards': soundboards})
+    return render(request, 'Html/Soundboard/soundboard_list.html', {'soundboards': soundboards})
 
 @login_required
 @require_http_methods(['POST', 'GET'])
@@ -42,15 +42,15 @@ def soundboard_create(request):
         return redirect('soundboardsList')
     else:
         form = SoundBoardForm()
-    return render(request, 'Soundboard/soundboard_form.html', {'form': form , 'method' : 'create'})
+    return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form , 'method' : 'create'})
 
 @login_required
 def soundboard_read(request, soundboard_id):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
     if not soundboard :
-        return render(request, '404.html', status=404)
+        return render(request, 'Html/General/404.html', status=404)
     else:   
-        return render(request, 'Soundboard/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
+        return render(request, 'Html/Soundboard/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
 
 @login_required
 @require_http_methods(['POST', 'GET'])
@@ -58,7 +58,7 @@ def soundboard_update(request, soundboard_id):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
     if request.method == 'POST':
         if not soundboard:
-            return render(request, '404.html', status=404)
+            return render(request, 'Html/General/404.html', status=404)
         else:
             form = SoundBoardForm(request.POST, request.FILES, instance=soundboard)
             if form.is_valid():
@@ -66,10 +66,10 @@ def soundboard_update(request, soundboard_id):
                 return redirect('soundboardsList')
     else:
         if not soundboard:
-            return render(request, '404.html', status=404) 
+            return render(request, 'Html/General/404.html', status=404) 
         else:
             form = SoundBoardForm(instance=soundboard)
-    return render(request, 'Soundboard/soundboard_form.html', {'form': form, 'method' : 'update'})
+    return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method' : 'update'})
 
 @login_required
 def soundboard_delete(request, soundboard_id) -> JsonResponse:
@@ -87,10 +87,10 @@ def soundboard_delete(request, soundboard_id) -> JsonResponse:
 def soundboard_organize(request, soundboard_id):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
     if not soundboard:
-        return render(request, '404.html', status=404)
+        return render(request, 'Html/General/404.html', status=404)
     
     soundboard_manager = SoundBoardPlaylistManager(request, soundboard)
-    return render(request, 'Soundboard/soundboard_organize.html', {'soundboard': soundboard, 'actualPlaylist': soundboard_manager.get_playlists, 'unassociatedPlaylists': soundboard_manager.get_unassociated_playlists})
+    return render(request, 'Html/Soundboard/soundboard_organize.html', {'soundboard': soundboard, 'actualPlaylist': soundboard_manager.get_playlists, 'unassociatedPlaylists': soundboard_manager.get_unassociated_playlists})
 
 
 @login_required
@@ -123,7 +123,7 @@ def soundboard_organize_update(request, soundboard_id) -> HttpResponse:
 @login_required
 def playlist_read_all(request):
     playlists = (PlaylistService(request)).get_all_playlist()
-    return render(request, 'Playlist/playlist_read_all.html', {'playlists': playlists})
+    return render(request, 'Html/Playlist/playlist_read_all.html', {'playlists': playlists})
 
 @login_required
 def playlist_create_with_soundboard(request, soundboard_id):
@@ -136,8 +136,8 @@ def playlist_create_with_soundboard(request, soundboard_id):
             return redirect('soundboardsRead', soundboard_id=soundboard.id)
         else:
             form = PlaylistForm()
-        return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic':None})
-    return render(request, '404.html', status=404) 
+        return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic':None})
+    return render(request, 'Html/General/404.html', status=404) 
 
 @login_required
 def playlist_create(request):
@@ -146,7 +146,7 @@ def playlist_create(request):
         return redirect('playlistsAllList')
     else:
         form = PlaylistForm()
-    return render(request, 'Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic': None})
+    return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic': None})
 
 @login_required
 @require_http_methods(['GET'])
@@ -160,7 +160,7 @@ def playlist_update(request, playlist_id):
     playlist = (PlaylistService(request)).get_playlist(playlist_id)
     if request.method == 'POST':
         if not playlist:
-            return render(request, '404.html', status=404)
+            return render(request, 'Html/General/404.html', status=404)
         else:
             form = PlaylistForm(request.POST, request.FILES, instance=playlist)
             if form.is_valid():
@@ -168,11 +168,11 @@ def playlist_update(request, playlist_id):
                 return redirect('playlistsAllList')
     else:
         if not playlist:
-            return render(request, '404.html', status=404) 
+            return render(request, 'Html/General/404.html', status=404) 
         else:
             form = PlaylistForm(instance=playlist)
     list_music = (MusicService(request)).get_list_music(playlist_id)
-    return render(request, 'Playlist/playlist_create.html', {'form': form, 'method' : 'update', 'listMusic' : list_music})
+    return render(request, 'Html/Playlist/playlist_create.html', {'form': form, 'method' : 'update', 'listMusic' : list_music})
 
 @login_required
 @require_http_methods(['DELETE'])
@@ -196,15 +196,15 @@ def music_create(request, playlist_id) -> JsonResponse:
             return redirect('playlistUpdate', playlist_id=playlist_id)
         else:
             form = MusicForm()
-        return render(request, 'Music/add_music.html', {'form': form, "playlist":playlist, 'method' : 'create' })
-    return render(request, '404.html', status=404) 
+        return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist, 'method' : 'create' })
+    return render(request, 'Html/General/404.html', status=404) 
 
 @login_required
 def music_update(request, playlist_id, music_id):
     playlist = (PlaylistService(request)).get_playlist(playlist_id)
     music = Music.objects.get(id=music_id)
     if not music or not playlist:
-        return render(request, '404.html', status=404) 
+        return render(request, 'Html/General/404.html', status=404) 
     if request.method == 'POST':
         form = MusicForm(request.POST, request.FILES, instance=music)
         if form.is_valid():
@@ -212,7 +212,7 @@ def music_update(request, playlist_id, music_id):
             return redirect('playlistUpdate', playlist_id=playlist_id)
     else:
         form = MusicForm(instance=music)
-    return render(request, 'Music/add_music.html', {'form': form, "playlist":playlist, 'music': music, 'method' : 'update' })
+    return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist, 'music': music, 'method' : 'update' })
 
 
 

@@ -26,7 +26,7 @@ def public_listing_soundboard(request):
 def public_soundboard_read_playlist(request, soundboard_id):
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_id)
     if not soundboard:
-        return render(request, '404.html', status=404)
+        return render(request, 'Html/General/404.html', status=404)
     else:   
         return render(request, 'Html/Public/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
     
