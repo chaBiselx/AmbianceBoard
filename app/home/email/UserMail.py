@@ -7,7 +7,7 @@ from home.utils.EmailSender import EmailSender
 
 class UserMail:
     def __init__(self, user):
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger('home')
         self.from_email = 'noreply@abmianceboard.com'
         self.user = user
     def send_welcome_email(self):

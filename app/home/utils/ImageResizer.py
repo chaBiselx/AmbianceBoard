@@ -10,7 +10,7 @@ class ImageResizer:
         :param input_path: Chemin de l'image source.
         :param output_path: Chemin pour enregistrer l'image redimensionnée.
         """
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger('home')
         
         self.input_path = input_path
         self.output_path = output_path

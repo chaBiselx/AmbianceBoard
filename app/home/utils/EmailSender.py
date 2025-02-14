@@ -1,4 +1,5 @@
 import smtplib
+import logging
 from parameters import settings
 from email.message import EmailMessage
 from typing import List, Optional
@@ -29,6 +30,7 @@ class EmailSender:
         self.username = username
         self.password = password
         self.use_tls = use_tls
+        self.logger = logging.getLogger('mail')
 
     def send_email(self, subject: str, body: str, from_email: str, to_emails: List[str], attachments: Optional[List[str]] = None):
         """
@@ -65,8 +67,10 @@ class EmailSender:
                 if(self.use_tls) :
                     server.starttls()  # Active la connexion sécurisée
                 server.login(self.username, self.password)
+                self.logger.info(f"Email envoyé de {msg['From']} à {msg['To']} : {msg['Subject']}")
                 server.send_message(msg)
                 return True
         except Exception as e:
+            self.logger.error(e)
             raise SendException(f"{e}")
         

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,6 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = bool(os.environ.get("DEBUG", default=0))
+TESTING = 'test' in sys.argv
 
 EMAIL_DEBUG = bool(os.environ.get("EMAIL_DEBUG", default=None))
 EMAIL_SMTP_SERVEUR = str(os.environ.get("EMAIL_SMTP_SERVEUR"))
@@ -51,6 +53,103 @@ INSTALLED_APPS = [
     "django_crontab",
 ]
 
+
+# Logging configuration
+if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
+    os.mkdir(os.path.join(BASE_DIR, 'logs'), mode=0o777 if DEBUG else 0o666)
+    
+level_log_debug = 'DEBUG' if DEBUG else 'WARNING'
+timed_rotating_file_handler = 'logging.handlers.TimedRotatingFileHandler'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} {levelname} {message} file:{filename} line:{lineno}',
+            'style': '{',
+        },
+        'console': {
+            'format': '{asctime} {levelname} {message}',
+            'style': '{',
+        },
+        'request': {
+            'format': '{asctime} {method:<8} {request} {post} {status} {duration}sec id:{unique_id}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+        'ORM_file': {
+            'level': level_log_debug,
+            'class': timed_rotating_file_handler,
+            'filename': os.path.join(BASE_DIR, 'logs', 'orm_logs.log'),
+            'when': 'D',  # Daily rotation
+            'interval': 1,  # Every day
+            'backupCount': 7,  # Keep 7 days of logs
+            'formatter': 'verbose',
+        },
+        'APP_file': {
+            'level': 'INFO',
+            'class': timed_rotating_file_handler,
+            'filename': os.path.join(BASE_DIR, 'logs', 'app_logs.log'),
+            'when': 'D',  # Daily rotation
+            'interval': 1,  # Every day
+            'backupCount': 7,  # Keep 7 days of logs
+            'formatter': 'verbose',
+        },
+        'request_file': {
+            'level': 'INFO',
+            'class': timed_rotating_file_handler,
+            'filename': os.path.join(BASE_DIR, 'logs', 'request_logs.log'),
+            'when': 'D',  # Daily rotation
+            'interval': 1,  # Every day
+            'backupCount': 7,  # Keep 7 days of logs
+            'formatter': 'request',
+        },
+        'Mail_file': {
+            'level': 'INFO',
+            'class': timed_rotating_file_handler,
+            'filename': os.path.join(BASE_DIR, 'logs', 'mails_logs.log'),
+            'when': 'D',  # Daily rotation
+            'interval': 1,  # Every day
+            'backupCount': 14,  # Keep 14 days of logs
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': [],
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['ORM_file'],
+            'level': 'DEBUG' ,
+            'propagate': False,
+        },
+        'home': {
+            'handlers': ['console', 'APP_file'],
+            'level': level_log_debug,
+            'propagate': False,
+        },
+        'mail': {
+            'handlers': ['APP_file', 'Mail_file'],
+            'level': level_log_debug,
+            'propagate': False,
+        },
+        'request': {
+            'handlers': ['request_file'],
+            'level': level_log_debug,
+            'propagate': False,
+        },
+    },
+}
+
+
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -59,6 +158,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "home.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
 ]
 
 ROOT_URLCONF = "parameters.urls"
@@ -146,27 +246,8 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-#loggin 
-if DEBUG:
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'console': {
-                'class': 'logging.StreamHandler',
-            },
-      
-        },
-        'loggers': {
-            'home': {
-                'handlers': ['console'],
-                'level': 'DEBUG',
-            },
-            'cron': {
-                'level': 'DEBUG',
-            },
-        },
-    }
+ 
+     
     
 #Message system 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

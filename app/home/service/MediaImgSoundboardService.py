@@ -5,14 +5,12 @@ from parameters import settings
 from home.models.SoundBoard import SoundBoard
 from home.message.MediaImgSoundBoardMessenger import clean_img_files
 
-logger = logging.getLogger(__name__)
-
 class MediaImgSoundboardService:
     list_media = []
     
     def __init__(self):
         self.media_dir = default_storage.location + "/" + SoundBoard.SOUNDBOARD_FOLDER
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger('home')
         
     def clear_media_img(self):
         self.__get_list_media()

@@ -3,6 +3,7 @@ BACKUP_DIR=backup
 MEDIA_FOLDER=mediafiles
 MEDIA_BACKUP=$(BACKUP_DIR)/media_backup.tar.gz
 DATA_BACKUP=$(BACKUP_DIR)/data.json
+LOG_DIR=./logs
  
 
  
@@ -27,6 +28,12 @@ load:
 	@echo "$(GREEN)Restauration de la base de données...$(NC)"
 	python manage.py loaddata $(DATA_BACKUP)
 	@echo "$(GREEN)Restauration terminée.$(NC)"
+
+#nettoyage des fichier de logs
+clean:
+	@# Help: vide les fichiers de logs sans les supprimer
+	@find $(LOG_DIR) -type f -name "*.log" -exec sh -c '>'{}'; echo "Logs vidés pour {}"' \;
+
  
 # Création du dossier de sauvegarde s'il n'existe pas
 .prepare:

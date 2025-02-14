@@ -4,7 +4,7 @@ from home.service.cleanService.ImgPlaylistCleanService import ImgPlaylistCleanSe
 
 @shared_task
 def clean_img_files(list_media_file:list):
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger('home')
     logger.info("clean_audio_messenger STARTED")
     logger.debug(f"Received list_media_file: {list_media_file}")
     (ImgPlaylistCleanService()).clean_files(list_media_file)

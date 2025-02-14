@@ -4,7 +4,7 @@ from home.service.cron.RGPDService import RGPDService
 
 def run():
     # code de votre tâche cron
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger('home')
     logger.info("Starting DeleteAccountCron")
     (RGPDService())
         .prevent_account_deletion()

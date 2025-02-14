@@ -9,3 +9,4 @@ __pycache
 app/mediafiles/musics/*
 app/mediafiles/playlistIcon/*
 app/mediafiles/soundBoardIcon/*
+app/logs/*

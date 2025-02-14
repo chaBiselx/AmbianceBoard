@@ -19,7 +19,7 @@ def manager_dashboard(request) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def clean_media_folder(request) -> JsonResponse:
     try:
-        logger = logging.getLogger(__name__)
+        logger = logging.getLogger('home')
         logger.warning("Starting ClearMediaFolder View")
         (MediaAudioService()).clear_media_audio()
         (MediaImgPlaylistService()).clear_media_img()

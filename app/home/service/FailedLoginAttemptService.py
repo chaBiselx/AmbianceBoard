@@ -10,7 +10,7 @@ class FailedLoginAttemptService:
         self.username = username
         self.now = timezone.now()
         self.time_threshold = self.now - timedelta(minutes=15)
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger('home')
         
     def add_or_create_failed_login_attempt(self):
         failed_attempt, created = FailedLoginAttempt.objects.get_or_create(

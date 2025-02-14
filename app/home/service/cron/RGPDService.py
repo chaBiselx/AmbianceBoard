@@ -6,7 +6,7 @@ from home.email.UserMail import UserMail
 
 class RGPDService:
     def __init__(self):
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger('home')
         
     def prevent_inactive_users(self):
         # Obtenir la date de 22 mois avant aujourd'hui

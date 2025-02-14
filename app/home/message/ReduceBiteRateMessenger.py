@@ -4,7 +4,7 @@ from home.utils.AudioBitrateReducer import AudioBitrateReducer
 
 @shared_task
 def reduce_bit_rate(path_file:str):
-    logger = logging.getLogger(__name__)
+    logger = logging.getLogger('home')
     logger.info("reduce_bit_rate STARTED")
     reducer = AudioBitrateReducer(path_file)
     reducer.load_audio()

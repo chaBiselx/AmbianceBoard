@@ -9,7 +9,7 @@ from home.service.cleanService.BaseCleanService import BaseCleanService
 
 class ImgSoundboardCleanService(BaseCleanService):
     def __init__(self, storage_location=None, folder=None):
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger('home')
         self.storage_location = storage_location or default_storage.location
         self.folder = folder or Soundboard.SOUNDBOARD_FOLDER
 

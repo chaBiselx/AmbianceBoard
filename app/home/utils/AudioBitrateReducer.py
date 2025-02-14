@@ -11,7 +11,7 @@ class AudioBitrateReducer:
         self.bitrate = None
 
         # Configuration du logger
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger('home')
 
     def load_audio(self):
         """Charge le fichier audio."""
