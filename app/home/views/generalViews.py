@@ -1,29 +1,36 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.models import Group
+from home.models.User import User
 from home.enum.GroupEnum import GroupEnum
 from django.http import JsonResponse
 import logging
 from home.forms.CreateUserForm import CreateUserForm
 from home.email.UserMail import UserMail
 from home.service.FailedLoginAttemptService import FailedLoginAttemptService
+from django.core.exceptions import ValidationError
 
 def home(request):
     return render(request, "Html/General/home.html", {"title": "Accueil"})
 
 
 def create_account(request):
+    logger = logging.getLogger('home')
+    errors = []
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            group = Group.objects.get(name=GroupEnum.USER_STANDARD.name)
-            group.user_set.add(user)
-            UserMail(user).send_welcome_email()
-            return redirect('login')
+            try:
+                user = form.save()
+                group = Group.objects.get(name=GroupEnum.USER_STANDARD.name)
+                group.user_set.add(user)
+                UserMail(user).send_welcome_email()
+                return redirect('login')
+            except Exception as e:
+                logger.error(e)
     else:
         form = CreateUserForm()
-    return render(request, 'Html/Account/create_account.html', {'form': form})
+    return render(request, 'Html/Account/create_account.html', {'form': form, 'errors':errors})
 
 def login_view(request):
     context = {}
