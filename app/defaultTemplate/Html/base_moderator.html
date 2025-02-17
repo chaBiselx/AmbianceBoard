@@ -1,7 +1,6 @@
 {% extends 'Html/base.html' %}
-{% load static %}
 
 
 {% block javascript %}
-    <script src="{% static 'js/moderator/popupMoreInfos.js' %}"></script>
+    <script src="{% url 'protectedModerator' 'js' 'popupMoreInfos.js' %}"></script>
 {% endblock javascript %}
