@@ -38,7 +38,7 @@ class CreateUserForm(forms.ModelForm):
                 "Le mot de passe doit contenir au moins une minuscule"
             )
 
-        if not re.search(r'[0-9]', password):
+        if not re.search(r'\d', password):
             raise forms.ValidationError(
                 "Le mot de passe doit contenir au moins un chiffre"
             )
