@@ -26,6 +26,12 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = bool(os.environ.get("DEBUG", default=0))
 TESTING = 'test' in sys.argv
 
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
 EMAIL_DEBUG = bool(os.environ.get("EMAIL_DEBUG", default=None))
 EMAIL_SMTP_SERVEUR = str(os.environ.get("EMAIL_SMTP_SERVEUR"))
 EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT"))
