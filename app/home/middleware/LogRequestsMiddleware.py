@@ -25,18 +25,28 @@ class LogRequestsMiddleware:
             
         duration = round(time.time() - start_time, 6)
 
+        # Nettoyer les champs sensibles du POST
+        filtered_post = {
+            k: ("***" if "password" in k.lower() or "secret" in k.lower() or "token" in k.lower() else v)
+            for k, v in request.POST.items()
+        }
+
+        # Logger les informations sans les champs sensibles
         self.logger.info(
             '',
             extra={
                 'method': request.method,
                 'request': request.get_full_path(),
-                'post': request.POST.dict(),
+                'post': filtered_post,
                 'status': response.status_code,
                 'duration': duration,
                 'unique_id': unique_id
             }
         )
-        self.logger_home.info(f"REQUEST : {request.method:<8} {request.get_full_path()} {request.POST.dict()} {response.status_code} {duration}sec id:{unique_id}")
-           
+
+        self.logger_home.info(
+            f"REQUEST : {request.method:<8} {request.get_full_path()} {filtered_post} {response.status_code} {duration}sec id:{unique_id}"
+        )
+
         return response
-    
+
