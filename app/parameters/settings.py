@@ -23,10 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = bool(os.environ.get("DEBUG", default=0))
+DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
+ACTIVE_SSL = bool(int(os.environ.get("ACTIVE_SSL", default=1)))
+
 TESTING = 'test' in sys.argv
 
-if not DEBUG:
+if ACTIVE_SSL:
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
