@@ -18,7 +18,6 @@ def static_protected_moderator_js(request, folder:str, filename: str ) -> FileRe
     protected_dir = os.path.join(settings.BASE_DIR, f'staticProtected/moderator/{folder}')
     
     file_path = os.path.join(protected_dir, filename)
-    print(file_path)
     if not os.path.isfile(file_path):
         return Http404("Fichier non trouvé.")
     
@@ -34,7 +33,6 @@ def static_protected_manager_js(request, folder:str, filename: str ) -> FileResp
     protected_dir = os.path.join(settings.BASE_DIR, f'staticProtected/manager/{folder}')
     
     file_path = os.path.join(protected_dir, filename)
-    print(file_path)
     if not os.path.isfile(file_path):
         return Http404("Fichier non trouvé.")
     

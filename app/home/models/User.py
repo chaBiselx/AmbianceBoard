@@ -6,6 +6,9 @@ from django.utils import timezone
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     isBan = models.BooleanField(default=False)
+    isConfirmed = models.BooleanField(default=False)
+    confirmationToken = models.CharField(max_length=255, default=None, null=True, blank=True)
+    demandeConfirmationDate = models.DateTimeField(default=None, null=True, blank=True)
     reasonBan = models.CharField(max_length=255, default="")
     banExpiration = models.DateTimeField(default=None, null=True, blank=True) 
     
@@ -24,8 +27,10 @@ class User(AbstractUser):
         return True
     
     def __str__(self):
-        return self.username
+        return f"{self.username} {self.email}"
     
+    def get_confirmation_token(self) -> str|None:
+        return str(self.confirmationToken) if self.confirmationToken is not None else self.confirmationToken
     
         
         

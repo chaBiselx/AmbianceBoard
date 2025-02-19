@@ -12,7 +12,9 @@ from home.TNR.TU.utils.EmailSenderTest import *
 
 from home.TNR.TU.Service.FailedLoginAttemptServiceTest import *
 from home.TNR.TU.Service.MusicServiceTest import *
-from home.TNR.TU.Service.RGPDServiceTest import *
+from home.TNR.TU.Service.RGPDServiceNotActiveTest import *
+from home.TNR.TU.Service.RGPDServiceNotConfirmedTest import *
+from home.TNR.TU.Service.ConfirmationUserServiceTest import *
 
 from home.TNR.TU.UserParametersFactoryTest import *
 

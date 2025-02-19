@@ -116,7 +116,6 @@ def soundboard_organize_update(request, soundboard_id) -> HttpResponse:
             soundboard_playlist_service.remove(playlist)
             return JsonResponse({'success': 'playslist deleted'}, status=200)
     except Exception as e:
-        print(e)
         return JsonResponse({"error": "playslist non trouvé."}, status=404)
     
 

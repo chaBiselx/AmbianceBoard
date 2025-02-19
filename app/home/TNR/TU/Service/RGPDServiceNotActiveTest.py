@@ -4,7 +4,7 @@ from home.models.User import User
 from home.service.cron.RGPDService import RGPDService
 from django.utils.timezone import make_aware
 
-class RGPDServiceTestCase(TestCase):
+class RGPDServiceNotActiveTest(TestCase):
     def setUp(self):
         self.user1 = User.objects.create_user(username='user1', email='user1@example.com')
         self.user1.last_login = make_aware(datetime.datetime.now() - datetime.timedelta(days=730))

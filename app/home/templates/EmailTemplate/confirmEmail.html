@@ -1,0 +1,11 @@
+{% include "Email/base.html" %}
+
+
+{% block content %} 
+
+<div>
+    <h1>Bonjour {{ user.username }} !</h1>
+    <p>Merci de confirmer votre compte. <a href="{{ url }}">Confirmation</a></p>
+</div>
+
+{% endblock content %}

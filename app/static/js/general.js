@@ -19,3 +19,23 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+function resentEmailConfirmation(el){
+    el.style.display = 'none'
+    url = el.dataset.url
+    var csrfToken = getCookie('csrftoken');
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            createClientNotification({message: 'Email envoyé avec success', type: 'success'})
+        })
+        .catch(error => {
+            console.error(error)
+            createClientNotification({message: 'Une erreur est survenue', type: 'error'})
+        });
+}
