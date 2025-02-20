@@ -11,6 +11,9 @@ class User(AbstractUser):
     demandeConfirmationDate = models.DateTimeField(default=None, null=True, blank=True)
     reasonBan = models.CharField(max_length=255, default="")
     banExpiration = models.DateTimeField(default=None, null=True, blank=True) 
+    tokenReinitialisation = models.CharField(max_length=255, default=None, null=True, blank=True)
+    demandeTokenDate = models.DateTimeField(default=None, null=True, blank=True)
+    
     
     def checkBanned(self) -> bool:
         """
@@ -32,5 +35,8 @@ class User(AbstractUser):
     def get_confirmation_token(self) -> str|None:
         return str(self.confirmationToken) if self.confirmationToken is not None else self.confirmationToken
     
+    def get_reinitialisation_token(self) -> str|None:
+        return str(self.tokenReinitialisation) if self.tokenReinitialisation is not None else self.tokenReinitialisation
+        
         
         

@@ -15,7 +15,7 @@ class ConfirmationUserService:
     def generation_uri(self, change_confirmation_date:bool = True) -> str:
         if self.user.isConfirmed:
             raise SecurityException("User already confirmed")
-        self.user.confirmationToken = uuid.uuid4()
+        self.user.confirmationToken = self.__generation_token()
         if(change_confirmation_date):
             self.user.demandeConfirmationDate = timezone.now()
         self.logger.debug(f"Confirmation token: {self.user.confirmationToken} for user {self.user.username}: ")
@@ -33,11 +33,14 @@ class ConfirmationUserService:
         if self.user.get_confirmation_token() != str(confirmation_token):
             raise SecurityException("Confirmation token dont match")
         if self.user.demandeConfirmationDate is None:
-            raise SecurityException("Confirmation token not found")
+            raise SecurityException("Confirmation date not found")
         if self.user.demandeConfirmationDate + timezone.timedelta(days=1) < timezone.now():
-            raise SecurityException("Confirmation token expired")
+            raise SecurityException("Confirmation date expired")
                 
         self.user.isConfirmed = True
         self.user.confirmationToken = None
         self.user.save()
         return True
+    
+    def __generation_token(self):
+        return str(uuid.uuid4())

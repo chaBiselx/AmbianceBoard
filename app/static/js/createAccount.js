@@ -1,9 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    document.getElementById('id_first_name').focus();
-
     document.getElementById('id_password').addEventListener('input', validatePassword)
-
 });
 
 function validatePassword(event) {

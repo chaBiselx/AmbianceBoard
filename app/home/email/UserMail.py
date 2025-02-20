@@ -42,6 +42,38 @@ class UserMail:
             self.logger.info(f"Email de confirmation envoyé à {self.user.email}")
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de confirmation à {self.user.email}: {e}")
+
+
+    def send_reset_password_email(self, url):
+        """
+        Sends an email to send a link to reset account
+        
+        """
+        subject = 'Reinitialisation de votre mot de passe'
+      
+        html_content = render_to_string('EmailTemplate/resetPassword.html', {'title': "Bienvenue" ,'user': self.user, 'url': url})
+        
+        try:
+            mailer = EmailSender()
+            mailer.send_email(subject, html_content, self.from_email, [self.user.email])
+            self.logger.info(f"Email de reinitialisation envoyé à {self.user.email}")
+        except Exception as e:
+            self.logger.error(f"Erreur lors de l'envoi de l'email de reinitialisation à {self.user.email}: {e}")
+            
+    def send_password_changed_email(self):
+        """
+        Sends an email to prevent user from changing password
+        
+        """
+        subject = 'Modification de mot de passe'
+        html_content = render_to_string('EmailTemplate/password_changed.html', {'title': "Bienvenue" ,'user': self.user})
+        
+        try:
+            mailer = EmailSender()
+            mailer.send_email(subject, html_content, self.from_email, [self.user.email])
+            self.logger.info(f"Email de modification de mot de passe envoyé à {self.user.email}")
+        except Exception as e:
+            self.logger.error(f"Erreur lors de l'envoi de modification de mot de passe à {self.user.email}: {e}")
             
     def account_auto_deletion(self):
         """
