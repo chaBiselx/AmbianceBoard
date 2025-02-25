@@ -25,7 +25,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
 ACTIVE_SSL = bool(int(os.environ.get("ACTIVE_SSL", default=1)))
-
+DEBUG_TOOLBAR = bool(int(os.environ.get("DEBUG_TOOLBAR", default=0)))
+if(DEBUG ==0):
+    DEBUG_TOOLBAR = False
+    
+    
 TESTING = 'test' in sys.argv
 
 if ACTIVE_SSL:
@@ -64,6 +68,7 @@ INSTALLED_APPS = [
     "home",
     "django_crontab",
 ]
+
 
 
 # Logging configuration
@@ -257,6 +262,24 @@ MEDIA_ROOT = BASE_DIR / "mediafiles"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+INTERNAL_IPS = [] 
+DEBUG_TOOLBAR_CONFIG = []
+
+# debug toolbar
+if(DEBUG_TOOLBAR):
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    
+    INTERNAL_IPS.append('127.0.0.1')
+    if APP_PORT : 
+        INTERNAL_IPS.append(APP_HOST + ':' + str(APP_PORT))
+    else :
+        INTERNAL_IPS.append(APP_HOST)
+        
+    DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': lambda request: True,
+    }
 
  
      
