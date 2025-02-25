@@ -29,6 +29,8 @@ DEBUG_TOOLBAR = bool(int(os.environ.get("DEBUG_TOOLBAR", default=0)))
 if(DEBUG ==0):
     DEBUG_TOOLBAR = False
     
+RUN_CRONS = bool(int(os.environ.get("RUN_CRONS", default=0)))
+    
     
 TESTING = 'test' in sys.argv
 
@@ -288,15 +290,15 @@ if(DEBUG_TOOLBAR):
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # CRON JOBS
-CRON_CLASSES  = [
-   "home.cron.CleanMediaFolderCron.run",
-   "home.cron.DeleteAccountCron.run",
-]
-
-CRONJOBS = [
-    ('* 2 * * *', 'home.cron.CleanMediaFolderCron.run'), # evey minute
-    ('* * 10 */1 *', 'home.cron.DeleteAccountCron.run'), # evey ten of each month
-]
+CRON_CLASSES = []
+CRONJOBS = []
+if RUN_CRONS:
+    CRON_CLASSES.append('home.cron.CleanMediaFolderCron.run')
+    CRON_CLASSES.append('home.cron.DeleteAccountCron.run')
+    
+    CRONJOBS.append(('*/1 * * * *', 'home.cron.CleanMediaFolderCron.run'))
+    CRONJOBS.append(('0 10 */1 * *', 'home.cron.DeleteAccountCron.run'))
+        
 
 # message brokers 
 RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")

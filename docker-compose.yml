@@ -1,6 +1,18 @@
 services:
+  cronjob:
+    build: ./app
+    command: python manage.py runcrons
+    volumes:
+      - ./app/:/usr/src/app/
+    env_file:
+      - ./.env
+    environment:
+      - RUN_CRONS=1
+    depends_on:
+      - db
+      - rabbitmq  # Ajout de la dépendance à RabbitMQ
+
   web:
-  
     build: ./app
     command: python manage.py runserver 0.0.0.0:${WEB_PORT}
     volumes:
@@ -9,6 +21,8 @@ services:
       - ${WEB_PORT}:${WEB_PORT}
     env_file:
       - ./.env
+    environment:
+      - RUN_CRONS=0
     depends_on:
       - db
       - rabbitmq  # Ajout de la dépendance à RabbitMQ
