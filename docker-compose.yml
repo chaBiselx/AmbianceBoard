@@ -12,11 +12,12 @@ services:
       - db
       - rabbitmq  # Ajout de la dépendance à RabbitMQ
 
-  web:
+  back:
     build: ./app
     command: python manage.py runserver 0.0.0.0:${WEB_PORT}
     volumes:
       - ./app/:/usr/src/app/
+      - static_volume:/usr/src/app/static/js
     ports:
       - ${WEB_PORT}:${WEB_PORT}
     env_file:
@@ -26,6 +27,20 @@ services:
     depends_on:
       - db
       - rabbitmq  # Ajout de la dépendance à RabbitMQ
+
+  front:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - static_volume:/app/static/js
+    ports:
+      - "3000:3000"
+    command: npm run dev
+    depends_on:
+      - back
 
   db:
     image: postgres:15.8
@@ -58,3 +73,4 @@ services:
 volumes:
   db-data: null
   rabbitmq-data: null 
+  static_volume: null

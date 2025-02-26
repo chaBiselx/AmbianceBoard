@@ -37,7 +37,7 @@
         {% include 'Html/message.html' %}
         <section class="pt-0 pb-0">
             <div class="container">
-                {% if title is not None %}<h1>{{ title }}</h1>{% endif %}
+                {% if title is not None %}<h1 id="mainTitle">{{ title }}</h1>{% endif %}
                 {% block content %}{% endblock %}
             </div>
         </section>
@@ -57,9 +57,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
 
-    <script src="{% static 'js/style.js' %}"></script>
-    <script src="{% static 'js/general.js' %}"></script>
-    <script src="{% static 'js/clientNotification.js' %}"></script>
+    <script src="{% static 'js_pure/style.js' %}"></script>
+    <script src="{% static 'js_pure/general.js' %}"></script>
+    <script src="{% static 'js_pure/clientNotification.js' %}"></script>
 
     {% block javascript %} {% endblock %}
 

@@ -65,7 +65,7 @@ class EaseInQuad extends FadeStrategy {
     }
   }
 
-function selectTypeFade(fadeType) {
+function selectTypeFade(fadeType:string) {
     switch (fadeType) {
         case 'linear':
             return new LinearFade();
@@ -137,7 +137,7 @@ class AudioFadeManager {
 
 document.addEventListener("DOMContentLoaded", (event) => {
     addEventListenerDom()
-    listMixer = document.getElementsByClassName('mixer-playlist');
+    let listMixer = document.getElementsByClassName('mixer-playlist');
     for (let mixer of listMixer) {
         mixer.addEventListener('change', eventChangeVolume);
     };
@@ -161,8 +161,8 @@ function eventChangeVolume(event) {
 
 }
 
-function changeSpecifiqueVolume(type) {
-    listAudio = document.getElementsByClassName('audio-' + type);
+function changeSpecifiqueVolume(type:string) {
+    const listAudio = document.getElementsByClassName('audio-' + type);
     for (let audio of listAudio) {
         updateVolumeElement(audio)
     };
@@ -207,11 +207,11 @@ function createPlaylistLink(dataset) {
     audio.src = dataset.playlistUri + "?i=" + Date.now(); // cache busting
     audio.autoplay = true;
     audio.dataset.idplaylist = dataset.playlistId;
-    audio.dataset.defaultVolume = dataset.playlistVolume / 100;
+    audio.dataset.defaultVolume = (dataset.playlistVolume / 100).toString();
     audio.dataset.playlistType = dataset.playlistType;
     audio.dataset.fadeintype = dataset.playlistFadeintype;
     audio.dataset.fadeouttype = dataset.playlistFadeouttype;
-    audio.dataset.levelFade = 1;
+    audio.dataset.levelFade = (1).toString();
     if (DEBUG) {
         audio.controls = true;
     }
