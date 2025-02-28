@@ -102,11 +102,15 @@ def soundboard_organize_update(request, soundboard_id) -> HttpResponse:
         playlist = (PlaylistService(request)).get_playlist(data['idPlaylist'])
         new_order = None
         if 'newOrder' in data.keys():
-            new_order = int(data['newOrder'])
+            if(data['newOrder'] is None):
+                new_order = 1
+            else :
+                new_order = int(data['newOrder'])
         soundboard_playlist_service = SoundboardPlaylistService(soundboard)
         if not playlist:
             raise exceptions.ObjectDoesNotExist
         if request.method == 'POST':
+            
             soundboard_playlist_service.add(playlist, new_order)
             return JsonResponse({'success': 'playslist added', 'order': playlist.get_order()}, status=200)
         if request.method == 'UPDATE':

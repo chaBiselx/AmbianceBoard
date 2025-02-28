@@ -88,8 +88,8 @@ class CleanOrderHandler {
 
     reorderFrom(order = 0) {
         let listEl = this.associatedPlaylists.getElementsByClassName('playlist-dragAndDrop');
-        for (let i = 0; i < listEl.length; i++) {
-            if (i + 1 >= order && order > 0) {
+        for (let i = 1; i <= listEl.length; i++) {
+            if (i + 1 >= order && order > 1) {
                 listEl[i].dataset.order = parseInt(listEl[i].dataset.order) + 1
             }
         }
