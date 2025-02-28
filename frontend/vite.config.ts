@@ -5,7 +5,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        playMusic: resolve(__dirname, 'src/playMusic.ts')
+        SoundboardPlayer: resolve(__dirname, 'src/SoundboardPlayer.ts')
       },
       output: {
         entryFileNames: '[name].[hash].js',
