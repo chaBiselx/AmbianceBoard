@@ -11,7 +11,7 @@ function validatePassword(event) {
         hasUpperCase: /[A-Z]/.test(password),
         hasLowerCase: /[a-z]/.test(password),
         hasNumber: /[0-9]/.test(password),
-        hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+        hasSpecialChar: /[!@#€£$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
     };
 
     // Vérification de toutes les règles

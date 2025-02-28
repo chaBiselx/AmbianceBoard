@@ -40,7 +40,7 @@ class UserPasswordForm(forms.ModelForm):
                 "Le mot de passe doit contenir au moins un chiffre"
             )
 
-        if not re.search(r'[!@#$%^&*()_+\-=\[\]{};:"|,.<>/?]', password):
+        if not re.search(r'[!@#€£$%^&*()_+\-=\[\]{};:"|,.<>/?]', password):
             raise forms.ValidationError(
                 "Le mot de passe doit contenir au moins un caractère spécial"
             )
