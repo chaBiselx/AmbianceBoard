@@ -145,8 +145,8 @@ def playlist_create_with_soundboard(request, soundboard_id):
 @login_required
 def playlist_create(request):
     if request.method == 'POST':
-        (PlaylistService(request)).save_form()
-        return redirect('playlistsAllList')
+        playlist = (PlaylistService(request)).save_form()
+        return redirect('playlistUpdate', playlist_id=playlist.id)
     else:
         form = PlaylistForm()
     return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic': None})
@@ -168,7 +168,7 @@ def playlist_update(request, playlist_id):
             form = PlaylistForm(request.POST, request.FILES, instance=playlist)
             if form.is_valid():
                 form.save()
-                return redirect('playlistsAllList')
+                return redirect('playlistUpdate', playlist_id=playlist_id)
     else:
         if not playlist:
             return render(request, 'Html/General/404.html', status=404) 
