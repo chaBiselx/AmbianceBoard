@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addEventListenerDom()
     addEventListenerPlaylistVolumeUpdate();
     addEventShowHidePlayslitMixer();
+    updateWithMixerPlaylist();
     new MixerManager().initializeEventListeners();
     if (Config.DEBUG) {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS);
@@ -85,6 +86,16 @@ function eventTogglePlaylist(event: Event) {
         SoundBoardManager.addPlaylist(buttonPlaylist);
     }
 
+}
+
+function updateWithMixerPlaylist(){
+    const formElements = document.querySelectorAll('.playlist-link');
+    for (let index = 0; index < formElements.length; index++) {
+        const element = formElements[index] as HTMLElement;
+        const elmentDest = document.getElementById(`range_volume_${element.dataset.playlistId!}`)!
+        elmentDest.style.width = `${element.offsetWidth}px`;
+        
+    }
 }
 
 
