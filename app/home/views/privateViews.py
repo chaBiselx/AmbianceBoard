@@ -245,4 +245,21 @@ def music_stream(request, playlist_id) -> HttpResponse:
     response = HttpResponse(music.file, content_type='audio/*')
     response['Content-Disposition'] = 'inline; filename="{}"'.format(music.fileName)
     return response
+
+@login_required
+@require_http_methods(['POST'])
+def update_direct_volume(request, playlist_id) -> JsonResponse:
+    if request.method == 'POST':
+        playlist = (PlaylistService(request)).get_playlist(playlist_id)
+        if not playlist:
+            return JsonResponse({"error": "Playlist introuvable."}, status=404)
+        else :
+            data = json.loads(request.body)
+            volume = data.get('volume')
+            if volume is not None:
+                playlist.volume = volume
+                playlist.save()
+                return JsonResponse({"message": "volume updated"}, status=200)
+        
+    return JsonResponse({"error": "Méthode non supportée."}, status=405)
     

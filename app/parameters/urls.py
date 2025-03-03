@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from home.views.generalViews import home, create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password
 from home.views.privateViews import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
 from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors
-from home.views.privateViews import music_create, music_update, music_delete,music_stream
+from home.views.privateViews import music_create, music_update, music_delete,music_stream, update_direct_volume
 from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user
 from home.views.managerViews import manager_dashboard, clean_media_folder
 from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream
@@ -43,6 +43,8 @@ urlpatterns = [
     path("playlist/<uuid:playlist_id>/music/edit/<int:music_id>", music_update, name="editMusic"),
     path("playlist/<uuid:playlist_id>/music/delete/<int:music_id>", music_delete, name="deleteMusic"),
     path("playlist/<uuid:playlist_id>/stream", music_stream, name="streammMusic"),
+    path("playlist/<uuid:playlist_id>/volume/update", update_direct_volume, name="update_direct_volume"),
+    
     path("playlist/other-colors", playlist_listing_colors, name="getListingOtherColors"),
     
     path("public/", public_index, name="publicIndex"),

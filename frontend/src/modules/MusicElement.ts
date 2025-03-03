@@ -16,7 +16,7 @@ class MusicElement {
     defaultVolume: number = 1;
     autoplay: boolean = true;
     levelFade: number = 1;
-    fadeInOnGoing : boolean = false;
+    fadeInOnGoing: boolean = false;
     fadeIn: boolean = false;
     fadeInType: string = 'linear';
     fadeInDuration: number = 0;
@@ -72,8 +72,7 @@ class MusicElement {
 
     private setDefaultFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistVolume) {
-            this.defaultVolume = parseFloat(buttonPlaylist.dataset.playlistVolume) / 100;
-            this.DOMElement.dataset.defaultvolume = this.defaultVolume.toString();
+            this.setDefaultVolume(buttonPlaylist.getVolume());
         }
         if (buttonPlaylist.dataset.playlistFadein) {
             this.fadeIn = (buttonPlaylist.dataset.playlistFadein == TRUE) ? true : false;
@@ -122,13 +121,18 @@ class MusicElement {
         this.DOMElement.autoplay = true;
     }
 
+    public setDefaultVolume(volume: number) {
+        this.defaultVolume = volume;
+        this.DOMElement.dataset.defaultvolume = this.defaultVolume.toString();
+    }
+
     public addToDOM(): MusicElement {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
         audioElementDiv.appendChild(this.DOMElement);
         return this
     }
 
-    public delete(){
+    public delete() {
         const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist) as ButtonPlaylist;
         buttonPlaylist.disactive();
         this.DOMElement.remove();
@@ -162,9 +166,9 @@ class MusicElement {
             this.DOMElement.addEventListener('ended', this.eventDeleteNoFadeOut);
 
         }
-        
+
         this.DOMElement.play();
-        
+
     }
 
     public addFadeIn() {
@@ -249,17 +253,30 @@ class MusicElement {
 
 }
 
+class SearchMusicElement {
+    static searchByButton(buttonPlaylist: ButtonPlaylist): MusicElement[] {
+        const audio = document.getElementsByClassName('playlist-audio-' + buttonPlaylist.idPlaylist) as HTMLCollectionOf<HTMLAudioElement>;
+        const listMusic: MusicElement[] = [];
+        if (audio.length > 0) {
+            for (let audioDom of audio) {
+                listMusic.push(new MusicElement(audioDom));
+            }
+        }
+        return listMusic;
+    }
+}
+
 class ListingAudioElement {
-    static getListingAudioElement(type : string) : MusicElement[]{
+    static getListingAudioElement(type: string): MusicElement[] {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
         const audio = audioElementDiv.getElementsByClassName('audio-' + type) as HTMLCollectionOf<HTMLAudioElement>;
-        const listingMusicElement:MusicElement[] = []
-        for(let audioDom of audio){
-            listingMusicElement.push( new MusicElement(audioDom));
+        const listingMusicElement: MusicElement[] = []
+        for (let audioDom of audio) {
+            listingMusicElement.push(new MusicElement(audioDom));
         };
         return listingMusicElement;
     }
 }
 
-export { MusicElement, ListingAudioElement };
+export { MusicElement, ListingAudioElement, SearchMusicElement };
 

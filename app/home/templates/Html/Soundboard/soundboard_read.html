@@ -5,7 +5,8 @@
 
 {% block javascript %}
 {% load static %}
-<script src="{% static "SoundboardPlayer"|search_true_file %}"></script>
+<!-- here-->
+<script src="{% static " SoundboardPlayer"|search_true_file %}"></script>
 {% endblock javascript %}
 
 {% block content %}
@@ -14,13 +15,20 @@
     <div class="col-12 col-xl-10">
         <div style="display:None;" id="players"></div>
 
-        {%  add_mixer PlaylistTypeEnum %}
+        {% add_mixer PlaylistTypeEnum %}
 
         <div class="flex-container">
             {% for playlist in soundboard.get_list_playlist_ordered %}
-            <div class="playlist-link playlist-element flex-item playlist-dim-100 m-1" id="playlist-{{ playlist.id }}" style="background-color: {{playlist.color}};color: {{playlist.colorText}};" data-playlist-uri="{% url 'streammMusic' playlist.id %}" {% for key, value in playlist.get_data_set.items %}
-                data-playlist-{{ key }}="{{ value }}" {% endfor %}>
-                {{ playlist | applys_playlist_content}}
+            <div class="flex-item">
+                <div class="playlist-link playlist-element  playlist-dim-100 m-1" id="playlist-{{ playlist.id }}" style="background-color: {{playlist.color}};color: {{playlist.colorText}};" data-playlist-uri="{% url 'streammMusic' playlist.id %}" {% for key, value in playlist.get_data_set.items %}
+                    data-playlist-{{ key }}="{{ value }}" {% endfor %}>
+                    {{ playlist | applys_playlist_content}}
+
+                </div>
+                <div class="mixer-playlist-update-container hide-playlist-mixer">
+                    <input class="mixer-playlist-update" type="range" name="volume" value="{{playlist.volume}}" min="0" max="100" id="range_volume_{{ playlist.id }}" data-playlistupdatevolumeuri="{% url 'update_direct_volume' playlist.id %}" data-defaultvolume="{{ playlist.volume }}"
+                        data-idplaylist="{{ playlist.id }}">
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -31,7 +39,8 @@
         <div>
             <a class="btn btn-primary btn-block" href="{% url 'addPlaylistWithSoundboard' soundboard.id %}">Créer une playlist</a>
             <br />
-            <a class="btn btn-primary btn-block" href="{% url 'organizeSoundboard' soundboard.id %}">Organizer</a>
+            <a class="btn btn-primary btn-block" href="{% url 'organizeSoundboard' soundboard.id %}">Organizer</a><br />
+            <input type="checkbox" name="showMixerPlaylist" id="inputShowMixerPlaylist"> Afficher le mixer<br />
         </div>
     </div>
 

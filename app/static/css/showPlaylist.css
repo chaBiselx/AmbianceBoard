@@ -60,8 +60,10 @@
     border-color: transparent;
     border-radius: 8px;
     display: flex;
-    justify-content: center; /* Centre horizontalement */
-    align-items: center; /* Centre verticalement */
+    justify-content: center;
+    /* Centre horizontalement */
+    align-items: center;
+    /* Centre verticalement */
 }
 
 
@@ -83,6 +85,10 @@
         border-color: rgba(28, 152, 144, 0.7);
 
     }
+}
+
+.hide-playlist-mixer {
+    display: none;
 }
 
 .active-playlist {

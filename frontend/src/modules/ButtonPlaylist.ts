@@ -16,15 +16,21 @@ class ButtonPlaylist {
         this.dataset = el.dataset;
     }
 
-    delete() {
+    public getVolume(): number {
+        const volume = this.dataset.playlistVolume
+        if (volume === undefined) return 1
+        return parseFloat(volume) / 100;
+    }
+
+    public delete() {
         this.buttonElement.remove();
     }
 
-    disactive() {
+    public disactive() {
         this.buttonElement.classList.remove("active-playlist")
     }
 
-    active() {
+    public active() {
         this.buttonElement.classList.add("active-playlist")
     }
 
