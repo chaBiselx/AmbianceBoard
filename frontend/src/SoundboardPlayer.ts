@@ -70,8 +70,6 @@ function eventUpdatePlaylistVolume(event: Event) {
                 let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist, parseFloat(event.target.value));
                 eventUpdateVolumePlaylist.updateVolume();
                 
-                console.log(event.target.dataset.playlistupdatevolumeuri);
-                
                 const uri = event.target.dataset.playlistupdatevolumeuri as uri;
                 eventUpdateVolumePlaylist.updateBackend(uri);
             }
