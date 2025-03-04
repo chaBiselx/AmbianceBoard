@@ -20,6 +20,7 @@ from home.forms.MusicForm import MusicForm
 from home.filters.SoundBoardFilter import SoundBoardFilter
 from home.enum.PermissionEnum import PermissionEnum
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 
 
 @login_required
@@ -139,7 +140,8 @@ def playlist_create_with_soundboard(request, soundboard_id):
             return redirect('soundboardsRead', soundboard_id=soundboard.id)
         else:
             form = PlaylistForm()
-        return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic':None})
+        list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
+        return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic':None, 'list_default_color': list_default_color})
     return render(request, 'Html/General/404.html', status=404) 
 
 @login_required
@@ -149,13 +151,20 @@ def playlist_create(request):
         return redirect('playlistUpdate', playlist_id=playlist.id)
     else:
         form = PlaylistForm()
-    return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic': None})
+    list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
+    return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic': None, 'list_default_color': list_default_color})
 
 @login_required
 @require_http_methods(['GET'])
 def playlist_listing_colors(request) -> JsonResponse:
+    default_playlists = DefaultColorPlaylistService(request.user).get_list_default_color_ajax()
+    
+
+    
     unique_playlists = Playlist.objects.values('colorText', 'color', 'typePlaylist').distinct().all()
-    return JsonResponse({"unique_playlists": list(unique_playlists)}, status=200)
+    for playlist in unique_playlists:
+        playlist['typePlaylist'] = PlaylistTypeEnum[playlist['typePlaylist']].value
+    return JsonResponse({"unique_playlists": list(unique_playlists), "default_playlists": list(default_playlists)}, status=200)
 
 
 @login_required
@@ -175,7 +184,8 @@ def playlist_update(request, playlist_id):
         else:
             form = PlaylistForm(instance=playlist)
     list_music = (MusicService(request)).get_list_music(playlist_id)
-    return render(request, 'Html/Playlist/playlist_create.html', {'form': form, 'method' : 'update', 'listMusic' : list_music})
+    list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
+    return render(request, 'Html/Playlist/playlist_create.html', {'form': form, 'method' : 'update', 'listMusic' : list_music, 'list_default_color':list_default_color})
 
 @login_required
 @require_http_methods(['DELETE'])

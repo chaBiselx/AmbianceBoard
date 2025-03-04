@@ -1,6 +1,7 @@
 simulatePlaylistColor();
+toggleShowColorForm();
 
-const DomElementAddEvent = ['id_name', 'id_color', 'id_colorText', 'id_icon'];
+const DomElementAddEvent = ['id_name', 'id_color', 'id_colorText', 'id_icon', 'id_typePlaylist', 'id_useSpecificColor'];
 for (let i = 0; i < DomElementAddEvent.length; i++) {
     document.getElementById(DomElementAddEvent[i]).addEventListener('input', simulatePlaylistColor);
     document.getElementById(DomElementAddEvent[i]).addEventListener('change', simulatePlaylistColor);
@@ -8,8 +9,18 @@ for (let i = 0; i < DomElementAddEvent.length; i++) {
 
 function simulatePlaylistColor() {
     const demo = document.getElementById('demo-playlist')
-    demo.style.backgroundColor = document.getElementById('id_color').value;
-    demo.style.color = document.getElementById('id_colorText').value;
+    id_useSpecificColor = document.getElementById('id_useSpecificColor');
+    if(id_useSpecificColor.checked){
+        demo.style.backgroundColor = document.getElementById('id_color').value;
+        demo.style.color = document.getElementById('id_colorText').value;
+    }else{
+        id_typePlaylist = document.getElementById('id_typePlaylist');
+        if(id_typePlaylist){
+            demo.style.backgroundColor = document.getElementById(`default_${id_typePlaylist.value}_color`).value;
+            demo.style.color = document.getElementById(`default_${id_typePlaylist.value}_colorText`).value;
+        }
+    }
+ 
 
     if (document.getElementById('id_icon').value != "") {
         const reader = new FileReader();
@@ -33,7 +44,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     volumeInput = document.getElementById('id_volume');
     setVolumeToAllMusic(volumeInput.value);
     volumeInput.addEventListener('change', eventChangeVolume);
-
+    document.getElementById('id_useSpecificColor').addEventListener('change', toggleShowColorForm);;
 });
 
 function eventChangeVolume(event) {
@@ -46,6 +57,19 @@ function setVolumeToAllMusic(volume) {
     listMusic.forEach((music) => {
         music.volume = volume / 100;
     });
+}
+
+function toggleShowColorForm() {
+    listClass = document.getElementsByClassName('color_form')
+    if (document.getElementById('id_useSpecificColor').checked) {
+        for (let i = 0; i < listClass.length; i++) {
+            listClass[i].classList.remove('d-none');
+        }
+    } else {
+        for (let i = 0; i < listClass.length; i++) {
+            listClass[i].classList.add('d-none');
+        }
+    }
 }
 
 
@@ -199,44 +223,25 @@ function getListingOtherColors(el){
         .then((body) => {
             const divRow = document.createElement("div");
             divRow.classList="row"
-            body.unique_playlists.forEach(playlist => {
-                const divCol1 = document.createElement("div");
-                divCol1.classList="col-4"
-                const divElement = document.createElement("div");
-                divElement.innerHTML = "<small>Lorem</small>";
-                divElement.style.backgroundColor = playlist.color;
-                divElement.style.color = playlist.colorText;
-                divElement.classList="playlist-element playlist-dim-75 m-1"
-
-                const divCol2 = document.createElement("div");
-                divCol2.classList="col-5"
-                divCol2.innerHTML = `<small>${ playlist.typePlaylist }</small>`;
-
-                const divCol3 = document.createElement("div");
-                divCol3.classList="col-3"
-
-                const button = document.createElement("button");
-                button.classList="btn btn-primary";
-                button.type = "button";
-                button.title = "choisir cette couleur";
-                button.textContent = "choisir";
-                button.setAttribute('onclick',  `selectColor("${ playlist.color }", "${ playlist.colorText }")`);
-                console.log(button);
-                
-                
-
-                divCol3.appendChild(button);
-                divCol1.appendChild(divElement);
-                divRow.appendChild(divCol1);
-                divRow.appendChild(divCol2);
-                divRow.appendChild(divCol3);
-
-           
-
-                
-            })
-
-            
+            if( body.default_playlists){
+                const title = document.createElement("h3")
+                title.classList="text-center"
+                title.innerHTML = "Playlist Defauts"
+                divRow.appendChild(title);
+                body.default_playlists.forEach(playlist => {
+                    appendChildPlaylist(divRow, playlist)
+                })
+            }
+            if(body.unique_playlists){
+                divRow.appendChild(document.createElement("hr"));
+                const title = document.createElement("h3")
+                title.classList="text-center"
+                title.innerHTML = "Playlist Uniques"
+                divRow.appendChild(title);
+                body.unique_playlists.forEach(playlist => {
+                    appendChildPlaylist(divRow, playlist)
+                })
+            }
             modalShow({
                 title: title,
                 body: divRow.outerHTML
@@ -245,6 +250,37 @@ function getListingOtherColors(el){
         .catch(error => {
             console.error('Erreur lors de la requête AJAX:', error);
         });
+}
+
+function appendChildPlaylist(divRow, playlist) {
+    const divCol1 = document.createElement("div");
+    divCol1.classList="col-4"
+    const divElement = document.createElement("div");
+    divElement.innerHTML = "<small>Lorem</small>";
+    divElement.style.backgroundColor = playlist.color;
+    divElement.style.color = playlist.colorText;
+    divElement.classList="playlist-element playlist-dim-75 m-1"
+
+    const divCol2 = document.createElement("div");
+    divCol2.classList="col-5"
+    divCol2.innerHTML = `<small>${ playlist.typePlaylist }</small>`;
+
+    const divCol3 = document.createElement("div");
+    divCol3.classList="col-3"
+
+    const button = document.createElement("button");
+    button.classList="btn btn-primary";
+    button.type = "button";
+    button.title = "choisir cette couleur";
+    button.textContent = "choisir";
+    button.setAttribute('onclick',  `selectColor("${ playlist.color }", "${ playlist.colorText }")`);
+
+    divCol3.appendChild(button);
+    divCol1.appendChild(divElement);
+    divRow.appendChild(divCol1);
+    divRow.appendChild(divCol2);
+    divRow.appendChild(divCol3);
+
 }
 
 function selectColor(color, colorText) {

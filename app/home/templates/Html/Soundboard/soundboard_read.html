@@ -20,7 +20,7 @@
         <div class="flex-container">
             {% for playlist in soundboard.get_list_playlist_ordered %}
             <div class="flex-item">
-                <div class="playlist-link playlist-element  playlist-dim-100 m-1" id="playlist-{{ playlist.id }}" style="background-color: {{playlist.color}};color: {{playlist.colorText}};" data-playlist-uri="{% url 'streammMusic' playlist.id %}" {% for key, value in playlist.get_data_set.items %}
+                <div class="playlist-link playlist-element  playlist-dim-100 m-1" id="playlist-{{ playlist.id }}" style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};" data-playlist-uri="{% url 'streammMusic' playlist.id %}" {% for key, value in playlist.get_data_set.items %}
                     data-playlist-{{ key }}="{{ value }}" {% endfor %}>
                     {{ playlist | applys_playlist_content}}
 

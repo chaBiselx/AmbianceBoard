@@ -46,17 +46,26 @@
                             {% endfor %}
                         </ul>
                         {% endif %}
+                        <div class="d-none">
+                            {% for defaultColor in list_default_color %}
+                            <input type="text" id="default_{{ defaultColor.typePlaylist }}_color" value="{{ defaultColor.color }}">
+                            <input type="text" id="default_{{ defaultColor.typePlaylist }}_colorText" value="{{ defaultColor.colorText }}">
+                            {% endfor %}
+                        </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
                         <button type="button" class="btn btn-info" onclick="showDescriptionType()">Show description</button>
                     </div>
-                    <div class="col-sm-12 col-md-4">
+                    <div class="col-12">
+                        {{ form.useSpecificColor.label }}  :<br /> {{ form.useSpecificColor }}
+                    </div>
+                    <div class="col-sm-12 col-md-4 color_form">
                         {{ form.color.label }} * :<br /> {{ form.color }}
                     </div>
-                    <div class="col-sm-12 col-md-4">
+                    <div class="col-sm-12 col-md-4 color_form">
                         {{ form.colorText.label }} * :<br />{{ form.colorText }}
                     </div>
-                    <div class="col-sm-12 col-md-4">
+                    <div class="col-sm-12 col-md-4 color_form">
                         <button type="button" class="btn btn-info" onclick="getListingOtherColors(this)" data-url="{% url 'getListingOtherColors' %}">Selectionner couleurs existantes</button>
                     </div>
 

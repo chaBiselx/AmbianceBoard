@@ -6,7 +6,7 @@ from home.models.Playlist import Playlist
 class PlaylistForm(forms.ModelForm):
     class Meta:
         model = Playlist
-        fields = ('name', 'typePlaylist', 'color', 'colorText', 'volume', 'icon')
+        fields = ('name', 'typePlaylist', 'useSpecificColor', 'color', 'colorText', 'volume', 'icon')
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -26,6 +26,7 @@ class PlaylistForm(forms.ModelForm):
         choices=Playlist.typePlaylist.field.choices,
         required=True,
     )
+    useSpecificColor = forms.BooleanField(required=False, label='Utiliser une couleur personnalisée', initial=False)
     color = forms.CharField(
         label='Couleur du background',
         widget=forms.TextInput(attrs={'type': 'color'}),

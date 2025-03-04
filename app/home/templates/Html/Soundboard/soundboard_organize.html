@@ -15,7 +15,7 @@
             <span class="unassociated-playlists-empty " hidden="true">Aucune playlist non associée</span>
             {% for playlist in unassociatedPlaylists %}
             <div class="playlist-dragAndDrop flex-item position-relative" data-order="" id="{{ playlist.id }}" draggable="true">
-                <div  class="playlist-link playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.color}}; color: {{playlist.colorText}};">
+                <div  class="playlist-link playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
                     {{ playlist | applys_playlist_content}}
                 </div>
             </div>
@@ -30,7 +30,7 @@
             <span class="associated-playlists-empty" hidden="true">Aucune playlist associée</span>
             {% for playlist in actualPlaylist %}
             <div class="playlist-dragAndDrop flex-item position-relative" data-order="{{ playlist.get_order }}" id="{{ playlist.id }}" draggable="true">
-                <div class="playlist-link  playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.color}}; color: {{playlist.colorText}};">
+                <div class="playlist-link  playlist-element playlist-dim-100 m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
                     {{ playlist | applys_playlist_content}}
                 </div>
             </div>

@@ -1,0 +1,42 @@
+{% extends 'Html/settings_base.html' %}
+{% load PlaylistEnum %}
+
+{% block content_settings %}
+
+<h2>Gestion des couleurs de playlist</h2>
+<form method="post">
+    {% csrf_token %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="d-none"> input typePlaylist</th>
+                <th>Type de Playlist</th>
+                <th>Couleur</th>
+                <th>Couleur du texte</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ formset.management_form }}
+            {% for form in formset %}
+            <tr>
+                <td class="d-none">
+                    {{ form.typePlaylist }}
+                </td>
+                <td>{{ form.typePlaylist.value|to_value }} </td>
+                <td>{{ form.color }}</td>
+                <td>{{ form.colorText }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+    {% if formset.errors %}
+    <ul>
+        {% for error in formset.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</form>
+{% endblock %}

@@ -8,7 +8,7 @@
         <li>
             <hr class="dropdown-divider">
         </li>
-        <li><a class="dropdown-item" href="#">Settings</a></li>
+        <li><a class="dropdown-item" href="{% url 'settingsIndex' %}">Settings</a></li>
         {% if request.user.has_group == MODERATEUR %}
         <li>
             <hr class="dropdown-divider">    

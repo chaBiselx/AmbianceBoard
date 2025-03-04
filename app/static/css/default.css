@@ -14,7 +14,7 @@ header {
 /* Navigation latérale */
 .sidebar {
     width: 250px;
-    background-color: #444;
+    background-color: #999999;
     color: white;
     height: 100vh;
     overflow-y: auto;
@@ -41,6 +41,11 @@ header {
 .sidebar ul li {
     padding: 15px;
     border-bottom: 1px solid #555;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
 }
 
 .sidebar ul li:hover {

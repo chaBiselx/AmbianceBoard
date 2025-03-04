@@ -23,7 +23,7 @@ class PlaylistService:
         
     def get_all_playlist(self)-> list[Playlist] :
         try:
-            _query_set = Playlist.objects.all().order_by('id')
+            _query_set = Playlist.objects.all().order_by('updated_at')
             _filter = PlaylistFilter(queryset=_query_set)
             playlists = _filter.filter_by_user(self.request.user)
         except Exception:
