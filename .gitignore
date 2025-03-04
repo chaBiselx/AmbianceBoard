@@ -10,3 +10,4 @@ app/mediafiles/musics/*
 app/mediafiles/playlistIcon/*
 app/mediafiles/soundBoardIcon/*
 app/logs/*
+app/backup/*
