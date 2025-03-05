@@ -1,9 +1,10 @@
 {% extends 'Html/base.html' %}
 {% load SoundBoard %}
+{% load FrontJs %}
 
 {% block javascript %}
 {% load static %}
-<script src="{% static 'js_pure/form/soundboard_form.js' %}"></script>
+<script type="module" src="{% static 'FormSoundboard'|search_true_file %}"></script>
 {% endblock javascript %}
 
 {% block content %}
@@ -22,7 +23,7 @@
         <div>
             {% if form.instance.id %}
             <div>
-                <button class="btn btn-danger" onclick=confirmSuppression(this) data-deleteurl="{% url 'soundboardsDelete' form.instance.id %}" data-redirecturl="{% url 'soundboardsList' %}">Supprimer</button>
+                <button class="btn btn-danger" id="btn-delete-soundboard" data-deleteurl="{% url 'soundboardsDelete' form.instance.id %}" data-redirecturl="{% url 'soundboardsList' %}">Supprimer</button>
             </div>
             {% endif %}
             <form method="post" enctype="multipart/form-data">

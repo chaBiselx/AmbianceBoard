@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 function simulatePlaylistColor() {
-    const demo = document.getElementById('demo-playlist')
+    const demo = document.getElementById('demo-playlist') as HTMLDivElement;
     const id_useSpecificColor = document.getElementById('id_useSpecificColor') as HTMLInputElement;
     if (demo == null) {
         return
