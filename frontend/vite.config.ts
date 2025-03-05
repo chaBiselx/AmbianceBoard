@@ -6,7 +6,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         SoundboardPlayer: resolve(__dirname, 'src/SoundboardPlayer.ts'),
-        FormPlaylist: resolve(__dirname, 'src/FormPlaylist.ts')
+        FormPlaylist: resolve(__dirname, 'src/FormPlaylist.ts'),
+        PasswordRules: resolve(__dirname, 'src/PasswordRules.ts')
       },
       output: {
         format: 'es',
