@@ -1,0 +1,418 @@
+import Cookie from './modules/Cookie.ts';
+
+type playlist = { color: string, colorText: string, typePlaylist: string };
+
+simulatePlaylistColor();
+toggleShowColorForm();
+
+const DomElementAddEvent = ['id_name', 'id_color', 'id_colorText', 'id_icon', 'id_typePlaylist', 'id_useSpecificColor'];
+for (let i = 0; i < DomElementAddEvent.length; i++) {
+    const input = document.getElementById(DomElementAddEvent[i]) as HTMLInputElement
+    if (input) {
+        input.addEventListener('input', simulatePlaylistColor);
+        input.addEventListener('change', simulatePlaylistColor);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", (event) => {
+    const volumeInput = document.getElementById('id_volume') as HTMLInputElement;
+    setVolumeToAllMusic(parseFloat(volumeInput.value));
+    volumeInput.addEventListener('change', eventChangeVolume);
+    const id_useSpecificColor = document.getElementById('id_useSpecificColor');
+    if (id_useSpecificColor) {
+        id_useSpecificColor.addEventListener('change', toggleShowColorForm);
+    }
+    addMusicEvent();
+    addDeletePlaylistEvent();
+    addDeleteMusicEvent();
+    addPopupDescriptionPlaylistType();
+    addListingOtherColorsEvent();
+});
+
+function simulatePlaylistColor() {
+    const demo = document.getElementById('demo-playlist')
+    const id_useSpecificColor = document.getElementById('id_useSpecificColor') as HTMLInputElement;
+    if (demo == null) {
+        return
+    }
+
+    if (id_useSpecificColor && id_useSpecificColor.checked) {
+        const color = document.getElementById('id_color') as HTMLInputElement;
+        const colorText = document.getElementById('id_colorText') as HTMLInputElement;
+        demo.style.backgroundColor = color.value;
+        demo.style.color = colorText.value;
+    } else {
+        const id_typePlaylist = document.getElementById('id_typePlaylist') as HTMLInputElement;
+        if (id_typePlaylist) {
+            const color = document.getElementById(`default_${id_typePlaylist.value}_color`) as HTMLInputElement;
+            const colorText = document.getElementById(`default_${id_typePlaylist.value}_colorText`) as HTMLInputElement;
+            demo.style.backgroundColor = color.value;
+            demo.style.color = colorText.value;
+        }
+    }
+
+    const imgInput = document.getElementById('id_icon') as HTMLInputElement;
+    if (imgInput.value != "") {
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+            demo.innerHTML = "<img class='playlist-img' src=" + reader.result + " ></img>";
+        });
+        if (imgInput.files && imgInput.files[0]) {
+            reader.readAsDataURL(imgInput.files[0])
+        }
+     
+    } else if (document.getElementById('id_icon_alreadyexist')) {
+        const urlImg = document.getElementById('id_icon_alreadyexist') as HTMLLinkElement;
+        demo.innerHTML = "<img class='playlist-img' src=" + urlImg.href + " ></img>";
+    } else {
+        const inputName = document.getElementById('id_name') as HTMLInputElement;
+        demo.textContent = inputName.value;
+    }
+
+}
+
+
+
+
+function eventChangeVolume(event: Event) {
+    const volumeInput = event.target as HTMLInputElement;
+    setVolumeToAllMusic(parseFloat(volumeInput.value));
+}
+
+function setVolumeToAllMusic(volume: number) {
+    const listMusic = document.querySelectorAll('.music-player');
+    listMusic.forEach((el) => {
+        const music = el as HTMLAudioElement;
+        music.volume = volume / 100;
+    });
+}
+
+function toggleShowColorForm() {
+    const listClass = document.getElementsByClassName('color_form')
+    const id_useSpecificColor = document.getElementById('id_useSpecificColor') as HTMLInputElement;
+    if (id_useSpecificColor && id_useSpecificColor.checked) {
+        for (let i = 0; i < listClass.length; i++) {
+            listClass[i].classList.remove('d-none');
+        }
+    } else {
+        for (let i = 0; i < listClass.length; i++) {
+            listClass[i].classList.add('d-none');
+        }
+    }
+}
+
+function addDeletePlaylistEvent() {
+    const deletePlaylistBtn = document.getElementById('btn-delete-playlist');
+    if (deletePlaylistBtn) {
+        deletePlaylistBtn.addEventListener('click', confirmSuppressionPlaylist);
+    }
+}
+
+
+function confirmSuppressionPlaylist(event: Event) {
+    const el = event.target as HTMLButtonElement;
+    const config = {
+        delete_url: el.dataset.deleteurl,
+        redirect_url: el.dataset.redirecturl,
+    };
+
+    if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
+        callAjaxDeletePlaylist(config)
+    } else {
+        // Annuler la suppression
+    }
+}
+
+function callAjaxDeletePlaylist(config : any) {
+    var csrfToken = Cookie.get('csrftoken')!;
+    fetch(config.delete_url, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRFToken': csrfToken
+        },
+    })
+        .then(response => {
+            if (response.status === 200) {
+                window.location.href = config.redirect_url;
+            } else {
+                // Gestion des erreurs
+                console.error('Erreur lors de la suppression');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête AJAX:', error);
+        });
+}
+
+function addDeleteMusicEvent() {
+    const deleteMusicBtn = document.getElementsByClassName('btn-delete-music');
+    for (let i = 0; i < deleteMusicBtn.length; i++) {
+        deleteMusicBtn[i].addEventListener('click', confirmSuppressionMusic);
+    }
+}
+
+
+function confirmSuppressionMusic(event: Event) {
+    const el = event.target as HTMLButtonElement;
+    const config = {
+        delete_url: el.dataset.deleteurl,
+        redirect_url: el.dataset.redirecturl,
+    };
+
+    if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
+        callAjaxDeleteMusic(config)
+    } else {
+        // Annuler la suppression
+    }
+}
+
+function callAjaxDeleteMusic(config : any) {
+    var csrfToken = Cookie.get('csrftoken')!;
+    fetch(config.delete_url, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRFToken': csrfToken
+        },
+    })
+        .then(response => {
+            if (response.status === 200) {
+                window.location.href = config.redirect_url;
+            } else {
+                // Gestion des erreurs
+                console.error('Erreur lors de la suppression');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête AJAX:', error);
+        });
+}
+
+function addPopupDescriptionPlaylistType() {
+    const typePlaylistDescriptionBtn = document.getElementById('btn-show-description-playlist-type');
+    if (typePlaylistDescriptionBtn) {
+        typePlaylistDescriptionBtn.addEventListener('click', showDescriptionType);
+    }
+}
+
+function showDescriptionType() {
+    const div = document.createElement("div");
+    const ul = document.createElement("ul");
+
+    const li1 = document.createElement("li");
+    li1.innerHTML = "Son instantanné";
+    const li1Ul = document.createElement("ul");
+    const li1Li1 = document.createElement("li");
+    li1Li1.innerHTML = "choisi une musique aléatoire";
+    const li1Li2 = document.createElement("li");
+    li1Li2.innerHTML = "sans fade in/out";
+    const li1Li3 = document.createElement("li");
+    li1Li3.innerHTML = "sans lecture suivante";
+    const li1Li4 = document.createElement("li");
+    li1Li4.innerHTML = "peux etre jouer avec d'autre sons";
+    li1Ul.appendChild(li1Li1);
+    li1Ul.appendChild(li1Li2);
+    li1Ul.appendChild(li1Li3);
+    li1Ul.appendChild(li1Li4);
+    li1.appendChild(li1Ul);
+
+    const li2 = document.createElement("li");
+    li2.innerHTML = "musique d'ambiences";
+    const li2Ul = document.createElement("ul");
+    const li2Li1 = document.createElement("li");
+    li2Li1.innerHTML = "lit la playlist de musique de manière aléatoire";
+    const li2Li2 = document.createElement("li");
+    li2Li2.innerHTML = "avec fade in/out (3s)";
+    const li2Li3 = document.createElement("li");
+    li2Li3.innerHTML = "avec lecture suivante";
+    const li2Li4 = document.createElement("li");
+    li2Li4.innerHTML = "peux etre jouer avec d'autre sons";
+    li2Ul.appendChild(li2Li1);
+    li2Ul.appendChild(li2Li2);
+    li2Ul.appendChild(li2Li3);
+    li2Ul.appendChild(li2Li4);
+    li2.appendChild(li2Ul);
+
+    const li3 = document.createElement("li");
+    li3.innerHTML = "musique de fond";
+    const li3Ul = document.createElement("ul");
+    const li3Li1 = document.createElement("li");
+    li3Li1.innerHTML = "lit la playlist de musique de manière aléatoire";
+    const li3Li2 = document.createElement("li");
+    li3Li2.innerHTML = "avec fade in/out (5s)";
+    const li3Li3 = document.createElement("li");
+    li3Li3.innerHTML = "avec lecture suivante";
+    const li3Li4 = document.createElement("li");
+    li3Li4.innerHTML = "1 playlist de ce type musique par fois";
+    li3Ul.appendChild(li3Li1);
+    li3Ul.appendChild(li3Li2);
+    li3Ul.appendChild(li3Li3);
+    li3Ul.appendChild(li3Li4);
+    li3.appendChild(li3Ul);
+
+    ul.appendChild(li1);
+    ul.appendChild(li2);
+    ul.appendChild(li3);
+    div.appendChild(ul);
+
+
+    modalShow({
+        title: 'Description',
+        body: div.outerHTML,
+        footer: '',
+    });
+}
+
+function addListingOtherColorsEvent() {
+    const el = document.getElementById('btn-select-other-color');
+    if (el) {
+        el.addEventListener('click', getListingOtherColors);
+    }
+}
+
+function getListingOtherColors(event: Event) {
+    const el = event.target as HTMLElement;
+    const url = el.dataset.url!;
+    const title = "Selectionner Couleur existantes";
+
+    fetch(url, {
+        method: 'GET',
+        responseType: 'json',
+    })
+        .then(response => response.json())
+        .then((body) => {
+            const divRow = document.createElement("div") as HTMLElement;
+            divRow.classList.add("row");
+
+            if (body.default_playlists) {
+                const title = document.createElement("h3")
+                title.classList.add("text-center");
+                title.innerHTML = "Playlist Defauts"
+                divRow.appendChild(title);
+                body.default_playlists.forEach(el => {
+                    const playlist = el as playlist;
+                    appendChildPlaylist(divRow, playlist)
+                })
+            }
+            if (body.unique_playlists) {
+                divRow.appendChild(document.createElement("hr"));
+                const title = document.createElement("h3")
+                title.classList.add("text-center");
+                title.innerHTML = "Playlist Uniques"
+                divRow.appendChild(title);
+                body.default_playlists.forEach(el => {
+                    const playlist = el as playlist;
+                    appendChildPlaylist(divRow, playlist)
+                })
+            }
+            modalShow({
+                title: title,
+                body: divRow.outerHTML
+            })
+
+            const btnSelectPlaylistColor = document.getElementsByClassName("btn-select-playlist-color");
+            for (let i = 0; i < btnSelectPlaylistColor.length; i++) {
+                btnSelectPlaylistColor[i].addEventListener('click', selectColor);
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête AJAX:', error);
+        });
+}
+
+function appendChildPlaylist(divRow: HTMLElement, playlist: playlist) {
+    const divCol1 = document.createElement("div");
+    divCol1.classList.add("col-4")
+    const divElement = document.createElement("div");
+    divElement.innerHTML = "<small>Lorem</small>";
+    divElement.style.backgroundColor = playlist.color;
+    divElement.style.color = playlist.colorText;
+    divElement.classList.add("playlist-element");
+    divElement.classList.add("playlist-dim-75");
+    divElement.classList.add("m-1")
+
+    const divCol2 = document.createElement("div");
+    divCol2.classList.add("col-5")
+    divCol2.innerHTML = `<small>${playlist.typePlaylist}</small>`;
+
+    const divCol3 = document.createElement("div");
+    divCol3.classList.add("col-3")
+
+    const button = document.createElement("button");
+    button.classList.add("btn");
+    button.classList.add("btn-primary");
+    button.classList.add("btn-select-playlist-color");
+    button.type = "button";
+    button.title = "choisir cette couleur";
+    button.textContent = "choisir";
+    button.dataset.color = playlist.color;
+    button.dataset.colorText = playlist.colorText;
+
+    divCol3.appendChild(button);
+    divCol1.appendChild(divElement);
+    divRow.appendChild(divCol1);
+    divRow.appendChild(divCol2);
+    divRow.appendChild(divCol3);
+
+}
+
+function selectColor(event: Event) {
+    console.log("selectColor");
+
+    const el = event.target as HTMLButtonElement;
+    const color = el.dataset.color!;
+    const colorText = el.dataset.colorText!;
+    const id_colorText = document.getElementById("id_colorText") as HTMLInputElement;
+    const id_color = document.getElementById("id_color") as HTMLInputElement;
+    if (id_colorText && id_color) {
+        id_color.value = color;
+        id_colorText.value = colorText;
+    }
+    modalHide();
+    simulatePlaylistColor();
+}
+
+function addMusicEvent() {
+    const addMusicBtn = document.getElementsByClassName('btn-add-music');
+    if (addMusicBtn) {
+        for (let i = 0; i < addMusicBtn.length; i++) {
+            addMusicBtn[i].addEventListener('click', showPopupMusic);
+        }
+    }
+}
+
+function showPopupMusic(event: Event) {
+    const el = event.target as HTMLButtonElement;;
+    const url = el.dataset!.url!;
+    const title = el.title!;
+
+    fetch(url, {
+        method: 'GET',
+    })
+        .then(response => response.text())
+        .then((body) => {
+            modalShow({
+                title: title,
+                body: body
+            })
+            const fileInput = document.getElementById('id_file');
+            if (fileInput) {
+                fileInput.addEventListener('change', autoSetAlternateName);
+            }
+
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête AJAX:', error);
+        });
+}
+
+function autoSetAlternateName(event: Event) {
+    const fileInputOrigin = event.target as HTMLInputElement;
+    const fileDest = document.getElementById('id_alternativeName') as HTMLInputElement;
+    if (fileDest && fileInputOrigin && fileDest.value == '') {
+        const regexExtenstion = /\.(.)*$/g;
+        if (fileInputOrigin.files && fileInputOrigin.files[0]) {
+            fileDest.value = fileInputOrigin.files[0].name.replace(regexExtenstion, '').substring(0, 50);
+        }
+    }
+
+}

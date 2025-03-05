@@ -1,9 +1,10 @@
 {% extends 'Html/base.html' %}
 {% load Playlist %}
+{% load FrontJs %}
 
 {% block javascript %}
 {% load static %}
-<script src="{% static 'js_pure/form/playlist_form.js' %}"></script>
+<script type="module" src="{% static "FormPlaylist"|search_true_file %}"></script>
 {% endblock javascript %}
 
 {% block content %}
@@ -21,7 +22,7 @@
         <div>
             {% if method == 'update' %}
             <div>
-                <button class="btn btn-danger" onclick=confirmSuppressionPlaylist(this) data-deleteurl="{% url 'playlistDelete' form.instance.id %}" data-redirecturl="{% url 'playlistsAllList' %}">Delete playlist</button>
+                <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.id %}" data-redirecturl="{% url 'playlistsAllList' %}">Delete playlist</button>
             </div>
             {% endif %}
             <form method="post" enctype="multipart/form-data">
@@ -54,7 +55,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6">
-                        <button type="button" class="btn btn-info" onclick="showDescriptionType()">Show description</button>
+                        <button type="button" id="btn-show-description-playlist-type" class="btn btn-info" >Show description</button>
                     </div>
                     <div class="col-12">
                         {{ form.useSpecificColor.label }}  :<br /> {{ form.useSpecificColor }}
@@ -66,7 +67,7 @@
                         {{ form.colorText.label }} * :<br />{{ form.colorText }}
                     </div>
                     <div class="col-sm-12 col-md-4 color_form">
-                        <button type="button" class="btn btn-info" onclick="getListingOtherColors(this)" data-url="{% url 'getListingOtherColors' %}">Selectionner couleurs existantes</button>
+                        <button type="button" class="btn btn-info" id="btn-select-other-color" data-url="{% url 'getListingOtherColors' %}">Selectionner couleurs existantes</button>
                     </div>
 
                     <div class="col-sm-12 col-md-6">
@@ -123,7 +124,7 @@
     <div class="col">
         <div class="gestion">
             <div>
-                <button class="btn btn-primary btn-block" title="Add a music to the playlist" onclick="showPopupMusic(this)" data-url="{% url 'addMusic' form.instance.id %}">add music</button>
+                <button class="btn btn-primary btn-block btn-add-music" title="Add a music to the playlist" data-url="{% url 'addMusic' form.instance.id %}">add music</button>
             </div>
             <div class"flex-container">
                 {% if listMusic is not null %}
@@ -140,8 +141,8 @@
                     </div>
 
                     <div class="btn-group">
-                        <button class="btn btn-warning" title="Edit {{ music.fileName }}" onclick=showPopupMusic(this) data-url="{% url 'editMusic' form.instance.id music.id %}">Edit</button>
-                        <button class="btn btn-danger" onclick=confirmSuppressionMusic(this) data-deleteurl="{% url 'deleteMusic' form.instance.id music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.id %}">Delete</button>
+                        <button class="btn btn-warning btn-add-music" title="Edit {{ music.fileName }}" data-url="{% url 'editMusic' form.instance.id music.id %}">Edit</button>
+                        <button class="btn btn-danger btn-delete-music" title="Delete {{ music.fileName }}" data-deleteurl="{% url 'deleteMusic' form.instance.id music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.id %}">Delete</button>
                     </div>
                 </div>
                 {% endfor %}
