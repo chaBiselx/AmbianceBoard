@@ -27,11 +27,22 @@ class ButtonPlaylist {
     }
 
     public disactive() {
+        delete this.dataset.tokenPlaylistActive;
         this.buttonElement.classList.remove("active-playlist")
     }
 
     public active() {
+        this.dataset.tokenPlaylistActive = Date.now().toString();
         this.buttonElement.classList.add("active-playlist")
+    }
+
+    public isActive(): boolean {
+        return this.buttonElement.classList.contains("active-playlist");
+    }
+
+    public getToken(): string | null {
+        if (!this.dataset.tokenPlaylistActive) return null;
+        return this.dataset.tokenPlaylistActive;
     }
 
 }

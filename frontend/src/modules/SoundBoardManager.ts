@@ -1,8 +1,8 @@
-import Config from '../modules/Config'; 
-import { ButtonPlaylist, ListingButtonPlaylist  } from '../modules/ButtonPlaylist';
+import Config from '../modules/Config';
+import { ButtonPlaylist, ListingButtonPlaylist } from '../modules/ButtonPlaylist';
 import { MusicElement } from '../modules/MusicElement';
 import UpdateVolumeElement from '../modules/UpdateVolumeElement';
-import {  ListingAudioElement } from '../modules/MusicElement';
+import { ListingAudioElement } from '../modules/MusicElement';
 
 
 class SoundBoardManager {
@@ -13,24 +13,30 @@ class SoundBoardManager {
         (new UpdateVolumeElement(musicElement)).update();
         musicElement.addToDOM();
         musicElement.play();
-        
+
     }
 
     static addPlaylist(buttonPlaylist: ButtonPlaylist) {
         let audioElement = document.getElementsByClassName(`playlist-audio-${buttonPlaylist.idPlaylist}`);
-    
         if (audioElement.length == 0) {
-    
+
             SoundBoardManager.deleteSameTypePlaylist(buttonPlaylist);
             SoundBoardManager.createPlaylistLink(buttonPlaylist);
-    
+
         } else {
             buttonPlaylist.disactive();
             while (audioElement.length > 0) { // delete all playlist
                 (new MusicElement(audioElement[0] as HTMLAudioElement)).delete();
             }
         }
-    
+
+    }
+
+    static removePlaylist(buttonPlaylist: ButtonPlaylist) {
+        const audioElement = document.getElementsByClassName(`playlist-audio-${buttonPlaylist.idPlaylist}`) as HTMLCollectionOf<HTMLAudioElement>;
+        while (audioElement.length > 0) { // delete all playlist
+            (new MusicElement(audioElement[0])).delete();
+        }
     }
 
     static deleteSameTypePlaylist(ButtonPlaylist: ButtonPlaylist) {
@@ -49,9 +55,9 @@ class SoundBoardManager {
             }
         }
     }
-    
 
-    
+
+
 }
 
-export {SoundBoardManager};
+export { SoundBoardManager };

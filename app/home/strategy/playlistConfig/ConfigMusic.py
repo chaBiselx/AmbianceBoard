@@ -2,10 +2,10 @@ from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from home.enum.FadeEnum import FadeEnum
 
 class ConfigMusic():
-    def get_data(self, obj):
+    def get_data(self, playlist):
         return {
-            "id":obj.id, 
-            "type":PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.value, 
+            "id": playlist.id, 
+            "type": PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.value, 
             "fadeIn": True, 
             "fadeInDuration": 5,
             "fadeInType": FadeEnum.EASE.value,
@@ -14,5 +14,6 @@ class ConfigMusic():
             "fadeOutType": FadeEnum.EASE.value,
             "loop": True,
             "singleConcurrentRead":True,
-            "volume" : obj.volume
+            "volume" : playlist.volume,
+            "delay" : playlist.maxDelay or 0
         }

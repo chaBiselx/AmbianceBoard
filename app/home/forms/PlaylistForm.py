@@ -6,7 +6,7 @@ from home.models.Playlist import Playlist
 class PlaylistForm(forms.ModelForm):
     class Meta:
         model = Playlist
-        fields = ('name', 'typePlaylist', 'useSpecificColor', 'color', 'colorText', 'volume', 'icon')
+        fields = ('name', 'typePlaylist', 'useSpecificColor', 'color', 'colorText', 'volume', 'icon', 'maxDelay')
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -50,6 +50,12 @@ class PlaylistForm(forms.ModelForm):
         required=False
     )
     clear_icon = forms.BooleanField(required=False, label='Supprimer le fichier', initial=False)
+    maxDelay = forms.IntegerField(
+        label='Délai maximum (en seconde) avant de jouer la musique suivante',
+        min_value=0,
+        max_value=3600,
+        initial=0
+    )
     def clean_icon(self):
         if self.cleaned_data.get('clear_icon'):
             return None

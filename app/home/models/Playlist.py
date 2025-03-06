@@ -27,6 +27,7 @@ class Playlist(models.Model):
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
     volume = models.IntegerField(default=75, validators=[MinValueValidator(0), MaxValueValidator(100)])
     icon = models.FileField(upload_to=PLAYLIST_FOLDER, default=None, null=True, blank=True)
+    maxDelay = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

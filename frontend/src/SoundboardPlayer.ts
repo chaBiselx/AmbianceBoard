@@ -1,7 +1,7 @@
 
 
 import Config from './modules/Config';
-import type {uri} from './type/General';
+import type { uri } from './type/General';
 
 import { ButtonPlaylist, ButtonPlaylistFinder } from './modules/ButtonPlaylist';
 import { MixerManager } from './modules/MixerManager';
@@ -69,7 +69,7 @@ function eventUpdatePlaylistVolume(event: Event) {
             if (buttonPlaylist) {
                 let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist, parseFloat(event.target.value));
                 eventUpdateVolumePlaylist.updateVolume();
-                
+
                 const uri = event.target.dataset.playlistupdatevolumeuri as uri;
                 eventUpdateVolumePlaylist.updateBackend(uri);
             }
@@ -80,19 +80,24 @@ function eventUpdatePlaylistVolume(event: Event) {
 function eventTogglePlaylist(event: Event) {
     if (event.target instanceof HTMLElement) {
         const buttonPlaylist = new ButtonPlaylist(event.target)
-        buttonPlaylist.active();
-        SoundBoardManager.addPlaylist(buttonPlaylist);
-    }
+        if (!buttonPlaylist.isActive()) {
+            buttonPlaylist.active();
+            SoundBoardManager.addPlaylist(buttonPlaylist);
+        } else {
+            buttonPlaylist.disactive();
+            SoundBoardManager.removePlaylist(buttonPlaylist);
 
+        }
+    }
 }
 
-function updateWithMixerPlaylist(){
+function updateWithMixerPlaylist() {
     const formElements = document.querySelectorAll('.playlist-link');
     for (let index = 0; index < formElements.length; index++) {
         const element = formElements[index] as HTMLElement;
         const elmentDest = document.getElementById(`range_volume_${element.dataset.playlistId!}`)!
         elmentDest.style.width = `${element.offsetWidth}px`;
-        
+
     }
 }
 

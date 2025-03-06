@@ -24,6 +24,8 @@ class MusicElement {
     fadeOutType: string = 'linear';
     playlistLoop: boolean = false;
     fadeOutDuration: number = 0;
+    delay: number = 0;
+    butonPlaylistToken: string | null = null;
 
 
     constructor(Element: HTMLAudioElement | ButtonPlaylist) {
@@ -38,6 +40,9 @@ class MusicElement {
     }
 
     private setDefaultValue() {
+        if (this.DOMElement.dataset.butonPlaylistToken) {
+            this.butonPlaylistToken = this.DOMElement.dataset.butonPlaylistToken;
+        }
         if (this.DOMElement.dataset.defaultvolume) {
             this.defaultVolume = parseFloat(this.DOMElement.dataset.defaultvolume);
         }
@@ -68,6 +73,9 @@ class MusicElement {
         if (this.DOMElement.dataset.playlistloop) {
             this.playlistLoop = (this.DOMElement.dataset.playlistloop == "true" ? true : false);
         }
+        if (this.DOMElement.dataset.playlistdelay) {
+            this.delay = parseFloat(this.DOMElement.dataset.playlistdelay);
+        }
     }
 
     private setDefaultFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
@@ -77,6 +85,11 @@ class MusicElement {
         if (buttonPlaylist.dataset.playlistFadein) {
             this.fadeIn = (buttonPlaylist.dataset.playlistFadein == TRUE) ? true : false;
             this.DOMElement.dataset.fadein = this.fadeIn.toString();
+        }
+        const token = buttonPlaylist.getToken();
+        if (token) {
+            this.butonPlaylistToken = token;
+            this.DOMElement.dataset.butonPlaylistToken = this.butonPlaylistToken;
         }
         if (buttonPlaylist.dataset.playlistFadeintype) {
             this.fadeInType = buttonPlaylist.dataset.playlistFadeintype;
@@ -109,6 +122,10 @@ class MusicElement {
         if (buttonPlaylist.dataset.playlistLoop) {
             this.playlistLoop = (buttonPlaylist.dataset.playlistLoop == TRUE) ? true : false;
             this.DOMElement.dataset.playlistloop = this.playlistLoop.toString();
+        }
+        if (buttonPlaylist.dataset.playlistDelay) {
+            this.delay = parseFloat(buttonPlaylist.dataset.playlistDelay);
+            this.DOMElement.dataset.playlistdelay = this.delay.toString();
         }
 
 
@@ -224,11 +241,37 @@ class MusicElement {
                 new_music.addFadeOut();
                 if (new_music.playlistLoop) {
                     if (Config.DEBUG) console.log("eventFadeOut loop");
-                    SoundBoardManager.createPlaylistLink(buttonPlaylist);
+                    new_music.applyDelay(() => {
+                        SoundBoardManager.createPlaylistLink(buttonPlaylist);
+                    })
                 } else {
                     buttonPlaylist.disactive();
                 }
             }
+        }
+    }
+
+    private getTimeDelay() {
+        if (this.delay > 0) {
+            return Math.floor(Math.random() * this.delay * 100) / 100;
+        }
+        return 0;
+    }
+
+    private applyDelay(callback: () => void) {
+        if (this.delay > 0) {
+            const delay = this.getTimeDelay();
+            if (Config.DEBUG) console.log("delay: " + delay);
+            setTimeout(() => {
+                if (Config.DEBUG) console.log("applyDelay callback: ");
+
+                const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist);
+                if (buttonPlaylist && buttonPlaylist.isActive() && this.butonPlaylistToken == buttonPlaylist.getToken()) {
+                    callback()
+                }
+            }, delay * 1000);
+        } else {
+            callback();
         }
     }
 
@@ -244,7 +287,9 @@ class MusicElement {
         new_music.DOMElement.remove();
         if (new_music.playlistLoop) {
             const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
-            SoundBoardManager.addPlaylist(buttonPlaylist);
+            new_music.applyDelay(() => {
+                SoundBoardManager.createPlaylistLink(buttonPlaylist);
+            })
         } else {
             const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
             buttonPlaylist.disactive();
