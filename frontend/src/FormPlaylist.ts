@@ -60,7 +60,7 @@ function simulatePlaylistColor() {
         if (imgInput.files && imgInput.files[0]) {
             reader.readAsDataURL(imgInput.files[0])
         }
-     
+
     } else if (document.getElementById('id_icon_alreadyexist')) {
         const urlImg = document.getElementById('id_icon_alreadyexist') as HTMLLinkElement;
         demo.innerHTML = "<img class='playlist-img' src=" + urlImg.href + " ></img>";
@@ -111,19 +111,22 @@ function addDeletePlaylistEvent() {
 
 function confirmSuppressionPlaylist(event: Event) {
     const el = event.target as HTMLButtonElement;
-    const config = {
-        delete_url: el.dataset.deleteurl,
-        redirect_url: el.dataset.redirecturl,
-    };
+    if (el.dataset.deleteurl && el.dataset.redirecturl) {
+        const config = {
+            delete_url: el.dataset.deleteurl,
+            redirect_url: el.dataset.redirecturl,
+        };
 
-    if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
-        callAjaxDeletePlaylist(config)
-    } else {
-        // Annuler la suppression
+        if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
+            callAjaxDeletePlaylist(config)
+        } else {
+            // Annuler la suppression
+        }
+
     }
 }
 
-function callAjaxDeletePlaylist(config : any) {
+function callAjaxDeletePlaylist(config: { delete_url: string, redirect_url: string }) {
     var csrfToken = Cookie.get('csrftoken')!;
     fetch(config.delete_url, {
         method: 'DELETE',
@@ -154,19 +157,22 @@ function addDeleteMusicEvent() {
 
 function confirmSuppressionMusic(event: Event) {
     const el = event.target as HTMLButtonElement;
-    const config = {
-        delete_url: el.dataset.deleteurl,
-        redirect_url: el.dataset.redirecturl,
-    };
+    if(el.dataset.deleteurl && el.dataset.redirecturl ){
+        const config = {
+            delete_url: el.dataset.deleteurl,
+            redirect_url: el.dataset.redirecturl,
+        };
+    
+        if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
+            callAjaxDeleteMusic(config)
+        } else {
+            // Annuler la suppression
+        }
 
-    if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
-        callAjaxDeleteMusic(config)
-    } else {
-        // Annuler la suppression
     }
 }
 
-function callAjaxDeleteMusic(config : any) {
+function callAjaxDeleteMusic(config: { delete_url: string, redirect_url: string }) {
     var csrfToken = Cookie.get('csrftoken')!;
     fetch(config.delete_url, {
         method: 'DELETE',
@@ -276,7 +282,6 @@ function getListingOtherColors(event: Event) {
 
     fetch(url, {
         method: 'GET',
-        responseType: 'json',
     })
         .then(response => response.json())
         .then((body) => {

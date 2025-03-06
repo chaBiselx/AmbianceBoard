@@ -53,15 +53,17 @@ function addDeleteSoundboardEvent() {
 
 function confirmSuppression(event: Event) {
     const el = event.target as HTMLButtonElement;
-    const config:deleteConfig = {
-        delete_url:el.dataset.deleteurl!,
-        redirect_url:el.dataset.redirecturl!
-    };
-
-    if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
-        callAjax(config)
-    } else {
-        // Annuler la suppression
+    if(el.dataset.deleteurl && el.dataset.redirecturl){
+        const config:deleteConfig = {
+            delete_url:el.dataset.deleteurl!,
+            redirect_url:el.dataset.redirecturl!
+        };
+    
+        if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
+            callAjax(config)
+        } else {
+            // Annuler la suppression
+        }
     }
 }
 
