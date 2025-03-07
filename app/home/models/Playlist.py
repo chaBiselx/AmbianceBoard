@@ -12,6 +12,7 @@ from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 
 class Playlist(models.Model):
     PLAYLIST_FOLDER = 'playlistIcon/'
+    tempId = models.BigIntegerField(unique=True) 
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
