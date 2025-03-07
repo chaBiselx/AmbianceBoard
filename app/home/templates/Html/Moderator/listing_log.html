@@ -34,7 +34,7 @@
                     {{ messageLog.message }}
                 </td>
                 <td>
-                    <button class="btn btn-primary" onclick="getDataUser(this)" data-title="{{messageLog.created_at | date:"Y-m-d \T H:i"}} {{messageLog.tag}}" data-url="{% url 'moderatorGetDataUser' user.id %}" id="user-{{ user.id }}">
+                    <button class="btn btn-primary" onclick="getDataUser(this)" data-title="{{messageLog.created_at | date:" Y-m-d \T H:i"}} {{messageLog.tag}}" data-url="{% url 'moderatorGetDataUser' user.uuid %}" id="user-{{ user.uuid }}">
                         Plus d'info
                     </button>
                 </td>

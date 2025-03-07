@@ -21,9 +21,9 @@
 <div class="row">
     <div class="col-12 col-sm-11 col-md-10 col-xl-8">
         <div>
-            {% if form.instance.id %}
+            {% if form.instance.uuid %}
             <div>
-                <button class="btn btn-danger" id="btn-delete-soundboard" data-deleteurl="{% url 'soundboardsDelete' form.instance.id %}" data-redirecturl="{% url 'soundboardsList' %}">Supprimer</button>
+                <button class="btn btn-danger" id="btn-delete-soundboard" data-deleteurl="{% url 'soundboardsDelete' form.instance.uuid %}" data-redirecturl="{% url 'soundboardsList' %}">Supprimer</button>
             </div>
             {% endif %}
             <form method="post" enctype="multipart/form-data">

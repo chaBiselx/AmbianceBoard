@@ -10,18 +10,18 @@ class SoundBoardService:
     def __init__(self, request):
         self.request = request
     
-    def get_soundboard(self, soundboard_id:int)-> SoundBoard|None :
+    def get_soundboard(self, soundboard_uuid:int)-> SoundBoard|None :
         try:
-            soundboard = SoundBoard.objects.get(id=soundboard_id)
+            soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
             if not soundboard or soundboard.user != self.request.user:
                 return None
             return soundboard
         except SoundBoard.DoesNotExist:
             return None
     
-    def get_public_soundboard(self, soundboard_id:int)-> SoundBoard|None :
+    def get_public_soundboard(self, soundboard_uuid:int)-> SoundBoard|None :
         try:
-            soundboard = SoundBoard.objects.get(id=soundboard_id)
+            soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
             if not soundboard or not soundboard.is_public:
                 return None
             return soundboard

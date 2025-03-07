@@ -16,24 +16,24 @@ def public_index(request):
 def public_listing_soundboard(request):
     page_number = int(request.GET.get('page', 1))
     
-    queryset = SoundBoard.objects.filter(is_public=True, user__isBan = False).order_by('id')
+    queryset = SoundBoard.objects.filter(is_public=True, user__isBan = False).order_by('uuid')
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     
     return render(request, 'Html/Public/listing_soundboard.html', context)
 
 @detect_ban
-def public_soundboard_read_playlist(request, soundboard_id):
-    soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_id)
+def public_soundboard_read_playlist(request, soundboard_uuid):
+    soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
     if not soundboard:
         return render(request, 'Html/General/404.html', status=404)
     else:   
         return render(request, 'Html/Public/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
     
 @detect_ban
-def public_music_stream(request, soundboard_id, playlist_id) -> HttpResponse:
+def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
  
-    music = (MusicService(request)).get_public_random_music(soundboard_id, playlist_id)
+    music = (MusicService(request)).get_public_random_music(soundboard_uuid, playlist_uuid)
     if not music :
         return HttpResponse("Musique introuvable.", status=404)
     

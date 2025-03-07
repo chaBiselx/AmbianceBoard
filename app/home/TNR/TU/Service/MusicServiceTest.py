@@ -23,9 +23,9 @@ class MusicServiceTest(TestCase):
             password='test'
         )
     
-    def _create_playlist(self, id, user):
+    def _create_playlist(self, uuid, user):
         return Playlist.objects.create(
-            id=id,
+            uuid=uuid,
             name="test",
             user=user
         )

@@ -79,7 +79,7 @@ class MusicModelTest(TestCase):
             playlist=self.playlist
         )
         
-        playlist_id = self.playlist.id
+        playlist_uuid = self.playlist.uuid
         self.playlist.delete()
         
         # Vérifier que la musique a été supprimée

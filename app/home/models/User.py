@@ -4,7 +4,7 @@ import uuid
 from django.utils import timezone
 
 class User(AbstractUser):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     isBan = models.BooleanField(default=False)
     isConfirmed = models.BooleanField(default=False)
     confirmationToken = models.CharField(max_length=255, default=None, null=True, blank=True)

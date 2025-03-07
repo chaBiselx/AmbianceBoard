@@ -20,7 +20,7 @@ class ConfirmationUserServiceTest(TestCase):
         uri = self.confirmation_service.generation_uri()
         self.assertIsNotNone(uri)
         self.assertIn('/confirm/', uri)
-        self.assertIn(str(self.user.id), uri)
+        self.assertIn(str(self.user.uuid), uri)
         self.assertIn(str(self.user.get_confirmation_token()), uri)
         
     def test_generation_uri_user_already_confirmed(self):
@@ -90,7 +90,7 @@ class ConfirmationUserServiceTest(TestCase):
     @patch('home.service.ConfirmationUserService.reverse')
     def test_generation_uri_reverse_called(self, mock_reverse):
         self.confirmation_service.generation_uri()
-        mock_reverse.assert_called_once_with('confirm_account', kwargs={'uuid_user': self.user.id, 'confirmation_token': self.user.confirmationToken})
+        mock_reverse.assert_called_once_with('confirm_account', kwargs={'uuid_user': self.user.uuid, 'confirmation_token': self.user.confirmationToken})
 
 if __name__ == '__main__':
     unittest.main()

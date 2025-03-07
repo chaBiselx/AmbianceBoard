@@ -22,7 +22,7 @@
         <div>
             {% if method == 'update' %}
             <div>
-                <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.id %}" data-redirecturl="{% url 'playlistsAllList' %}">Delete playlist</button>
+                <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.uuid %}" data-redirecturl="{% url 'playlistsAllList' %}">Delete playlist</button>
             </div>
             {% endif %}
             <form method="post" enctype="multipart/form-data">
@@ -127,7 +127,7 @@
     <div class="col">
         <div class="gestion">
             <div>
-                <button class="btn btn-primary btn-block btn-add-music" title="Add a music to the playlist" data-url="{% url 'addMusic' form.instance.id %}">add music</button>
+                <button class="btn btn-primary btn-block btn-add-music" title="Add a music to the playlist" data-url="{% url 'addMusic' form.instance.uuid %}">add music</button>
             </div>
             <div class"flex-container">
                 {% if listMusic is not null %}
@@ -144,8 +144,8 @@
                     </div>
 
                     <div class="btn-group">
-                        <button class="btn btn-warning btn-add-music" title="Edit {{ music.fileName }}" data-url="{% url 'editMusic' form.instance.id music.id %}">Edit</button>
-                        <button class="btn btn-danger btn-delete-music" title="Delete {{ music.fileName }}" data-deleteurl="{% url 'deleteMusic' form.instance.id music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.id %}">Delete</button>
+                        <button class="btn btn-warning btn-add-music" title="Edit {{ music.fileName }}" data-url="{% url 'editMusic' form.instance.uuid music.id %}">Edit</button>
+                        <button class="btn btn-danger btn-delete-music" title="Delete {{ music.fileName }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}">Delete</button>
                     </div>
                 </div>
                 {% endfor %}

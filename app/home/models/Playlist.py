@@ -12,7 +12,7 @@ from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 
 class Playlist(models.Model):
     PLAYLIST_FOLDER = 'playlistIcon/'
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
@@ -34,7 +34,7 @@ class Playlist(models.Model):
         self._icon_original = self.icon if self.pk else None
         
     def __str__(self):
-        return f"{self.name} ({self.id}) "
+        return f"{self.name} ({self.uuid}) "
         
     def save(self, *args, **kwargs):
         new_file = False
@@ -57,6 +57,9 @@ class Playlist(models.Model):
     def get_order(self):
         soundboard_playlist = Soundboard_Playlist.objects.filter(Playlist=self).first()
         return soundboard_playlist.order if soundboard_playlist and soundboard_playlist.order is not None else None
+    
+    def get_id_html(self) -> str:
+        return str("lknvbj")
     
     def get_color(self):
         if self.useSpecificColor:

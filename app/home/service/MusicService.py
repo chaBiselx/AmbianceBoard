@@ -14,34 +14,34 @@ class MusicService:
     def __init__(self, request):
         self.request = request
     
-    def get_random_music(self, playlist_id:int)-> Music|None :
+    def get_random_music(self, playlist_uuid:int)-> Music|None :
         try:
             music_filter = MusicFilter()
             music_filter.filter_by_user(self.request.user)
-            return self._get_random_music_from_playlist(music_filter, playlist_id)
+            return self._get_random_music_from_playlist(music_filter, playlist_uuid)
         except Playlist.DoesNotExist:
             return None
     
-    def get_public_random_music(self, soundboard_id:uuid, playlist_id:int)-> Music|None :
-        soundboard = (SoundBoardService(self.request)).get_public_soundboard(soundboard_id)
+    def get_public_random_music(self, soundboard_uuid:uuid, playlist_uuid:int)-> Music|None :
+        soundboard = (SoundBoardService(self.request)).get_public_soundboard(soundboard_uuid)
         if not soundboard:
             return None
         try:
             music_filter = MusicFilter()
-            return self._get_random_music_from_playlist(music_filter, playlist_id)
+            return self._get_random_music_from_playlist(music_filter, playlist_uuid)
         except Playlist.DoesNotExist:
             return None
         
-    def _get_random_music_from_playlist(self, music_filter:MusicFilter, playlist_id:int)-> Music|None :
-        queryset = music_filter.filter_by_playlist(playlist_id)
+    def _get_random_music_from_playlist(self, music_filter:MusicFilter, playlist_uuid:int)-> Music|None :
+        queryset = music_filter.filter_by_playlist(playlist_uuid)
         return queryset.order_by('?').first()
         
         
-    def get_list_music(self, playlist_id:int)-> list[Music]|None :
+    def get_list_music(self, playlist_uuid:int)-> list[Music]|None :
         try:
             music_filter = MusicFilter()
             queryset = music_filter.filter_by_user(self.request.user)
-            queryset = music_filter.filter_by_playlist(playlist_id)
+            queryset = music_filter.filter_by_playlist(playlist_uuid)
             return queryset
         except Playlist.DoesNotExist:
             return None

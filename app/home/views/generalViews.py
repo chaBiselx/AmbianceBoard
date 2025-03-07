@@ -112,7 +112,7 @@ def token_validation_reset_password(request, uuid_user:str, token_reinitialisati
     logger = logging.getLogger('home')
     user = None
     try:
-        user = User.objects.get(id=uuid_user)
+        user = User.objects.get(uuid=uuid_user)
     except User.DoesNotExist:
         pass
     if user is None :

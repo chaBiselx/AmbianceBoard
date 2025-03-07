@@ -12,7 +12,7 @@ class LogRequestsMiddleware:
         start_time = time.time()
         
         if request.user.is_authenticated: # If the user is authenticated
-            unique_id = f"USER_{request.user.id}"
+            unique_id = f"USER_{request.user.uuid}"
             response = self.get_response(request)
         else: # If the user is not authenticated
             unique_id = request.COOKIES.get('unique_id')

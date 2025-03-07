@@ -9,7 +9,7 @@
         <div class="col-sm-12 col-md-6">
             <dl>
                 <dt>Id</dt>
-                <dd>{{playlist.id}}</dd>
+                <dd>{{playlist.uuid}}</dd>
                 <dt>Titre</dt>
                 <dd>{{playlist.name}}</dd>
                 <dt>Type Playlist</dt>
@@ -36,7 +36,7 @@
         <div class="col-sm-12 col-md-6">
             <dl>
                 <dt>Id</dt>
-                <dd>{{user.id}}</dd>
+                <dd>{{user.uuid}}</dd>
                 <dt>Username</dt>
                 <dd>{{user.username}}</dd>
                 <dt>Admin</dt>
@@ -61,10 +61,10 @@
                         <td>{{log.tag}}</td>
                         <td>{{log.message}}</td>
                     </tr>
-                {% endfor %}
+                    {% endfor %}
                 </tbody>
             </table>
-          
+
             {% endif %}
         </div>
         {% endif %}

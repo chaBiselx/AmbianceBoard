@@ -19,7 +19,7 @@ class ResetPasswordService():
         self.user.tokenReinitialisation = self.__generation_token()
         self.user.demandeTokenDate = timezone.now()
         self.user.save()
-        return reverse("token_validation_reset_password", kwargs={'uuid_user': self.user.id, 'token_reinitialisation': self.user.tokenReinitialisation })
+        return reverse("token_validation_reset_password", kwargs={'uuid_user': self.user.uuid, 'token_reinitialisation': self.user.tokenReinitialisation })
         
     def verification_token(self, token_reinitialisation:str) -> bool : 
         if self.user is None : 

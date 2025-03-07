@@ -53,21 +53,21 @@ def moderator_listing_images_soundboard(request) -> HttpResponse:
 
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
-def moderator_get_infos_playlist(request, playlist_id) -> HttpResponse:
-    playlist = Playlist.objects.get(id=playlist_id)
+def moderator_get_infos_playlist(request, playlist_uuid) -> HttpResponse:
+    playlist = Playlist.objects.get(uuid=playlist_uuid)
     return render(request, 'Html/Moderator/info_playlist.html', {"playlist":playlist})
     
     
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
-def moderator_get_infos_soundboard(request, soundboard_id) -> HttpResponse:
-    soundboard = SoundBoard.objects.get(id=soundboard_id)
+def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
+    soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
     return render(request, 'Html/Moderator/info_soundboard.html', {"soundboard":soundboard})
     
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
-def moderator_get_infos_soundboard(request, soundboard_id) -> HttpResponse:
-    soundboard = SoundBoard.objects.get(id=soundboard_id)
+def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
+    soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
     return render(request, 'Html/Moderator/info_soundboard.html', {"soundboard":soundboard})
 
 @login_required
@@ -83,8 +83,8 @@ def moderator_listing_log_moderation(request) -> HttpResponse:
 
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
-def moderator_get_infos_user(request, user_id) -> HttpResponse:
-    user = User.objects.get(id=user_id)
+def moderator_get_infos_user(request, user_uuid) -> HttpResponse:
+    user = User.objects.get(id=user_uuid)
     return render(request, 'Html/Moderator/info_user.html', {"user":user})
     
     

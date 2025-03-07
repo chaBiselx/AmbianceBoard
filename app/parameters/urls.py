@@ -28,43 +28,43 @@ urlpatterns = [
     
     path("soundBoards/", soundboard_list, name="soundboardsList"),
     path("soundBoards/new", soundboard_create, name="soundboardsNew"),
-    path("soundBoards/<uuid:soundboard_id>", soundboard_read, name="soundboardsRead"),
-    path("soundBoards/<uuid:soundboard_id>/update", soundboard_update, name="soundboardsUpdate"),
-    path("soundBoards/<uuid:soundboard_id>/delete", soundboard_delete, name="soundboardsDelete"),
-    path("soundBoards/<uuid:soundboard_id>/organize", soundboard_organize, name="organizeSoundboard"),
-    path("soundBoards/<uuid:soundboard_id>/organize/update", soundboard_organize_update, name="organizeSoundboardUpdate"),
+    path("soundBoards/<uuid:soundboard_uuid>", soundboard_read, name="soundboardsRead"),
+    path("soundBoards/<uuid:soundboard_uuid>/update", soundboard_update, name="soundboardsUpdate"),
+    path("soundBoards/<uuid:soundboard_uuid>/delete", soundboard_delete, name="soundboardsDelete"),
+    path("soundBoards/<uuid:soundboard_uuid>/organize", soundboard_organize, name="organizeSoundboard"),
+    path("soundBoards/<uuid:soundboard_uuid>/organize/update", soundboard_organize_update, name="organizeSoundboardUpdate"),
     
     path('account/settings/',settings_index, name="settingsIndex"),
     path('account/settings/playlists/style',settings_update_default_style, name="defaultPlaylistType"),
     
-    path("soundBoards/<uuid:soundboard_id>/music/create", playlist_create_with_soundboard, name="addPlaylistWithSoundboard"),
+    path("soundBoards/<uuid:soundboard_uuid>/music/create", playlist_create_with_soundboard, name="addPlaylistWithSoundboard"),
     path("playlist/create", playlist_create, name="addPlaylist"),
     path("playlist/all", playlist_read_all, name="playlistsAllList"),
-    path("playlist/<uuid:playlist_id>/update", playlist_update, name="playlistUpdate"),
-    path("playlist/<uuid:playlist_id>/delete", playlist_delete, name="playlistDelete"),
+    path("playlist/<uuid:playlist_uuid>/update", playlist_update, name="playlistUpdate"),
+    path("playlist/<uuid:playlist_uuid>/delete", playlist_delete, name="playlistDelete"),
     
-    path("playlist/<uuid:playlist_id>/music/create", music_create, name="addMusic"),
-    path("playlist/<uuid:playlist_id>/music/edit/<int:music_id>", music_update, name="editMusic"),
-    path("playlist/<uuid:playlist_id>/music/delete/<int:music_id>", music_delete, name="deleteMusic"),
-    path("playlist/<uuid:playlist_id>/stream", music_stream, name="streammMusic"),
-    path("playlist/<uuid:playlist_id>/volume/update", update_direct_volume, name="update_direct_volume"),
+    path("playlist/<uuid:playlist_uuid>/music/create", music_create, name="addMusic"),
+    path("playlist/<uuid:playlist_uuid>/music/edit/<int:music_id>", music_update, name="editMusic"),
+    path("playlist/<uuid:playlist_uuid>/music/delete/<int:music_id>", music_delete, name="deleteMusic"),
+    path("playlist/<uuid:playlist_uuid>/stream", music_stream, name="streammMusic"),
+    path("playlist/<uuid:playlist_uuid>/volume/update", update_direct_volume, name="update_direct_volume"),
     
     path("playlist/other-colors", playlist_listing_colors, name="getListingOtherColors"),
     
     path("public/", public_index, name="publicIndex"),
     path("public/soundboards", public_listing_soundboard, name="publicListingSoundboard"),
-    path("public/soundboards/<uuid:soundboard_id>", public_soundboard_read_playlist, name="publicReadSoundboard"),
-    path("public/soundboards/<uuid:soundboard_id>/<uuid:playlist_id>/stream", public_music_stream, name="publicStreammMusic"),
+    path("public/soundboards/<uuid:soundboard_uuid>", public_soundboard_read_playlist, name="publicReadSoundboard"),
+    path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreammMusic"),
     
     
     
     path("moderator/", moderator_dashboard, name="moderatorDashboard"),
     path("moderator/playlist/images", moderator_listing_images_playlist, name="moderatorControleImagesPlaylist"),
-    path("moderator/playlist/<uuid:playlist_id>", moderator_get_infos_playlist, name="moderatorGetDataPlaylist"),
+    path("moderator/playlist/<uuid:playlist_uuid>", moderator_get_infos_playlist, name="moderatorGetDataPlaylist"),
     path("moderator/soundboard/images", moderator_listing_images_soundboard, name="moderatorControleImagesSoundboard"),
-    path("moderator/soundboard/<uuid:soundboard_id>", moderator_get_infos_soundboard, name="moderatorGetDataSoundboard"),
+    path("moderator/soundboard/<uuid:soundboard_uuid>", moderator_get_infos_soundboard, name="moderatorGetDataSoundboard"),
     path("moderator/log/", moderator_listing_log_moderation, name="moderatorControleLog"),
-    path("moderator/log/user/<uuid:user_id>", moderator_get_infos_user, name="moderatorGetDataUser"),
+    path("moderator/log/user/<uuid:user_uuid>", moderator_get_infos_user, name="moderatorGetDataUser"),
     
     
     

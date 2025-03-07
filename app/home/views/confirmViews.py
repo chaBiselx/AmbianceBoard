@@ -21,7 +21,7 @@ def confirm_account(request, uuid_user:str, confirmation_token:str):
     logger = logging.getLogger('home')
     logger.info("Starting ConfirmAccount View")
     try:
-        user = User.objects.get(id=uuid_user)
+        user = User.objects.get(uuid=uuid_user)
         ConfirmationUserService(user).verification_token(confirmation_token)
         
        

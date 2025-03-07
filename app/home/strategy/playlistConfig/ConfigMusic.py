@@ -4,7 +4,7 @@ from home.enum.FadeEnum import FadeEnum
 class ConfigMusic():
     def get_data(self, playlist):
         return {
-            "id": playlist.id, 
+            "id": playlist.uuid, 
             "type": PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.value, 
             "fadeIn": True, 
             "fadeInDuration": 5,

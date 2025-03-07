@@ -5,7 +5,7 @@ from home.enum.FadeEnum import FadeEnum
 class ConfigInstant():
     def get_data(self, playlist):
         return {
-            "id": playlist.id, 
+            "id": playlist.uuid, 
             "type": PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT.value, 
             "fadeIn": False, 
             "fadeInDuration": 0,

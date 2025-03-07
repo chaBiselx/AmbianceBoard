@@ -173,8 +173,8 @@ class SoundBoardModelTest(TestCase):
             name="UUID Generation SoundBoard"
         )
         
-        self.assertIsNotNone(soundboard.id)
-        self.assertTrue(isinstance(soundboard.id, uuid.UUID))
+        self.assertIsNotNone(soundboard.uuid)
+        self.assertTrue(isinstance(soundboard.uuid, uuid.UUID))
 
     def test_user_deletion_cascade(self):
         """Test que la suppression d'un utilisateur supprime ses soundboards"""
@@ -187,7 +187,7 @@ class SoundBoardModelTest(TestCase):
         
         # Vérifier que le soundboard a été supprimé
         with self.assertRaises(SoundBoard.DoesNotExist):
-            SoundBoard.objects.get(id=soundboard.id)
+            SoundBoard.objects.get(uuid=soundboard.uuid)
 
     def tearDown(self):
         """Nettoyage après les tests"""

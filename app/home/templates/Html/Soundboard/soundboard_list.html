@@ -7,7 +7,7 @@
     <div class="col-12 col-xl-10">
         <div class="flex-container">
             {% for soundboard in soundboards %}
-            <a href="{% url 'soundboardsRead' soundboard.id %}">
+            <a href="{% url 'soundboardsRead' soundboard.uuid %}">
                 <div class="playlist-link playlist-element flex-item playlist-dim-200 m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};">
                     {{ soundboard | applys_soundboard_content}}
                 </div>

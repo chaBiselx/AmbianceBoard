@@ -183,12 +183,12 @@ class PlaylistModelTest(TestCase):
             typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
         )
         
-        user_id = self.user.id
+        user_uuid = self.user.uuid
         self.user.delete()
         
         # Vérifier que la playlist a été supprimée
         with self.assertRaises(Playlist.DoesNotExist):
-            Playlist.objects.get(id=playlist.id)
+            Playlist.objects.get(uuid=playlist.uuid)
 
     def tearDown(self):
         """Nettoyage après les tests"""

@@ -5,7 +5,7 @@
 
 {% block javascript %}
 {% load static %}
-<script type="module" src="{% static "SoundboardPlayer"|search_true_file %}"></script>
+<script type="module" src="{% static " SoundboardPlayer"|search_true_file %}"></script>
 {% endblock javascript %}
 
 {% block content %}
@@ -14,12 +14,12 @@
     <div class="col-12 col-xl-10">
         <div style="display:None;" id="players"></div>
 
-        {%  add_mixer PlaylistTypeEnum %}
+        {% add_mixer PlaylistTypeEnum %}
 
         <div class="flex-container">
             {% for playlist in soundboard.get_list_playlist_ordered %}
-            <div class="playlist-link playlist-element flex-item playlist-dim-100 m-1" id="playlist-{{ playlist.id }}" style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};" data-playlist-uri="{% url 'publicStreammMusic' soundboard.id  playlist.id %}" {% for key, value in playlist.get_data_set.items %}
-                data-playlist-{{ key }}="{{ value }}" {% endfor %}>
+            <div class="playlist-link playlist-element flex-item playlist-dim-100 m-1" id="playlist-{{ playlist.uuid }}" style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};" data-playlist-uri="{% url 'publicStreammMusic' soundboard.uuid  playlist.uuid %}" 
+                {% for key, value in playlist.get_data_set.items %} data-playlist-{{ key }}="{{ value }}" {% endfor %}>
                 {{ playlist | applys_playlist_content}}
             </div>
             {% endfor %}

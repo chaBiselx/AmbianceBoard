@@ -7,13 +7,13 @@
 <div class="row">
     <div class="col-12">
         <div class="flex-container">
-                {% for soundboard in page_objects %}
-                <a href="{% url 'publicReadSoundboard' soundboard.id %}">
-                    <div class="playlist-link playlist-element flex-item playlist-dim-200 m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};">
-                        {{ soundboard | applys_soundboard_content}}
-                    </div>
-                </a>
-                {% endfor %}
+            {% for soundboard in page_objects %}
+            <a href="{% url 'publicReadSoundboard' soundboard.uuid %}">
+                <div class="playlist-link playlist-element flex-item playlist-dim-200 m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};">
+                    {{ soundboard | applys_soundboard_content}}
+                </div>
+            </a>
+            {% endfor %}
         </div>
     </div>
     <div class="col-12">
@@ -21,4 +21,3 @@
     </div>
 </div>
 {% endblock content %}
-

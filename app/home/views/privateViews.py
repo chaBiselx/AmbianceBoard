@@ -26,7 +26,7 @@ from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 @login_required
 def soundboard_list(request):
     try:
-        _query_set = SoundBoard.objects.all().order_by('id')
+        _query_set = SoundBoard.objects.all().order_by('uuid')
         _filter = SoundBoardFilter(queryset=_query_set)
         soundboards = _filter.filter_by_user(request.user)
     except Exception:
@@ -46,8 +46,8 @@ def soundboard_create(request):
     return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form , 'method' : 'create'})
 
 @login_required
-def soundboard_read(request, soundboard_id):
-    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
+def soundboard_read(request, soundboard_uuid):
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard :
         return render(request, 'Html/General/404.html', status=404)
     else:   
@@ -55,8 +55,8 @@ def soundboard_read(request, soundboard_id):
 
 @login_required
 @require_http_methods(['POST', 'GET'])
-def soundboard_update(request, soundboard_id):
-    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
+def soundboard_update(request, soundboard_uuid):
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if request.method == 'POST':
         if not soundboard:
             return render(request, 'Html/General/404.html', status=404)
@@ -73,8 +73,8 @@ def soundboard_update(request, soundboard_id):
     return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method' : 'update'})
 
 @login_required
-def soundboard_delete(request, soundboard_id) -> JsonResponse:
-    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
+def soundboard_delete(request, soundboard_uuid) -> JsonResponse:
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if request.method == 'POST':
         if not soundboard:
             return JsonResponse({"error": "SoundBoard introuvable."}, status=404)
@@ -85,8 +85,8 @@ def soundboard_delete(request, soundboard_id) -> JsonResponse:
 
 
 @login_required
-def soundboard_organize(request, soundboard_id):
-    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
+def soundboard_organize(request, soundboard_uuid):
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
         return render(request, 'Html/General/404.html', status=404)
     
@@ -96,9 +96,9 @@ def soundboard_organize(request, soundboard_id):
 
 @login_required
 @require_http_methods(['POST', 'DELETE', 'UPDATE'])
-def soundboard_organize_update(request, soundboard_id) -> HttpResponse:
+def soundboard_organize_update(request, soundboard_uuid) -> HttpResponse:
     try:
-        soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
+        soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
         data = json.loads(request.body.decode('utf-8'))
         playlist = (PlaylistService(request)).get_playlist(data['idPlaylist'])
         new_order = None
@@ -130,14 +130,14 @@ def playlist_read_all(request):
     return render(request, 'Html/Playlist/playlist_read_all.html', {'playlists': playlists})
 
 @login_required
-def playlist_create_with_soundboard(request, soundboard_id):
-    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_id)
+def playlist_create_with_soundboard(request, soundboard_uuid):
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if(soundboard) : 
         if request.method == 'POST':
             playlist = (PlaylistService(request)).save_form()
             if(playlist):
                 soundboard.playlists.add(playlist)
-            return redirect('soundboardsRead', soundboard_id=soundboard.id)
+            return redirect('soundboardsRead', soundboard_uuid=soundboard.uuid)
         else:
             form = PlaylistForm()
         list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
@@ -148,7 +148,7 @@ def playlist_create_with_soundboard(request, soundboard_id):
 def playlist_create(request):
     if request.method == 'POST':
         playlist = (PlaylistService(request)).save_form()
-        return redirect('playlistUpdate', playlist_id=playlist.id)
+        return redirect('playlistUpdate', playlist_uuid=playlist.uuid)
     else:
         form = PlaylistForm()
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
@@ -168,8 +168,8 @@ def playlist_listing_colors(request) -> JsonResponse:
 
 
 @login_required
-def playlist_update(request, playlist_id):
-    playlist = (PlaylistService(request)).get_playlist(playlist_id)
+def playlist_update(request, playlist_uuid):
+    playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     if request.method == 'POST':
         if not playlist:
             return render(request, 'Html/General/404.html', status=404)
@@ -177,21 +177,21 @@ def playlist_update(request, playlist_id):
             form = PlaylistForm(request.POST, request.FILES, instance=playlist)
             if form.is_valid():
                 form.save()
-                return redirect('playlistUpdate', playlist_id=playlist_id)
+                return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
     else:
         if not playlist:
             return render(request, 'Html/General/404.html', status=404) 
         else:
             form = PlaylistForm(instance=playlist)
-    list_music = (MusicService(request)).get_list_music(playlist_id)
+    list_music = (MusicService(request)).get_list_music(playlist_uuid)
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
     return render(request, 'Html/Playlist/playlist_create.html', {'form': form, 'method' : 'update', 'listMusic' : list_music, 'list_default_color':list_default_color})
 
 @login_required
 @require_http_methods(['DELETE'])
-def playlist_delete(request, playlist_id) -> JsonResponse:
+def playlist_delete(request, playlist_uuid) -> JsonResponse:
     if request.method == 'DELETE':
-        playlist = (PlaylistService(request)).get_playlist(playlist_id)
+        playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
             return JsonResponse({"error": "Playlist introuvable."}, status=404)
         else :
@@ -201,20 +201,20 @@ def playlist_delete(request, playlist_id) -> JsonResponse:
     
 @login_required
 @require_http_methods(['POST', 'GET'])
-def music_create(request, playlist_id) -> JsonResponse:
-    playlist = (PlaylistService(request)).get_playlist(playlist_id)
+def music_create(request, playlist_uuid) -> JsonResponse:
+    playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     if(playlist) : 
         if request.method == 'POST':
             (MusicService(request)).save_form(playlist)
-            return redirect('playlistUpdate', playlist_id=playlist_id)
+            return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
         else:
             form = MusicForm()
         return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist, 'method' : 'create' })
     return render(request, 'Html/General/404.html', status=404) 
 
 @login_required
-def music_update(request, playlist_id, music_id):
-    playlist = (PlaylistService(request)).get_playlist(playlist_id)
+def music_update(request, playlist_uuid, music_id):
+    playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     music = Music.objects.get(id=music_id)
     if not music or not playlist:
         return render(request, 'Html/General/404.html', status=404) 
@@ -222,7 +222,7 @@ def music_update(request, playlist_id, music_id):
         form = MusicForm(request.POST, request.FILES, instance=music)
         if form.is_valid():
             form.save()
-            return redirect('playlistUpdate', playlist_id=playlist_id)
+            return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
     else:
         form = MusicForm(instance=music)
     return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist, 'music': music, 'method' : 'update' })
@@ -231,9 +231,9 @@ def music_update(request, playlist_id, music_id):
 
 @login_required
 @require_http_methods(['DELETE'])
-def music_delete(request, playlist_id, music_id) -> JsonResponse:
+def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
     if request.method == 'DELETE':
-        playlist = (PlaylistService(request)).get_playlist(playlist_id)
+        playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
             return JsonResponse({"error": "Playlist introuvable."}, status=404)
         
@@ -247,8 +247,8 @@ def music_delete(request, playlist_id, music_id) -> JsonResponse:
 
 @login_required
 @require_http_methods(['GET'])
-def music_stream(request, playlist_id) -> HttpResponse:
-    music = (MusicService(request)).get_random_music(playlist_id)
+def music_stream(request, playlist_uuid) -> HttpResponse:
+    music = (MusicService(request)).get_random_music(playlist_uuid)
     if not music :
         return HttpResponse("Musique introuvable.", status=404)
     
@@ -258,9 +258,9 @@ def music_stream(request, playlist_id) -> HttpResponse:
 
 @login_required
 @require_http_methods(['POST'])
-def update_direct_volume(request, playlist_id) -> JsonResponse:
+def update_direct_volume(request, playlist_uuid) -> JsonResponse:
     if request.method == 'POST':
-        playlist = (PlaylistService(request)).get_playlist(playlist_id)
+        playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
             return JsonResponse({"error": "Playlist introuvable."}, status=404)
         else :

@@ -21,7 +21,7 @@ class ConfirmationUserService:
         self.logger.debug(f"Confirmation token: {self.user.confirmationToken} for user {self.user.username}: ")
         
         self.user.save()
-        return reverse("confirm_account", kwargs={'uuid_user': self.user.id, 'confirmation_token': self.user.confirmationToken })
+        return reverse("confirm_account", kwargs={'uuid_user': self.user.uuid, 'confirmation_token': self.user.confirmationToken })
     
     def verification_token(self, confirmation_token:str) -> bool:
         if self.user is None : 
