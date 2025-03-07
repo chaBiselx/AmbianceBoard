@@ -6,6 +6,7 @@ import type { uri } from './type/General';
 import { ButtonPlaylist, ButtonPlaylistFinder } from './modules/ButtonPlaylist';
 import { MixerManager } from './modules/MixerManager';
 import { SoundBoardManager } from './modules/SoundBoardManager';
+import WakeLock from './modules/WakeLock';
 import { UpdateVolumePlaylist } from './modules/UpdateVolumePlaylist';
 
 
@@ -19,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS);
         if (audioElementDiv) audioElementDiv.style.display = 'block';
     }
+    // Activer le Wake Lock au chargement de la page
+    new WakeLock().start();
 
 });
 
