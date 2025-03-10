@@ -110,7 +110,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Soundboard_Playlist',
+            name='SoundboardPlaylist',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('order', models.IntegerField(default=0)),
@@ -121,7 +121,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='soundboard',
             name='playlists',
-            field=models.ManyToManyField(related_name='soundboards', through='home.Soundboard_Playlist', to='home.playlist'),
+            field=models.ManyToManyField(related_name='soundboards', through='home.SoundboardPlaylist', to='home.playlist'),
         ),
         migrations.CreateModel(
             name='UserModerationLog',

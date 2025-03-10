@@ -2,7 +2,7 @@ from django.db import models
 
 
 
-class Soundboard_Playlist(models.Model):
+class SoundboardPlaylist(models.Model):
     SoundBoard = models.ForeignKey("SoundBoard", on_delete=models.CASCADE, null=False, blank=False)
     Playlist = models.ForeignKey("Playlist", on_delete=models.CASCADE, null=False, blank=False)
     order = models.IntegerField(default=0)

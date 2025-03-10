@@ -6,7 +6,7 @@ import uuid
 from home.models.SoundBoard import SoundBoard
 from home.models.User import User
 from home.models.Playlist import Playlist
-from home.models.Soundboard_Playlist import Soundboard_Playlist
+from home.models.SoundboardPlaylist import SoundboardPlaylist
 
 class SoundBoardModelTest(TestCase):
     def setUp(self):
@@ -34,7 +34,7 @@ class SoundBoardModelTest(TestCase):
             user=self.user,
             name="Other Name"
         )
-        Soundboard_Playlist.objects.create(
+        SoundboardPlaylist.objects.create(
             SoundBoard=soundboard,
             Playlist=self.playlist,
             order=1  
@@ -138,12 +138,12 @@ class SoundBoardModelTest(TestCase):
         
         # Ajouter plusieurs playlists
         playlist2 = Playlist.objects.create(name="Test Playlist 2",user=self.user)
-        Soundboard_Playlist.objects.create(
+        SoundboardPlaylist.objects.create(
             SoundBoard=soundboard,
             Playlist=self.playlist,
             order=1  
         )
-        Soundboard_Playlist.objects.create(
+        SoundboardPlaylist.objects.create(
             SoundBoard=soundboard,
             Playlist=playlist2,
             order=2  

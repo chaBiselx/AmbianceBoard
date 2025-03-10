@@ -3,7 +3,7 @@ from home.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
 from home.models.User import User
 from home.models.Playlist import Playlist
-from home.models.Soundboard_Playlist import Soundboard_Playlist
+from home.models.SoundboardPlaylist import SoundboardPlaylist
 from home.message.ReduceSizeImgMessenger import reduce_size_img
 
 
@@ -16,7 +16,7 @@ class SoundBoard(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
-    playlists = models.ManyToManyField(Playlist, through=Soundboard_Playlist, related_name='soundboards')
+    playlists = models.ManyToManyField(Playlist, through=SoundboardPlaylist, related_name='soundboards')
     name = models.CharField(max_length=255)
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
@@ -50,7 +50,7 @@ class SoundBoard(models.Model):
         super().clean()
         
     def get_list_playlist_ordered(self):
-        return Playlist.objects.filter(soundboards=self).order_by('soundboard_playlist__order')
+        return Playlist.objects.filter(soundboards=self).order_by('soundboardplaylist__order')
         
 
         

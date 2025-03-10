@@ -1,4 +1,4 @@
-from home.models.Soundboard_Playlist import Soundboard_Playlist
+from home.models.SoundboardPlaylist import SoundboardPlaylist
 from home.models.Playlist import Playlist
 from home.models.SoundBoard import SoundBoard
 
@@ -14,7 +14,7 @@ class SoundboardPlaylistService:
         if order is not None : 
             self.reorder_from(order)
         
-        Soundboard_Playlist.objects.create(
+        SoundboardPlaylist.objects.create(
             SoundBoard=self.soundboard,
             Playlist=playlist,
             order=order
@@ -27,7 +27,7 @@ class SoundboardPlaylistService:
         if order is not None : 
             self.reorder_from(order)
         
-        soundboard_playlist = Soundboard_Playlist.objects.get(SoundBoard=self.soundboard, Playlist=playlist)
+        soundboard_playlist = SoundboardPlaylist.objects.get(SoundBoard=self.soundboard, Playlist=playlist)
         soundboard_playlist.order = order
         soundboard_playlist.save()
         self.reorder()
@@ -42,18 +42,18 @@ class SoundboardPlaylistService:
         return order
     
     def remove(self, playlist:Playlist):
-        Soundboard_Playlist.objects.get(SoundBoard=self.soundboard, Playlist=playlist).delete()
+        SoundboardPlaylist.objects.get(SoundBoard=self.soundboard, Playlist=playlist).delete()
         self.reorder()
         return self
             
     def _new_order(self):
-        if Soundboard_Playlist.objects.filter(SoundBoard=self.soundboard).count() == 0:
+        if SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard).count() == 0:
             return 1
         else:
-            return Soundboard_Playlist.objects.filter(SoundBoard=self.soundboard).order_by('-order').first().order + 1
+            return SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard).order_by('-order').first().order + 1
             
     def reorder(self):
-        soundboard_playlists = Soundboard_Playlist.objects.filter(SoundBoard=self.soundboard).order_by('order')
+        soundboard_playlists = SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard).order_by('order')
         new_order = 1
         for soundboard_playlist in soundboard_playlists:
             soundboard_playlist.order = new_order
@@ -63,7 +63,7 @@ class SoundboardPlaylistService:
         return self
     
     def reorder_from(self, order):
-        soundboard_playlists = Soundboard_Playlist.objects.filter(SoundBoard=self.soundboard, order__gte=order ).order_by('order')
+        soundboard_playlists = SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard, order__gte=order ).order_by('order')
         new_order = order + 1
         for soundboard_playlist in soundboard_playlists:
             soundboard_playlist.order = new_order

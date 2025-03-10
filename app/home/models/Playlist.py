@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from home.strategy.PlaylistStrategy import PlaylistStrategy
 from home.message.ReduceSizeImgMessenger import reduce_size_img
-from home.models.Soundboard_Playlist import Soundboard_Playlist
+from home.models.SoundboardPlaylist import SoundboardPlaylist
 from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 
 
@@ -56,7 +56,7 @@ class Playlist(models.Model):
         return strategy.get_data(self)
 
     def get_order(self):
-        soundboard_playlist = Soundboard_Playlist.objects.filter(Playlist=self).first()
+        soundboard_playlist = SoundboardPlaylist.objects.filter(Playlist=self).first()
         return soundboard_playlist.order if soundboard_playlist and soundboard_playlist.order is not None else None
     
     def get_id_html(self) -> str:
