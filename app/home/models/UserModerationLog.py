@@ -10,7 +10,9 @@ class UserModerationLog(models.Model):
     """
     Journal des avertissements avec message et tag
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
+    userOld = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False,to_field='uuid', related_name='UserModerationLogUserOld')
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True,to_field='id', related_name='UserModerationLogUser')
+    
     message = models.TextField(verbose_name='Message de l\'avertissement', null=False, blank=False)
     tag = models.CharField(
         max_length=50,
