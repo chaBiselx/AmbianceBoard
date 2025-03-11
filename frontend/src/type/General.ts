@@ -1,4 +1,9 @@
 type uri = string;
 type method = string ;
 
-export type { uri, method};
+type position = {
+    x: number;
+    y: number;
+}
+
+export type { uri, method, position};
