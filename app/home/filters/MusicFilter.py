@@ -11,9 +11,9 @@ class MusicFilter:
             self.queryset = self.queryset.filter(playlist__user=user)
         return self.queryset
 
-    def filter_by_playlist(self, id_playlist):
-        if id_playlist:
-            self.queryset = self.queryset.filter(playlist =id_playlist)
+    def filter_by_playlist(self, uuid_playlist):
+        if uuid_playlist:
+            self.queryset = self.queryset.filter(playlist__uuid =uuid_playlist)
         return self.queryset
 
  
