@@ -9,7 +9,7 @@ class SoundBoardPlaylistManager:
         self.soundboard = soundboard
 
     def get_playlists(self):
-        return list(self.soundboard.playlists.all().order_by('soundboard_playlist__order'))
+        return list(self.soundboard.playlists.all().order_by('soundboardplaylist__order'))
 
     def get_unassociated_playlists(self):
         all_playlists = list((PlaylistService(self.request)).get_all_playlist())
