@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-
+{% load FrontJs %}
 {% load static %}
 
 <head>
@@ -57,7 +57,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
 
-    <script src="{% static 'js_pure/style.js' %}"></script>
+    <script type="module" src="{% static "General"|search_true_file %}"></script>
     <script src="{% static 'js_pure/general.js' %}"></script>
     <script src="{% static 'js_pure/clientNotification.js' %}"></script>
 

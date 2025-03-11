@@ -22,9 +22,9 @@ def detect_not_confirmed_account():
         @wraps(view_func)
         def wrapper(request, *args, **kwargs):
             if request.user.is_authenticated:
-                if request.user.isConfirmed == False :
+                if request.user.isConfirmed == False or True:
                     url = reverse("resend_email_confirmation")
-                    messages.info(request, mark_safe(f'Votre addresse email n\'est pas confirmé, merci de regarder dans vos email <br/> <button class="btn btn-secondary" data-url="{url}" onclick="resentEmailConfirmation(this)">Renvoyer un email de confirmation</button>'))
+                    messages.info(request, mark_safe(f'Votre addresse email n\'est pas confirmé, merci de regarder dans vos email <br/> <button class="btn btn-secondary" id="resend_email_confirmation_account" data-url="{url}" >Renvoyer un email de confirmation</button>'))
                 
             return view_func(request, *args, **kwargs)
         return wrapper

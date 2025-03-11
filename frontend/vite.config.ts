@@ -13,7 +13,8 @@ export default defineConfig(({ mode }) => {
                     FormPlaylist: resolve(__dirname, 'src/FormPlaylist.ts'),
                     FormSoundboard: resolve(__dirname, 'src/FormSoundboard.ts'),
                     PasswordRules: resolve(__dirname, 'src/PasswordRules.ts'),
-                    SounboardOrganizer: resolve(__dirname, 'src/SounboardOrganizer.ts')
+                    SounboardOrganizer: resolve(__dirname, 'src/SounboardOrganizer.ts'),
+                    General: resolve(__dirname, 'src/General.ts')
                 },
                 output: {
                     format: 'es',
