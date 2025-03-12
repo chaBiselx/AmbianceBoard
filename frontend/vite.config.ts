@@ -8,6 +8,7 @@ export default defineConfig(({ mode }) => {
     return {
         build: {
             rollupOptions: {
+                dir: resolve(__dirname, 'static/js'),
                 input: {
                     SoundboardPlayer: resolve(__dirname, 'src/SoundboardPlayer.ts'),
                     FormPlaylist: resolve(__dirname, 'src/FormPlaylist.ts'),
