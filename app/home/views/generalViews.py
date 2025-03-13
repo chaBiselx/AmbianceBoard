@@ -23,6 +23,10 @@ def home(request):
     return render(request, "Html/General/home.html", {"title": "Accueil"})
 
 
+def legal_notice(request):
+    return render(request, "Html/General/legal_notice.html", {"title": "Mention légal"})
+
+
 def create_account(request):
     logger = logging.getLogger('home')
     errors = []

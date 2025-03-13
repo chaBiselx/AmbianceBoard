@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from home.views.generalViews import home, create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password
+from home.views.generalViews import home, create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice
 from home.views.privateViews import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
 from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors, playlist_describe_type
 from home.views.privateViews import music_create, music_update, music_delete,music_stream, update_direct_volume
@@ -17,6 +17,7 @@ from home.views.confirmViews import confirm_account
 urlpatterns = [
     path("", home, name="home"),
     path("admin/", admin.site.urls),
+    path("legal-notice", legal_notice, name="legalNotice"),
     
     path("create-account/", create_account, name="createAccount"),
     path("login/", login_view, name="login"),

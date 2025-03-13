@@ -13,10 +13,6 @@ from django.core.exceptions import ValidationError
 from home.service.ConfirmationUserService import ConfirmationUserService
 
 
-def home(request):
-    return render(request, "Html/General/home.html", {"title": "Accueil"})
-
-
 def confirm_account(request, uuid_user:str, confirmation_token:str):
     logger = logging.getLogger('home')
     logger.info("Starting ConfirmAccount View")
