@@ -1,0 +1,66 @@
+<ul>
+    {% for config in dataFacade %}
+    <li class="m-0">
+        <h5>{{ config.name }} : </h5>
+    </li>
+    <ul>
+        <li>Lecture aléatoire : Oui 
+            <img src="{{listParam.STATIC.path}}" alt="{{listParam.STATIC.value}}" width="12px">
+        <li>
+            Lire en boucle :
+            {% if config.structure.loop.default %}
+            Oui
+            {% else %}
+            Non
+            {% endif %}
+            <img src="{{config.structure.loop.condition.get_icon_path}}" alt="{{config.structure.loop.condition.value}}" width="12px">
+        </li>
+        <li>
+            delay max entre deux musique :
+            {% if config.structure.delay.default is not None %}
+            {{ config.structure.delay.default }}s
+            {% endif %}
+            <img src="{{config.structure.delay.condition.get_icon_path}}" alt="{{config.structure.delay.condition.value}}" width="12px">
+        </li>
+        <li>
+            une seul instance de ce type de musique :
+            {% if config.structure.singleConcurrentRead.default %}
+            Oui
+            {% else %}
+            Non
+            {% endif %}
+            <img src="{{config.structure.singleConcurrentRead.condition.get_icon_path}}" alt="{{config.structure.singleConcurrentRead.condition.value}}" width="12px">
+        </li>
+        <li>
+            volume :
+            {% if config.structure.volume.default %}
+            {{ config.structure.volume.default }} %
+            {% endif %}
+            <img src="{{config.structure.volume.condition.get_icon_path}}" alt="{{config.structure.volume.condition.value}}" width="12px">
+        </li>
+        <li>
+            {{config.structure.fadeIn.volume.get_icon_path}}
+
+            fade in :
+            {% if config.structure.fadeIn.default %}
+            Oui | {{ config.structure.fadeInDuration.default }}s | {{ config.structure.fadeInType.default }}
+            {% else %}
+            Non
+            {% endif %}
+            <img src="{{config.structure.fadeIn.condition.get_icon_path}}" alt="{{config.structure.fadeIn.condition.value}}" width="12px">
+        </li>
+        <li>
+            fade out :
+            {% if config.structure.fadeOut.default %}
+            Oui | {{ config.structure.fadeOutDuration.default }}s | {{ config.structure.fadeOutType.default }}
+            {% else %}
+            Non
+            {% endif %}
+            <img src="{{config.structure.fadeOut.condition.get_icon_path}}" alt="{{config.structure.fadeOut.condition.value}}" width="12px">
+        </li>
+
+    </ul>
+
+
+    {% endfor %}
+</ul>

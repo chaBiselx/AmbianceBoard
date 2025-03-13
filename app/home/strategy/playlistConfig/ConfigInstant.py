@@ -1,11 +1,12 @@
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from home.enum.FadeEnum import FadeEnum
+from home.strategy.playlistConfig.AbstractConfig import AbstractConfig
 
-
-class ConfigInstant():
-    def get_data(self, playlist):
-        return {
-            "id": playlist.uuid, 
+class ConfigInstant(AbstractConfig):
+    def __init__(self):
+        super().__init__()
+        self.default_data = {
+            "id": None, 
             "type": PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT.value, 
             "fadeIn": False, 
             "fadeInDuration": 0,
@@ -15,6 +16,6 @@ class ConfigInstant():
             "fadeOutType": FadeEnum.LINEAR.value,
             "loop": False,
             "singleConcurrentRead" : False,
-            "volume" : playlist.volume,
-            "delay" :  playlist.maxDelay or 0
+            "volume" : 75,
+            "delay" :  0
         }

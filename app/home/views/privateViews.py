@@ -20,7 +20,9 @@ from home.forms.MusicForm import MusicForm
 from home.filters.SoundBoardFilter import SoundBoardFilter
 from home.enum.PermissionEnum import PermissionEnum
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from home.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
+from home.formatter.TypePlaylistFormater import TypePlaylistFormater
 
 
 @login_required
@@ -153,6 +155,39 @@ def playlist_create(request):
         form = PlaylistForm()
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
     return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic': None, 'list_default_color': list_default_color})
+
+@login_required
+@require_http_methods(['GET'])
+def playlist_describe_type(request)-> HttpResponse:
+    data = []
+    for type_playlist in list(PlaylistTypeEnum):
+        obj = {
+            "type": type_playlist.name, 
+            "name": type_playlist.value,
+            "structure": TypePlaylistFormater(type_playlist).get_structured_data()
+        }
+        data.append(obj)
+    list_param ={
+        ConfigTypeDataEnum.STATIC.name : {
+            'name' : ConfigTypeDataEnum.STATIC.name,
+            'value' : ConfigTypeDataEnum.STATIC.value,
+            'path' : ConfigTypeDataEnum.STATIC.get_icon_path(),
+        },
+        ConfigTypeDataEnum.PARAM.name :{
+            'name' : ConfigTypeDataEnum.PARAM.name,
+            'value' : ConfigTypeDataEnum.PARAM.value,
+            'path' : ConfigTypeDataEnum.PARAM.get_icon_path(),
+        },
+        ConfigTypeDataEnum.PARAM_WITH_DEFAULT.name : {
+            'name' : ConfigTypeDataEnum.PARAM_WITH_DEFAULT.name,
+            'value' : ConfigTypeDataEnum.PARAM_WITH_DEFAULT.value,
+            'path' : ConfigTypeDataEnum.PARAM_WITH_DEFAULT.get_icon_path(),
+        }
+    }
+    
+    return render(request, 'Html/Playlist/describe_type.html', {'dataFacade': data, "listParam":list_param})
+    
+    
 
 @login_required
 @require_http_methods(['GET'])

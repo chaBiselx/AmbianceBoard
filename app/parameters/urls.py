@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 from home.views.generalViews import home, create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password
 from home.views.privateViews import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
-from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors
+from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors, playlist_describe_type
 from home.views.privateViews import music_create, music_update, music_delete,music_stream, update_direct_volume
 from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user
 from home.views.settingsViews import settings_index, settings_update_default_style
@@ -42,6 +42,7 @@ urlpatterns = [
     path("playlist/all", playlist_read_all, name="playlistsAllList"),
     path("playlist/<uuid:playlist_uuid>/update", playlist_update, name="playlistUpdate"),
     path("playlist/<uuid:playlist_uuid>/delete", playlist_delete, name="playlistDelete"),
+    path("playlist/type/describe", playlist_describe_type, name="playlistDescribeType"),
     
     path("playlist/<uuid:playlist_uuid>/music/create", music_create, name="addMusic"),
     path("playlist/<uuid:playlist_uuid>/music/edit/<int:music_id>", music_update, name="editMusic"),

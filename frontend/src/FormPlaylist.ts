@@ -107,7 +107,7 @@ function toggleShowColorForm() {
     }
 }
 
-function toggleShowDelayForm(){
+function toggleShowDelayForm() {
     const listClass = document.getElementsByClassName('delay_form')
     const id_useSpecificDelay = document.getElementById('id_useSpecificDelay') as HTMLInputElement;
     if (id_useSpecificDelay && id_useSpecificDelay.checked) {
@@ -178,12 +178,12 @@ function addDeleteMusicEvent() {
 
 function confirmSuppressionMusic(event: Event) {
     const el = event.target as HTMLButtonElement;
-    if(el.dataset.deleteurl && el.dataset.redirecturl ){
+    if (el.dataset.deleteurl && el.dataset.redirecturl) {
         const config = {
             delete_url: el.dataset.deleteurl,
             redirect_url: el.dataset.redirecturl,
         };
-    
+
         if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
             callAjaxDeleteMusic(config)
         } else {
@@ -221,72 +221,26 @@ function addPopupDescriptionPlaylistType() {
     }
 }
 
-function showDescriptionType() {
-    const div = document.createElement("div");
-    const ul = document.createElement("ul");
+function showDescriptionType(e: Event) {
+    const element = e.target as HTMLButtonElement;
+    const url = element.dataset.url!;
+    const title = "Selectionner Couleur existantes";
 
-    const li1 = document.createElement("li");
-    li1.innerHTML = "Son instantanné";
-    const li1Ul = document.createElement("ul");
-    const li1Li1 = document.createElement("li");
-    li1Li1.innerHTML = "choisi une musique aléatoire";
-    const li1Li2 = document.createElement("li");
-    li1Li2.innerHTML = "sans fade in/out";
-    const li1Li3 = document.createElement("li");
-    li1Li3.innerHTML = "sans lecture suivante";
-    const li1Li4 = document.createElement("li");
-    li1Li4.innerHTML = "peux etre jouer avec d'autre sons";
-    li1Ul.appendChild(li1Li1);
-    li1Ul.appendChild(li1Li2);
-    li1Ul.appendChild(li1Li3);
-    li1Ul.appendChild(li1Li4);
-    li1.appendChild(li1Ul);
-
-    const li2 = document.createElement("li");
-    li2.innerHTML = "musique d'ambiences";
-    const li2Ul = document.createElement("ul");
-    const li2Li1 = document.createElement("li");
-    li2Li1.innerHTML = "lit la playlist de musique de manière aléatoire";
-    const li2Li2 = document.createElement("li");
-    li2Li2.innerHTML = "avec fade in/out (3s)";
-    const li2Li3 = document.createElement("li");
-    li2Li3.innerHTML = "avec lecture suivante";
-    const li2Li4 = document.createElement("li");
-    li2Li4.innerHTML = "peux etre jouer avec d'autre sons";
-    li2Ul.appendChild(li2Li1);
-    li2Ul.appendChild(li2Li2);
-    li2Ul.appendChild(li2Li3);
-    li2Ul.appendChild(li2Li4);
-    li2.appendChild(li2Ul);
-
-    const li3 = document.createElement("li");
-    li3.innerHTML = "musique de fond";
-    const li3Ul = document.createElement("ul");
-    const li3Li1 = document.createElement("li");
-    li3Li1.innerHTML = "lit la playlist de musique de manière aléatoire";
-    const li3Li2 = document.createElement("li");
-    li3Li2.innerHTML = "avec fade in/out (5s)";
-    const li3Li3 = document.createElement("li");
-    li3Li3.innerHTML = "avec lecture suivante";
-    const li3Li4 = document.createElement("li");
-    li3Li4.innerHTML = "1 playlist de ce type musique par fois";
-    li3Ul.appendChild(li3Li1);
-    li3Ul.appendChild(li3Li2);
-    li3Ul.appendChild(li3Li3);
-    li3Ul.appendChild(li3Li4);
-    li3.appendChild(li3Ul);
-
-    ul.appendChild(li1);
-    ul.appendChild(li2);
-    ul.appendChild(li3);
-    div.appendChild(ul);
-
-
-    ModalCustom.show({
-        title: 'Description',
-        body: div.outerHTML,
-        footer: '',
-    });
+    fetch(url, {
+        method: 'GET',
+    })
+        .then(response => response.text())
+        .then((body) => {
+            ModalCustom.show({
+                title: title,
+                body: body as string,
+                footer: "",
+                width: "lg"
+            })
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête AJAX:', error);
+        });
 }
 
 function addListingOtherColorsEvent() {
@@ -332,7 +286,9 @@ function getListingOtherColors(event: Event) {
             }
             ModalCustom.show({
                 title: title,
-                body: divRow.outerHTML
+                body: divRow.outerHTML,
+                footer: "",
+                width: "lg"
             })
 
             const btnSelectPlaylistColor = document.getElementsByClassName("btn-select-playlist-color");
@@ -418,7 +374,9 @@ function showPopupMusic(event: Event) {
         .then((body) => {
             ModalCustom.show({
                 title: title,
-                body: body
+                body: body,
+                footer: "",
+                width: "lg"
             })
             const fileInput = document.getElementById('id_file');
             if (fileInput) {
