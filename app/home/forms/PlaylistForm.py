@@ -50,6 +50,7 @@ class PlaylistForm(forms.ModelForm):
         required=False
     )
     clear_icon = forms.BooleanField(required=False, label='Supprimer le fichier', initial=False)
+    useSpecificDelay = forms.BooleanField(required=False, label='Utiliser un delai aléatoire spécifique', initial=False)
     maxDelay = forms.IntegerField(
         label='Délai maximum (en seconde) avant de jouer la musique suivante',
         min_value=0,

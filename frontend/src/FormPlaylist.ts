@@ -5,6 +5,7 @@ type playlist = { color: string, colorText: string, typePlaylist: string };
 
 simulatePlaylistColor();
 toggleShowColorForm();
+toggleShowDelayForm();
 
 const DomElementAddEvent = ['id_name', 'id_color', 'id_colorText', 'id_icon', 'id_typePlaylist', 'id_useSpecificColor'];
 for (let i = 0; i < DomElementAddEvent.length; i++) {
@@ -22,6 +23,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const id_useSpecificColor = document.getElementById('id_useSpecificColor');
     if (id_useSpecificColor) {
         id_useSpecificColor.addEventListener('change', toggleShowColorForm);
+    }
+    const id_useSpecificDelay = document.getElementById('id_useSpecificDelay');
+    if (id_useSpecificDelay) {
+        id_useSpecificDelay.addEventListener('change', toggleShowDelayForm);
     }
     addMusicEvent();
     addDeletePlaylistEvent();
@@ -100,6 +105,21 @@ function toggleShowColorForm() {
             listClass[i].classList.add('d-none');
         }
     }
+}
+
+function toggleShowDelayForm(){
+    const listClass = document.getElementsByClassName('delay_form')
+    const id_useSpecificDelay = document.getElementById('id_useSpecificDelay') as HTMLInputElement;
+    if (id_useSpecificDelay && id_useSpecificDelay.checked) {
+        for (let i = 0; i < listClass.length; i++) {
+            listClass[i].classList.remove('d-none');
+        }
+    } else {
+        for (let i = 0; i < listClass.length; i++) {
+            listClass[i].classList.add('d-none');
+        }
+    }
+
 }
 
 function addDeletePlaylistEvent() {

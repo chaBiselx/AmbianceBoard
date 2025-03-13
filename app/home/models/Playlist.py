@@ -23,11 +23,12 @@ class Playlist(models.Model):
         (PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.name, PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.value),
         (PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name, PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.value),
     ])
-    useSpecificColor = models.BooleanField(default=False, )  # Format hexa (ex: #FFFFFF)
+    useSpecificColor = models.BooleanField(default=False, )
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
     volume = models.IntegerField(default=75, validators=[MinValueValidator(0), MaxValueValidator(100)])
     icon = models.FileField(upload_to=PLAYLIST_FOLDER, default=None, null=True, blank=True)
+    useSpecificDelay = models.BooleanField(default=False, )
     maxDelay = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     
     def __init__(self, *args, **kwargs):

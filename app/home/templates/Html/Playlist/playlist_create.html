@@ -69,7 +69,10 @@
                     <div class="col-sm-12 col-md-4 color_form">
                         <button type="button" class="btn btn-info" id="btn-select-other-color" data-url="{% url 'getListingOtherColors' %}">Selectionner couleurs existantes</button>
                     </div>
-                    <div class="col-sm-12 col-md-12">
+                    <div class="col-12">
+                        {{ form.useSpecificDelay.label }} :<br /> {{ form.useSpecificDelay }}
+                    </div>
+                    <div class="col-sm-12 col-md-12 delay_form">
                         {{ form.maxDelay.label }} :<br /> {{ form.maxDelay }}
                     </div>
 
