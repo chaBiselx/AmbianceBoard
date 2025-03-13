@@ -1,5 +1,5 @@
-
 import Cookie from "./modules/Cookie";
+import Notification from './modules/Notifications';
 
 document.addEventListener("DOMContentLoaded", () => {
     new EmailConfirmationAccount('resend_email_confirmation_account').addEvent();
@@ -36,11 +36,11 @@ class EmailConfirmationAccount {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        createClientNotification({message: 'Email envoyé avec success', type: 'success'})
+                        Notification.createClientNotification({message: 'Email envoyé avec success', type: 'success'})
                     })
                     .catch(error => {
                         console.error(error)
-                        createClientNotification({message: 'Une erreur est survenue', type: 'error'})
+                        Notification.createClientNotification({message: 'Une erreur est survenue', type: 'error'})
                     });
             }
             
@@ -49,3 +49,4 @@ class EmailConfirmationAccount {
       
     }
 }
+

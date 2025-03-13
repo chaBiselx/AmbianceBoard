@@ -13,9 +13,6 @@ async function moveFiles() {
     console.log('🚀 Déplacement des fichiers après build...');
 
     try {
-        await fs.copy(`${outputDir}/js`, `${targetDir}/js_pure`);
-        console.log('✔️ Fichiers JS déplacés !');
-
         await fs.copy(`${outputDir}/css`, `${targetDir}/css`);
         console.log('✔️ Fichiers CSS déplacés !');
 

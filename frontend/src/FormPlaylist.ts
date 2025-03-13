@@ -1,4 +1,5 @@
 import Cookie from './modules/Cookie.ts';
+import ModalCustom from './modules/Modal.ts';
 
 type playlist = { color: string, colorText: string, typePlaylist: string };
 
@@ -261,7 +262,7 @@ function showDescriptionType() {
     div.appendChild(ul);
 
 
-    modalShow({
+    ModalCustom.show({
         title: 'Description',
         body: div.outerHTML,
         footer: '',
@@ -309,7 +310,7 @@ function getListingOtherColors(event: Event) {
                     appendChildPlaylist(divRow, playlist)
                 })
             }
-            modalShow({
+            ModalCustom.show({
                 title: title,
                 body: divRow.outerHTML
             })
@@ -372,7 +373,7 @@ function selectColor(event: Event) {
         id_color.value = color;
         id_colorText.value = colorText;
     }
-    modalHide();
+    ModalCustom.hide();
     simulatePlaylistColor();
 }
 
@@ -395,7 +396,7 @@ function showPopupMusic(event: Event) {
     })
         .then(response => response.text())
         .then((body) => {
-            modalShow({
+            ModalCustom.show({
                 title: title,
                 body: body
             })

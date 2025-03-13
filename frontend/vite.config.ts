@@ -2,10 +2,14 @@ import { defineConfig, loadEnv } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig(({ mode }) => {
-    // Charge les variables d'environnement en fonction du mode
     const env = loadEnv(mode, process.cwd(), '');
 
     return {
+        resolve: {
+            alias: {
+                bootstrap: resolve(__dirname, 'node_modules/bootstrap')
+            }
+        },
         build: {
             rollupOptions: {
                 dir: resolve(__dirname, 'static/js'),
@@ -26,7 +30,6 @@ export default defineConfig(({ mode }) => {
             }
         },
         define: {
-            // Expose DEBUG spécifiquement
             'import.meta.env.DEBUG': env.DEBUG === '1'
         }
     };
