@@ -11,13 +11,13 @@
             <hr class="dropdown-divider">
         </li>
         <li><a class="dropdown-item" href="{% url 'settingsIndex' %}">Settings</a></li>
-        {% if request.user|has_group:MODERATEUR %}
+        {% if request.user|has_group:"MODERATEUR" %}
         <li>
             <hr class="dropdown-divider">    
         </li>
         <li><a class="dropdown-item" href="{% url 'moderatorDashboard' %}">Moderation</a></li>
         {% endif %}
-        {% if request.user|has_group:MANAGER %}
+        {% if request.user|has_group:"MANAGER" %}
         <li>
             <hr class="dropdown-divider">    
         </li>
