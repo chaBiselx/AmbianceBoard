@@ -1,6 +1,6 @@
-import { MusicElement } from "../modules/MusicElement";
-import { MixerManager } from "../modules/MixerManager";
-import { ButtonPlaylistFinder } from "../modules/ButtonPlaylist";
+import { MusicElement } from "@/modules/MusicElement";
+import { MixerManager } from "@/modules/MixerManager";
+import { ButtonPlaylistFinder } from "@/modules/ButtonPlaylist";
 
 class UpdateVolumeElement {
     musicElement: MusicElement

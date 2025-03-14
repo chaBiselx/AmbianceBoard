@@ -1,4 +1,4 @@
-import Cookie from "./modules/Cookie";
+import Cookie from "@/modules/Cookie";
 
 type deleteConfig = { delete_url: string, redirect_url: string };
 

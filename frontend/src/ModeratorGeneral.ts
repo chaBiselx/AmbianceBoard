@@ -1,5 +1,22 @@
-function getDataPlaylist(el){
-    const url = el.dataset.url;
+import ModalCustom from '@/modules/Modal.ts';
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.popup-data-playlist').forEach((el) => {
+        el.addEventListener('click', getDataPlaylist);
+    })
+    document.querySelectorAll('.popup-data-soundboard').forEach((el) => {
+        el.addEventListener('click', getDataSoundboard);
+    })
+    document.querySelectorAll('.popup-data-user').forEach((el) => {
+        el.addEventListener('click', getDataUser);
+    })
+    
+})
+
+
+function getDataPlaylist(event:Event){
+    const el = event.target as HTMLButtonElement;
+    const url = el.dataset.url!;
     const title = "Playlist" + el.dataset.title;
 
     fetch(url, {
@@ -7,23 +24,20 @@ function getDataPlaylist(el){
     })
         .then(response => response.text())
         .then((body) => {
-            modalShow({
+            ModalCustom.show({
                 title: title,
                 body: body,
+                footer: "",
                 width: 'xl'
             })
-            fileInput = document.getElementById('id_file');
-            if (fileInput) {
-                fileInput.addEventListener('change', autoSetAlternateName);
-            }
-
         })
         .catch(error => {
             console.error('Erreur lors de la requête AJAX:', error);
         });
 }
 
-function getDataSoundboard(el){
+function getDataSoundboard(event:Event){
+    const el = event.target as HTMLButtonElement;
     const url = el.dataset.url;
     const title = " Soundboard : " + el.dataset.title;
 
@@ -32,23 +46,20 @@ function getDataSoundboard(el){
     })
         .then(response => response.text())
         .then((body) => {
-            modalShow({
+            ModalCustom.show({
                 title: title,
                 body: body,
+                footer: "",
                 width: 'xl'
             })
-            fileInput = document.getElementById('id_file');
-            if (fileInput) {
-                fileInput.addEventListener('change', autoSetAlternateName);
-            }
-
         })
         .catch(error => {
             console.error('Erreur lors de la requête AJAX:', error);
         });
 }
 
-function getDataUser(el){
+function getDataUser(event:Event){
+    const el = event.target as HTMLButtonElement;
     const url = el.dataset.url;
     const title = " log : " + el.dataset.title;
 
@@ -57,16 +68,12 @@ function getDataUser(el){
     })
         .then(response => response.text())
         .then((body) => {
-            modalShow({
+            ModalCustom.show({
                 title: title,
                 body: body,
+                footer: "",
                 width: 'xl'
             })
-            fileInput = document.getElementById('id_file');
-            if (fileInput) {
-                fileInput.addEventListener('change', autoSetAlternateName);
-            }
-
         })
         .catch(error => {
             console.error('Erreur lors de la requête AJAX:', error);

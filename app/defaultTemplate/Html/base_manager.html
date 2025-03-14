@@ -1,0 +1,7 @@
+{% extends 'Html/base.html' %}
+{% load static %}
+{% load FrontJs %}
+
+{% block javascript %}
+    <script type="module" src="{% static 'Manager_General'|search_true_file %}"></script>
+{% endblock javascript %}

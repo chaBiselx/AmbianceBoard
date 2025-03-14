@@ -1,6 +1,8 @@
 {% extends 'Html/base.html' %}
+{% load FrontJs %}
+{% load static %}
 
 
 {% block javascript %}
-    <script src="{% url 'protectedModerator' 'js' 'popupMoreInfos.js' %}"></script>
+    <script type="module" src="{% static 'Moderator_General'|search_true_file %}"></script>
 {% endblock javascript %}

@@ -11,7 +11,6 @@ from home.views.moderatorViews import moderator_dashboard, moderator_listing_ima
 from home.views.settingsViews import settings_index, settings_update_default_style
 from home.views.managerViews import manager_dashboard, clean_media_folder
 from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream
-from home.views.staticProtectedViews import static_protected_moderator_js, static_protected_manager_js
 from home.views.confirmViews import confirm_account
 
 urlpatterns = [
@@ -67,12 +66,6 @@ urlpatterns = [
     path("moderator/soundboard/<uuid:soundboard_uuid>", moderator_get_infos_soundboard, name="moderatorGetDataSoundboard"),
     path("moderator/log/", moderator_listing_log_moderation, name="moderatorControleLog"),
     path("moderator/log/user/<uuid:user_uuid>", moderator_get_infos_user, name="moderatorGetDataUser"),
-    
-    
-    
-    path("protected/static/mod/<str:folder>/<str:filename>", static_protected_moderator_js, name="protectedModerator"),
-    path("protected/static/man/<str:folder>/<str:filename>", static_protected_manager_js, name="protectedManager"),
-    
     
     path("manager/", manager_dashboard, name="managerDashboard"),
     path("manager/clean-media-folders", clean_media_folder, name="adminCleanMediaFolders"),

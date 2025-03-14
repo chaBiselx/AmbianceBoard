@@ -1,13 +1,13 @@
 
 
-import Config from './modules/Config';
-import type { uri } from './type/General';
+import Config from '@/modules/Config';
+import type { uri } from '@/type/General';
 
-import { ButtonPlaylist, ButtonPlaylistFinder } from './modules/ButtonPlaylist';
-import { MixerManager } from './modules/MixerManager';
-import { SoundBoardManager } from './modules/SoundBoardManager';
-import WakeLock from './modules/WakeLock';
-import { UpdateVolumePlaylist } from './modules/UpdateVolumePlaylist';
+import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
+import { MixerManager } from '@/modules/MixerManager';
+import { SoundBoardManager } from '@/modules/SoundBoardManager';
+import WakeLock from '@/modules/WakeLock';
+import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -98,8 +98,10 @@ function updateWithMixerPlaylist() {
     const formElements = document.querySelectorAll('.playlist-link');
     for (let index = 0; index < formElements.length; index++) {
         const element = formElements[index] as HTMLElement;
-        const elmentDest = document.getElementById(`range_volume_${element.dataset.playlistId!}`)!
-        elmentDest.style.width = `${element.offsetWidth}px`;
+        const elmentDest = document.getElementById(`range_volume_${element.dataset.playlistId!}`)
+        if(elmentDest){
+            elmentDest.style.width = `${element.offsetWidth}px`;
+        }
 
     }
 }

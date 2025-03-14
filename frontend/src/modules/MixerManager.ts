@@ -1,5 +1,5 @@
 
-import UpdateVolumeElement from '../modules/UpdateVolumeElement';
+import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { MusicElement } from './MusicElement';
 
 type mixer = {

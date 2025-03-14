@@ -1,6 +1,6 @@
-import Cookie from "./modules/Cookie";
-import type { position } from './type/General'
-import { OrganizerButtonPlaylist } from './modules/OrganizerButtonPlaylist'
+import Cookie from "@/modules/Cookie";
+import type { position } from '@/type/General'
+import { OrganizerButtonPlaylist } from '@/modules/OrganizerButtonPlaylist'
 
 document.addEventListener("DOMContentLoaded", () => {
     if (OrganizerDragAndDropZone.valid()) {

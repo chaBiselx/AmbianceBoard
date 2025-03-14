@@ -1,5 +1,5 @@
-import Cookie from './modules/Cookie.ts';
-import ModalCustom from './modules/Modal.ts';
+import Cookie from '@/modules/Cookie.ts';
+import ModalCustom from '@/modules/Modal.ts';
 
 type playlist = { color: string, colorText: string, typePlaylist: string };
 

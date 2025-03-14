@@ -1,9 +1,9 @@
 import { ButtonPlaylist } from "./ButtonPlaylist";
-import { SearchMusicElement } from "../modules/MusicElement";
-import  UpdateVolumeElement  from "../modules/UpdateVolumeElement";
-import Cookie from '../modules/Cookie';
+import { SearchMusicElement } from "@/modules/MusicElement";
+import  UpdateVolumeElement  from "@/modules/UpdateVolumeElement";
+import Cookie from '@/modules/Cookie';
 
-import { method, uri } from '../type/General';
+import { method, uri } from '@/type/General';
 
 class UpdateVolumePlaylist {
     buttonPlaylist: ButtonPlaylist

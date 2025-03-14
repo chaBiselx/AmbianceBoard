@@ -7,7 +7,8 @@ export default defineConfig(({ mode }) => {
     return {
         resolve: {
             alias: {
-                bootstrap: resolve(__dirname, 'node_modules/bootstrap')
+                bootstrap: resolve(__dirname, 'node_modules/bootstrap'),
+                '@': resolve(__dirname, './src')
             }
         },
         build: {
@@ -19,7 +20,9 @@ export default defineConfig(({ mode }) => {
                     FormSoundboard: resolve(__dirname, 'src/FormSoundboard.ts'),
                     PasswordRules: resolve(__dirname, 'src/PasswordRules.ts'),
                     SounboardOrganizer: resolve(__dirname, 'src/SounboardOrganizer.ts'),
-                    General: resolve(__dirname, 'src/General.ts')
+                    General: resolve(__dirname, 'src/General.ts'),
+                    Manager_General: resolve(__dirname, 'src/ManagerGeneral.ts'),
+                    Moderator_General: resolve(__dirname, 'src/ModeratorGeneral.ts'),
                 },
                 output: {
                     format: 'es',

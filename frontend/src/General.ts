@@ -1,5 +1,5 @@
-import Cookie from "./modules/Cookie";
-import Notification from './modules/Notifications';
+import Cookie from "@/modules/Cookie";
+import Notification from '@/modules/Notifications';
 
 document.addEventListener("DOMContentLoaded", () => {
     new EmailConfirmationAccount('resend_email_confirmation_account').addEvent();

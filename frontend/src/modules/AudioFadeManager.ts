@@ -1,6 +1,6 @@
-import * as Model from '../modules/FadeStartegy';
-import UpdateVolumeElement from '../modules/UpdateVolumeElement';
-import {MusicElement} from "../modules/MusicElement";
+import * as Model from '@/modules/FadeStartegy';
+import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
+import {MusicElement} from "@/modules/MusicElement";
 
 
 class AudioFadeManager {

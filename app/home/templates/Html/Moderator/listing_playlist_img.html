@@ -18,7 +18,7 @@
 
         <div class="flex-container">
             {% for playlist in page_objects %}
-            <button class="playlist-link playlist-element flex-item playlist-dim-100 m-1" onclick="getDataPlaylist(this)" data-title="{{playlist.name}}" data-url="{% url 'moderatorGetDataPlaylist' playlist.uuid %}" id="playlist-{{ playlist.uuid }}"
+            <button class="playlist-link playlist-element flex-item playlist-dim-100 m-1 popup-data-playlist" data-title="{{playlist.name}}" data-url="{% url 'moderatorGetDataPlaylist' playlist.uuid %}" id="playlist-{{ playlist.uuid }}"
                 style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};" data-playlist-uri="{% url 'streammMusic' playlist.uuid %}">
                 {{ playlist | applys_soundboard_content}}
             </button>

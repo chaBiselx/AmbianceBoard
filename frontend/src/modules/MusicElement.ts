@@ -1,10 +1,10 @@
-import Config from '../modules/Config';
-import Notification from '../modules/Notifications';
+import Config from '@/modules/Config';
+import Notification from '@/modules/Notifications';
 
-import { ButtonPlaylist, ButtonPlaylistFinder } from '../modules/ButtonPlaylist';
-import * as Model from '../modules/FadeStartegy';
-import AudioFadeManager from '../modules/AudioFadeManager';
-import { SoundBoardManager } from '../modules/SoundBoardManager';
+import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
+import * as Model from '@/modules/FadeStartegy';
+import AudioFadeManager from '@/modules/AudioFadeManager';
+import { SoundBoardManager } from '@/modules/SoundBoardManager';
 
 const TRUE = 'True';//TODO fix type soundboard_read
 
