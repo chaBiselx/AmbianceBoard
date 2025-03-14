@@ -18,4 +18,6 @@ from home.TNR.TU.Service.ConfirmationUserServiceTest import *
 
 from home.TNR.TU.UserParametersFactoryTest import *
 
+from home.TNR.TU.config.PlaylistConfigTest import *
+
 # Create your tests here.
