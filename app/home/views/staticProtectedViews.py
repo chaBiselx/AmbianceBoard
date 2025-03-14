@@ -6,12 +6,14 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.http import FileResponse,Http404
 from home.enum.PermissionEnum import PermissionEnum
 from parameters import settings
+from django.views.decorators.http import require_http_methods
 
 
 
     
 
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name)
 def static_protected_moderator_js(request, folder:str, filename: str ) -> FileResponse:
     
@@ -27,6 +29,7 @@ def static_protected_moderator_js(request, folder:str, filename: str ) -> FileRe
     return response
     
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MANAGER_ACCESS_DASHBOARD.name)
 def static_protected_manager_js(request, folder:str, filename: str ) -> FileResponse:
     

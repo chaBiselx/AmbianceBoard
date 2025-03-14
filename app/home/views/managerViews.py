@@ -10,12 +10,14 @@ from home.enum.PermissionEnum import PermissionEnum
 
 
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def manager_dashboard(request) -> HttpResponse:
     return render(request, 'Html/Manager/dashboard.html')
     
 
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def clean_media_folder(request) -> JsonResponse:
     try:

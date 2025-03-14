@@ -26,6 +26,7 @@ from home.formatter.TypePlaylistFormater import TypePlaylistFormater
 
 
 @login_required
+@require_http_methods(['GET'])
 def soundboard_list(request):
     try:
         _query_set = SoundBoard.objects.all().order_by('uuid')
@@ -48,6 +49,7 @@ def soundboard_create(request):
     return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form , 'method' : 'create'})
 
 @login_required
+@require_http_methods(['GET'])
 def soundboard_read(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard :
@@ -75,9 +77,10 @@ def soundboard_update(request, soundboard_uuid):
     return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method' : 'update'})
 
 @login_required
+@require_http_methods(['DELETE'])
 def soundboard_delete(request, soundboard_uuid) -> JsonResponse:
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
-    if request.method == 'POST':
+    if request.method == 'DELETE':
         if not soundboard:
             return JsonResponse({"error": "SoundBoard introuvable."}, status=404)
         else :
@@ -87,6 +90,7 @@ def soundboard_delete(request, soundboard_uuid) -> JsonResponse:
 
 
 @login_required
+@require_http_methods(['GET'])
 def soundboard_organize(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
@@ -127,11 +131,13 @@ def soundboard_organize_update(request, soundboard_uuid) -> HttpResponse:
     
 
 @login_required
+@require_http_methods(['GET'])
 def playlist_read_all(request):
     playlists = (PlaylistService(request)).get_all_playlist()
     return render(request, 'Html/Playlist/playlist_read_all.html', {'playlists': playlists})
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 def playlist_create_with_soundboard(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if(soundboard) : 
@@ -147,6 +153,7 @@ def playlist_create_with_soundboard(request, soundboard_uuid):
     return render(request, 'Html/General/404.html', status=404) 
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 def playlist_create(request):
     if request.method == 'POST':
         playlist = (PlaylistService(request)).save_form()
@@ -203,6 +210,7 @@ def playlist_listing_colors(request) -> JsonResponse:
 
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 def playlist_update(request, playlist_uuid):
     playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     if request.method == 'POST':
@@ -248,6 +256,7 @@ def music_create(request, playlist_uuid) -> JsonResponse:
     return render(request, 'Html/General/404.html', status=404) 
 
 @login_required
+@require_http_methods(['GET', 'POST'])
 def music_update(request, playlist_uuid, music_id):
     playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     music = Music.objects.get(id=music_id)

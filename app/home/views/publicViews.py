@@ -8,11 +8,14 @@ from home.service.SoundBoardService import SoundBoardService
 from home.service.MusicService import MusicService
 from home.decorator.detectBan import detect_ban
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from django.views.decorators.http import require_http_methods
 
 
+@require_http_methods(['GET'])
 def public_index(request):
     return redirect('publicListingSoundboard')
 
+@require_http_methods(['GET'])
 def public_listing_soundboard(request):
     page_number = int(request.GET.get('page', 1))
     
@@ -22,6 +25,7 @@ def public_listing_soundboard(request):
     
     return render(request, 'Html/Public/listing_soundboard.html', context)
 
+@require_http_methods(['GET'])
 @detect_ban
 def public_soundboard_read_playlist(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
@@ -30,6 +34,7 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
     else:   
         return render(request, 'Html/Public/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
     
+@require_http_methods(['GET'])
 @detect_ban
 def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
  

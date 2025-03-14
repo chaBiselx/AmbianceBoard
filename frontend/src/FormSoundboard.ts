@@ -60,17 +60,17 @@ function confirmSuppression(event: Event) {
         };
     
         if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
-            callAjax(config)
+            callAjax(config, 'DELETE')
         } else {
             // Annuler la suppression
         }
     }
 }
 
-function callAjax(config:deleteConfig) {
+function callAjax(config:deleteConfig, method: string = 'POST') {
     var csrfToken = Cookie.get('csrftoken')!;
     fetch(config.delete_url, {
-        method: 'POST',
+        method: method,
         headers: {
             'X-CSRFToken': csrfToken
         },

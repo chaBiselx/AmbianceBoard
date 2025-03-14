@@ -1,5 +1,7 @@
 import uuid
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.models import Group
 from home.models.User import User
@@ -13,6 +15,8 @@ from django.core.exceptions import ValidationError
 from home.service.ConfirmationUserService import ConfirmationUserService
 
 
+@login_required
+@require_http_methods(['GET'])
 def confirm_account(request, uuid_user:str, confirmation_token:str):
     logger = logging.getLogger('home')
     logger.info("Starting ConfirmAccount View")

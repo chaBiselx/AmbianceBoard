@@ -12,10 +12,12 @@ from home.models.UserModerationLog import UserModerationLog
 from home.enum.PermissionEnum import PermissionEnum
 from home.models.User import User
 from home.utils.ExtractPaginator import extract_context_to_paginator
+from django.views.decorators.http import require_http_methods
 
 
 @login_required
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+@require_http_methods(['GET'])
 def moderator_dashboard(request) -> HttpResponse:
     nb_users = User.objects.all().count()
     moy_playlist_per_user = (User.objects.annotate(playlist_count=models.Count('playlist')).aggregate(avg_playlists=Avg('playlist_count')))['avg_playlists']
@@ -30,6 +32,7 @@ def moderator_dashboard(request) -> HttpResponse:
     })
     
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_images_playlist(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
@@ -41,6 +44,7 @@ def moderator_listing_images_playlist(request) -> HttpResponse:
     return render(request, 'Html/Moderator/listing_playlist_img.html', context)
 
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_images_soundboard(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
@@ -52,6 +56,7 @@ def moderator_listing_images_soundboard(request) -> HttpResponse:
     return render(request, 'Html/Moderator/listing_soundboard_img.html', context)
 
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_playlist(request, playlist_uuid) -> HttpResponse:
     playlist = Playlist.objects.get(uuid=playlist_uuid)
@@ -59,18 +64,21 @@ def moderator_get_infos_playlist(request, playlist_uuid) -> HttpResponse:
     
     
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
     soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
     return render(request, 'Html/Moderator/info_soundboard.html', {"soundboard":soundboard})
     
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
     soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
     return render(request, 'Html/Moderator/info_soundboard.html', {"soundboard":soundboard})
 
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_log_moderation(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 50))
@@ -82,6 +90,7 @@ def moderator_listing_log_moderation(request) -> HttpResponse:
     return render(request, 'Html/Moderator/listing_log.html', context)
 
 @login_required
+@require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_user(request, user_uuid) -> HttpResponse:
     user = User.objects.get(id=user_uuid)

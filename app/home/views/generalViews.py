@@ -14,19 +14,22 @@ from home.service.ConfirmationUserService import ConfirmationUserService
 from home.utils.url import get_full_url
 from home.decorator.detectNotConfirmedAccount import detect_not_confirmed_account
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django_ratelimit.decorators import ratelimit
 from home.service.ResetPasswordService import ResetPasswordService
 from home.forms.UserPasswordForm import UserPasswordForm
 @detect_not_confirmed_account()
+@require_http_methods(['GET'])
 def home(request):
     return render(request, "Html/General/home.html", {"title": "Accueil"})
 
 
+@require_http_methods(['GET'])
 def legal_notice(request):
     return render(request, "Html/General/legal_notice.html", {"title": "Mention légal"})
 
-
+@require_http_methods(['GET', 'POST'])
 def create_account(request):
     logger = logging.getLogger('home')
     errors = []
@@ -53,6 +56,7 @@ def create_account(request):
         form = CreateUserForm()
     return render(request, 'Html/Account/create_account.html', {'form': form, 'errors':errors})
 
+@require_http_methods(['GET', 'POST'])
 def login_view(request):
     context = {}
     if request.method == 'POST':
@@ -71,13 +75,15 @@ def login_view(request):
     
     return render(request, 'Html/Account/login.html', context)
 
+@require_http_methods(['GET'])
 def logout_view(request):
     if request.user.is_authenticated:
         logout(request)
     return redirect('home')
 
-
+@login_required
 @require_http_methods(['POST'])
+@ratelimit(key='ip', rate='3/m', method='POST', block=True)
 def resend_email_confirmation(request) -> JsonResponse:
     logger = logging.getLogger('home')
     if request.user.is_authenticated and request.method == 'POST' and request.user.isConfirmed == False :
