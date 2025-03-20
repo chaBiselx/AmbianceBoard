@@ -8,7 +8,7 @@ from home.views.privateViews import soundboard_list, soundboard_create, soundboa
 from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors, playlist_describe_type
 from home.views.privateViews import music_create, music_update, music_delete,music_stream, update_direct_volume
 from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user
-from home.views.settingsViews import settings_index, settings_update_default_style
+from home.views.settingsViews import settings_index, settings_update_default_style, update_theme
 from home.views.managerViews import manager_dashboard, clean_media_folder
 from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream
 from home.views.confirmViews import confirm_account
@@ -35,6 +35,7 @@ urlpatterns = [
     path("soundBoards/<uuid:soundboard_uuid>/organize/update", soundboard_organize_update, name="organizeSoundboardUpdate"),
     
     path('account/settings/',settings_index, name="settingsIndex"),
+    path('account/settings/theme',update_theme, name="updateTheme"),
     path('account/settings/playlists/style',settings_update_default_style, name="defaultPlaylistType"),
     
     path("soundBoards/<uuid:soundboard_uuid>/music/create", playlist_create_with_soundboard, name="addPlaylistWithSoundboard"),

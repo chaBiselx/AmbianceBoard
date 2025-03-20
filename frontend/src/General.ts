@@ -98,6 +98,7 @@ class GeneralTheme {
         this.theme = this.theme === 'light' ? 'dark' : 'light';
         this.toggleIcon();
         this.toggleAttribute();
+        this.saveTheme();
         localStorage.setItem('theme', this.theme);
 
         
@@ -113,6 +114,28 @@ class GeneralTheme {
             this.buttonToggle.innerHTML = `<i class="fa-solid fa-sun"></i>`;
         } else {
             this.buttonToggle.innerHTML = `<i class="fa-solid fa-moon"></i>`;
+        }
+    }
+
+    private saveTheme() {
+        const url = this.buttonToggle.dataset.url
+        const csrfToken = Cookie.get('csrftoken')!;
+        console.log(url);
+        
+        if (url) {
+            fetch(url, {
+                method: 'UPDATE',
+                headers: {
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({ theme: this.theme })
+            })
+                .then(response => response.json())
+                .then(data => {
+                })
+                .catch(error => {
+                    console.error(error)
+                });
         }
     }
 
