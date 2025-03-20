@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html lang="fr">
-{% load FrontJs %}
 {% load static %}
+{% load FrontJs %}
+
+<html lang="fr">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="TODO" />
-    <meta name="author" content="BISELX" />
-    <title>Ambiance Soundboard</title>
-    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon-32x32.png' %}">
+    {% include 'Html/meta.html' %}
 
     <!-- Core theme CSS (includes Bootstrap)-->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/default.css' %}">
     <link rel="stylesheet" href="{% static 'css/showPlaylist.css' %}">
     {% block resource %}
@@ -20,40 +16,70 @@
 
 </head>
 
-<body id="page-top" class="bg-light">
-    <!-- Navigation-->
-    {% block navbar %}
-        {% include 'Html/navbar.html' %}
-    {% endblock navbar %}
-    <div class="main-content px-0">
-        <div class="navbar-padding" style="padding-top: 5rem"></div>
-        {% include 'Html/message.html' %}
-        <section class="pt-0 pb-0">
-            <div class="{% block class_container %}container{% endblock %}">
-                {% if title is not None %}<h1 id="mainTitle">{{ title }}</h1>{% endif %}
-                {% block content %}{% endblock %}
-            </div>
-        </section>
-    </div>
-    <!-- Footer-->
-    <footer class="bg-black text-center py-1">
-        <div class="container px-5">
-            <div class="text-white-50 small">
-            
-                <p>© 2025 Ambiance board. Tous droits réservés. - <a href="{% url 'legalNotice' %}">Mention légal</a></p>
+<body id="mainBody" class="{% include 'Html/sidebar_class.html'%}">
+    <!-- Show base layout -->
+    <a class="show-base-layout rounded" href="#page-top" id="showBaseLayoutButton">
+        <i class="fa-solid fa-eye"></i>
+    </a>
+
+    <!-- Navbar -->
+    <header class="navbar navbar-expand-lg fixed-top border-bottom shadow-sm" id="mainNav">
+        <div class="container-fluid">
+            {% include 'Html/sidebar_button.html'%}
+
+
+            <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
+                <img src="{% static 'img/logo.png' %}" alt="img main logo" width="40" height="40">
+                <span class="main-title">{% block title %} Ambiance soundboard {% endblock %}</span>
+
+            </a>
+
+
+
+            <div class="ms-auto d-flex align-items-center gap-3">
+                <button class="btn btn-link url_link p-1" id="darkModeToggle" aria-label="Toggle dark mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button class="btn btn-link url_link p-1" aria-label="hide all" id="hideAll">
+                    <i class="fa-solid fa-eye-slash"></i>
+                </button>
+                {% block navbar %}
+                {% include 'Html/navbar.html' %}
+                {% endblock navbar %}
+
+
             </div>
         </div>
-    </footer>
+    </header>
+
+    <!-- Sidebar -->
+    {% include 'Html/sidebar.html'%}
+
+
+    <!-- Main Content -->
+    <main class="container-fluid py-4 px-3 px-lg-4">
+        <div class="row">
+            {% include 'Html/message.html' %}
+            <div class="col-12">
+                <section class="pt-0 pb-0">
+                    {% if title is not None %}<h1 id="mainTitle">{{ title }}</h1>{% endif %}
+                    {% block content %}{% endblock %}
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include 'Html/footer.html'%}
+
+    <!-- Modal -->
     {% include 'Html/modal.html'%}
 
-   
     <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-
+    <!-- Core JS-->
     <script type="module" src="{% static "General"|search_true_file %}"></script>
+    {% block javascript %} {% endblock javascript %}
 
-    {% block javascript %} {% endblock %}
 
 </body>
 

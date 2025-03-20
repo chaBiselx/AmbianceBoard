@@ -2,9 +2,10 @@
 {% load Playlist %}
 {% load Mixer %}
 {% load FrontJs %}
+{% load static %}
 
 {% block javascript %}
-{% load static %}
+{{ block.super }}
 <script type="module" src="{% static " SoundboardPlayer"|search_true_file %}"></script>
 {% endblock javascript %}
 

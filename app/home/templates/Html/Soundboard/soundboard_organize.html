@@ -1,9 +1,10 @@
 {% extends 'Html/base.html' %}
 {% load Playlist %}
 {% load FrontJs %}
+{% load static %}
 
 {% block javascript %}
-{% load static %}
+{{ block.super }}
 <script type="module" src="{% static "SounboardOrganizer"|search_true_file %}"></script>
 {% endblock javascript %}
 

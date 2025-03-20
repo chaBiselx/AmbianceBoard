@@ -178,17 +178,17 @@ def playlist_describe_type(request)-> HttpResponse:
         ConfigTypeDataEnum.STATIC.name : {
             'name' : ConfigTypeDataEnum.STATIC.name,
             'value' : ConfigTypeDataEnum.STATIC.value,
-            'path' : ConfigTypeDataEnum.STATIC.get_icon_path(),
+            'class' : ConfigTypeDataEnum.STATIC.get_icon_class(),
         },
         ConfigTypeDataEnum.PARAM.name :{
             'name' : ConfigTypeDataEnum.PARAM.name,
             'value' : ConfigTypeDataEnum.PARAM.value,
-            'path' : ConfigTypeDataEnum.PARAM.get_icon_path(),
+            'class' : ConfigTypeDataEnum.PARAM.get_icon_class(),
         },
         ConfigTypeDataEnum.PARAM_WITH_DEFAULT.name : {
             'name' : ConfigTypeDataEnum.PARAM_WITH_DEFAULT.name,
             'value' : ConfigTypeDataEnum.PARAM_WITH_DEFAULT.value,
-            'path' : ConfigTypeDataEnum.PARAM_WITH_DEFAULT.get_icon_path(),
+            'class' : ConfigTypeDataEnum.PARAM_WITH_DEFAULT.get_icon_class(),
         }
     }
     

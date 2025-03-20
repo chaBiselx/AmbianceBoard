@@ -4,13 +4,15 @@
     {% for playlistType in PlaylistTypeEnum %}
     <div class="range-container-item">
         <label for="" class="range-container-item-label"> 
-            <img width="20px" src="{{ playlistType.get_icon_path }}" onerror="this.onerror=null; this.src='{% static 'img/PlaylistType/icon_general.png' %}'" alt="{{ playlistType.value}}">
+            <i class="{{ playlistType.get_icon_class }}" alt="{{ playlistType.value}}"></i>
         </label>
         <input type="range" id="mixer-{{ playlistType.value }}" data-type="{{ playlistType.value }}" class="mixer-playlist mixer-playlist-type vertical-range" min="0" max="1" value="1" step="0.1">
     </div>
     {% endfor %}
     <div class="range-container-item">
-        <label for="" class="range-container-item-label"><img width="20px" src="{% static 'img/PlaylistType/icon_general.png' %}" alt="general"></label>
+        <label for="" class="range-container-item-label">
+            <i class="fa-solid fa-sliders" alt="general"></i>
+        </label>
         <input type="range" id="mixer-general" class="mixer-playlist vertical-range" min="0" max="1" value="1" step="0.1">
     </div>
 

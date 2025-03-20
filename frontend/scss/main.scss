@@ -1,5 +1,6 @@
 // Importer les personnalisations
-@import 'custom';
+@import 'mainTheme';
+@import 'playlist/main';
 
 // Importer Bootstrap (tous les composants ou seulement ceux nécessaires)
 @import '../node_modules/bootstrap/scss/bootstrap';

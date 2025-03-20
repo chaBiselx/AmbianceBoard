@@ -14,5 +14,10 @@ class PlaylistTypeEnum(Enum):
         }
         return default_color.get(self.name, {'color': '#000000', 'colorText': '#ffffff'})
  
-    def get_icon_path(self):
-        return static(f"img/PlaylistType/icon_{self.value.lower()}.png")
+    def get_icon_class(self):
+        default_class ={
+            self.PLAYLIST_TYPE_INSTANT.name: "fa-solid fa-explosion",
+            self.PLAYLIST_TYPE_AMBIENT.name: "fa-solid fa-dove",
+            self.PLAYLIST_TYPE_MUSIC.name: "fa-solid fa-music"
+        }
+        return default_class.get(self.name, "fa-solid fa-sliders")
