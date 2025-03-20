@@ -1,0 +1,32 @@
+
+.flex-item {
+    display: inline-block;
+}
+
+
+$flex_grid: 1,2,3,4,5;
+@each $column in $flex_grid {
+
+    .flex-item-#{$column} {
+        width: #{100 / $column}%;
+    }
+
+}
+
+
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+    align-content: flex-start;
+    width: 100%;
+
+}
+
+
+
+
+
+
