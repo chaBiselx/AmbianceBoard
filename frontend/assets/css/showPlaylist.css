@@ -8,31 +8,7 @@
 
 }
 
-.playlist-dim-50 {
-    width: 37.5px;
-    height: 37.5px;
-}
 
-.playlist-dim-75 {
-    width: 56.25px;
-    height: 56.25px;
-}
-
-.playlist-dim-100 {
-    width: 75px;
-    height: 75px;
-}
-
-.playlist-dim-200 {
-    width: 150px;
-    height: 150px;
-}
-
-.playlist-img {
-    pointer-events: none;
-    max-width: 100%;
-    max-height: 100%;
-}
 
 .flex-item {
     display: inline-block;
@@ -48,22 +24,6 @@
 
 .flex-item-4 {
     width: 25%;
-}
-
-
-/* base style */
-.playlist-element {
-    cursor: pointer;
-    overflow: hidden;
-    border-width: 5px;
-    border-style: solid;
-    border-color: transparent;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    /* Centre horizontalement */
-    align-items: center;
-    /* Centre verticalement */
 }
 
 

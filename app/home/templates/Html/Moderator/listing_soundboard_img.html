@@ -14,7 +14,7 @@
 
         <div class="flex-container">
             {% for soundboard in page_objects %}
-            <button class="playlist-link playlist-element flex-item playlist-dim-200 m-1 popup-data-soundboard" data-title="{{soundboard.name}}" data-url="{% url 'moderatorGetDataSoundboard' soundboard.uuid %}"
+            <button class="soundboard-element flex-item soundboard-dim-150 m-1 popup-data-soundboard" data-title="{{soundboard.name}}" data-url="{% url 'moderatorGetDataSoundboard' soundboard.uuid %}"
                 style="background-color: {{ soundboard.color }};color :{{ soundboard.colorText }};">
                 {{ soundboard | applys_soundboard_content}}
             </button>
