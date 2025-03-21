@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => {
                     PasswordRules: resolve(__dirname, 'src/PasswordRules.ts'),
                     SounboardOrganizer: resolve(__dirname, 'src/SounboardOrganizer.ts'),
                     General: resolve(__dirname, 'src/General.ts'),
+                    UpdateDimension: resolve(__dirname, 'src/UpdateDimension.ts'),
                     Manager_General: resolve(__dirname, 'src/ManagerGeneral.ts'),
                     Moderator_General: resolve(__dirname, 'src/ModeratorGeneral.ts'),
                 },

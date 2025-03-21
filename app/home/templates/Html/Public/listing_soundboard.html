@@ -9,7 +9,7 @@
         <div class="flex-container">
             {% for soundboard in page_objects %}
             <a href="{% url 'publicReadSoundboard' soundboard.uuid %}">
-                <div class="soundboard-element flex-item soundboard-dim-150 m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};">
+                <div class="soundboard-element flex-item soundboard-dim-{{ soundboard_dim }} m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};">
                     {{ soundboard | applys_soundboard_content}}
                 </div>
             </a>

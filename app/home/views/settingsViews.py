@@ -70,3 +70,43 @@ def update_theme(request):
             logger.error(f"update theme error : {e}")
             return JsonResponse({'error': 'Failed to update theme.'}, status=500)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+@login_required
+@require_http_methods(['GET'])
+def update_dimensions(request):
+    return render(request, 'Html/Account/Settings/update_dimensions.html')
+@login_required
+@require_http_methods(['UPDATE'])
+def update_playlist_dim(request):
+    if request.method == 'UPDATE':
+        try:
+            data = json.loads(request.body)  # Décode le JSON
+            if 'dim' not in data:
+                raise Exception('dim not found in request data.')
+            dim = data['dim']
+            user_preference, _ = UserPreference.objects.get_or_create(user=request.user)
+            user_preference.playlistDim = dim
+            user_preference.save()
+            return JsonResponse({'message': 'Dimensions updated successfully.'}, status=200)
+        except Exception as e:
+            logger.error(f"update dimensions playlist error : {e}")
+            return JsonResponse({'error': 'Failed to update dimensions.'}, status=500)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+@login_required
+@require_http_methods(['UPDATE'])
+def update_soundboard_dim(request):
+    if request.method == 'UPDATE':
+        try:
+            data = json.loads(request.body)  # Décode le JSON
+            if 'dim' not in data:
+                raise Exception('dim not found in request data.')
+            dim = data['dim']
+            user_preference, _ = UserPreference.objects.get_or_create(user=request.user)
+            user_preference.soundboardDim = dim
+            user_preference.save()
+            return JsonResponse({'message': 'Dimensions updated successfully.'}, status=200)
+        except Exception as e:
+            logger.error(f"update dimensions soundboard error : {e}")
+            return JsonResponse({'error': 'Failed to update dimensions.'}, status=500)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)

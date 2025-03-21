@@ -14,7 +14,7 @@ class UserPreference(models.Model):
         (ThemeEnum.name, ThemeEnum.value) for ThemeEnum in ThemeEnum],
         verbose_name='Theme', default=None, blank=True,null=True)
     playlistDim =models.IntegerField(default=100, validators=[MinValueValidator(0), MaxValueValidator(500)], null=True, blank=True)
-    SoundboardDim =models.IntegerField(default=100, validators=[MinValueValidator(0), MaxValueValidator(500)], null=True, blank=True)
+    soundboardDim =models.IntegerField(default=100, validators=[MinValueValidator(0), MaxValueValidator(500)], null=True, blank=True)
     
     
     

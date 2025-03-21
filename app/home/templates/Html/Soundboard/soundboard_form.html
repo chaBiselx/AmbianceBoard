@@ -78,7 +78,7 @@
         </div>
     </div>
     <div class="col-12 col-sm-1 col-md-2 col-xl-4">
-        <div class="soundboard-element soundboard-dim-150 m-1" id="demo-soundboard">
+        <div class="soundboard-element soundboard-dim-{{ soundboard_dim }} m-1" id="demo-soundboard">
             {% if method == 'update' %}
             {{ form.instance | applys_soundboard_content}}
             {% endif %}

@@ -13,6 +13,7 @@ def sidebar_processor(request):
             'sidebar_items': [
                 {'title': 'Index', 'url': reverse("settingsIndex")},
                 {'title': 'Playlist type', 'url': reverse("defaultPlaylistType")},
+                {'title': 'Dimensions boutons', 'url': reverse("updateDimensions")},
             ]
         }
     return {'show_sidebar': False}

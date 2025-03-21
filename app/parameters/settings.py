@@ -194,7 +194,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 'home.context_processors.sidebar_processor.sidebar_processor',
-                'home.context_processors.theme_processor.theme_processor',
+                'home.context_processors.user_preference_processor.user_preference_processor',
             ],
         },
     },
