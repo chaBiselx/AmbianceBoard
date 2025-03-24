@@ -9,6 +9,7 @@ $playlist-dimensions: 50, 75, 100, 125, 150, 175, 200;
 }
 
 .playlist-element {
+    position: relative;
     cursor: pointer;
     overflow: hidden;
     border-width: 5px;

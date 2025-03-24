@@ -1,0 +1,54 @@
+$oppacityDefault: 0.50;
+$oppacityHover: 0.90;
+
+.favorite-float{
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    cursor: pointer;
+    mix-blend-mode: hard-light;
+}
+
+.favorite-btn {
+    position: relative;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+.favorite-btn input {
+    display: none;
+}
+
+.icon-default,
+.icon-active {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transition: opacity 0.3s ease;
+}
+
+.icon-default {
+    opacity: $oppacityDefault;
+}
+
+.icon-active {
+    opacity: 0;
+}
+
+/* Quand le checkbox est coché → Montre l'icône active */
+.favorite-btn input:checked~.icon-default {
+    opacity: 0;
+}
+
+.favorite-btn input:checked~.icon-active {
+    opacity: $oppacityDefault;
+}
+
+.favorite-btn:hover .icon-default {
+    opacity: $oppacityHover;
+}
+
+.favorite-btn:hover input:checked ~ .icon-active {
+    opacity: $oppacityHover;
+}

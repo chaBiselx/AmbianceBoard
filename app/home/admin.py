@@ -8,6 +8,7 @@ from home.models.UserModerationLog import UserModerationLog
 from home.models.FailedLoginAttempt import FailedLoginAttempt
 from home.models.PlaylistColorUser import PlaylistColorUser
 from home.models.UserPreference import UserPreference
+from home.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -18,3 +19,4 @@ admin.site.register(Music)
 admin.site.register(SoundboardPlaylist)
 admin.site.register(PlaylistColorUser)
 admin.site.register(UserPreference)
+admin.site.register(UserFavoritePublicSoundboard)
