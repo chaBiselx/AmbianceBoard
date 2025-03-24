@@ -33,8 +33,6 @@ def public_listing_soundboard(request):
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     context['listFavorite'] = list_favorite
-    print(queryset)
-    print(list_favorite)
     return render(request, 'Html/Public/listing_soundboard.html', context)
 
 @require_http_methods(['GET'])

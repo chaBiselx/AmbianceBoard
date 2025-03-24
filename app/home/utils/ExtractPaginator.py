@@ -21,7 +21,7 @@ def extract_context_to_paginator(paginator:Paginator, page_number:int):
     return {
         'page_objects': page_objects,
         'paginator': {
-            'page_number': str(page_number),
+            'page_number': page_number,
             'page_range' : page_range,
             'is_first_page': page_number == 1,
             'is_last_page': page_number == paginator.num_pages,
