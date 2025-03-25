@@ -391,7 +391,7 @@ function autoSetAlternateName(event: Event) {
     const fileInputOrigin = event.target as HTMLInputElement;
     const fileDest = document.getElementById('id_alternativeName') as HTMLInputElement;
     if (fileDest && fileInputOrigin && fileDest.value == '') {
-        const regexExtenstion = /\.(.)*$/g;
+        const regexExtenstion = /\.[^.]*$/g;
         if (fileInputOrigin.files && fileInputOrigin.files[0]) {
             fileDest.value = fileInputOrigin.files[0].name.replace(regexExtenstion, '').substring(0, 50);
         }
