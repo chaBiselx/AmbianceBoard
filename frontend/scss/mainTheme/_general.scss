@@ -1,3 +1,6 @@
+@import "../variables";
+
+
 a {
     color:inherit;
     text-decoration: inherit !important;
@@ -66,13 +69,32 @@ main {
     height: 2.40rem;
     text-align: center;
     color: var(--bs-white);
-    background: var(--bs-secondary, #85888b);
+    background-color: inherit;
     line-height: 46px;
     cursor: pointer;
+
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            background-color: $bg_color_light;
+        }
+
+        html[data-bs-theme="dark"] & {
+            background-color: $bg_color_dark;
+        }
+    }
 }
 
 .show-base-layout:hover {
-    background: var(--bs-secondary, #85888b);
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            background-color: $bg_color_light_hover;
+        }
+
+        html[data-bs-theme="dark"] & {
+            background-color: $bg_color_dark_hover;
+        }
+    }
+    
 }
 
 .show-base-layout:focus,
@@ -98,20 +120,20 @@ main {
 
     @at-root {
         html:not([data-bs-theme="dark"]) & {
-            color: var(--bs-body-color, #212529);
+            color: $text_color_dark;
 
             &:hover {
-                color: var(--bs-secondary, #85888b);
+                color: $text_color_dark_hover;
                 text-decoration: underline;
                 opacity: 0.9;
             }
         }
 
         html[data-bs-theme="dark"] & {
-            color: var(--bs-body-color, #f8f9fa);
+            color: $text_color_light;
 
             &:hover {
-                color: var(--bs-secondary, #85888b);
+                color: $text_color_light_hover;
                 text-decoration: underline;
                 opacity: 0.9;
             }

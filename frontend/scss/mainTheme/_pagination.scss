@@ -1,0 +1,61 @@
+@import "../variables";
+
+.page-item .page-link {
+    color: inherit;
+
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            color: $text_color_dark;
+
+
+
+            &:hover {
+                color: $text_color_dark_hover;
+                text-decoration: underline;
+                opacity: 0.9;
+            }
+        }
+
+        html[data-bs-theme="dark"] & {
+            color: $text_color_light;
+
+
+
+            &:hover {
+                color: $text_color_light_hover;
+                text-decoration: underline;
+                opacity: 0.9;
+            }
+        }
+    }
+}
+
+li.page-link.active,
+li.active>.page-link {
+
+
+
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            border-bottom-color: $border_color_light;
+            border-top-color: $border_color_light;
+            border-right-color: $border_color_light;
+            border-left-color: $border_color_light;
+            background-color: $bg_color_light;
+            &:hover {
+                background-color: $bg_color_light_hover;
+            }
+        }
+
+        html[data-bs-theme="dark"] & {
+            border-bottom-color: $border_color_dark;
+            border-top-color: $border_color_dark;
+            border-right-color: $border_color_dark;
+            border-left-color: $border_color_dark;
+            background-color: $bg_color_dark;
+            &:hover {
+                background-color: $bg_color_dark_hover;
+            }
+        }
+    }
+}

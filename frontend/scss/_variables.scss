@@ -4,3 +4,17 @@
 @import '../node_modules/bootstrap/scss/mixins';
 
 $with-sidebar: 280px;
+// text
+$text_color_dark: var(--bs-body-color, #212529);
+$text_color_dark_hover: var(--bs-gray-400, #85888b);
+$text_color_light: var(--bs-body-color, #f8f9fa);
+$text_color_light_hover: var(--bs-gray-600, #85888b);
+// background
+$bg_color_dark: var(--bs-gray-600, #85888b);
+$bg_color_dark_hover: var(--bs-gray-400, #85888b);
+$bg_color_light: var(--bs-gray-400, #85888b);
+$bg_color_light_hover: var(--bs-gray-600, #85888b);
+//border 
+$border_color_dark: var(--bs-gray-600, #85888b);
+$border_color_light: var(--bs-gray-400, #85888b);
+
