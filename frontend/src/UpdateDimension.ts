@@ -2,8 +2,7 @@
 import Cookie from "@/modules/Cookie";
 
 
-document.addEventListener("DOMContentLoaded", (event) => {
-    console.log('here');
+document.addEventListener("DOMContentLoaded", () => {
     const listElement = document.getElementsByClassName('block-update');
     if (listElement) {
         for (let i = 0; i < listElement.length; i++) {
@@ -12,8 +11,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         }
     }
-
-
 });
 
 class UpdateDimensionElement {

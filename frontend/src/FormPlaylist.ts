@@ -16,7 +16,7 @@ for (let i = 0; i < DomElementAddEvent.length; i++) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
     const volumeInput = document.getElementById('id_volume') as HTMLInputElement;
     setVolumeToAllMusic(parseFloat(volumeInput.value));
     volumeInput.addEventListener('change', eventChangeVolume);

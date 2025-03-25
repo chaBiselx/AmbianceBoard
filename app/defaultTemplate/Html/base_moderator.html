@@ -2,4 +2,8 @@
 {% load FrontJs %}
 {% load static %}
 
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "Moderator_General"|search_true_file %}"></script>
+{% endblock javascript %}
 

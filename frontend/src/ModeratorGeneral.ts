@@ -1,4 +1,4 @@
-import ModalCustom from '@/modules/Modal.ts';
+import ModalCustom from '@/modules/Modal';
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.popup-data-playlist').forEach((el) => {
@@ -10,73 +10,64 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.popup-data-user').forEach((el) => {
         el.addEventListener('click', getDataUser);
     })
-    
+
 })
 
 
-function getDataPlaylist(event:Event){
+function getDataPlaylist(event: Event) {
     const el = event.target as HTMLButtonElement;
     const url = el.dataset.url!;
     const title = "Playlist" + el.dataset.title;
 
-    fetch(url, {
-        method: 'GET',
-    })
-        .then(response => response.text())
-        .then((body) => {
-            ModalCustom.show({
-                title: title,
-                body: body,
-                footer: "",
-                width: 'xl'
-            })
-        })
-        .catch(error => {
-            console.error('Erreur lors de la requête AJAX:', error);
-        });
+    new fetchPopupData(url, title).fetch();
 }
 
-function getDataSoundboard(event:Event){
+function getDataSoundboard(event: Event) {
     const el = event.target as HTMLButtonElement;
-    const url = el.dataset.url;
+    const url = el.dataset.url!;
     const title = " Soundboard : " + el.dataset.title;
 
-    fetch(url, {
-        method: 'GET',
-    })
-        .then(response => response.text())
-        .then((body) => {
-            ModalCustom.show({
-                title: title,
-                body: body,
-                footer: "",
-                width: 'xl'
-            })
-        })
-        .catch(error => {
-            console.error('Erreur lors de la requête AJAX:', error);
-        });
+    new fetchPopupData(url, title).fetch();
 }
 
-function getDataUser(event:Event){
+function getDataUser(event: Event) {
     const el = event.target as HTMLButtonElement;
-    const url = el.dataset.url;
+    const url = el.dataset.url!;
     const title = " log : " + el.dataset.title;
 
-    fetch(url, {
-        method: 'GET',
-    })
-        .then(response => response.text())
-        .then((body) => {
-            ModalCustom.show({
-                title: title,
-                body: body,
-                footer: "",
-                width: 'xl'
-            })
+    new fetchPopupData(url, title).fetch();
+}
+
+class fetchPopupData {
+    url: string
+    title: string
+    constructor(url: string, title: string) {
+        this.url = url;
+        this.title = title
+    }
+
+    public fetch() {
+        console.log('fetch');
+        
+        fetch(this.url, {
+            method: 'GET',
         })
-        .catch(error => {
-            console.error('Erreur lors de la requête AJAX:', error);
-        });
+            .then(response => response.text())
+            .then((body) => {
+               this.show(body)
+            })
+            .catch(error => {
+                console.error('Erreur lors de la requête AJAX:', error);
+            });
+    }
+
+    public show(body: string) {
+        ModalCustom.show({
+            title: this.title,
+            body: body as string,
+            footer: "",
+            width: "lg"
+        })
+    }
 }
 

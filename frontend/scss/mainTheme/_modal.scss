@@ -1,0 +1,14 @@
+@import "../variables";
+
+.modal-bg-header {
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            background-color: $modal_header_bg_light;
+        }
+
+        html[data-bs-theme="dark"] & {
+            background-color: $modal_header_bg_dark;
+        }
+    }
+}
+
