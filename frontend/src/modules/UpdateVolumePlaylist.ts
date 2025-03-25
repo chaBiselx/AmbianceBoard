@@ -29,13 +29,12 @@ class UpdateVolumePlaylist {
 
     updateBackend(uri: uri) {
         const method = 'POST' as method;
-        var csrfToken = Cookie.get('csrftoken') as string ;
         fetch(uri, {
             method: method,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken
+                'X-CSRFToken': Cookie.get('csrftoken')! 
             },
             body: JSON.stringify({
                 volume: this.volume

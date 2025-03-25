@@ -43,7 +43,8 @@ class AbstractConfig():
                 obj["default"] = self.default_data[key]
                 obj["value"] = self.default_data[key]
             elif(self.structure_data[key] == ConfigTypeDataEnum.PARAM):
-                pass
+                obj["default"] = None
+                obj["value"] = None
             elif(self.structure_data[key] == ConfigTypeDataEnum.PARAM_WITH_DEFAULT):
                 obj["default"] = self.default_data[key]
             else:

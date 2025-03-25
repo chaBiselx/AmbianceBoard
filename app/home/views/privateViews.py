@@ -103,6 +103,7 @@ def soundboard_organize(request, soundboard_uuid):
 @login_required
 @require_http_methods(['POST', 'DELETE', 'UPDATE'])
 def soundboard_organize_update(request, soundboard_uuid) -> HttpResponse:
+    logger = logging.getLogger("home")
     try:
         soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
         data = json.loads(request.body.decode('utf-8'))
@@ -127,6 +128,7 @@ def soundboard_organize_update(request, soundboard_uuid) -> HttpResponse:
             soundboard_playlist_service.remove(playlist)
             return JsonResponse({'success': 'playslist deleted'}, status=200)
     except Exception as e:
+        logger.error(f"soundboard_organize_update : {e}")
         return JsonResponse({"error": "playslist non trouvé."}, status=404)
     
 

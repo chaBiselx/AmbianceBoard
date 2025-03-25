@@ -113,9 +113,7 @@ $tooltipRadius: round(.8em, 1px);
 }
 
 output {
-    position-anchor: --thumb;
     position: absolute;
-    position-area: top;
     color: --bs-white;
     font-weight: bold;
     font-family: sans-serif;
@@ -137,7 +135,6 @@ output {
     animation-range: entry 100% exit 0%;
 
     &.bottom {
-        position-area: bottom;
         border-top: var(--tooltipTailSize) solid #0000;
         border-bottom: none;
         border-radius: var(--tooltipRadius)/calc(var(--tooltipRadius) + var(--tooltipTailSize)) calc(var(--tooltipRadius) + var(--tooltipTailSize)) var(--tooltipRadius) var(--tooltipRadius);

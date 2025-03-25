@@ -55,7 +55,7 @@ class ModalCustom {
 
     static hide() {
         const myModalEl = ModalCustom.getMainHTMLElement();
-        var modal = Modal.getInstance(myModalEl)
+        let modal = Modal.getInstance(myModalEl)
         modal.hide();
 
         document.getElementById("mainModalTitle")!.innerHTML = "";

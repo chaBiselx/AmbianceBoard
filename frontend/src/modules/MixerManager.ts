@@ -8,8 +8,8 @@ type mixer = {
     input: HTMLInputElement
 }
 
-class mixerBuilder {
-    private mixer: mixer;
+class MixerBuilder {
+    private readonly mixer: mixer;
 
     constructor(input: HTMLInputElement) {
         this.mixer = {
@@ -25,7 +25,7 @@ class mixerBuilder {
 }
 
 class MixerManager{
-    private listMixer: HTMLCollectionOf<Element>;
+    private readonly listMixer: HTMLCollectionOf<Element>;
 
     constructor() {
         this.listMixer = document.getElementsByClassName('mixer-playlist');
@@ -38,11 +38,11 @@ class MixerManager{
     }
 
     private eventChangeVolume(event: Event): void {
-        const mixer = new mixerBuilder(event.target as HTMLInputElement).getMixer();
+        const mixer = new MixerBuilder(event.target as HTMLInputElement).getMixer();
         if (mixer.id === 'mixer-general') {
             const listType = document.getElementsByClassName('mixer-playlist-type');
             for (let typeMixer of listType) {
-                const m = new mixerBuilder(typeMixer as HTMLInputElement).getMixer();
+                const m = new MixerBuilder(typeMixer as HTMLInputElement).getMixer();
                 this.changeSpecifiqueVolume(m.type);
             }
         } else {

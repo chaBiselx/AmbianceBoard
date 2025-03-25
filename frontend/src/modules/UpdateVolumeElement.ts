@@ -15,7 +15,7 @@ class UpdateVolumeElement {
         let VolumeMixerGeneral = this.getVolumeMixerGeneral()
         let VolumeMixerType = this.getVolumeMixerType(this.musicElement.playlistType)
         let new_volume = Math.min(1, Math.max(0, VolumeDefault * VolumeFade * VolumeMixerGeneral * VolumeMixerType))
-        // console.log(`VolumeDefault: ${VolumeDefault}, VolumeFade: ${VolumeFade}, VolumeMixerGeneral: ${VolumeMixerGeneral}, VolumeMixerType: ${VolumeMixerType}, new_volume: ${new_volume}`);
+        // console.log(`VolumeDefault: ${VolumeDefault}, VolumeFade: ${VolumeFade}, VolumeMixerGeneral: ${VolumeMixerGeneral}, VolumeMixerType: ${VolumeMixerType}, new_volume: ${new_volume}`); // NOSONAR
         this.musicElement.DOMElement.volume = new_volume;
     }
 

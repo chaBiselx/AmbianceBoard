@@ -80,7 +80,7 @@ class GeneralTheme {
     buttonToggle: HTMLButtonElement
 
     constructor() {
-        this.theme = localStorage.getItem('theme') || 'light';
+        this.theme = localStorage.getItem('theme') ?? 'light';
         this.buttonToggle = document.getElementById('darkModeToggle') as HTMLButtonElement;
         this.toggleIcon();
         this.toggleAttribute();

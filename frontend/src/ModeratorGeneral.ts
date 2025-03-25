@@ -19,7 +19,7 @@ function getDataPlaylist(event: Event) {
     const url = el.dataset.url!;
     const title = "Playlist" + el.dataset.title;
 
-    new fetchPopupData(url, title).fetch();
+    new FetchPopupData(url, title).fetch();
 }
 
 function getDataSoundboard(event: Event) {
@@ -27,7 +27,7 @@ function getDataSoundboard(event: Event) {
     const url = el.dataset.url!;
     const title = " Soundboard : " + el.dataset.title;
 
-    new fetchPopupData(url, title).fetch();
+    new FetchPopupData(url, title).fetch();
 }
 
 function getDataUser(event: Event) {
@@ -35,10 +35,10 @@ function getDataUser(event: Event) {
     const url = el.dataset.url!;
     const title = " log : " + el.dataset.title;
 
-    new fetchPopupData(url, title).fetch();
+    new FetchPopupData(url, title).fetch();
 }
 
-class fetchPopupData {
+class FetchPopupData {
     url: string
     title: string
     constructor(url: string, title: string) {
@@ -64,7 +64,7 @@ class fetchPopupData {
     public show(body: string) {
         ModalCustom.show({
             title: this.title,
-            body: body as string,
+            body: body,
             footer: "",
             width: "lg"
         })

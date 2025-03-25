@@ -148,11 +148,10 @@ function confirmSuppressionPlaylist(event: Event) {
 }
 
 function callAjaxDeletePlaylist(config: { delete_url: string, redirect_url: string }) {
-    var csrfToken = Cookie.get('csrftoken')!;
     fetch(config.delete_url, {
         method: 'DELETE',
         headers: {
-            'X-CSRFToken': csrfToken
+            'X-CSRFToken': Cookie.get('csrftoken')!
         },
     })
         .then(response => {
@@ -194,11 +193,10 @@ function confirmSuppressionMusic(event: Event) {
 }
 
 function callAjaxDeleteMusic(config: { delete_url: string, redirect_url: string }) {
-    var csrfToken = Cookie.get('csrftoken')!;
     fetch(config.delete_url, {
         method: 'DELETE',
         headers: {
-            'X-CSRFToken': csrfToken
+            'X-CSRFToken': Cookie.get('csrftoken')!
         },
     })
         .then(response => {
@@ -233,7 +231,7 @@ function showDescriptionType(e: Event) {
         .then((body) => {
             ModalCustom.show({
                 title: title,
-                body: body as string,
+                body: body,
                 footer: "",
                 width: "lg"
             })

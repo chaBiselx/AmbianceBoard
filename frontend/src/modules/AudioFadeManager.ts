@@ -15,7 +15,7 @@ class AudioFadeManager {
     endVolume: number;
     updateVolumeElement: UpdateVolumeElement;
 
-    constructor(MusicElement:MusicElement, fadeStrategy = new Model.default.LinearFade(), isFadeIn = true, onComplete:null|Function) {
+    constructor(MusicElement:MusicElement, fadeStrategy = new Model.default.LinearFade(), isFadeIn = true, onComplete:null|Function = null) {
         this.musicElement = MusicElement;
         this.audioElement = MusicElement.DOMElement;
         this.fadeStrategy = fadeStrategy;

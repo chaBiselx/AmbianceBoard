@@ -7,6 +7,9 @@ from home.models.Music import Music
 from home.models.Playlist import Playlist
 from home.models.User import User
 
+filename_name1 = "Test Music"
+filename_alt1 = "Alt Name"
+
 
 class MusicModelTest(TestCase):
     def setUp(self):
@@ -27,14 +30,14 @@ class MusicModelTest(TestCase):
     def test_music_creation(self):
         """Test la création basique d'un objet Music"""
         music = Music.objects.create(
-            fileName="Test Music",
-            alternativeName="Alt Name",
+            fileName=filename_name1,
+            alternativeName=filename_alt1,
             file=self.test_file,
             playlist=self.playlist
         )
         
         self.assertTrue(isinstance(music, Music))
-        self.assertEqual(music.alternativeName, "Alt Name")
+        self.assertEqual(music.alternativeName, filename_alt1)
         self.assertTrue(music.file.name.endswith('.mp3'))
         self.assertEqual(music.playlist, self.playlist)
 
@@ -46,7 +49,7 @@ class MusicModelTest(TestCase):
         
         music = Music.objects.create(
             fileName="Original Name",
-            alternativeName="Alt Name",
+            alternativeName=filename_alt1,
             file=SimpleUploadedFile(
                 name='test_long_name_that_needs_truncating.mp3',
                 content=b'file_content'
@@ -64,7 +67,7 @@ class MusicModelTest(TestCase):
         
         music = Music.objects.create(
             file=SimpleUploadedFile(name=long_name, content=b'content'),
-            alternativeName="Alt Name",
+            alternativeName=filename_alt1,
             playlist=self.playlist
         )
         
@@ -73,13 +76,13 @@ class MusicModelTest(TestCase):
     def test_playlist_deletion_cascade(self):
         """Test que la suppression d'une playlist supprime aussi les musiques associées"""
         music = Music.objects.create(
-            fileName="Test Music",
-            alternativeName="Alt Name",
+            fileName=filename_name1,
+            alternativeName=filename_alt1,
             file=self.test_file,
             playlist=self.playlist
         )
         
-        playlist_uuid = self.playlist.uuid
+        _ = self.playlist.uuid
         self.playlist.delete()
         
         # Vérifier que la musique a été supprimée
@@ -90,7 +93,7 @@ class MusicModelTest(TestCase):
         """Test que les champs requis sont bien obligatoires"""
         # Test sans fichier
         music = Music(
-            fileName="Test Music",
+            fileName=filename_name1,
             playlist=self.playlist
         )
         with self.assertRaises(ValidationError):
@@ -99,8 +102,8 @@ class MusicModelTest(TestCase):
     def test_music_str_method(self):
         """Test la méthode __str__ du modèle"""
         music = Music.objects.create(
-            fileName="Test Music",
-            alternativeName="Alt Name",
+            fileName=filename_name1,
+            alternativeName=filename_alt1,
             file=self.test_file,
             playlist=self.playlist
         )

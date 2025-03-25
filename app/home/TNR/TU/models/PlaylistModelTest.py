@@ -7,6 +7,8 @@ from home.models.Playlist import Playlist
 from home.models.User import User
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
+playlist_name = "Test Playlist"
+
 class PlaylistModelTest(TestCase):
     def setUp(self):
         """Initialisation des données de test"""
@@ -26,12 +28,12 @@ class PlaylistModelTest(TestCase):
         """Test la création basique d'une Playlist"""
         playlist = Playlist.objects.create(
             user=self.user,
-            name="Test Playlist",
+            name=playlist_name,
             typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
         )
         
         self.assertTrue(isinstance(playlist, Playlist))
-        self.assertEqual(playlist.name, "Test Playlist")
+        self.assertEqual(playlist.name, playlist_name)
         self.assertEqual(playlist.typePlaylist, PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name)
         self.assertEqual(playlist.color, "#000000")  # Valeur par défaut
         self.assertEqual(playlist.colorText, "#ffffff")  # Valeur par défaut
@@ -43,7 +45,7 @@ class PlaylistModelTest(TestCase):
         with self.assertRaises(ValidationError):
             playlist = Playlist.objects.create(
                 user=self.user,
-                name="Test Playlist",
+                name=playlist_name,
                 typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
                 volume=-1
             )
@@ -53,7 +55,7 @@ class PlaylistModelTest(TestCase):
         with self.assertRaises(ValidationError):
             playlist = Playlist.objects.create(
                 user=self.user,
-                name="Test Playlist",
+                name=playlist_name,
                 typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
                 volume=101
             )
@@ -62,7 +64,7 @@ class PlaylistModelTest(TestCase):
         # Test volume valide
         playlist = Playlist.objects.create(
             user=self.user,
-            name="Test Playlist",
+            name=playlist_name,
             typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
             volume=50
         )
@@ -72,7 +74,7 @@ class PlaylistModelTest(TestCase):
         """Test que l'utilisateur est obligatoire"""
         with self.assertRaises(ValueError):
             Playlist.objects.create(
-                name="Test Playlist",
+                name=playlist_name,
                 typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
             )
             
@@ -86,7 +88,7 @@ class PlaylistModelTest(TestCase):
         # Créer d'abord la Playlist sans icône
         playlist = Playlist.objects.create(
             user=self.user,
-            name="Test Playlist",
+            name=playlist_name,
             typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
             icon=self.test_icon
         )
@@ -111,7 +113,7 @@ class PlaylistModelTest(TestCase):
         # Créer d'abord la Playlist sans icône
         playlist = Playlist.objects.create(
             user=self.user,
-            name="Test Playlist",
+            name=playlist_name,
             typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
         )
         
@@ -179,11 +181,11 @@ class PlaylistModelTest(TestCase):
         """Test que la suppression d'un utilisateur supprime ses playlists"""
         playlist = Playlist.objects.create(
             user=self.user,
-            name="Test Playlist",
+            name=playlist_name,
             typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
         )
         
-        user_uuid = self.user.uuid
+        _ = self.user.uuid
         self.user.delete()
         
         # Vérifier que la playlist a été supprimée

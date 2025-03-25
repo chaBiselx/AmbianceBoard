@@ -47,7 +47,7 @@ class MusicElement {
             this.defaultVolume = parseFloat(this.DOMElement.dataset.defaultvolume);
         }
         if (this.DOMElement.dataset.fadein) {
-            this.fadeIn = (this.DOMElement.dataset.fadein == "true" ? true : false);
+            this.fadeIn = this.DOMElement.dataset.fadein == "true";
         }
         if (this.DOMElement.dataset.fadeintype) {
             this.fadeInType = this.DOMElement.dataset.fadeintype;
@@ -56,7 +56,7 @@ class MusicElement {
             this.fadeInDuration = parseFloat(this.DOMElement.dataset.fadeinduration);
         }
         if (this.DOMElement.dataset.fadeout) {
-            this.fadeOut = (this.DOMElement.dataset.fadeout == "true" ? true : false);
+            this.fadeOut = this.DOMElement.dataset.fadeout == "true" ;
         }
         if (this.DOMElement.dataset.fadeouttype) {
             this.fadeOutType = this.DOMElement.dataset.fadeouttype;
@@ -71,7 +71,7 @@ class MusicElement {
             this.idPlaylist = this.DOMElement.dataset.playlistid;
         }
         if (this.DOMElement.dataset.playlistloop) {
-            this.playlistLoop = (this.DOMElement.dataset.playlistloop == "true" ? true : false);
+            this.playlistLoop = this.DOMElement.dataset.playlistloop == "true";
         }
         if (this.DOMElement.dataset.playlistdelay) {
             this.delay = parseFloat(this.DOMElement.dataset.playlistdelay);
@@ -134,7 +134,7 @@ class MusicElement {
 
         this.DOMElement.classList.add('audio-' + buttonPlaylist.dataset.playlistType)
         this.DOMElement.src = buttonPlaylist.dataset.playlistUri + "?i=" + Date.now();
-        this.DOMElement.controls = (Config.DEBUG) ? true : false;
+        this.DOMElement.controls = Config.DEBUG;
         this.DOMElement.autoplay = true;
     }
 
@@ -143,7 +143,7 @@ class MusicElement {
         this.DOMElement.dataset.defaultvolume = this.defaultVolume.toString();
     }
 
-    public addToDOM(): MusicElement {
+    public addToDOM(): this {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
         audioElementDiv.appendChild(this.DOMElement);
         return this
@@ -163,7 +163,7 @@ class MusicElement {
                 if (event.target.error && event.target.error.code === 4) { // => ERROR 404
                     let new_music = new MusicElement(event.target);
 
-                    const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist as string) as ButtonPlaylist;
+                    const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
                     buttonPlaylist.disactive();
                     Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
                     event.target.remove();
@@ -232,7 +232,7 @@ class MusicElement {
         let new_music = new MusicElement(event.target as HTMLAudioElement);
         const timeRemaining = new_music.DOMElement.duration - new_music.DOMElement.currentTime;
 
-        if (timeRemaining <= new_music.fadeOutDuration && new_music.fadeOut == true) {
+        if (timeRemaining <= new_music.fadeOutDuration && new_music.fadeOut) {
             const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist);
             if (buttonPlaylist) {
 

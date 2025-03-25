@@ -11,7 +11,7 @@ class ButtonPlaylist {
     constructor(el: HTMLElement) {
         this.buttonElement = el;
         this.idPlaylist = el.dataset.playlistId!;
-        this.singleConcurrentread = (el.dataset.playlistSingleconcurrentread == TRUE) ? true : false;
+        this.singleConcurrentread = el.dataset.playlistSingleconcurrentread == TRUE;
         this.playlistType = el.dataset.playlistType!;
         this.dataset = el.dataset;
     }

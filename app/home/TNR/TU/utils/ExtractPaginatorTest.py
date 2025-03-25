@@ -14,7 +14,7 @@ class ExtractPaginatorTest(TestCase):
         """Test le contexte pour la première page"""
         context = extract_context_to_paginator(self.paginator, 1)
         
-        self.assertEqual(context['paginator']['page_number'], '1')
+        self.assertEqual(context['paginator']['page_number'], 1)
         self.assertTrue(context['paginator']['is_first_page'])
         self.assertFalse(context['paginator']['is_last_page'])
         self.assertEqual(context['paginator']['previous_page_number'], '0')
@@ -28,7 +28,7 @@ class ExtractPaginatorTest(TestCase):
         """Test le contexte pour une page au milieu"""
         context = extract_context_to_paginator(self.paginator, 5)
         
-        self.assertEqual(context['paginator']['page_number'], '5')
+        self.assertEqual(context['paginator']['page_number'], 5)
         self.assertFalse(context['paginator']['is_first_page'])
         self.assertFalse(context['paginator']['is_last_page'])
         self.assertEqual(context['paginator']['previous_page_number'], '4')
@@ -43,7 +43,7 @@ class ExtractPaginatorTest(TestCase):
         last_page = self.paginator.num_pages
         context = extract_context_to_paginator(self.paginator, last_page)
         
-        self.assertEqual(context['paginator']['page_number'], str(last_page))
+        self.assertEqual(context['paginator']['page_number'], last_page)
         self.assertFalse(context['paginator']['is_first_page'])
         self.assertTrue(context['paginator']['is_last_page'])
         self.assertEqual(context['paginator']['previous_page_number'], str(last_page - 1))
@@ -57,11 +57,11 @@ class ExtractPaginatorTest(TestCase):
         """Test le contexte avec un numéro de page invalide"""
         # Test avec une page négative
         context = extract_context_to_paginator(self.paginator, -1)
-        self.assertEqual(context['paginator']['page_number'], '1')  # Devrait retourner la première page
+        self.assertEqual(context['paginator']['page_number'], 1)  # Devrait retourner la première page
         
         # Test avec une page trop grande
         context = extract_context_to_paginator(self.paginator, 999)
-        self.assertEqual(context['paginator']['page_number'], str(self.paginator.num_pages))  # Devrait retourner la dernière page
+        self.assertEqual(context['paginator']['page_number'], self.paginator.num_pages)  # Devrait retourner la dernière page
 
     def test_small_dataset(self):
         """Test avec un petit ensemble de données"""
@@ -69,7 +69,7 @@ class ExtractPaginatorTest(TestCase):
         paginator = Paginator(small_data, 2)
         context = extract_context_to_paginator(paginator, 1)
         
-        self.assertEqual(context['paginator']['page_number'], '1')
+        self.assertEqual(context['paginator']['page_number'], 1)
         self.assertTrue(context['paginator']['is_first_page'])
         
         # Vérifier le page_range pour un petit dataset

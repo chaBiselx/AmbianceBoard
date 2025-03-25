@@ -14,7 +14,7 @@ class PasswordRules {
     }
 
     public addEvent() {
-        const passwordInput = this.getPasswordInput() as HTMLInputElement
+        const passwordInput = this.getPasswordInput()
         passwordInput.addEventListener('input', this.validatePassword.bind(this))
     }
 
@@ -30,8 +30,8 @@ class PasswordRules {
             minLength: password.length >= 8,
             hasUpperCase: /[A-Z]/.test(password),
             hasLowerCase: /[a-z]/.test(password),
-            hasNumber: /[0-9]/.test(password),
-            hasSpecialChar: /[!@#€£$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+            hasNumber: /\d/.test(password),
+            hasSpecialChar: /[!@#€£$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)
         };
     
         // Vérification de toutes les règles

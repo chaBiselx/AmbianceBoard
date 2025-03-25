@@ -12,7 +12,6 @@ from django.forms import formset_factory
 from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from home.enum.ThemeEnum import ThemeEnum
 
-PlaylistColorUserFormSet = formset_factory(PlaylistColorUserForm, extra=0)
 logger = logging.getLogger('home')
 
 @login_required
@@ -23,31 +22,37 @@ def settings_index(request):
 @login_required
 @require_http_methods(['POST', 'GET'])
 def settings_update_default_style(request):
+    playlist_color_user_form_set = formset_factory(PlaylistColorUserForm, extra=0)
     
     default_color_playlist = DefaultColorPlaylistService(request.user)
     initial_data = default_color_playlist.get_list_default_color()
 
     if request.method == "POST":
-        formset = PlaylistColorUserFormSet(request.POST)
-        if formset.is_valid():
-            for form in formset:
-                if form.cleaned_data:
-                    type_playlist = form.cleaned_data["typePlaylist"]
-                    color = form.cleaned_data["color"]
-                    color_text = form.cleaned_data["colorText"]
-                    
-                    # Mise à jour ou création de l'entrée
-                    pcu, created = PlaylistColorUser.objects.get_or_create(user=request.user, typePlaylist=type_playlist)
-                    pcu.color = color
-                    pcu.colorText = color_text
-                    if(created):
-                        pcu.user = request.user
-                        logger.debug(f"pcu.user: {pcu}")
-                    pcu.save()
-            
-            return redirect('defaultPlaylistType')
+        try:
+            formset = playlist_color_user_form_set(request.POST)
+            if formset.is_valid():
+                for form in formset:
+                    if form.cleaned_data:
+                        type_playlist = form.cleaned_data["typePlaylist"]
+                        color = form.cleaned_data["color"]
+                        color_text = form.cleaned_data["colorText"]
+                        
+                        # Mise à jour ou création de l'entrée
+                        pcu, created = PlaylistColorUser.objects.get_or_create(user=request.user, typePlaylist=type_playlist)
+                        pcu.color = color
+                        pcu.colorText = color_text
+                        if(created):
+                            pcu.user = request.user
+                            logger.debug(f"pcu.user: {pcu}")
+                        pcu.save()
+                        
+                
+                return redirect('defaultPlaylistType')
+        except Exception as e:
+            logger.error(f"settings_update_default_style error : {e}")
+            return render(request, 'Html/Account/Settings/update_default_style_playlist.html', {'formset': formset})
     else:
-        formset = PlaylistColorUserFormSet(initial=initial_data)
+        formset = playlist_color_user_form_set(initial=initial_data)
     
     return render(request, 'Html/Account/Settings/update_default_style_playlist.html', {'formset': formset})
 
