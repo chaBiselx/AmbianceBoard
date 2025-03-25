@@ -64,6 +64,8 @@ class LogRequestsMiddleware:
                 }
             )
     
+    
+    
             self.logger_home.info(
                 f"REQUEST : {request.method:<8} {request.get_full_path()} {filtered_post} {response.status_code} {duration}sec id:{log_id}"
             )
