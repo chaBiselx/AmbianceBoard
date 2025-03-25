@@ -23,6 +23,8 @@ from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from home.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from home.formatter.TypePlaylistFormater import TypePlaylistFormater
+from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from home.enum.ErrorMessageEnum import ErrorMessageEnum
 
 
 @login_required
@@ -53,7 +55,7 @@ def soundboard_create(request):
 def soundboard_read(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard :
-        return render(request, 'Html/General/404.html', status=404)
+        return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
     else:   
         return render(request, 'Html/Soundboard/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
 
@@ -63,7 +65,7 @@ def soundboard_update(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if request.method == 'POST':
         if not soundboard:
-            return render(request, 'Html/General/404.html', status=404)
+            return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
         else:
             form = SoundBoardForm(request.POST, request.FILES, instance=soundboard)
             if form.is_valid():
@@ -71,7 +73,7 @@ def soundboard_update(request, soundboard_uuid):
                 return redirect('soundboardsList')
     else:
         if not soundboard:
-            return render(request, 'Html/General/404.html', status=404) 
+            return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
         else:
             form = SoundBoardForm(instance=soundboard)
     return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method' : 'update'})
@@ -85,8 +87,8 @@ def soundboard_delete(request, soundboard_uuid) -> JsonResponse:
             return JsonResponse({"error": "SoundBoard introuvable."}, status=404)
         else :
             soundboard.delete()
-            return JsonResponse({'success': 'Suppression réussie'}, status=200)
-    return JsonResponse({"error": "Méthode non supportée."}, status=405)
+            return JsonResponse({'success': 'Suppression soundboard réussie'}, status=200)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED}, status=405)
 
 
 @login_required
@@ -94,7 +96,7 @@ def soundboard_delete(request, soundboard_uuid) -> JsonResponse:
 def soundboard_organize(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
-        return render(request, 'Html/General/404.html', status=404)
+        return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
     
     soundboard_manager = SoundBoardPlaylistManager(request, soundboard)
     return render(request, 'Html/Soundboard/soundboard_organize.html', {'soundboard': soundboard, 'actualPlaylist': soundboard_manager.get_playlists, 'unassociatedPlaylists': soundboard_manager.get_unassociated_playlists})
@@ -152,7 +154,7 @@ def playlist_create_with_soundboard(request, soundboard_uuid):
             form = PlaylistForm()
         list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
         return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic':None, 'list_default_color': list_default_color})
-    return render(request, 'Html/General/404.html', status=404) 
+    return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -217,7 +219,7 @@ def playlist_update(request, playlist_uuid):
     playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     if request.method == 'POST':
         if not playlist:
-            return render(request, 'Html/General/404.html', status=404)
+            return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
         else:
             form = PlaylistForm(request.POST, request.FILES, instance=playlist)
             if form.is_valid():
@@ -225,7 +227,7 @@ def playlist_update(request, playlist_uuid):
                 return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
     else:
         if not playlist:
-            return render(request, 'Html/General/404.html', status=404) 
+            return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
         else:
             form = PlaylistForm(instance=playlist)
     list_music = (MusicService(request)).get_list_music(playlist_uuid)
@@ -241,8 +243,8 @@ def playlist_delete(request, playlist_uuid) -> JsonResponse:
             return JsonResponse({"error": "Playlist introuvable."}, status=404)
         else :
             playlist.delete()
-            return JsonResponse({'success': 'Suppression réussie'}, status=200)
-    return JsonResponse({"error": "Méthode non supportée."}, status=405)
+            return JsonResponse({'success': 'Suppression playlist réussie'}, status=200)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED}, status=405)
     
 @login_required
 @require_http_methods(['POST', 'GET'])
@@ -255,7 +257,7 @@ def music_create(request, playlist_uuid) -> JsonResponse:
         else:
             form = MusicForm()
         return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist, 'method' : 'create' })
-    return render(request, 'Html/General/404.html', status=404) 
+    return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -263,7 +265,7 @@ def music_update(request, playlist_uuid, music_id):
     playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     music = Music.objects.get(id=music_id)
     if not music or not playlist:
-        return render(request, 'Html/General/404.html', status=404) 
+        return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
     if request.method == 'POST':
         form = MusicForm(request.POST, request.FILES, instance=music)
         if form.is_valid():
@@ -288,8 +290,8 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
             return JsonResponse({"error": "Musique introuvable."}, status=404)
         music.file.delete()
         music.delete()
-        return JsonResponse({'success': 'Suppression réussie'}, status=200)
-    return JsonResponse({"error": "Méthode non supportée."}, status=405)
+        return JsonResponse({'success': 'Suppression musique réussie'}, status=200)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED}, status=405)
 
 @login_required
 @require_http_methods(['GET'])
@@ -317,5 +319,5 @@ def update_direct_volume(request, playlist_uuid) -> JsonResponse:
                 playlist.save()
                 return JsonResponse({"message": "volume updated"}, status=200)
         
-    return JsonResponse({"error": "Méthode non supportée."}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED}, status=405)
     

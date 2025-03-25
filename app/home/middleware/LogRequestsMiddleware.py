@@ -12,7 +12,7 @@ class LogRequestsMiddleware:
         start_time = time.time()
         
         if request.user.is_authenticated: # If the user is authenticated
-            log_id = f"USER_{request.user.uuid}"
+            unique_id = f"USER_{request.user.uuid}"
             response = self.get_response(request)
         else: # If the user is not authenticated
             unique_id = request.COOKIES.get('unique_id')
@@ -22,7 +22,7 @@ class LogRequestsMiddleware:
                 response.set_cookie('unique_id', unique_id, max_age=3600)  # Set cookie for 1 hour
             else:
                 response = self.get_response(request)
-            log_id = f"ANONYMOUS_{unique_id}"
+        log_id = f"ANONYMOUS_{unique_id}"
             
         duration = round(time.time() - start_time, 6)
 

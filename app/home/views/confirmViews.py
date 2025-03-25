@@ -13,6 +13,7 @@ from home.email.UserMail import UserMail
 from home.service.FailedLoginAttemptService import FailedLoginAttemptService
 from django.core.exceptions import ValidationError
 from home.service.ConfirmationUserService import ConfirmationUserService
+from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 
 
 @login_required
@@ -29,5 +30,5 @@ def confirm_account(request, uuid_user:str, confirmation_token:str):
         return redirect('login')
     except Exception as e:
         logger.error(e)
-        return render(request,  'Html/General/404.html', status=404)
+        return render(request,  HtmlDefaultPageEnum.ERROR_404, status=404)
     

@@ -68,11 +68,10 @@ function confirmSuppression(event: Event) {
 }
 
 function callAjax(config:deleteConfig, method: string = 'POST') {
-    var csrfToken = Cookie.get('csrftoken')!;
     fetch(config.delete_url, {
         method: method,
         headers: {
-            'X-CSRFToken': csrfToken
+            'X-CSRFToken': Cookie.get('csrftoken')!
         },
     })
         .then(response => {

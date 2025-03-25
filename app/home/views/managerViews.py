@@ -7,6 +7,7 @@ from home.service.MediaAudioService import MediaAudioService
 from home.service.MediaImgPlaylistService import MediaImgPlaylistService
 from home.service.MediaImgSoundboardService import MediaImgSoundboardService
 from home.enum.PermissionEnum import PermissionEnum
+from home.enum.ErrorMessageEnum import ErrorMessageEnum
 
 
 @login_required
@@ -30,6 +31,6 @@ def clean_media_folder(request) -> JsonResponse:
         logger.warning("Ending ClearMediaFolder View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
-        return JsonResponse({"error": "Unexpected error", "message": str(e)}, status=500)
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR, "message": str(e)}, status=500)
     
 

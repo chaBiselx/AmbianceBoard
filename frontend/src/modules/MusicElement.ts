@@ -79,55 +79,14 @@ class MusicElement {
     }
 
     private setDefaultFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        if (buttonPlaylist.dataset.playlistVolume) {
-            this.setDefaultVolume(buttonPlaylist.getVolume());
-        }
-        if (buttonPlaylist.dataset.playlistFadein) {
-            this.fadeIn = (buttonPlaylist.dataset.playlistFadein == TRUE) ? true : false;
-            this.DOMElement.dataset.fadein = this.fadeIn.toString();
-        }
-        const token = buttonPlaylist.getToken();
-        if (token) {
-            this.butonPlaylistToken = token;
-            this.DOMElement.dataset.butonPlaylistToken = this.butonPlaylistToken;
-        }
-        if (buttonPlaylist.dataset.playlistFadeintype) {
-            this.fadeInType = buttonPlaylist.dataset.playlistFadeintype;
-            this.DOMElement.dataset.fadeintype = this.fadeInType;
-        }
-        if (buttonPlaylist.dataset.playlistFadeinduration) {
-            this.fadeInDuration = parseFloat(buttonPlaylist.dataset.playlistFadeinduration);
-            this.DOMElement.dataset.fadeinduration = this.fadeInDuration.toString();
-        }
-        if (buttonPlaylist.dataset.playlistFadeout) {
-            this.fadeOut = (buttonPlaylist.dataset.playlistFadein == TRUE) ? true : false;
-            this.DOMElement.dataset.fadeout = this.fadeOut.toString();
-        }
-        if (buttonPlaylist.dataset.playlistFadeouttype) {
-            this.fadeOutType = buttonPlaylist.dataset.playlistFadeouttype;
-            this.DOMElement.dataset.fadeouttype = this.fadeOutType;
-        }
-        if (buttonPlaylist.dataset.playlistFadeoutduration) {
-            this.fadeOutDuration = parseFloat(buttonPlaylist.dataset.playlistFadeoutduration);
-            this.DOMElement.dataset.fadeoutduration = this.fadeOutDuration.toString();
-        }
-        if (buttonPlaylist.dataset.playlistType) {
-            this.playlistType = buttonPlaylist.dataset.playlistType
-            this.DOMElement.dataset.playlisttype = this.playlistType;
-        }
-        if (buttonPlaylist.idPlaylist) {
-            this.idPlaylist = buttonPlaylist.idPlaylist;
-            this.DOMElement.dataset.playlistid = this.idPlaylist;
-        }
-        if (buttonPlaylist.dataset.playlistLoop) {
-            this.playlistLoop = (buttonPlaylist.dataset.playlistLoop == TRUE) ? true : false;
-            this.DOMElement.dataset.playlistloop = this.playlistLoop.toString();
-        }
-        if (buttonPlaylist.dataset.playlistDelay) {
-            this.delay = parseFloat(buttonPlaylist.dataset.playlistDelay);
-            this.DOMElement.dataset.playlistdelay = this.delay.toString();
-        }
-
+        this.setDefaultVolumeFromPlaylist(buttonPlaylist);
+        this.setFadeInFromPlaylist(buttonPlaylist);
+        this.setFadeOutFromPlaylist(buttonPlaylist);
+        this.setPlaylistTypeFromPlaylist(buttonPlaylist);
+        this.setPlaylistIdFromPlaylist(buttonPlaylist);
+        this.setPlaylistLoopFromPlaylist(buttonPlaylist);
+        this.setPlaylistDelayFromPlaylist(buttonPlaylist);
+        this.setButtonPlaylistTokenFromPlaylist(buttonPlaylist);
 
 
         this.DOMElement.className = `playlist-audio-${buttonPlaylist.idPlaylist}`;
@@ -295,6 +254,78 @@ class MusicElement {
             buttonPlaylist.disactive();
         }
     }
+
+    private setDefaultVolumeFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+        if (buttonPlaylist.dataset.playlistVolume) {
+          this.setDefaultVolume(buttonPlaylist.getVolume());
+        }
+      }
+      
+      private setFadeInFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+        if (buttonPlaylist.dataset.playlistFadein) {
+          this.fadeIn = (buttonPlaylist.dataset.playlistFadein == TRUE) ? true : false;
+          this.DOMElement.dataset.fadein = this.fadeIn.toString();
+        }
+        if (buttonPlaylist.dataset.playlistFadeintype) {
+          this.fadeInType = buttonPlaylist.dataset.playlistFadeintype;
+          this.DOMElement.dataset.fadeintype = this.fadeInType;
+        }
+        if (buttonPlaylist.dataset.playlistFadeinduration) {
+          this.fadeInDuration = parseFloat(buttonPlaylist.dataset.playlistFadeinduration);
+          this.DOMElement.dataset.fadeinduration = this.fadeInDuration.toString();
+        }
+      }
+      
+      private setFadeOutFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+        if (buttonPlaylist.dataset.playlistFadeout) {
+          this.fadeOut = (buttonPlaylist.dataset.playlistFadein == TRUE) ? true : false;
+          this.DOMElement.dataset.fadeout = this.fadeOut.toString();
+        }
+        if (buttonPlaylist.dataset.playlistFadeouttype) {
+          this.fadeOutType = buttonPlaylist.dataset.playlistFadeouttype;
+          this.DOMElement.dataset.fadeouttype = this.fadeOutType;
+        }
+        if (buttonPlaylist.dataset.playlistFadeoutduration) {
+          this.fadeOutDuration = parseFloat(buttonPlaylist.dataset.playlistFadeoutduration);
+          this.DOMElement.dataset.fadeoutduration = this.fadeOutDuration.toString();
+        }
+      }
+      
+      private setPlaylistTypeFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+        if (buttonPlaylist.dataset.playlistType) {
+          this.playlistType = buttonPlaylist.dataset.playlistType;
+          this.DOMElement.dataset.playlisttype = this.playlistType;
+        }
+      }
+      
+      private setPlaylistIdFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+        if (buttonPlaylist.idPlaylist) {
+          this.idPlaylist = buttonPlaylist.idPlaylist;
+          this.DOMElement.dataset.playlistid = this.idPlaylist;
+        }
+      }
+      
+      private setPlaylistLoopFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+        if (buttonPlaylist.dataset.playlistLoop) {
+          this.playlistLoop = (buttonPlaylist.dataset.playlistLoop == TRUE) ? true : false;
+          this.DOMElement.dataset.playlistloop = this.playlistLoop.toString();
+        }
+      }
+      
+      private setPlaylistDelayFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+        if (buttonPlaylist.dataset.playlistDelay) {
+          this.delay = parseFloat(buttonPlaylist.dataset.playlistDelay);
+          this.DOMElement.dataset.playlistdelay = this.delay.toString();
+        }
+      }
+      
+      private setButtonPlaylistTokenFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+        const token = buttonPlaylist.getToken();
+        if (token) {
+          this.butonPlaylistToken = token;
+          this.DOMElement.dataset.butonPlaylistToken = this.butonPlaylistToken;
+        }
+      }
 
 }
 

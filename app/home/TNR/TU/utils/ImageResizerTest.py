@@ -5,6 +5,7 @@ import os
 from PIL import Image
 from home.utils.ImageResizer import ImageResizer  # Assurez-vous que le fichier s'appelle image_resizer.py
 
+os_path_exist = 'os.path.exists'
 class ImageResizerTest(unittest.TestCase):
     def setUp(self):
         self.input_path = "test_input.jpg"
@@ -12,7 +13,7 @@ class ImageResizerTest(unittest.TestCase):
         
     def test_init_with_existing_file(self):
         """Test l'initialisation avec un fichier qui existe"""
-        with patch('os.path.exists') as mock_exists:
+        with patch(os_path_exist) as mock_exists:
             mock_exists.return_value = True
             resizer = ImageResizer(self.input_path, self.output_path)
             self.assertEqual(resizer.input_path, self.input_path)
@@ -20,7 +21,7 @@ class ImageResizerTest(unittest.TestCase):
 
     def test_init_with_nonexistent_file(self):
         """Test l'initialisation avec un fichier qui n'existe pas"""
-        with patch('os.path.exists') as mock_exists:
+        with patch(os_path_exist) as mock_exists:
             mock_exists.return_value = False
             with self.assertRaises(FileNotFoundError):
                 ImageResizer(self.input_path, self.output_path)
@@ -35,7 +36,7 @@ class ImageResizerTest(unittest.TestCase):
         mock_img.__enter__.return_value = mock_img
         mock_image_open.return_value = mock_img
 
-        with patch('os.path.exists') as mock_exists:
+        with patch(os_path_exist) as mock_exists:
             mock_exists.return_value = True
             resizer = ImageResizer(self.input_path, self.output_path)
             resizer.resize_image(max_size=200)
@@ -55,7 +56,7 @@ class ImageResizerTest(unittest.TestCase):
         mock_img.__enter__.return_value = mock_img
         mock_image_open.return_value = mock_img
 
-        with patch('os.path.exists') as mock_exists:
+        with patch(os_path_exist) as mock_exists:
             mock_exists.return_value = True
             resizer = ImageResizer(self.input_path, self.output_path)
             resizer.resize_image(max_size=200)
@@ -68,7 +69,7 @@ class ImageResizerTest(unittest.TestCase):
         """Test la gestion des erreurs lors du redimensionnement"""
         mock_image_open.side_effect = Exception("Test error")
 
-        with patch('os.path.exists') as mock_exists:
+        with patch(os_path_exist) as mock_exists:
             mock_exists.return_value = True
             resizer = ImageResizer(self.input_path, self.output_path)
 

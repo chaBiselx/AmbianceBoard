@@ -6,6 +6,11 @@ from parameters import settings
 from home.exceptions.EmailException import DebugModeActivedWitoutDebugMailException, AttachementException, SendException
 from home.utils.EmailSender import EmailSender
 
+subject_test = "Test Subject"
+body_test = "Test Body"
+from_email_test = "sender@example.com"
+to_emails_test = ["recipient@example.com"]
+
 class TestEmailSender(unittest.TestCase):
     def setUp(self):
         """Configure les paramètres de base pour les tests"""
@@ -57,10 +62,10 @@ class TestEmailSender(unittest.TestCase):
         mock_smtp.return_value.__enter__.return_value = mock_server
         
         # Paramètres de l'email
-        subject = "Test Subject"
-        body = "Test Body"
-        from_email = "sender@example.com"
-        to_emails = ["recipient@example.com"]
+        subject = subject_test
+        body = body_test
+        from_email = from_email_test
+        to_emails = to_emails_test
         
         # Envoie l'email
         result = sender.send_email(subject, body, from_email, to_emails)
@@ -88,10 +93,10 @@ class TestEmailSender(unittest.TestCase):
         mock_smtp.return_value.__enter__.return_value = mock_server
         
         # Paramètres de l'email
-        subject = "Test Subject"
-        body = "Test Body"
-        from_email = "sender@example.com"
-        to_emails = ["recipient@example.com"]
+        subject = subject_test
+        body = body_test
+        from_email = from_email_test
+        to_emails = to_emails_test
         attachments = ["/path/to/file.txt"]
         
         # Envoie l'email
@@ -117,10 +122,10 @@ class TestEmailSender(unittest.TestCase):
         
         with self.assertRaises(AttachementException):
             sender.send_email(
-                "Test Subject",
-                "Test Body",
-                "sender@example.com",
-                ["recipient@example.com"],
+                subject_test,
+                body_test,
+                from_email_test,
+                to_emails_test,
                 ["/path/to/nonexistent.txt"]
             )
 
@@ -134,8 +139,8 @@ class TestEmailSender(unittest.TestCase):
         
         with self.assertRaises(SendException):
             sender.send_email(
-                "Test Subject",
-                "Test Body",
-                "sender@example.com",
-                ["recipient@example.com"]
+                subject_test,
+                body_test,
+                from_email_test,
+                to_emails_test
             )
