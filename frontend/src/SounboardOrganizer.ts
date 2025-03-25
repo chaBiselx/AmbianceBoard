@@ -24,7 +24,7 @@ class OrganizerDragAndDropZone {
     }
 
     public static valid(): boolean {
-        if (document.getElementById('unassociated-playlists') instanceof HTMLDivElement && document.getElementById('unassociated-playlists') instanceof HTMLDivElement) {
+        if (document.getElementById('unassociated-playlists') instanceof HTMLDivElement && document.getElementById('associated-playlists') instanceof HTMLDivElement) {
             return true;
         }
         return false;

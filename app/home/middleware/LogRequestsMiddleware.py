@@ -16,7 +16,9 @@ class LogRequestsMiddleware:
             response = self.get_response(request)
         else: # If the user is not authenticated
             unique_id = request.COOKIES.get('unique_id')
-            if not unique_id or not isinstance(unique_id, uuid.UUID) : # If the cookie is not set or modified
+            if not isinstance(unique_id, uuid.UUID): # if cookie is modified 
+                unique_id = none
+            if not unique_id : # If the cookie is not set
                 unique_id = f"{uuid.uuid4()}"
                 response = self.get_response(request)
                 response.set_cookie('unique_id', unique_id, max_age=3600)  # Set cookie for 1 hour
