@@ -5,8 +5,8 @@
         "build": "npm run prebuild && npm run sass:build && vite build --outDir ../app/static/js ",
         "dev": "concurrently \"npm run prebuild\" \"npm run sass:watch\" \"npm run vite:watch\"",
         "vite:watch": "vite build --watch --outDir ../app/static/js",
-        "sass:build": "sass scss/main.scss static/css/style.css",
-        "sass:watch": "sass scss/main.scss static/css/style.css --watch",
+        "sass:build": "sass scss/main.scss static/css/style.css --no-source-map compressed",
+        "sass:watch": "sass scss/main.scss static/css/style.css --no-source-map --watch",
         "prebuild": "node scripts/pre-build.js"
     },
     "dependencies": {
