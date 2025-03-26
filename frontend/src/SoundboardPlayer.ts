@@ -44,13 +44,12 @@ function togglePlaylistMixer() {
     const checkBox = document.getElementById('inputShowMixerPlaylist') as HTMLInputElement
     const showMixer = checkBox.checked
     if (listMixerUpdate) {
-        for (let i = 0; i < listMixerUpdate.length; i++) {
+        for (const mixerUpdate of listMixerUpdate) {
             if (showMixer) {
-                listMixerUpdate[i].classList.remove('hide-playlist-mixer');
+                mixerUpdate.classList.remove('hide-playlist-mixer');
             } else {
-                listMixerUpdate[i].classList.add('hide-playlist-mixer');
+                mixerUpdate.classList.add('hide-playlist-mixer');
             }
-
         }
     }
 }
@@ -58,8 +57,8 @@ function togglePlaylistMixer() {
 function addEventListenerPlaylistVolumeUpdate() {
     const listMixerUpdate = document.getElementsByClassName('mixer-playlist-update');
     if (listMixerUpdate) {
-        for (let i = 0; i < listMixerUpdate.length; i++) {
-            listMixerUpdate[i].addEventListener('change', eventUpdatePlaylistVolume);
+        for (const mixerUpdate of listMixerUpdate) {
+            mixerUpdate.addEventListener('change', eventUpdatePlaylistVolume);
         }
     }
 
@@ -95,14 +94,12 @@ function eventTogglePlaylist(event: Event) {
 }
 
 function updateWithMixerPlaylist() {
-    const formElements = document.querySelectorAll('.playlist-link');
-    for (let index = 0; index < formElements.length; index++) {
-        const element = formElements[index] as HTMLElement;
+    const formElements = document.querySelectorAll('.playlist-link') as NodeListOf<HTMLElement>;
+    for (const element of formElements) {
         const elmentDest = document.getElementById(`range_volume_${element.dataset.playlistId!}`)
         if(elmentDest){
             elmentDest.style.width = `${element.offsetWidth}px`;
         }
-
     }
 }
 

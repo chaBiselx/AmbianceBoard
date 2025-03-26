@@ -1,5 +1,5 @@
-import Cookie from '@/modules/Cookie.ts';
-import ModalCustom from '@/modules/Modal.ts';
+import Cookie from '@/modules/Cookie';
+import ModalCustom from '@/modules/Modal';
 
 type playlist = { color: string, colorText: string, typePlaylist: string };
 
@@ -8,13 +8,14 @@ toggleShowColorForm();
 toggleShowDelayForm();
 
 const DomElementAddEvent = ['id_name', 'id_color', 'id_colorText', 'id_icon', 'id_typePlaylist', 'id_useSpecificColor'];
-for (let i = 0; i < DomElementAddEvent.length; i++) {
-    const input = document.getElementById(DomElementAddEvent[i]) as HTMLInputElement
+for (const element of DomElementAddEvent) {
+    const input = document.getElementById(element) as HTMLInputElement
     if (input) {
         input.addEventListener('input', simulatePlaylistColor);
         input.addEventListener('change', simulatePlaylistColor);
     }
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const volumeInput = document.getElementById('id_volume') as HTMLInputElement;
@@ -42,7 +43,7 @@ function simulatePlaylistColor() {
         return
     }
 
-    if (id_useSpecificColor && id_useSpecificColor.checked) {
+    if (id_useSpecificColor?.checked) {
         const color = document.getElementById('id_color') as HTMLInputElement;
         const colorText = document.getElementById('id_colorText') as HTMLInputElement;
         demo.style.backgroundColor = color.value;
@@ -63,7 +64,7 @@ function simulatePlaylistColor() {
         reader.addEventListener("load", () => {
             demo.innerHTML = "<img class='playlist-img' src=" + reader.result + " ></img>";
         });
-        if (imgInput.files && imgInput.files[0]) {
+        if (imgInput.files?.[0]) {
             reader.readAsDataURL(imgInput.files[0])
         }
 
@@ -96,13 +97,13 @@ function setVolumeToAllMusic(volume: number) {
 function toggleShowColorForm() {
     const listClass = document.getElementsByClassName('color_form')
     const id_useSpecificColor = document.getElementById('id_useSpecificColor') as HTMLInputElement;
-    if (id_useSpecificColor && id_useSpecificColor.checked) {
-        for (let i = 0; i < listClass.length; i++) {
-            listClass[i].classList.remove('d-none');
+    if (id_useSpecificColor?.checked) {
+        for (const classElement of listClass) {
+            classElement.classList.remove('d-none');
         }
     } else {
-        for (let i = 0; i < listClass.length; i++) {
-            listClass[i].classList.add('d-none');
+        for (const classElement of listClass) {
+            classElement.classList.add('d-none');
         }
     }
 }
@@ -110,13 +111,13 @@ function toggleShowColorForm() {
 function toggleShowDelayForm() {
     const listClass = document.getElementsByClassName('delay_form')
     const id_useSpecificDelay = document.getElementById('id_useSpecificDelay') as HTMLInputElement;
-    if (id_useSpecificDelay && id_useSpecificDelay.checked) {
-        for (let i = 0; i < listClass.length; i++) {
-            listClass[i].classList.remove('d-none');
+    if (id_useSpecificDelay?.checked) {
+        for (const classElement of listClass) {
+            classElement.classList.remove('d-none');
         }
     } else {
-        for (let i = 0; i < listClass.length; i++) {
-            listClass[i].classList.add('d-none');
+        for (const classElement of listClass) {
+            classElement.classList.add('d-none');
         }
     }
 
@@ -139,7 +140,7 @@ function confirmSuppressionPlaylist(event: Event) {
         };
 
         if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
-            callAjaxDeletePlaylist(config)
+            deleteEntity(config)
         } else {
             // Annuler la suppression
         }
@@ -147,7 +148,7 @@ function confirmSuppressionPlaylist(event: Event) {
     }
 }
 
-function callAjaxDeletePlaylist(config: { delete_url: string, redirect_url: string }) {
+function deleteEntity(config: { delete_url: string, redirect_url: string }) {
     fetch(config.delete_url, {
         method: 'DELETE',
         headers: {
@@ -168,10 +169,11 @@ function callAjaxDeletePlaylist(config: { delete_url: string, redirect_url: stri
 }
 
 function addDeleteMusicEvent() {
-    const deleteMusicBtn = document.getElementsByClassName('btn-delete-music');
-    for (let i = 0; i < deleteMusicBtn.length; i++) {
-        deleteMusicBtn[i].addEventListener('click', confirmSuppressionMusic);
+    const deleteMusicBtnList = document.getElementsByClassName('btn-delete-music');
+    for (const deleteMusicBtn of deleteMusicBtnList) {
+        deleteMusicBtn.addEventListener('click', confirmSuppressionMusic);
     }
+
 }
 
 
@@ -184,32 +186,12 @@ function confirmSuppressionMusic(event: Event) {
         };
 
         if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
-            callAjaxDeleteMusic(config)
+            deleteEntity(config)
         } else {
             // Annuler la suppression
         }
 
     }
-}
-
-function callAjaxDeleteMusic(config: { delete_url: string, redirect_url: string }) {
-    fetch(config.delete_url, {
-        method: 'DELETE',
-        headers: {
-            'X-CSRFToken': Cookie.get('csrftoken')!
-        },
-    })
-        .then(response => {
-            if (response.status === 200) {
-                window.location.href = config.redirect_url;
-            } else {
-                // Gestion des erreurs
-                console.error('Erreur lors de la suppression');
-            }
-        })
-        .catch(error => {
-            console.error('Erreur lors de la requête AJAX:', error);
-        });
 }
 
 function addPopupDescriptionPlaylistType() {
@@ -289,9 +271,9 @@ function getListingOtherColors(event: Event) {
                 width: "lg"
             })
 
-            const btnSelectPlaylistColor = document.getElementsByClassName("btn-select-playlist-color");
-            for (let i = 0; i < btnSelectPlaylistColor.length; i++) {
-                btnSelectPlaylistColor[i].addEventListener('click', selectColor);
+            const btnSelectPlaylistColorList = document.getElementsByClassName("btn-select-playlist-color");
+            for (const btnSelectPlaylistColor of btnSelectPlaylistColorList) {
+                btnSelectPlaylistColor.addEventListener('click', selectColor);
             }
         })
         .catch(error => {
@@ -352,10 +334,10 @@ function selectColor(event: Event) {
 }
 
 function addMusicEvent() {
-    const addMusicBtn = document.getElementsByClassName('btn-add-music');
-    if (addMusicBtn) {
-        for (let i = 0; i < addMusicBtn.length; i++) {
-            addMusicBtn[i].addEventListener('click', showPopupMusic);
+    const addMusicBtnList = document.getElementsByClassName('btn-add-music');
+    if (addMusicBtnList) {
+        for (const addMusicBtn of addMusicBtnList) {
+            addMusicBtn.addEventListener('click', showPopupMusic);
         }
     }
 }
@@ -392,7 +374,7 @@ function autoSetAlternateName(event: Event) {
     const fileDest = document.getElementById('id_alternativeName') as HTMLInputElement;
     if (fileDest && fileInputOrigin && fileDest.value == '') {
         const regexExtenstion = /\.[^.]*$/g;
-        if (fileInputOrigin.files && fileInputOrigin.files[0]) {
+        if (fileInputOrigin.files?.[0]) {
             fileDest.value = fileInputOrigin.files[0].name.replace(regexExtenstion, '').substring(0, 50);
         }
     }

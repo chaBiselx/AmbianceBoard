@@ -7,17 +7,26 @@ import * as bootstrap from 'bootstrap';
 document.addEventListener('DOMContentLoaded', () => {
     // Dropdown
     document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(element => {
-        new bootstrap.Dropdown(element);
+        try {
+            new bootstrap.Dropdown(element);
+        } catch (error) {
+        }
     });
 
     // Tooltip
     document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(element => {
-        new bootstrap.Tooltip(element);
+        try {
+            new bootstrap.Tooltip(element);
+        } catch (error) {
+        }
     });
 
     // Popover
     document.querySelectorAll('[data-bs-toggle="popover"]').forEach(element => {
-        new bootstrap.Popover(element);
+        try {
+            new bootstrap.Popover(element);
+        } catch (error) {
+        }
     });
 });
 

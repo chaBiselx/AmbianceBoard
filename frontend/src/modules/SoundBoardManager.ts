@@ -1,8 +1,7 @@
 import Config from '@/modules/Config';
 import { ButtonPlaylist, ListingButtonPlaylist } from '@/modules/ButtonPlaylist';
-import { MusicElement } from '@/modules/MusicElement';
+import { MusicElement, ListingAudioElement } from '@/modules/MusicElement';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
-import { ListingAudioElement } from '@/modules/MusicElement';
 
 
 class SoundBoardManager {

@@ -4,12 +4,13 @@ type deleteConfig = { delete_url: string, redirect_url: string };
 
 simulateSoundBoardColor();
 
-const DomElementAddEvent = ['id_name', 'id_color', 'id_colorText', 'id_icon'];
-for (let i = 0; i < DomElementAddEvent.length; i++) {
-    const input = document.getElementById(DomElementAddEvent[i]) as HTMLInputElement;
+const DomElementAddEventList = ['id_name', 'id_color', 'id_colorText', 'id_icon'];
+for (const DomElementAddEvent of DomElementAddEventList) {
+    const input = document.getElementById(DomElementAddEvent) as HTMLInputElement;
     input.addEventListener('input', simulateSoundBoardColor);
     input.addEventListener('change', simulateSoundBoardColor);
 }
+
 
 function simulateSoundBoardColor() {
     const demo = document.getElementById('demo-soundboard') as HTMLDivElement;
@@ -27,7 +28,7 @@ function simulateSoundBoardColor() {
         reader.addEventListener("load", () => {
             demo.innerHTML = "<img class='playlist-img' src=" + reader.result + " ></img>";
         });
-        if (imgInput.files && imgInput.files[0]) {
+        if (imgInput.files?.[0]) {
             reader.readAsDataURL(imgInput.files[0])
         }
     } else if(document.getElementById('id_icon_alreadyexist')){
@@ -55,8 +56,8 @@ function confirmSuppression(event: Event) {
     const el = event.target as HTMLButtonElement;
     if(el.dataset.deleteurl && el.dataset.redirecturl){
         const config:deleteConfig = {
-            delete_url:el.dataset.deleteurl!,
-            redirect_url:el.dataset.redirecturl!
+            delete_url:el.dataset.deleteurl,
+            redirect_url:el.dataset.redirecturl
         };
     
         if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {

@@ -11,6 +11,8 @@ from home.models.UserPreference import UserPreference
 from django.forms import formset_factory
 from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from home.enum.ThemeEnum import ThemeEnum
+from home.enum.ErrorMessageEnum import ErrorMessageEnum
+from home.exceptions.PostDataException import PostDataException
 
 logger = logging.getLogger('home')
 
@@ -63,7 +65,7 @@ def update_theme(request):
         try:
             data = json.loads(request.body)  # Décode le JSON
             if 'theme' not in data:
-                raise Exception('Theme not found in request data.')
+                raise PostDataException('Theme not found in request data.')
             
             new_theme = data['theme']
             enum_theme = ThemeEnum(new_theme)
@@ -74,7 +76,7 @@ def update_theme(request):
         except Exception as e:
             logger.error(f"update theme error : {e}")
             return JsonResponse({'error': 'Failed to update theme.'}, status=500)
-    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD}, status=400)
 
 @login_required
 @require_http_methods(['GET'])
@@ -87,7 +89,7 @@ def update_playlist_dim(request):
         try:
             data = json.loads(request.body)  # Décode le JSON
             if 'dim' not in data:
-                raise Exception('dim not found in request data.')
+                raise PostDataException('dim not found in request data.')
             dim = data['dim']
             user_preference, _ = UserPreference.objects.get_or_create(user=request.user)
             user_preference.playlistDim = dim
@@ -96,7 +98,7 @@ def update_playlist_dim(request):
         except Exception as e:
             logger.error(f"update dimensions playlist error : {e}")
             return JsonResponse({'error': 'Failed to update dimensions.'}, status=500)
-    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD}, status=400)
 
 @login_required
 @require_http_methods(['UPDATE'])
@@ -105,7 +107,7 @@ def update_soundboard_dim(request):
         try:
             data = json.loads(request.body)  # Décode le JSON
             if 'dim' not in data:
-                raise Exception('dim not found in request data.')
+                raise PostDataException('dim not found in request data.')
             dim = data['dim']
             user_preference, _ = UserPreference.objects.get_or_create(user=request.user)
             user_preference.soundboardDim = dim
@@ -114,4 +116,4 @@ def update_soundboard_dim(request):
         except Exception as e:
             logger.error(f"update dimensions soundboard error : {e}")
             return JsonResponse({'error': 'Failed to update dimensions.'}, status=500)
-    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD}, status=400)

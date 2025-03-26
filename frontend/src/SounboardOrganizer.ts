@@ -129,10 +129,9 @@ class CleanOrderHandler {
     }
 
     trueReorder() {
-        const listEl = this.associatedPlaylists.getElementsByClassName('playlist-dragAndDrop');
+        const listEl = this.associatedPlaylists.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
         let order = 1;
-        for (let i = 0; i < listEl.length; i++) {
-            const element = listEl[i] as HTMLDivElement;
+        for (const element of listEl) {
             if(element.dataset){
                 element.dataset.order = order.toString();
                 order++;
@@ -143,15 +142,14 @@ class CleanOrderHandler {
 
     resetBadge() {
         const listEl = this.associatedPlaylists.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
-        for (let i = 0; i < listEl.length; i++) {
-            const element = listEl[i] as HTMLDivElement;
+        for (const element of listEl) {
             const buttonPlaylist = new OrganizerButtonPlaylist(element.id)
             buttonPlaylist.removeBadge(false)
             let order = 0;
             if (element.dataset) {
                 order = parseInt(element.dataset.order!)
             }
-            buttonPlaylist.addBadge(order)
+            buttonPlaylist.addBadge(order) 
         }
         this.cleanUnsassociatedBadge()
 
@@ -195,8 +193,8 @@ class EventDataTransfert {
     public static getClassFromEvent(event: DragEvent): EventDataTransfert {
         const dataTransfer = event.dataTransfer!
         let DT = {
-            id: dataTransfer.getData('id')!,
-            dragstart: dataTransfer.getData('dragstart')!,
+            id: dataTransfer.getData('id'),
+            dragstart: dataTransfer.getData('dragstart'),
         } as DataTransfer;
         const EDT = new EventDataTransfert(event);
         EDT.setDataTransfer(DT);

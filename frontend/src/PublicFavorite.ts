@@ -4,8 +4,8 @@ import Cookie from "@/modules/Cookie";
 document.addEventListener("DOMContentLoaded", () => {
     const listFavoriteAction = document.getElementsByClassName('favorite-action');
     if (listFavoriteAction) {
-        for (let i = 0; i < listFavoriteAction.length; i++) {
-            const favoriteAction = new PublicFavorite(listFavoriteAction[i] as HTMLInputElement);
+        for (const favoriteActionElement of listFavoriteAction) {
+            const favoriteAction = new PublicFavorite(favoriteActionElement as HTMLInputElement);
             favoriteAction.addEvent();
         }
     }
