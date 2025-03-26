@@ -1,6 +1,6 @@
 import Config from '@/modules/Config'
 class WakeLock {
-    private readonly wakeLock: WakeLockSentinel | null = null;
+    private wakeLock: WakeLockSentinel | null = null;
 
     constructor() {
         document.addEventListener("visibilitychange", this.handleVisibilityChange);
@@ -24,7 +24,7 @@ class WakeLock {
     }
 
     // Gestion de la visibilité de la page
-    private handleVisibilityChange = async (): Promise<void> => {
+    private readonly handleVisibilityChange = async (): Promise<void> => {
         if (this.wakeLock !== null && document.visibilityState === "visible") {
             this.start();
         }

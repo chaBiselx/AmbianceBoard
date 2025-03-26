@@ -6,7 +6,7 @@ class Cookie {
         if (document.cookie && document.cookie != '') {
             let cookies = document.cookie.split(';');
             for (let cookie of cookies) {
-                cookie = cookie.trim();
+                cookie.trim();
                 if (cookie.substring(0, name.length + 1) == (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;

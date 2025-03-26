@@ -139,7 +139,7 @@ function confirmSuppressionPlaylist(event: Event) {
             redirect_url: el.dataset.redirecturl,
         };
 
-        if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
+        if (confirm("Êtes-vous sûr de vouloir supprimer la playlist ?")) {
             deleteEntity(config)
         } else {
             // Annuler la suppression
@@ -185,7 +185,7 @@ function confirmSuppressionMusic(event: Event) {
             redirect_url: el.dataset.redirecturl,
         };
 
-        if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
+        if (confirm("Êtes-vous sûr de vouloir supprimer la musique ?")) {
             deleteEntity(config)
         } else {
             // Annuler la suppression
@@ -344,8 +344,8 @@ function addMusicEvent() {
 
 function showPopupMusic(event: Event) {
     const el = event.target as HTMLButtonElement;;
-    const url = el.dataset!.url!;
-    const title = el.title!;
+    const url = el.dataset.url!;
+    const title = el.title;
 
     fetch(url, {
         method: 'GET',

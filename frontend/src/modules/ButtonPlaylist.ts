@@ -61,8 +61,9 @@ class ListingButtonPlaylist {
     static getListingAudioElement(playlistType: string): ButtonPlaylist[] {
         const buttonPlaylists = document.getElementsByClassName(`playlist-${playlistType}`) as HTMLCollectionOf<HTMLElement>;
         const buttonPlaylistList: ButtonPlaylist[] = [];
-        for (let i = 0; i < buttonPlaylists.length; i++) {
-            buttonPlaylistList.push(new ButtonPlaylist(buttonPlaylists[i]));
+        for (const button of buttonPlaylists) {
+            buttonPlaylistList.push(new ButtonPlaylist(button));
+            
         }
         return buttonPlaylistList;
     }

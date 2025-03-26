@@ -3,12 +3,11 @@ import Cookie from "@/modules/Cookie";
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const listElement = document.getElementsByClassName('block-update');
+    const listElement = document.getElementsByClassName('block-update') as HTMLCollectionOf<HTMLElement>;
     if (listElement) {
-        for (let i = 0; i < listElement.length; i++) {
-            const updateDim = new UpdateDimensionElement(listElement[i] as HTMLElement);
+        for (const element of listElement) {
+            const updateDim = new UpdateDimensionElement(element as HTMLElement);
             updateDim.addEventListener();
-
         }
     }
 });
@@ -29,8 +28,8 @@ class UpdateDimensionElement {
         this.demoElement = document.getElementById(`demo-${this.type}`) as HTMLDivElement;
 
         const regex = new RegExp(String.raw`${this.type}-dim-\d+`, "g");
-        const match = this.demoElement.className.match(regex);
-        if (match && match[0]) {
+        const match = regex.exec(this.demoElement.className);
+        if (match?.[0]) {
             this.classDimension = match[0]
         } else {
             throw new Error("Aucune dimension trouvée");

@@ -157,9 +157,9 @@ class CleanOrderHandler {
     }
 
     cleanUnsassociatedBadge() {
-        const listUnassociated = this.playlistNonAssociees.getElementsByClassName('playlist-dragAndDrop');
-        for (let i = 0; i < listUnassociated.length; i++) {
-            const buttonPlaylist = new OrganizerButtonPlaylist(listUnassociated[i].id)
+        const listUnassociated = this.playlistNonAssociees.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
+        for (const unassociated of listUnassociated) {
+            const buttonPlaylist = new OrganizerButtonPlaylist(unassociated.id)
             buttonPlaylist.removeBadge(true)
         }
         return this

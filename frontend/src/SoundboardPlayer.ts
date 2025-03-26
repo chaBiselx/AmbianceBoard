@@ -94,7 +94,7 @@ function eventTogglePlaylist(event: Event) {
 }
 
 function updateWithMixerPlaylist() {
-    const formElements = document.querySelectorAll('.playlist-link') as NodeListOf<HTMLElement>;
+    const formElements = document.getElementsByClassName(`playlist-link`) as HTMLCollectionOf<HTMLAudioElement>;
     for (const element of formElements) {
         const elmentDest = document.getElementById(`range_volume_${element.dataset.playlistId!}`)
         if(elmentDest){

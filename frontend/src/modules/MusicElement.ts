@@ -263,7 +263,7 @@ class MusicElement {
       
       private setFadeInFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistFadein) {
-          this.fadeIn = (buttonPlaylist.dataset.playlistFadein == TRUE) ? true : false;
+          this.fadeIn = buttonPlaylist.dataset.playlistFadein == TRUE;
           this.DOMElement.dataset.fadein = this.fadeIn.toString();
         }
         if (buttonPlaylist.dataset.playlistFadeintype) {
@@ -278,7 +278,7 @@ class MusicElement {
       
       private setFadeOutFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistFadeout) {
-          this.fadeOut = (buttonPlaylist.dataset.playlistFadein == TRUE) ? true : false;
+          this.fadeOut = buttonPlaylist.dataset.playlistFadein == TRUE;
           this.DOMElement.dataset.fadeout = this.fadeOut.toString();
         }
         if (buttonPlaylist.dataset.playlistFadeouttype) {
@@ -307,7 +307,7 @@ class MusicElement {
       
       private setPlaylistLoopFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistLoop) {
-          this.playlistLoop = (buttonPlaylist.dataset.playlistLoop == TRUE) ? true : false;
+          this.playlistLoop = buttonPlaylist.dataset.playlistLoop == TRUE;
           this.DOMElement.dataset.playlistloop = this.playlistLoop.toString();
         }
       }
