@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package*.json tsconfig.json ./
 COPY vite.config.ts ./
 
-RUN npm install
+RUN npm install --ignore-scripts
 
 COPY ./src ./src
 
