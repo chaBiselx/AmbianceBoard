@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const listElement = document.getElementsByClassName('block-update') as HTMLCollectionOf<HTMLElement>;
     if (listElement) {
         for (const element of listElement) {
-            const updateDim = new UpdateDimensionElement(element as HTMLElement);
+            const updateDim = new UpdateDimensionElement(element);
             updateDim.addEventListener();
         }
     }

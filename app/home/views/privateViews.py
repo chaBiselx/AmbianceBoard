@@ -84,7 +84,7 @@ def soundboard_delete(request, soundboard_uuid) -> JsonResponse:
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if request.method == 'DELETE':
         if not soundboard:
-            return JsonResponse({"error": "SoundBoard introuvable."}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND}, status=404)
         else :
             soundboard.delete()
             return JsonResponse({'success': 'Suppression soundboard réussie'}, status=200)
@@ -153,7 +153,11 @@ def playlist_create_with_soundboard(request, soundboard_uuid):
         else:
             form = PlaylistForm()
         list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
-        return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic':None, 'list_default_color': list_default_color})
+        return render(
+            request, 
+            'Html/Playlist/playlist_create.html', # NOSONAR
+            {'form': form , 'method' : 'create', 'listMusic':None, 'list_default_color': list_default_color}
+        )
     return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
 
 @login_required
@@ -165,7 +169,11 @@ def playlist_create(request):
     else:
         form = PlaylistForm()
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
-    return render(request, 'Html/Playlist/playlist_create.html', {'form': form , 'method' : 'create', 'listMusic': None, 'list_default_color': list_default_color})
+    return render(
+        request,
+        'Html/Playlist/playlist_create.html', # NOSONAR
+        {'form': form , 'method' : 'create', 'listMusic': None, 'list_default_color': list_default_color}
+    )
 
 @login_required
 @require_http_methods(['GET'])
@@ -232,7 +240,11 @@ def playlist_update(request, playlist_uuid):
             form = PlaylistForm(instance=playlist)
     list_music = (MusicService(request)).get_list_music(playlist_uuid)
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
-    return render(request, 'Html/Playlist/playlist_create.html', {'form': form, 'method' : 'update', 'listMusic' : list_music, 'list_default_color':list_default_color})
+    return render(
+        request, 
+        'Html/Playlist/playlist_create.html', # NOSONAR
+        {'form': form, 'method' : 'update', 'listMusic' : list_music, 'list_default_color':list_default_color}
+    )
 
 @login_required
 @require_http_methods(['DELETE'])
@@ -240,7 +252,7 @@ def playlist_delete(request, playlist_uuid) -> JsonResponse:
     if request.method == 'DELETE':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"error": "Playlist introuvable."}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND}, status=404)
         else :
             playlist.delete()
             return JsonResponse({'success': 'Suppression playlist réussie'}, status=200)
@@ -283,11 +295,11 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
     if request.method == 'DELETE':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"error": "Playlist introuvable."}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND}, status=404)
         
         music = Music.objects.get(id=music_id)
         if not music:
-            return JsonResponse({"error": "Musique introuvable."}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND}, status=404)
         music.file.delete()
         music.delete()
         return JsonResponse({'success': 'Suppression musique réussie'}, status=200)
@@ -298,7 +310,7 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
 def music_stream(request, playlist_uuid) -> HttpResponse:
     music = (MusicService(request)).get_random_music(playlist_uuid)
     if not music :
-        return HttpResponse("Musique introuvable.", status=404)
+        return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND, status=404)
     
     response = HttpResponse(music.file, content_type='audio/*')
     response['Content-Disposition'] = 'inline; filename="{}"'.format(music.fileName)
@@ -310,7 +322,7 @@ def update_direct_volume(request, playlist_uuid) -> JsonResponse:
     if request.method == 'POST':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"error": "Playlist introuvable."}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND}, status=404)
         else :
             data = json.loads(request.body)
             volume = data.get('volume')

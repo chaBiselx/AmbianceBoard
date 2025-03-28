@@ -5,3 +5,4 @@ class ErrorMessageEnum(Enum):
     NOT_ACCEPTABLE = 'non accetable.'
     INTERNAL_SERVER_ERROR = 'une erreur est survenue.'
     INVALID_REQUEST_METHOD = 'Invalid request method.'
+    ELEMENT_NOT_FOUND = 'Element introuvable.'

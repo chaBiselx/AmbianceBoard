@@ -34,11 +34,8 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 # pull official base image
 FROM python:3.11.4-slim-buster
 
-# create directory for the app user
-RUN mkdir -p /home/app
-
-# create the app user
-RUN addgroup --system app && adduser --system --group app
+# create directory for the app user & create the app user
+RUN mkdir -p /home/app && addgroup --system app && adduser --system --group app
 
 # create the appropriate directories
 ENV HOME=/home/app
