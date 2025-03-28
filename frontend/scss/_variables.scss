@@ -4,11 +4,14 @@
 @import '../node_modules/bootstrap/scss/mixins';
 
 $with-sidebar: 280px;
+
 // text
-$text_color_dark: var(--bs-body-color, #212529);
+$text_color_dark: var(--bs-body-color, #f8f9fa);
 $text_color_dark_hover: var(--bs-gray-400, #85888b);
-$text_color_light: var(--bs-body-color, #f8f9fa);
+$text_color_light: var(--bs-body-color, #212529);
 $text_color_light_hover: var(--bs-gray-600, #85888b);
+$text_color_dark_rgb : rgb(133, 136, 139);
+$text_color_light_rgb :rgb(133, 136, 139);
 // background
 $bg_color_dark: var(--bs-gray-600, #85888b);
 $bg_color_dark_hover: var(--bs-gray-400, #85888b);
@@ -16,7 +19,14 @@ $bg_color_light: var(--bs-gray-400, #85888b);
 $bg_color_light_hover: var(--bs-gray-600, #85888b);
 //border 
 $border_color_dark: var(--bs-gray-600, #85888b);
-$border_color_light: var(--bs-gray-400, #85888b);
+$border_color_light: var(--bs-gray-400, #050505);
 //modal 
 $modal_header_bg_dark: var(--bs-gray-700, #85888b);
 $modal_header_bg_light: var(--bs-gray-300, #85888b);
+//accordion
+$accordion_not_collapsed_header_bg_dark: var(--bs-gray-700, #85888b);
+$accordion_not_collapsed_header_bg_light: var(--bs-gray-300, #85888b);
+$accordion-button-icon-light: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#{$text_color_dark_rgb}"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+$accordion-button-active-icon-light: $accordion-button-icon-light;
+$accordion-button-icon-dark: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#{$text_color_light_rgb}"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+$accordion-button-active-icon-dark: $accordion-button-icon-dark;

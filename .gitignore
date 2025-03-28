@@ -11,3 +11,4 @@ app/mediafiles/playlistIcon/*
 app/mediafiles/soundBoardIcon/*
 app/logs/*
 app/backup/*
+db-data/*

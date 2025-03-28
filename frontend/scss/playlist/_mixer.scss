@@ -1,5 +1,5 @@
 
-
+// @import '../variables';
 
 // Définition des variables SCSS
 $sliderColor: #547980;
@@ -31,6 +31,15 @@ $tooltipRadius: round(.8em, 1px);
     text-align: center;
     display: block;
 }
+
+// .vertical-mixer {
+//     -webkit-appearance: slider-vertical;
+//     display: block;
+//     width: 20%;
+//     margin: 0 40% 0 40%;
+//     text-align: center;
+//     cursor: grab;
+// }
 
 .vertical-mixer {
     writing-mode: bt-lr; /* bottom-to-top, left-to-right */

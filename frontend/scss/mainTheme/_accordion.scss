@@ -1,0 +1,81 @@
+@import "../variables";
+
+
+[data-bs-theme="dark"] .accordion-button::after {
+    background-image: $accordion-button-icon; // Utiliser background-image au lieu de --bs-accordion-btn-icon
+}
+
+[data-bs-theme="dark"] .accordion-button:not(.collapsed)::after {
+    background-image: $accordion-button-active-icon;
+}
+
+.accordion-button::after {
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            background-image: $accordion-button-icon-light;
+        }
+
+        html[data-bs-theme="dark"] & {
+            background-image: $accordion-button-icon-dark;
+
+        }
+    }
+}
+
+.accordion-button:not(.collapsed)::after {
+    html:not([data-bs-theme="dark"]) & {
+        background-image: $accordion-button-active-icon-light;
+    }
+
+    html[data-bs-theme="dark"] & {
+        background-image: $accordion-button-active-icon-dark;
+
+    }
+}
+
+
+.accordion-body {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+.accordion-button {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            color: $text_color_dark;
+        }
+
+        html[data-bs-theme="dark"] & {
+            color: $text_color_light;
+        }
+    }
+}
+
+.accordion-button:not(.collapsed) {
+
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            background-color: $accordion_not_collapsed_header_bg_light;
+        }
+
+        html[data-bs-theme="dark"] & {
+            background-color: $accordion_not_collapsed_header_bg_dark;
+        }
+    }
+}
+
+.accordion-button:focus {
+
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            box-shadow: 0 0 0 0.25rem $bg_color_dark_hover ;
+        }
+
+        html[data-bs-theme="dark"] & {
+            box-shadow: 0 0 0 0.25rem $bg_color_light_hover;
+        }
+    }
+}

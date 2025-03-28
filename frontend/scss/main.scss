@@ -1,9 +1,11 @@
-// Importer les personnalisations
+// Importer les variables personnalisées de Bootstrap
 @import 'variables';
+
+// Importer Bootstrap (avec les variables personnalisées)
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+// Importer les personnalisations
 @import 'mainTheme/main';
 @import 'playlist/main';
 @import 'soundboard/main';
 @import 'utils/main';
-
-// Importer Bootstrap (tous les composants ou seulement ceux nécessaires)
-@import '../node_modules/bootstrap/scss/bootstrap';
