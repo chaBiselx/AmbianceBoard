@@ -1,6 +1,3 @@
-
-// @import '../variables';
-
 // Définition des variables SCSS
 $sliderColor: #547980;
 $gap: round(.2em, 1px);
@@ -14,40 +11,6 @@ $tooltipRadius: round(.8em, 1px);
     inherits: true;
     initial-value: 0;
 }
-
-
-.mixer-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-.mixer-container-item{
-    width: 25%;
-    height: 150px;
-}
-
-.mixer-container-item-label{
-    text-align: center;
-    display: block;
-}
-
-// .vertical-mixer {
-//     -webkit-appearance: slider-vertical;
-//     display: block;
-//     width: 20%;
-//     margin: 0 40% 0 40%;
-//     text-align: center;
-//     cursor: grab;
-// }
-
-.vertical-mixer {
-    writing-mode: bt-lr; /* bottom-to-top, left-to-right */
-    -webkit-appearance: slider-vertical;
-    display: block;
-    width: 100%;
-}
-
 
 .hide-playlist-mixer {
     display: none;
@@ -121,7 +84,7 @@ $tooltipRadius: round(.8em, 1px);
     }
 }
 
-output {
+.horizontal-slider-output {
     position: absolute;
     color: --bs-white;
     font-weight: bold;

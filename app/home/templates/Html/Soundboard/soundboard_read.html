@@ -29,7 +29,7 @@
                 <form class="mixer-playlist-update-container hide-playlist-mixer">
                     <input class="mixer-playlist-update horizontal-slider" type="range" value="{{playlist.volume}}" min="0" max="100" id="range_volume_{{ playlist.uuid }}" data-playlistupdatevolumeuri="{% url 'update_direct_volume' playlist.uuid %}" data-defaultvolume="{{ playlist.volume }}"
                         data-idplaylist="{{ playlist.uuid }}" />
-                    <output class="bottom" for="range_volume_{{ playlist.uuid}}" style="--min: 0;--max: 100"></output>
+                    <output class="horizontal-slider-output bottom" for="range_volume_{{ playlist.uuid}}" style="--min: 0;--max: 100"></output>
                 </form>
             </div>
             {% endfor %}

@@ -1,0 +1,24 @@
+.mixer-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mixer-container-item{
+    width: 25%;
+    height: 150px;
+}
+
+.mixer-container-item-label{
+    text-align: center;
+    display: block;
+}
+
+.vertical-mixer {
+    writing-mode: bt-lr; /* bottom-to-top, left-to-right */
+    -webkit-appearance: slider-vertical;
+    display: block;
+    width: 100%;
+}
+
+
