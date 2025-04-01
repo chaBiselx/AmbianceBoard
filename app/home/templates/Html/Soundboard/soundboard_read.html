@@ -13,7 +13,7 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-12 col-xl-10">
+    <div class="col">
         <div style="display:None;" id="players"></div>
 
         {% add_mixer PlaylistTypeEnum %}
@@ -27,7 +27,7 @@
 
                 </div>
                 <form class="mixer-playlist-update-container hide-playlist-mixer">
-                    <input class="mixer-playlist-update horizontal-slider" type="range" value="{{playlist.volume}}" min="0" max="100" id="range_volume_{{ playlist.uuid }}" data-playlistupdatevolumeuri="{% url 'update_direct_volume' playlist.uuid %}" data-defaultvolume="{{ playlist.volume }}"
+                    <input class="mixer-playlist-update horizontal-slider-input" type="range" value="{{playlist.volume}}" min="0" max="100" id="range_volume_{{ playlist.uuid }}" data-playlistupdatevolumeuri="{% url 'update_direct_volume' playlist.uuid %}" data-defaultvolume="{{ playlist.volume }}"
                         data-idplaylist="{{ playlist.uuid }}" />
                     <output class="horizontal-slider-output bottom" for="range_volume_{{ playlist.uuid}}" style="--min: 0;--max: 100"></output>
                 </form>
@@ -37,22 +37,18 @@
 
 
     </div>
-    <div class="col-12 col-xl-2">
+    <div class="col-12 col-xl-2" id="soundboard-menu">
         <div>
-            <a class="btn btn-primary btn-block" href="{% url 'addPlaylistWithSoundboard' soundboard.uuid %}">Créer une playlist</a>
-            <br />
-            <a class="btn btn-primary btn-block" href="{% url 'organizeSoundboard' soundboard.uuid %}">Organizer</a><br />
-            <input type="checkbox" name="showMixerPlaylist" id="inputShowMixerPlaylist"> Afficher le mixer<br />
+            <a class="btn btn-primary btn-block py-1 my-1" href="{% url 'addPlaylistWithSoundboard' soundboard.uuid %}">Ajouter une playlist</a>
+            
+            <a class="btn btn-primary btn-block py-1 my-1" href="{% url 'organizeSoundboard' soundboard.uuid %}">Organiser</a>
+            
+            <input type="checkbox" class="btn-check" id="inputShowMixerPlaylist" autocomplete="off">
+            <label class="btn btn-outline-primary btn-block py-1 my-1" for="inputShowMixerPlaylist"> <span id="inputShowMixerPlaylist-show">Afficher</span><span id="inputShowMixerPlaylist-hide" class="d-none">Masquer</span> les mixers des playlists</label>
+        
+            <a class="btn btn-warning btn-block py-1 my-1" href="{% url 'soundboardsUpdate' soundboard.uuid %}">Modifier le general du SoundBoard</a>
+        
         </div>
-    </div>
-
-</div>
-
-
-<div class="row">
-    <div class="col">
-        <a class="btn btn-warning btn-block" href="{% url 'soundboardsUpdate' soundboard.uuid %}">Modifier le general du SoundBoard</a>
-
     </div>
 </div>
 

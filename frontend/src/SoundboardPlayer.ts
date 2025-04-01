@@ -42,6 +42,8 @@ function addEventListenerDom() {
 function togglePlaylistMixer() {
     const listMixerUpdate = document.getElementsByClassName('mixer-playlist-update-container');
     const checkBox = document.getElementById('inputShowMixerPlaylist') as HTMLInputElement
+    document.getElementById('inputShowMixerPlaylist-show')?.classList.toggle('d-none')
+    document.getElementById('inputShowMixerPlaylist-hide')?.classList.toggle('d-none')
     const showMixer = checkBox.checked
     if (listMixerUpdate) {
         for (const mixerUpdate of listMixerUpdate) {

@@ -180,6 +180,9 @@ class FullScreen {
         const mainContent = document.getElementById('main-content');
         if (mainContent) mainContent.classList.toggle('py-lg-5');
         const showBaseLayoutButton = document.getElementById('showBaseLayoutButton')
+        const soundboardMenu = document.getElementById('soundboard-menu');
+        if (soundboardMenu) soundboardMenu.classList.toggle('d-none');
+        
         if (showBaseLayoutButton) showBaseLayoutButton.classList.toggle('d-inline')
     }
 }

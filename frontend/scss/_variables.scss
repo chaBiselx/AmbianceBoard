@@ -30,3 +30,11 @@ $accordion-button-icon-light: url('data:image/svg+xml,<svg xmlns="http://www.w3.
 $accordion-button-active-icon-light: $accordion-button-icon-light;
 $accordion-button-icon-dark: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="#{$text_color_light_rgb}"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
 $accordion-button-active-icon-dark: $accordion-button-icon-dark;
+
+//mixer
+$mixer-color-light: $border_color_light;
+$mixer-color-dark: $border_color_dark;
+$mixer-color-lower-light: #1E9600;
+$mixer-color-upper-light: #bb0000;
+$mixer-color-lower-dark: #636363;
+$mixer-color-upper-dark: #004488;

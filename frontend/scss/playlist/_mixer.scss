@@ -1,5 +1,6 @@
+@import "../variables";
+
 // Définition des variables SCSS
-$sliderColor: #547980;
 $gap: round(.2em, 1px);
 $lineThickness: round(.2em, 1px);
 $thumbSize: round(1.3em, 1px);
@@ -17,7 +18,16 @@ $tooltipRadius: round(.8em, 1px);
 }
 
 .mixer-playlist-update-container {
-    --sliderColor: #{$sliderColor};
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            --sliderColor: #{$mixer-color-light};
+        }
+
+        html[data-bs-theme="dark"] & {
+            --sliderColor: #{$mixer-color-dark};
+        }
+    }
+
     --gap: #{$gap};
     --lineThickness: #{$lineThickness};
     --thumbSize: #{$thumbSize};
@@ -34,9 +44,10 @@ $tooltipRadius: round(.8em, 1px);
     font-size: 1vh;
 }
 
-.horizontal-slider {
+.horizontal-slider-input {
     width: 100%;
     height: var(--thumbSize);
+    /* needed for Firefox*/
     --sliderColorMixed: color-mix(in srgb, var(--sliderColor), #000 var(--p, 0%));
     appearance: none;
     background: none;
@@ -85,8 +96,10 @@ $tooltipRadius: round(.8em, 1px);
 }
 
 .horizontal-slider-output {
+    position-anchor: --thumb;
     position: absolute;
-    color: --bs-white;
+    position-area: top;
+    color: var(--bs-white);
     font-weight: bold;
     font-family: sans-serif;
     text-align: center;
@@ -106,7 +119,21 @@ $tooltipRadius: round(.8em, 1px);
     animation-timeline: --thumb-view;
     animation-range: entry 100% exit 0%;
 
+    @at-root {
+        html:not([data-bs-theme="dark"]) {
+            --colorStart: #{$mixer-color-upper-light};
+            --colorEnd: #{$mixer-color-upper-dark};
+        }
+
+        html[data-bs-theme="dark"] {
+            --colorStart: #{$mixer-color-upper-dark};
+            --colorEnd: #{$mixer-color-lower-dark};
+        }
+    }
+
+
     &.bottom {
+        position-area: bottom;
         border-top: var(--tooltipTailSize) solid #0000;
         border-bottom: none;
         border-radius: var(--tooltipRadius)/calc(var(--tooltipRadius) + var(--tooltipTailSize)) calc(var(--tooltipRadius) + var(--tooltipTailSize)) var(--tooltipRadius) var(--tooltipRadius);
@@ -122,12 +149,12 @@ $tooltipRadius: round(.8em, 1px);
 
 @keyframes range {
     0% {
-        background: $green-500;
+        background: var(--colorStart);
         --val: var(--max);
     }
 
     100% {
-        background: $red-500;
+        background: var(--colorEnd);
         --val: var(--min);
     }
 }
