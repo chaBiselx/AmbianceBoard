@@ -2,7 +2,7 @@
 
 
 a {
-    color:inherit;
+    color: inherit;
     text-decoration: inherit !important;
 }
 
@@ -21,7 +21,7 @@ main {
     main {
         margin-bottom: 100px;
     }
-    
+
 }
 
 @media (min-width: 992px) {
@@ -43,7 +43,7 @@ main {
     z-index: 1000;
 }
 
-.sidebar .nav li a{
+.sidebar .nav li a {
     padding-left: 1em;
 }
 
@@ -74,16 +74,23 @@ main {
     text-align: center;
     color: var(--bs-white);
     background-color: inherit;
-    line-height: 46px;
-    cursor: pointer;
+    padding: 0 !important;
+    z-index: 1000;
+    border-width: 1px;
+    vertical-align: baseline;
+    text-align: center;
+    
 
     @at-root {
         html:not([data-bs-theme="dark"]) & {
             background-color: $bg_color_light;
+            border-color: $border_color_light;
         }
 
         html[data-bs-theme="dark"] & {
             background-color: $bg_color_dark;
+            border-color: $border_color_dark;
+
         }
     }
 }
@@ -98,7 +105,7 @@ main {
             background-color: $bg_color_dark_hover;
         }
     }
-    
+
 }
 
 .show-base-layout:focus,
@@ -108,7 +115,6 @@ main {
 
 .show-base-layout i {
     font-weight: 800;
-    margin: 0.7rem;
 }
 
 .url_link {
@@ -153,7 +159,7 @@ main {
     }
 }
 
-.btn-block{
+.btn-block {
     display: block;
     width: 100%;
 }

@@ -20,9 +20,9 @@
 
 <body id="mainBody" class="{% include 'Html/sidebar_class.html'%}">
     <!-- Show base layout -->
-    <a class="show-base-layout rounded" href="#page-top" id="showBaseLayoutButton">
+    <button class="show-base-layout rounded"  id="showBaseLayoutButton">
         <i class="fa-solid fa-eye"></i>
-    </a>
+    </button>
 
     <!-- Navbar -->
     <header class="navbar navbar-expand-lg fixed-top border-bottom bg-body shadow-sm" id="mainNav">
@@ -59,7 +59,7 @@
 
 
     <!-- Main Content -->
-    <main class="container-fluid py-4 py-lg-5 px-3 px-lg-4">
+    <main class="container-fluid py-4 py-lg-5 px-3 px-lg-4" id="main-content">
         <div class="row">
             {% include 'Html/message.html' %}
             <div class="col-12">

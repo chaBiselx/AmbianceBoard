@@ -177,6 +177,8 @@ class FullScreen {
         if (mainFooter) mainFooter.classList.toggle('d-none');
         const mainBody = document.getElementById('mainBody')
         if (mainBody) mainBody.classList.toggle('p-0');
+        const mainContent = document.getElementById('main-content');
+        if (mainContent) mainContent.classList.toggle('py-lg-5');
         const showBaseLayoutButton = document.getElementById('showBaseLayoutButton')
         if (showBaseLayoutButton) showBaseLayoutButton.classList.toggle('d-inline')
     }
