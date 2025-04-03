@@ -1,6 +1,6 @@
 from django import forms
 from home.models.Playlist import Playlist
-from home.forms.BootstrapFormMixin import BootstrapFormMixin
+from home.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 
 

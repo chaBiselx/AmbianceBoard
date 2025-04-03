@@ -1,41 +1,4 @@
 
-
-class BootstrapFormMixin:
-    
-    
-    """Ajoute la classe 'form-control' à tous les champs du formulaire"""
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._add_input_classes()
-        self._add_label_classes()
-
-    def _add_input_classes(self):
-        for field in self.fields.values():
-            manager = InputManager(field)
-            if(field.widget.__class__.__name__ == 'PasswordInput'):
-                manager = PasswordInput(field)
-            if(field.widget.__class__.__name__ == 'TextInput'):
-                manager = TextInputManager(field)
-            if  field.widget.__class__.__name__ == 'FileInput':
-                manager = FileInputManager(field)
-            if field.widget.__class__.__name__ == 'NumberInput':
-                manager = NumberInputManager(field)
-            if field.widget.__class__.__name__ == 'CheckboxInput':
-                manager = CheckboxInputManager(field)
-            if field.widget.__class__.__name__ == 'Select':
-                manager = SelectInputManager(field)
-            manager.apply_classes()
-
-    def _add_label_classes(self):
-        for field_name, field in self.fields.items():
-            # Si le champ est obligatoire, ajoute un astérisque au label
-            if field.required and field.label:
-                field.label += ' * '
-            else :
-                ' '
-
-
-
 class InputManager:
     field = None
     default_classes = ""

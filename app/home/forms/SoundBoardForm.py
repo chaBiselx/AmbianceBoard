@@ -1,6 +1,6 @@
 from django import forms
 from home.models.SoundBoard import SoundBoard
-from home.forms.BootstrapFormMixin import BootstrapFormMixin
+from home.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:

@@ -1,6 +1,6 @@
 from django import forms
 from home.models.Music import Music
-from home.forms.BootstrapFormMixin import BootstrapFormMixin
+from home.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 class MusicForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
