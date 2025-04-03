@@ -6,6 +6,7 @@
 {% block javascript %}
 {{ block.super }}
 <script type="module" src="{% static "FormPlaylist"|search_true_file %}"></script>
+<script type="module" src="{% static "ListingMusiques"|search_true_file %}"></script>
 {% endblock javascript %}
 
 {% block content %}
@@ -23,7 +24,7 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-12 col-sm-11 col-md-10 col-xl-8">
+            <div class="col-12 col-sm-9 col-md-10">
                 <div>
                     {% if method == 'update' %}
                     <div>
@@ -120,7 +121,7 @@
                 </div>
 
             </div>
-            <div class="col-12 col-sm-1 col-md-2 col-xl-4">
+            <div class="col-12 col-sm-3 col-md-2">
                 <div class="playlist-link playlist-element playlist-dim-{{ playlist_dim }} m-1" id="demo-playlist">
                     {% if method == 'update' %}
                     {{ form.instance | applys_playlist_content}}
@@ -143,27 +144,28 @@
         <div class="row ">
             <div class="col">
                 <div class="gestion">
-                    <div >
+                    <div>
                         <button class="btn btn-primary btn-block btn-add-music" title="Ajouter musique" data-url="{% url 'addMusic' form.instance.uuid %}">Ajouter musique</button>
                     </div>
-                    <div class"flex-container">
+                    <div class="flex-container mt-2">
                         {% if listMusic is not null %}
                         {% for music in listMusic %}
                         <div class="music flex-item flex-item-5 border border-secondary rounded p-2">
-                            <div class="music-name">
-                                {{ music.alternativeName }} <br />
-                                <small>
+                            <div class="btn-group float-end">
+                                <button class="btn btn-sm btn-warning btn-add-music" title="Edit {{ music.fileName }}" data-url="{% url 'editMusic' form.instance.uuid music.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger btn-delete-music" title="Delete {{ music.fileName }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                            <div class="music-name mt-1 mb-2">
+                                <h6>{{ music.alternativeName }}</h6>
+                                 <small>
                                     {{ music.fileName }}
                                 </small>
                             </div>
-                            <div>
-                                <audio class="music-player" src="{{ music.file.url }}" controls></audio>
+                            <div class="player-custom p-2" data-url="{{ music.file.url }}">
+                                <audio class="music-player d-none"></audio>
                             </div>
 
-                            <div class="btn-group">
-                                <button class="btn btn-warning btn-add-music" title="Edit {{ music.fileName }}" data-url="{% url 'editMusic' form.instance.uuid music.id %}">Modifier</button>
-                                <button class="btn btn-danger btn-delete-music" title="Delete {{ music.fileName }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}">Delete</button>
-                            </div>
+
                         </div>
                         {% endfor %}
 

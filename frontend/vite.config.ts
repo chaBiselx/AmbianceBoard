@@ -17,6 +17,7 @@ export default defineConfig(({ mode }) => {
                 input: {
                     SoundboardPlayer: resolve(__dirname, 'src/SoundboardPlayer.ts'),
                     FormPlaylist: resolve(__dirname, 'src/FormPlaylist.ts'),
+                    ListingMusiques: resolve(__dirname, 'src/ListingMusiques.ts'),
                     FormSoundboard: resolve(__dirname, 'src/FormSoundboard.ts'),
                     PasswordRules: resolve(__dirname, 'src/PasswordRules.ts'),
                     SounboardOrganizer: resolve(__dirname, 'src/SounboardOrganizer.ts'),
