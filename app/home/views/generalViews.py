@@ -73,7 +73,7 @@ def login_view(request):
         # wrong password
         failed_login_attempt_service.add_or_create_failed_login_attempt()
         if(failed_login_attempt_service.is_timeout()) :
-            return render(request, HtmlDefaultPageEnum.ERROR_429, status=429)
+            return render(request, HtmlDefaultPageEnum.ERROR_429.value, status=429)
     
     return render(request, 'Html/Account/login.html', context)
 
@@ -97,7 +97,7 @@ def resend_email_confirmation(request) -> JsonResponse:
         except Exception as e:
             logger.error(f"resend confirmation error : {e}")
             return JsonResponse({"error": "Cannot send email"}, status=500)
-    return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE}, status=406)
+    return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.value}, status=406)
 
 @require_http_methods(['GET', 'POST'])
 @ratelimit(key='ip', rate='3/m', method='POST', block=True)
@@ -128,7 +128,7 @@ def token_validation_reset_password(request, uuid_user:str, token_reinitialisati
     except User.DoesNotExist:
         pass
     if user is None :
-        return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     
     is_valid = False
     reset_password_service = ResetPasswordService(user)
@@ -139,7 +139,7 @@ def token_validation_reset_password(request, uuid_user:str, token_reinitialisati
         logger.error(f"token validation error : {e}")
         
     if not is_valid:
-        return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     
     
     if request.method == 'POST':

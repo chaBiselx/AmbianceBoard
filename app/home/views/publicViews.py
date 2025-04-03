@@ -42,7 +42,7 @@ def public_listing_soundboard(request):
 def public_soundboard_read_playlist(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
     if not soundboard:
-        return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     else:   
         return render(request, 'Html/Public/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
     
@@ -74,7 +74,7 @@ def favorite_update(request, soundboard_uuid) -> JsonResponse:
 
         except Exception as e:
             logger.error(f"favorite_update : {e}")
-            return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR}, status=500)
+            return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
             
     if request.method == 'DELETE':
         try:
@@ -85,8 +85,8 @@ def favorite_update(request, soundboard_uuid) -> JsonResponse:
             return JsonResponse({"error": "Favorite not found."}, status=404)
         except Exception as e:
             logger.error(f"favorite_update : {e}")
-            return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR}, status=500)
+            return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
         
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
         
     

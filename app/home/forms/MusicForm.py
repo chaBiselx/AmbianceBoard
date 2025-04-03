@@ -1,7 +1,8 @@
 from django import forms
 from home.models.Music import Music
+from home.forms.BootstrapFormMixin import BootstrapFormMixin
 
-class MusicForm(forms.ModelForm):
+class MusicForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Music
         fields = ('file', 'alternativeName' )

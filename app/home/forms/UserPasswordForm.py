@@ -1,8 +1,9 @@
 import re
 from django import forms
 from home.models.User import User
+from home.forms.BootstrapFormMixin import BootstrapFormMixin
 
-class UserPasswordForm(forms.ModelForm):
+class UserPasswordForm(BootstrapFormMixin, forms.ModelForm):
     password = forms.CharField(max_length=64,label='Mot de passe', widget=forms.PasswordInput)
     confirm_password = forms.CharField(max_length=64,label='Confirmer le mot de passe', widget=forms.PasswordInput)
 

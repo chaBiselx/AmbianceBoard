@@ -8,6 +8,6 @@ def detect_ban(func):
         if kwargs['soundboard_uuid'] is not None:
             soundboard = SoundBoard.objects.get(uuid=kwargs['soundboard_uuid'])
             if soundboard.user.checkBanned(): 
-                return render(args[0], HtmlDefaultPageEnum.ERROR_404, status=404)
+                return render(args[0], HtmlDefaultPageEnum.ERROR_404.value, status=404)
         return func(*args, **kwargs)
     return wrapper

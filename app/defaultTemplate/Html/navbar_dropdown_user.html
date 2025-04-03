@@ -3,7 +3,7 @@
 <div class="dropdown">
     <button class="btn btn-link url_link dropdown-toggle d-flex align-items-center text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         <i class="fa-solid fa-user"></i>
-        <span class="d-none d-lg-inline">{{request.user.username}}</span>
+        <span class="d-none d-lg-inline">&nbsp;{{request.user.username}}</span>
     </button>
     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
         <li><a class="dropdown-item"  href="{% url 'logout' %}">Deconnexion</a></li>

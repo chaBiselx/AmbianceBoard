@@ -10,160 +10,176 @@
 
 {% block content %}
 
-<h2>
-    {% if method == 'update' %}
-    Modifier la playlist {{ form.instance.name }}
-    {% else %}
-    Créer une nouvelle playlist
-    {% endif %}
-</h2>
 
-<div class="row">
-    <div class="col-12 col-sm-11 col-md-10 col-xl-8">
-        <div>
+<div class="card">
+    <div class="card-header">
+        <h2>
             {% if method == 'update' %}
-            <div>
-                <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.uuid %}" data-redirecturl="{% url 'playlistsAllList' %}">Delete playlist</button>
-            </div>
+            Modifier la playlist {{ form.instance.name }}
+            {% else %}
+            Créer une nouvelle playlist
             {% endif %}
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-12">
-                        {{ form.name.label }} * :<br /> {{ form.name }}
-                        {% if form.name.errors %}
-                        <ul>
-                            {% for error in form.name.errors %}
-                            <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        {{ form.typePlaylist.label }} * :<br /> {{ form.typePlaylist }}
-                        {% if form.typePlaylist.errors %}
-                        <ul>
-                            {% for error in form.typePlaylist.errors %}
-                            <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                        <div class="d-none">
-                            {% for defaultColor in list_default_color %}
-                            <input type="text" id="default_{{ defaultColor.typePlaylist }}_color" value="{{ defaultColor.color }}">
-                            <input type="text" id="default_{{ defaultColor.typePlaylist }}_colorText" value="{{ defaultColor.colorText }}">
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        <button type="button" id="btn-show-description-playlist-type" class="btn btn-info" data-url="{% url 'playlistDescribeType' %}">Show description</button>
-                    </div>
-                    <div class="col-12">
-                        {{ form.useSpecificColor.label }} :<br /> {{ form.useSpecificColor }}
-                    </div>
-                    <div class="col-sm-12 col-md-4 color_form">
-                        {{ form.color.label }} * :<br /> {{ form.color }}
-                    </div>
-                    <div class="col-sm-12 col-md-4 color_form">
-                        {{ form.colorText.label }} * :<br />{{ form.colorText }}
-                    </div>
-                    <div class="col-sm-12 col-md-4 color_form">
-                        <button type="button" class="btn btn-info" id="btn-select-other-color" data-url="{% url 'getListingOtherColors' %}">Selectionner couleurs existantes</button>
-                    </div>
-                    <div class="col-12">
-                        {{ form.useSpecificDelay.label }} :<br /> {{ form.useSpecificDelay }}
-                    </div>
-                    <div class="col-sm-12 col-md-12 delay_form">
-                        {{ form.maxDelay.label }} :<br /> {{ form.maxDelay }}
-                    </div>
-
-                    <div class="col-sm-12 col-md-6">
-                        {{ form.volume.label }} * :<br /> {{ form.volume }}
-                        {% if form.volume.errors %}
-                        <ul>
-                            {% for error in form.volume.errors %}
-                            <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                    </div>
-                    <div class="col-sm-12 col-md-6">
-                        {{ form.icon.label }} :<br />
-                        {% if form.instance.icon %}
-                        {{ form.icon.help_text|safe }} | {{ form.clear_icon }} Supprimer le fichier <br />
-                        {% endif %}
-                        {{ form.icon }}
-                        {% if form.icon.errors %}
-                        <ul>
-                            {% for error in form.icon.errors %}
-                            <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                    </div>
-                    <div class="col-12">
-                        <button class="btn btn-success" type="submit">
-                            {% if method == 'update' %}
-                            Modifier
-                            {% else %}
-                            Créer
-                            {% endif %}
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-        </div>
-
+        </h2>
     </div>
-    <div class="col-12 col-sm-1 col-md-2 col-xl-4">
-        <div class="playlist-link playlist-element playlist-dim-{{ playlist_dim }} m-1" id="demo-playlist">
-            {% if method == 'update' %}
-            {{ form.instance | applys_playlist_content}}
-            {% endif %}
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-sm-11 col-md-10 col-xl-8">
+                <div>
+                    {% if method == 'update' %}
+                    <div>
+                        <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.uuid %}" data-redirecturl="{% url 'playlistsAllList' %}">Delete playlist</button>
+                    </div>
+                    {% endif %}
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12">
+                                {{ form.name.label_tag }} <br /> {{ form.name }}
+                                {% if form.name.errors %}
+                                <ul>
+                                    {% for error in form.name.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                {{ form.typePlaylist.label_tag }} <br /> {{ form.typePlaylist }}
+                                {% if form.typePlaylist.errors %}
+                                <ul>
+                                    {% for error in form.typePlaylist.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                                <div class="d-none">
+                                    {% for defaultColor in list_default_color %}
+                                    <input type="text" id="default_{{ defaultColor.typePlaylist }}_color" value="{{ defaultColor.color }}">
+                                    <input type="text" id="default_{{ defaultColor.typePlaylist }}_colorText" value="{{ defaultColor.colorText }}">
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <button type="button" id="btn-show-description-playlist-type" class="btn btn-info" data-url="{% url 'playlistDescribeType' %}">Show description</button>
+                            </div>
+                            <div class="col-12">
+                                {{ form.useSpecificColor.label_tag }} <br /> {{ form.useSpecificColor }}
+                            </div>
+                            <div class="col-sm-12 col-md-4 color_form">
+                                {{ form.color.label_tag }} <br /> {{ form.color }}
+                            </div>
+                            <div class="col-sm-12 col-md-4 color_form">
+                                {{ form.colorText.label_tag }} <br />{{ form.colorText }}
+                            </div>
+                            <div class="col-sm-12 col-md-4 color_form">
+                                <button type="button" class="btn btn-info" id="btn-select-other-color" data-url="{% url 'getListingOtherColors' %}">Selectionner couleurs existantes</button>
+                            </div>
+                            <div class="col-12">
+                                {{ form.useSpecificDelay.label_tag }} <br /> {{ form.useSpecificDelay }}
+                            </div>
+                            <div class="col-sm-12 col-md-12 delay_form">
+                                {{ form.maxDelay.label_tag }} <br /> {{ form.maxDelay }}
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                {{ form.volume.label_tag }} <br /> {{ form.volume }}
+                                {% if form.volume.errors %}
+                                <ul>
+                                    {% for error in form.volume.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                {{ form.icon.label_tag }} <br />
+                                {% if form.instance.icon %}
+                                {{ form.icon.help_text|safe }} | {{ form.clear_icon }} Supprimer le fichier <br />
+                                {% endif %}
+                                {{ form.icon }}
+                                {% if form.icon.errors %}
+                                <ul>
+                                    {% for error in form.icon.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-success btn-block mt-2" type="submit">
+                                    {% if method == 'update' %}
+                                    Modifier
+                                    {% else %}
+                                    Créer
+                                    {% endif %}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="col-12 col-sm-1 col-md-2 col-xl-4">
+                <div class="playlist-link playlist-element playlist-dim-{{ playlist_dim }} m-1" id="demo-playlist">
+                    {% if method == 'update' %}
+                    {{ form.instance | applys_playlist_content}}
+                    {% endif %}
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
+
 
 
 {% if method == 'update' %}
-<div class="row mt-2">
-    <div class="col">
-        <div class="gestion">
-            <div>
-                <button class="btn btn-primary btn-block btn-add-music" title="Add a music to the playlist" data-url="{% url 'addMusic' form.instance.uuid %}">add music</button>
-            </div>
-            <div class"flex-container">
-                {% if listMusic is not null %}
-                {% for music in listMusic %}
-                <div class="music flex-item flex-item-5 border border-secondary rounded p-2">
-                    <div class="music-name">
-                        {{ music.alternativeName }} <br />
-                        <small>
-                            {{ music.fileName }}
-                        </small>
+<div class="card mt-2">
+    <div class="card-header">
+        <h2>Musiques</h2>
+    </div>
+    <div class="card-body">
+        <div class="row ">
+            <div class="col">
+                <div class="gestion">
+                    <div >
+                        <button class="btn btn-primary btn-block btn-add-music" title="Ajouter musique" data-url="{% url 'addMusic' form.instance.uuid %}">Ajouter musique</button>
                     </div>
-                    <div>
-                        <audio class="music-player" src="{{ music.file.url }}" controls></audio>
-                    </div>
+                    <div class"flex-container">
+                        {% if listMusic is not null %}
+                        {% for music in listMusic %}
+                        <div class="music flex-item flex-item-5 border border-secondary rounded p-2">
+                            <div class="music-name">
+                                {{ music.alternativeName }} <br />
+                                <small>
+                                    {{ music.fileName }}
+                                </small>
+                            </div>
+                            <div>
+                                <audio class="music-player" src="{{ music.file.url }}" controls></audio>
+                            </div>
 
-                    <div class="btn-group">
-                        <button class="btn btn-warning btn-add-music" title="Edit {{ music.fileName }}" data-url="{% url 'editMusic' form.instance.uuid music.id %}">Edit</button>
-                        <button class="btn btn-danger btn-delete-music" title="Delete {{ music.fileName }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}">Delete</button>
+                            <div class="btn-group">
+                                <button class="btn btn-warning btn-add-music" title="Edit {{ music.fileName }}" data-url="{% url 'editMusic' form.instance.uuid music.id %}">Modifier</button>
+                                <button class="btn btn-danger btn-delete-music" title="Delete {{ music.fileName }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}">Delete</button>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        {% endif %}
                     </div>
                 </div>
-                {% endfor %}
-
-                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a href="{% url 'addPlaylist' %}" class="btn btn-block btn-primary">Creer une nouvelle playlist</a>
             </div>
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-12">
-        <a href="{% url 'addPlaylist' %}" class="btn btn-block btn-primary">Creer une nouvelle playlist</a>
-    </div>
-</div>
+
 {% endif %}
 
 

@@ -1,7 +1,8 @@
 from django import forms
-from ..models.SoundBoard import SoundBoard
+from home.models.SoundBoard import SoundBoard
+from home.forms.BootstrapFormMixin import BootstrapFormMixin
 
-class SoundBoardForm(forms.ModelForm):
+class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = SoundBoard
         fields = ('name', 'color', 'colorText', 'is_public', 'icon')
@@ -15,17 +16,18 @@ class SoundBoardForm(forms.ModelForm):
  
     name = forms.CharField(
         label='Nom du soundboard', 
+        widget=forms.TextInput(attrs={'typeInput': 'text'}),
         max_length=64, 
         required=True
     )
     color = forms.CharField(
         label='Couleur du background',
-        widget=forms.TextInput(attrs={'type': 'color'}),
+        widget=forms.TextInput(attrs={'type': 'color', 'typeInput': 'color'}),
         initial="#000000"
     )
     colorText = forms.CharField(
         label='Couleur du texte',
-        widget=forms.TextInput(attrs={'type': 'color'}),
+        widget=forms.TextInput(attrs={'type': 'color', 'typeInput': 'color'}),
         initial="#ffffff"
     )
     is_public = forms.BooleanField(

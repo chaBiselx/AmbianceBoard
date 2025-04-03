@@ -30,5 +30,5 @@ def confirm_account(request, uuid_user:str, confirmation_token:str):
         return redirect('login')
     except Exception as e:
         logger.error(e)
-        return render(request,  HtmlDefaultPageEnum.ERROR_404, status=404)
+        return render(request,  HtmlDefaultPageEnum.ERROR_404.value, status=404)
     

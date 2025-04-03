@@ -1,16 +1,32 @@
 {% extends 'Html/base.html' %}
 
 {% block content %}
-<form id="connexion-form" method="post">
-    {% csrf_token %}
-    <label for="username">Nom d'utilisateur :</label>
-    <input type="text" id="username" name="username" required>
+<div class="row justify-content-sm-center">
+    <div class="col-12 col-sm-6 col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Connexion</h5>
+            </div>
+            <div class="card-body">
+                <form id="connexion-form" method="post">
+                    {% csrf_token %}
+                    <label for="username"class="form-label">Nom d'utilisateur :</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
 
-    <label for="password">Mot de passe :</label>
-    <input type="password" id="password" name="password" required>
+                    <label for="password" class="form-label">Mot de passe :</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                    <hr class="my-4">
 
-    <button class="btn btn-primary" type="submit">Se connecter</button>
-    <a class="btn btn-secondary" href="{% url 'send_reset_password' %}">mot de passe oublié</a>
-</form>
+                    <button class="btn btn-primary btn-block mt-2" type="submit">Se connecter</button>
+                    <a class="btn btn-secondary btn-block mt-2" href="{% url 'send_reset_password' %}">mot de passe oublié</a>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
 
 {% endblock %}

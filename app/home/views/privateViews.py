@@ -55,7 +55,7 @@ def soundboard_create(request):
 def soundboard_read(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard :
-        return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     else:   
         return render(request, 'Html/Soundboard/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
 
@@ -65,7 +65,7 @@ def soundboard_update(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if request.method == 'POST':
         if not soundboard:
-            return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
+            return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
         else:
             form = SoundBoardForm(request.POST, request.FILES, instance=soundboard)
             if form.is_valid():
@@ -73,7 +73,7 @@ def soundboard_update(request, soundboard_uuid):
                 return redirect('soundboardsList')
     else:
         if not soundboard:
-            return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
+            return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
         else:
             form = SoundBoardForm(instance=soundboard)
     return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method' : 'update'})
@@ -84,11 +84,11 @@ def soundboard_delete(request, soundboard_uuid) -> JsonResponse:
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if request.method == 'DELETE':
         if not soundboard:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         else :
             soundboard.delete()
             return JsonResponse({'success': 'Suppression soundboard réussie'}, status=200)
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
 
 
 @login_required
@@ -96,7 +96,7 @@ def soundboard_delete(request, soundboard_uuid) -> JsonResponse:
 def soundboard_organize(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
-        return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     
     soundboard_manager = SoundBoardPlaylistManager(request, soundboard)
     return render(request, 'Html/Soundboard/soundboard_organize.html', {'soundboard': soundboard, 'actualPlaylist': soundboard_manager.get_playlists, 'unassociatedPlaylists': soundboard_manager.get_unassociated_playlists})
@@ -158,7 +158,7 @@ def playlist_create_with_soundboard(request, soundboard_uuid):
             'Html/Playlist/playlist_create.html', # NOSONAR
             {'form': form , 'method' : 'create', 'listMusic':None, 'list_default_color': list_default_color}
         )
-    return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
+    return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -227,7 +227,7 @@ def playlist_update(request, playlist_uuid):
     playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     if request.method == 'POST':
         if not playlist:
-            return render(request, HtmlDefaultPageEnum.ERROR_404, status=404)
+            return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
         else:
             form = PlaylistForm(request.POST, request.FILES, instance=playlist)
             if form.is_valid():
@@ -235,7 +235,7 @@ def playlist_update(request, playlist_uuid):
                 return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
     else:
         if not playlist:
-            return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
+            return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
         else:
             form = PlaylistForm(instance=playlist)
     list_music = (MusicService(request)).get_list_music(playlist_uuid)
@@ -252,11 +252,11 @@ def playlist_delete(request, playlist_uuid) -> JsonResponse:
     if request.method == 'DELETE':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         else :
             playlist.delete()
             return JsonResponse({'success': 'Suppression playlist réussie'}, status=200)
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
     
 @login_required
 @require_http_methods(['POST', 'GET'])
@@ -269,7 +269,7 @@ def music_create(request, playlist_uuid) -> JsonResponse:
         else:
             form = MusicForm()
         return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist, 'method' : 'create' })
-    return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
+    return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -277,7 +277,7 @@ def music_update(request, playlist_uuid, music_id):
     playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     music = Music.objects.get(id=music_id)
     if not music or not playlist:
-        return render(request, HtmlDefaultPageEnum.ERROR_404, status=404) 
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
     if request.method == 'POST':
         form = MusicForm(request.POST, request.FILES, instance=music)
         if form.is_valid():
@@ -295,22 +295,22 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
     if request.method == 'DELETE':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         
         music = Music.objects.get(id=music_id)
         if not music:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         music.file.delete()
         music.delete()
         return JsonResponse({'success': 'Suppression musique réussie'}, status=200)
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
 
 @login_required
 @require_http_methods(['GET'])
 def music_stream(request, playlist_uuid) -> HttpResponse:
     music = (MusicService(request)).get_random_music(playlist_uuid)
     if not music :
-        return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND, status=404)
+        return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
     
     response = HttpResponse(music.file, content_type='audio/*')
     response['Content-Disposition'] = 'inline; filename="{}"'.format(music.fileName)
@@ -322,7 +322,7 @@ def update_direct_volume(request, playlist_uuid) -> JsonResponse:
     if request.method == 'POST':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         else :
             data = json.loads(request.body)
             volume = data.get('volume')
@@ -331,5 +331,5 @@ def update_direct_volume(request, playlist_uuid) -> JsonResponse:
                 playlist.save()
                 return JsonResponse({"message": "volume updated"}, status=200)
         
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
     

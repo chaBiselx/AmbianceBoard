@@ -1,9 +1,10 @@
 from django import forms
 from home.models.Playlist import Playlist
+from home.forms.BootstrapFormMixin import BootstrapFormMixin
 
 
 
-class PlaylistForm(forms.ModelForm):
+class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Playlist
         fields = ('name', 'typePlaylist', 'useSpecificColor', 'color', 'colorText', 'volume', 'icon', 'maxDelay')
@@ -29,12 +30,12 @@ class PlaylistForm(forms.ModelForm):
     useSpecificColor = forms.BooleanField(required=False, label='Utiliser une couleur personnalisée', initial=False)
     color = forms.CharField(
         label='Couleur du background',
-        widget=forms.TextInput(attrs={'type': 'color'}),
+        widget=forms.TextInput(attrs={'type': 'color', 'typeInput': 'color'}),
         initial="#000000"
     )
     colorText = forms.CharField(
         label='Couleur du texte',
-        widget=forms.TextInput(attrs={'type': 'color'}),
+        widget=forms.TextInput(attrs={'type': 'color', 'typeInput': 'color'}),
         initial="#ffffff"
     )
     volume = forms.IntegerField(
@@ -42,7 +43,7 @@ class PlaylistForm(forms.ModelForm):
         min_value=0,
         max_value=100,
         initial=75,
-        widget=forms.NumberInput(attrs={'type': 'range', 'min': 0, 'max': 100})
+        widget=forms.NumberInput(attrs={'type': 'range', 'min': 0, 'max': 100, 'typeInput': 'range'})
     )
     icon = forms.FileField(
         label='Icone de la playlist', 

@@ -31,6 +31,6 @@ def clean_media_folder(request) -> JsonResponse:
         logger.warning("Ending ClearMediaFolder View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
-        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR, "message": str(e)}, status=500)
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
     
 
