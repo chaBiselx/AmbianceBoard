@@ -1,7 +1,7 @@
 services:
   cronjob:
     build: ./app
-    command: python manage.py runcrons
+    command: cron -f
     volumes:
       - ./app/:/usr/src/app/
     env_file:

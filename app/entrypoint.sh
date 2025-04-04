@@ -16,12 +16,16 @@ fi
 # python manage.py flush --no-input
 python manage.py migrate
 
-python manage.py crontab add
 
 # Démarrer Celery en arrière-plan
 celery -A home worker --queues=default --concurrency=4 --loglevel=info &
 
-cron start
+if [ "$RUNCRON" = "1" ]; then
+    echo "Adding crontab..."
+    python manage.py crontab add
 
+    echo "Starting cron..."
+    cron start
+fi
 
 exec "$@"
