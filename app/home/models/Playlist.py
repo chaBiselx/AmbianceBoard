@@ -8,6 +8,8 @@ from home.strategy.PlaylistStrategy import PlaylistStrategy
 from home.message.ReduceSizeImgMessenger import reduce_size_img
 from home.models.SoundboardPlaylist import SoundboardPlaylist
 from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
+from django.core.cache import cache
+from parameters import settings
 
 
 class Playlist(models.Model):
@@ -67,14 +69,24 @@ class Playlist(models.Model):
         if self.useSpecificColor:
             return self.color
         else:
-            d_c_p_service = DefaultColorPlaylistService(self.user)
+            cache_key = f"user:{self.user_id}"
+            user = cache.get(cache_key)
+            if user is None:
+                user = self.user 
+                cache.set(cache_key, user, timeout=settings.LIMIT_CACHE_DEFAULT)
+            d_c_p_service = DefaultColorPlaylistService(user)
             return d_c_p_service.get_default_color(self.typePlaylist)
         
     def get_color_text(self):
         if self.useSpecificColor:
             return self.colorText
         else:
-            d_c_p_service = DefaultColorPlaylistService(self.user)
+            cache_key = f"user:{self.user_id}"
+            user = cache.get(cache_key)
+            if user is None:
+                user = self.user 
+                cache.set(cache_key, user, timeout=3600)
+            d_c_p_service = DefaultColorPlaylistService(user)
             return d_c_p_service.get_default_color_text(self.typePlaylist)
             
     

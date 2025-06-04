@@ -1,5 +1,7 @@
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from home.models.PlaylistColorUser import PlaylistColorUser
+from django.core.cache import cache
+from parameters import settings
 
 
 class DefaultColorPlaylistService():
@@ -35,14 +37,31 @@ class DefaultColorPlaylistService():
         return initial_data
     
     def get_default_color(self, playlist_type):
+        cache_key = f"default_color:{self.user.id}:{playlist_type}"
+        color_found = cache.get(cache_key)
+        if color_found:
+            return color_found
+        
         existing_data = {pcu.typePlaylist: pcu for pcu in PlaylistColorUser.objects.filter(user=self.user, typePlaylist=playlist_type)}
         if existing_data.get(playlist_type):
-            return existing_data[playlist_type].color
-        return PlaylistTypeEnum[playlist_type].get_default_color()['color']
+            color_found = existing_data[playlist_type].color
+        else : 
+            color_found = PlaylistTypeEnum[playlist_type].get_default_color()['color']
+        
+        cache.set(cache_key, color_found, timeout=settings.LIMIT_CACHE_DEFAULT)
+        return color_found
     
     def get_default_color_text(self, playlist_type):
+        cache_key = f"default_color_text:{self.user.id}:{playlist_type}"
+        color_text_found = cache.get(cache_key)
+        if color_text_found:
+            return color_text_found
+        
         existing_data = {pcu.typePlaylist: pcu for pcu in PlaylistColorUser.objects.filter(user=self.user, typePlaylist=playlist_type)}
         if existing_data.get(playlist_type):
-            return existing_data[playlist_type].colorText
-        return PlaylistTypeEnum[playlist_type].get_default_color()['colorText']
+            color_text_found = existing_data[playlist_type].colorText
+        else :
+            color_text_found = PlaylistTypeEnum[playlist_type].get_default_color()['colorText']
+        cache.set(cache_key, color_text_found, timeout=settings.LIMIT_CACHE_DEFAULT)
+        return color_text_found
     

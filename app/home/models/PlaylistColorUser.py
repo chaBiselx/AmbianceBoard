@@ -1,6 +1,7 @@
 from django.db import models
 from home.models.User import User
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from django.core.cache import cache
 
 
 class PlaylistColorUser(models.Model):
@@ -18,7 +19,22 @@ class PlaylistColorUser(models.Model):
     class Meta:
         unique_together = ('user', 'typePlaylist')
         
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        # clear cache
+        self.clear_color_cache()
+        
+    def delete(self, *args, **kwargs):
+        self.clear_color_cache()
+        super().delete(*args, **kwargs)
+
     def __str__(self):
         return f"{self.user} ({self.typePlaylist}) "
+    
+    def clear_color_cache(self):
+        """Supprime le cache lié à la couleur de cette playlist pour l'utilisateur."""
+        if self.user_id and self.typePlaylist:
+            cache_key = f"default_color:{self.user_id}:{self.typePlaylist}"
+            cache.delete(cache_key)
         
    
