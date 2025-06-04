@@ -62,9 +62,6 @@ class Playlist(models.Model):
         soundboard_playlist = SoundboardPlaylist.objects.filter(Playlist=self).first()
         return soundboard_playlist.order if soundboard_playlist and soundboard_playlist.order is not None else None
     
-    def get_id_html(self) -> str:
-        return str("lknvbj")
-    
     def get_color(self):
         if self.useSpecificColor:
             return self.color
