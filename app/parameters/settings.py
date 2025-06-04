@@ -298,7 +298,7 @@ if RUN_CRONS:
     CRON_CLASSES.append('home.cron.CleanMediaFolderCron.run')
     CRON_CLASSES.append('home.cron.DeleteAccountCron.run')
     
-    CRONJOBS.append(('*/1 * * * *', 'home.cron.CleanMediaFolderCron.run'))
+    CRONJOBS.append(('0 10 * * *', 'home.cron.CleanMediaFolderCron.run'))
     CRONJOBS.append(('0 10 */1 * *', 'home.cron.DeleteAccountCron.run'))
         
 
