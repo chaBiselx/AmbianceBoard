@@ -22,7 +22,7 @@ class UpdateVolumePlaylist {
         listMusic.forEach(musicElement => {
             musicElement.setDefaultVolume(this.buttonPlaylist.getVolume())
             const updateVolume = new UpdateVolumeElement(musicElement);
-            updateVolume.update()
+            updateVolume.clearCache(musicElement.idPlaylist).update()
         });
 
     }

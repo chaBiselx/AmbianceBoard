@@ -26,6 +26,7 @@ class MusicElement {
     fadeOutDuration: number = 0;
     delay: number = 0;
     butonPlaylistToken: string | null = null;
+    fadeInGoing: boolean = false;
 
 
     constructor(Element: HTMLAudioElement | ButtonPlaylist) {
@@ -56,7 +57,7 @@ class MusicElement {
             this.fadeInDuration = parseFloat(this.DOMElement.dataset.fadeinduration);
         }
         if (this.DOMElement.dataset.fadeout) {
-            this.fadeOut = this.DOMElement.dataset.fadeout == "true" ;
+            this.fadeOut = this.DOMElement.dataset.fadeout == "true";
         }
         if (this.DOMElement.dataset.fadeouttype) {
             this.fadeOutType = this.DOMElement.dataset.fadeouttype;
@@ -117,21 +118,13 @@ class MusicElement {
 
 
     public play() {
-        this.DOMElement.addEventListener('error', function (event: Event) {
-            if (event.target && event.target instanceof HTMLAudioElement) {
-                if (event.target.error && event.target.error.code === 4) { // => ERROR 404
-                    let new_music = new MusicElement(event.target);
+        if (Config.DEBUG) console.log('play');
+        this.DOMElement.addEventListener('error', this.handleAudioError);
 
-                    const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
-                    buttonPlaylist.disactive();
-                    Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
-                    event.target.remove();
-                }
-            }
-        });
         if (this.fadeIn) {
             this.addFadeIn();
         }
+
         if (this.fadeOut) {
             this.DOMElement.addEventListener('ended', this.eventDeleteFadeOut);
             this.DOMElement.addEventListener('loadedmetadata', () => {
@@ -140,29 +133,27 @@ class MusicElement {
 
         } else {
             this.DOMElement.addEventListener('ended', this.eventDeleteNoFadeOut);
-
         }
-
         this.DOMElement.play();
 
     }
 
     public addFadeIn() {
-        if (Config.DEBUG) console.log('addFadeIn');
         this.levelFade = 0;
-        this.DOMElement.dataset.fadeInGoing = true.toString();
+
+        this.fadeInGoing = true;
 
         let typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeInType)
+
         let audioFade = new AudioFadeManager(this, typeFade, true, () => {
             this.levelFade = 1;
-            delete this.DOMElement.dataset.fadeInGoing;
+            this.fadeInGoing = false;
         });
         audioFade.setDuration(this.fadeInDuration);
-
         this.DOMElement.addEventListener('playing', () => {
             let time = Date.now();
             while (this.DOMElement.readyState != 2) {
-                if (time + 50 < Date.now()) {
+                if (time + 1 < Date.now()) {
                     break;
                 }
             }
@@ -173,7 +164,7 @@ class MusicElement {
 
     public addFadeOut() {
         if (Config.DEBUG) console.log('addFadeOut');
-        if (this.DOMElement.dataset.fadeInGoing) {
+        if (this.fadeInGoing) {
             if (Config.DEBUG) console.log('ignore fade out if fade in not finished');
             return // ignore fade out if fade in not finished
         }
@@ -257,75 +248,88 @@ class MusicElement {
 
     private setDefaultVolumeFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistVolume) {
-          this.setDefaultVolume(buttonPlaylist.getVolume());
+            this.setDefaultVolume(buttonPlaylist.getVolume());
         }
-      }
-      
-      private setFadeInFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+    }
+
+    private setFadeInFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistFadein) {
-          this.fadeIn = buttonPlaylist.dataset.playlistFadein == TRUE;
-          this.DOMElement.dataset.fadein = this.fadeIn.toString();
+            this.fadeIn = buttonPlaylist.dataset.playlistFadein == TRUE;
+            this.DOMElement.dataset.fadein = this.fadeIn.toString();
         }
         if (buttonPlaylist.dataset.playlistFadeintype) {
-          this.fadeInType = buttonPlaylist.dataset.playlistFadeintype;
-          this.DOMElement.dataset.fadeintype = this.fadeInType;
+            this.fadeInType = buttonPlaylist.dataset.playlistFadeintype;
+            this.DOMElement.dataset.fadeintype = this.fadeInType;
         }
         if (buttonPlaylist.dataset.playlistFadeinduration) {
-          this.fadeInDuration = parseFloat(buttonPlaylist.dataset.playlistFadeinduration);
-          this.DOMElement.dataset.fadeinduration = this.fadeInDuration.toString();
+            this.fadeInDuration = parseFloat(buttonPlaylist.dataset.playlistFadeinduration);
+            this.DOMElement.dataset.fadeinduration = this.fadeInDuration.toString();
         }
-      }
-      
-      private setFadeOutFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+    }
+
+    private setFadeOutFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistFadeout) {
-          this.fadeOut = buttonPlaylist.dataset.playlistFadein == TRUE;
-          this.DOMElement.dataset.fadeout = this.fadeOut.toString();
+            this.fadeOut = buttonPlaylist.dataset.playlistFadein == TRUE;
+            this.DOMElement.dataset.fadeout = this.fadeOut.toString();
         }
         if (buttonPlaylist.dataset.playlistFadeouttype) {
-          this.fadeOutType = buttonPlaylist.dataset.playlistFadeouttype;
-          this.DOMElement.dataset.fadeouttype = this.fadeOutType;
+            this.fadeOutType = buttonPlaylist.dataset.playlistFadeouttype;
+            this.DOMElement.dataset.fadeouttype = this.fadeOutType;
         }
         if (buttonPlaylist.dataset.playlistFadeoutduration) {
-          this.fadeOutDuration = parseFloat(buttonPlaylist.dataset.playlistFadeoutduration);
-          this.DOMElement.dataset.fadeoutduration = this.fadeOutDuration.toString();
+            this.fadeOutDuration = parseFloat(buttonPlaylist.dataset.playlistFadeoutduration);
+            this.DOMElement.dataset.fadeoutduration = this.fadeOutDuration.toString();
         }
-      }
-      
-      private setPlaylistTypeFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+    }
+
+    private setPlaylistTypeFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistType) {
-          this.playlistType = buttonPlaylist.dataset.playlistType;
-          this.DOMElement.dataset.playlisttype = this.playlistType;
+            this.playlistType = buttonPlaylist.dataset.playlistType;
+            this.DOMElement.dataset.playlisttype = this.playlistType;
         }
-      }
-      
-      private setPlaylistIdFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+    }
+
+    private setPlaylistIdFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.idPlaylist) {
-          this.idPlaylist = buttonPlaylist.idPlaylist;
-          this.DOMElement.dataset.playlistid = this.idPlaylist;
+            this.idPlaylist = buttonPlaylist.idPlaylist;
+            this.DOMElement.dataset.playlistid = this.idPlaylist;
         }
-      }
-      
-      private setPlaylistLoopFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+    }
+
+    private setPlaylistLoopFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistLoop) {
-          this.playlistLoop = buttonPlaylist.dataset.playlistLoop == TRUE;
-          this.DOMElement.dataset.playlistloop = this.playlistLoop.toString();
+            this.playlistLoop = buttonPlaylist.dataset.playlistLoop == TRUE;
+            this.DOMElement.dataset.playlistloop = this.playlistLoop.toString();
         }
-      }
-      
-      private setPlaylistDelayFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+    }
+
+    private setPlaylistDelayFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistDelay) {
-          this.delay = parseFloat(buttonPlaylist.dataset.playlistDelay);
-          this.DOMElement.dataset.playlistdelay = this.delay.toString();
+            this.delay = parseFloat(buttonPlaylist.dataset.playlistDelay);
+            this.DOMElement.dataset.playlistdelay = this.delay.toString();
         }
-      }
-      
-      private setButtonPlaylistTokenFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+    }
+
+    private setButtonPlaylistTokenFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         const token = buttonPlaylist.getToken();
         if (token) {
-          this.butonPlaylistToken = token;
-          this.DOMElement.dataset.butonPlaylistToken = this.butonPlaylistToken;
+            this.butonPlaylistToken = token;
+            this.DOMElement.dataset.butonPlaylistToken = this.butonPlaylistToken;
         }
-      }
+    }
+
+    private handleAudioError(event: Event) {
+    if (event.target && event.target instanceof HTMLAudioElement) {
+        if (event.target.error && event.target.error.code === 4) { // => ERROR 404
+            let new_music = new MusicElement(event.target);
+
+            const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
+            buttonPlaylist.disactive();
+            Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
+            event.target.remove();
+        }
+    }
+}
 
 }
 

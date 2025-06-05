@@ -55,8 +55,7 @@ class MixerManager{
         for (let audio of listAudio) {
 
             const musicElement = new MusicElement(audio as HTMLAudioElement);
-            
-            new UpdateVolumeElement(musicElement).update();
+            new UpdateVolumeElement(musicElement).clearCache(type).update();
         }
     }
 
