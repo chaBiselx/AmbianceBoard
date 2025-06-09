@@ -10,7 +10,7 @@ from home.views.privateViews import music_create, music_update, music_delete,mus
 from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user
 from home.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions
 from home.views.managerViews import manager_dashboard, clean_media_folder
-from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, favorite_update
+from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, favorite_update, reporting_content
 from home.views.confirmViews import confirm_account
 
 urlpatterns = [
@@ -62,7 +62,7 @@ urlpatterns = [
     path("public/soundboards", public_listing_soundboard, name="publicListingSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>", public_soundboard_read_playlist, name="publicReadSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreammMusic"),
-    
+    path("public/report", reporting_content, name="publicReportingContent"),
     
     
     path("moderator/", moderator_dashboard, name="moderatorDashboard"),

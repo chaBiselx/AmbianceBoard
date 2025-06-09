@@ -9,11 +9,16 @@ from home.models.SoundBoard import SoundBoard
 from home.service.SoundBoardService import SoundBoardService
 from home.service.MusicService import MusicService
 from home.decorator.detectBan import detect_ban
+from home.decorator.reportingContent import add_reporting_btn
+from django.template.response import TemplateResponse
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from django.views.decorators.http import require_http_methods
 from home.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
 from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
+from django.contrib import messages
+from home.service.ReportContentService import ReportContentService
+
 
 
 @require_http_methods(['GET'])
@@ -21,6 +26,7 @@ def public_index(request):
     return redirect('publicListingSoundboard')
 
 @require_http_methods(['GET'])
+@add_reporting_btn()
 def public_listing_soundboard(request):
     page_number = int(request.GET.get('page', 1))
     
@@ -35,16 +41,17 @@ def public_listing_soundboard(request):
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     context['listFavorite'] = list_favorite
-    return render(request, 'Html/Public/listing_soundboard.html', context)
+    return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
 
 @require_http_methods(['GET'])
 @detect_ban
+@add_reporting_btn()
 def public_soundboard_read_playlist(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     else:   
-        return render(request, 'Html/Public/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
+        return TemplateResponse(request, 'Html/Public/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
     
 @require_http_methods(['GET'])
 @detect_ban
@@ -88,5 +95,22 @@ def favorite_update(request, soundboard_uuid) -> JsonResponse:
             return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
         
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+   
+@require_http_methods(['POST'])
+def reporting_content(request):
+    if request.method == 'POST':
         
+        if(ReportContentService(request).save_report()):
+            messages.info(request, 'Votre signalement a bien été pris en compte, merci de votre contribution')
+        else : 
+            messages.error(request, 'Une erreur est survenue, merci de re-essayer plus tard')
+        
+        
+        if(request.POST.get('redirect')):
+            return redirect(request.POST.get('redirect'))
+        else:
+            return redirect('publicListingSoundboard')
+    return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+
+
     

@@ -5,6 +5,12 @@
     <i class="fa-solid fa-universal-access"></i>
     <span class="d-none d-lg-inline">Public</span>
 </a>
+{% if reportingContentUrl is not None %}
+<button class="btn btn-link url_link p-1" aria-label="Report" id="reportButton" data-url="{{ reportingContentUrl }}">
+    <i class="fa-solid fa-flag"></i>
+    <span class="d-none d-lg-inline">Report</span>
+</button>
+{% endif %}
 {% if request.user.is_authenticated %}
 <a class="btn btn-link url_link p-1" href="{% url 'soundboardsList' %}" aria-label="Soundboard">
     <i class="fa-solid fa-table-cells-large"></i>
@@ -17,13 +23,12 @@
 {% include 'Html/navbar_dropdown_user.html'%}
 
 {% else %}
-<a class="btn btn-link url_link p-1"  href="{% url 'login' %}" aria-label="Playlists">
+<a class="btn btn-link url_link p-1" href="{% url 'login' %}" aria-label="Playlists">
     <i class="fa-solid fa-right-to-bracket"></i>
     <span class="d-none d-lg-inline">Login</span>
 </a>
-<a class="btn btn-link url_link p-1"  href="{% url 'createAccount' %}" aria-label="Playlists">
+<a class="btn btn-link url_link p-1" href="{% url 'createAccount' %}" aria-label="Playlists">
     <i class="fa-solid fa-user-plus"></i>
     <span class="d-none d-lg-inline">Creation</span>
 </a>
 {% endif %}
-

@@ -1,6 +1,6 @@
 import Cookie from "@/modules/Cookie";
 import Notification from '@/modules/Notifications';
-
+import ReportingContent from '@/modules/ReportingContent'
 import * as bootstrap from 'bootstrap';
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
@@ -36,7 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
     new FullScreen().addEvent();
     new EmailConfirmationAccount('resend_email_confirmation_account').addEvent();
     new Sidebar().addEvent();
-    
+    new ReportingContent('reportButton').addEvent();
+
 
 });
 
@@ -118,7 +119,7 @@ class GeneralTheme {
         htmlElement.setAttribute('data-bs-theme', this.theme);
     }
 
-    private toggleIcon(){
+    private toggleIcon() {
         if (this.theme === 'dark') {
             this.buttonToggle.innerHTML = `<i class="fa-solid fa-sun"></i>`;
         } else {
@@ -129,8 +130,7 @@ class GeneralTheme {
     private saveTheme() {
         const url = this.buttonToggle.dataset.url
         const csrfToken = Cookie.get('csrftoken')!;
-        console.log(url);
-        
+
         if (url) {
             fetch(url, {
                 method: 'UPDATE',
@@ -182,7 +182,7 @@ class FullScreen {
         const showBaseLayoutButton = document.getElementById('showBaseLayoutButton')
         const soundboardMenu = document.getElementById('soundboard-menu');
         if (soundboardMenu) soundboardMenu.classList.toggle('d-none');
-        
+
         if (showBaseLayoutButton) showBaseLayoutButton.classList.toggle('d-inline')
     }
 }
@@ -209,4 +209,3 @@ class Sidebar {
     }
 
 }
-
