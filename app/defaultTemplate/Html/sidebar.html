@@ -5,7 +5,14 @@
 <div class="sidebar position-fixed start-0 bg-body h-100 border-end" id="mainSidebar">
     <menu class="nav flex-column nav-pills nav-flush">
         {% for item  in sidebar_items  %}
-        <li><a class="nav-link url_link py-3 border-bottom rounded-0 d-flex align-items-center" href="{{ item.url }}">{{ item.title }}</a></li>
+        <li>
+            <a class="nav-link url_link py-3 border-bottom rounded-0 d-flex align-items-center" href="{{ item.url }}">
+                {% if item.classIcon is not None %}
+                    <i class="{{ item.classIcon }}"></i>&nbsp;
+                {% endif %}
+                {{ item.title }}
+            </a>
+        </li>
         {% endfor %}
         
     </menu>
