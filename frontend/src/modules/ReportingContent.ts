@@ -194,7 +194,7 @@ class ReportFormPlaylist extends ReportFormBase implements ReportFormElement {
 
     addHidden(): string {
         return this.addFormGroup(`
-        <input type="hidden" id="element-type" value="playlist">
+        <input type="hidden" name="element-type" id="element-type" value="playlist">
         <input type="hidden" name="element-id" id="element-id" value="${this.HTMLElement.dataset.id}">`)
     }
     addSelectorForm(): string {
