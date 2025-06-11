@@ -204,6 +204,7 @@ class ReportFormPlaylist extends ReportFormBase implements ReportFormElement {
           <option value="image">Image</option>
           <option value="text">Texte</option>
           <option value="music">Musique</option>
+          <option value="copyright">Copyright</option>
         </select>`)
     }
 

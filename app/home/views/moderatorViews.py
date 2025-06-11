@@ -74,13 +74,6 @@ def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
 @login_required
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
-def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
-    soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
-    return render(request, 'Html/Moderator/info_soundboard.html', {"soundboard":soundboard})
-
-@login_required
-@require_http_methods(['GET'])
-@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_log_moderation(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
     

@@ -35,7 +35,7 @@ class ReportContent(models.Model):
     )
     resultModerator = models.CharField(
         max_length=25,
-        choices=[('invalid', 'invalid'), ('valid', 'valid'), ('spam', 'spam'), ('duplicate', 'duplicate'), ('other', 'other')],
+        choices=[('invalid', 'invalid'), ('valid', 'valid'), ('spam', 'spam'), ('duplicate', 'duplicate'), ('other', 'other'), ('copyright', 'copyright')],
         verbose_name='Resultat moderateur'
     )
     dateResultModerator = models.DateTimeField(null=True, blank=True, verbose_name='Date de la modération')
