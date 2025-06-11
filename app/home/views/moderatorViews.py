@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from home.models.Playlist import Playlist
 from home.models.SoundBoard import SoundBoard
 from home.models.UserModerationLog import UserModerationLog
+from home.models.ReportContent import ReportContent
 from home.enum.PermissionEnum import PermissionEnum
 from home.models.User import User
 from home.utils.ExtractPaginator import extract_context_to_paginator
@@ -81,7 +82,7 @@ def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_log_moderation(request) -> HttpResponse:
-    page_number = int(request.GET.get('page', 50))
+    page_number = int(request.GET.get('page', 1))
     
     queryset = UserModerationLog.objects.all().order_by('created_at')
     paginator = Paginator(queryset, 100)  
@@ -95,5 +96,35 @@ def moderator_listing_log_moderation(request) -> HttpResponse:
 def moderator_get_infos_user(request, user_uuid) -> HttpResponse:
     user = User.objects.get(id=user_uuid)
     return render(request, 'Html/Moderator/info_user.html', {"user":user})
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_listing_report(request) -> HttpResponse:
+    page_number = int(request.GET.get('page', 1))
+    queryset = ReportContent.objects.filter(moderator__isnull=True).order_by('created_at')
+ 
+    paginator = Paginator(queryset, 100)  
+    context = extract_context_to_paginator(paginator, page_number)
+    context['archive'] = False
     
+    return render(request, 'Html/Moderator/listing_report.html', context)
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_listing_report_archived(request) -> HttpResponse:
+    page_number = int(request.GET.get('page', 1))
+    queryset = ReportContent.objects.filter(moderator__isnull=False).order_by('created_at')
+    paginator = Paginator(queryset, 100)  
+    context = extract_context_to_paginator(paginator, page_number)
+    context['archive'] = True
     
+    return render(request, 'Html/Moderator/listing_report.html', context)
+    
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_get_infos_report(request, report_id) -> HttpResponse:
+    user = ReportContent.objects.get(id=report_id)
+    return render(request, 'Html/Moderator/info_content_report.html', {"user":user})

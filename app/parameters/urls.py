@@ -7,7 +7,7 @@ from home.views.generalViews import home, create_account, login_view, logout_vie
 from home.views.privateViews import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
 from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors, playlist_describe_type
 from home.views.privateViews import music_create, music_update, music_delete,music_stream, update_direct_volume
-from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user
+from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report
 from home.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions
 from home.views.managerViews import manager_dashboard, clean_media_folder
 from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, favorite_update, reporting_content
@@ -70,6 +70,9 @@ urlpatterns = [
     path("moderator/playlist/<uuid:playlist_uuid>", moderator_get_infos_playlist, name="moderatorGetDataPlaylist"),
     path("moderator/soundboard/images", moderator_listing_images_soundboard, name="moderatorControleImagesSoundboard"),
     path("moderator/soundboard/<uuid:soundboard_uuid>", moderator_get_infos_soundboard, name="moderatorGetDataSoundboard"),
+    path("moderator/report/content", moderator_listing_report, name="moderatorControleReport"),
+    path("moderator/report/content/archive", moderator_listing_report_archived, name="moderatorControleReportArchived"),
+    path("moderator/report/content/<int:report_id>", moderator_get_infos_report, name="moderatorGetDataContentReport"),
     path("moderator/log/", moderator_listing_log_moderation, name="moderatorControleLog"),
     path("moderator/log/user/<uuid:user_uuid>", moderator_get_infos_user, name="moderatorGetDataUser"),
     
