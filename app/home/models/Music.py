@@ -11,7 +11,7 @@ class Music(models.Model):
     fileName = models.CharField(max_length=63)
     alternativeName = models.CharField(max_length=63, default=None)
     file = models.FileField(upload_to=MUSIC_FOLDER)
-    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE,null=False, blank=False)
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE,null=False, blank=False, related_name="musics")
 
     def __str__(self):
         return self.alternativeName

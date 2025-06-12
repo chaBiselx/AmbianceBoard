@@ -167,12 +167,5 @@ def reporting_add_log(request) -> HttpResponse:
             user.reasonBan = request.POST.get('action_ban_reason')
             user.banExpiration = datetime.now() + timedelta(days=duration_ban * 31)
             user.save()
-        # # info user
-        # user = User.objects.get(id=request.POST.get('user_id'))
-        # # info moderator
-        # moderator = User.objects.get(id=request.POST.get('moderator_id'))
-    
-    
-    
         
     return redirect(request.POST.get('redirect_uri', 'moderatorDashboard'))

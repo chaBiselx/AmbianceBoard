@@ -118,6 +118,12 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
+                        <div class="col-12">
+                            {% for music in playlist.musics.all %}
+                                <audio src="{{ music.file.url }}" controls></audio>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -212,8 +218,8 @@
                         </div>
                     </div>
                 </div>
-                {% endif %}
                 <hr>
+                {% endif %}
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-6 col-12">
