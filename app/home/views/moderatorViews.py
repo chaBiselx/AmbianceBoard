@@ -11,9 +11,12 @@ from home.models.SoundBoard import SoundBoard
 from home.models.UserModerationLog import UserModerationLog
 from home.models.ReportContent import ReportContent
 from home.enum.PermissionEnum import PermissionEnum
+from home.enum.ModerationModelEnum import ModerationModelEnum
 from home.models.User import User
 from home.utils.ExtractPaginator import extract_context_to_paginator
 from django.views.decorators.http import require_http_methods
+from datetime import datetime, timedelta
+
 
 
 @login_required
@@ -121,3 +124,55 @@ def moderator_listing_report_archived(request) -> HttpResponse:
 def moderator_get_infos_report(request, report_id) -> HttpResponse:
     user = ReportContent.objects.get(id=report_id)
     return render(request, 'Html/Moderator/info_content_report.html', {"user":user})
+
+
+@login_required
+@require_http_methods(['POST'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def reporting_add_log(request) -> HttpResponse:
+    # info reportContent 
+    user = User.objects.get(uuid=request.POST.get('user_id'))
+    if user is not None:
+        report_content = None
+        content_report_accepted = request.POST.get('contentReport_accepted')
+        if content_report_accepted:
+            id_report_content = request.POST.get('contentReport_id')
+            content_moderator_response = request.POST.get('content_moderator_response')
+            if id_report_content and content_moderator_response:
+                report_content = ReportContent.objects.get(id=id_report_content)
+                if report_content is not None:
+                    report_content.resultModerator = content_moderator_response
+                    report_content.moderator = request.user
+                    report_content.dateResultModerator = datetime.now()
+                    # report_content.save()
+        
+        moderator_log_accepted = request.POST.get('moderator_log_accepted')
+        if moderator_log_accepted:
+            UserModerationLog.objects.create(
+                user = user,
+                moderator = request.user,
+                message = request.POST.get('moderator_log_message'),
+                tag = request.POST.get('moderator_log_tag'),
+                model = request.POST.get('moderator_log_model', ModerationModelEnum.UNKNOWN.name),
+                report = report_content
+            )
+            
+        
+        action_ban_user = request.POST.get('action_ban_user')
+        if action_ban_user:
+            duration_ban = int(request.POST.get('action_ban_duration', '12'))
+            if(duration_ban <=0):
+                duration_ban = 12
+            user.isBan = True
+            user.reasonBan = request.POST.get('action_ban_reason')
+            user.banExpiration = datetime.now() + timedelta(days=duration_ban * 31)
+            user.save()
+        # # info user
+        # user = User.objects.get(id=request.POST.get('user_id'))
+        # # info moderator
+        # moderator = User.objects.get(id=request.POST.get('moderator_id'))
+    
+    
+    
+        
+    return redirect(request.POST.get('redirect_uri', 'moderatorDashboard'))

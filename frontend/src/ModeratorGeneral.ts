@@ -55,6 +55,7 @@ class FetchPopupData {
             .then(response => response.text())
             .then((body) => {
                this.show(body)
+               this.setValue()
             })
             .catch(error => {
                 console.error('Erreur lors de la requête AJAX:', error);
@@ -68,6 +69,12 @@ class FetchPopupData {
             footer: "",
             width: "lg"
         })
+    }
+
+    public setValue(){
+        const currentPath = window.location.pathname + window.location.search;
+        let redirectInput = document.getElementById('redirect_uri') as HTMLInputElement;
+        redirectInput.value = currentPath
     }
 }
 

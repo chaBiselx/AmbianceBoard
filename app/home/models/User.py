@@ -10,7 +10,7 @@ class User(AbstractUser):
     isConfirmed = models.BooleanField(default=False)
     confirmationToken = models.CharField(max_length=255, default=None, null=True, blank=True)
     demandeConfirmationDate = models.DateTimeField(default=None, null=True, blank=True)
-    reasonBan = models.CharField(max_length=255, default="")
+    reasonBan = models.CharField(max_length=255, default="" , null=False, blank=True)
     banExpiration = models.DateTimeField(default=None, null=True, blank=True) 
     tokenReinitialisation = models.CharField(max_length=255, default=None, null=True, blank=True)
     demandeTokenDate = models.DateTimeField(default=None, null=True, blank=True)

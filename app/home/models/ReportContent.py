@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from home.models.Playlist import Playlist
+from home.enum.ReportContentResultEnum import ReportContentResultEnum
 
 class ReportContent(models.Model):
     id = models.BigAutoField(primary_key=True) 
@@ -19,7 +20,7 @@ class ReportContent(models.Model):
     uuidElement = models.UUIDField(db_index=True)
     precisionElement = models.CharField(
         max_length=25,
-        choices=[('unknown', 'unknown'), ('image', 'image'), ('text', 'text'), ('music', 'music')],
+        choices=[('unknown', 'unknown'), ('image', 'image'), ('text', 'text'), ('music', 'music'), ('copyright', 'copyright')],
         verbose_name='precision sur l\'élément'
     )
     descriptionElement = models.TextField(verbose_name='Description de l\'élément')
@@ -35,7 +36,7 @@ class ReportContent(models.Model):
     )
     resultModerator = models.CharField(
         max_length=25,
-        choices=[('invalid', 'invalid'), ('valid', 'valid'), ('spam', 'spam'), ('duplicate', 'duplicate'), ('other', 'other'), ('copyright', 'copyright')],
+        choices=([tag.name, tag.name] for tag in ReportContentResultEnum),
         verbose_name='Resultat moderateur'
     )
     dateResultModerator = models.DateTimeField(null=True, blank=True, verbose_name='Date de la modération')

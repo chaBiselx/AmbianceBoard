@@ -1,6 +1,10 @@
 {% load Playlist %}
 {% load SoundBoard %}
 {% load UserLog %}
+{% load ReportContentResultEnum %}
+{% load ModerationEnum %}
+{% load ModerationModelEnum %}
+
 <div class="popupModerator">
     <div class="accordion" id="accordionPanelsStayOpenExample">
         {% if contentReport is not None %}
@@ -94,9 +98,9 @@
                                 <dt>Id</dt>
                                 <dd>{{playlist.uuid}}</dd>
                                 <dt>Créée</dt>
-                                <dd>{{soundboard.created_at |  date:"Y-m-d \T H:i"}}</dd>
+                                <dd>{{playlist.created_at |  date:"Y-m-d \T H:i"}}</dd>
                                 <dt>Modifé</dt>
-                                <dd>{{soundboard.updated_at |  date:"Y-m-d \T H:i"}}</dd>
+                                <dd>{{playlist.updated_at |  date:"Y-m-d \T H:i"}}</dd>
                                 <dt>Titre</dt>
                                 <dd>{{playlist.name}}</dd>
                                 <dt>Type Playlist</dt>
@@ -135,6 +139,8 @@
                                 <dd>{{user.uuid}}</dd>
                                 <dt>Username</dt>
                                 <dd>{{user.username}}</dd>
+                                <dt>Ban</dt>
+                                <dd>{{user.isBan}}</dd>
                                 <dt>Admin</dt>
                                 <dd>{{user.is_superuser}}</dd>
                             </dl>
@@ -168,5 +174,118 @@
         </div>
         {% endif %}
 
+    </div>
+    {% if condition %}
+
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Actions</h5>
+        </div>
+        <div class="card-body">
+            <form action="{% url 'moderatorAddLog'  %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="redirect_uri" id="redirect_uri" value="">
+                <input type="hidden" name="user_id" id="user_id" value="{{user.uuid}}">
+                {% if contentReport and contentReport.moderator is None%}
+                <input type="hidden" name="contentReport_id" value="{{contentReport.id}}">
+                <div class="form-group ">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="contentReport_accepted">Content Report association</label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <div class="form-switch">
+                                <input class="form-check-input form-control" name="contentReport_accepted" type="checkbox" id="contentReport_accepted" checked>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="content_moderator_response">Reponse</label>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <select name="content_moderator_response" id="content_moderator_response" class="form-control">
+                                {% list_values_report_content_result_enum as enum_list %}
+                                {% for name, value in enum_list %}
+                                <option value="{{ value }}">{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <hr>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="moderator_log_accepted">Ajout Log</label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <div class="form-switch">
+                                <input class="form-check-input form-control" name="moderator_log_accepted" type="checkbox" id="moderator_log_accepted" checked>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="moderator_log_tag">Tag</label>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <select name="moderator_log_tag" id="moderator_log_tag" class="form-control">
+                                {% list_values_report_moderation_enum as enum_list %}
+                                {% for name, value in enum_list %}
+                                <option value="{{ value }}" {% if value == 'OTHER' %} selected {% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="moderator_log_model">Élement</label>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <select name="moderator_log_model" id="moderator_log_model" class="form-control">
+                                {% list_values_report_moderation__model_enum as enum_list %}
+                                {% for name, value in enum_list %}
+                                <option value="{{ value }}">{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="moderator_log_message">Message</label>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <textarea name="moderator_log_message" id="moderator_log_message" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="text-secondary">Bannir l'utilisateur fait qui ne peux plus publier publiquement du contenu (shadowban)</p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="action_ban_user">Ban User</label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <div class="form-switch">
+                                <input class="form-check-input form-control" name="action_ban_user" type="checkbox" id="action_ban_user">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="action_ban_reason">Motif ban</label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <textarea name="action_ban_reason" class="form-control" id="action_ban_reason" maxlength="255"></textarea>
+                        </div>
+                                  <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="action_ban_duration">Durée ban <small>(mois)</small></label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <input type="number" name="action_ban_duration" id="action_ban_duration" class="form-control" value="6" min="1" max="60" step="1">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-success float-end" type="submit">Envoyer</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
