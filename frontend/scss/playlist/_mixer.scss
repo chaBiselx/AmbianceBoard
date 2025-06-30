@@ -98,9 +98,7 @@ $tooltipRadius: round(.8em, 1px);
 }
 
 .horizontal-slider-output {
-    position-anchor: --thumb;
     position: absolute;
-    position-area: top;
     color: var(--bs-white);
     font-weight: bold;
     font-family: sans-serif;
