@@ -56,7 +56,7 @@ urlpatterns = [
     path("playlist/<uuid:playlist_uuid>/music/create", music_create, name="addMusic"),
     path("playlist/<uuid:playlist_uuid>/music/edit/<int:music_id>", music_update, name="editMusic"),
     path("playlist/<uuid:playlist_uuid>/music/delete/<int:music_id>", music_delete, name="deleteMusic"),
-    path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", music_stream, name="streammMusic"),
+    path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", music_stream, name="streamMusic"),
     path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream/stop", stop_stream, name="stopStreamMusic"),
     
     path("playlist/<uuid:playlist_uuid>/volume/update", update_direct_volume, name="update_direct_volume"),
@@ -66,7 +66,7 @@ urlpatterns = [
     path("public/", public_index, name="publicIndex"),
     path("public/soundboards", public_listing_soundboard, name="publicListingSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>", public_soundboard_read_playlist, name="publicReadSoundboard"),
-    path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreammMusic"),
+    path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreamMusic"),
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream/stop", public_stop_stream, name="publicStopStreamMusic"),
     path("public/report", reporting_content, name="publicReportingContent"),
     
