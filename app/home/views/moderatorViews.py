@@ -16,6 +16,7 @@ from home.models.User import User
 from home.utils.ExtractPaginator import extract_context_to_paginator
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
+from home.utils.url import redirection_url
 
 
 
@@ -168,4 +169,4 @@ def reporting_add_log(request) -> HttpResponse:
             user.banExpiration = datetime.now() + timedelta(days=duration_ban * 31)
             user.save()
         
-    return redirect(request.POST.get('redirect_uri', 'moderatorDashboard'))
+    return redirect(redirection_url(request.POST.get('redirect_uri', 'moderatorDashboard')))
