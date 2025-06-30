@@ -98,7 +98,9 @@ $tooltipRadius: round(.8em, 1px);
 }
 
 .horizontal-slider-output {
+    position-anchor: --thumb;// NOSONAR
     position: absolute;
+    position-area: top; // NOSONAR
     color: var(--bs-white);
     font-weight: bold;
     font-family: sans-serif;
@@ -133,7 +135,7 @@ $tooltipRadius: round(.8em, 1px);
 
 
     &.bottom {
-        position-area: bottom;
+        position-area: bottom; // NOSONAR
         border-top: var(--tooltipTailSize) solid #0000;
         border-bottom: none;
         border-radius: var(--tooltipRadius)/calc(var(--tooltipRadius) + var(--tooltipTailSize)) calc(var(--tooltipRadius) + var(--tooltipTailSize)) var(--tooltipRadius) var(--tooltipRadius);
