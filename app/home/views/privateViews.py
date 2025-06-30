@@ -25,6 +25,7 @@ from home.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from home.formatter.TypePlaylistFormater import TypePlaylistFormater
 from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
+from home.service.SharedSoundboardService import SharedSoundboardService
 
 
 @login_required
@@ -307,14 +308,24 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
 
 @login_required
 @require_http_methods(['GET'])
-def music_stream(request, playlist_uuid) -> HttpResponse:
+def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
     music = (MusicService(request)).get_random_music(playlist_uuid)
     if not music :
         return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
     
+    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, music)
+    
     response = HttpResponse(music.file, content_type='audio/*')
     response['Content-Disposition'] = 'inline; filename="{}"'.format(music.fileName)
     return response
+
+@login_required
+@require_http_methods(['UPDATE'])
+def stop_stream(request, soundboard_uuid, playlist_uuid) -> JsonResponse:
+    
+    SharedSoundboardService(request, soundboard_uuid).music_stop(playlist_uuid)
+    
+    return JsonResponse({"message": "stream stop"}, status=200)
 
 @login_required
 @require_http_methods(['POST'])

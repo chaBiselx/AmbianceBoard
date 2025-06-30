@@ -32,6 +32,17 @@ class MusicService:
         except Playlist.DoesNotExist:
             return None
         
+    def get_shared_music(self, soundboard_uuid:uuid, playlist_uuid:int, token:str, music_id: int)-> Music|None :
+        soundboard = (SoundBoardService(self.request)).get_soundboard_from_shared_soundboard(soundboard_uuid, token)
+        if not soundboard:
+            return None
+        try:
+            return Music.objects.get(pk=music_id, playlist__uuid=playlist_uuid)
+        except Music.DoesNotExist:
+            return None
+        except Playlist.DoesNotExist:
+            return None
+        
     def _get_random_music_from_playlist(self, music_filter:MusicFilter, playlist_uuid:int)-> Music|None :
         queryset = music_filter.filter_by_playlist(playlist_uuid)
         return queryset.order_by('?').first()

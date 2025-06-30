@@ -1,4 +1,5 @@
 import uuid
+import os
 from home.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
 from home.message.ReduceBiteRateMessenger import reduce_bit_rate
@@ -6,6 +7,7 @@ from home.models.Playlist import Playlist
 
 class Music(models.Model):
     MUSIC_FOLDER = 'musics/'
+    id = models.BigAutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     fileName = models.CharField(max_length=63)
@@ -30,6 +32,9 @@ class Music(models.Model):
         super().save(*args, **kwargs)
         if new_file: 
             reduce_bit_rate.apply_async(args=[self.file.path], queue='default', priority=1 )
+            
+    def get_name(self):
+        return os.path.splitext(os.path.basename(self.file.name))[0]
 
         
     def clean(self):

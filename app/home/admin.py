@@ -10,6 +10,7 @@ from home.models.PlaylistColorUser import PlaylistColorUser
 from home.models.UserPreference import UserPreference
 from home.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
 from home.models.ReportContent import ReportContent
+from home.models.SharedSoundboard import SharedSoundboard
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -22,3 +23,4 @@ admin.site.register(PlaylistColorUser)
 admin.site.register(UserPreference)
 admin.site.register(UserFavoritePublicSoundboard)
 admin.site.register(ReportContent)
+admin.site.register(SharedSoundboard)

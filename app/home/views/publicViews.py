@@ -18,6 +18,7 @@ from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
 from django.contrib import messages
 from home.service.ReportContentService import ReportContentService
+from home.service.SharedSoundboardService import SharedSoundboardService
 
 
 
@@ -61,10 +62,19 @@ def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse
     if not music :
         return HttpResponse("Musique introuvable.", status=404)
     
+    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, music)
+    
     response = HttpResponse(music.file, content_type='audio/*')
     response['Content-Disposition'] = 'inline; filename="{}"'.format(music.fileName)
     return response
 
+@login_required
+@require_http_methods(['UPDATE'])
+def public_stop_stream(request, soundboard_uuid, playlist_uuid) -> JsonResponse:
+    
+    SharedSoundboardService(request, soundboard_uuid).music_stop(playlist_uuid)
+    
+    return JsonResponse({"message": "stream stop"}, status=200)
 @login_required
 @require_http_methods(['POST', 'DELETE'])
 def favorite_update(request, soundboard_uuid) -> JsonResponse:

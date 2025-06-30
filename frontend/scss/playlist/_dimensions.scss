@@ -21,6 +21,10 @@ $playlist-dimensions: 50, 75, 100, 125, 150, 175, 200;
     /* Centre horizontalement */
     align-items: center;
     /* Centre verticalement */
+
+    &.disabled {
+        cursor: initial;
+    }
 }
 
 .playlist-img {

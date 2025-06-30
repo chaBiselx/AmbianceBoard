@@ -65,12 +65,15 @@ class ReportingContent {
             title: title,
             body: body,
             footer: "",
-            width: "xl"
+            width: "xl",
+            callback: () => {
+                const reportableElements = document.querySelectorAll('.event-report')
+                reportableElements.forEach(element => {
+                    element.addEventListener('click', this.handleClickForm.bind(this));
+                });
+            }
         })
-        const reportableElements = document.querySelectorAll('.event-report')
-        reportableElements.forEach(element => {
-            element.addEventListener('click', this.handleClickForm.bind(this));
-        });
+
     }
 
     private handleClickForm(event: Event) {
@@ -136,13 +139,13 @@ class ReportFormBase implements ReportFormElement {
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = this.urlForm;
-        form.innerHTML = 
+        form.innerHTML =
             this.addCsrf() +
             this.addRedirectLink() +
-            this.addHidden() + 
-            this.addSelectorForm() + 
-            this.addDefaultForm() + 
-            this.addSpecifiqueForm() + 
+            this.addHidden() +
+            this.addSelectorForm() +
+            this.addDefaultForm() +
+            this.addSpecifiqueForm() +
             this.addValidation();
 
         return form.outerHTML

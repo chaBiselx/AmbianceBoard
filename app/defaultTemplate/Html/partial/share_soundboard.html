@@ -1,0 +1,7 @@
+{% if soundboard %}
+<div class="row">
+    <div class="col">
+        <button class="btn btn-outline-secondary float-end" id="btn-publish-soundboard" data-url="{% url 'publish_soundboard' soundboard.uuid %}"><i class="fa-solid fa-square-share-nodes"></i> Partager l'écoute</button>
+    </div>
+</div>
+{% endif %}

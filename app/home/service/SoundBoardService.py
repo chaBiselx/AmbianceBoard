@@ -1,4 +1,5 @@
 from home.models.SoundBoard import SoundBoard
+from home.models.SharedSoundboard import SharedSoundboard
 from home.forms.SoundBoardForm import SoundBoardForm
 from home.enum.PermissionEnum import PermissionEnum
 from django.contrib import messages
@@ -26,6 +27,22 @@ class SoundBoardService:
                 return None
             return soundboard
         except SoundBoard.DoesNotExist:
+            return None
+        
+    def get_soundboard_from_shared_soundboard(self, soundboard_uuid, token:str)-> SoundBoard|None :
+        try:
+            soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
+            if not soundboard:
+                return None
+            
+            shared_soundboard = SharedSoundboard.objects.get(soundboard=soundboard, token=token)
+            if not shared_soundboard : 
+                return None
+            return soundboard
+
+        except SoundBoard.DoesNotExist:
+            return None
+        except SharedSoundboard.DoesNotExist:
             return None
         
     def save_form(self):

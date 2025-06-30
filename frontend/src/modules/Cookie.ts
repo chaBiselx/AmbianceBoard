@@ -16,6 +16,13 @@ class Cookie {
         return cookieValue;
     }
 
+    static set(name: string, value: string) {
+        let date = new Date();
+        date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+        let expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
 }
 
 export default Cookie;

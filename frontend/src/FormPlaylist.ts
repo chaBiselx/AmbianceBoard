@@ -268,13 +268,16 @@ function getListingOtherColors(event: Event) {
                 title: title,
                 body: divRow.outerHTML,
                 footer: "",
-                width: "lg"
+                width: "lg",
+                callback: () => {
+                    const btnSelectPlaylistColorList = document.getElementsByClassName("btn-select-playlist-color");
+                    for (const btnSelectPlaylistColor of btnSelectPlaylistColorList) {
+                        btnSelectPlaylistColor.addEventListener('click', selectColor);
+                    }
+                }
             })
 
-            const btnSelectPlaylistColorList = document.getElementsByClassName("btn-select-playlist-color");
-            for (const btnSelectPlaylistColor of btnSelectPlaylistColorList) {
-                btnSelectPlaylistColor.addEventListener('click', selectColor);
-            }
+
         })
         .catch(error => {
             console.error('Erreur lors de la requête AJAX:', error);
@@ -356,12 +359,15 @@ function showPopupMusic(event: Event) {
                 title: title,
                 body: body,
                 footer: "",
-                width: "lg"
+                width: "lg",
+                callback: () => {
+                    const fileInput = document.getElementById('id_file');
+                    if (fileInput) {
+                        fileInput.addEventListener('change', autoSetAlternateName);
+                    }
+                }
             })
-            const fileInput = document.getElementById('id_file');
-            if (fileInput) {
-                fileInput.addEventListener('change', autoSetAlternateName);
-            }
+
 
         })
         .catch(error => {

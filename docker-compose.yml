@@ -7,7 +7,7 @@ services:
     env_file:
       - ./.env
     environment:
-      - RUN_CRONS=1
+      - RUNCRON=1
     depends_on:
       - db
       - rabbitmq  # Ajout de la dépendance à RabbitMQ
@@ -23,7 +23,7 @@ services:
     env_file:
       - ./.env
     environment:
-      - RUN_CRONS=0
+      - RUNCRON=0
     depends_on:
       - db
       - rabbitmq  # Ajout de la dépendance à RabbitMQ

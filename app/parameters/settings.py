@@ -60,6 +60,7 @@ CSRF_TRUSTED_ORIGINS = ["http://localhost:1337"]
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -202,6 +203,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "parameters.wsgi.application"
 
+# Websocket
+
+ASGI_APPLICATION = 'parameters.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -297,9 +306,11 @@ CRONJOBS = []
 if RUN_CRONS:
     CRON_CLASSES.append('home.cron.CleanMediaFolderCron.run')
     CRON_CLASSES.append('home.cron.DeleteAccountCron.run')
+    CRON_CLASSES.append('home.cron.DeleteSharedSoundboardExpiredCron.run')
     
     CRONJOBS.append(('0 10 * * *', 'home.cron.CleanMediaFolderCron.run'))
-    CRONJOBS.append(('0 10 */1 * *', 'home.cron.DeleteAccountCron.run'))
+    CRONJOBS.append(('0 10 * * *', 'home.cron.DeleteAccountCron.run'))
+    CRONJOBS.append(('0 18 * * *', 'home.cron.DeleteSharedSoundboardExpiredCron.run'))
         
 
 # message brokers 

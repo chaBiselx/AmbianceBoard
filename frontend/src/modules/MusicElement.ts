@@ -5,6 +5,7 @@ import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import * as Model from '@/modules/FadeStartegy';
 import AudioFadeManager from '@/modules/AudioFadeManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
+import Cookie from '@/modules/Cookie';
 
 const TRUE = 'True';//TODO fix type soundboard_read
 
@@ -27,6 +28,9 @@ class MusicElement {
     delay: number = 0;
     butonPlaylistToken: string | null = null;
     fadeInGoing: boolean = false;
+    baseUrl: string = ''; // url of playlist to stream music
+    WebSocketActive: boolean = false; // user has websocket connection to command shared soundboard
+    isSlave: boolean = false; // is manuplated by websocket (shared soundboard)
 
 
     constructor(Element: HTMLAudioElement | ButtonPlaylist) {
@@ -38,6 +42,9 @@ class MusicElement {
             this.setDefaultFromPlaylist(Element);
         }
 
+        if (Cookie.get('WebSocketToken') != null) {
+            this.WebSocketActive = true;
+        }
     }
 
     private setDefaultValue() {
@@ -77,6 +84,12 @@ class MusicElement {
         if (this.DOMElement.dataset.playlistdelay) {
             this.delay = parseFloat(this.DOMElement.dataset.playlistdelay);
         }
+        if (this.DOMElement.dataset.baseurl) {
+            this.baseUrl = this.DOMElement.dataset.baseurl!;
+        }
+        if (this.DOMElement.dataset.isslave) {
+            this.isSlave = this.DOMElement.dataset.isslave == "true";
+        }
     }
 
     private setDefaultFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
@@ -88,12 +101,17 @@ class MusicElement {
         this.setPlaylistLoopFromPlaylist(buttonPlaylist);
         this.setPlaylistDelayFromPlaylist(buttonPlaylist);
         this.setButtonPlaylistTokenFromPlaylist(buttonPlaylist);
+        this.setBaseURlFromPlaylist(buttonPlaylist);
 
 
         this.DOMElement.className = `playlist-audio-${buttonPlaylist.idPlaylist}`;
 
         this.DOMElement.classList.add('audio-' + buttonPlaylist.dataset.playlistType)
-        this.DOMElement.src = buttonPlaylist.dataset.playlistUri + "?i=" + Date.now();
+        let src = this.baseUrl
+        if (!this.isSlave) {
+            src += "?i=" + Date.now();
+        }
+        this.DOMElement.src = src;
         this.DOMElement.controls = Config.DEBUG;
         this.DOMElement.autoplay = true;
     }
@@ -113,9 +131,16 @@ class MusicElement {
         const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist) as ButtonPlaylist;
         buttonPlaylist.disactive();
         this.DOMElement.remove();
+
+        this.callAPIToStop()
     }
 
-
+    public setSpecificMusic(baseUrl: string) {
+        this.setSlave(true);
+        this.baseUrl = baseUrl;
+        this.DOMElement.dataset.baseurl = this.baseUrl;
+        this.DOMElement.src = this.baseUrl;
+    }
 
     public play() {
         if (Config.DEBUG) console.log('play');
@@ -136,6 +161,10 @@ class MusicElement {
         }
         this.DOMElement.play();
 
+    }
+
+    public checkLoop(): boolean {
+        return this.playlistLoop && !this.isSlave
     }
 
     public addFadeIn() {
@@ -189,7 +218,7 @@ class MusicElement {
 
                 new_music.DOMElement.removeEventListener('timeupdate', new_music.eventFadeOut);
                 new_music.addFadeOut();
-                if (new_music.playlistLoop) {
+                if (new_music.checkLoop()) {
                     if (Config.DEBUG) console.log("eventFadeOut loop");
                     new_music.applyDelay(() => {
                         SoundBoardManager.createPlaylistLink(buttonPlaylist);
@@ -235,7 +264,7 @@ class MusicElement {
         if (Config.DEBUG) console.log('eventDeleteNoFadeOut');
         let new_music = new MusicElement(event.target as HTMLAudioElement);
         new_music.DOMElement.remove();
-        if (new_music.playlistLoop) {
+        if (new_music.checkLoop()) {
             const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
             new_music.applyDelay(() => {
                 SoundBoardManager.createPlaylistLink(buttonPlaylist);
@@ -243,6 +272,20 @@ class MusicElement {
         } else {
             const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
             buttonPlaylist.disactive();
+        }
+    }
+
+    private callAPIToStop() {
+        if (this.WebSocketActive && !this.isSlave) {
+            fetch(this.baseUrl + '/stop', {
+                method: 'UPDATE',
+                headers: {
+                    'X-CSRFToken': Cookie.get('csrftoken')!,
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => {
+                if (Config.DEBUG) console.log('callAPIToStop', response);
+            })
         }
     }
 
@@ -318,18 +361,29 @@ class MusicElement {
         }
     }
 
-    private handleAudioError(event: Event) {
-    if (event.target && event.target instanceof HTMLAudioElement) {
-        if (event.target.error && event.target.error.code === 4) { // => ERROR 404
-            let new_music = new MusicElement(event.target);
+    private setBaseURlFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
+        this.baseUrl = buttonPlaylist.dataset.playlistUri!;
+        this.DOMElement.dataset.baseurl = this.baseUrl;
+    }
 
-            const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
-            buttonPlaylist.disactive();
-            Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
-            event.target.remove();
+    private setSlave(slave: boolean): this {
+        this.isSlave = slave;
+        this.DOMElement.dataset.isslave = this.isSlave.toString();
+        return this
+    }
+
+    private handleAudioError(event: Event) {
+        if (event.target && event.target instanceof HTMLAudioElement) {
+            if (event.target.error && event.target.error.code === 4) { // => ERROR 404
+                let new_music = new MusicElement(event.target);
+
+                const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
+                buttonPlaylist.disactive();
+                Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
+                event.target.remove();
+            }
         }
     }
-}
 
 }
 
@@ -350,6 +404,16 @@ class ListingAudioElement {
     static getListingAudioElement(type: string): MusicElement[] {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
         const audio = audioElementDiv.getElementsByClassName('audio-' + type) as HTMLCollectionOf<HTMLAudioElement>;
+        const listingMusicElement: MusicElement[] = []
+        for (let audioDom of audio) {
+            listingMusicElement.push(new MusicElement(audioDom));
+        };
+        return listingMusicElement;
+    }
+
+    static getListAllAudio(): MusicElement[] {
+        const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
+        const audio = audioElementDiv.getElementsByTagName('audio') as HTMLCollectionOf<HTMLAudioElement>;
         const listingMusicElement: MusicElement[] = []
         for (let audioDom of audio) {
             listingMusicElement.push(new MusicElement(audioDom));

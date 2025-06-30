@@ -1,12 +1,20 @@
 import { Modal } from 'bootstrap';
 
+type ModalJson = {
+    title: string;
+    body: string;
+    footer: string;
+    width: string;
+    callback?: () => void
+}
+
 class ModalCustom {
-    public static getMainHTMLElement() : HTMLDivElement{
+    public static getMainHTMLElement(): HTMLDivElement {
         return document.getElementById('mainModal')! as HTMLDivElement
     }
 
 
-    public static show(param = {
+    public static show(param: ModalJson = {
         title: "",
         body: "",
         footer: "",
@@ -24,7 +32,7 @@ class ModalCustom {
         const mainModal = new Modal(mainModalElement, {
             keyboard: false
         });
-        
+
         mainModalElement.classList.remove('modal-lg');
         mainModalElement.classList.remove('modal-sm');
         mainModalElement.classList.remove('modal-xl');
@@ -41,7 +49,7 @@ class ModalCustom {
                 break;
         }
 
-        if(width){
+        if (width) {
             mainModalElement.classList.add(width);
         }
 
@@ -51,6 +59,9 @@ class ModalCustom {
 
 
         mainModal.show();
+        if (typeof config.callback === 'function') {
+            config.callback();
+        }
     }
 
     static hide() {

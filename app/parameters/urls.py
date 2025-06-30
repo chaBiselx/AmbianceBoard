@@ -6,12 +6,15 @@ from django.conf.urls.static import static
 from home.views.generalViews import home, create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice
 from home.views.privateViews import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
 from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors, playlist_describe_type
-from home.views.privateViews import music_create, music_update, music_delete,music_stream, update_direct_volume
+from home.views.privateViews import music_create, music_update, music_delete,music_stream,stop_stream, update_direct_volume
 from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log
 from home.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions
 from home.views.managerViews import manager_dashboard, clean_media_folder
-from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, favorite_update, reporting_content
+from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_stop_stream, favorite_update, reporting_content
+from home.views.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream
 from home.views.confirmViews import confirm_account
+from home.channels.ScharedSoundboard import ScharedSoundboard
+
 
 urlpatterns = [
     path("", home, name="home"),
@@ -53,7 +56,9 @@ urlpatterns = [
     path("playlist/<uuid:playlist_uuid>/music/create", music_create, name="addMusic"),
     path("playlist/<uuid:playlist_uuid>/music/edit/<int:music_id>", music_update, name="editMusic"),
     path("playlist/<uuid:playlist_uuid>/music/delete/<int:music_id>", music_delete, name="deleteMusic"),
-    path("playlist/<uuid:playlist_uuid>/stream", music_stream, name="streammMusic"),
+    path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", music_stream, name="streammMusic"),
+    path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream/stop", stop_stream, name="stopStreamMusic"),
+    
     path("playlist/<uuid:playlist_uuid>/volume/update", update_direct_volume, name="update_direct_volume"),
     
     path("playlist/other-colors", playlist_listing_colors, name="getListingOtherColors"),
@@ -62,7 +67,13 @@ urlpatterns = [
     path("public/soundboards", public_listing_soundboard, name="publicListingSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>", public_soundboard_read_playlist, name="publicReadSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreammMusic"),
+    path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream/stop", public_stop_stream, name="publicStopStreamMusic"),
     path("public/report", reporting_content, name="publicReportingContent"),
+    
+    path('shared/<uuid:soundboard_uuid>', publish_soundboard, name="publish_soundboard"),
+    path('shared/<uuid:soundboard_uuid>/<str:token>', shared_soundboard_read, name="shared_soundboard"),
+    path('shared/<uuid:soundboard_uuid>/<str:token>/<uuid:playlist_uuid>/<int:music_id>/stream', shared_music_stream, name="sharedStreamMusic"),
+    
     
     
     path("moderator/", moderator_dashboard, name="moderatorDashboard"),
@@ -81,6 +92,8 @@ urlpatterns = [
     path("manager/", manager_dashboard, name="managerDashboard"),
     path("manager/clean-media-folders", clean_media_folder, name="adminCleanMediaFolders"),
     
+    
+    path('shared/ws/<uuid:soundboard_uuid>/<str:token>', ScharedSoundboard.as_asgi(), name='soundboard_ws'),
 ]
 
 

@@ -8,13 +8,18 @@ import { MixerManager } from '@/modules/MixerManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import WakeLock from '@/modules/WakeLock';
 import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
+import ModalCustom from './modules/Modal';
+import Cookie from '@/modules/Cookie';
+import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    showPopupSharedPlaylist();
     addEventListenerDom()
     addEventListenerPlaylistVolumeUpdate();
     addEventShowHidePlayslitMixer();
     updateWithMixerPlaylist();
+    addEventPublishEvent();
     new MixerManager().initializeEventListeners();
     if (Config.DEBUG) {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS);
@@ -25,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-function addEventShowHidePlayslitMixer() {
+function addEventShowHidePlayslitMixer(): void {
     const inputShowMixerPlaylist = document.getElementById('inputShowMixerPlaylist');
     if (inputShowMixerPlaylist) {
         inputShowMixerPlaylist.addEventListener('change', togglePlaylistMixer);
@@ -35,6 +40,7 @@ function addEventShowHidePlayslitMixer() {
 function addEventListenerDom() {
     const formElements = document.querySelectorAll('.playlist-link');
     formElements.forEach(element => {
+        if (element.classList.contains('disabled')) return
         element.addEventListener('click', eventTogglePlaylist);
     });
 }
@@ -99,12 +105,91 @@ function updateWithMixerPlaylist() {
     const formElements = document.getElementsByClassName(`playlist-link`) as HTMLCollectionOf<HTMLAudioElement>;
     for (const element of formElements) {
         const elmentDest = document.getElementById(`range_volume_${element.dataset.playlistId!}`)
-        if(elmentDest){
+        if (elmentDest) {
             elmentDest.style.width = `${element.offsetWidth}px`;
         }
     }
 }
 
+function addEventPublishEvent() {
+    const button = document.getElementById(`btn-publish-soundboard`);
+    if (button) {
+        button.addEventListener('click', publishSoundboard);
+        if (Cookie.get('WebSocketToken') != null) {
+            if (button.dataset.url) {
+                fetch(button.dataset.url, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': Cookie.get('csrftoken')!
+                    }
+                })
+            }
+        }
+    }
+}
 
+function publishSoundboard(event: Event) {
+
+    const button = event.target as HTMLButtonElement;
+    const url = button.dataset.url as string;
+
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'X-CSRFToken': Cookie.get('csrftoken')!
+        }
+    }).then(response => response.text()).then((body) => {
+        ModalCustom.show({
+            title: "Lien partage",
+            body: body,
+            footer: "",
+            width: "sm"
+        })
+    })
+
+}
+
+function showPopupSharedPlaylist() {
+    const activeWS = document.getElementById('active-WS')
+    if (activeWS) {
+        const button = document.createElement("button");
+        button.id = "btn-start-websocket";
+        button.classList.add("btn");
+        button.classList.add("btn-primary");
+        button.classList.add("btn-block");
+        button.textContent = "Activer la playlist";
+        document.getElementById('btn-shared-playlist')?.appendChild(button);
+
+        ModalCustom.show({
+            title: "Partage de playlist",
+            body: button.outerHTML,
+            footer: "",
+            width: "sm",
+            callback: () => {
+                const buttonListener = document.getElementById(`btn-start-websocket`);
+                if (buttonListener) {
+
+                    buttonListener.addEventListener('click', activeWebSocket);
+                }
+            }
+        })
+
+    }
+}
+
+
+function activeWebSocket() {
+    ModalCustom.hide();
+    const activeWS = document.getElementById('active-WS')
+    if (activeWS) {
+        const url = activeWS.dataset.url
+        if (!url) return
+
+        new SharedSoundBoardWebSocket(url).start();
+
+
+    }
+
+}
 
 

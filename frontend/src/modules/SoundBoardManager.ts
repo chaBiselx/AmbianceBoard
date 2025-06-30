@@ -55,6 +55,18 @@ class SoundBoardManager {
         }
     }
 
+    
+    static deleteAllMusicPlaylist() {
+        if (Config.DEBUG) console.log('deleteAllPlaylist');
+        const listingMusicElement = ListingAudioElement.getListAllAudio();
+        for (let musicElement of listingMusicElement) {
+            if (Config.DEBUG) console.log("remove", musicElement);
+            musicElement.delete();
+        }
+   
+    }
+
+
 
 
 }
