@@ -26,9 +26,12 @@ from home.utils.url import redirection_url
 def moderator_dashboard(request) -> HttpResponse:
     nb_users = User.objects.all().count()
     moy_playlist_per_user = (User.objects.annotate(playlist_count=models.Count('playlist')).aggregate(avg_playlists=Avg('playlist_count')))['avg_playlists']
-    moy_music_per_user = (User.objects.annotate(music_count=Count('playlist__music')).aggregate(avg_music=Avg('music_count')))['avg_music']
-    moy_music_per_playlist = (Playlist.objects.annotate(music_count=models.Count('music')).aggregate(avg_musics=Avg('music_count')))['avg_musics']
-
+    moy_music_per_user = User.objects.annotate(
+        music_count=models.Count('playlist__musics')
+        ).aggregate(avg_music=Avg('music_count'))['avg_music']
+    moy_music_per_playlist = Playlist.objects.annotate(
+        music_count=models.Count('musics')
+        ).aggregate(avg_music=Avg('music_count'))['avg_music']
     return render(request, 'Html/Moderator/dashboard.html', {
             'nb_users': nb_users, 
             'moy_playlist_per_user': moy_playlist_per_user, 
