@@ -13,7 +13,7 @@ from home.views.managerViews import manager_dashboard, clean_media_folder
 from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_stop_stream, favorite_update, reporting_content
 from home.views.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream
 from home.views.confirmViews import confirm_account
-from home.channels.ScharedSoundboard import ScharedSoundboard
+from home.channels.SharedSoundboard import SharedSoundboard
 
 
 urlpatterns = [
@@ -93,7 +93,7 @@ urlpatterns = [
     path("manager/clean-media-folders", clean_media_folder, name="adminCleanMediaFolders"),
     
     
-    path('shared/ws/<uuid:soundboard_uuid>/<str:token>', ScharedSoundboard.as_asgi(), name='soundboard_ws'),
+    path('shared/ws/<uuid:soundboard_uuid>/<str:token>', SharedSoundboard.as_asgi(), name='soundboard_ws'),
 ]
 
 

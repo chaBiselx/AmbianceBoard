@@ -1,6 +1,8 @@
 
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { MusicElement } from './MusicElement';
+import Cookie from './Cookie';
+import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
 
 type mixer = {
     id: string,
@@ -24,11 +26,35 @@ class MixerBuilder {
     }
 }
 
-class MixerManager{
+class MixerElement {
+    private DOMMixerElement: HTMLInputElement | null = null;
+
+    constructor(typeMixer: string) {
+        const domElementMixer = document.querySelector(`.mixer-playlist[data-type="${typeMixer}"]`);
+        if (domElementMixer) {
+            this.DOMMixerElement = domElementMixer as HTMLInputElement
+        }
+    }
+
+    update(value: number): void {
+        if(!this.DOMMixerElement) return
+        this.DOMMixerElement.value = value.toString();
+        this.DOMMixerElement.dispatchEvent(new Event('change'));
+    }
+}
+
+class MixerManager {
     private readonly listMixer: HTMLCollectionOf<Element>;
+    private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
 
     constructor() {
         this.listMixer = document.getElementsByClassName('mixer-playlist');
+
+        const WebSocketUrl = Cookie.get('WebSocketUrl');
+        if (WebSocketUrl) {
+            this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getInstance(atob(WebSocketUrl), true));
+            this.sharedSoundBoardWebSocket.start();
+        }
     }
 
     public initializeEventListeners(): void {
@@ -51,6 +77,7 @@ class MixerManager{
     }
 
     private changeSpecifiqueVolume(type: string): void {
+        this.sharedSoundBoardWebSocket?.sendMessage({ type: 'mixer_update', data: { type: type, value: MixerManager.getMixerValue(type) } });
         const listAudio = document.getElementsByClassName('audio-' + type);
         for (let audio of listAudio) {
 
@@ -67,4 +94,4 @@ class MixerManager{
 }
 
 
-export {MixerManager};
+export { MixerManager, MixerElement };

@@ -6,7 +6,7 @@ from channels.db import database_sync_to_async
 
 logger = logging.getLogger('home')
 
-class ScharedSoundboard(AsyncWebsocketConsumer):
+class SharedSoundboard(AsyncWebsocketConsumer):
     async def connect(self):
         # Récupération des paramètres d'URL
         self.soundboard_uuid = self.scope['url_route']['kwargs']['soundboard_uuid']
@@ -47,6 +47,8 @@ class ScharedSoundboard(AsyncWebsocketConsumer):
                 await self.handle_music_stop(data)
             elif message_type == 'music_stop_all':
                 await self.handle_music_stop_all(data)
+            elif message_type == 'mixer_update':
+                await self.handle_mixer_update(data)
             else:
                 # Echo pour les autres messages
                 await self.send(text_data=json.dumps({
@@ -165,6 +167,44 @@ class ScharedSoundboard(AsyncWebsocketConsumer):
         if event.get('sender') != self.channel_name:
             await self.send(text_data=json.dumps({
                 'type': 'music_stop_all'
+            }))
+            
+    async def handle_mixer_update(self, data_received):
+        data = data_received.get('data', {})
+        type_mixer = data.get('type')
+        if not type_mixer:
+            await self.send(text_data=json.dumps({
+                'type': 'error',
+                'message': 'type_mixer manquant'
+            }))
+            return
+        
+        value = data.get('value')
+        if value is None:
+            await self.send(text_data=json.dumps({
+                'type': 'error',
+                'message': 'value manquant'
+            }))
+            return
+        await self.channel_layer.group_send(
+            self.group_name,
+            {
+                'type': 'mixer_update',
+                'type_mixer': type_mixer,
+                'value': value
+            }
+        )
+        
+    async def mixer_update(self, event):
+        """Reçoit les messages mixer_update du groupe"""
+        # Ne pas renvoyer le message à l'expéditeur
+        if event.get('sender') != self.channel_name:
+            await self.send(text_data=json.dumps({
+                'type': 'send_mixer_update',
+                'data' : {
+                    'typeMixer':event.get('type_mixer', None),
+                    'value':event.get('value', None),
+                }
             }))
         
     async def validate_connection(self):

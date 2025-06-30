@@ -1,6 +1,7 @@
 import logging
 import random
 import json
+import base64
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
@@ -27,9 +28,23 @@ def publish_soundboard(request, soundboard_uuid):
         shared.save()
         
         response = render (request, 'Html/Shared/publich_soundboard.html', {'shared_url' :  get_full_url(reverse('shared_soundboard', args=[soundboard_uuid, shared.token]))})
+        
+        ws_path = reverse('soundboard_ws', kwargs={
+            'soundboard_uuid': soundboard_uuid,
+            'token': shared.token,
+        })
+        ws_url = f'ws://{request.get_host()}{ws_path}'
         response.set_cookie(
                                 'WebSocketToken', 
                                 shared.token, 
+                                max_age=3600*10*24,
+                                httponly=False,
+                                secure=True,    # HTTPS uniquement
+                                samesite='Strict'  # Protection contre les attaques CSRF
+                            )
+        response.set_cookie(
+                                'WebSocketUrl', 
+                                base64.urlsafe_b64encode(ws_url.encode('utf-8')).decode('utf-8'),
                                 max_age=3600*10*24,
                                 httponly=False,
                                 secure=True,    # HTTPS uniquement

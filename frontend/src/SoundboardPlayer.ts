@@ -185,7 +185,7 @@ function activeWebSocket() {
         const url = activeWS.dataset.url
         if (!url) return
 
-        new SharedSoundBoardWebSocket(url).start();
+        (SharedSoundBoardWebSocket.getInstance(url)).start();
 
 
     }

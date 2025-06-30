@@ -8,6 +8,9 @@ class Cookie {
             for (let cookie of cookies) {
                 if (cookie.trim().substring(0, name.length + 1) == (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    if(cookieValue.startsWith('="') && cookieValue.endsWith('"')) {
+                        cookieValue = cookieValue.substring(2, cookieValue.length - 1);
+                    }
                     break;
                 }
             }

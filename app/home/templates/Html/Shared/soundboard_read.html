@@ -16,7 +16,9 @@
         <div style="display:None;" id="players"></div>
         <div style="display:None;" id="active-WS" data-url="{{ ws_url }}"></div>
 
-        {% add_mixer PlaylistTypeEnum %}
+        <div class="d-none">
+            {% add_mixer PlaylistTypeEnum  %}
+        </div>
 
         <div class="flex-container d-none">
             {% for playlist in soundboard.get_list_playlist_ordered %}

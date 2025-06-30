@@ -3,6 +3,7 @@ import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MusicElement } from '@/modules/MusicElement';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
+import {MixerElement} from "@/modules/MixerManager";
 
 type DataMusic = {
     'track': number | null
@@ -10,29 +11,31 @@ type DataMusic = {
     'url_music': string | null
 }
 type DataMixer = {
-    'type': string
+    'typeMixer': string
     'value': number
 }
 type WebSocketResponse = {
     'type': string
-    'data': DataMusic|DataMixer
+    'data': DataMusic | DataMixer
 }
 
 class SharedSoundBoardWebSocket {
     private static instance: SharedSoundBoardWebSocket | null = null;
     private url: string;
     private socket: WebSocket | null = null;
+    private master: boolean;
 
-    private constructor(url: string) {
+    private constructor(url: string, master: boolean = false) {
         this.url = url;
+        this.master = master;
     }
 
-    public static getInstance(url?: string): SharedSoundBoardWebSocket {
+    public static getInstance(url?: string, master: boolean = false): SharedSoundBoardWebSocket {
         if (!SharedSoundBoardWebSocket.instance) {
             if (!url) {
                 throw new Error('URL is required for first instantiation');
             }
-            SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url);
+            SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, master);
         }
         return SharedSoundBoardWebSocket.instance;
     }
@@ -105,7 +108,8 @@ class SharedSoundBoardWebSocket {
 
     private responseProcessing(response: WebSocketResponse): void {
         if (Config.DEBUG) console.log('Message reçu:', response);
-
+        if (Config.DEBUG) console.log('master', this.master);
+         if (this.master) return
         switch (response.type) {
             case 'music_start':
                 if (Config.DEBUG) console.log('▶️ Démarrage musique:', response);
@@ -119,6 +123,10 @@ class SharedSoundBoardWebSocket {
                 this.stopAll();
                 if (Config.DEBUG) console.log('⏹️ Arrêt toutes musiques:', response);
                 break;
+            case 'send_mixer_update':
+                this.updateMixer(response.data as DataMixer);
+                if (Config.DEBUG) console.log('🔄 update mixer:', response);
+                break;
             default:
                 if (Config.DEBUG) console.error('❌ Erreur:', response);
                 break;
@@ -126,11 +134,11 @@ class SharedSoundBoardWebSocket {
     }
 
     private startMusic(data: DataMusic): void {
-        if(!data.url_music) return;
-        
+        if (!data.url_music) return;
+
         const buttonPlaylist = ButtonPlaylistFinder.search(data.playlist_uuid);
         if (!buttonPlaylist) return;
-        
+
         const musicElement = new MusicElement(buttonPlaylist);
         (new UpdateVolumeElement(musicElement)).update();
         musicElement.addToDOM();
@@ -146,6 +154,10 @@ class SharedSoundBoardWebSocket {
 
     private stopAll(): void {
         SoundBoardManager.deleteAllMusicPlaylist();
+    }
+
+    private updateMixer(data: DataMixer): void {
+        new MixerElement(data.typeMixer).update(data.value);
     }
 }
 
