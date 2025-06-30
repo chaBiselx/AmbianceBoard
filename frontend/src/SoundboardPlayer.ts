@@ -115,16 +115,6 @@ function addEventPublishEvent() {
     const button = document.getElementById(`btn-publish-soundboard`);
     if (button) {
         button.addEventListener('click', publishSoundboard);
-        if (Cookie.get('WebSocketToken') != null) {
-            if (button.dataset.url) {
-                fetch(button.dataset.url, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRFToken': Cookie.get('csrftoken')!
-                    }
-                })
-            }
-        }
     }
 }
 

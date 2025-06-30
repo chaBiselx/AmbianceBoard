@@ -20,41 +20,37 @@ from home.service.SharedSoundboardService import SharedSoundboardService
 
 
 
-@require_http_methods(['GET', 'DELETE'])
+@require_http_methods(['GET'])
 def publish_soundboard(request, soundboard_uuid):
     
-    if request.method == 'GET':
-        shared = SharedSoundboard.objects.create(soundboard=SoundBoard.objects.get(uuid=soundboard_uuid))
-        shared.save()
-        
-        response = render (request, 'Html/Shared/publich_soundboard.html', {'shared_url' :  get_full_url(reverse('shared_soundboard', args=[soundboard_uuid, shared.token]))})
-        
-        ws_path = reverse('soundboard_ws', kwargs={
-            'soundboard_uuid': soundboard_uuid,
-            'token': shared.token,
-        })
-        ws_url = f'ws://{request.get_host()}{ws_path}'
-        response.set_cookie(
-                                'WebSocketToken', 
-                                shared.token, 
-                                max_age=3600*10*24,
-                                httponly=False,
-                                secure=True,    # HTTPS uniquement
-                                samesite='Strict'  # Protection contre les attaques CSRF
-                            )
-        response.set_cookie(
-                                'WebSocketUrl', 
-                                base64.urlsafe_b64encode(ws_url.encode('utf-8')).decode('utf-8'),
-                                max_age=3600*10*24,
-                                httponly=False,
-                                secure=True,    # HTTPS uniquement
-                                samesite='Strict'  # Protection contre les attaques CSRF
-                            )
-        return response
-    if request.method == 'DELETE':
-        SharedSoundboardService(request, soundboard_uuid).music_stop_all()
-        return JsonResponse({'success': 'OK'}, status=200)
+    shared = SharedSoundboard.objects.create(soundboard=SoundBoard.objects.get(uuid=soundboard_uuid))
+    shared.save()
     
+    response = render (request, 'Html/Shared/publich_soundboard.html', {'shared_url' :  get_full_url(reverse('shared_soundboard', args=[soundboard_uuid, shared.token]))})
+    
+    ws_path = reverse('soundboard_ws', kwargs={
+        'soundboard_uuid': soundboard_uuid,
+        'token': shared.token,
+    })
+    ws_url = f'ws://{request.get_host()}{ws_path}'
+    response.set_cookie(
+                            'WebSocketToken', 
+                            shared.token, 
+                            max_age=3600*10*24,
+                            httponly=False,
+                            secure=True,    # HTTPS uniquement
+                            samesite='Strict'  # Protection contre les attaques CSRF
+                        )
+    response.set_cookie(
+                            'WebSocketUrl', 
+                            base64.urlsafe_b64encode(ws_url.encode('utf-8')).decode('utf-8'),
+                            max_age=3600*10*24,
+                            httponly=False,
+                            secure=True,    # HTTPS uniquement
+                            samesite='Strict'  # Protection contre les attaques CSRF
+                        )
+    return response
+
     
     
 

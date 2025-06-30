@@ -54,6 +54,7 @@ def soundboard_create(request):
 @login_required
 @require_http_methods(['GET'])
 def soundboard_read(request, soundboard_uuid):
+    SharedSoundboardService(request, soundboard_uuid).music_stop_all()
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard :
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
