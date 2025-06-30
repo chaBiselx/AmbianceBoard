@@ -19,6 +19,7 @@ from home.enum.ErrorMessageEnum import ErrorMessageEnum
 from django.contrib import messages
 from home.service.ReportContentService import ReportContentService
 from home.service.SharedSoundboardService import SharedSoundboardService
+from home.utils.url import redirection_url
 
 
 
@@ -117,7 +118,7 @@ def reporting_content(request):
         
         
         if(request.POST.get('redirect')):
-            return redirect(request.POST.get('redirect'))
+            return redirect(redirection_url(request.POST.get('redirect')))
         else:
             return redirect('publicListingSoundboard')
     return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
