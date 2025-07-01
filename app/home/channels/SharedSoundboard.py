@@ -47,8 +47,11 @@ class SharedSoundboard(AsyncWebsocketConsumer):
                 await self.handle_music_stop(data)
             elif message_type == 'music_stop_all':
                 await self.handle_music_stop_all(data)
-            elif message_type == 'mixer_update':
+            elif message_type == 'send_mixer_update':
                 await self.handle_mixer_update(data)
+            elif message_type == 'send_playlist_update_volume':
+                await self.handle_playlist_update_volume(data)
+                
             else:
                 # Echo pour les autres messages
                 await self.send(text_data=json.dumps({
@@ -200,10 +203,49 @@ class SharedSoundboard(AsyncWebsocketConsumer):
         # Ne pas renvoyer le message à l'expéditeur
         if event.get('sender') != self.channel_name:
             await self.send(text_data=json.dumps({
-                'type': 'send_mixer_update',
+                'type': 'mixer_update',
                 'data' : {
                     'typeMixer':event.get('type_mixer', None),
                     'value':event.get('value', None),
+                }
+            }))
+            
+    async def handle_playlist_update_volume(self, data_received):
+        
+        data = data_received.get('data', {})
+        playlist_uuid = data.get('playlist_uuid')
+        if not playlist_uuid:
+            await self.send(text_data=json.dumps({
+                'type': 'error',
+                'message': 'playlist_uuid manquant'
+            }))
+            return
+        
+        volume = data.get('volume')
+        if volume is None:
+            await self.send(text_data=json.dumps({
+                'type': 'error',
+                'message': 'volume manquant'
+            }))
+            return
+        await self.channel_layer.group_send(
+            self.group_name,
+            {
+                'type': 'playlist_update_volume',
+                'playlist_uuid': playlist_uuid,
+                'volume': volume
+            }
+        )
+        
+    async def playlist_update_volume(self, event):
+        """Reçoit les messages playlist_update_volume du groupe"""
+        # Ne pas renvoyer le message à l'expéditeur
+        if event.get('sender') != self.channel_name:
+            await self.send(text_data=json.dumps({
+                'type': 'playlist_update_volume',
+                'data' : {
+                    'playlist_uuid':event.get('playlist_uuid', None),
+                    'volume':event.get('volume', None),
                 }
             }))
         

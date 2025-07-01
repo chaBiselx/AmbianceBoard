@@ -77,7 +77,7 @@ class MixerManager {
     }
 
     private changeSpecifiqueVolume(type: string): void {
-        this.sharedSoundBoardWebSocket?.sendMessage({ type: 'mixer_update', data: { type: type, value: MixerManager.getMixerValue(type) } });
+        this.sharedSoundBoardWebSocket?.sendMessage({ type: 'send_mixer_update', data: { type: type, value: MixerManager.getMixerValue(type) } });
         const listAudio = document.getElementsByClassName('audio-' + type);
         for (let audio of listAudio) {
 

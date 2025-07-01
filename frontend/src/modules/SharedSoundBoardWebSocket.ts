@@ -4,6 +4,7 @@ import { MusicElement } from '@/modules/MusicElement';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import { MixerElement } from "@/modules/MixerManager";
+import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
 
 type DataMusic = {
     'track': number | null
@@ -14,9 +15,13 @@ type DataMixer = {
     'typeMixer': string
     'value': number
 }
+type DataVolumePlaylist = {
+    'playlist_uuid': string
+    'volume': number
+}
 type WebSocketResponse = {
     'type': string
-    'data': DataMusic | DataMixer
+    'data': DataMusic | DataMixer | DataVolumePlaylist
 }
 
 class SharedSoundBoardWebSocket {
@@ -126,9 +131,13 @@ class SharedSoundBoardWebSocket {
                 this.stopAll();
                 if (Config.DEBUG) console.log('⏹️ Arrêt toutes musiques:', response);
                 break;
-            case 'send_mixer_update':
+            case 'mixer_update':
                 this.updateMixer(response.data as DataMixer);
                 if (Config.DEBUG) console.log('🔄 update mixer:', response);
+                break;
+            case 'playlist_update_volume':
+                this.updateVolumePlaylist(response.data as DataVolumePlaylist);
+                if (Config.DEBUG) console.log('🔄 update volume playlist:', response);
                 break;
             default:
                 if (Config.DEBUG) console.error('❌ Erreur:', response);
@@ -161,6 +170,13 @@ class SharedSoundBoardWebSocket {
 
     private updateMixer(data: DataMixer): void {
         new MixerElement(data.typeMixer).update(data.value);
+    }
+
+    private updateVolumePlaylist(data: DataVolumePlaylist): void {
+        const buttonPlaylist = ButtonPlaylistFinder.search(data.playlist_uuid);
+        if (!buttonPlaylist) return;
+        let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist, data.volume);
+        eventUpdateVolumePlaylist.updateVolume();
     }
 }
 

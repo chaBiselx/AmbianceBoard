@@ -45,6 +45,10 @@ class ButtonPlaylist {
         return this.dataset.tokenPlaylistActive;
     }
 
+    public getIdPlaylist(): string {
+        return this.idPlaylist
+    }
+
 }
 
 class ButtonPlaylistFinder {

@@ -1,16 +1,15 @@
 
 
 import Config from '@/modules/Config';
-import type { uri } from '@/type/General';
 
-import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
+import { ButtonPlaylist } from '@/modules/ButtonPlaylist';
 import { MixerManager } from '@/modules/MixerManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import WakeLock from '@/modules/WakeLock';
-import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
 import ModalCustom from './modules/Modal';
 import Cookie from '@/modules/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
+import {MixerPlaylist} from "@/modules/MixerPlaylist";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -63,29 +62,11 @@ function togglePlaylistMixer() {
 }
 
 function addEventListenerPlaylistVolumeUpdate() {
-    const listMixerUpdate = document.getElementsByClassName('mixer-playlist-update');
-    if (listMixerUpdate) {
-        for (const mixerUpdate of listMixerUpdate) {
-            mixerUpdate.addEventListener('change', eventUpdatePlaylistVolume);
-        }
-    }
-
+    const mixerPlaylist = new MixerPlaylist();
+    mixerPlaylist.addEventListener();
 }
 
-function eventUpdatePlaylistVolume(event: Event) {
-    if (event.target instanceof HTMLInputElement) {
-        if (event.target.dataset.idplaylist) {
-            const buttonPlaylist = ButtonPlaylistFinder.search(event.target.dataset.idplaylist)
-            if (buttonPlaylist) {
-                let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist, parseFloat(event.target.value));
-                eventUpdateVolumePlaylist.updateVolume();
 
-                const uri = event.target.dataset.playlistupdatevolumeuri as uri;
-                eventUpdateVolumePlaylist.updateBackend(uri);
-            }
-        }
-    }
-}
 
 function eventTogglePlaylist(event: Event) {
     if (event.target instanceof HTMLElement) {
