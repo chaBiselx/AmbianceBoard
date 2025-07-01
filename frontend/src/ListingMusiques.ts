@@ -167,7 +167,7 @@ class PlayerCustom {
     }
 
     private seekerUpdateTime() {
-        var nt = this.audioPlayer.currentTime * (100 / this.audioPlayer.duration);
+        let nt = this.audioPlayer.currentTime * (100 / this.audioPlayer.duration);
         const seekerInput = this.getSeekerElement();
         seekerInput.value = nt.toString();
     }

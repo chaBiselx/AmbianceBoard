@@ -3,7 +3,7 @@ import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MusicElement } from '@/modules/MusicElement';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
-import {MixerElement} from "@/modules/MixerManager";
+import { MixerElement } from "@/modules/MixerManager";
 
 type DataMusic = {
     'track': number | null
@@ -21,9 +21,9 @@ type WebSocketResponse = {
 
 class SharedSoundBoardWebSocket {
     private static instance: SharedSoundBoardWebSocket | null = null;
-    private url: string;
+    private readonly url: string;
+    private readonly master: boolean;
     private socket: WebSocket | null = null;
-    private master: boolean;
 
     private constructor(url: string, master: boolean = false) {
         this.url = url;
@@ -65,11 +65,14 @@ class SharedSoundBoardWebSocket {
         };
 
         this.socket.onclose = (event) => {
-            if (event.wasClean) {
-                if (Config.DEBUG) console.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
-            } else {
-                if (Config.DEBUG) console.log('Connection died');
+            if (Config.DEBUG) {
+                if (event.wasClean) {
+                    console.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
+                } else {
+                    console.log('Connection died');
+                }
             }
+
             this.socket = null;
         };
 
@@ -107,9 +110,9 @@ class SharedSoundBoardWebSocket {
     }
 
     private responseProcessing(response: WebSocketResponse): void {
+        if (this.master) return
         if (Config.DEBUG) console.log('Message reçu:', response);
         if (Config.DEBUG) console.log('master', this.master);
-         if (this.master) return
         switch (response.type) {
             case 'music_start':
                 if (Config.DEBUG) console.log('▶️ Démarrage musique:', response);

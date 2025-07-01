@@ -27,7 +27,7 @@ class MixerBuilder {
 }
 
 class MixerElement {
-    private DOMMixerElement: HTMLInputElement | null = null;
+    private readonly DOMMixerElement: HTMLInputElement | null = null;
 
     constructor(typeMixer: string) {
         const domElementMixer = document.querySelector(`.mixer-playlist[data-type="${typeMixer}"]`);
@@ -45,7 +45,7 @@ class MixerElement {
 
 class MixerManager {
     private readonly listMixer: HTMLCollectionOf<Element>;
-    private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
+    private readonly sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
 
     constructor() {
         this.listMixer = document.getElementsByClassName('mixer-playlist');
