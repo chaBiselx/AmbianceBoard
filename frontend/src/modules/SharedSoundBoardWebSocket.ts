@@ -1,5 +1,5 @@
 import Config from '@/modules/Config';
-import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
+import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MusicElement } from '@/modules/MusicElement';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
@@ -89,7 +89,7 @@ class SharedSoundBoardWebSocket {
     }
 
     public getConnectionState(): number | null {
-        return this.socket?.readyState || null;
+        return this.socket?.readyState ?? null;
     }
 
     public sendMessage(data: object): boolean {

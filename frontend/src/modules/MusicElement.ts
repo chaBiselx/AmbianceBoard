@@ -413,7 +413,7 @@ class ListingAudioElement {
 
     static getListAllAudio(): MusicElement[] {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
-        const audio = audioElementDiv.getElementsByTagName('audio') as HTMLCollectionOf<HTMLAudioElement>;
+        const audio = audioElementDiv.getElementsByTagName('audio');
         const listingMusicElement: MusicElement[] = []
         for (let audioDom of audio) {
             listingMusicElement.push(new MusicElement(audioDom));

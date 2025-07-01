@@ -49,7 +49,7 @@ class UpdateVolumeElement {
         return Math.round(value * 100) / 100;
     }
 
-    public clearCache( key: string) : UpdateVolumeElement {
+    public clearCache( key: string) : this {
         delete UpdateVolumeElement.mixerCache[key];
         delete UpdateVolumeElement.mixerCache['general'];
         return this;
