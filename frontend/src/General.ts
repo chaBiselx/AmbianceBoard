@@ -169,22 +169,18 @@ class FullScreen {
 
     }
     private toggle() {
-        const mainNav = document.getElementById('mainNav')
-        if (mainNav) mainNav.classList.toggle('d-none');
-        const mainSidebar = document.getElementById('mainSidebar')
-        if (mainSidebar) mainSidebar.classList.toggle('d-none');
-        const mainFooter = document.getElementById('mainFooter')
-        if (mainFooter) mainFooter.classList.toggle('d-none');
+        const elementToToggles = document.getElementsByClassName('fullScreen-element');
+        Array.from(elementToToggles).forEach(element => {
+            element.classList.toggle('d-none');
+        });
+        const elementToTogglesInline = document.getElementsByClassName('fullScreen-element-inline');
+        Array.from(elementToTogglesInline).forEach(element => {
+            element.classList.toggle('d-inline');
+        });
         const mainBody = document.getElementById('mainBody')
         if (mainBody) mainBody.classList.toggle('p-0');
         const mainContent = document.getElementById('main-content');
         if (mainContent) mainContent.classList.toggle('py-lg-5');
-        const showBaseLayoutButton = document.getElementById('showBaseLayoutButton')
-        const soundboardMenu = document.getElementById('soundboard-menu');
-        if (soundboardMenu) soundboardMenu.classList.toggle('d-none');
-        if (showBaseLayoutButton) showBaseLayoutButton.classList.toggle('d-inline')
-        const shareButton = document.getElementById('share-soundboard-block');
-        if (shareButton) shareButton.classList.toggle('d-none');
     }
 }
 
