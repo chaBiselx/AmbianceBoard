@@ -111,7 +111,7 @@ class GeneralTheme {
         this.saveTheme();
         localStorage.setItem('theme', this.theme);
 
-        
+
     }
 
     private toggleAttribute() {
@@ -182,8 +182,9 @@ class FullScreen {
         const showBaseLayoutButton = document.getElementById('showBaseLayoutButton')
         const soundboardMenu = document.getElementById('soundboard-menu');
         if (soundboardMenu) soundboardMenu.classList.toggle('d-none');
-
         if (showBaseLayoutButton) showBaseLayoutButton.classList.toggle('d-inline')
+        const shareButton = document.getElementById('share-soundboard-block');
+        if (shareButton) shareButton.classList.toggle('d-none');
     }
 }
 
