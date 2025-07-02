@@ -66,18 +66,19 @@ class MixerManager {
     private eventChangeVolume(event: Event): void {
         const mixer = new MixerBuilder(event.target as HTMLInputElement).getMixer();
         if (mixer.id === 'mixer-general') {
+            this.sharedSoundBoardWebSocket?.sendMessage({ type: 'send_mixer_update', data: { type: 'General', value: MixerManager.getMixerValue('general') } });
             const listType = document.getElementsByClassName('mixer-playlist-type');
             for (let typeMixer of listType) {
                 const m = new MixerBuilder(typeMixer as HTMLInputElement).getMixer();
                 this.changeSpecifiqueVolume(m.type);
             }
         } else {
+            this.sharedSoundBoardWebSocket?.sendMessage({ type: 'send_mixer_update', data: { type: mixer.type, value: MixerManager.getMixerValue(mixer.type) } });
             this.changeSpecifiqueVolume(mixer.type);
         }
     }
 
     private changeSpecifiqueVolume(type: string): void {
-        this.sharedSoundBoardWebSocket?.sendMessage({ type: 'send_mixer_update', data: { type: type, value: MixerManager.getMixerValue(type) } });
         const listAudio = document.getElementsByClassName('audio-' + type);
         for (let audio of listAudio) {
 
