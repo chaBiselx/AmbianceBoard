@@ -17,7 +17,6 @@ def sidebar_processor(request):
         
     sidebar_urls_settings_moderator = ['/moderator']
     
-    # Vérifiez si l'URL actuelle fait partie de celles qui nécessitent une sidebar
     if request.path in sidebar_urls_settings_moderator or any(request.path.startswith(url) for url in sidebar_urls_settings_moderator):
         return {
             'show_sidebar': True,
@@ -29,5 +28,18 @@ def sidebar_processor(request):
                 {'title': 'Logs', 'url': reverse("moderatorControleLog"), 'classIcon':"fa-solid fa-helmet-safety"},
             ]
         }
+        
+    if request.user.is_authenticated:
+        sidebar_urls_settings_public = ['/public']
+        
+        
+        if request.path in sidebar_urls_settings_public or any(request.path.startswith(url) for url in sidebar_urls_settings_public):
+            return {
+                'show_sidebar': True,
+                'sidebar_items': [
+                    {'title': 'Soundboard', 'url': reverse("publicListingSoundboard"), 'classIcon':"fa-solid fa-bars"},
+                    {'title': 'Favoris', 'url': reverse("publicFavorite"), 'classIcon':"fa-regular fa-star"},
+                ]
+            }
     return {'show_sidebar': False}
 

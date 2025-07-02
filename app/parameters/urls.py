@@ -10,7 +10,7 @@ from home.views.privateViews import music_create, music_update, music_delete,mus
 from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log
 from home.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions
 from home.views.managerViews import manager_dashboard, clean_media_folder
-from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_stop_stream, favorite_update, reporting_content
+from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_stop_stream, favorite_update, reporting_content, public_favorite
 from home.views.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream
 from home.views.confirmViews import confirm_account
 from home.channels.SharedSoundboard import SharedSoundboard
@@ -69,6 +69,7 @@ urlpatterns = [
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreamMusic"),
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream/stop", public_stop_stream, name="publicStopStreamMusic"),
     path("public/report", reporting_content, name="publicReportingContent"),
+    path("public/favorite", public_favorite, name="publicFavorite"),
     
     path('shared/<uuid:soundboard_uuid>', publish_soundboard, name="publish_soundboard"),
     path('shared/<uuid:soundboard_uuid>/<str:token>', shared_soundboard_read, name="shared_soundboard"),

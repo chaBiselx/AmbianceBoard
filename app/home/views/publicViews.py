@@ -45,6 +45,28 @@ def public_listing_soundboard(request):
     context['listFavorite'] = list_favorite
     return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
 
+@login_required
+def public_favorite(request):
+    page_number = int(request.GET.get('page', 1))
+    
+    list_favorite = []
+    if request.user.is_authenticated:
+        list_favorite_obj = request.user.favorite.all()
+        for favorite in list_favorite_obj:
+            list_favorite.append(favorite.get_soundboard().uuid)
+            
+    
+    queryset = SoundBoard.objects.filter(
+        favorite__user=request.user,
+        is_public=True, 
+        user__isBan=False
+    ).order_by('uuid')
+    paginator = Paginator(queryset, 100)  
+    context = extract_context_to_paginator(paginator, page_number)
+    context['listFavorite'] = list_favorite
+    return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
+
+
 @require_http_methods(['GET'])
 @detect_ban
 @add_reporting_btn()
@@ -123,6 +145,7 @@ def reporting_content(request):
         else:
             return redirect('publicListingSoundboard')
     return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+
 
 
     
