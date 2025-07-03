@@ -1,11 +1,12 @@
 from django import forms
 from home.models.SoundBoard import SoundBoard
+from home.models.Tag import Tag
 from home.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = SoundBoard
-        fields = ('name', 'color', 'colorText', 'is_public', 'icon')
+        fields = ('name', 'color', 'colorText', 'is_public', 'icon', 'tags')
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -13,6 +14,13 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
         if self.instance and self.instance.icon:
             self.fields['icon'].widget.attrs.update({'placeholder': 'Choisissez un nouveau fichier'})
             self.fields['icon'].help_text = f"Image déja choisie <a id='id_icon_alreadyexist' href='{ self.instance.icon.url }' target='_blank'>Voir</a>" 
+        
+        # Configuration du champ tags
+        self.fields['tags'].queryset = Tag.objects.filter(is_active=True).order_by('name')
+        
+        # Si c'est une édition, pré-sélectionner les tags existants
+        if self.instance and self.instance.pk:
+            self.fields['tags'].initial = self.instance.tags.filter(is_active=True)
  
     name = forms.CharField(
         label='Nom du soundboard', 
@@ -41,6 +49,14 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
         required=False
     )
     clear_icon = forms.BooleanField(required=False, label='Supprimer le fichier', initial=False)
+    
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.filter(is_active=True),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label='Tags',
+        help_text='Sélectionnez si necessaires des tags pour catégoriser votre soundboard pour les recherches'
+    )
 
     def clean_icon(self):
         if self.cleaned_data.get('clear_icon'):
@@ -60,6 +76,8 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
 
         if commit:
             instance.save()
+            # Sauvegarder les relations many-to-many (tags)
+            self.save_m2m()
 
         return instance
 

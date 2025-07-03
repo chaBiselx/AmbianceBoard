@@ -1,6 +1,8 @@
 import Cookie from "@/modules/Cookie";
 import Notification from '@/modules/Notifications';
 import ReportingContent from '@/modules/ReportingContent'
+import {PaginationManager} from '@/modules/PaginationManager';
+import {TagManager} from '@/modules/TagManager';
 import * as bootstrap from 'bootstrap';
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
@@ -37,6 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
     new EmailConfirmationAccount('resend_email_confirmation_account').addEvent();
     new Sidebar().addEvent();
     new ReportingContent('reportButton').addEvent();
+    new PaginationManager().addEventListeners();
+    new TagManager().addEventListeners();
 
 
 });

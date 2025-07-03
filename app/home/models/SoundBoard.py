@@ -4,6 +4,7 @@ from django.db import models
 from home.models.User import User
 from home.models.Playlist import Playlist
 from home.models.SoundboardPlaylist import SoundboardPlaylist
+from home.models.Tag import Tag
 from home.message.ReduceSizeImgMessenger import reduce_size_img
 
 
@@ -17,6 +18,7 @@ class SoundBoard(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     playlists = models.ManyToManyField(Playlist, through=SoundboardPlaylist, related_name='soundboards')
+    tags = models.ManyToManyField(Tag, blank=True, related_name='soundboards', help_text="Tags associés à ce soundboard")
     name = models.CharField(max_length=255)
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
@@ -51,6 +53,19 @@ class SoundBoard(models.Model):
         
     def get_list_playlist_ordered(self):
         return Playlist.objects.filter(soundboards=self).order_by('soundboardplaylist__order')
+    
+    def get_tags_list(self):
+        """Retourne la liste des tags associés à ce soundboard"""
+        return self.tags.filter(is_active=True).order_by('name')
+    
+    def add_tag(self, tag):
+        """Ajoute un tag à ce soundboard"""
+        if tag.is_active:
+            self.tags.add(tag)
+    
+    def remove_tag(self, tag):
+        """Retire un tag de ce soundboard"""
+        self.tags.remove(tag)
         
 
         

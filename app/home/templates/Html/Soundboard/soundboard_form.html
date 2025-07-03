@@ -72,6 +72,35 @@
                                 {% endif %}
                             </div>
 
+                            <div class="mb-3">
+                                <div class="form-label">{{ form.tags.label }}</div>
+                                <div class="tags-container">
+                                    <div class="d-flex flex-wrap gap-1 p-1" id="tags-selection">
+                                        {% for tag in form.fields.tags.queryset %}
+                                        <div class="form-check-custom">
+                                            <input 
+                                                type="checkbox" 
+                                                class="form-check-input d-none" 
+                                                name="tags" 
+                                                value="{{ tag.pk }}" 
+                                                id="tag_{{ tag.pk }}"
+                                                {% if tag in form.tags.initial %}checked{% endif %}
+                                            >
+                                            <label 
+                                                for="tag_{{ tag.pk }}" 
+                                                class="badge tag-badge {% if tag in form.tags.initial %}badge-selected{% else %}badge-unselected{% endif %}"
+                                                data-tag-id="{{ tag.pk }}"
+                                                data-bs-toggle="tooltip" data-bs-title="{{ tag.description|default:"Aucun description" }}"
+                                            >
+                                                <small><i class="fas fa-tag me-1"></i></small>{{ tag.name }}
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <small class="form-text text-muted mt-2">{{ form.tags.help_text }}</small>
+                                </div>
+                            </div>
+
                             <button class="btn btn-primary btn-block mt-2" type="submit">
                                 {% if method == 'update' %}
                                 Modifier le SoundBoard

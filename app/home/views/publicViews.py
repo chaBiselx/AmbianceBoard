@@ -13,12 +13,14 @@ from home.decorator.reportingContent import add_reporting_btn
 from django.template.response import TemplateResponse
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from django.views.decorators.http import require_http_methods
-from home.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
+from home.models.Tag import Tag
+from django.db.models import Count
 from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
 from django.contrib import messages
 from home.service.ReportContentService import ReportContentService
 from home.service.SharedSoundboardService import SharedSoundboardService
+from home.service.TagService import TagService
 from home.utils.url import redirection_url
 
 
@@ -31,6 +33,7 @@ def public_index(request):
 @add_reporting_btn()
 def public_listing_soundboard(request):
     page_number = int(request.GET.get('page', 1))
+    selected_tag = request.GET.get('tag', None)
     
     list_favorite = []
     if request.user.is_authenticated:
@@ -38,11 +41,19 @@ def public_listing_soundboard(request):
         for favorite in list_favorite_obj:
             list_favorite.append(favorite.get_soundboard().uuid)
     
+    # Filtrage par tag si spécifié
+    queryset = SoundBoard.objects.filter(is_public=True, user__isBan=False)
+    if selected_tag:
+        queryset = queryset.filter(tags__name=selected_tag)
     
-    queryset = SoundBoard.objects.filter(is_public=True, user__isBan = False).order_by('uuid')
+    queryset = queryset.order_by('uuid')
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
+    
+    
+    context['listTags'] = TagService(request).get_tag_with_count()
     context['listFavorite'] = list_favorite
+    context['selected_tag'] = selected_tag
     return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
 
 @login_required
