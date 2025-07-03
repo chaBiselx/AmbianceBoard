@@ -50,19 +50,17 @@
 }
 
 .badge-unselected {
-    background-color: #f8f9fa;
-    color: #6c757d;
-    border-color: #dee2e6;
-
     @at-root {
         html:not([data-bs-theme="dark"]) & {
+            background-color: $white;
             border-color: $border_color_light;
-            color: $border_color_light;
-            border-color: $border_color_light;
+            color: $text_color_light;
         }
 
         html[data-bs-theme="dark"] & {
-            border-color: $border_color_dark
+            background-color: $gray-800;
+            border-color: $border_color_dark;
+            color: $text_color_dark;
         }
     }
 }
