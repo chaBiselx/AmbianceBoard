@@ -56,6 +56,7 @@ def public_listing_soundboard(request):
     context['selected_tag'] = selected_tag
     return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
 
+@require_http_methods(['GET'])
 @login_required
 def public_favorite(request):
     page_number = int(request.GET.get('page', 1))
