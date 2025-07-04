@@ -1,5 +1,15 @@
 import Cookie from '@/modules/Cookie';
 import ModalCustom from '@/modules/Modal';
+import { MusicDropzoneConfig, MusicDropzoneManager } from '@/modules/MusicDropzoneManager';
+
+
+declare global {
+    interface Window {
+        Dropzone: any;
+        musicDropzoneManager?: MusicDropzoneManager;
+    }
+}
+
 
 type playlist = { color: string, colorText: string, typePlaylist: string };
 
@@ -248,8 +258,7 @@ function getListingOtherColors(event: Event) {
                 title.classList.add("text-center");
                 title.innerHTML = "Playlist Defauts"
                 divRow.appendChild(title);
-                body.default_playlists.forEach(el => {
-                    const playlist = el as playlist;
+                body.default_playlists.forEach((playlist: playlist) => {
                     appendChildPlaylist(divRow, playlist)
                 })
             }
@@ -259,8 +268,7 @@ function getListingOtherColors(event: Event) {
                 title.classList.add("text-center");
                 title.innerHTML = "Playlist Uniques"
                 divRow.appendChild(title);
-                body.default_playlists.forEach(el => {
-                    const playlist = el as playlist;
+                body.default_playlists.forEach((playlist: playlist) => {
                     appendChildPlaylist(divRow, playlist)
                 })
             }
@@ -361,6 +369,25 @@ function showPopupMusic(event: Event) {
                 footer: "",
                 width: "lg",
                 callback: () => {
+                    const dropZone = document.getElementById('music-dropzone');
+                    if (dropZone) {
+                        const uploadUrl = dropZone.getAttribute('data-upload-url');
+
+                        if (!uploadUrl) {
+                            console.error('Missing required configuration for MusicDropzoneManager');
+                            return;
+                        }
+
+                        try {
+                            window.musicDropzoneManager = new MusicDropzoneManager(
+                                {
+                                    containerSelector: '#music-dropzone',
+                                    uploadUrl: uploadUrl,
+                                } as MusicDropzoneConfig);
+                        } catch (error) {
+                            console.error('Error initializing MusicDropzoneManager:', error);
+                        }
+                    }
                     const fileInput = document.getElementById('id_file');
                     if (fileInput) {
                         fileInput.addEventListener('change', autoSetAlternateName);

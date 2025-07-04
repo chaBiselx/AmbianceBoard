@@ -344,4 +344,55 @@ def update_direct_volume(request, playlist_uuid) -> JsonResponse:
                 return JsonResponse({"message": "volume updated"}, status=200)
         
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+
+@login_required
+@require_http_methods(['POST'])
+def upload_multiple_music(request, playlist_uuid) -> JsonResponse:
+    """Vue pour l'upload multiple de fichiers musicaux via Dropzone"""
+    playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
+    if not playlist:
+        return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
     
+    if request.method == 'POST':
+        if len(request.FILES) == 0:
+            return JsonResponse({"error": "Aucun fichier reçu"}, status=400)
+        
+        music_service = MusicService(request)
+        results = []
+        errors = []
+        
+        for key, file in request.FILES.items():
+            try:
+                # Créer un objet de données similaire à ce que POST contiendrait
+                file_data = {
+                    'file': file,
+                    'alternativeName': file.name.split('.')[0]  # Nom par défaut
+                }
+                
+                # Utiliser le service pour sauvegarder chaque fichier
+                music = music_service.save_multiple_files_item(playlist, file_data)
+                if music:
+                    results.append({
+                        'id': music.id,
+                        'filename': music.fileName,
+                        'alternativeName': music.alternativeName
+                    })
+                else:
+                    errors.append(f"Erreur lors de la sauvegarde de {file.name}")
+                    
+            except Exception as e:
+                errors.append(f"Erreur avec {file.name}: {str(e)}")
+        
+        if results:
+            return JsonResponse({
+                "success": True,
+                "uploaded_files": results,
+                "errors": errors
+            }, status=200)
+        else:
+            return JsonResponse({
+                "success": False,
+                "errors": errors
+            }, status=400)
+    
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)

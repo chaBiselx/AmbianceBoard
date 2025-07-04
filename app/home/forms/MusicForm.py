@@ -14,7 +14,7 @@ class MusicForm(BootstrapFormMixin, forms.ModelForm):
         
     def clean_file(self):
         file = self.cleaned_data['file']
-        allowed_extensions = ['.mp3', '.wav', '.ogg']
+        allowed_extensions = ['.mp3', '.wav', '.ogg'] #TODO convert to enum 
         if file and not any(file.name.lower().endswith(ext) for ext in allowed_extensions):
              raise forms.ValidationError('Seuls les fichiers MP3, WAV et OGG sont autorisés.')
         return file

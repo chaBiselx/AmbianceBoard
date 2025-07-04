@@ -152,8 +152,8 @@
                         {% for music in listMusic %}
                         <div class="music flex-item flex-item-5 border border-secondary rounded p-2">
                             <div class="btn-group float-end">
-                                <button class="btn btn-sm btn-warning btn-add-music" title="Edit {{ music.fileName }}" data-url="{% url 'editMusic' form.instance.uuid music.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn btn-sm btn-danger btn-delete-music" title="Delete {{ music.fileName }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i class="fa-solid fa-trash-can"></i></button>
+                                <button class="btn btn-sm btn-warning btn-add-music" title="Edit {{ music.fileName }}" data-url="{% url 'editMusic' form.instance.uuid music.id %}"><i class="fa-solid fa-pen-to-square pe-none"></i></button>
+                                <button class="btn btn-sm btn-danger btn-delete-music" title="Delete {{ music.fileName }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid music.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i class="fa-solid fa-trash-can pe-none"></i></button>
                             </div>
                             <div class="music-name mt-1 mb-2">
                                 <h6>{{ music.alternativeName }}</h6>

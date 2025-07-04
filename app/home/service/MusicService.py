@@ -82,6 +82,33 @@ class MusicService:
                 for error in errors:
                     messages.error(self.request, error)
         return None
-        
+    
+    def save_multiple_files_item(self, playlist: Playlist, file_data: dict):
+        """Sauvegarde un fichier individuel dans le contexte d'un upload multiple"""
+        user_parameters = UserParametersFactory(self.request.user)
+        limit_music_per_playlist = user_parameters.limit_music_per_playlist
 
+        # Vérifier la limite de musiques par playlist
+        current_music_count = Music.objects.filter(playlist=playlist).count()
+        if current_music_count >= limit_music_per_playlist:
+            raise ValueError("Vous avez atteint la limite de musique par playlist (" + str(limit_music_per_playlist) + " max).")
         
+        # Vérifier le poids du fichier
+        file = file_data['file']
+        limit_weight_file = user_parameters.limit_weight_file
+        if file.size > limit_weight_file * 1024 * 1024:
+            raise ValueError("Le poids du fichier est trop lourd.")
+        
+        # Vérifier l'extension du fichier
+        allowed_extensions = ['.mp3', '.wav', '.ogg'] #TODO convert to enum 
+        if not any(file.name.lower().endswith(ext) for ext in allowed_extensions):
+            raise ValueError("Seuls les fichiers MP3, WAV et OGG sont autorisés.")
+        
+        # Créer l'objet Music
+        music = Music()
+        music.file = file
+        music.alternativeName = file_data.get('alternativeName', file.name.split('.')[0])[0:63]
+        music.playlist = playlist
+        music.save()
+        return music
+    

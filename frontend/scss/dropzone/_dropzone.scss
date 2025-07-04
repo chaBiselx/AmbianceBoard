@@ -1,0 +1,62 @@
+.dropzone {
+    border: 2px dashed;
+    
+    border-radius: 10px;
+    background: #f8f9fa;
+    min-height: 200px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            background: $bg_color_light;
+            border-color: $border_color_light;
+        }
+
+        html[data-bs-theme="dark"] & {
+            background: $bg_color_dark;
+            border-color: $border_color_dark;
+
+        }
+    }
+
+    &:hover {
+     @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            background: $bg_color_light;
+            border-color: $border_color_light_hover;
+
+        }
+
+        html[data-bs-theme="dark"] & {
+            background: $bg_color_dark;
+            border-color: $border_color_dark_hover;
+        }
+    }
+    }
+}
+
+
+
+.dropzone.dz-drag-hover {
+    border-color: $success;
+    background: #d4edda;
+}
+
+.dropzone .dz-preview {
+    display: none;
+}
+
+.uploaded-file-item {
+    border-left: 4px solid $primary;
+}
+
+.upload-status .badge-success {
+    background-color: $success;
+}
+
+.upload-status .badge-danger {
+    background-color: $danger;
+}

@@ -1,5 +1,29 @@
-<form method="post" enctype="multipart/form-data" action="{% if method == 'update' %}{% url 'editMusic' playlist.uuid music.id %}{% else %}{% url 'addMusic' playlist.uuid %}{% endif %}">
+{% if method == 'update' %}
+<!-- Mode édition : formulaire classique -->
+<form method="post" enctype="multipart/form-data" action="{% url 'editMusic' playlist.uuid music.id %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button class="btn btn-primary btn-block mt-2" type="submit">Ajouter</button>
+    <button class="btn btn-primary btn-block mt-2" type="submit">Modifier</button>
 </form>
+{% else %}
+<!-- Mode création : Dropzone pour upload multiple -->
+<div class="container-fluid">
+    <div class="row">
+        <!-- Zone de drop des fichiers -->
+        <div class="col-12 mb-4">
+            <div id="music-dropzone" class="dropzone"
+                 data-upload-url="{% url 'uploadMultipleMusic' playlist.uuid %}"
+                 data-playlist-redirect-url="{% url 'playlistUpdate' playlist.uuid %}">
+                <div class="dz-message">
+                    <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                    <h4>Glissez vos fichiers audio ici</h4>
+                    <p>ou cliquez pour sélectionner des fichiers</p>
+                    <p class="text-muted">Formats acceptés : MP3, WAV, OGG</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endif %}
