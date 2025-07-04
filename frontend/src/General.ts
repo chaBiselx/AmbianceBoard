@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             new bootstrap.Dropdown(element);
         } catch (error) {
+            console.warn('Bootstrap Dropdown initialization failed:');
         }
     });
 
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             new bootstrap.Tooltip(element);
         } catch (error) {
+            console.warn('Bootstrap Tooltip initialization failed:');
         }
     });
 
@@ -28,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             new bootstrap.Popover(element);
         } catch (error) {
+            console.warn('Bootstrap Popover initialization failed:');
         }
     });
 });
@@ -41,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
     new ReportingContent('reportButton').addEvent();
     new PaginationManager().addEventListeners();
     new TagManager().addEventListeners();
-
 
 });
 
