@@ -14,6 +14,7 @@ class User(AbstractUser):
     banExpiration = models.DateTimeField(default=None, null=True, blank=True) 
     tokenReinitialisation = models.CharField(max_length=255, default=None, null=True, blank=True)
     demandeTokenDate = models.DateTimeField(default=None, null=True, blank=True)
+    betaTester = models.BooleanField(default=False, help_text="Indicates if the user is a beta tester")
     
     
     def checkBanned(self) -> bool:
