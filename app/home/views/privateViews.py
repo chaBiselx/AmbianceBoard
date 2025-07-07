@@ -26,6 +26,7 @@ from home.formatter.TypePlaylistFormater import TypePlaylistFormater
 from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
 from home.service.SharedSoundboardService import SharedSoundboardService
+from home.enum.MusicFormatEnum import MusicFormatEnum
 
 
 @login_required
@@ -124,7 +125,7 @@ def soundboard_organize_update(request, soundboard_uuid) -> HttpResponse:
         if request.method == 'POST':
             
             soundboard_playlist_service.add(playlist, new_order)
-            return JsonResponse({'success': 'playslist added', 'order': playlist.get_order()}, status=200)
+            return JsonResponse({'success': 'playlist added', 'order': playlist.get_order()}, status=200)
         if request.method == 'UPDATE':
             soundboard_playlist_service.update(playlist, new_order)
             return JsonResponse({'success': 'playslist added', 'order': playlist.get_order()}, status=200)
@@ -266,11 +267,14 @@ def music_create(request, playlist_uuid) -> JsonResponse:
     playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     if(playlist) : 
         if request.method == 'POST':
-            (MusicService(request)).save_form(playlist)
+            try:
+                (MusicService(request)).save_form(playlist)
+            except ValueError as e:
+                messages.error(request, str(e))
             return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
         else:
             form = MusicForm()
-        return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist, 'method' : 'create' })
+        return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist ,'MusicFormatEnum': [ext.value for ext in MusicFormatEnum]})
     return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
 
 @login_required
@@ -281,13 +285,14 @@ def music_update(request, playlist_uuid, music_id):
     if not music or not playlist:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
     if request.method == 'POST':
-        form = MusicForm(request.POST, request.FILES, instance=music)
-        if form.is_valid():
-            form.save()
-            return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
+        try:
+            (MusicService(request)).save_form(playlist, music)
+        except ValueError as e:
+            messages.error(request, str(e))
+        return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
     else:
         form = MusicForm(instance=music)
-    return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist, 'music': music, 'method' : 'update' })
+    return render(request, 'Html/Music/update_music.html', {'form': form, "playlist":playlist, 'music': music })
 
 
 

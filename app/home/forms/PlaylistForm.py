@@ -64,7 +64,7 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
         icon = self.cleaned_data['icon']
         allowed_extensions = [".jpg" , ".jpeg" , ".jfif" , ".pjpeg" , ".pjp", ".png", ".svg", ".webp"]
         if icon and not any(icon.name.lower().endswith(ext) for ext in allowed_extensions):
-             raise forms.ValidationError('Seuls les fichiers audio (.mp3, .wav, .ogg) sont autorisés.')
+             raise forms.ValidationError('Seuls les fichiers image (.jpg, .jpeg, .jfif, .pjpeg, .pjp, .png, .svg, .webp) sont autorisés.')
         return icon
     
     def save(self, commit=True):

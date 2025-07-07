@@ -1,0 +1,6 @@
+<!-- Mode édition : formulaire classique -->
+<form method="post" enctype="multipart/form-data" action="{% url 'editMusic' playlist.uuid music.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary btn-block mt-2" type="submit">Modifier</button>
+</form>
