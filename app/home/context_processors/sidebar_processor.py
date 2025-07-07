@@ -30,6 +30,17 @@ def sidebar_processor(request):
             ]
         }
         
+    sidebar_urls_settings_moderator = ['/manager']
+    
+    if request.path in sidebar_urls_settings_moderator or any(request.path.startswith(url) for url in sidebar_urls_settings_moderator):
+        return {
+            'show_sidebar': True,
+            'sidebar_items': [
+                {'title': 'User Tiers', 'url': reverse("adminUserTiersDashboard"), 'classIcon':"fa-solid fa-users-medical"},
+     
+            ]
+        }
+        
     if request.user.is_authenticated:
         sidebar_urls_settings_public = ['/public']
         

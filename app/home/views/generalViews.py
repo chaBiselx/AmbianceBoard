@@ -21,6 +21,10 @@ from home.service.ResetPasswordService import ResetPasswordService
 from home.forms.UserPasswordForm import UserPasswordForm
 from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
+from home.models.UserTier import UserTier
+
+
+
 @detect_not_confirmed_account()
 @require_http_methods(['GET'])
 def home(request):
@@ -51,6 +55,10 @@ def create_account(request):
                 except Exception as e:
                     logger.error(e)
                 logger.info(f"User {user.username} created")
+                UserTier.objects.create(
+                    user=user,
+                    tier_name='STANDARD'
+                )
                 return redirect('login')
             except Exception as e:
                 logger.error(e)

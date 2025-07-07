@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
+FIELD_ENCRYPTION_KEY = os.environ.get("FIELD_ENCRYPTION_KEY")
 
 DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
 ACTIVE_SSL = bool(int(os.environ.get("ACTIVE_SSL", default=1)))
@@ -307,10 +308,12 @@ if RUN_CRONS:
     CRON_CLASSES.append('home.cron.CleanMediaFolderCron.run')
     CRON_CLASSES.append('home.cron.DeleteAccountCron.run')
     CRON_CLASSES.append('home.cron.DeleteSharedSoundboardExpiredCron.run')
+    CRON_CLASSES.append('home.cron.UserTierExpirationCron.run')
     
     CRONJOBS.append(('0 10 * * *', 'home.cron.CleanMediaFolderCron.run'))
     CRONJOBS.append(('0 10 * * *', 'home.cron.DeleteAccountCron.run'))
     CRONJOBS.append(('0 18 * * *', 'home.cron.DeleteSharedSoundboardExpiredCron.run'))
+    CRONJOBS.append(('0 6 * * *', 'home.cron.UserTierExpirationCron.run'))  # Tous les jours à 6h
         
 
 # message brokers 
@@ -337,11 +340,11 @@ PERMISSIONS = {permission.name: permission.value for permission in PermissionEnu
 
 ATTRIB_PERMISSIONS = {
     GroupEnum.ADMIN.name: {
-        "inherited_permissions": [GroupEnum.MANAGER.name, GroupEnum.MODERATEUR.name , GroupEnum.USER_PREMIUM.name, GroupEnum.USER_STANDARD.name],
+        "inherited_permissions": [GroupEnum.MANAGER.name, GroupEnum.MODERATEUR.name , GroupEnum.USER_STANDARD.name],
         "permission" : []
     },
     GroupEnum.MANAGER.name: {
-        "inherited_permissions": [GroupEnum.MODERATEUR.name , GroupEnum.USER_PREMIUM.name, GroupEnum.USER_STANDARD.name],
+        "inherited_permissions": [GroupEnum.MODERATEUR.name , GroupEnum.USER_STANDARD.name],
         "permission" : [
             PermissionEnum.MANAGER_ATTRIBUTE_MODERATEUR_ROLE.name,
             PermissionEnum.MANAGER_ACCESS_DASHBOARD.name,
@@ -349,7 +352,7 @@ ATTRIB_PERMISSIONS = {
         ]
     },
     GroupEnum.MODERATEUR.name: {
-        "inherited_permissions": [GroupEnum.USER_PREMIUM.name, GroupEnum.USER_STANDARD.name],
+        "inherited_permissions": [GroupEnum.USER_STANDARD.name],
         "permission" : [
             PermissionEnum.MODERATEUR_ACCESS_ALL_MUSIC.name, 
             PermissionEnum.MODERATEUR_ACCESS_ALL_PLAYLIST.name, 
@@ -357,31 +360,67 @@ ATTRIB_PERMISSIONS = {
             PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name
         ]
     },
-    GroupEnum.USER_PREMIUM.name: {
-        "inherited_permissions": [GroupEnum.USER_STANDARD.name],
-        "permission" : [
-            PermissionEnum.USER_PREMIUM_OVER_LIMIT_SOUNDBOARD.name,
-            PermissionEnum.USER_PREMIUM_OVER_LIMIT_PLAYLIST.name,
-            PermissionEnum.USER_PREMIUM_OVER_LIMIT_WEIGHT_MUSIC.name,
-            PermissionEnum.USER_PREMIUM_OVER_LIMIT_MUSIC_PER_PLAYLIST.name,
-            ]
-    },
     GroupEnum.USER_STANDARD.name: {
         "inherited_permissions": [],
         "permission" : [PermissionEnum.USER_STANDARD.name]
     },
 }
 
-#LIMIT
-LIMIT_USER_PREMIUM_SOUNDBOARD = 25
-LIMIT_USER_PREMIUM_PLAYLIST = 1000
-LIMIT_USER_PREMIUM_MUSIC_PER_PLAYLIST = 25
-LIMIT_USER_PREMIUM_WEIGHT_MUSIC = 120 #Mo
-# LIMIT USER STANDARD
-LIMIT_USER_STANDARD_SOUNDBOARD = 5
-LIMIT_USER_STANDARD_PLAYLIST = 75
-LIMIT_USER_STANDARD_MUSIC_PER_PLAYLIST = 10
-LIMIT_USER_STANDARD_WEIGHT_MUSIC = 50 #Mo
+# USER TIERS AND LIMITS CONFIGURATION
+# Configuration flexible pour différents niveaux d'utilisateurs
+
+USER_TIERS = {
+    'STANDARD': {
+        'name': 'Standard',
+        'display_name': 'Utilisateur Standard',
+        'limits': {
+            'soundboard': 5,
+            'playlist': 75,
+            'music_per_playlist': 5,
+            'weight_music_mb': 50,
+        },
+        'group_enum': 'USER_STANDARD'
+    },
+    'PREMIUM_BASIC': {
+        'name': 'Premium Basic',
+        'display_name': 'Premium Basique',
+        'limits': {
+            'soundboard': 25,
+            'playlist': 150,
+            'music_per_playlist': 10,
+            'weight_music_mb': 70,
+        },
+        'group_enum': 'USER_PREMIUM_BASIC'
+    },
+    # Prêt pour de futures versions premium
+    'PREMIUM_ADVANCED': {
+        'name': 'Premium advanced',
+        'display_name': 'Premium Avancée',
+        'limits': {
+            'soundboard': 50,
+            'playlist': 250,
+            'music_per_playlist': 20,
+            'weight_music_mb': 150,
+        },
+        'group_enum': 'USER_PREMIUM_ADVANCED'  # À ajouter dans GroupEnum
+    },
+    'PREMIUM_PRO': {
+        'name': 'Premium Professionnel',
+        'display_name': 'Premium Professionnel',
+        'limits': {
+            'soundboard': 100,
+            'playlist': 500,
+            'music_per_playlist': 30,
+            'weight_music_mb': 200,
+        },
+        'group_enum': 'USER_PREMIUM_PRO'  # À ajouter dans GroupEnum
+    }
+}
+
+
+
+
+
 
 # CACHE
 
