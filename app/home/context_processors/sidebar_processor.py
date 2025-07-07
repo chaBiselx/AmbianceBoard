@@ -26,6 +26,7 @@ def sidebar_processor(request):
                 {'title': 'Playlists', 'url': reverse("moderatorControleImagesSoundboard"), 'classIcon':"fa-solid fa-music"},
                 {'title': 'Report', 'url': reverse("moderatorControleReport"), 'classIcon':"fa-solid fa-helmet-safety"},
                 {'title': 'Logs', 'url': reverse("moderatorControleLog"), 'classIcon':"fa-solid fa-helmet-safety"},
+                {'title': 'Tags', 'url': reverse("moderatorListingTags"), 'classIcon':"fas fa-tags"},
             ]
         }
         

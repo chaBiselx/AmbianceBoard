@@ -10,6 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.popup-data-user').forEach((el) => {
         el.addEventListener('click', getDataUser);
     })
+        document.querySelectorAll('.popup-add-tag').forEach((el) => {
+        el.addEventListener('click', getAddtag);
+    })
+    document.querySelectorAll('.popup-info-tag').forEach((el) => {
+        el.addEventListener('click', getInfoTag);
+    })
+    document.querySelectorAll('.popup-edit-tag').forEach((el) => {
+        el.addEventListener('click', getEditTag);
+    })
 
 })
 
@@ -38,6 +47,30 @@ function getDataUser(event: Event) {
     new FetchPopupData(url, title).fetch();
 }
 
+function getAddtag(event: Event) {
+    const el = event.target as HTMLButtonElement;
+    const url = el.dataset.url!;
+    const title = "Ajouter un tag"; 
+    new FetchPopupData(url, title).fetch();
+}
+
+function getInfoTag(event: Event) {
+    const el = event.target as HTMLButtonElement;
+    const url = el.dataset.url!;
+    const title = "Informations du tag";
+
+    new FetchPopupData(url, title).fetch();
+}
+
+function getEditTag(event: Event) {
+
+    const el = event.target as HTMLButtonElement;
+    const url = el.dataset.url!;
+    const title = "Modifier le tag";
+
+    new FetchPopupData(url, title).fetch();
+}
+
 class FetchPopupData {
     url: string
     title: string
@@ -47,15 +80,13 @@ class FetchPopupData {
     }
 
     public fetch() {
-        console.log('fetch');
-        
         fetch(this.url, {
             method: 'GET',
         })
             .then(response => response.text())
             .then((body) => {
-               this.show(body)
-               this.setValue()
+                this.show(body)
+                this.setValue()
             })
             .catch(error => {
                 console.error('Erreur lors de la requête AJAX:', error);
@@ -71,10 +102,12 @@ class FetchPopupData {
         })
     }
 
-    public setValue(){
+    public setValue() {
         const currentPath = window.location.pathname + window.location.search;
-        let redirectInput = document.getElementById('redirect_uri') as HTMLInputElement;
-        redirectInput.value = currentPath
+        const redirectInput = document.getElementById('redirect_uri') as HTMLInputElement;
+        if (redirectInput) {
+            redirectInput.value = currentPath;
+        }
     }
 }
 

@@ -7,7 +7,7 @@ from home.views.generalViews import home, create_account, login_view, logout_vie
 from home.views.privateViews import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
 from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors, playlist_describe_type
 from home.views.privateViews import music_create, music_update, music_delete,music_stream,stop_stream, update_direct_volume, upload_multiple_music
-from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log
+from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
 from home.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions
 from home.views.managerViews import manager_dashboard, clean_media_folder
 from home.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_stop_stream, favorite_update, reporting_content, public_favorite
@@ -89,6 +89,11 @@ urlpatterns = [
     path("moderator/log/", moderator_listing_log_moderation, name="moderatorControleLog"),
     path("moderator/log/user/<uuid:user_uuid>", moderator_get_infos_user, name="moderatorGetDataUser"),
     path("moderator/log/add/", reporting_add_log, name="moderatorAddLog"),
+    
+    path("moderator/tags/", moderator_listing_tags, name="moderatorListingTags"),
+    path("moderator/tags/create/", moderator_create_tag, name="moderatorCreateTag"),
+    path("moderator/tags/<uuid:tag_uuid>/", moderator_get_infos_tag, name="moderatorGetInfosTag"),
+    path("moderator/tags/<uuid:tag_uuid>/edit/", moderator_edit_tag, name="moderatorEditTag"),
     
     
     path("manager/", manager_dashboard, name="managerDashboard"),

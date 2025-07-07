@@ -17,6 +17,8 @@ from home.utils.ExtractPaginator import extract_context_to_paginator
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from home.utils.url import redirection_url
+from home.models.Tag import Tag
+from home.forms.TagForm import TagForm
 
 
 
@@ -173,3 +175,53 @@ def reporting_add_log(request) -> HttpResponse:
             user.save()
         
     return redirect(redirection_url(request.POST.get('redirect_uri', 'moderatorDashboard')))
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_listing_tags(request) -> HttpResponse:
+    page_number = int(request.GET.get('page', 1))
+    
+    queryset = Tag.objects.all().order_by('name')
+    paginator = Paginator(queryset, 50)  
+    context = extract_context_to_paginator(paginator, page_number)
+    
+    return render(request, 'Html/Moderator/listing_tags.html', context)
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_create_tag(request) -> HttpResponse:
+    if request.method == 'POST':
+        form = TagForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect('moderatorListingTags')
+    else:
+        form = TagForm()
+    
+    return render(request, 'Html/Moderator/create_tag.html', {'form': form})
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_edit_tag(request, tag_uuid) -> HttpResponse:
+    tag = Tag.objects.get(uuid=tag_uuid)
+    
+    if request.method == 'POST':
+        form = TagForm(request.POST, instance=tag)
+        if form.is_valid():
+            form.save()
+            return redirect('moderatorListingTags')
+    else:
+        form = TagForm(instance=tag)
+    
+    return render(request, 'Html/Moderator/edit_tag.html', {'form': form, 'tag': tag})
+
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_get_infos_tag(request, tag_uuid) -> HttpResponse:
+    tag = Tag.objects.get(uuid=tag_uuid)
+    return render(request, 'Html/Moderator/info_tag.html', {"tag": tag})
