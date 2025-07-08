@@ -1,7 +1,7 @@
+import Csrf from "@/modules/Csrf";
 import { ButtonPlaylist } from "./ButtonPlaylist";
 import { SearchMusicElement } from "@/modules/MusicElement";
 import  UpdateVolumeElement  from "@/modules/UpdateVolumeElement";
-import Cookie from '@/modules/Cookie';
 
 import { method, uri } from '@/type/General';
 
@@ -34,7 +34,7 @@ class UpdateVolumePlaylist {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-CSRFToken': Cookie.get('csrftoken')! 
+                'X-CSRFToken': Csrf.getToken()! 
             },
             body: JSON.stringify({
                 volume: this.volume

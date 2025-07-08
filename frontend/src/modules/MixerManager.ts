@@ -1,7 +1,7 @@
 
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
-import { MusicElement } from './MusicElement';
-import Cookie from './Cookie';
+import { MusicElement } from '@/modules/MusicElement';
+import Cookie from '@/modules/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
 
 type mixer = {

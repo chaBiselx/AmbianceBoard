@@ -1,4 +1,4 @@
-import Cookie from "@/modules/Cookie";
+import Csrf from "@/modules/Csrf";
 import type { position } from '@/type/General'
 import { OrganizerButtonPlaylist } from '@/modules/OrganizerButtonPlaylist'
 
@@ -132,7 +132,7 @@ class CleanOrderHandler {
         const listEl = this.associatedPlaylists.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
         let order = 1;
         for (const element of listEl) {
-            if(element.dataset){
+            if (element.dataset) {
                 element.dataset.order = order.toString();
                 order++;
             }
@@ -149,7 +149,7 @@ class CleanOrderHandler {
             if (element.dataset) {
                 order = parseInt(element.dataset.order!)
             }
-            buttonPlaylist.addBadge(order) 
+            buttonPlaylist.addBadge(order)
         }
         this.cleanUnsassociatedBadge()
 
@@ -228,11 +228,10 @@ class SendBackendAction {
     private fetch(method: string, body: {}) {
         const associatedPlaylists = OrganizerDragAndDropZone.associatedPlaylists();
         const url = associatedPlaylists.dataset.url as string;
-        const csrfToken = Cookie.get('csrftoken')!;
         fetch(url, {
             method: method,
             headers: {
-                'X-CSRFToken': csrfToken,
+                'X-CSRFToken': Csrf.getToken()!,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)

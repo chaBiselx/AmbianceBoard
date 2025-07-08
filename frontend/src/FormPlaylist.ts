@@ -1,6 +1,6 @@
-import Cookie from '@/modules/Cookie';
 import ModalCustom from '@/modules/Modal';
 import { MusicDropzoneConfig, MusicDropzoneManager } from '@/modules/MusicDropzoneManager';
+import Csrf from './modules/Csrf';
 
 
 declare global {
@@ -162,7 +162,7 @@ function deleteEntity(config: { delete_url: string, redirect_url: string }) {
     fetch(config.delete_url, {
         method: 'DELETE',
         headers: {
-            'X-CSRFToken': Cookie.get('csrftoken')!
+            'X-CSRFToken': Csrf.getToken()!,
         },
     })
         .then(response => {

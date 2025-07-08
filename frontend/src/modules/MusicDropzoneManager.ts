@@ -1,4 +1,3 @@
-import Cookie from '@/modules/Cookie';
 import Notification from '@/modules/Notifications';
 import ModalCustom from './Modal';
 import {

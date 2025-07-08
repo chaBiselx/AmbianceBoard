@@ -1,5 +1,5 @@
 import ModalCustom from '@/modules/Modal';
-import Cookie from '@/modules/Cookie';
+import Csrf from "@/modules/Csrf";
 
 
 class ReportingContent {
@@ -152,7 +152,7 @@ class ReportFormBase implements ReportFormElement {
     }
 
     addCsrf(): string {
-        const csrfToken = Cookie.get('csrftoken')!
+        const csrfToken = Csrf.getToken()!
         return `<input type="hidden" name="csrfmiddlewaretoken" value="${csrfToken}">`
     }
 

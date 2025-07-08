@@ -1,5 +1,5 @@
 
-import Cookie from "@/modules/Cookie";
+import Csrf from "@/modules/Csrf";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -69,7 +69,7 @@ class UpdateDimensionElement {
         fetch(this.url, {
             method: 'UPDATE',
             headers: {
-                'X-CSRFToken': Cookie.get('csrftoken')!
+                'X-CSRFToken': Csrf.getToken()!,
             },
             body: JSON.stringify({ dim: dim })
         })

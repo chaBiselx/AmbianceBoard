@@ -1,13 +1,12 @@
 
-
 import Config from '@/modules/Config';
+import Csrf from "@/modules/Csrf";
 
 import { ButtonPlaylist } from '@/modules/ButtonPlaylist';
 import { MixerManager } from '@/modules/MixerManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import WakeLock from '@/modules/WakeLock';
 import ModalCustom from './modules/Modal';
-import Cookie from '@/modules/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
 import {MixerPlaylist} from "@/modules/MixerPlaylist";
 
@@ -107,7 +106,7 @@ function publishSoundboard(event: Event) {
     fetch(url, {
         method: 'GET',
         headers: {
-            'X-CSRFToken': Cookie.get('csrftoken')!
+            'X-CSRFToken': Csrf.getToken()!
         }
     }).then(response => response.text()).then((body) => {
         ModalCustom.show({

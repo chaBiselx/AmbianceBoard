@@ -1,4 +1,3 @@
-import Cookie from "@/modules/Cookie";
 import Notification from '@/modules/Notifications';
 import ReportingContent from '@/modules/ReportingContent'
 import {PaginationManager} from '@/modules/PaginationManager';
@@ -67,7 +66,7 @@ class EmailConfirmationAccount {
         if (this.element) {
             this.element.style.display = 'none'
             const url = this.element.dataset.url
-            const csrfToken = Cookie.get('csrftoken')!;
+            const csrfToken = Csrf.getToken();
             if (url) {
                 fetch(url, {
                     method: 'POST',
@@ -135,7 +134,7 @@ class GeneralTheme {
 
     private saveTheme() {
         const url = this.buttonToggle.dataset.url
-        const csrfToken = Cookie.get('csrftoken')!;
+        const csrfToken = Csrf.getToken();
 
         if (url) {
             fetch(url, {

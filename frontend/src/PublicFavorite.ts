@@ -1,4 +1,4 @@
-import Cookie from "@/modules/Cookie";
+import Csrf from "./modules/Csrf";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -35,10 +35,12 @@ class PublicFavorite {
         if(!this.element.checked){// invert because input already checked before event
             method = 'DELETE';
         }
+        console.log(Csrf.getToken());
+        
         fetch(this.url, {
             method: method,
             headers: {
-                'X-CSRFToken': Cookie.get('csrftoken')!
+                'X-CSRFToken': Csrf.getToken()!,
             },
         })
 

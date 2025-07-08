@@ -1,4 +1,5 @@
 import Config from '@/modules/Config';
+import Csrf from "@/modules/Csrf";
 import Notification from '@/modules/Notifications';
 
 import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
@@ -280,7 +281,7 @@ class MusicElement {
             fetch(this.baseUrl + '/stop', {
                 method: 'UPDATE',
                 headers: {
-                    'X-CSRFToken': Cookie.get('csrftoken')!,
+                    'X-CSRFToken': Csrf.getToken()!,
                     'Content-Type': 'application/json',
                 },
             }).then((response) => {

@@ -1,4 +1,4 @@
-import Cookie from "@/modules/Cookie";
+import Csrf from "@/modules/Csrf";
 
 type deleteConfig = { delete_url: string, redirect_url: string };
 
@@ -132,7 +132,7 @@ function callAjax(config: deleteConfig, method: string = 'POST') {
     fetch(config.delete_url, {
         method: method,
         headers: {
-            'X-CSRFToken': Cookie.get('csrftoken')!
+            'X-CSRFToken': Csrf.getToken()!
         },
     })
         .then(response => {
