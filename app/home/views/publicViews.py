@@ -22,6 +22,8 @@ from home.service.ReportContentService import ReportContentService
 from home.service.SharedSoundboardService import SharedSoundboardService
 from home.service.TagService import TagService
 from home.utils.url import redirection_url
+from home.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
+
 
 
 
