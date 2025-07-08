@@ -5,6 +5,7 @@
         <!-- Zone de drop des fichiers -->
         <div class="col-12 mb-4">
             <div id="music-dropzone" class="dropzone"
+                 data-csrf="{{ csrf_token }}"
                  data-upload-url="{% url 'uploadMultipleMusic' playlist.uuid %}"
                  data-playlist-redirect-url="{% url 'playlistUpdate' playlist.uuid %}">
                 <div class="dz-message">

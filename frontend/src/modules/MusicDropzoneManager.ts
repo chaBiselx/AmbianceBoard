@@ -1,22 +1,25 @@
-import Dropzone from 'dropzone';
 import Cookie from '@/modules/Cookie';
 import Notification from '@/modules/Notifications';
 import ModalCustom from './Modal';
+import {
+    IDropAndDropConfig,
+    IDropZoneAdapter,
+    IDropZoneCallbacks,
+    IUploadResponse
+} from '@/modules/DragDrop/DragAndDropInterface';
+import DropZoneAdapter from '@/modules/DragDrop/DropZoneAdapter'
 
 /**
  * Gestionnaire pour l'upload multiple de fichiers musicaux avec Dropzone
- * Permet de gérer l'upload de plusieurs fichiers audio en une fois avec personnalisation des noms
+ * Utilise l'abstraction DropZoneAdapter pour une meilleure maintenabilité
  */
 export class MusicDropzoneManager {
-    private dropzone: Dropzone | null = null;
+    private dropzoneAdapter: IDropZoneAdapter | null = null;
     private readonly config: MusicDropzoneConfig;
 
     constructor(config: MusicDropzoneConfig) {
-        // Vérifier que le container existe
         this.config = config;
         this.checkElement(config.containerSelector);
-
-
         this.initDropzone();
     }
 
@@ -29,53 +32,66 @@ export class MusicDropzoneManager {
     }
 
     private initDropzone(): void {
-        // Configuration Dropzone
-        this.dropzone = new Dropzone(this.config.containerSelector, {
-            url: this.config.uploadUrl,
-            method: "post",
-            paramName: "files",
-            acceptedFiles: ".mp3,.wav,.ogg",
-            addRemoveLinks: false,
-            uploadMultiple: true,
-            parallelUploads: 10,
-            createImageThumbnails: false,
-            headers: {
-                "X-CSRFToken": Cookie.get('csrftoken')!
+        const callbacks: IDropZoneCallbacks = {
+            onFileAdded: (_file: File) => {
+                ModalCustom.hide();
             },
-        });
-        this.dropzone.on("addedfile", (_file: File) => {
-            ModalCustom.hide();
-        });
-        this.dropzone.on("success", (_files: FileList, response: UploadResponse) => {
-            this.handleUploadSuccess(_files, response);
-        });
-        this.dropzone.on("error", (_file: FileList, errorMessage: ErrorResponse) => {
-            this.handleUploadError(_file, errorMessage);
-        });
+            onUploadSuccess: (files: File | File[] | FileList, response: IUploadResponse) => {
+                this.handleUploadSuccess(files, response);
+            },
+            onUploadError: (files: File | File[] | FileList, error: any) => {
+                this.handleUploadError(files, error);
+            }
+        };
+        const dragAndDropConfig = {
+            containerSelector: this.config.containerSelector,
+            uploadUrl: this.config.uploadUrl,
+            acceptedFiles: ".mp3,.wav,.ogg",
+            uploadMultiple: true,
+            parallelUploads: 5,
+            createImageThumbnails: false,
+            addRemoveLinks: false,
+            headers: {
+                "X-CSRFToken": this.config.csrf
+            },
+            paramName: "files",
+            method: "post",
+
+
+        } as IDropAndDropConfig;
+
+        this.dropzoneAdapter = new DropZoneAdapter(dragAndDropConfig, callbacks);
+
+        this.dropzoneAdapter?.initialize();
     }
 
-    private handleUploadSuccess(_files: FileList, response: UploadResponse): void {
+    private handleUploadSuccess(_files: File | File[] | FileList, response: IUploadResponse): void {
         console.log('Upload response:', response);
 
         if (response.errors && response.errors.length > 0) {
             console.warn('Upload errors:', response.errors);
         }
         this.showErrors(response.errors || []);
-     
+
         setTimeout(() => {
             window.location.reload();
         }, 500);
     }
 
-    private handleUploadError(_file: FileList, errorMessage: ErrorResponse): void {
+    private handleUploadError(_files: File | File[] | FileList, errorMessage: any): void {
         console.error('Upload error:', errorMessage);
-        this.showErrors(errorMessage.errors || []);
+        const errors = errorMessage.errors || (typeof errorMessage === 'string' ? [errorMessage] : ['An unknown error occurred']);
+        this.showErrors(errors);
     }
 
     private showErrors(errors: Array<string>): void {
         errors.forEach((error: string) => {
             Notification.createClientNotification({ message: error, type: 'danger' });
         });
+    }
+
+    public destroy(): void {
+        this.dropzoneAdapter?.destroy();
     }
 }
 
@@ -85,23 +101,8 @@ export class MusicDropzoneManager {
 export interface MusicDropzoneConfig {
     containerSelector: string;
     uploadUrl: string;
+    csrf : string;
 }
-
-export interface UploadResponse {
-    success: boolean;
-    uploaded_files?: Array<{
-        id: number;
-        filename: string;
-        alternativeName: string;
-    }>;
-    errors?: string[];
-}
-
-export interface ErrorResponse {
-    success: boolean;
-    errors: string[];
-}
-
 
 /**
  * Factory function pour créer une instance de MusicDropzoneManager
