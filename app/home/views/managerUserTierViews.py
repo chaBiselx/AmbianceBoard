@@ -176,7 +176,7 @@ def manager_user_tier_bulk_action(request) -> HttpResponse:
         elif action == 'extend_subscription':
             days = int(request.POST.get('extend_days', 30))
             for user in users:
-                user_tier, created = UserTier.objects.get_or_create(user=user)
+                user_tier, _ = UserTier.objects.get_or_create(user=user)
                 if user_tier.tier_expiry_date:
                     user_tier.tier_expiry_date += timedelta(days=days)
                 else:

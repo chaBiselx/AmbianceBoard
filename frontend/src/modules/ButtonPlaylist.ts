@@ -1,5 +1,5 @@
 
-const TRUE = 'True';//TODO fix type soundboard_read
+import Boolean from "@/modules/Util/Boolean";
 
 class ButtonPlaylist {
     buttonElement: HTMLElement;
@@ -11,7 +11,7 @@ class ButtonPlaylist {
     constructor(el: HTMLElement) {
         this.buttonElement = el;
         this.idPlaylist = el.dataset.playlistId!;
-        this.singleConcurrentread = el.dataset.playlistSingleconcurrentread == TRUE;
+        this.singleConcurrentread = Boolean.convert(el.dataset.playlistSingleconcurrentread!);
         this.playlistType = el.dataset.playlistType!;
         this.dataset = el.dataset;
     }

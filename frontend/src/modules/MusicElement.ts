@@ -8,8 +8,8 @@ import * as Model from '@/modules/FadeStartegy';
 import AudioFadeManager from '@/modules/AudioFadeManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import Cookie from '@/modules/General/Cookie';
+import Boolean from "@/modules/Util/Boolean";
 
-const TRUE = 'True';//TODO fix type soundboard_read
 
 
 class MusicElement {
@@ -299,7 +299,7 @@ class MusicElement {
 
     private setFadeInFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistFadein) {
-            this.fadeIn = buttonPlaylist.dataset.playlistFadein == TRUE;
+            this.fadeIn = Boolean.convert(buttonPlaylist.dataset.playlistFadein);
             this.DOMElement.dataset.fadein = this.fadeIn.toString();
         }
         if (buttonPlaylist.dataset.playlistFadeintype) {
@@ -314,7 +314,7 @@ class MusicElement {
 
     private setFadeOutFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistFadeout) {
-            this.fadeOut = buttonPlaylist.dataset.playlistFadein == TRUE;
+            this.fadeOut = Boolean.convert(buttonPlaylist.dataset.playlistFadeout);
             this.DOMElement.dataset.fadeout = this.fadeOut.toString();
         }
         if (buttonPlaylist.dataset.playlistFadeouttype) {
@@ -343,7 +343,7 @@ class MusicElement {
 
     private setPlaylistLoopFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistLoop) {
-            this.playlistLoop = buttonPlaylist.dataset.playlistLoop == TRUE;
+            this.playlistLoop = Boolean.convert(buttonPlaylist.dataset.playlistLoop);
             this.DOMElement.dataset.playlistloop = this.playlistLoop.toString();
         }
     }

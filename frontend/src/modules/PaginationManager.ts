@@ -1,6 +1,6 @@
 class PaginationManager {
     private readonly DOMPagination: HTMLElement;
-    private static parameterName: string = 'page';
+    private static readonly parameterName: string = 'page';
 
     
     constructor() {
