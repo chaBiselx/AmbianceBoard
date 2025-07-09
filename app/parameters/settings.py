@@ -377,7 +377,7 @@ USER_TIERS = {
             'soundboard': 5,
             'playlist': 75,
             'music_per_playlist': 5,
-            'weight_music_mb': 50,
+            'weight_music_mb': 10,
         },
         'group_enum': 'USER_STANDARD'
     },
@@ -388,7 +388,7 @@ USER_TIERS = {
             'soundboard': 25,
             'playlist': 150,
             'music_per_playlist': 10,
-            'weight_music_mb': 70,
+            'weight_music_mb': 20,
         },
         'group_enum': 'USER_PREMIUM_BASIC'
     },
@@ -400,7 +400,7 @@ USER_TIERS = {
             'soundboard': 50,
             'playlist': 250,
             'music_per_playlist': 20,
-            'weight_music_mb': 150,
+            'weight_music_mb': 25,
         },
         'group_enum': 'USER_PREMIUM_ADVANCED'  # À ajouter dans GroupEnum
     },
@@ -411,7 +411,7 @@ USER_TIERS = {
             'soundboard': 100,
             'playlist': 500,
             'music_per_playlist': 30,
-            'weight_music_mb': 200,
+            'weight_music_mb': 30,
         },
         'group_enum': 'USER_PREMIUM_PRO'  # À ajouter dans GroupEnum
     }

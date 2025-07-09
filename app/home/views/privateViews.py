@@ -276,10 +276,12 @@ def music_create(request, playlist_uuid) -> JsonResponse:
             return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
         else:
             form = MusicForm()
-        nb_music_remaining = UserTierManager.get_user_limits(request.user)['music_per_playlist'] - playlist.musics.count()
+        limit = UserTierManager.get_user_limits(request.user)
+        nb_music_remaining = limit['music_per_playlist'] - playlist.musics.count()
         if nb_music_remaining < 0:
             nb_music_remaining = 0
-        return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist , 'nbMusicRemaining' : nb_music_remaining , 'MusicFormatEnum': [ext.value for ext in MusicFormatEnum]})
+        file_size_mb = limit['weight_music_mb']
+        return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist , 'nbMusicRemaining' : nb_music_remaining , 'file_size_mb': file_size_mb, 'MusicFormatEnum': [ext.value for ext in MusicFormatEnum]})
     return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
 
 @login_required
