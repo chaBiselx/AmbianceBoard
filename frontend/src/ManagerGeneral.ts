@@ -1,1 +1,3 @@
-console.log('hello-world');
+import ConsoleCustom from "./modules/General/ConsoleCustom";
+
+ConsoleCustom.log('hello-world');

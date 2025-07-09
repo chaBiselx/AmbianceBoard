@@ -151,7 +151,7 @@ class MusicServiceTest(TestCase):
         test_file = self._create_test_file("new_song.mp3", size_mb=2)
         file_data = {
             'file': test_file,
-            'alternativeName': 'Test Song'
+            'alternativeName': 'Test Song 1'
         }
         
         # Exécuter la méthode
@@ -160,7 +160,7 @@ class MusicServiceTest(TestCase):
         # Vérifications
         self.assertIsNotNone(music)
         self.assertIsInstance(music, Music)
-        self.assertEqual(music.alternativeName, 'Test Song')
+        self.assertEqual(music.alternativeName, 'Test Song 1')
         self.assertEqual(music.playlist, new_playlist)
         self.assertTrue(music.file.name.endswith('.mp3'))
 
@@ -184,7 +184,7 @@ class MusicServiceTest(TestCase):
         test_file = self._create_test_file("new_song.mp3")
         file_data = {
             'file': test_file,
-            'alternativeName': 'Test Song'
+            'alternativeName': 'Exceeded Song'
         }
         
         # Le playlist self.playlist a déjà 3 musiques, limite est 2
@@ -363,7 +363,7 @@ class MusicServiceTest(TestCase):
                 )
                 file_data = {
                     'file': test_file,
-                    'alternativeName': f'Test Song {format_ext}'
+                    'alternativeName': f'Test format Song {format_ext}'
                 }
                 
                 # Ne devrait pas lever d'exception

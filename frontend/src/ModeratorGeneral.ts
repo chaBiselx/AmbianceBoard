@@ -1,4 +1,5 @@
-import ModalCustom from '@/modules/Modal';
+import ModalCustom from '@/modules/General/Modal';
+import ConsoleCustom from "@/modules/General/ConsoleCustom";
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.popup-data-playlist').forEach((el) => {
@@ -89,7 +90,7 @@ class FetchPopupData {
                 this.setValue()
             })
             .catch(error => {
-                console.error('Erreur lors de la requête AJAX:', error);
+                ConsoleCustom.error('Erreur lors de la requête AJAX:', error);
             });
     }
 

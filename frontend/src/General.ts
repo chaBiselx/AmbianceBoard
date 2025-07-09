@@ -1,8 +1,10 @@
-import Notification from '@/modules/Notifications';
+import Notification from '@/modules/General/Notifications';
 import ReportingContent from '@/modules/ReportingContent'
 import {PaginationManager} from '@/modules/PaginationManager';
 import {TagManager} from '@/modules/TagManager';
 import * as bootstrap from 'bootstrap';
+import ConsoleCustom from "./modules/General/ConsoleCustom";
+import Csrf from "./modules/General/Csrf";
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             new bootstrap.Dropdown(element);
         } catch (error) {
-            console.warn('Bootstrap Dropdown initialization failed:');
+            ConsoleCustom.warn('Bootstrap Dropdown initialization failed:');
         }
     });
 
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             new bootstrap.Tooltip(element);
         } catch (error) {
-            console.warn('Bootstrap Tooltip initialization failed:');
+            ConsoleCustom.warn('Bootstrap Tooltip initialization failed:');
         }
     });
 
@@ -29,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             new bootstrap.Popover(element);
         } catch (error) {
-            console.warn('Bootstrap Popover initialization failed:');
+            ConsoleCustom.warn('Bootstrap Popover initialization failed:');
         }
     });
 });
@@ -67,7 +69,7 @@ class EmailConfirmationAccount {
             this.element.style.display = 'none'
             const url = this.element.dataset.url
             const csrfToken = Csrf.getToken();
-            if (url) {
+            if (url && csrfToken) {
                 fetch(url, {
                     method: 'POST',
                     headers: {
@@ -136,7 +138,7 @@ class GeneralTheme {
         const url = this.buttonToggle.dataset.url
         const csrfToken = Csrf.getToken();
 
-        if (url) {
+        if (url && csrfToken) {
             fetch(url, {
                 method: 'UPDATE',
                 headers: {

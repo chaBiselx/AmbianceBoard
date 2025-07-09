@@ -1,4 +1,5 @@
-import Csrf from "@/modules/Csrf";
+import Csrf from "@/modules/General/Csrf";
+import ConsoleCustom from './modules/General/ConsoleCustom';
 
 type deleteConfig = { delete_url: string, redirect_url: string };
 
@@ -7,10 +8,6 @@ class TagSelector {
     private readonly tagBadges: string = '.tag-badge'
     private readonly classSelected: string = 'badge-selected'
     private readonly classUnselected: string = 'badge-unselected'
-
-    constructor() {
-
-    }
 
     public init() {
         const tagBadges = document.querySelectorAll(this.tagBadges);
@@ -31,14 +28,14 @@ class TagSelector {
         const tagId = el.getAttribute('data-tag-id');
         
         if (!tagId) {
-            console.warn('Tag ID not found on element:', el);
+            ConsoleCustom.warn('Tag ID not found on element:', el);
             return;
         }
         
         const checkbox = document.getElementById('tag_' + tagId) as HTMLInputElement;
         
         if (!checkbox || checkbox.type !== "checkbox") {
-            console.warn('Checkbox not found or not a valid input element:', checkbox);
+            ConsoleCustom.warn('Checkbox not found or not a valid input element:', checkbox);
             return;
         }
 
@@ -144,7 +141,7 @@ function callAjax(config: deleteConfig, method: string = 'POST') {
             }
         })
         .catch(error => {
-            console.error('Erreur lors de la requête AJAX:', error);
+            ConsoleCustom.error('Erreur lors de la requête AJAX:', error);
         });
 }
 

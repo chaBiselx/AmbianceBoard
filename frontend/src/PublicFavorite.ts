@@ -1,4 +1,4 @@
-import Csrf from "./modules/Csrf";
+import Csrf from "./modules/General/Csrf";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -35,7 +35,6 @@ class PublicFavorite {
         if(!this.element.checked){// invert because input already checked before event
             method = 'DELETE';
         }
-        console.log(Csrf.getToken());
         
         fetch(this.url, {
             method: method,

@@ -101,7 +101,7 @@ def manager_user_tier_edit(request, user_uuid) -> HttpResponse:
     """Édition du tier d'un utilisateur"""
     
     user = get_object_or_404(User, uuid=user_uuid)
-    user_tier, created = UserTier.objects.get_or_create(user=user)
+    user_tier, _ = UserTier.objects.get_or_create(user=user)
     
     if request.method == 'POST':
         try:
@@ -168,7 +168,7 @@ def manager_user_tier_bulk_action(request) -> HttpResponse:
         
         if action == 'downgrade_to_standard':
             for user in users:
-                user_tier, created = UserTier.objects.get_or_create(user=user)
+                user_tier, _ = UserTier.objects.get_or_create(user=user)
                 user_tier.downgrade_to_standard()
             
             messages.success(request, f'{len(users)} utilisateur(s) rétrogradé(s) au tier Standard')

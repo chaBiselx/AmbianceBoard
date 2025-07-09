@@ -1,4 +1,4 @@
-import Config from '@/modules/Config'
+import Config from '@/modules/General/Config'
 class WakeLock {
     private wakeLock: WakeLockSentinel | null = null;
 

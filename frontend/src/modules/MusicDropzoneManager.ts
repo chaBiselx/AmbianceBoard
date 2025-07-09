@@ -1,5 +1,6 @@
-import Notification from '@/modules/Notifications';
-import ModalCustom from './Modal';
+import ConsoleCustom from '@/modules/General/ConsoleCustom';
+import Notification from '@/modules/General/Notifications';
+import ModalCustom from './General/Modal';
 import {
     IDropAndDropConfig,
     IDropZoneAdapter,
@@ -65,10 +66,10 @@ export class MusicDropzoneManager {
     }
 
     private handleUploadSuccess(_files: File | File[] | FileList, response: IUploadResponse): void {
-        console.log('Upload response:', response);
+        ConsoleCustom.log('Upload response:', response);
 
         if (response.errors && response.errors.length > 0) {
-            console.warn('Upload errors:', response.errors);
+            ConsoleCustom.warn('Upload errors:', response.errors);
         }
         this.showErrors(response.errors || []);
 
@@ -78,7 +79,7 @@ export class MusicDropzoneManager {
     }
 
     private handleUploadError(_files: File | File[] | FileList, errorMessage: any): void {
-        console.error('Upload error:', errorMessage);
+        ConsoleCustom.error('Upload error:', errorMessage);
         const errors = errorMessage.errors || (typeof errorMessage === 'string' ? [errorMessage] : ['An unknown error occurred']);
         this.showErrors(errors);
     }

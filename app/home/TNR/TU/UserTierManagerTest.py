@@ -8,6 +8,7 @@ from parameters import settings
 
 
 class UserTierManagerTest(TestCase):
+    self.utilisateurStandard = 'Utilisateur Standard'
     
     def setUp(self):
         # Créer les groupes nécessaires
@@ -43,7 +44,7 @@ class UserTierManagerTest(TestCase):
         
         self.assertIn('STANDARD', tiers)
         self.assertIn('PREMIUM_BASIC', tiers)
-        self.assertEqual(tiers['STANDARD']['display_name'], 'Utilisateur Standard')
+        self.assertEqual(tiers['STANDARD']['display_name'], self.utilisateurStandard)
         self.assertEqual(tiers['PREMIUM_BASIC']['display_name'], 'Premium Basique')
     
     def test_get_tier_info(self):
@@ -86,9 +87,9 @@ class UserTierManagerTest(TestCase):
         premium_name = UserTierManager.get_tier_display_name('PREMIUM_BASIC')
         invalid_name = UserTierManager.get_tier_display_name('INVALID')
         
-        self.assertEqual(standard_name, 'Utilisateur Standard')
+        self.assertEqual(standard_name, self.utilisateurStandard)
         self.assertEqual(premium_name, 'Premium Basique')
-        self.assertEqual(invalid_name, 'Utilisateur Standard')  # Fallback
+        self.assertEqual(invalid_name, self.utilisateurStandard)  # Fallback
     
     def test_get_user_limits(self):
         """Test la récupération des limites d'un utilisateur"""
@@ -115,8 +116,6 @@ class UserTierManagerTest(TestCase):
             user=custom_user,
             tier_name='STANDARD',
         )
-        
-        limits = UserTierManager.get_user_limits(custom_user)
         
         # Devrait retourner les limites effectives du tier
         user_tier = custom_user.tier_info
@@ -151,7 +150,7 @@ class UserTierManagerTest(TestCase):
         self.assertIn('PREMIUM_BASIC', comparison)
         
         standard_comp = comparison['STANDARD']
-        self.assertEqual(standard_comp['display_name'], 'Utilisateur Standard')
+        self.assertEqual(standard_comp['display_name'], self.utilisateurStandard)
         self.assertIn('limits', standard_comp)
     
     def test_compatibility_with_settings(self):

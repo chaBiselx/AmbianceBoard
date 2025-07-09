@@ -1,5 +1,5 @@
 
-import Csrf from "@/modules/Csrf";
+import Csrf from "@/modules/General/Csrf";
 
 
 document.addEventListener("DOMContentLoaded", () => {

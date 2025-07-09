@@ -1,4 +1,4 @@
-import Csrf from "@/modules/Csrf";
+import Csrf from "@/modules/General/Csrf";
 import { ButtonPlaylist } from "./ButtonPlaylist";
 import { SearchMusicElement } from "@/modules/MusicElement";
 import  UpdateVolumeElement  from "@/modules/UpdateVolumeElement";

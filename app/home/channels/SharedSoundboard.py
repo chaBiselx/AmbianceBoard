@@ -66,29 +66,29 @@ class SharedSoundboard(AsyncWebsocketConsumer):
                 'data': text_data
             }))
 
+    async def _check_missing_params(self, data, params):
+        """Vérifie les paramètres manquants et envoie une erreur si nécessaire."""
+        for param in params:
+            # cas pour le volume ou une valeur peut être 0
+            if param == 'volume' or param == 'value':
+                if data.get(param) is None:
+                    await self.send(text_data=json.dumps({
+                        'type': 'error',
+                        'message': f'{param} manquant'
+                    }))
+                    return True
+            elif not data.get(param):
+                await self.send(text_data=json.dumps({
+                    'type': 'error',
+                    'message': f'{param} manquant'
+                }))
+                return True
+        return False
+
     async def handle_music_start(self, data):
         """Gère le démarrage de musique"""
         
-        track = data.get('track')
-        playlist_uuid = data.get('playlist_uuid')
-        url_music = data.get('url_music')
-        if not track:
-            await self.send(text_data=json.dumps({
-                'type': 'error',
-                'message': 'Track manquant'
-            }))
-            return
-        if not playlist_uuid:
-            await self.send(text_data=json.dumps({
-                'type': 'error',
-                'message': 'playlist_uuid manquant'
-            }))
-            return
-        if not url_music:
-            await self.send(text_data=json.dumps({
-                'type': 'error',
-                'message': 'url_music manquant'
-            }))
+        if await self._check_missing_params(data, ['track', 'playlist_uuid', 'url_music']):
             return
             
         # Diffuser à tout le groupe
@@ -96,21 +96,16 @@ class SharedSoundboard(AsyncWebsocketConsumer):
             self.group_name,
             {
                 'type': 'music_start',
-                'track': track,
-                'playlist_uuid': playlist_uuid,
-                'url_music': url_music,
+                'track': data.get('track'),
+                'playlist_uuid': data.get('playlist_uuid'),
+                'url_music': data.get('url_music'),
                 'sender': self.channel_name
             }
         )
 
     async def handle_music_stop(self, data):
         """Gère l'arrêt de musique"""
-        playlist_uuid = data.get('playlist_uuid')
-        if not playlist_uuid:
-            await self.send(text_data=json.dumps({
-                'type': 'error',
-                'message': 'playlist_uuid manquant'
-            }))
+        if await self._check_missing_params(data, ['playlist_uuid']):
             return
         
         # Diffuser à tout le groupe
@@ -118,8 +113,8 @@ class SharedSoundboard(AsyncWebsocketConsumer):
             self.group_name,
             {
                 'type': 'music_stop',
-                'track': track,
-                'playlist_uuid': playlist_uuid,
+                'track': data.get('track'),
+                'playlist_uuid': data.get('playlist_uuid'),
                 'sender': self.channel_name
             }
         )
@@ -174,27 +169,15 @@ class SharedSoundboard(AsyncWebsocketConsumer):
             
     async def handle_mixer_update(self, data_received):
         data = data_received.get('data', {})
-        type_mixer = data.get('type')
-        if not type_mixer:
-            await self.send(text_data=json.dumps({
-                'type': 'error',
-                'message': 'type_mixer manquant'
-            }))
+        if await self._check_missing_params(data, ['type', 'value']):
             return
         
-        value = data.get('value')
-        if value is None:
-            await self.send(text_data=json.dumps({
-                'type': 'error',
-                'message': 'value manquant'
-            }))
-            return
         await self.channel_layer.group_send(
             self.group_name,
             {
                 'type': 'mixer_update',
-                'type_mixer': type_mixer,
-                'value': value
+                'type_mixer': data.get('type'),
+                'value': data.get('value')
             }
         )
         
@@ -213,27 +196,15 @@ class SharedSoundboard(AsyncWebsocketConsumer):
     async def handle_playlist_update_volume(self, data_received):
         
         data = data_received.get('data', {})
-        playlist_uuid = data.get('playlist_uuid')
-        if not playlist_uuid:
-            await self.send(text_data=json.dumps({
-                'type': 'error',
-                'message': 'playlist_uuid manquant'
-            }))
+        if await self._check_missing_params(data, ['playlist_uuid', 'volume']):
             return
-        
-        volume = data.get('volume')
-        if volume is None:
-            await self.send(text_data=json.dumps({
-                'type': 'error',
-                'message': 'volume manquant'
-            }))
-            return
+
         await self.channel_layer.group_send(
             self.group_name,
             {
                 'type': 'playlist_update_volume',
-                'playlist_uuid': playlist_uuid,
-                'volume': volume
+                'playlist_uuid': data.get('playlist_uuid'),
+                'volume': data.get('volume')
             }
         )
         

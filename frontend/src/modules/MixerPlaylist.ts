@@ -4,7 +4,7 @@ import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
 import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 
 
-import Cookie from './Cookie';
+import Cookie from './General/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
 
 

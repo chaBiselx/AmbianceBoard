@@ -1,6 +1,7 @@
-import Csrf from "@/modules/Csrf";
+import Csrf from "@/modules/General/Csrf";
 import type { position } from '@/type/General'
 import { OrganizerButtonPlaylist } from '@/modules/OrganizerButtonPlaylist'
+import ConsoleCustom from "./modules/General/ConsoleCustom";
 
 document.addEventListener("DOMContentLoaded", () => {
     if (OrganizerDragAndDropZone.valid()) {
@@ -241,7 +242,7 @@ class SendBackendAction {
                 const cleanorder = new CleanOrderHandler()
                 cleanorder.reorderFrom(data.order).resetBadge()
             })
-            .catch(error => console.error(error));
+            .catch(error => ConsoleCustom.error(error));
     }
 
 }

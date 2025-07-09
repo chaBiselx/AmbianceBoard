@@ -13,8 +13,6 @@ class TagManager {
             return;
         }
         this.DOMTag.querySelectorAll('.tag-element-redirect').forEach(tagElement => {
-            console.log('tagElement', tagElement);
-            
             tagElement.addEventListener('click', (event) => {
                 const target = event.currentTarget as HTMLElement;
                 const tag = target.dataset.tag;

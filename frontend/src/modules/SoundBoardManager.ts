@@ -1,4 +1,4 @@
-import Config from '@/modules/Config';
+import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import { ButtonPlaylist, ListingButtonPlaylist } from '@/modules/ButtonPlaylist';
 import { MusicElement, ListingAudioElement } from '@/modules/MusicElement';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
@@ -6,7 +6,7 @@ import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 
 class SoundBoardManager {
     static createPlaylistLink(buttonPlaylist: ButtonPlaylist) {
-        if (Config.DEBUG) console.log('createPlaylistLink', buttonPlaylist);
+        ConsoleCustom.log('createPlaylistLink', buttonPlaylist);
 
         const musicElement = new MusicElement(buttonPlaylist);
         (new UpdateVolumeElement(musicElement)).update();
@@ -39,17 +39,17 @@ class SoundBoardManager {
     }
 
     static deleteSameTypePlaylist(ButtonPlaylist: ButtonPlaylist) {
-        if (Config.DEBUG) console.log('deleteSameTypePlaylist');
-        if (Config.DEBUG) console.log(ButtonPlaylist.singleConcurrentread);
+        ConsoleCustom.log('deleteSameTypePlaylist');
+        ConsoleCustom.log(ButtonPlaylist.singleConcurrentread);
         if (ButtonPlaylist.singleConcurrentread) {
             const listingMusicElement = ListingAudioElement.getListingAudioElement(ButtonPlaylist.playlistType);
             for (let musicElement of listingMusicElement) {
-                if (Config.DEBUG) console.log("remove", musicElement);
+                ConsoleCustom.log("remove", musicElement);
                 musicElement.delete();
             }
             const listingButtonPlaylist = ListingButtonPlaylist.getListingAudioElement(ButtonPlaylist.playlistType);
             for (let buttonPlaylist of listingButtonPlaylist) {
-                if (Config.DEBUG) console.log("disactive", buttonPlaylist);
+                ConsoleCustom.log("disactive", buttonPlaylist);
                 buttonPlaylist.disactive();
             }
         }
@@ -57,10 +57,10 @@ class SoundBoardManager {
 
     
     static deleteAllMusicPlaylist() {
-        if (Config.DEBUG) console.log('deleteAllPlaylist');
+        ConsoleCustom.log('deleteAllPlaylist');
         const listingMusicElement = ListingAudioElement.getListAllAudio();
         for (let musicElement of listingMusicElement) {
-            if (Config.DEBUG) console.log("remove", musicElement);
+            ConsoleCustom.log("remove", musicElement);
             musicElement.delete();
         }
    

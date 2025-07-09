@@ -1,12 +1,12 @@
 
-import Config from '@/modules/Config';
-import Csrf from "@/modules/Csrf";
+import Config from '@/modules/General/Config';
+import Csrf from "@/modules/General/Csrf";
 
 import { ButtonPlaylist } from '@/modules/ButtonPlaylist';
 import { MixerManager } from '@/modules/MixerManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
-import WakeLock from '@/modules/WakeLock';
-import ModalCustom from './modules/Modal';
+import WakeLock from '@/modules/General/WakeLock';
+import ModalCustom from './modules/General/Modal';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
 import {MixerPlaylist} from "@/modules/MixerPlaylist";
 

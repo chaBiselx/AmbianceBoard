@@ -1,5 +1,5 @@
-import ModalCustom from '@/modules/Modal';
-import Csrf from "@/modules/Csrf";
+import ModalCustom from '@/modules/General/Modal';
+import Csrf from "@/modules/General/Csrf";
 
 
 class ReportingContent {

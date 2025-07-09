@@ -1,12 +1,13 @@
-import Config from '@/modules/Config';
-import Csrf from "@/modules/Csrf";
-import Notification from '@/modules/Notifications';
+import Config from '@/modules/General/Config';
+import Csrf from "@/modules/General/Csrf";
+import Notification from '@/modules/General/Notifications';
+import ConsoleCustom from '@/modules/General/ConsoleCustom';
 
 import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import * as Model from '@/modules/FadeStartegy';
 import AudioFadeManager from '@/modules/AudioFadeManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
-import Cookie from '@/modules/Cookie';
+import Cookie from '@/modules/General/Cookie';
 
 const TRUE = 'True';//TODO fix type soundboard_read
 
@@ -144,7 +145,7 @@ class MusicElement {
     }
 
     public play() {
-        if (Config.DEBUG) console.log('play');
+        ConsoleCustom.log('play');
         this.DOMElement.addEventListener('error', this.handleAudioError);
 
         if (this.fadeIn) {
@@ -193,9 +194,9 @@ class MusicElement {
     }
 
     public addFadeOut() {
-        if (Config.DEBUG) console.log('addFadeOut');
+        ConsoleCustom.log('addFadeOut');
         if (this.fadeInGoing) {
-            if (Config.DEBUG) console.log('ignore fade out if fade in not finished');
+            ConsoleCustom.log('ignore fade out if fade in not finished');
             return // ignore fade out if fade in not finished
         }
 
@@ -208,7 +209,7 @@ class MusicElement {
     }
 
     private eventFadeOut(event: Event) {
-        if (Config.DEBUG) console.log('eventFadeOut');
+        ConsoleCustom.log('eventFadeOut');
         let new_music = new MusicElement(event.target as HTMLAudioElement);
         const timeRemaining = new_music.DOMElement.duration - new_music.DOMElement.currentTime;
 
@@ -220,7 +221,7 @@ class MusicElement {
                 new_music.DOMElement.removeEventListener('timeupdate', new_music.eventFadeOut);
                 new_music.addFadeOut();
                 if (new_music.checkLoop()) {
-                    if (Config.DEBUG) console.log("eventFadeOut loop");
+                    ConsoleCustom.log("eventFadeOut loop");
                     new_music.applyDelay(() => {
                         SoundBoardManager.createPlaylistLink(buttonPlaylist);
                     })
@@ -241,9 +242,9 @@ class MusicElement {
     private applyDelay(callback: () => void) {
         if (this.delay > 0) {
             const delay = this.getTimeDelay();
-            if (Config.DEBUG) console.log("delay: " + delay);
+            ConsoleCustom.log("delay: " + delay);
             setTimeout(() => {
-                if (Config.DEBUG) console.log("applyDelay callback: ");
+                ConsoleCustom.log("applyDelay callback: ");
 
                 const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist);
                 if (buttonPlaylist && buttonPlaylist.isActive() && this.butonPlaylistToken == buttonPlaylist.getToken()) {
@@ -256,13 +257,13 @@ class MusicElement {
     }
 
     private eventDeleteFadeOut(event: Event) {
-        if (Config.DEBUG) console.log('eventDeleteFadeOut');
+        ConsoleCustom.log('eventDeleteFadeOut');
         let new_music = new MusicElement(event.target as HTMLAudioElement);
         new_music.DOMElement.remove();
     }
 
     private eventDeleteNoFadeOut(event: Event) {
-        if (Config.DEBUG) console.log('eventDeleteNoFadeOut');
+        ConsoleCustom.log('eventDeleteNoFadeOut');
         let new_music = new MusicElement(event.target as HTMLAudioElement);
         new_music.DOMElement.remove();
         if (new_music.checkLoop()) {
@@ -285,7 +286,7 @@ class MusicElement {
                     'Content-Type': 'application/json',
                 },
             }).then((response) => {
-                if (Config.DEBUG) console.log('callAPIToStop', response);
+                ConsoleCustom.log('callAPIToStop', response);
             })
         }
     }

@@ -1,6 +1,7 @@
-import ModalCustom from '@/modules/Modal';
+import ModalCustom from '@/modules/General/Modal';
 import { MusicDropzoneConfig, MusicDropzoneManager } from '@/modules/MusicDropzoneManager';
-import Csrf from './modules/Csrf';
+import Csrf from './modules/General/Csrf';
+import ConsoleCustom from "./modules/General/ConsoleCustom";
 
 
 declare global {
@@ -170,11 +171,11 @@ function deleteEntity(config: { delete_url: string, redirect_url: string }) {
                 window.location.href = config.redirect_url;
             } else {
                 // Gestion des erreurs
-                console.error('Erreur lors de la suppression');
+                ConsoleCustom.error('Erreur lors de la suppression');
             }
         })
         .catch(error => {
-            console.error('Erreur lors de la requête AJAX:', error);
+            ConsoleCustom.error('Erreur lors de la requête AJAX:', error);
         });
 }
 
@@ -229,7 +230,7 @@ function showDescriptionType(e: Event) {
             })
         })
         .catch(error => {
-            console.error('Erreur lors de la requête AJAX:', error);
+            ConsoleCustom.error('Erreur lors de la requête AJAX:', error);
         });
 }
 
@@ -288,7 +289,7 @@ function getListingOtherColors(event: Event) {
 
         })
         .catch(error => {
-            console.error('Erreur lors de la requête AJAX:', error);
+            ConsoleCustom.error('Erreur lors de la requête AJAX:', error);
         });
 }
 
@@ -328,8 +329,8 @@ function appendChildPlaylist(divRow: HTMLElement, playlist: playlist) {
 
 }
 
-function selectColor(event: Event) {
-    console.log("selectColor");
+function selectColor(event: Event): void {
+    ConsoleCustom.log("selectColor");
 
     const el = event.target as HTMLButtonElement;
     const color = el.dataset.color!;
@@ -375,7 +376,7 @@ function showPopupMusic(event: Event) {
                         const csrf = dropZone.getAttribute('data-csrf');
 
                         if (!uploadUrl) {
-                            console.error('Missing required configuration for MusicDropzoneManager');
+                            ConsoleCustom.error('Missing required configuration for MusicDropzoneManager');
                             return;
                         }
 
@@ -387,7 +388,7 @@ function showPopupMusic(event: Event) {
                                     csrf : csrf
                                 } as MusicDropzoneConfig);
                         } catch (error) {
-                            console.error('Error initializing MusicDropzoneManager:', error);
+                            ConsoleCustom.error('Error initializing MusicDropzoneManager:', error);
                         }
                     }
                     const fileInput = document.getElementById('id_file');
@@ -400,7 +401,7 @@ function showPopupMusic(event: Event) {
 
         })
         .catch(error => {
-            console.error('Erreur lors de la requête AJAX:', error);
+            ConsoleCustom.error('Erreur lors de la requête AJAX:', error);
         });
 }
 

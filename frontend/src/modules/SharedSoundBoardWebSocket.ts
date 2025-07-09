@@ -1,10 +1,11 @@
-import Config from '@/modules/Config';
+import Config from '@/modules/General/Config';
 import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MusicElement } from '@/modules/MusicElement';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import { MixerElement } from "@/modules/MixerManager";
 import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
+import ConsoleCustom from '@/modules/General/ConsoleCustom';
 
 type DataMusic = {
     'track': number | null
@@ -55,14 +56,14 @@ class SharedSoundBoardWebSocket {
     public start(): void {
         // Éviter de créer plusieurs connexions WebSocket
         if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-            if (Config.DEBUG) console.log('WebSocket is already connected.');
+            ConsoleCustom.log('WebSocket is already connected.');
             return;
         }
 
         this.socket = new WebSocket(this.url);
 
         this.socket.onopen = (event) => {
-            if (Config.DEBUG) console.log('WebSocket is connected.');
+            ConsoleCustom.log('WebSocket is connected.');
         };
 
         this.socket.onmessage = (event) => {
@@ -82,7 +83,7 @@ class SharedSoundBoardWebSocket {
         };
 
         this.socket.onerror = (error) => {
-            if (Config.DEBUG) console.log('WebSocket Error:', error);
+            ConsoleCustom.log('WebSocket Error:', error);
         };
     }
 
@@ -99,48 +100,48 @@ class SharedSoundBoardWebSocket {
 
     public sendMessage(data: object): boolean {
         if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
-            if (Config.DEBUG) console.error('WebSocket is not connected. Cannot send message.');
+            ConsoleCustom.error('WebSocket is not connected. Cannot send message.');
             return false;
         }
 
         try {
             const jsonString = JSON.stringify(data);
             this.socket.send(jsonString);
-            if (Config.DEBUG) console.log('Message envoyé:', data);
+            ConsoleCustom.log('Message envoyé:', data);
             return true;
         } catch (error) {
-            if (Config.DEBUG) console.error('Erreur lors de l\'envoi du message:', error);
+            ConsoleCustom.error('Erreur lors de l\'envoi du message:', error);
             return false;
         }
     }
 
     private responseProcessing(response: WebSocketResponse): void {
         if (this.master) return
-        if (Config.DEBUG) console.log('Message reçu:', response);
-        if (Config.DEBUG) console.log('master', this.master);
+        ConsoleCustom.log('Message reçu:', response);
+        ConsoleCustom.log('master', this.master);
         switch (response.type) {
             case 'music_start':
-                if (Config.DEBUG) console.log('▶️ Démarrage musique:', response);
+                ConsoleCustom.log('▶️ Démarrage musique:', response);
                 this.startMusic(response.data as DataMusic);
                 break;
             case 'music_stop':
                 this.stopMusic(response.data as DataMusic);
-                if (Config.DEBUG) console.log('⏹️ Arrêt musique:', response);
+                ConsoleCustom.log('⏹️ Arrêt musique:', response);
                 break;
             case 'music_stop_all':
                 this.stopAll();
-                if (Config.DEBUG) console.log('⏹️ Arrêt toutes musiques:', response);
+                ConsoleCustom.log('⏹️ Arrêt toutes musiques:', response);
                 break;
             case 'mixer_update':
                 this.updateMixer(response.data as DataMixer);
-                if (Config.DEBUG) console.log('🔄 update mixer:', response);
+                ConsoleCustom.log('🔄 update mixer:', response);
                 break;
             case 'playlist_update_volume':
                 this.updateVolumePlaylist(response.data as DataVolumePlaylist);
-                if (Config.DEBUG) console.log('🔄 update volume playlist:', response);
+                ConsoleCustom.log('🔄 update volume playlist:', response);
                 break;
             default:
-                if (Config.DEBUG) console.error('❌ Erreur:', response);
+                ConsoleCustom.error('❌ Erreur:', response);
                 break;
         }
     }
