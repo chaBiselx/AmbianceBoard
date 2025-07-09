@@ -46,9 +46,9 @@ export class MusicDropzoneManager {
         const dragAndDropConfig = {
             containerSelector: this.config.containerSelector,
             uploadUrl: this.config.uploadUrl,
-            acceptedFiles: ".mp3,.wav,.ogg",
+            acceptedFiles: this.config.fileFormat,
             uploadMultiple: true,
-            parallelUploads: 5,
+            parallelUploads: this.config.nbfile,
             createImageThumbnails: false,
             addRemoveLinks: false,
             headers: {
@@ -102,6 +102,8 @@ export interface MusicDropzoneConfig {
     containerSelector: string;
     uploadUrl: string;
     csrf : string;
+    fileFormat: string;
+    nbfile:number;
 }
 
 /**

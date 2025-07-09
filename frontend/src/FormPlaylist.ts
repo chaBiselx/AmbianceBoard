@@ -373,7 +373,8 @@ function showPopupMusic(event: Event) {
                     const dropZone = document.getElementById('music-dropzone');
                     if (dropZone) {
                         const uploadUrl = dropZone.getAttribute('data-upload-url');
-                        const csrf = dropZone.getAttribute('data-csrf');
+                        const csrf = Csrf.getToken();
+                        
 
                         if (!uploadUrl) {
                             ConsoleCustom.error('Missing required configuration for MusicDropzoneManager');
@@ -385,7 +386,9 @@ function showPopupMusic(event: Event) {
                                 {
                                     containerSelector: '#music-dropzone',
                                     uploadUrl: uploadUrl,
-                                    csrf : csrf
+                                    csrf : csrf,
+                                    fileFormat: dropZone.dataset.format,
+                                    nbfile: parseInt(dropZone.dataset.musicremaining!),
                                 } as MusicDropzoneConfig);
                         } catch (error) {
                             ConsoleCustom.error('Error initializing MusicDropzoneManager:', error);

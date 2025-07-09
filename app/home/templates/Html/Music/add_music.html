@@ -7,12 +7,15 @@
             <div id="music-dropzone" class="dropzone"
                  data-csrf="{{ csrf_token }}"
                  data-upload-url="{% url 'uploadMultipleMusic' playlist.uuid %}"
-                 data-playlist-redirect-url="{% url 'playlistUpdate' playlist.uuid %}">
+                 data-playlist-redirect-url="{% url 'playlistUpdate' playlist.uuid %}"
+                 data-format="{{ MusicFormatEnum|join:"," }}"
+                 data-musicRemaining="{{ nbMusicRemaining }}">
                 <div class="dz-message">
                     <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
                     <h4>Glissez vos fichiers audio ici</h4>
                     <p>ou cliquez pour sélectionner des fichiers</p>
                     <p class="text-muted">Formats acceptés : {{ MusicFormatEnum|join:", " }}</p>
+                    <p><small class="text-muted" id="music-remaining">{{ nbMusicRemaining }} fichiers restants</small></p>
                 </div>
             </div>
         </div>
