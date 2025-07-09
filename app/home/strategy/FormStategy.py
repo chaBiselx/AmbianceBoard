@@ -7,6 +7,8 @@ class FormStategy:
             manager = PasswordInput(field)
         if(field.widget.__class__.__name__ == 'TextInput'):
             manager = TextInputManager(field)
+        if(field.widget.__class__.__name__ == 'EmailInput'):
+            manager = TextInputManager(field)
         if(field.widget.__class__.__name__ == 'Textarea'):
             manager = TextInputManager(field)
         if  field.widget.__class__.__name__ == 'FileInput':

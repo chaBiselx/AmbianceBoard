@@ -13,14 +13,24 @@ class CreateUserForm(UserPasswordForm):
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'password')
 
-    def clean(self):
-        cleaned_data = super().clean()
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        protected_names = [
+            'root', 'admin', 'administrator', 'superuser', 'sysadmin', 'webmaster',
+            'support', 'postmaster', 'hostmaster', 'abuse', 'noreply', 'security',
+            'test', 'guest', 'info', 'contact', 'help', 'www', 'ftp', 'mail',
+            'news', 'uucp', 'operator', 'staff', 'user', 'users', 'system'
+        ]
+        if username.lower() in protected_names:
+            raise forms.ValidationError("Ce nom d'utilisateur est protégé et ne peut pas être utilisé.")
+        return username
 
-        email = cleaned_data.get('email')
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
         if email and User.objects.filter(email=email).exists():
             raise forms.ValidationError("Cet email est déjà utilisé")
 
-        return cleaned_data
+        return email
 
     def save(self, commit=True):
         user = super().save(commit=False)
