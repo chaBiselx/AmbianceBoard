@@ -4,6 +4,8 @@ import logging
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.urls import reverse
+from django.core.cache import cache
+from django.conf import settings
 
 from home.models.SharedSoundboard import SharedSoundboard
 from home.models.SoundBoard import SoundBoard
@@ -61,20 +63,24 @@ class SharedSoundboardService():
         
     def _get_shared_soundboard(self):
         """Récupère le SharedSoundboard de manière asynchrone"""
+        cache_key = f"shared_soundboard:{self.soundboard_uuid}:{self.token}"
+        shared_soundboard = cache.get(cache_key)
+        if shared_soundboard is not None:
+            return True
+            
         if self.token is None:
             return False
-        
-        #TODO use CACHE
         
         try:
             soundboard = SoundBoard.objects.get(uuid=self.soundboard_uuid)
             if not soundboard:
                 return False
             
-            SharedSoundboard.objects.get(
+            shared_soundboard = SharedSoundboard.objects.filter(
                 soundboard=soundboard, 
                 token=self.token
-            )
+            ).first()
+            cache.set(cache_key, shared_soundboard, timeout=settings.LIMIT_CACHE_DEFAULT)
             return True
         except SharedSoundboard.DoesNotExist:
             logger.error(f"Soundboard introuvable: {self.soundboard_uuid}")

@@ -3,6 +3,8 @@ import json
 import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
+from django.core.cache import cache
+from django.conf import settings
 
 logger = logging.getLogger('home')
 
@@ -241,6 +243,10 @@ class SharedSoundboard(AsyncWebsocketConsumer):
     def _get_shared_soundboard(self):
         """Récupère le SharedSoundboard de manière asynchrone"""
         try:
+            cache_key = f"shared_soundboard:{self.soundboard_uuid}:{self.token}"
+            shared_soundboard = cache.get(cache_key)
+            if shared_soundboard is not None:
+                return shared_soundboard
             
             # Import local pour éviter le problème AppRegistryNotReady
             from home.models.SharedSoundboard import SharedSoundboard
@@ -249,12 +255,14 @@ class SharedSoundboard(AsyncWebsocketConsumer):
             soundboard = SoundBoard.objects.get(uuid=self.soundboard_uuid)
             if not soundboard:
                 return None
-            #TODO use CACHE
-            
-            return SharedSoundboard.objects.get(
+
+            shared_soundboard = SharedSoundboard.objects.filter(
                 soundboard=soundboard, 
                 token=self.token
-            )
+            ).first()
+            cache.set(cache_key, shared_soundboard, timeout=settings.LIMIT_CACHE_DEFAULT)
+            
+            return shared_soundboard
         except SharedSoundboard.DoesNotExist:
             return None
         except Exception as e:
