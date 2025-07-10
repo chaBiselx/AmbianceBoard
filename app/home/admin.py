@@ -13,6 +13,7 @@ from home.models.ReportContent import ReportContent
 from home.models.SharedSoundboard import SharedSoundboard
 from home.models.Tag import Tag
 from home.models.UserTier import UserTier
+from home.models.DomainBlacklist import DomainBlacklist
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -28,3 +29,4 @@ admin.site.register(ReportContent)
 admin.site.register(SharedSoundboard)
 admin.site.register(Tag)
 admin.site.register(UserTier)
+admin.site.register(DomainBlacklist)

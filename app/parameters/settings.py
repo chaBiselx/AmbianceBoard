@@ -309,12 +309,15 @@ if RUN_CRONS:
     CRON_CLASSES.append('home.cron.DeleteAccountCron.run')
     CRON_CLASSES.append('home.cron.DeleteSharedSoundboardExpiredCron.run')
     CRON_CLASSES.append('home.cron.UserTierExpirationCron.run')
+    CRON_CLASSES.append('home.cron.SyncDomainBlacklistCronJob.run')
+    
     
     CRONJOBS.append(('0 10 * * *', 'home.cron.CleanMediaFolderCron.run'))
     CRONJOBS.append(('0 10 * * *', 'home.cron.DeleteAccountCron.run'))
     CRONJOBS.append(('0 18 * * *', 'home.cron.DeleteSharedSoundboardExpiredCron.run'))
     CRONJOBS.append(('0 6 * * *', 'home.cron.UserTierExpirationCron.run'))  # Tous les jours à 6h
-        
+    CRONJOBS.append(('0 12 1,7,14,21,28 * *', 'home.cron.SyncDomainBlacklistCronJob.run'))  # Tous les jours à 12h
+
 
 # message brokers 
 RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")

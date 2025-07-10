@@ -9,6 +9,7 @@ from home.service.MediaImgSoundboardService import MediaImgSoundboardService
 from home.enum.PermissionEnum import PermissionEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
 from home.service.cron.UserTierExpirationService import UserTierExpirationService
+from home.service.cron.DomainBlacklistCronService import DomainBlacklistCronService
     
 
 @login_required
@@ -44,3 +45,18 @@ def expire_account(request) -> JsonResponse:
         return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
     
 
+    
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def sync_domain_blacklist(request) -> JsonResponse:
+    try:
+        logger = logging.getLogger('home')
+        logger.warning("Starting SyncDomainBlacklist View")
+        domain_blacklist_cron_service = DomainBlacklistCronService()
+        domain_blacklist_cron_service.sync_blacklist()
+        logger.warning("Ending SyncDomainBlacklist View")
+        return JsonResponse({"message": "OK"}, status=200)
+    except Exception as e:
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+    

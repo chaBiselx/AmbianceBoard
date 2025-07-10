@@ -9,3 +9,4 @@ celery[redis]
 kombu
 channels[daphne]
 django-encrypted-model-fields==0.6.5
+requests==2.32.4

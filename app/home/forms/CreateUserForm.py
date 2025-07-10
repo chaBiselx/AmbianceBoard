@@ -2,6 +2,7 @@ import re
 from django import forms
 from home.models.User import User
 from home.forms.UserPasswordForm import UserPasswordForm
+from home.models.DomainBlacklist import DomainBlacklist
 
 class CreateUserForm(UserPasswordForm):
     first_name = forms.CharField(max_length=64,label='Prénom', )
@@ -29,6 +30,9 @@ class CreateUserForm(UserPasswordForm):
         email = self.cleaned_data.get('email')
         if email and User.objects.filter(email=email).exists():
             raise forms.ValidationError("Cet email est déjà utilisé")
+        
+        if DomainBlacklist.objects.filter(domain=email.split('@')[-1]).exists():
+            raise forms.ValidationError("L'email fourni est sur la liste noire. Veuillez utiliser un autre email.")
 
         return email
 
