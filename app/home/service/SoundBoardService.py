@@ -10,6 +10,14 @@ class SoundBoardService:
     
     def __init__(self, request):
         self.request = request
+        
+    def get_all_soundboard(self)-> list[SoundBoard] :
+        try:
+            _query_set = SoundBoard.objects.all().order_by('updated_at')
+            soundboards = _query_set.filter(user=self.request.user)
+        except Exception:
+            soundboards = []
+        return soundboards
     
     def get_soundboard(self, soundboard_uuid:int)-> SoundBoard|None :
         try:

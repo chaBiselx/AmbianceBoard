@@ -372,6 +372,7 @@ ATTRIB_PERMISSIONS = {
 # USER TIERS AND LIMITS CONFIGURATION
 # Configuration flexible pour différents niveaux d'utilisateurs
 
+AUDIO_BITRATE_REDUCER_TARGET_BITRATE = 128  # En kbps
 USER_TIERS = {
     'STANDARD': {
         'name': 'Standard',

@@ -1,6 +1,7 @@
 import logging
 from pydub import AudioSegment
 import os
+from django.conf import settings
 
 class AudioBitrateReducer:
     def __init__(self, input_file):
@@ -42,8 +43,9 @@ class AudioBitrateReducer:
             self.logger.error(f"Erreur lors de l'obtention du bitrate : {e}")
         return None
 
-    def reduce_bitrate(self, output_file=None, target_bitrate=128):
+    def reduce_bitrate(self, output_file=None):
         """Réduit le bitrate du fichier audio si nécessaire et conserve l'extension."""
+        target_bitrate=settings.AUDIO_BITRATE_REDUCER_TARGET_BITRATE
         if self.audio is None:
             self.logger.debug("L'audio n'est pas chargé. Exécutez 'load_audio()' en premier.")
             return

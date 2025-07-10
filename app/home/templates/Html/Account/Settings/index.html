@@ -1,6 +1,68 @@
 {% extends 'Html/base.html' %}
 
 {% block content %}
-Index settings page
+<div class="container mt-4">
+    <h2>Récapitulatif de votre compte</h2>
+    <p>Votre tier actuel : <strong>{{ user_tiers }}</strong></p>
 
+    <div class="card">
+        <div class="card-header">
+            Vos limites actuelles
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Fonctionnalité</th>
+                        <th>Limite</th>
+                        <th>Actuel</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Nombre de soundboards</td>
+                        <td>{{ limit.soundboard }}</td>
+                        <td>{{ nb_soundboard }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de playlists</td>
+                        <td>{{ limit.playlist }}</td>
+                        <td>{{ nb_playlist }}</td>
+                    </tr>
+                    <tr>
+                        <td>Musiques par playlist</td>
+                        <td>{{ limit.music_per_playlist }}</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>Poids maximum par musique (MB)</td>
+                        <td>{{ limit.weight_music_mb }}</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            Paramètres de l'application
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Paramètre</th>
+                        <th>Valeur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Taux de compression audio maximum</td>
+                        <td><strong>{{ app_setting.target_bitrate }} kbps</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}
