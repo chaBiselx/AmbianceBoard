@@ -29,10 +29,10 @@ def moderator_dashboard(request) -> HttpResponse:
     nb_users = User.objects.all().count()
     moy_playlist_per_user = (User.objects.annotate(playlist_count=models.Count('playlist')).aggregate(avg_playlists=Avg('playlist_count')))['avg_playlists']
     moy_music_per_user = User.objects.annotate(
-        music_count=models.Count('playlist__musics')
+        music_count=models.Count('playlist__tracks')
         ).aggregate(avg_music=Avg('music_count'))['avg_music']
     moy_music_per_playlist = Playlist.objects.annotate(
-        music_count=models.Count('musics')
+        music_count=models.Count('tracks')
         ).aggregate(avg_music=Avg('music_count'))['avg_music']
     return render(request, 'Html/Moderator/dashboard.html', {
             'nb_users': nb_users, 
@@ -47,7 +47,7 @@ def moderator_dashboard(request) -> HttpResponse:
 def moderator_listing_images_playlist(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
     
-    queryset = Playlist.objects.exclude(icon__isnull=False, icon__exact='')
+    queryset = Playlist.objects.all()
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
     
@@ -59,7 +59,7 @@ def moderator_listing_images_playlist(request) -> HttpResponse:
 def moderator_listing_images_soundboard(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
 
-    queryset = SoundBoard.objects.exclude(icon__isnull=False, icon__exact='')
+    queryset = SoundBoard.objects.all()
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
     

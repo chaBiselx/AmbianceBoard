@@ -2,6 +2,7 @@ import uuid
 from home.enum.PermissionEnum import PermissionEnum
 from home.models.Playlist import Playlist
 from home.models.Music import Music
+from home.models.Track import Track
 from home.filters.MusicFilter import MusicFilter
 from home.forms.MusicForm import MusicForm
 from home.factory.UserParametersFactory import UserParametersFactory
@@ -37,8 +38,8 @@ class MusicService:
         if not soundboard:
             return None
         try:
-            return Music.objects.get(pk=music_id, playlist__uuid=playlist_uuid)
-        except Music.DoesNotExist:
+            return Track.objects.get(pk=music_id, playlist__uuid=playlist_uuid)
+        except Track.DoesNotExist:
             return None
         except Playlist.DoesNotExist:
             return None
@@ -61,7 +62,7 @@ class MusicService:
         user_parameters = UserParametersFactory(self.request.user)
         limit_music_per_playlist = user_parameters.limit_music_per_playlist
             
-        if(len(Music.objects.filter(playlist=playlist)) >= limit_music_per_playlist):
+        if(len(Track.objects.filter(playlist=playlist)) >= limit_music_per_playlist):
             raise ValueError("Vous avez atteint la limite de musique par playlist (" + str(limit_music_per_playlist) + " max).")
             
         form = MusicForm(self.request.POST, self.request.FILES, instance=music)
@@ -87,7 +88,7 @@ class MusicService:
         limit_music_per_playlist = user_parameters.limit_music_per_playlist
 
         # Vérifier la limite de musiques par playlist
-        current_music_count = Music.objects.filter(playlist=playlist).count()
+        current_music_count = Track.objects.filter(playlist=playlist).count()
         if current_music_count >= limit_music_per_playlist:
             raise ValueError("Vous avez atteint la limite de musique par playlist (" + str(limit_music_per_playlist) + " max).")
         
@@ -107,5 +108,5 @@ class MusicService:
         music.alternativeName = file.name.split('.')[0][0:63]
         music.playlist = playlist
         music.save()
+        
         return music
-    

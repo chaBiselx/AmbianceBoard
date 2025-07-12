@@ -3,21 +3,13 @@ import os
 from home.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
 from home.message.ReduceBiteRateMessenger import reduce_bit_rate
-from home.models.Playlist import Playlist
+from .Track import Track
 
-class Music(models.Model):
+class Music(Track):
     MUSIC_FOLDER = 'musics/'
-    id = models.BigAutoField(primary_key=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    fileName = models.CharField(max_length=63)
-    alternativeName = models.CharField(max_length=63, default=None)
+    fileName = models.CharField(max_length=255)
     file = models.FileField(upload_to=MUSIC_FOLDER)
-    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE,null=False, blank=False, related_name="musics")
 
-    def __str__(self):
-        return self.alternativeName
-    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._file_original = self.file if self.pk else None 
@@ -34,7 +26,9 @@ class Music(models.Model):
             reduce_bit_rate.apply_async(args=[self.file.path], queue='default', priority=1 )
             
     def get_name(self):
-        return os.path.splitext(os.path.basename(self.file.name))[0]
+        if self.alternativeName:
+            return self.alternativeName
+        return os.path.splitext(os.path.basename(self.fileName))[0]
 
         
     def clean(self):

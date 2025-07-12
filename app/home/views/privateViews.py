@@ -243,12 +243,12 @@ def playlist_update(request, playlist_uuid):
             return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
         else:
             form = PlaylistForm(instance=playlist)
-    list_music = (MusicService(request)).get_list_music(playlist_uuid)
+    list_track = (MusicService(request)).get_list_music(playlist_uuid)
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
     return render(
         request, 
         'Html/Playlist/playlist_create.html', # NOSONAR
-        {'form': form, 'method' : 'update', 'listMusic' : list_music, 'list_default_color':list_default_color}
+        {'form': form, 'method' : 'update', 'listTrack' : list_track, 'list_default_color':list_default_color}
     )
 
 @login_required
@@ -277,7 +277,7 @@ def music_create(request, playlist_uuid) -> JsonResponse:
         else:
             form = MusicForm()
         limit = UserTierManager.get_user_limits(request.user)
-        nb_music_remaining = limit['music_per_playlist'] - playlist.musics.count()
+        nb_music_remaining = limit['music_per_playlist'] - playlist.tracks.count()
         if nb_music_remaining < 0:
             nb_music_remaining = 0
         file_size_mb = limit['weight_music_mb']
@@ -322,14 +322,15 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
 @login_required
 @require_http_methods(['GET'])
 def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
-    music = (MusicService(request)).get_random_music(playlist_uuid)
-    if not music :
+    track = (MusicService(request)).get_random_music(playlist_uuid)
+    if not track :
         return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
     
-    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, music)
-    
-    response = HttpResponse(music.file, content_type='audio/*')
-    response['Content-Disposition'] = 'inline; filename="{}"'.format(music.fileName)
+    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
+
+    response = track.get_reponse_content()
+    if(not response):
+        return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
     return response
 
 @login_required

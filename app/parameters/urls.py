@@ -81,9 +81,9 @@ urlpatterns = [
     
     
     path("moderator/", moderator_dashboard, name="moderatorDashboard"),
-    path("moderator/playlist/images", moderator_listing_images_playlist, name="moderatorControleImagesPlaylist"),
+    path("moderator/playlist/", moderator_listing_images_playlist, name="moderatorControleImagesPlaylist"),
     path("moderator/playlist/<uuid:playlist_uuid>", moderator_get_infos_playlist, name="moderatorGetDataPlaylist"),
-    path("moderator/soundboard/images", moderator_listing_images_soundboard, name="moderatorControleImagesSoundboard"),
+    path("moderator/soundboard", moderator_listing_images_soundboard, name="moderatorControleImagesSoundboard"),
     path("moderator/soundboard/<uuid:soundboard_uuid>", moderator_get_infos_soundboard, name="moderatorGetDataSoundboard"),
     path("moderator/report/content", moderator_listing_report, name="moderatorControleReport"),
     path("moderator/report/content/archive", moderator_listing_report_archived, name="moderatorControleReportArchived"),

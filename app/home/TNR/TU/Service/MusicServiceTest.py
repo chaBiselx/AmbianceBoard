@@ -3,6 +3,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch, MagicMock
 from home.service.MusicService import MusicService
 from home.models.Music import Music
+from home.models.Track import Track
 from home.models.Playlist import Playlist
 from home.models.User import User
 
@@ -59,7 +60,7 @@ class MusicServiceTest(TestCase):
         
         music_service = MusicService(request)
         music = music_service.get_random_music(1)
-        self.assertEqual(music.alternativeName, "test")
+        self.assertEqual(music.get_name(), "test")
     
     def test_get_random_music_random(self):
         request = self.factory.get('/')
@@ -149,18 +150,14 @@ class MusicServiceTest(TestCase):
         )
         
         test_file = self._create_test_file("new_song.mp3", size_mb=2)
-        file_data = {
-            'file': test_file,
-            'alternativeName': 'Test Song 1'
-        }
         
         # Exécuter la méthode
-        music = music_service.save_multiple_files_item(new_playlist, file_data)
+        music = music_service.save_multiple_files_item(new_playlist, test_file)
         
         # Vérifications
         self.assertIsNotNone(music)
         self.assertIsInstance(music, Music)
-        self.assertEqual(music.alternativeName, 'Test Song 1')
+        self.assertEqual(music.alternativeName, 'new_song')
         self.assertEqual(music.playlist, new_playlist)
         self.assertTrue(music.file.name.endswith('.mp3'))
 
@@ -176,20 +173,13 @@ class MusicServiceTest(TestCase):
         request = self.factory.post('/')
         request.user = self.user
         
-        self.playlist.musics.add(self.music[0], self.music[1])  # Ajout de 2 musiques
-        self.playlist.save()  # Sauvegarder la playlist avec les musiques
-        
         music_service = MusicService(request)
         
         test_file = self._create_test_file("new_song.mp3")
-        file_data = {
-            'file': test_file,
-            'alternativeName': 'Exceeded Song'
-        }
         
-        # Le playlist self.playlist a déjà 3 musiques, limite est 2
+        # Le playlist self.playlist a déjà 3 musiques, la limite est 2
         with self.assertRaises(ValueError) as context:
-            music_service.save_multiple_files_item(self.playlist, file_data)
+            music_service.save_multiple_files_item(self.playlist, test_file)
         
         self.assertIn("limite de musique par playlist", str(context.exception))
 
@@ -216,13 +206,9 @@ class MusicServiceTest(TestCase):
         
         # Créer un fichier de 2 Mo (dépasse la limite de 1 Mo)
         test_file = self._create_test_file("large_song.mp3", size_mb=2)
-        file_data = {
-            'file': test_file,
-            'alternativeName': 'Large Song'
-        }
         
         with self.assertRaises(ValueError) as context:
-            music_service.save_multiple_files_item(new_playlist, file_data)
+            music_service.save_multiple_files_item(new_playlist, test_file)
         
         self.assertIn("poids du fichier est trop lourd", str(context.exception))
 
@@ -253,13 +239,9 @@ class MusicServiceTest(TestCase):
             content=b'not an audio file',
             content_type='text/plain'
         )
-        file_data = {
-            'file': test_file,
-            'alternativeName': 'Invalid File'
-        }
         
         with self.assertRaises(ValueError) as context:
-            music_service.save_multiple_files_item(new_playlist, file_data)
+            music_service.save_multiple_files_item(new_playlist, test_file)
         
         self.assertIn("fichiers audio", str(context.exception))
 
@@ -285,19 +267,15 @@ class MusicServiceTest(TestCase):
         )
         
         test_file = self._create_test_file("my_awesome_song.mp3")
-        file_data = {
-            'file': test_file
-            # Pas d'alternativeName fourni
-        }
         
-        music = music_service.save_multiple_files_item(new_playlist, file_data)
+        music = music_service.save_multiple_files_item(new_playlist, test_file)
         
         # Le nom alternatif devrait être le nom du fichier sans extension
         self.assertEqual(music.alternativeName, 'my_awesome_song')
 
     @patch('home.service.MusicService.UserParametersFactory')
     def test_save_multiple_files_item_truncate_long_name(self, mock_user_params_factory):
-        """Test que le nom alternatif long est tronqué à 63 caractères"""
+        """Test que le nom de fichier long est tronqué à 63 caractères pour alternativeName"""
         # Configuration du mock
         mock_user_params = MagicMock()
         mock_user_params.limit_music_per_playlist = 10
@@ -316,15 +294,11 @@ class MusicServiceTest(TestCase):
             user=self.user
         )
         
-        test_file = self._create_test_file("song.mp3")
         # Nom très long (plus de 63 caractères)
         long_name = "a" * 70
-        file_data = {
-            'file': test_file,
-            'alternativeName': long_name
-        }
-        
-        music = music_service.save_multiple_files_item(new_playlist, file_data)
+        test_file = self._create_test_file(f"{long_name}.mp3")
+
+        music = music_service.save_multiple_files_item(new_playlist, test_file)
         
         # Le nom devrait être tronqué à 63 caractères
         self.assertEqual(len(music.alternativeName), 63)
@@ -361,13 +335,9 @@ class MusicServiceTest(TestCase):
                     content=b'audio content',
                     content_type=f'audio/{format_ext[1:]}'
                 )
-                file_data = {
-                    'file': test_file,
-                    'alternativeName': f'Test format Song {format_ext}'
-                }
                 
                 # Ne devrait pas lever d'exception
-                music = music_service.save_multiple_files_item(playlist, file_data)
+                music = music_service.save_multiple_files_item(playlist, test_file)
                 self.assertIsNotNone(music)
                 self.assertTrue(music.file.name.endswith(format_ext))
 
@@ -379,3 +349,4 @@ class MusicServiceTest(TestCase):
                 storage = music.file.storage
                 if storage.exists(music.file.name):
                     storage.delete(music.file.name)
+        Track.objects.all().delete()
