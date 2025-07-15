@@ -78,7 +78,10 @@ def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id
     if not track :
         return HttpResponse("Musique introuvable.", status=404)
     
-    response = track.get_reponse_content()
-    if(not response):
-        return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
-    return response
+    try:
+        response = track.get_reponse_content()
+        if response:
+            return response
+    except Exception as e:
+        logging.error(f"Error in music_stream: {e}")
+    return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)

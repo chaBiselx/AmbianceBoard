@@ -1,6 +1,7 @@
 from django.db import models
 from .Playlist import Playlist
-from django.http import  HttpResponse
+from django.http import  StreamingHttpResponse
+from home.strategy.urlMusicStreamStrategy import UrlMusicStreamStrategy
 
 
 class Track(models.Model):
@@ -67,13 +68,22 @@ class Track(models.Model):
     
     def get_reponse_content(self):
         if self.is_music():
-            response = HttpResponse(self.get_stream_url(), content_type='audio/*')
+            response = StreamingHttpResponse(self.music.file, content_type='audio/*')
             response['Content-Disposition'] = 'inline; filename="{}"'.format(self.music.fileName)
             return response
         if self.is_link_music():
-            pass
-            # response = HttpResponse(linkmusic.file, content_type='audio/*')
-            # response['Content-Disposition'] = 'inline; filename="{}"'.format(linkmusic.fileName)
+            strategy_class = UrlMusicStreamStrategy().get_strategy(self.linkmusic.domained_name)
+            if not strategy_class:
+                raise ValueError(f"Aucune stratégie trouvée pour le domaine: {self.linkmusic.domained_name}")
+            strategy_instance = strategy_class(self.linkmusic.url)
+            stream = strategy_instance.extract()
+                
+            if not stream:
+                raise ValueError("Aucun stream audio trouvé pour le lien")
+                
+            response = StreamingHttpResponse(stream, content_type='audio/*')
+            response['Content-Disposition'] = 'inline; filename="{}"'.format(self.get_name())
+            response['Accept-Ranges'] = 'bytes'
         # Fallback pour les instances de Track qui ne seraient ni l'un ni l'autre
         return None
 

@@ -144,8 +144,16 @@
         <div class="row ">
             <div class="col">
                 <div class="gestion">
-                    <div>
-                        <button class="btn btn-primary btn-block btn-add-music" title="Ajouter musique" data-url="{% url 'addMusic' form.instance.uuid %}">Ajouter musique</button>
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <button class="btn btn-primary btn-block btn-add-music" title="Ajouter musique" data-url="{% url 'addMusic' form.instance.uuid %}">Ajouter musique</button>
+                        </div>
+                        {% if LinkMusicAllowedEnum|length > 0 %}
+                        <div class="col-12 col-sm-6">
+                            <button class="btn btn-primary btn-block btn-add-music" title="Ajouter lien" data-url="{% url 'addLink' form.instance.uuid %}">Ajouter Lien</button>
+                        </div>
+                        {% endif %}
+
                     </div>
                     <div class="flex-container mt-2">
                         {% if listTrack is not null %}
@@ -154,12 +162,15 @@
                             <div class="btn-group float-end">
                                 {% if track.is_music %}
                                 <button class="btn btn-sm btn-warning btn-add-music" title="Edit {{ track.get_name }}" data-url="{% url 'editMusic' form.instance.uuid track.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
-                                {% endif %}
-                                {% if track.is_link_music %}
-                                <button class="btn btn-sm btn-warning btn-add-music" title="Edit {{ track.get_name }}" data-url="{% url 'editMusic' form.instance.uuid track.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger btn-delete-music" title="Delete {{ track.get_name }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid track.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i
+                                        class="fa-solid fa-trash-can"></i></button>
 
                                 {% endif %}
-                                <button class="btn btn-sm btn-danger btn-delete-music" title="Delete {{ track.get_name }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid track.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i class="fa-solid fa-trash-can"></i></button>
+                                {% if track.is_link_music %}
+                                <button class="btn btn-sm btn-warning btn-add-music" title="Edit {{ track.get_name }}" data-url="{% url 'editLink' form.instance.uuid track.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger btn-delete-music" title="Delete {{ track.get_name }}" data-deleteurl="{% url 'deleteLink' form.instance.uuid track.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i
+                                        class="fa-solid fa-trash-can"></i></button>
+                                {% endif %}
                             </div>
                             <div class="music-name mt-1 mb-2">
                                 <h6>{{ track.get_name }}</h6>

@@ -7,6 +7,7 @@ from home.views.generalViews import home, create_account, login_view, logout_vie
 from home.views.privateViews import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
 from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors, playlist_describe_type
 from home.views.privateViews import music_create, music_update, music_delete,music_stream,stop_stream, update_direct_volume, upload_multiple_music
+from home.views.privateViews import link_create, link_update, link_delete
 from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
 from home.views.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
 from home.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions
@@ -59,6 +60,11 @@ urlpatterns = [
     path("playlist/<uuid:playlist_uuid>/music/upload-multiple", upload_multiple_music, name="uploadMultipleMusic"),
     path("playlist/<uuid:playlist_uuid>/music/edit/<int:music_id>", music_update, name="editMusic"),
     path("playlist/<uuid:playlist_uuid>/music/delete/<int:music_id>", music_delete, name="deleteMusic"),
+    
+    path("playlist/<uuid:playlist_uuid>/link/create", link_create, name="addLink"),
+    path("playlist/<uuid:playlist_uuid>/link/edit/<int:link_id>", link_update, name="editLink"),
+    path("playlist/<uuid:playlist_uuid>/link/delete/<int:link_id>", link_delete, name="deleteLink"),
+
     path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", music_stream, name="streamMusic"),
     path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream/stop", stop_stream, name="stopStreamMusic"),
     
