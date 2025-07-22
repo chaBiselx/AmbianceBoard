@@ -1,10 +1,10 @@
 from django.db.models import Q
 from home.models.User import User
-from home.models.Music import Music
+from home.models.Track import Track
 
 class MusicFilter:
     def __init__(self, queryset=None):
-        self.queryset = queryset or Music.objects.all()
+        self.queryset = queryset or Track.objects.all()
 
     def filter_by_user(self, user=None):
         if user is not None:
@@ -16,4 +16,3 @@ class MusicFilter:
             self.queryset = self.queryset.filter(playlist__uuid =uuid_playlist)
         return self.queryset
 
- 

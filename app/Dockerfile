@@ -10,6 +10,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
 RUN apt-get update && apt-get --no-install-recommends install -y build-essential --purge cron \
+    dos2unix \
     ffmpeg \
     make \
     netcat \
@@ -34,7 +35,7 @@ RUN pip install -r requirements-dev.txt
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh .
-RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh && \
+RUN dos2unix /usr/src/app/entrypoint.sh && \
     chmod +x /usr/src/app/entrypoint.sh
 
 # copy project

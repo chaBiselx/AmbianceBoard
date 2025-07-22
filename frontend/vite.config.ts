@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig, loadEnv } from 'vite';
 import { resolve } from 'path';
 
@@ -37,6 +38,10 @@ export default defineConfig(({ mode }) => {
         },
         define: {
             'import.meta.env.DEBUG': env.DEBUG === '1'
-        }
+        },
+        test: {
+            globals: true,
+            environment: 'jsdom',
+        },
     };
 });

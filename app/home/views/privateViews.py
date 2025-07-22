@@ -4,7 +4,7 @@ import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from django.views.decorators.http import require_http_methods
 from home.models.SoundBoard import SoundBoard
 from home.models.Playlist import Playlist
@@ -13,11 +13,13 @@ from home.manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
 from home.service.SoundBoardService import SoundBoardService
 from home.service.PlaylistService import PlaylistService
 from home.service.MusicService import MusicService
+from home.service.LinkService import LinkService
 from home.service.SoundboardPlaylistService import SoundboardPlaylistService
 from home.service.MultipleMusicUploadService import MultipleMusicUploadService
 from home.forms.SoundBoardForm import SoundBoardForm
 from home.forms.PlaylistForm import PlaylistForm
 from home.forms.MusicForm import MusicForm
+from home.forms.LinkMusicForm import LinkMusicForm
 from home.filters.SoundBoardFilter import SoundBoardFilter
 from home.enum.PermissionEnum import PermissionEnum
 from home.enum.PlaylistTypeEnum import PlaylistTypeEnum
@@ -28,7 +30,10 @@ from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
 from home.service.SharedSoundboardService import SharedSoundboardService
 from home.enum.MusicFormatEnum import MusicFormatEnum
+from home.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from home.utils.UserTierManager import UserTierManager
+
+logger = logging.getLogger('home')
 
 
 @login_required
@@ -110,7 +115,6 @@ def soundboard_organize(request, soundboard_uuid):
 @login_required
 @require_http_methods(['POST', 'DELETE', 'UPDATE'])
 def soundboard_organize_update(request, soundboard_uuid) -> HttpResponse:
-    logger = logging.getLogger("home")
     try:
         soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
         data = json.loads(request.body.decode('utf-8'))
@@ -158,10 +162,11 @@ def playlist_create_with_soundboard(request, soundboard_uuid):
         else:
             form = PlaylistForm()
         list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
+        link_music_allowed_values = [choice.value for choice in LinkMusicAllowedEnum]
         return render(
             request, 
             'Html/Playlist/playlist_create.html', # NOSONAR
-            {'form': form , 'method' : 'create', 'listMusic':None, 'list_default_color': list_default_color}
+            {'form': form , 'method' : 'create', 'listMusic':None, 'list_default_color': list_default_color, 'LinkMusicAllowedEnum': link_music_allowed_values}
         )
     return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
 
@@ -174,10 +179,11 @@ def playlist_create(request):
     else:
         form = PlaylistForm()
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
+    link_music_allowed_values = [choice.value for choice in LinkMusicAllowedEnum]
     return render(
         request,
         'Html/Playlist/playlist_create.html', # NOSONAR
-        {'form': form , 'method' : 'create', 'listMusic': None, 'list_default_color': list_default_color}
+        {'form': form , 'method' : 'create', 'listMusic': None, 'list_default_color': list_default_color,'LinkMusicAllowedEnum': link_music_allowed_values}
     )
 
 @login_required
@@ -230,26 +236,36 @@ def playlist_listing_colors(request) -> JsonResponse:
 @require_http_methods(['GET', 'POST'])
 def playlist_update(request, playlist_uuid):
     playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
+    if not playlist:
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     if request.method == 'POST':
-        if not playlist:
-            return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
-        else:
-            form = PlaylistForm(request.POST, request.FILES, instance=playlist)
-            if form.is_valid():
-                form.save()
-                return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
+        form = PlaylistForm(request.POST, request.FILES, instance=playlist)
+        if form.is_valid():
+            form.save()
+            return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
     else:
-        if not playlist:
-            return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
-        else:
-            form = PlaylistForm(instance=playlist)
-    list_music = (MusicService(request)).get_list_music(playlist_uuid)
+        form = PlaylistForm(instance=playlist)
+    list_track = (MusicService(request)).get_list_music(playlist_uuid)
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
+    link_music_allowed_values = [choice.value for choice in LinkMusicAllowedEnum]
     return render(
         request, 
         'Html/Playlist/playlist_create.html', # NOSONAR
-        {'form': form, 'method' : 'update', 'listMusic' : list_music, 'list_default_color':list_default_color}
+        {'form': form, 'method' : 'update', 'listTrack' : list_track, 'list_default_color':list_default_color, 'LinkMusicAllowedEnum': link_music_allowed_values}
     )
+    
+@login_required
+@require_http_methods(['GET'])
+def playlist_create_track_stream(request, playlist_uuid, music_id) -> HttpResponse|StreamingHttpResponse:
+    track = (MusicService(request)).get_specific_music(playlist_uuid, music_id)
+    if not track :
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+    
+    ret = track.get_reponse_content()
+    if ret is None:
+        return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+    return ret
+
 
 @login_required
 @require_http_methods(['DELETE'])
@@ -277,7 +293,7 @@ def music_create(request, playlist_uuid) -> JsonResponse:
         else:
             form = MusicForm()
         limit = UserTierManager.get_user_limits(request.user)
-        nb_music_remaining = limit['music_per_playlist'] - playlist.musics.count()
+        nb_music_remaining = limit['music_per_playlist'] - playlist.tracks.count()
         if nb_music_remaining < 0:
             nb_music_remaining = 0
         file_size_mb = limit['weight_music_mb']
@@ -322,15 +338,19 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
 @login_required
 @require_http_methods(['GET'])
 def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
-    music = (MusicService(request)).get_random_music(playlist_uuid)
-    if not music :
+    track = (MusicService(request)).get_random_music(playlist_uuid)
+    if not track :
         return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
     
-    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, music)
-    
-    response = HttpResponse(music.file, content_type='audio/*')
-    response['Content-Disposition'] = 'inline; filename="{}"'.format(music.fileName)
-    return response
+    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
+
+    try:
+        response = track.get_reponse_content()
+        if response:
+            return response
+    except Exception as e:
+        logger.error(f"Error in music_stream: {e}")
+    return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
 
 @login_required
 @require_http_methods(['UPDATE'])
@@ -377,4 +397,70 @@ def upload_multiple_music(request, playlist_uuid) -> JsonResponse:
 
         return JsonResponse({"success": True, "uploaded_files": results}, status=200)
 
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+
+
+@login_required
+@require_http_methods(['POST', 'GET'])
+def link_create(request, playlist_uuid):
+    playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
+    if not playlist:
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+    
+    if request.method == 'POST':
+        try:
+            (LinkService(request)).save_form(playlist)
+            messages.success(request, "Lien musical ajouté avec succès!")
+        except ValueError as e:
+            messages.error(request, str(e))
+        return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
+    else:
+        form = LinkMusicForm()
+    
+    return render(request, 'Html/Music/add_link_music.html', {
+        'form': form, 
+        'playlist': playlist
+    })
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+def link_update(request, playlist_uuid, link_id):
+    playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
+    if not playlist:
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+
+    link = (LinkService(request)).get_link(link_id)
+    if not link:
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+
+    if request.method == 'POST':
+        try:
+            (LinkService(request)).save_form(playlist, link)
+            messages.success(request, "Lien musical modifié avec succès!")
+        except ValueError as e:
+            messages.error(request, str(e))
+        return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
+    else:
+        form = LinkMusicForm(instance=link)
+    
+    return render(request, 'Html/Music/update_link_music.html', {
+        'form': form, 
+        'playlist': playlist, 
+        'link': link
+    })
+
+@login_required
+@require_http_methods(['DELETE'])
+def link_delete(request, playlist_uuid, link_id) -> JsonResponse:
+    if request.method == 'DELETE':
+        playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
+        if not playlist:
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        
+        link = (LinkService(request)).get_link(link_id)
+        if not link:
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+
+        link.delete()
+        return JsonResponse({'success': 'Suppression musique réussie'}, status=200)
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)

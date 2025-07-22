@@ -96,14 +96,15 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
 @detect_ban
 def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
  
-    music = (MusicService(request)).get_public_random_music(soundboard_uuid, playlist_uuid)
-    if not music :
+    track = (MusicService(request)).get_public_random_music(soundboard_uuid, playlist_uuid)
+    if not track :
         return HttpResponse("Musique introuvable.", status=404)
     
-    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, music)
+    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
     
-    response = HttpResponse(music.file, content_type='audio/*')
-    response['Content-Disposition'] = 'inline; filename="{}"'.format(music.fileName)
+    response = track.get_reponse_content()
+    if(not response):
+        return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
     return response
 
 @login_required

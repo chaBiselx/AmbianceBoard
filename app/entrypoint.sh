@@ -27,13 +27,14 @@ if [ "$RUNCRON" = "1" ]; then
     echo "Adding crontab..."
     python manage.py crontab add
 
+    sleep 60
+
     echo "Starting cron..."
-    cron start &
+    exec cron -f &
 fi
 
 if [ "$RUNCRON" != "1" ]; then
     echo "Start WebSocket Daphne..."
-    exo "daphne parameters.asgi:application --bind 0.0.0.0 --port ${WS_PORT:-8000}"
     exec daphne parameters.asgi:application --bind 0.0.0.0 --port ${WS_PORT:-8000} &
 fi
 

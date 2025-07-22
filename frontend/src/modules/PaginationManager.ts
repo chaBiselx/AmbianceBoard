@@ -13,8 +13,12 @@ class PaginationManager {
         }
         const paginationButtons = this.DOMPagination.querySelectorAll('.page-item');
         paginationButtons.forEach(pageItem => {
+            if (pageItem.classList.contains('disabled')) {
+                return;
+            }
             const button = pageItem.querySelector('.page-link') as HTMLButtonElement;
-            if(button.classList.contains('disabled')) return;
+            if (!button) return;
+            
             button.addEventListener('click', (event) => {
                 const target = event.target as HTMLElement;
                 const page = target.dataset.page;

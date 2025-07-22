@@ -16,6 +16,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from home.utils.url import get_full_url
 from home.service.MusicService import MusicService
 from home.service.SharedSoundboardService import SharedSoundboardService
+from home.enum.ErrorMessageEnum import ErrorMessageEnum
+
 
 
 
@@ -72,10 +74,14 @@ def shared_soundboard_read(request, soundboard_uuid, token):
 @require_http_methods(['GET'])
 def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id) -> HttpResponse:
  
-    music = (MusicService(request)).get_shared_music(soundboard_uuid, playlist_uuid, token, music_id)
-    if not music :
+    track = (MusicService(request)).get_shared_music(soundboard_uuid, playlist_uuid, token, music_id)
+    if not track :
         return HttpResponse("Musique introuvable.", status=404)
     
-    response = HttpResponse(music.file, content_type='audio/*')
-    response['Content-Disposition'] = 'inline; filename="{}"'.format(music.fileName)
-    return response
+    try:
+        response = track.get_reponse_content()
+        if response:
+            return response
+    except Exception as e:
+        logging.error(f"Error in music_stream: {e}")
+    return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)

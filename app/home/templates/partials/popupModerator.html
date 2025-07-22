@@ -108,7 +108,7 @@
                                 <dt>Volume</dt>
                                 <dd>{{playlist.volume}}</dd>
                                 <dt>Nombre de musique</dt>
-                                <dd>{{playlist.music_set.count}}</dd>
+                                <dd>{{playlist.tracks.count}}</dd>
                             </dl>
                         </div>
                         <div class="col-sm-12 col-md-6">
@@ -120,8 +120,8 @@
                         </div>
                         <hr>
                         <div class="col-12">
-                            {% for music in playlist.musics.all %}
-                                <audio src="{{ music.file.url }}" controls></audio>
+                            {% for track in playlist.tracks.all %}
+                                <audio src="{{ track.get_stream_url }}" controls></audio>
                             {% endfor %}
                         </div>
                     </div>
