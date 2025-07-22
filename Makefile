@@ -3,12 +3,15 @@ MAKEFLAGS += --no-print-directory
 
 # Couleurs for echo
 GREEN = \033[0;32m
-YEllOW = \033[0;33m
+YELLOW = \033[0;33m
 RED = \033[0;31m
+GREY = \033[0;37m
 NC = \033[0m  # No Color (reinit)
 
 # CONST
-CONTAINER_NAME_PHP=django-web
+CONTAINER_BACKEND=docker compose exec back
+CONTAINER_CRONJOB=docker compose exec cronjob
+CONTAINER_FRONTEND=docker compose exec -w /app front
 
 
 help:
@@ -21,5 +24,5 @@ help:
         | xargs -I _ sh -c 'printf "%-20s " _; make _ -nB | (grep -i "^# Help:" || echo "") | tail -1 | sed "s/^# Help: //g"'
 
 
-include makeFileFolder/Install.mk
+include makeFileFolder/Backend.mk
 include makeFileFolder/Test.mk
