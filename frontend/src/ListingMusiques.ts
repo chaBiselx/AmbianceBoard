@@ -1,3 +1,6 @@
+import Notification from '@/modules/General/Notifications';
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const listPlayer = document.getElementsByClassName('player-custom')
     for (const player of listPlayer) {
@@ -38,7 +41,7 @@ class PlayerCustom {
         divButton.appendChild(buttonStart);
 
         const buttonReload = this.generateButtonRestart();
-        divButton.appendChild(this.generateButtonRestart());
+        divButton.appendChild(buttonReload);
 
         container.appendChild(divButton);
 
@@ -110,6 +113,13 @@ class PlayerCustom {
         this.divPlayer.getElementsByClassName('play-icon')[0].classList.add('d-none');
         this.divPlayer.getElementsByClassName('pause-icon')[0].classList.remove('d-none');
 
+        this.audioPlayer.addEventListener('error', (e) => {
+            Notification.createClientNotification({
+                message: "Erreur lors de la lecture de l'audio.",
+                type: 'danger',
+                duration: 2000,
+            });
+        });
 
         this.audioPlayer.play();
     }
@@ -174,6 +184,9 @@ class PlayerCustom {
 
 
     private audioTimeFormat(timeVal: number): string {
+        if(timeVal === Infinity){
+            return '∞'
+        }
         let time = Math.floor(timeVal / 60);
         let secs = Math.floor(timeVal - time * 60);
         const secsString = (secs < 10 ? ":0" : ":") + secs;

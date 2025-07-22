@@ -16,7 +16,6 @@ class LinkMusic(Track):
         return self.alternativeName if self.alternativeName else self.url
     
     def save(self, *args, **kwargs):
-        self.urlType = None
         if not self.domained_name:
             self.domained_name = self._extract_domain_from_url(self.url)
         super().save(*args, **kwargs)

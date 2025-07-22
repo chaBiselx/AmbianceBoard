@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from home.views.generalViews import home, create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice
 from home.views.privateViews import soundboard_list, soundboard_create, soundboard_read, soundboard_update, soundboard_delete, soundboard_organize, soundboard_organize_update
 from home.views.privateViews import playlist_create, playlist_read_all, playlist_create_with_soundboard, playlist_update, playlist_delete, playlist_listing_colors, playlist_describe_type
-from home.views.privateViews import music_create, music_update, music_delete,music_stream,stop_stream, update_direct_volume, upload_multiple_music
+from home.views.privateViews import music_create, music_update, music_delete,music_stream,stop_stream, update_direct_volume, upload_multiple_music, playlist_create_track_stream
 from home.views.privateViews import link_create, link_update, link_delete
 from home.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
 from home.views.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
@@ -54,6 +54,7 @@ urlpatterns = [
     path("playlist/all", playlist_read_all, name="playlistsAllList"),
     path("playlist/<uuid:playlist_uuid>/update", playlist_update, name="playlistUpdate"),
     path("playlist/<uuid:playlist_uuid>/delete", playlist_delete, name="playlistDelete"),
+    path("playlist/<uuid:playlist_uuid>/<int:music_id>", playlist_create_track_stream, name="playlistCreateTrackStream"),
     path("playlist/type/describe", playlist_describe_type, name="playlistDescribeType"),
     
     path("playlist/<uuid:playlist_uuid>/music/create", music_create, name="addMusic"),

@@ -178,7 +178,7 @@
                                     {{ track.get_source }}
                                 </small>
                             </div>
-                            <div class="player-custom p-2" data-url="{{ track.get_url }}">
+                            <div class="player-custom p-2" data-url="{% url 'playlistCreateTrackStream' form.instance.uuid track.id %}">
                                 <audio class="music-player d-none"></audio>
                             </div>
 

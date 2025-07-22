@@ -2,6 +2,7 @@ from django.db import models
 from .Playlist import Playlist
 from django.http import StreamingHttpResponse
 from home.strategy.urlMusicStreamStrategy import UrlMusicStreamStrategy
+from django.shortcuts import redirect
 
 
 class Track(models.Model):
@@ -72,19 +73,19 @@ class Track(models.Model):
             response['Content-Disposition'] = 'inline; filename="{}"'.format(self.music.fileName)
             return response
         if self.is_link_music():
-            strategy_class = UrlMusicStreamStrategy().get_strategy(self.linkmusic.domained_name)
+            strategy_class = UrlMusicStreamStrategy().get_strategy(self.linkmusic)
             if not strategy_class:
                 raise ValueError(f"Aucune stratégie trouvée pour le domaine: {self.linkmusic.domained_name}")
             strategy_instance = strategy_class(self.linkmusic)
-            stream = strategy_instance.extract()
-
-            if not stream:
-                raise ValueError("Aucun stream audio trouvé pour le lien")
-            
-            response = StreamingHttpResponse(stream, content_type='audio/*')
-            response['Content-Disposition'] = 'inline; filename="{}"'.format(self.get_name())
-            return response
-        # Fallback pour les instances de Track qui ne seraient ni l'un ni l'autre
+            stream, type_stream = strategy_instance.extract()
+            if(type_stream == 'file'):
+                response = StreamingHttpResponse(stream, content_type='audio/*')
+                response['Content-Disposition'] = 'inline; filename="{}"'.format(self.get_name())
+                return response
+            elif(type_stream == 'redirect'):
+                # Si le type est 'redirect', on redirige vers l'URL du lien
+                return redirect(self.linkmusic.url, permanent=False)
+            raise ValueError("Aucun stream audio trouvé pour le lien")
         return None
 
     def __str__(self):

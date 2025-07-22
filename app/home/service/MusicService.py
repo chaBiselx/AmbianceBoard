@@ -14,7 +14,20 @@ class MusicService:
     
     def __init__(self, request):
         self.request = request
-    
+        
+    def get_specific_music(self, playlist_uuid:int, music_id:int)-> Music|None :
+        """        Récupère une musique spécifique par son ID dans une playlist.
+        Args:
+            playlist_uuid (int): L'UUID de la playlist.
+            music_id (int): L'ID de la musique à récupérer.
+        """
+        try:
+            return Track.objects.get(pk=music_id, playlist__uuid=playlist_uuid)
+        except Track.DoesNotExist:
+            return None
+        except Playlist.DoesNotExist:
+            return None
+
     def get_random_music(self, playlist_uuid:int)-> Music|None :
         try:
             music_filter = MusicFilter()
