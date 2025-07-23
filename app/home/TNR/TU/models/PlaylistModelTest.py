@@ -80,8 +80,8 @@ class PlaylistModelTest(TestCase):
             
     @patch('uuid.uuid4')
     @patch('home.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
-    def test_icon_new_upload(self, mock_reduce_size, mock_uuid):
-        """Test le téléchargement et le traitement de l'icône"""
+    def test_icon_upload_on_create(self, mock_reduce_size, mock_uuid):
+        """Test le téléchargement et le traitement de l'icône lors de la création"""
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"
         mock_uuid.return_value = uuid.UUID(test_uuid)
         
@@ -98,15 +98,15 @@ class PlaylistModelTest(TestCase):
         
         # Vérifier que la tâche de redimensionnement a été appelée
         mock_reduce_size.assert_called_once_with(
-            args=[playlist.icon.path],
+            args=['Playlist', playlist.id],
             queue='default',
             priority=1
         )
 
     @patch('uuid.uuid4')
     @patch('home.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
-    def test_icon_new_upload(self, mock_reduce_size, mock_uuid):
-        """Test le téléchargement et le traitement de l'icône"""
+    def test_icon_upload_on_update(self, mock_reduce_size, mock_uuid):
+        """Test le téléchargement et le traitement de l'icône lors de la mise à jour"""
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"
         mock_uuid.return_value = uuid.UUID(test_uuid)
         
@@ -127,7 +127,7 @@ class PlaylistModelTest(TestCase):
         
         # Vérifier que la tâche de redimensionnement a été appelée
         mock_reduce_size.assert_called_once_with(
-            args=[playlist.icon.path],
+            args=['Playlist', playlist.id],
             queue='default',
             priority=1
         )
