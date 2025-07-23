@@ -2,7 +2,7 @@ from django import forms
 from home.models.SoundBoard import SoundBoard
 from home.models.Tag import Tag
 from home.mixins.BootstrapFormMixin import BootstrapFormMixin
-from home.enum.MusicFormatEnum import MusicFormatEnum
+from home.enum.ImageFormatEnum import ImageFormatEnum
 
 class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
@@ -46,7 +46,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     )
     icon = forms.FileField(
         label='Icone de la playlist', 
-        widget=forms.FileInput(attrs={'accept': '.jpg, .jpeg, .jfif, .pjpeg, .pjp, .png, .svg, .webp'}),
+        widget=forms.FileInput(attrs={'accept': ', '.join(ImageFormatEnum.values())}),
         required=False
     )
     clear_icon = forms.BooleanField(required=False, label='Supprimer le fichier', initial=False)
@@ -63,7 +63,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
         if self.cleaned_data.get('clear_icon'):
             return None
         icon = self.cleaned_data['icon']
-        allowed_extensions = [".jpg", ".jpeg", ".jfif", ".pjpeg", ".pjp", ".png", ".svg", ".webp"]
+        allowed_extensions = ImageFormatEnum.values()
         if icon and not any(icon.name.lower().endswith(ext) for ext in allowed_extensions):
             raise forms.ValidationError(f"Seuls les fichiers images ({', '.join(allowed_extensions)}) sont autorisés.")
         return icon

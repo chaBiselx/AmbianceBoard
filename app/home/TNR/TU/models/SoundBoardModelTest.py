@@ -72,7 +72,7 @@ class SoundBoardModelTest(TestCase):
         
         # Vérifier que la tâche de redimensionnement a été appelée
         mock_reduce_size.assert_called_once_with(
-            args=[soundboard.icon.path],
+            args=['SoundBoard', soundboard.id],
             queue='default',
             priority=1
         )
@@ -99,7 +99,7 @@ class SoundBoardModelTest(TestCase):
         
         # Vérifier que la tâche de redimensionnement a été appelée
         mock_reduce_size.assert_called_once_with(
-            args=[soundboard.icon.path],
+            args=['SoundBoard', soundboard.id],
             queue='default',
             priority=1
         )
@@ -124,7 +124,7 @@ class SoundBoardModelTest(TestCase):
         
         # Vérifier que la tâche de redimensionnement a été appelée
         mock_reduce_size.assert_called_once_with(
-            args=[soundboard.icon.path],
+            args=['SoundBoard', soundboard.id],
             queue='default',
             priority=1
         )

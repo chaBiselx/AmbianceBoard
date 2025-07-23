@@ -52,7 +52,13 @@ class Playlist(models.Model):
             
         super().save(*args, **kwargs)
         if new_file: 
-            reduce_size_img.apply_async(args=[self.icon.path], queue='default', priority=1 )
+            reduce_size_img.apply_async(args=[self.__class__.__name__, self.pk], queue='default', priority=1 )
+            
+    def update(self, *args, **kwargs):
+        if not hasattr(self, 'user') :
+            raise ValueError("Playlist must have a user")
+            
+        super().save(*args, **kwargs)
     
     def get_data_set(self):
         strategy = PlaylistStrategy().get_strategy(self.typePlaylist)

@@ -1,6 +1,7 @@
 from django import forms
 from home.models.Playlist import Playlist
 from home.mixins.BootstrapFormMixin import BootstrapFormMixin
+from home.enum.ImageFormatEnum import ImageFormatEnum
 
 
 
@@ -47,7 +48,7 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
     )
     icon = forms.FileField(
         label='Icone de la playlist', 
-        widget=forms.FileInput(attrs={'accept': '.jpg, .jpeg, .jfif, .pjpeg, .pjp, .png, .svg, .webp'}),
+        widget=forms.FileInput(attrs={'accept': ', '.join(ImageFormatEnum.values())}),
         required=False
     )
     clear_icon = forms.BooleanField(required=False, label='Supprimer le fichier', initial=False)
@@ -62,9 +63,9 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
         if self.cleaned_data.get('clear_icon'):
             return None
         icon = self.cleaned_data['icon']
-        allowed_extensions = [".jpg" , ".jpeg" , ".jfif" , ".pjpeg" , ".pjp", ".png", ".svg", ".webp"]
+        allowed_extensions = ImageFormatEnum.values()
         if icon and not any(icon.name.lower().endswith(ext) for ext in allowed_extensions):
-             raise forms.ValidationError('Seuls les fichiers image (.jpg, .jpeg, .jfif, .pjpeg, .pjp, .png, .svg, .webp) sont autorisés.')
+             raise forms.ValidationError(f'Seuls les fichiers image ({", ".join(allowed_extensions)}) sont autorisés.')
         return icon
     
     def save(self, commit=True):
