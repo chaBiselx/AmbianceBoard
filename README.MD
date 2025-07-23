@@ -27,6 +27,11 @@ cp .env.dev.sample .env
 docker compose up --build  
 ```  
 
+sous WSL en cas d'erreur avec l'entrypoint utiliser dos2unix
+```shell
+dos2unix ./app/entrypoint.sh
+```
+
 ### 3. Accéder au conteneur  
 ```shell  
 docker exec -it AmbianceBoard-back-1 bash  
