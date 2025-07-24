@@ -5,7 +5,7 @@ from home.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
 class LinkMusic(Track):
     url = models.URLField(max_length=200)
     domained_name = models.CharField(max_length=255, blank=True)
-    urlType = models.CharField(max_length=50, blank=True, null=True, choices=[
+    urlType = models.CharField(max_length=50, blank=True, choices=[
         (LinkMusicTypeEnum.FILE.name, LinkMusicTypeEnum.FILE.value),
         (LinkMusicTypeEnum.STREAM.name, LinkMusicTypeEnum.STREAM.value),
         (LinkMusicTypeEnum.OTHER.name, LinkMusicTypeEnum.OTHER.value),

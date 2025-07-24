@@ -30,8 +30,8 @@ class LinkMusicForm(forms.ModelForm):
         url = self.cleaned_data.get('url')
         if url:
             # Validation basique pour s'assurer que l'URL est valide
-            if not url.startswith(('http://', 'https://')):
-                raise forms.ValidationError("L'URL doit commencer par http:// ou https://")
+            if not url.startswith('https://'):
+                raise forms.ValidationError("L'URL doit commencer par https://")
         return url
 
     def clean_alternativeName(self):
