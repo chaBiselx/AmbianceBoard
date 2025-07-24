@@ -358,14 +358,6 @@ def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
     return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
 
 @login_required
-@require_http_methods(['UPDATE'])
-def stop_stream(request, soundboard_uuid, playlist_uuid) -> JsonResponse:
-    
-    SharedSoundboardService(request, soundboard_uuid).music_stop(playlist_uuid)
-    
-    return JsonResponse({"message": "stream stop"}, status=200)
-
-@login_required
 @require_http_methods(['POST'])
 def update_direct_volume(request, playlist_uuid) -> JsonResponse:
     if request.method == 'POST':
