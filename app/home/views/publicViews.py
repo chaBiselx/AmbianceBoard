@@ -8,6 +8,7 @@ from home.utils.ExtractPaginator import extract_context_to_paginator
 from home.models.SoundBoard import SoundBoard
 from home.service.SoundBoardService import SoundBoardService
 from home.service.MusicService import MusicService
+from home.service.RandomizeTrackService import RandomizeTrackService
 from home.decorator.detectBan import detect_ban
 from home.decorator.reportingContent import add_reporting_btn
 from django.template.response import TemplateResponse
@@ -96,7 +97,7 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
 @detect_ban
 def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
  
-    track = (MusicService(request)).get_public_random_music(soundboard_uuid, playlist_uuid)
+    track = (RandomizeTrackService(request)).generate_public(soundboard_uuid, playlist_uuid)
     if not track :
         return HttpResponse("Musique introuvable.", status=404)
     

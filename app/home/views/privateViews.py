@@ -13,6 +13,7 @@ from home.manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
 from home.service.SoundBoardService import SoundBoardService
 from home.service.PlaylistService import PlaylistService
 from home.service.MusicService import MusicService
+from home.service.RandomizeTrackService import RandomizeTrackService
 from home.service.LinkService import LinkService
 from home.service.SoundboardPlaylistService import SoundboardPlaylistService
 from home.service.MultipleMusicUploadService import MultipleMusicUploadService
@@ -342,7 +343,7 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
 @login_required
 @require_http_methods(['GET'])
 def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
-    track = (MusicService(request)).get_random_music(playlist_uuid)
+    track = (RandomizeTrackService(request)).generate_private(playlist_uuid)
     if not track :
         return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
     

@@ -14,7 +14,7 @@ from home.models.SharedSoundboard import SharedSoundboard
 from home.models.SoundBoard import SoundBoard
 from django.contrib.sites.shortcuts import get_current_site
 from home.utils.url import get_full_url
-from home.service.MusicService import MusicService
+from home.service.RandomizeTrackService import RandomizeTrackService
 from home.service.SharedSoundboardService import SharedSoundboardService
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
 
@@ -74,7 +74,7 @@ def shared_soundboard_read(request, soundboard_uuid, token):
 @require_http_methods(['GET'])
 def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id) -> HttpResponse:
  
-    track = (MusicService(request)).get_shared_music(soundboard_uuid, playlist_uuid, token, music_id)
+    track = (RandomizeTrackService(request)).get_shared(soundboard_uuid, playlist_uuid, token, music_id)
     if not track :
         return HttpResponse("Musique introuvable.", status=404)
     

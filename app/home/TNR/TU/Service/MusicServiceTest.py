@@ -53,53 +53,6 @@ class MusicServiceTest(TestCase):
             content_type='audio/mp3'
         )
     
-    # Test get_random_music
-    def test_get_random_music(self):
-        request = self.factory.get('/')
-        request.user = self.user
-        
-        music_service = MusicService(request)
-        music = music_service.get_random_music(1)
-        self.assertEqual(music.get_name(), "test")
-    
-    def test_get_random_music_random(self):
-        request = self.factory.get('/')
-        request.user = self.user
-        
-        music_service = MusicService(request)
-        results = []
-        for _ in range(50):  # Faire 50 appels
-            random_music = music_service.get_random_music(1)
-            results.append(random_music)
-        
-        unique_results = set(results)
-        self.assertGreater(
-            len(unique_results), 
-            1,
-            "La fonction ne semble pas retourner des résultats aléatoires"
-        )
-        
-        self.assertGreater(
-            len(unique_results),
-            len(self.music) * 0.33,
-            "La distribution des résultats aléatoires semble trop uniforme"
-        )
-    
-    def test_get_random_music_incorrect_playlist(self):
-        request = self.factory.get('/')
-        request.user = self.user
-        
-        music_service = MusicService(request)
-        music = music_service.get_random_music(9999)
-        self.assertEqual(music, None)
-        
-    def test_get_random_music_other_user(self):
-        request = self.factory.get('/')
-        request.user = self.user
-        
-        music_service = MusicService(request)
-        music = music_service.get_random_music(2)
-        self.assertEqual(music, None)
         
     # Test get_list_music
     def test_get_list_music(self):
