@@ -30,11 +30,11 @@ class RGPDServiceNotActiveTest(TestCase):
     def test_delete_inactive_users(self):
         # Créer des utilisateurs non actifs
         user1 = User.objects.create_user(username='userdeleted', email=user1_email)
-        user1.last_login = datetime.datetime.now() - datetime.timedelta(days=365*2 + 1)
+        user1.last_login = make_aware(datetime.datetime.now() - datetime.timedelta(days=365*2 + 1))
         user1.save()
 
         user2 = User.objects.create_user(username='userkeep', email=user2_email)
-        user2.last_login = datetime.datetime.now() - datetime.timedelta(days=60)
+        user2.last_login = make_aware(datetime.datetime.now() - datetime.timedelta(days=60))
         user2.save()
 
         # Appeler la méthode delete_inactive_users
@@ -48,7 +48,7 @@ class RGPDServiceNotActiveTest(TestCase):
         # Créer des utilisateurs non actifs
         user1 = User.objects.create_user(username='userkeep', email=user1_email)
         user1.last_login = None
-        user1.date_joined = datetime.datetime.now() - datetime.timedelta(days=365*2 + 1)
+        user1.date_joined = make_aware(datetime.datetime.now() - datetime.timedelta(days=365*2 + 1))
         user1.save()
 
         user2 = User.objects.create_user(username='userdeleted', email=user2_email)
