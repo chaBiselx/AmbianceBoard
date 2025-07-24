@@ -9,6 +9,8 @@ import {
 } from '@/modules/DragDrop/DragAndDropInterface';
 import DropZoneAdapter from '@/modules/DragDrop/DropZoneAdapter'
 
+type DropZoneFileList = File | File[] | FileList 
+
 /**
  * Gestionnaire pour l'upload multiple de fichiers musicaux avec Dropzone
  * Utilise l'abstraction DropZoneAdapter pour une meilleure maintenabilité
@@ -36,10 +38,10 @@ export class MusicDropzoneManager {
             onFileAdded: (_file: File) => {
                 ModalCustom.hide();
             },
-            onUploadSuccess: (files: File | File[] | FileList, response: IUploadResponse) => {
+            onUploadSuccess: (files: DropZoneFileList, response: IUploadResponse) => {
                 this.handleUploadSuccess(files, response);
             },
-            onUploadError: (files: File | File[] | FileList, error: any) => {
+            onUploadError: (files: DropZoneFileList, error: any) => {
                 this.handleUploadError(files, error);
             }
         };
@@ -65,7 +67,7 @@ export class MusicDropzoneManager {
         this.dropzoneAdapter?.initialize();
     }
 
-    private handleUploadSuccess(_files: File | File[] | FileList, response: IUploadResponse): void {
+    private handleUploadSuccess(_files: DropZoneFileList, response: IUploadResponse): void {
         ConsoleCustom.log('Upload response:', response);
 
         if (response.errors && response.errors.length > 0) {
@@ -78,7 +80,7 @@ export class MusicDropzoneManager {
         }, 500);
     }
 
-    private handleUploadError(_files: File | File[] | FileList, errorMessage: any): void {
+    private handleUploadError(_files: DropZoneFileList, errorMessage: any): void {
         ConsoleCustom.error('Upload error:', errorMessage);
         const errors = errorMessage.errors || (typeof errorMessage === 'string' ? [errorMessage] : ['An unknown error occurred']);
         this.showErrors(errors);

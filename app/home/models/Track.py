@@ -9,7 +9,7 @@ class Track(models.Model):
     id = models.BigAutoField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    alternativeName = models.CharField(max_length=255, default=None, null=True, blank=True)
+    alternativeName = models.CharField(max_length=255, default=None,  blank=True)
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, null=False, blank=False, related_name="tracks")
 
     class Meta:
