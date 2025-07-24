@@ -6,10 +6,11 @@ class Cookie {
         if (document.cookie && document.cookie != '') {
             let cookies = document.cookie.split(';');
             for (let cookie of cookies) {
-                if (cookie.trim().substring(0, name.length + 1) == (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    if(cookieValue.startsWith('="') && cookieValue.endsWith('"')) {
-                        cookieValue = cookieValue.substring(2, cookieValue.length - 1);
+                const labelFromCookie: string = cookie.trim().substring(0, cookie.indexOf('=') - 1);
+                if (labelFromCookie === name) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 2));
+                    if(cookieValue.startsWith('"') && cookieValue.endsWith('"')) {
+                        cookieValue = cookieValue.substring(1, cookieValue.length - 1);
                     }
                     break;
                 }

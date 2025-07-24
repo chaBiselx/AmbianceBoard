@@ -2,8 +2,9 @@
 
 {% load static %}
 {% load FrontJs %}
+{% load Theme %}
 
-<html lang="fr" {% include 'Html/theme.html' %} >
+<html lang="fr" {% include 'Html/theme.html' %} data-bs-theme="{% get_user_theme %}">
 
 <head>
     <title>Ambiance Soundboard</title>
