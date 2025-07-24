@@ -1,9 +1,9 @@
-import logging
+
 import requests
 from typing import List
 from .BaseProvider import DomainProvider
+from home.utils.logger import logger
 
-logger = logging.getLogger("home")
 
 class RemoteTextDomainProvider(DomainProvider):
     """

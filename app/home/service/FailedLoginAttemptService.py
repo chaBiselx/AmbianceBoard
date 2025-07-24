@@ -1,4 +1,5 @@
-import logging
+from home.utils.logger import LoggerFactory
+
 from home.models.FailedLoginAttempt import FailedLoginAttempt
 from django.utils import timezone
 from datetime import timedelta
@@ -10,7 +11,7 @@ class FailedLoginAttemptService:
         self.username = username
         self.now = timezone.now()
         self.time_threshold = self.now - timedelta(minutes=15)
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
         
     def add_or_create_failed_login_attempt(self):
         failed_attempt, created = FailedLoginAttempt.objects.get_or_create(

@@ -1,7 +1,8 @@
-import logging
+
 from pydub import AudioSegment
 import os
 from django.conf import settings
+from home.utils.logger import LoggerFactory
 
 class AudioBitrateReducer:
     def __init__(self, input_file):
@@ -12,7 +13,7 @@ class AudioBitrateReducer:
         self.bitrate = None
 
         # Configuration du logger
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
 
     def load_audio(self):
         """Charge le fichier audio."""

@@ -1,8 +1,7 @@
-import logging
 
 from home.service.cron.UserTierExpirationService import UserTierExpirationService
 
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 def run():
     logger.info("Début de la vérification des expirations de tiers utilisateur via le service.")

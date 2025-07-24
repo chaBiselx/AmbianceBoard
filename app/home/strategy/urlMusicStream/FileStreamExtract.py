@@ -1,9 +1,8 @@
-import logging
 from home.enum.MusicFormatEnum import MusicFormatEnum
 from home.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
 import requests
 
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 class FileStreamExtract:
     def __init__(self, link_music):

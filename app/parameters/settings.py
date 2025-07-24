@@ -78,6 +78,14 @@ INSTALLED_APPS = [
 # Logging configuration
 if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
     os.mkdir(os.path.join(BASE_DIR, 'logs'), mode=0o777 if DEBUG else 0o666)
+
+
+LOGGER_TYPE = "file"
+if DEBUG :
+    LOGGER_TYPE = "file" # TODO set other for production 
+# For tests, use the MemoryLogger
+if TESTING:
+    LOGGER_TYPE = "memory"
     
 level_log_debug = 'DEBUG' if DEBUG else 'WARNING'
 timed_rotating_file_handler = 'logging.handlers.TimedRotatingFileHandler'

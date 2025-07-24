@@ -1,4 +1,3 @@
-import logging
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.core.paginator import Paginator
@@ -24,7 +23,7 @@ from home.service.SharedSoundboardService import SharedSoundboardService
 from home.service.TagService import TagService
 from home.utils.url import redirection_url
 from home.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
-
+from home.utils.logger import logger
 
 
 
@@ -118,7 +117,6 @@ def public_stop_stream(request, soundboard_uuid, playlist_uuid) -> JsonResponse:
 @login_required
 @require_http_methods(['POST', 'DELETE'])
 def favorite_update(request, soundboard_uuid) -> JsonResponse:
-    logger = logging.getLogger('home')
     try:
         soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
     except SoundBoard.DoesNotExist:

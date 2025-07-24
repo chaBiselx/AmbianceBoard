@@ -1,11 +1,10 @@
-import logging
 from celery import shared_task
 from django.apps import apps
 from home.strategy.ReduceSizeImgStrategy import ReduceSizeImgStrategy
+from home.utils.logger import logger
 
 @shared_task
 def reduce_size_img(model_name, model_id):
-    logger = logging.getLogger('home')
     logger.info(f"reduce_size_img STARTED for {model_name} with id {model_id}")
 
     try:

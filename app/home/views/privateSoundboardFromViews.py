@@ -1,4 +1,3 @@
-import logging
 import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -19,7 +18,7 @@ from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
 from django.core import exceptions
 
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 
 @login_required

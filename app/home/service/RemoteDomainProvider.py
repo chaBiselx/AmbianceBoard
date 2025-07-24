@@ -1,8 +1,6 @@
-import logging
 import requests
 from typing import List
-
-logger = logging.getLogger("home")
+from home.utils.logger import logger
 
 class RemoteDomainProvider:
     """

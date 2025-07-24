@@ -5,9 +5,7 @@ import secrets
 from django.utils import timezone
 from django.urls import reverse
 from home.exceptions.SecurityException import SecurityException
-import logging
-
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 
 class ResetPasswordService():

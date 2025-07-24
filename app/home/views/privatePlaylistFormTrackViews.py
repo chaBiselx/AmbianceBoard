@@ -1,4 +1,3 @@
-import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -17,7 +16,7 @@ from home.service.LinkService import LinkService
 from home.forms.LinkMusicForm import LinkMusicForm
 
 
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 @login_required
 @require_http_methods(['POST'])

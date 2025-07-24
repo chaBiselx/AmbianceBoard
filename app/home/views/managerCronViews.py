@@ -1,4 +1,3 @@
-import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
@@ -10,14 +9,13 @@ from home.enum.PermissionEnum import PermissionEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
 from home.service.cron.UserTierExpirationService import UserTierExpirationService
 from home.service.cron.DomainBlacklistCronService import DomainBlacklistCronService
-    
+from home.utils.logger import logger
 
 @login_required
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def clean_media_folder(request) -> JsonResponse:
     try:
-        logger = logging.getLogger('home')
         logger.warning("Starting ClearMediaFolder View")
         (MediaAudioService()).clear_media_audio()
         (MediaImgPlaylistService()).clear_media_img()
@@ -33,7 +31,6 @@ def clean_media_folder(request) -> JsonResponse:
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def expire_account(request) -> JsonResponse:
     try:
-        logger = logging.getLogger('home')
         logger.warning("Starting ExpireAccount View")
         user_tier_expiration_service = UserTierExpirationService()
         user_tier_expiration_service.handle_expired_tiers()
@@ -51,7 +48,6 @@ def expire_account(request) -> JsonResponse:
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def sync_domain_blacklist(request) -> JsonResponse:
     try:
-        logger = logging.getLogger('home')
         logger.warning("Starting SyncDomainBlacklist View")
         domain_blacklist_cron_service = DomainBlacklistCronService()
         domain_blacklist_cron_service.sync_blacklist()

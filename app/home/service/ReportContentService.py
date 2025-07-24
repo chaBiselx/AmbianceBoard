@@ -1,4 +1,4 @@
-import logging
+from home.utils.logger import LoggerFactory
 import uuid
 from home.models.ReportContent import ReportContent
 from home.exceptions.PostDataException import PostDataException
@@ -8,7 +8,7 @@ class ReportContentService:
     
     def __init__(self, request):
         self.request = request
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
         
         
     def save_report(self):

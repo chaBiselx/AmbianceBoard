@@ -1,4 +1,3 @@
-import logging
 from functools import wraps
 from django.contrib import messages
 from django.http import HttpResponse
@@ -12,7 +11,7 @@ from django.urls import reverse
 
 
 # Configurer le logger
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 def detect_not_confirmed_account():
     """

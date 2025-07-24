@@ -2,13 +2,13 @@ from abc import ABC, abstractmethod
 from home.utils.ImageResizer import ImageResizer
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-import logging
+from home.utils.logger import LoggerFactory
 import os
 
 
 class ReduceSizeImgStrategyBase():
     def __init__(self):
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
     
     @abstractmethod
     def resize(self, model):

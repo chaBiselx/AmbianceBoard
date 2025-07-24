@@ -1,7 +1,7 @@
 from PIL import Image, ImageSequence
 import os
-import logging
 from home.enum.ImageFormatEnum import ImageFormatEnum
+from home.utils.logger import LoggerFactory
 
  
 class ImageResizer:
@@ -13,7 +13,7 @@ class ImageResizer:
         :param input_path: Chemin de l'image source.
         :param output_path: Chemin pour enregistrer l'image redimensionnée.
         """
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
         
         self.input_path = input_path
         self.output_path = output_path

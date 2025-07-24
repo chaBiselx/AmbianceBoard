@@ -1,14 +1,16 @@
-import logging
+
 from datetime import datetime, timedelta
 from home.models.User import User
 from django.utils import timezone
 from home.email.UserMail import UserMail
 from home.service.ConfirmationUserService import ConfirmationUserService
 from home.utils.url import get_full_url
+from home.utils.logger import LoggerFactory
+
 
 class RGPDService:
     def __init__(self):
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
         
     def prevent_inactive_users(self):
         # Obtenir la date de 22 mois avant aujourd'hui

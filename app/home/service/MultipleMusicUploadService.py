@@ -1,9 +1,9 @@
-import logging
+
 from django.http import HttpRequest
 from home.models.Playlist import Playlist
 from home.service.MusicService import MusicService
 
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 class MultipleMusicUploadService:
     """Service for handling multiple music uploads."""

@@ -1,13 +1,13 @@
-import logging
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from home.utils.EmailSender import EmailSender
+from home.utils.logger import LoggerFactory
 
 
 class UserMail:
     def __init__(self, user):
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
         self.from_email = 'noreply@abmianceboard.com'
         self.user = user
     def send_welcome_email(self):

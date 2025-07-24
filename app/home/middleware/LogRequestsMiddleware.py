@@ -1,13 +1,13 @@
 import uuid
-import logging
 import time
 import secrets
+from home.utils.logger import LoggerFactory
 
 class LogRequestsMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
-        self.logger = logging.getLogger('request')
-        self.logger_home = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger('request')
+        self.logger_home = LoggerFactory.get_default_logger()
 
     def __call__(self, request):
         start_time = time.time()

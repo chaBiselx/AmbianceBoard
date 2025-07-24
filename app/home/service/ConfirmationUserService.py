@@ -1,4 +1,4 @@
-import logging
+from home.utils.logger import LoggerFactory
 import uuid
 from django.urls import reverse
 from home.models.User import User
@@ -10,7 +10,7 @@ class ConfirmationUserService:
     
     def __init__(self, user:User):
         self.user = user
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
     
     def generation_uri(self, change_confirmation_date:bool = True) -> str:
         if self.user.isConfirmed:

@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group
 from home.models.User import User
 from home.enum.GroupEnum import GroupEnum
 from django.http import JsonResponse
-import logging
+from home.utils.logger import logger
 from home.forms.CreateUserForm import CreateUserForm
 from home.email.UserMail import UserMail
 from home.service.FailedLoginAttemptService import FailedLoginAttemptService
@@ -19,7 +19,6 @@ from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 @login_required
 @require_http_methods(['GET'])
 def confirm_account(request, uuid_user:str, confirmation_token:str):
-    logger = logging.getLogger('home')
     logger.info("Starting ConfirmAccount View")
     try:
         user = User.objects.get(uuid=uuid_user)

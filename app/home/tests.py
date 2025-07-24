@@ -11,6 +11,9 @@ from home.TNR.TU.utils.ExtractPaginatorTest import *
 from home.TNR.TU.utils.EmailSenderTest import *
 from home.TNR.TU.utils.UrlsUtilsTest import *
 
+from home.TNR.TU.utils.logger.LoggerFactoryTest import *
+
+
 from home.TNR.TU.Service.FailedLoginAttemptServiceTest import *
 from home.TNR.TU.Service.MusicServiceTest import *
 from home.TNR.TU.Service.RandomizeTrackServiceTest import *

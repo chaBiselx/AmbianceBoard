@@ -1,15 +1,15 @@
-import logging
+
 import os
 from django.core.files.storage import default_storage
 from home.models.Playlist import Playlist
 from home.exceptions.FileManagementException import FileNotInDatabase, FileNoteFound
 from home.service.cleanService.BaseCleanService import BaseCleanService
-
+from home.utils.logger import LoggerFactory
 
 
 class ImgPlaylistCleanService(BaseCleanService):
     def __init__(self, storage_location=None, folder=None):
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
         self.storage_location = storage_location or default_storage.location
         self.folder = folder or Playlist.PLAYLIST_FOLDER
 

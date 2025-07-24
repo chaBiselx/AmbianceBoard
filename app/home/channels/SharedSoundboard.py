@@ -1,12 +1,10 @@
-import logging
 import json
 import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.core.cache import cache
 from django.conf import settings
-
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 class SharedSoundboard(AsyncWebsocketConsumer):
     async def connect(self):
@@ -232,7 +230,8 @@ class SharedSoundboard(AsyncWebsocketConsumer):
                 logger.error(f"Soundboard introuvable: {self.soundboard_uuid}")
                 return False
                 
-            logger.info(f"Connexion validée pour soundboard: {self.soundboard_uuid}")
+            # Utilisation du niveau debug pour réduire la verbosité des logs lors des connexions réussies.
+            logger.debug(f"Connexion validée pour soundboard: {self.soundboard_uuid}")
             return True
             
         except Exception as e:

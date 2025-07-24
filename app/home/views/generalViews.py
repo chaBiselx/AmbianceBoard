@@ -4,7 +4,6 @@ from django.contrib.auth.models import Group
 from home.models.User import User
 from home.enum.GroupEnum import GroupEnum
 from django.http import JsonResponse
-import logging
 from home.forms.CreateUserForm import CreateUserForm
 from home.forms.UserResetPasswordForm import UserResetPasswordForm
 from home.email.UserMail import UserMail
@@ -22,6 +21,7 @@ from home.forms.UserPasswordForm import UserPasswordForm
 from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
 from home.models.UserTier import UserTier
+from home.utils.logger import logger
 
 
 
@@ -37,7 +37,6 @@ def legal_notice(request):
 
 @require_http_methods(['GET', 'POST'])
 def create_account(request):
-    logger = logging.getLogger('home')
     errors = []
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -95,7 +94,6 @@ def logout_view(request):
 @require_http_methods(['POST'])
 @ratelimit(key='ip', rate='3/m', method='POST', block=True)
 def resend_email_confirmation(request) -> JsonResponse:
-    logger = logging.getLogger('home')
     if request.user.is_authenticated and request.method == 'POST' and request.user.isConfirmed == False :
         try:
             confirmation_user_service = ConfirmationUserService(request.user)
@@ -110,7 +108,6 @@ def resend_email_confirmation(request) -> JsonResponse:
 @require_http_methods(['GET', 'POST'])
 @ratelimit(key='ip', rate='3/m', method='POST', block=True)
 def send_reset_password(request):
-    logger = logging.getLogger('home')
     if request.method == 'POST':
         form = UserResetPasswordForm(request.POST)
         try:
@@ -129,7 +126,6 @@ def send_reset_password(request):
 @require_http_methods(['GET', 'POST'])
 @ratelimit(key='ip', rate='3/m', method='POST', block=True)
 def token_validation_reset_password(request, uuid_user:str, token_reinitialisation:str):
-    logger = logging.getLogger('home')
     user = None
     try:
         user = User.objects.get(uuid=uuid_user)

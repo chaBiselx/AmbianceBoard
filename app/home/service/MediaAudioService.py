@@ -1,17 +1,16 @@
 import os 
-import logging
 from django.core.files.storage import default_storage
 from parameters import settings
 from home.models.Music import Music
 from home.message.MediaAudioMessenger import clean_audio_messenger
-
+from home.utils.logger import LoggerFactory
 
 class MediaAudioService:
     list_media = []
     
     def __init__(self):
         self.media_dir = default_storage.location + "/" + Music.MUSIC_FOLDER
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
         
     def clear_media_audio(self):
         self.__get_list_media()

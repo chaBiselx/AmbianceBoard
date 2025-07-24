@@ -1,7 +1,6 @@
-import logging
 from home.service.cron import DomainBlacklistCronService
 
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 def run():
     # code de votre tâche cron

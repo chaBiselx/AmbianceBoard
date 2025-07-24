@@ -1,12 +1,12 @@
-import logging
+
 import requests
 from home.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from home.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
 from home.enum.MusicFormatEnum import MusicFormatEnum
 from home.strategy.urlMusicStream.FileStreamExtract import FileStreamExtract
 from home.strategy.urlMusicStream.InfiniteStreamExtract import InfiniteStreamExtract
+from home.utils.logger import logger
 
-logger = logging.getLogger('home')
 
 class UrlMusicStreamStrategy:
     """Fabrique qui retourne la bonne stratégie selon le type de configuration."""

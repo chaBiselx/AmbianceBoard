@@ -1,5 +1,5 @@
 import os 
-import logging
+from home.utils.logger import LoggerFactory
 from django.core.files.storage import default_storage
 from parameters import settings
 from home.models.Playlist import Playlist
@@ -10,7 +10,7 @@ class MediaImgPlaylistService:
     
     def __init__(self):
         self.media_dir = default_storage.location + "/" + Playlist.PLAYLIST_FOLDER
-        self.logger = logging.getLogger('home')
+        self.logger = LoggerFactory.get_default_logger()
         
     def clear_media_img(self):
         self.__get_list_media()

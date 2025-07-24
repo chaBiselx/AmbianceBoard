@@ -1,10 +1,9 @@
-import logging
 import requests
 from django.db import IntegrityError
 from home.models.DomainBlacklist import DomainBlacklist
 from home.service.domain_providers.RemoteTextDomainProvider import RemoteTextDomainProvider
 
-logger = logging.getLogger("home")
+from home.utils.logger import logger
 
 class DomainBlacklistCronService:
     domain_provider = [

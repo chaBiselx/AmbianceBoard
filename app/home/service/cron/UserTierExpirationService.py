@@ -1,12 +1,12 @@
 """
 Service pour gérer l'expiration des abonnements utilisateur
 """
-import logging
 from django.utils import timezone
 from datetime import timedelta
 from home.models.UserTier import UserTier
+from home.utils.logger import logger
 
-logger = logging.getLogger('home')
+
 
 class UserTierExpirationService:
     """

@@ -1,6 +1,4 @@
 
-import logging
-
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.urls import reverse
@@ -9,9 +7,7 @@ from django.conf import settings
 
 from home.models.SharedSoundboard import SharedSoundboard
 from home.models.SoundBoard import SoundBoard
-
-
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 class SharedSoundboardService():
     

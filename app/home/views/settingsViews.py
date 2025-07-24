@@ -1,4 +1,3 @@
-import logging
 import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -16,8 +15,7 @@ from home.enum.ThemeEnum import ThemeEnum
 from home.enum.ErrorMessageEnum import ErrorMessageEnum
 from home.exceptions.PostDataException import PostDataException
 from home.utils.UserTierManager import UserTierManager
-
-logger = logging.getLogger('home')
+from home.utils.logger import logger
 
 @login_required
 @require_http_methods(['GET'])

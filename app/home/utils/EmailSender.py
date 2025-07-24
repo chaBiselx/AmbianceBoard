@@ -1,5 +1,5 @@
 import smtplib
-import logging
+from home.utils.logger import LoggerFactory
 from parameters import settings
 from email.message import EmailMessage
 from typing import List, Optional
@@ -30,7 +30,7 @@ class EmailSender:
         self.username = username
         self.password = password
         self.use_tls = use_tls
-        self.logger = logging.getLogger('mail')
+        self.logger = LoggerFactory.get_default_logger('mail')
 
     def send_email(self, subject: str, body: str, from_email: str, to_emails: List[str], attachments: Optional[List[str]] = None):
         """
