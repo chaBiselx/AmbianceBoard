@@ -1,5 +1,5 @@
 # rentrer dans le docker 
-docker exec -it django-web-1 bash
+docker exec -it ambianceboard-back-1 bash
 
 # all command 
 python manage.py
