@@ -1,7 +1,7 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 from django.templatetags.static import static 
 
-class PlaylistTypeEnum(Enum): 
+class PlaylistTypeEnum(BaseEnum): 
     PLAYLIST_TYPE_INSTANT = 'Instant'
     PLAYLIST_TYPE_AMBIENT = 'Ambient'
     PLAYLIST_TYPE_MUSIC = 'Music'

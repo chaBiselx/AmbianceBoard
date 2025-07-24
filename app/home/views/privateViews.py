@@ -64,6 +64,10 @@ def soundboard_create(request):
 def soundboard_read(request, soundboard_uuid):
     SharedSoundboardService(request, soundboard_uuid).music_stop_all()
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
+    
+    print(PermissionEnum.values())
+    print(PlaylistTypeEnum.values())
+    print(ConfigTypeDataEnum.values())
     if not soundboard :
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     else:   
@@ -162,11 +166,11 @@ def playlist_create_with_soundboard(request, soundboard_uuid):
         else:
             form = PlaylistForm()
         list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
-        link_music_allowed_values = [choice.value for choice in LinkMusicAllowedEnum]
+        link_music_allowed_values = LinkMusicAllowedEnum.values()
         return render(
             request, 
             'Html/Playlist/playlist_create.html', # NOSONAR
-            {'form': form , 'method' : 'create', 'listMusic':None, 'list_default_color': list_default_color, 'LinkMusicAllowedEnum': link_music_allowed_values}
+            {'form': form, 'method': 'create', 'listMusic': None, 'list_default_color': list_default_color, 'LinkMusicAllowedEnum': link_music_allowed_values}
         )
     return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
 
@@ -179,7 +183,7 @@ def playlist_create(request):
     else:
         form = PlaylistForm()
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
-    link_music_allowed_values = [choice.value for choice in LinkMusicAllowedEnum]
+    link_music_allowed_values = LinkMusicAllowedEnum.values()
     return render(
         request,
         'Html/Playlist/playlist_create.html', # NOSONAR
@@ -247,7 +251,7 @@ def playlist_update(request, playlist_uuid):
         form = PlaylistForm(instance=playlist)
     list_track = (MusicService(request)).get_list_music(playlist_uuid)
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
-    link_music_allowed_values = [choice.value for choice in LinkMusicAllowedEnum]
+    link_music_allowed_values = LinkMusicAllowedEnum.values()
     return render(
         request, 
         'Html/Playlist/playlist_create.html', # NOSONAR
@@ -297,7 +301,7 @@ def music_create(request, playlist_uuid) -> JsonResponse:
         if nb_music_remaining < 0:
             nb_music_remaining = 0
         file_size_mb = limit['weight_music_mb']
-        return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist , 'nbMusicRemaining' : nb_music_remaining , 'file_size_mb': file_size_mb, 'MusicFormatEnum': [ext.value for ext in MusicFormatEnum]})
+        return render(request, 'Html/Music/add_music.html', {'form': form, "playlist":playlist , 'nbMusicRemaining' : nb_music_remaining , 'file_size_mb': file_size_mb, 'MusicFormatEnum': MusicFormatEnum.values()})
     return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
 
 @login_required

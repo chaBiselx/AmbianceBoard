@@ -335,11 +335,11 @@ MEDIA_IMG_MESSENGER_NB_MAX_FILE = 100
 # auth 
 from home.enum.GroupEnum import GroupEnum
 
-GROUPS = {group.name: group.value for group in GroupEnum}
+GROUPS = GroupEnum.convert_to_dict()
 
 from home.enum.PermissionEnum import PermissionEnum
 
-PERMISSIONS = {permission.name: permission.value for permission in PermissionEnum}
+PERMISSIONS = PermissionEnum.convert_to_dict()
 
 ATTRIB_PERMISSIONS = {
     GroupEnum.ADMIN.name: {

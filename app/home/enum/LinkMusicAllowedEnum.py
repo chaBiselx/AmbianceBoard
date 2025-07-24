@@ -1,6 +1,6 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 
-class LinkMusicAllowedEnum(Enum): 
+class LinkMusicAllowedEnum(BaseEnum): 
     CUSTOM = "custom"
 
    

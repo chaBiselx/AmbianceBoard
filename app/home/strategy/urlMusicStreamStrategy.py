@@ -41,7 +41,7 @@ class UrlMusicStreamStrategy:
     
     def _detect_type(self):
         try:
-            list_ext = [ext.value for ext in MusicFormatEnum]
+            list_ext = MusicFormatEnum.values() 
 
             # Envoyer une requête HEAD pour ne pas télécharger tout le contenu
             response = requests.head(self.link_music.url, allow_redirects=True, timeout=10)

@@ -1,6 +1,6 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 
-class FadeEnum(Enum): 
+class FadeEnum(BaseEnum): 
     LINEAR = "linear"
     EASE = "ease"
     EASE_IN = "ease-in"

@@ -1,7 +1,7 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 from django.templatetags.static import static 
 
-class ConfigTypeDataEnum(Enum):
+class ConfigTypeDataEnum(BaseEnum):
     STATIC = 'Fixe'
     PARAM = 'Parametrable via playlist'
     PARAM_WITH_DEFAULT = 'Parametrable via playlist avec valeur par default'

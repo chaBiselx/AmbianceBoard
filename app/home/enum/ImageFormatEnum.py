@@ -1,6 +1,6 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 
-class ImageFormatEnum(Enum): 
+class ImageFormatEnum(BaseEnum): 
 
     JPG = ".jpg" 
     JPEG = ".jpeg"
@@ -10,10 +10,7 @@ class ImageFormatEnum(Enum):
     WEBP = ".webp"
     GIF = ".gif"
 
-    @staticmethod
-    def values():
-        """Retourne une liste des valeurs de l'énumération."""
-        return [c.value for c in ImageFormatEnum]
+
     
     @staticmethod
     def methode_resizer():

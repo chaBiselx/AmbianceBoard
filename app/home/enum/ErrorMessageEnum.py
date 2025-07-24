@@ -1,6 +1,6 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 
-class ErrorMessageEnum(Enum): 
+class ErrorMessageEnum(BaseEnum): 
     METHOD_NOT_SUPPORTED = 'Méthode non supportée.'
     NOT_ACCEPTABLE = 'non accetable.'
     INTERNAL_SERVER_ERROR = 'une erreur est survenue.'

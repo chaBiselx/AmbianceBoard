@@ -1,6 +1,6 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 
-class LinkMusicTypeEnum(Enum): 
+class LinkMusicTypeEnum(BaseEnum): 
     FILE = "file"
     STREAM = "stream"
     OTHER = "other"

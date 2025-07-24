@@ -1,6 +1,6 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 
-class GroupEnum(Enum): 
+class GroupEnum(BaseEnum): 
     ADMIN = 'admin',
     MANAGER = 'manager',
     MODERATEUR = 'moderateur',

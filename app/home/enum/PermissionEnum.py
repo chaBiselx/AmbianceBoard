@@ -1,6 +1,6 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 
-class PermissionEnum(Enum): 
+class PermissionEnum(BaseEnum): 
     USER_STANDARD = "user_standard"
     MODERATEUR_ACCESS_ALL_MUSIC = "moderateur_access_all_music"
     MODERATEUR_ACCESS_ALL_PLAYLIST = "moderateur_access_all_playlist"

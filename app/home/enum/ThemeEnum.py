@@ -1,6 +1,6 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 
-class ThemeEnum(Enum): 
+class ThemeEnum(BaseEnum): 
     DARK = 'dark'
     LIGHT = 'light'
    

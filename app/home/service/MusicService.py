@@ -111,7 +111,7 @@ class MusicService:
             raise ValueError("Le poids du fichier est trop lourd.")
         
         # Vérifier l'extension du fichier
-        allowed_extensions = [ext.value for ext in MusicFormatEnum]  # Convert enum values to list
+        allowed_extensions = MusicFormatEnum.values()  # Convert enum values to list
         if not any(file.name.lower().endswith(ext) for ext in allowed_extensions):
             raise ValueError(f"Seuls les fichiers audio ({', '.join(allowed_extensions)}) sont autorisés.")
 

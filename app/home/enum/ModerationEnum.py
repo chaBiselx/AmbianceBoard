@@ -1,6 +1,6 @@
-from enum import Enum, auto
+from .BaseEnum import BaseEnum
 
-class ModerationEnum(Enum):
+class ModerationEnum(BaseEnum):
     """
     Énumération des tags de modération possibles
     """

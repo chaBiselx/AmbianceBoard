@@ -1,6 +1,6 @@
-from enum import Enum
+from .BaseEnum import BaseEnum
 
-class ModerationModelEnum(Enum):
+class ModerationModelEnum(BaseEnum):
     UNKNOWN = "unknown"
     PLAYLIST = "playlist"
     SOUNDBOARD = "soundboard"
