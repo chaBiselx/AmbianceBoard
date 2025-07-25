@@ -5,8 +5,8 @@ from home.forms.UserPasswordForm import UserPasswordForm
 from home.models.DomainBlacklist import DomainBlacklist
 
 class CreateUserForm(UserPasswordForm):
-    first_name = forms.CharField(max_length=64,label='Prénom', )
-    last_name = forms.CharField(max_length=64,label='Nom de famille', )
+    first_name = forms.CharField(max_length=64,label='Prénom', required=False)
+    last_name = forms.CharField(max_length=64,label='Nom de famille', required=False)
     username = forms.CharField(max_length=64,label='Nom d’utilisateur', )
     email = forms.EmailField(max_length=69,label='Email', )
 

@@ -2,12 +2,35 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 import uuid
 from django.utils import timezone
+from encrypted_model_fields.fields import EncryptedCharField
+
 
 class User(AbstractUser):
     id = models.BigAutoField(primary_key=True) 
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False, db_index=True)
-    isBan = models.BooleanField(default=False)
-    isConfirmed = models.BooleanField(default=False)
+    first_name = EncryptedCharField(
+        max_length=64,
+        blank=True,
+        null=True,
+        help_text="Prénom de l'utilisateur"
+    )
+    last_name = EncryptedCharField(
+        max_length=64,
+        blank=True,
+        null=True,
+        help_text="Nom de famille de l'utilisateur"
+    )
+    username = EncryptedCharField(
+        max_length=64,
+        unique=True,
+        verbose_name='username',
+        help_text="Nom d'utilisateur",
+        error_messages={
+            'unique': "A user with that username already exists.",
+        },
+    )
+    isBan = models.BooleanField(default=False, help_text="Indicates if the user is banned")
+    isConfirmed = models.BooleanField(default=False, help_text="Indicates if the user's email is confirmed")
     confirmationToken = models.CharField(max_length=255, default=None, null=True, blank=True)
     demandeConfirmationDate = models.DateTimeField(default=None, null=True, blank=True)
     reasonBan = models.CharField(max_length=255, default="" , null=False, blank=True)

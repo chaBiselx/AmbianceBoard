@@ -17,7 +17,19 @@
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
+
                     <div>
+                        {{ form.username.label_tag  }}<br /> {{ form.username }}
+                        {% if form.username.errors %}
+                        <ul>
+                            {% for error in form.username.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+
+                                        <div>
                         {{ form.first_name.label_tag  }}<br /> {{ form.first_name }}
                         {% if form.first_name.errors %}
                         <ul>
@@ -33,16 +45,6 @@
                         {% if form.last_name.errors %}
                         <ul>
                             {% for error in form.last_name.errors %}
-                            <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                    </div>
-                    <div>
-                        {{ form.username.label_tag  }}<br /> {{ form.username }}
-                        {% if form.username.errors %}
-                        <ul>
-                            {% for error in form.username.errors %}
                             <li>{{ error }}</li>
                             {% endfor %}
                         </ul>
