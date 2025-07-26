@@ -9,6 +9,7 @@ import WakeLock from '@/modules/General/WakeLock';
 import ModalCustom from './modules/General/Modal';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
 import {MixerPlaylist} from "@/modules/MixerPlaylist";
+import ShareLinkManager from '@/modules/Event/ShareLinkManager';
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -114,7 +115,8 @@ function publishSoundboard(event: Event) {
             body: body,
             footer: "",
             width: "sm"
-        })
+        });
+        (new ShareLinkManager()).addEvent();
     })
 
 }

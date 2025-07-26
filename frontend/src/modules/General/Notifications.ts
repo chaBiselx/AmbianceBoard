@@ -21,7 +21,7 @@ class Notification {
             notificationContainer.style.padding = config.padding;
             notificationContainer.style.top = '20px';
             notificationContainer.style.right = '20px';
-            notificationContainer.style.zIndex = '1050';
+            notificationContainer.style.zIndex = '9999';
             document.body.appendChild(notificationContainer);
         }
     
