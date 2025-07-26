@@ -20,7 +20,7 @@ class User(AbstractUser):
         null=True,
         help_text="Nom de famille de l'utilisateur"
     )
-    username = EncryptedCharField(
+    username = models.CharField(
         max_length=64,
         unique=True,
         verbose_name='username',
