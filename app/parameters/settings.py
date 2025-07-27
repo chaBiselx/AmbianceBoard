@@ -48,6 +48,9 @@ EMAIL_SMTP_USERNAME = str(os.environ.get("EMAIL_SMTP_USERNAME"))
 EMAIL_SMTP_PASSWORD = str(os.environ.get("EMAIL_SMTP_PASSWORD"))
 EMAIL_SMTP_USE_TLS = bool(os.environ.get("EMAIL_SMTP_USE_TLS", default=True))
 
+EMAIL_NO_REPLAY = os.environ.get("EMAIL_NO_REPLAY")
+EMAILS_LISTING_MODERATORS = os.environ.get("EMAILS_LISTING_MODERATORS", default="").split(";")
+
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
 APP_HOST = os.getenv('WEB_HOST')

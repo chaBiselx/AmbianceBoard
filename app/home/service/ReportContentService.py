@@ -2,6 +2,7 @@ from home.utils.logger import LoggerFactory
 import uuid
 from home.models.ReportContent import ReportContent
 from home.exceptions.PostDataException import PostDataException
+from home.email.ModeratorEmail import ModeratorEmail
 
 
 class ReportContentService:
@@ -30,8 +31,12 @@ class ReportContentService:
                     if self.request.user.is_authenticated:
                         report.creator = self.request.user
                     report.save()
+                    report.refresh_from_db()
                     
-                    # TODO envoyer un mail prioritaire au modérateur
+                    try:
+                        ModeratorEmail().report_content_reported(report)
+                    except Exception as e:
+                        self.logger.error(f"Erreur lors de l'envoi de l'email de signalement: {e}")
                     return True
                 else: 
                     raise PostDataException(f"Type de contenu ou uuid de contenu non renseigné {{type_element: {type_element}, uuid_element: {uuid_element}}}")
