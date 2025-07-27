@@ -14,6 +14,15 @@ from home.utils.logger import logger
 @login_required
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def listing_cron_views(request):
+    """
+    Render the manager cron views page.
+    """
+    return render(request, 'Html/Manager/cron_listing.html')
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def clean_media_folder(request) -> JsonResponse:
     try:
         logger.warning("Starting ClearMediaFolder View")

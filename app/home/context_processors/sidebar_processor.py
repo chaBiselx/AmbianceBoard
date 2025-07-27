@@ -36,8 +36,9 @@ def sidebar_processor(request):
         return {
             'show_sidebar': True,
             'sidebar_items': [
-                {'title': 'User Tiers', 'url': reverse("adminUserTiersDashboard"), 'classIcon':"fa-solid fa-users-medical"},
-     
+                {'title': 'Dashboard', 'url': reverse("managerDashboard"), 'classIcon':"fa-solid fa-chart-line"},
+                {'title': 'Cron', 'url': reverse("managerCronViews"), 'classIcon':"fa-solid fa-clock"},
+                {'title': 'User Tiers', 'url': reverse("adminUserTiersDashboard"), 'classIcon':"fas fa-user-graduate"},
             ]
         }
         
