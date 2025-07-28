@@ -2,6 +2,8 @@ import uuid
 from django.db import models
 from django.conf import settings
 from encrypted_model_fields.fields import EncryptedCharField
+from home.models.UserTierHistory import UserTierHistory
+from django.utils import timezone
 
 
 class UserTier(models.Model):
@@ -106,8 +108,6 @@ class UserTier(models.Model):
     
     def upgrade_tier(self, new_tier, expiry_date=None, payment_reference=None, changed_by=None, change_reason='UPGRADE'):
         """Met à jour le tier de l'utilisateur avec historique"""
-        from home.models.UserTierHistory import UserTierHistory
-        from django.utils import timezone
         
         old_tier = self.tier_name
         
@@ -135,8 +135,7 @@ class UserTier(models.Model):
     
     def downgrade_to_standard(self, changed_by=None, change_reason='DOWNGRADE'):
         """Rétrograde l'utilisateur au tier standard avec historique"""
-        from home.models.UserTierHistory import UserTierHistory
-        from django.utils import timezone
+
         
         old_tier = self.tier_name
         
