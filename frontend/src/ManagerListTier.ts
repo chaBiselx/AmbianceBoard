@@ -4,12 +4,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 class ListTiersManager {
-    selectAll: HTMLInputElement;
-    userCheckboxes: NodeListOf<HTMLInputElement>;
-    bulkActionBtn: HTMLButtonElement;
-    actionSelect: HTMLSelectElement;
-    extendDaysInput: HTMLInputElement;
-    bulkActionForm: HTMLFormElement;
+    private readonly selectAll: HTMLInputElement;
+    private readonly userCheckboxes: NodeListOf<HTMLInputElement>;
+    private readonly bulkActionBtn: HTMLButtonElement;
+    private readonly actionSelect: HTMLSelectElement;
+    private readonly extendDaysInput: HTMLInputElement;
+    private readonly bulkActionForm: HTMLFormElement;
 
     constructor() {
         this.selectAll = document.getElementById('select-all')! as HTMLInputElement;

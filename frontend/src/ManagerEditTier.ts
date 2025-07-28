@@ -6,15 +6,15 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 class TiersManager {
-    private tierSelect: HTMLSelectElement;
-    private expiryInput: HTMLInputElement;
-    private tierPreview: HTMLElement;
-    private previewContent: HTMLElement;
-    private downgradeBtn: HTMLElement;
-    private submitBtn: HTMLButtonElement;
-    private templateModalDownGradeBody: HTMLElement;
-    private templateModalDownGradeFooter: HTMLElement;
-    private tierChoices: Record<string, any>;
+    private readonly tierSelect: HTMLSelectElement;
+    private readonly expiryInput: HTMLInputElement;
+    private readonly tierPreview: HTMLElement;
+    private readonly previewContent: HTMLElement;
+    private readonly downgradeBtn: HTMLElement;
+    private readonly submitBtn: HTMLButtonElement;
+    private readonly templateModalDownGradeBody: HTMLElement;
+    private readonly templateModalDownGradeFooter: HTMLElement;
+    private readonly tierChoices: Record<string, any>;
 
     constructor() {
         this.tierSelect = document.getElementById('tier_name') as HTMLSelectElement;
