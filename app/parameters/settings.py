@@ -432,6 +432,8 @@ USER_TIERS = {
     }
 }
 
+TIER_EXPIRATION_WARNING_DAYS = int(os.environ.get("TIER_EXPIRATION_WARNING_DAYS", 14))  # Nombre de jours avant l'expiration pour envoyer un avertissement avant downgrade
+
 
 
 

@@ -2,9 +2,11 @@
 Service pour gérer l'expiration des abonnements utilisateur
 """
 from django.utils import timezone
+from django.conf import settings
 from datetime import timedelta
 from home.models.UserTier import UserTier
 from home.utils.logger import logger
+from home.email.UserMail import UserMail
 
 
 
@@ -12,8 +14,8 @@ class UserTierExpirationService:
     """
     Service pour gérer la logique d'expiration des tiers d'utilisateurs.
     """
-    delta_days = 7  # Nombre de jours avant l'expiration pour envoyer un avertissement
-    
+    delta_days = settings.TIER_EXPIRATION_WARNING_DAYS  # Nombre de jours avant l'expiration pour envoyer un avertissement
+
     def handle_expired_tiers(self):
         """
         Gère les tiers qui ont expiré.
@@ -71,12 +73,13 @@ class UserTierExpirationService:
             logger.error(f"Erreur lors de l'envoi des avertissements d'expiration: {str(e)}")
         return warning_count
 
-    def _send_expiration_notification(self, user):
+    def _send_expiration_notification(self, user, user_tier):
         """Envoie un email de notification d'expiration"""
-        # TODO: Implémenter l'envoi d'email
-        pass
-
+        user_mail = UserMail(user)
+        user_mail.tiers_downgrade_notification(user_tier.tier_name)
+        
+        
     def _send_expiration_warning(self, user, days_left):
         """Envoie un email d'avertissement d'expiration prochaine"""
-        # TODO: Implémenter l'envoi d'email d'avertissement
-        pass
+        user_mail = UserMail(user)
+        user_mail.tiers_expiration_warning(days_left)

@@ -19,7 +19,7 @@ class UserMail:
         The recipient is the user's email address.
         """
         subject = 'Bienvenue sur notre site'
-        html_content = render_to_string('EmailTemplate/welcomEmail.html', {'title': "Bienvenue" ,'user': self.user})
+        html_content = render_to_string('EmailTemplate/user/welcomEmail.html', {'title': "Bienvenue" ,'user': self.user})
         
         try:
             mailer = EmailSender()
@@ -35,7 +35,7 @@ class UserMail:
         """
         subject = 'Confirmation de votre compte'
       
-        html_content = render_to_string('EmailTemplate/confirmEmail.html', {'title': "Bienvenue" ,'user': self.user, 'url': url})
+        html_content = render_to_string('EmailTemplate/user/confirmEmail.html', {'title': "Bienvenue" ,'user': self.user, 'url': url})
         
         try:
             mailer = EmailSender()
@@ -52,7 +52,7 @@ class UserMail:
         """
         subject = 'Reinitialisation de votre mot de passe'
       
-        html_content = render_to_string('EmailTemplate/resetPassword.html', {'title': "Bienvenue" ,'user': self.user, 'url': url})
+        html_content = render_to_string('EmailTemplate/user/resetPassword.html', {'title': "Bienvenue" ,'user': self.user, 'url': url})
         
         try:
             mailer = EmailSender()
@@ -67,7 +67,7 @@ class UserMail:
         
         """
         subject = 'Modification de mot de passe'
-        html_content = render_to_string('EmailTemplate/password_changed.html', {'title': "Bienvenue" ,'user': self.user})
+        html_content = render_to_string('EmailTemplate/user/password_changed.html', {'title': "Bienvenue" ,'user': self.user})
         
         try:
             mailer = EmailSender()
@@ -84,7 +84,7 @@ class UserMail:
         The recipient is the user's email address.
         """
         subject = 'Votre compte a été supprimé'
-        html_content = render_to_string('EmailTemplate/autoDeletionAccount.html', {'title': "Account deleted" ,'user': self.user})
+        html_content = render_to_string('EmailTemplate/user/autoDeletionAccount.html', {'title': "Account deleted" ,'user': self.user})
         
         try:
             mailer = EmailSender()
@@ -102,7 +102,7 @@ class UserMail:
         """
         subject = 'Votre compte a été supprimé'
         
-        html_content = render_to_string('EmailTemplate/autoDeletionAccountNeverLogin.html', {'title': "Account deleted" ,'user': self.user})
+        html_content = render_to_string('EmailTemplate/user/autoDeletionAccountNeverLogin.html', {'title': "Account deleted" ,'user': self.user})
         
         try:
             mailer = EmailSender()
@@ -120,7 +120,7 @@ class UserMail:
         """
         subject = 'Votre compte va être supprimé'
         
-        html_content = render_to_string('EmailTemplate/preventAutoDeletion.html', {'title': "Prevent deletion account due to inactivity" ,'user': self.user})
+        html_content = render_to_string('EmailTemplate/user/preventAutoDeletion.html', {'title': "Prevent deletion account due to inactivity" ,'user': self.user})
         
         try:
             mailer = EmailSender()
@@ -137,7 +137,7 @@ class UserMail:
         The recipient is the user's email address.
         """
         subject = 'Votre compte va être supprimé car non confirmé'
-        html_content = render_to_string('EmailTemplate/preventAutoDeletionNotConfirmed.html', {'title': "Prevent deletion account due not confirmed" ,'user': self.user, 'url': url})
+        html_content = render_to_string('EmailTemplate/user/preventAutoDeletionNotConfirmed.html', {'title': "Prevent deletion account due not confirmed" ,'user': self.user, 'url': url})
         
         try:
             mailer = EmailSender()
@@ -154,7 +154,7 @@ class UserMail:
         The recipient is the user's email address.
         """
         subject = 'Votre compte a été supprimé car non confirmé'
-        html_content = render_to_string('EmailTemplate/autoDeletionNotConfirmed.html', {'title': "Deletion account due not confirmed" ,'user': self.user})
+        html_content = render_to_string('EmailTemplate/user/autoDeletionNotConfirmed.html', {'title': "Deletion account due not confirmed" ,'user': self.user})
         
         try:
             mailer = EmailSender()
@@ -163,4 +163,34 @@ class UserMail:
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de suppression Aucune confirmation à {self.user.email}: {e}")
         
+
+    def tiers_downgrade_notification(self, new_tier):
+        """
+        Sends a notification email to the user when their tier is downgraded.
+        
+        """
+        subject = 'Votre tier a été rétrogradé'
+        html_content = render_to_string('EmailTemplate/user/tierDowngradeNotification.html', {'title': "Tier downgraded" ,'user': self.user, 'new_tier': new_tier})
+        
+        try:
+            mailer = EmailSender()
+            mailer.send_email(subject, html_content, self.from_email, [self.user.email])
+            self.logger.info(f"Email de notification de rétrogradation envoyé à {self.user.email}")
+        except Exception as e:
+            self.logger.error(f"Erreur lors de l'envoi de l'email de notification de rétrogradation à {self.user.email}: {e}") 
             
+    def tiers_expiration_warning(self, days_left):
+        """
+        Sends a warning email to the user when their tier is about to expire.
+        
+        """
+        subject = 'Avertissement d\'expiration de votre tier'
+        html_content = render_to_string('EmailTemplate/user/tierExpirationWarning.html', {'title': "Tier expiration warning" ,'user': self.user, 'days_left': days_left})
+        
+        try:
+            mailer = EmailSender()
+            mailer.send_email(subject, html_content, self.from_email, [self.user.email])
+            self.logger.info(f"Email d'avertissement d'expiration envoyé à {self.user.email}")
+        except Exception as e:
+            self.logger.error(f"Erreur lors de l'envoi de l'email d'avertissement d'expiration à {self.user.email}: {e}")
+                   
