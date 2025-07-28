@@ -1,20 +1,18 @@
 {% extends 'Html/base_manager.html' %}
 {% load static %}
+{% load FrontJs %}
+{% load PaginationLinks %}
+
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "ManagerListTier"|search_true_file %}"></script>
+{% endblock javascript %}
 
 {% block title %}Liste des Tiers Utilisateurs{% endblock %}
 
 {% block content %}
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h1><i class="fas fa-users"></i> Liste des Tiers Utilisateurs</h1>
-                <a href="{% url 'adminUserTiersDashboard' %}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Retour au Dashboard
-                </a>
-            </div>
-        </div>
-    </div>
 
     <!-- Filtres -->
     <div class="row mb-4">
@@ -130,7 +128,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="{% url 'adminUserTierEdit' user_tier.user.uuid %}" class="btn btn-sm btn-warning" title="Modifier">
-                                                <i class="fas fa-edit"></i> TODO
+                                                <i class="fas fa-edit"></i> Modifier
                                             </a>
                                         </div>
                                     </td>
@@ -143,41 +141,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Pagination -->
-    <div class="row mt-3">
-        <div class="col-12">
-            {% if paginator.num_pages > 1 %}
-            <nav aria-label="Navigation pages">
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if search %}&search={{ search }}{% endif %}{% if tier_filter %}&tier={{ tier_filter }}{% endif %}">Précédent</a>
-                    </li>
-                    {% endif %}
-
-                    {% for num in paginator.page_range %}
-                    {% if page_obj.number == num %}
-                    <li class="page-item active">
-                        <span class="page-link">{{ num }}</span>
-                    </li>
-                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ num }}{% if search %}&search={{ search }}{% endif %}{% if tier_filter %}&tier={{ tier_filter }}{% endif %}">{{ num }}</a>
-                    </li>
-                    {% endif %}
-                    {% endfor %}
-
-                    {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if search %}&search={{ search }}{% endif %}{% if tier_filter %}&tier={{ tier_filter }}{% endif %}">Suivant</a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </nav>
-            {% endif %}
-        </div>
-    </div>
+    {% applys_pagination paginator %}
     {% else %}
     <div class="row">
         <div class="col-12">
@@ -189,66 +153,5 @@
     {% endif %}
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const selectAll = document.getElementById('select-all');
-        const userCheckboxes = document.querySelectorAll('.user-checkbox');
-        const bulkActionBtn = document.getElementById('bulk-action-btn');
-        const actionSelect = document.querySelector('select[name="action"]');
-        const extendDaysInput = document.getElementById('extend-days-input');
 
-        // Sélectionner/désélectionner tous
-        selectAll.addEventListener('change', function () {
-            userCheckboxes.forEach(checkbox => {
-                checkbox.checked = selectAll.checked;
-            });
-            updateBulkActionButton();
-        });
-
-        // Mise à jour du bouton d'action en lot
-        userCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updateBulkActionButton);
-        });
-
-        function updateBulkActionButton() {
-            const selectedUsers = Array.from(userCheckboxes).filter(cb => cb.checked);
-            bulkActionBtn.disabled = selectedUsers.length === 0 || !actionSelect.value;
-        }
-
-        // Afficher/masquer le champ jours selon l'action
-        actionSelect.addEventListener('change', function () {
-            if (this.value === 'extend_subscription') {
-                extendDaysInput.style.display = 'inline-block';
-                extendDaysInput.required = true;
-            } else {
-                extendDaysInput.style.display = 'none';
-                extendDaysInput.required = false;
-            }
-            updateBulkActionButton();
-        });
-
-        // Confirmation avant action en lot
-        document.getElementById('bulk-action-form').addEventListener('submit', function (e) {
-            const selectedUsers = Array.from(userCheckboxes).filter(cb => cb.checked);
-            const action = actionSelect.value;
-
-            if (selectedUsers.length === 0) {
-                e.preventDefault();
-                alert('Veuillez sélectionner au moins un utilisateur.');
-                return;
-            }
-
-            if (!action) {
-                e.preventDefault();
-                alert('Veuillez sélectionner une action.');
-                return;
-            }
-
-            const actionText = actionSelect.options[actionSelect.selectedIndex].text;
-            if (!confirm(`Êtes-vous sûr de vouloir exécuter "${actionText}" sur ${selectedUsers.length} utilisateur(s) ?`)) {
-                e.preventDefault();
-            }
-        });
-    });
-</script>
 {% endblock %}

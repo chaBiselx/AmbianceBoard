@@ -26,6 +26,8 @@ export default defineConfig(({ mode }) => {
                     General: resolve(__dirname, 'src/General.ts'),
                     UpdateDimension: resolve(__dirname, 'src/UpdateDimension.ts'),
                     Manager_General: resolve(__dirname, 'src/ManagerGeneral.ts'),
+                    ManagerEditTier: resolve(__dirname, 'src/ManagerEditTier.ts'),
+                    ManagerListTier: resolve(__dirname, 'src/ManagerListTier.ts'),
                     Moderator_General: resolve(__dirname, 'src/ModeratorGeneral.ts'),
                 },
                 output: {

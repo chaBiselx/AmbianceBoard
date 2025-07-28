@@ -2,6 +2,7 @@
 Vues pour la gestion des tiers d'utilisateurs par les administrateurs
 """
 
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
@@ -108,6 +109,7 @@ def manager_user_tier_edit(request, user_uuid) -> HttpResponse:
             expiry_date = request.POST.get('tier_expiry_date')
             payment_reference = request.POST.get('payment_reference', '')
             notes = request.POST.get('notes', '')
+            auto_renew = request.POST.get('auto_renew') == 'on'
             
             # Validation
             if new_tier not in UserTierManager.get_all_tiers():
@@ -127,8 +129,15 @@ def manager_user_tier_edit(request, user_uuid) -> HttpResponse:
                     return redirect('adminUserTierEdit', user_uuid=user_uuid)
             
             # Mise à jour du tier
-            user_tier.upgrade_tier(new_tier, parsed_expiry, payment_reference)
+            user_tier.upgrade_tier(
+                new_tier, 
+                parsed_expiry, 
+                payment_reference, 
+                changed_by=request.user,
+                change_reason='ADMIN_CHANGE'
+            )
             user_tier.notes = notes
+            user_tier.auto_renew = auto_renew
             
 
             user_tier.save()
@@ -142,7 +151,8 @@ def manager_user_tier_edit(request, user_uuid) -> HttpResponse:
     context = {
         'user': user,
         'user_tier': user_tier,
-        'tier_choices': UserTierManager.get_all_tiers(),
+        'tier_choices': json.dumps(UserTierManager.get_all_tiers()),
+        'tier_choices_form': UserTierManager.get_all_tiers(),
         'current_limits': user_tier.get_effective_limits() if user_tier else UserTierManager.get_tier_limits('STANDARD')
     }
     
