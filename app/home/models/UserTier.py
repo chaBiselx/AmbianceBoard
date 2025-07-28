@@ -4,6 +4,8 @@ from django.conf import settings
 from encrypted_model_fields.fields import EncryptedCharField
 from home.models.UserTierHistory import UserTierHistory
 from django.utils import timezone
+from home.utils.UserTierManager import UserTierManager
+
 
 
 class UserTier(models.Model):
@@ -72,7 +74,6 @@ class UserTier(models.Model):
 
     def get_effective_limits(self):
         """Retourne les limites effectives (custom ou tier par défaut)"""
-        from home.utils.UserTierManager import UserTierManager
         
         default_limits = UserTierManager.get_tier_limits(self.tier_name)
         
@@ -94,7 +95,6 @@ class UserTier(models.Model):
         if not self.tier_expiry_date:
             return False
         
-        from django.utils import timezone
         return timezone.now() > self.tier_expiry_date
     
     def get_days_until_expiry(self):
@@ -102,9 +102,8 @@ class UserTier(models.Model):
         if not self.tier_expiry_date:
             return None
         
-        from django.utils import timezone
         delta = self.tier_expiry_date - timezone.now()
-        return delta.days if delta.days > 0 else 0
+        return delta.days
     
     def upgrade_tier(self, new_tier, expiry_date=None, payment_reference=None, changed_by=None, change_reason='UPGRADE'):
         """Met à jour le tier de l'utilisateur avec historique"""

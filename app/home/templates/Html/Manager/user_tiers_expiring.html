@@ -57,7 +57,9 @@
                                     <td>
                                         {% with days_remaining=user_tier.get_days_until_expiry %}
                                         <span class="badge {% if days_remaining <= 1 %}badge-danger{% elif days_remaining <= 3 %}badge-warning{% else %}badge-info{% endif %}">
-                                            {% if days_remaining == 0 %}
+                                            {% if days_remaining < 0 %}
+                                                Expiré {{ days_remaining|slice:"1:" }} jour(s)
+                                            {% elif days_remaining == 0 %}
                                                 Expire aujourd'hui
                                             {% elif days_remaining == 1 %}
                                                 {{ days_remaining }} jour

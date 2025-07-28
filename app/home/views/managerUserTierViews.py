@@ -217,7 +217,6 @@ def manager_user_tiers_expiring(request) -> HttpResponse:
     
     queryset = UserTier.objects.filter(
         tier_expiry_date__lte=expiry_threshold,
-        tier_expiry_date__gte=timezone.now(),
     ).select_related('user').order_by('tier_expiry_date')
     
     paginator = Paginator(queryset, 50)
