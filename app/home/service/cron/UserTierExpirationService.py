@@ -34,7 +34,7 @@ class UserTierExpirationService:
                     logger.info(f"Expiration du tier {user_tier.tier_name} pour l'utilisateur {user_tier.user.username}")
                     user_tier.downgrade_to_standard()
                     expired_count += 1
-                    self._send_expiration_notification(user_tier.user)
+                    self._send_expiration_notification(user_tier.user, user_tier)
                 except Exception as e:
                     logger.error(f"Erreur lors de l'expiration du tier pour {user_tier.user.username}: {str(e)}")
             
