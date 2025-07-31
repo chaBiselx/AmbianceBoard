@@ -1,15 +1,17 @@
+from typing import Callable, Any, Dict
+from django.http import HttpRequest, HttpResponse
 import uuid
 import time
 import secrets
 from home.utils.logger import LoggerFactory
 
 class LogRequestsMiddleware:
-    def __init__(self, get_response):
+    def __init__(self, get_response: Callable[[HttpRequest], HttpResponse]) -> None:
         self.get_response = get_response
         self.logger = LoggerFactory.get_default_logger('request')
         self.logger_home = LoggerFactory.get_default_logger()
 
-    def __call__(self, request):
+    def __call__(self, request: HttpRequest) -> HttpResponse:
         start_time = time.time()
         
         try:

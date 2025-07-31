@@ -5,5 +5,5 @@ class UploadConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'home'
     
-    def ready(self):
+    def ready(self) -> None:
         import home.signals  # Importer les signals

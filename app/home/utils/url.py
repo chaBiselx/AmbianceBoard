@@ -1,7 +1,7 @@
 import urllib
 from django.conf import settings
 
-def get_full_url(path):
+def get_full_url(path: str) -> str:
     scheme = settings.APP_SCHEME
     host = settings.APP_HOST
     port = ''
@@ -9,7 +9,7 @@ def get_full_url(path):
         port = ':' + str(settings.APP_PORT)
     return f"{scheme}://{host}{port}{path}"
 
-def redirection_url(url):
+def redirection_url(url: str) -> str:
     scheme = settings.APP_SCHEME
     host = settings.APP_HOST
     port = ''

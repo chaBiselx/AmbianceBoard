@@ -1,3 +1,4 @@
+from typing import Any, Optional
 import uuid
 from home.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
@@ -33,14 +34,14 @@ class Playlist(models.Model):
     useSpecificDelay = models.BooleanField(default=False, )
     maxDelay = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self._icon_original = self.icon if self.pk else None
         
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} ({self.uuid}) "
         
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         new_file = False
         if not hasattr(self, 'user') :
             raise ValueError("Playlist must have a user")
@@ -54,21 +55,21 @@ class Playlist(models.Model):
         if new_file: 
             reduce_size_img.apply_async(args=[self.__class__.__name__, self.pk], queue='default', priority=1 )
             
-    def update(self, *args, **kwargs):
+    def update(self, *args: Any, **kwargs: Any) -> None:
         if not hasattr(self, 'user') :
             raise ValueError("Playlist must have a user")
             
         super().save(*args, **kwargs)
     
-    def get_data_set(self):
+    def get_data_set(self) -> "QuerySet[Any]":
         strategy = PlaylistStrategy().get_strategy(self.typePlaylist)
         return strategy.get_data(self)
 
-    def get_order(self):
+    def get_order(self) -> Optional[int]:
         soundboard_playlist = SoundboardPlaylist.objects.filter(Playlist=self).first()
         return soundboard_playlist.order if soundboard_playlist and soundboard_playlist.order is not None else None
     
-    def get_color(self):
+    def get_color(self) -> str:
         if self.useSpecificColor:
             return self.color
         else:
@@ -80,7 +81,7 @@ class Playlist(models.Model):
             d_c_p_service = DefaultColorPlaylistService(user)
             return d_c_p_service.get_default_color(self.typePlaylist)
         
-    def get_color_text(self):
+    def get_color_text(self) -> str:
         if self.useSpecificColor:
             return self.colorText
         else:
@@ -93,12 +94,12 @@ class Playlist(models.Model):
             return d_c_p_service.get_default_color_text(self.typePlaylist)
             
     
-    def clean(self):
+    def clean(self) -> None:
         if self.pk:
             self._icon_changed = self.icon != self._icon_original
         super().clean()
     
-    def __replace_name_by_uuid(self):
+    def __replace_name_by_uuid(self) -> None:
         new_uuid = uuid.uuid4()
         self.icon.name = f"{new_uuid}.{self.icon.name.split('.')[-1]}"
     

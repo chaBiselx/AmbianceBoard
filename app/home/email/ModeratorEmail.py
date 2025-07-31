@@ -1,18 +1,18 @@
-from django.core.mail import EmailMultiAlternatives
+from home.utils.logger.ILogger import ILogger
 from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 from django.conf import settings
+from home.models.ReportContent import ReportContent
 from home.utils.EmailSender import EmailSender
 from home.utils.logger import LoggerFactory
 
 
 class ModeratorEmail():
-    def __init__(self):
-        self.logger = LoggerFactory.get_default_logger()
-        self.from_email = settings.EMAIL_NO_REPLAY
-        self.to_emails = settings.EMAILS_LISTING_MODERATORS
+    def __init__(self) -> None:
+        self.logger: ILogger = LoggerFactory.get_default_logger()
+        self.from_email: str = settings.EMAIL_NO_REPLAY
+        self.to_emails: list[str] = settings.EMAILS_LISTING_MODERATORS
 
-    def report_content_reported(self, report):
+    def report_content_reported(self, report: ReportContent) -> None:
         """
         Send an email to the moderator when content is reported.
         
@@ -36,7 +36,7 @@ class ModeratorEmail():
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de signalement à {self.to_emails}: {e}")
             
-    def _has_moderator_email(self):
+    def _has_moderator_email(self) -> bool:
         """
         Check if the moderator email is configured.
         

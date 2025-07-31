@@ -1,9 +1,10 @@
+from typing import Union
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.models import Group
+from django.http import JsonResponse, HttpRequest, HttpResponse
 from home.models.User import User
 from home.enum.GroupEnum import GroupEnum
-from django.http import JsonResponse
 from home.forms.CreateUserForm import CreateUserForm
 from home.forms.UserResetPasswordForm import UserResetPasswordForm
 from home.email.UserMail import UserMail
@@ -27,16 +28,16 @@ from home.utils.logger import logger
 
 @detect_not_confirmed_account()
 @require_http_methods(['GET'])
-def home(request):
+def home(request: HttpRequest) -> HttpResponse:
     return render(request, "Html/General/home.html", {"title": "Accueil"})
 
 
 @require_http_methods(['GET'])
-def legal_notice(request):
+def legal_notice(request: HttpRequest) -> HttpResponse:
     return render(request, "Html/General/legal_notice.html", {"title": "Mention légal"})
 
 @require_http_methods(['GET', 'POST'])
-def create_account(request):
+def create_account(request: HttpRequest) -> HttpResponse:
     errors = []
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -66,7 +67,7 @@ def create_account(request):
     return render(request, 'Html/Account/create_account.html', {'form': form, 'errors':errors})
 
 @require_http_methods(['GET', 'POST'])
-def login_view(request):
+def login_view(request: HttpRequest) -> HttpResponse:
     context = {}
     if request.method == 'POST':
         username = request.POST['username']
@@ -85,7 +86,7 @@ def login_view(request):
     return render(request, 'Html/Account/login.html', context)
 
 @require_http_methods(['GET'])
-def logout_view(request):
+def logout_view(request: HttpRequest) -> HttpResponse:
     if request.user.is_authenticated:
         logout(request)
     return redirect('home')

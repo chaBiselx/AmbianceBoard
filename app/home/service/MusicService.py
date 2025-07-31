@@ -1,4 +1,7 @@
 import uuid
+from typing import Optional, List
+from django.http import HttpRequest
+from django.core.files.uploadedfile import UploadedFile
 from home.enum.PermissionEnum import PermissionEnum
 from home.models.Playlist import Playlist
 from home.models.Music import Music
@@ -12,10 +15,10 @@ from home.enum.MusicFormatEnum import MusicFormatEnum
 
 class MusicService:
     
-    def __init__(self, request):
+    def __init__(self, request: HttpRequest) -> None:
         self.request = request
         
-    def get_specific_music(self, playlist_uuid:int, music_id:int)-> Music|None :
+    def get_specific_music(self, playlist_uuid: int, music_id: int) -> Optional[Music]:
         """        Récupère une musique spécifique par son ID dans une playlist.
         Args:
             playlist_uuid (int): L'UUID de la playlist.
@@ -29,7 +32,7 @@ class MusicService:
             return None
 
         
-    def get_list_music(self, playlist_uuid:int)-> list[Music]|None :
+    def get_list_music(self, playlist_uuid: int) -> Optional[List[Music]]:
         try:
             music_filter = MusicFilter()
             queryset = music_filter.filter_by_user(self.request.user)
@@ -38,7 +41,7 @@ class MusicService:
         except Playlist.DoesNotExist:
             return None
         
-    def save_form(self, playlist:Playlist, music:Music=None) :
+    def save_form(self, playlist: Playlist, music: Optional[Music] = None) -> Optional[Music]:
         user_parameters = UserParametersFactory(self.request.user)
         limit_music_per_playlist = user_parameters.limit_music_per_playlist
             
@@ -62,7 +65,7 @@ class MusicService:
                     raise ValueError("Erreur dans le formulaire: " + error)
         return None
     
-    def save_multiple_files_item(self, playlist: Playlist, file):
+    def save_multiple_files_item(self, playlist: Playlist, file: UploadedFile) -> Music:
         """Sauvegarde un fichier individuel dans le contexte d'un upload multiple"""
         user_parameters = UserParametersFactory(self.request.user)
         limit_music_per_playlist = user_parameters.limit_music_per_playlist

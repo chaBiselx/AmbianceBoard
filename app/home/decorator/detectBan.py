@@ -1,10 +1,13 @@
+from typing import Callable, Any
 import functools
+from django.http import HttpRequest, HttpResponse
 from home.models.SoundBoard import SoundBoard
 from django.shortcuts import render
 from home.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
-def detect_ban(func):
+
+def detect_ban(func: Callable[..., HttpResponse]) -> Callable[..., HttpResponse]:
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> HttpResponse:
         if kwargs['soundboard_uuid'] is not None:
             soundboard = SoundBoard.objects.get(uuid=kwargs['soundboard_uuid'])
             if soundboard.user.checkBanned(): 

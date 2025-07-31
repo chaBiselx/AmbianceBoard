@@ -1,17 +1,18 @@
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
+from home.utils.logger.ILogger import ILogger
 from django.conf import settings
+from django.template.loader import render_to_string
+from home.models.User import User
 from home.utils.EmailSender import EmailSender
 from home.utils.logger import LoggerFactory
 
 
 class UserMail:
-    def __init__(self, user):
-        self.logger = LoggerFactory.get_default_logger()
-        self.from_email = settings.EMAIL_NO_REPLAY
-        self.user = user
-    def send_welcome_email(self):
+    def __init__(self, user: User) -> None:
+        self.logger: ILogger = LoggerFactory.get_default_logger()
+        self.from_email: str = settings.EMAIL_NO_REPLAY
+        self.user: User = user
+        
+    def send_welcome_email(self) -> None:
         """
         Sends a welcome email to the user using a predefined HTML template.
 
@@ -28,7 +29,7 @@ class UserMail:
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de bienvenue à {self.user.email}: {e}")
             
-    def send_account_confirmation_email(self, url):
+    def send_account_confirmation_email(self, url: str) -> None:
         """
         Sends a welcome email to the user using a predefined HTML template.
         
@@ -45,7 +46,7 @@ class UserMail:
             self.logger.error(f"Erreur lors de l'envoi de l'email de confirmation à {self.user.email}: {e}")
 
 
-    def send_reset_password_email(self, url):
+    def send_reset_password_email(self, url: str) -> None:
         """
         Sends an email to send a link to reset account
         
@@ -61,7 +62,7 @@ class UserMail:
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de reinitialisation à {self.user.email}: {e}")
             
-    def send_password_changed_email(self):
+    def send_password_changed_email(self) -> None:
         """
         Sends an email to prevent user from changing password
         
@@ -76,7 +77,7 @@ class UserMail:
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de modification de mot de passe à {self.user.email}: {e}")
             
-    def account_auto_deletion(self):
+    def account_auto_deletion(self) -> None:
         """
         Sends an account deletion email to the user using a predefined HTML template.
 
@@ -93,7 +94,7 @@ class UserMail:
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de suppression  à {self.user.email}: {e}")
             
-    def account_auto_deletion_never_login(self):
+    def account_auto_deletion_never_login(self) -> None:
         """
         Sends an account deletion email to the user using a predefined HTML template.
 

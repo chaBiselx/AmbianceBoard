@@ -1,3 +1,4 @@
+from typing import Optional
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import uuid
@@ -54,13 +55,13 @@ class User(AbstractUser):
             return self.banExpiration >= timezone.now()
         return True
     
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.username} {self.email}"
     
-    def get_confirmation_token(self) -> str|None:
+    def get_confirmation_token(self) -> Optional[str]:
         return str(self.confirmationToken) if self.confirmationToken is not None else self.confirmationToken
     
-    def get_reinitialisation_token(self) -> str|None:
+    def get_reinitialisation_token(self) -> Optional[str]:
         return str(self.tokenReinitialisation) if self.tokenReinitialisation is not None else self.tokenReinitialisation
         
         

@@ -1,3 +1,5 @@
+from typing import Optional, List
+from django.http import HttpRequest
 from django.contrib import messages
 from home.enum.PermissionEnum import PermissionEnum
 from home.models.Playlist import Playlist
@@ -8,10 +10,10 @@ from home.factory.UserParametersFactory import UserParametersFactory
 
 class PlaylistService:
     
-    def __init__(self, request):
+    def __init__(self, request: HttpRequest) -> None:
         self.request = request
     
-    def get_playlist(self, playlist_uuid:int)-> Playlist|None :
+    def get_playlist(self, playlist_uuid: int) -> Optional[Playlist]:
         try:
             playlist = Playlist.objects.get(uuid=playlist_uuid)
             if not playlist or playlist.user != self.request.user:
@@ -21,7 +23,7 @@ class PlaylistService:
         except Playlist.DoesNotExist:
             return None
         
-    def get_all_playlist(self)-> list[Playlist] :
+    def get_all_playlist(self) -> List[Playlist]:
         try:
             _query_set = Playlist.objects.all().order_by('updated_at')
             _filter = PlaylistFilter(queryset=_query_set)
@@ -30,7 +32,7 @@ class PlaylistService:
             playlists = []
         return playlists
     
-    def save_form(self):
+    def save_form(self) -> Optional[Playlist]:
         user_parameters = UserParametersFactory(self.request.user)
         limit_playlist = user_parameters.limit_playlist
         

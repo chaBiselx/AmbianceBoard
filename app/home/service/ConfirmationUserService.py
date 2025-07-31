@@ -8,11 +8,11 @@ from django.utils import timezone
 
 class ConfirmationUserService:
     
-    def __init__(self, user:User):
+    def __init__(self, user: User) -> None:
         self.user = user
         self.logger = LoggerFactory.get_default_logger()
     
-    def generation_uri(self, change_confirmation_date:bool = True) -> str:
+    def generation_uri(self, change_confirmation_date: bool = True) -> str:
         if self.user.isConfirmed:
             raise SecurityException("User already confirmed")
         self.user.confirmationToken = self.__generation_token()
@@ -23,7 +23,7 @@ class ConfirmationUserService:
         self.user.save()
         return reverse("confirm_account", kwargs={'uuid_user': self.user.uuid, 'confirmation_token': self.user.confirmationToken })
     
-    def verification_token(self, confirmation_token:str) -> bool:
+    def verification_token(self, confirmation_token: str) -> bool:
         if self.user is None : 
             raise SecurityException("User not found")
         if self.user.confirmationToken is None :
@@ -42,5 +42,5 @@ class ConfirmationUserService:
         self.user.save()
         return True
     
-    def __generation_token(self):
+    def __generation_token(self) -> str:
         return str(uuid.uuid4())

@@ -1,4 +1,6 @@
+from typing import Any, Optional
 from django import forms
+from django.core.files.uploadedfile import UploadedFile
 from home.models.SoundBoard import SoundBoard
 from home.models.Tag import Tag
 from home.mixins.BootstrapFormMixin import BootstrapFormMixin
@@ -9,7 +11,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
         model = SoundBoard
         fields = ('name', 'color', 'colorText', 'is_public', 'icon', 'tags')
         
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         # Supprime le lien si un fichier existe
         if self.instance and self.instance.icon:
@@ -59,7 +61,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
         help_text='Sélectionnez si necessaires des tags pour catégoriser votre soundboard pour les recherches'
     )
 
-    def clean_icon(self):
+    def clean_icon(self) -> Optional[UploadedFile]:
         if self.cleaned_data.get('clear_icon'):
             return None
         icon = self.cleaned_data['icon']
@@ -68,7 +70,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
             raise forms.ValidationError(f"Seuls les fichiers images ({', '.join(allowed_extensions)}) sont autorisés.")
         return icon
 
-    def save(self, commit=True):
+    def save(self, commit: bool = True) -> SoundBoard:
         instance = super().save(commit=False)
 
         # Si le fichier doit être supprimé, on l'initialise à None

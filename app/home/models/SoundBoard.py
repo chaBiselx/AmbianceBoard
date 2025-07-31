@@ -1,4 +1,5 @@
 import uuid
+from typing import Any
 from home.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
 from home.models.User import User
@@ -25,14 +26,14 @@ class SoundBoard(models.Model):
     is_public = models.BooleanField(default=False)
     icon = models.FileField(upload_to=SOUNDBOARD_FOLDER, default=None, null=True, blank=True)
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self._icon_original = self.icon if self.pk else None
         
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} ({self.uuid}) "    
         
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         new_file = False
         if not hasattr(self, 'user') :
             raise ValueError("Playlist must have a user")
@@ -45,38 +46,38 @@ class SoundBoard(models.Model):
         if new_file: 
             reduce_size_img.apply_async(args=[self.__class__.__name__, self.pk], queue='default', priority=1 )
             
-    def update(self, *args, **kwargs):
+    def update(self, *args: Any, **kwargs: Any) -> None:
         if not hasattr(self, 'user') :
             raise ValueError("Playlist must have a user")
             
         super().save(*args, **kwargs)
             
 
-    def clean(self):
+    def clean(self) -> None:
         if self.pk:
             self._icon_changed = self.icon != self._icon_original
         super().clean()
         
-    def get_list_playlist_ordered(self):
+    def get_list_playlist_ordered(self) -> "QuerySet[Playlist]":
         return Playlist.objects.filter(soundboards=self).order_by('soundboardplaylist__order')
     
-    def get_tags_list(self):
+    def get_tags_list(self) -> "QuerySet[Tag]":
         """Retourne la liste des tags associés à ce soundboard"""
         return self.tags.filter(is_active=True).order_by('name')
     
-    def add_tag(self, tag):
+    def add_tag(self, tag: Tag) -> None:
         """Ajoute un tag à ce soundboard"""
         if tag.is_active:
             self.tags.add(tag)
     
-    def remove_tag(self, tag):
+    def remove_tag(self, tag: Tag) -> None:
         """Retire un tag de ce soundboard"""
         self.tags.remove(tag)
         
 
         
  
-    def __replace_name_by_uuid(self):
+    def __replace_name_by_uuid(self) -> None:
         new_uuid = uuid.uuid4()
         self.icon.name = f"{new_uuid}.{self.icon.name.split('.')[-1]}"
     

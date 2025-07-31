@@ -1,3 +1,5 @@
+from typing import Optional
+from django.http import HttpRequest
 from home.models.SoundBoard import SoundBoard
 from home.models.SharedSoundboard import SharedSoundboard
 from home.forms.SoundBoardForm import SoundBoardForm
@@ -8,7 +10,7 @@ from home.factory.UserParametersFactory import UserParametersFactory
 
 class SoundBoardService:
     
-    def __init__(self, request):
+    def __init__(self, request: HttpRequest) -> None:
         self.request = request
         
     def get_all_soundboard(self)-> list[SoundBoard] :
@@ -19,7 +21,7 @@ class SoundBoardService:
             soundboards = []
         return soundboards
     
-    def get_soundboard(self, soundboard_uuid:int)-> SoundBoard|None :
+    def get_soundboard(self, soundboard_uuid: int) -> Optional[SoundBoard]:
         try:
             soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
             if not soundboard or soundboard.user != self.request.user:
@@ -28,7 +30,7 @@ class SoundBoardService:
         except SoundBoard.DoesNotExist:
             return None
     
-    def get_public_soundboard(self, soundboard_uuid:int)-> SoundBoard|None :
+    def get_public_soundboard(self, soundboard_uuid: int) -> Optional[SoundBoard]:
         try:
             soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
             if not soundboard or not soundboard.is_public:
@@ -37,7 +39,7 @@ class SoundBoardService:
         except SoundBoard.DoesNotExist:
             return None
         
-    def get_soundboard_from_shared_soundboard(self, soundboard_uuid, token:str)-> SoundBoard|None :
+    def get_soundboard_from_shared_soundboard(self, soundboard_uuid: int, token: str) -> Optional[SoundBoard]:
         try:
             soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
             if not soundboard:
@@ -53,7 +55,7 @@ class SoundBoardService:
         except SharedSoundboard.DoesNotExist:
             return None
         
-    def save_form(self):
+    def save_form(self) -> Optional[SoundBoard]:
         user_parameters = UserParametersFactory(self.request.user)
         limit_soundboard = user_parameters.limit_soundboard
         
