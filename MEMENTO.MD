@@ -28,13 +28,13 @@ python manage.py crontab show
 python manage.py test
 
 # Exécuter les tests d'une application spécifique
-python manage.py test home
+python manage.py test main
 
 # Exécuter uniquement les tests qui ont échoué
 python manage.py test --failed
 
 # Exécuter un test spécifique
-python manage.py test home.tests.TestClass.test_method
+python manage.py test main.tests.TestClass.test_method
 
 
 # dauns premier console 
@@ -55,7 +55,7 @@ psql -U postgres
 
 
 uuid_generate_v4() => CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-INSERT INTO home_finaluser (id,  email, "userID")
+INSERT INTO main_finaluser (id,  email, "userID")
 VALUES (uuid_generate_v4(), 'exemple@domaine.com', 'uniqueID123');
 
 

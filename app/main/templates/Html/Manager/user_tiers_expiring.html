@@ -1,0 +1,117 @@
+{% extends 'Html/base_manager.html' %}
+{% load static %}
+{% load FrontJs %}
+{% load PaginationLinks %}
+
+{% block navbar %}
+{% include "Html/navbar_manager.html" %}
+{% endblock navbar %}
+
+{% block title %}Abonnements Expirant Bientôt{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    
+    <!-- Liste des utilisateurs -->
+    {% if page_objects %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        Utilisateurs avec abonnement expirant
+                        <span class="badge badge-warning">{{ page_objects|length }}</span>
+                    </h5>
+                
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Utilisateur</th>
+                                    <th>Tier Actuel</th>
+                                    <th>Date d'Expiration</th>
+                                    <th>Jours Restants</th>
+                                    <th>Auto-Renouvellement</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user_tier in page_objects %}
+                                <tr {% if user_tier.get_days_until_expiry <= 3 %}class="table-danger"{% elif user_tier.get_days_until_expiry <= 7 %}class="table-warning"{% endif %}>
+                                    <td>
+                                        <div>
+                                            <strong>{{ user_tier.user.username }}</strong><br>
+                                            <small class="text-muted">{{ user_tier.user.email }}</small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge {% if user_tier.tier_name == 'STANDARD' %}badge-secondary{% elif user_tier.tier_name == 'PREMIUM_BASIC' %}badge-primary{% elif user_tier.tier_name == 'PREMIUM_ADVANCED' %}badge-warning{% else %}badge-success{% endif %}">
+                                            {{ user_tier.get_tier_name_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <strong>{{ user_tier.tier_expiry_date|date:"d/m/Y H:i" }}</strong>
+                                    </td>
+                                    <td>
+                                        {% with days_remaining=user_tier.get_days_until_expiry %}
+                                        <span class="badge {% if days_remaining <= 1 %}badge-danger{% elif days_remaining <= 3 %}badge-warning{% else %}badge-info{% endif %}">
+                                            {% if days_remaining < 0 %}
+                                                Expiré {{ days_remaining|slice:"1:" }} jour(s)
+                                            {% elif days_remaining == 0 %}
+                                                Expire aujourd'hui
+                                            {% elif days_remaining == 1 %}
+                                                {{ days_remaining }} jour
+                                            {% else %}
+                                                {{ days_remaining }} jours
+                                            {% endif %}
+                                        </span>
+                                        {% endwith %}
+                                    </td>
+                                    <td>
+                                        {% if user_tier.auto_renew %}
+                                            <span class="badge badge-success">
+                                                <i class="fas fa-check"></i> Activé
+                                            </span>
+                                        {% else %}
+                                            <span class="badge badge-secondary">
+                                                <i class="fas fa-times"></i> Désactivé
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="{% url 'adminUserTierEdit' user_tier.user.uuid %}" class="btn btn-sm btn-warning" title="Modifier le tier">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Pagination -->
+    {% applys_pagination paginator %}
+
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> 
+                Aucun abonnement n'expire dans les {{ days_ahead }} prochains jours. Excellente nouvelle !
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

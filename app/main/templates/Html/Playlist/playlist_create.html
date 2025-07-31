@@ -1,0 +1,207 @@
+{% extends 'Html/base.html' %}
+{% load Playlist %}
+{% load FrontJs %}
+{% load static %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "FormPlaylist"|search_true_file %}"></script>
+<script type="module" src="{% static "ListingMusiques"|search_true_file %}"></script>
+{% endblock javascript %}
+
+{% block content %}
+
+
+<div class="card">
+    <div class="card-header">
+        <h2>
+            {% if method == 'update' %}
+            Modifier la playlist {{ form.instance.name }}
+            {% else %}
+            Créer une nouvelle playlist
+            {% endif %}
+        </h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 col-sm-9 col-md-10">
+                <div>
+                    {% if method == 'update' %}
+                    <div>
+                        <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.uuid %}" data-redirecturl="{% url 'playlistsAllList' %}">Delete playlist</button>
+                    </div>
+                    {% endif %}
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12">
+                                {{ form.name.label_tag }} <br /> {{ form.name }}
+                                {% if form.name.errors %}
+                                <ul>
+                                    {% for error in form.name.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                {{ form.typePlaylist.label_tag }} <br /> {{ form.typePlaylist }}
+                                {% if form.typePlaylist.errors %}
+                                <ul>
+                                    {% for error in form.typePlaylist.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                                <div class="d-none">
+                                    {% for defaultColor in list_default_color %}
+                                    <input type="text" id="default_{{ defaultColor.typePlaylist }}_color" value="{{ defaultColor.color }}">
+                                    <input type="text" id="default_{{ defaultColor.typePlaylist }}_colorText" value="{{ defaultColor.colorText }}">
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <button type="button" id="btn-show-description-playlist-type" class="btn btn-info" data-url="{% url 'playlistDescribeType' %}">Show description</button>
+                            </div>
+                            <div class="col-12">
+                                {{ form.useSpecificColor.label_tag }} <br /> {{ form.useSpecificColor }}
+                            </div>
+                            <div class="col-sm-12 col-md-4 color_form">
+                                {{ form.color.label_tag }} <br /> {{ form.color }}
+                            </div>
+                            <div class="col-sm-12 col-md-4 color_form">
+                                {{ form.colorText.label_tag }} <br />{{ form.colorText }}
+                            </div>
+                            <div class="col-sm-12 col-md-4 color_form">
+                                <button type="button" class="btn btn-info" id="btn-select-other-color" data-url="{% url 'getListingOtherColors' %}">Selectionner couleurs existantes</button>
+                            </div>
+                            <div class="col-12">
+                                {{ form.useSpecificDelay.label_tag }} <br /> {{ form.useSpecificDelay }}
+                            </div>
+                            <div class="col-sm-12 col-md-12 delay_form">
+                                {{ form.maxDelay.label_tag }} <br /> {{ form.maxDelay }}
+                            </div>
+
+                            <div class="col-sm-12 col-md-6">
+                                {{ form.volume.label_tag }} <br /> {{ form.volume }}
+                                {% if form.volume.errors %}
+                                <ul>
+                                    {% for error in form.volume.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                {{ form.icon.label_tag }} <br />
+                                {% if form.instance.icon %}
+                                {{ form.icon.help_text|safe }} | {{ form.clear_icon }} Supprimer le fichier <br />
+                                {% endif %}
+                                {{ form.icon }}
+                                {% if form.icon.errors %}
+                                <ul>
+                                    {% for error in form.icon.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-success btn-block mt-2" type="submit">
+                                    {% if method == 'update' %}
+                                    Modifier
+                                    {% else %}
+                                    Créer
+                                    {% endif %}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="col-12 col-sm-3 col-md-2">
+                <div class="playlist-link playlist-element playlist-dim-{{ playlist_dim }} m-1" id="demo-playlist">
+                    {% if method == 'update' %}
+                    {{ form.instance | applys_playlist_content}}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+{% if method == 'update' %}
+<div class="card mt-2">
+    <div class="card-header">
+        <h2>Musiques</h2>
+    </div>
+    <div class="card-body">
+        <div class="row ">
+            <div class="col">
+                <div class="gestion">
+                    <div class="row">
+                        <div class="col-12 col-sm-6">
+                            <button class="btn btn-primary btn-block btn-add-music" title="Ajouter musique" data-url="{% url 'addMusic' form.instance.uuid %}">Ajouter musique</button>
+                        </div>
+                        {% if LinkMusicAllowedEnum|length > 0 %}
+                        <div class="col-12 col-sm-6">
+                            <button class="btn btn-primary btn-block btn-add-music" title="Ajouter lien" data-url="{% url 'addLink' form.instance.uuid %}">Ajouter Lien</button>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    <div class="flex-container mt-2">
+                        {% if listTrack is not null %}
+                        {% for track in listTrack %}
+                        <div class="music flex-item flex-item-5 border border-secondary rounded p-2">
+                            <div class="btn-group float-end">
+                                {% if track.is_music %}
+                                <button class="btn btn-sm btn-warning btn-add-music" title="Edit {{ track.get_name }}" data-url="{% url 'editMusic' form.instance.uuid track.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger btn-delete-music" title="Delete {{ track.get_name }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid track.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i
+                                        class="fa-solid fa-trash-can"></i></button>
+
+                                {% endif %}
+                                {% if track.is_link_music %}
+                                <button class="btn btn-sm btn-warning btn-add-music" title="Edit {{ track.get_name }}" data-url="{% url 'editLink' form.instance.uuid track.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger btn-delete-music" title="Delete {{ track.get_name }}" data-deleteurl="{% url 'deleteLink' form.instance.uuid track.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i
+                                        class="fa-solid fa-trash-can"></i></button>
+                                {% endif %}
+                            </div>
+                            <div class="music-name mt-1 mb-2">
+                                <h6>{{ track.get_name }}</h6>
+                                <small>
+                                    {{ track.get_source }}
+                                </small>
+                            </div>
+                            <div class="player-custom p-2" data-url="{% url 'playlistCreateTrackStream' form.instance.uuid track.id %}">
+                                <audio class="music-player d-none"></audio>
+                            </div>
+
+
+                        </div>
+                        {% endfor %}
+
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a href="{% url 'addPlaylist' %}" class="btn btn-block btn-primary">Creer une nouvelle playlist</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+
+
+
+{% endblock content %}

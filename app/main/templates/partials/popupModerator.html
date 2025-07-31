@@ -1,0 +1,297 @@
+{% load Playlist %}
+{% load SoundBoard %}
+{% load UserLog %}
+{% load ReportContentResultEnum %}
+{% load ModerationEnum %}
+{% load ModerationModelEnum %}
+
+<div class="popupModerator">
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+        {% if contentReport is not None %}
+
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="accordion-report">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-report-collapse" aria-expanded="true" aria-controls="accordion-report-collapse">
+                    Report
+                </button>
+            </h3>
+            <div id="accordion-report-collapse" class="accordion-collapse collapse show" aria-labelledby="accordion-report">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <dl>
+                                <dt>Id</dt>
+                                <dd>{{contentReport.id}}</dd>
+                                <dt>Précision</dt>
+                                <dd>{{contentReport.precisionElement}}</dd>
+                                <dt>Créée</dt>
+                                <dd>{{contentReport.created_at | date:"Y-m-d \T H:i" }} <small>({{contentReport.created_at|timesince}})</small></dd>
+                                <dt>Description</dt>
+                                <dd>{{contentReport.descriptionElement}}</dd>
+                                {% if contentReport.moderator is not None %}
+                                <dt>Moderateur</dt>
+                                <dd>{{contentReport.moderator.username}}</dd>
+                                <dt>Result</dt>
+                                <dd>{{contentReport.resultModerator}}</dd>
+                                <dt>date Result</dt>
+                                <dd>{{contentReport.dateResultModerator}} <small>({{contentReport.dateResultModerator|timesince}})</small></dd>
+
+                                {% endif %}
+                                </dt>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if soundboard is not None %}
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="accordion-soundboard">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-soundboard-collapse" aria-expanded="true" aria-controls="accordion-soundboard-collapse">
+                    Soundboard
+                </button>
+            </h3>
+            <div id="accordion-soundboard-collapse" class="accordion-collapse collapse show" aria-labelledby="accordion-soundboard">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <dl>
+                                <dt>Id</dt>
+                                <dd>{{soundboard.uuid}}</dd>
+                                <dt>Créée</dt>
+                                <dd>{{soundboard.created_at |  date:"Y-m-d \T H:i"}}</dd>
+                                <dt>Modifé</dt>
+                                <dd>{{soundboard.updated_at |  date:"Y-m-d \T H:i"}}</dd>
+                                <dt>Nom</dt>
+                                <dd>{{soundboard.name}}</dd>
+
+                            </dl>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="flex-container">
+                                <div class="soundboard-element   soundboard-dim-{{ soundboard_dim }} m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};" data-id="{{ soundboard.uuid }}">
+                                    {{ soundboard | applys_soundboard_content}}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if playlist is not None %}
+
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="accordion-playlist">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-playlist-collapse" aria-expanded="true" aria-controls="accordion-playlist-collapse">
+                    Playlist
+                </button>
+            </h3>
+            <div id="accordion-playlist-collapse" class="accordion-collapse collapse show" aria-labelledby="accordion-playlist">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <dl>
+                                <dt>Id</dt>
+                                <dd>{{playlist.uuid}}</dd>
+                                <dt>Créée</dt>
+                                <dd>{{playlist.created_at |  date:"Y-m-d \T H:i"}}</dd>
+                                <dt>Modifé</dt>
+                                <dd>{{playlist.updated_at |  date:"Y-m-d \T H:i"}}</dd>
+                                <dt>Titre</dt>
+                                <dd>{{playlist.name}}</dd>
+                                <dt>Type Playlist</dt>
+                                <dd>{{playlist.typePlaylist}}</dd>
+                                <dt>Volume</dt>
+                                <dd>{{playlist.volume}}</dd>
+                                <dt>Nombre de musique</dt>
+                                <dd>{{playlist.tracks.count}}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="flex-container">
+                                <div class="playlist-link playlist-element playlist-dim-{{ playlist_dim }} m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
+                                    {{ playlist | applys_playlist_content}}
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-12">
+                            {% for track in playlist.tracks.all %}
+                                <audio src="{{ track.get_stream_url }}" controls></audio>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if user is not None %}
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="accordion-user">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-user-collapse" aria-expanded="true" aria-controls="accordion-user-collapse">
+                    Utilisateur
+                </button>
+            </h3>
+            <div id="accordion-user-collapse" class="accordion-collapse collapse show" aria-labelledby="accordion-user">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <dl>
+                                <dt>Id</dt>
+                                <dd>{{user.uuid}}</dd>
+                                <dt>Username</dt>
+                                <dd>{{user.username}}</dd>
+                                <dt>Ban</dt>
+                                <dd>{{user.isBan}}</dd>
+                                <dt>Admin</dt>
+                                <dd>{{user.is_superuser}}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            {% get_user_logs user as logs%}
+                            {% if logs is empty %}
+                            <p>Aucun logs</p>
+                            {% else %}
+                            <table class="table">
+                                <thead>
+                                    <th>Date</th>
+                                    <th>Tag</th>
+                                    <th>Message</th>
+                                </thead>
+                                <tbody>
+                                    {% for log in logs %}
+                                    <tr>
+                                        <td><small>{{log.created_at|timesince}}</small></td>
+                                        <td>{{log.tag}}</td>
+                                        <td>{{log.message}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+    {% if condition %}
+
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Actions</h5>
+        </div>
+        <div class="card-body">
+            <form action="{% url 'moderatorAddLog'  %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="redirect_uri" id="redirect_uri" value="">
+                <input type="hidden" name="user_id" id="user_id" value="{{user.uuid}}">
+                {% if contentReport and contentReport.moderator is None%}
+                <input type="hidden" name="contentReport_id" value="{{contentReport.id}}">
+                <div class="form-group ">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="contentReport_accepted">Content Report association</label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <div class="form-switch">
+                                <input class="form-check-input form-control" name="contentReport_accepted" type="checkbox" id="contentReport_accepted" checked>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="content_moderator_response">Reponse</label>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <select name="content_moderator_response" id="content_moderator_response" class="form-control">
+                                {% list_values_report_content_result_enum as enum_list %}
+                                {% for name, value in enum_list %}
+                                <option value="{{ value }}">{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                {% endif %}
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="moderator_log_accepted">Ajout Log</label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <div class="form-switch">
+                                <input class="form-check-input form-control" name="moderator_log_accepted" type="checkbox" id="moderator_log_accepted" checked>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="moderator_log_tag">Tag</label>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <select name="moderator_log_tag" id="moderator_log_tag" class="form-control">
+                                {% list_values_report_moderation_enum as enum_list %}
+                                {% for name, value in enum_list %}
+                                <option value="{{ value }}" {% if value == 'OTHER' %} selected {% endif %}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="moderator_log_model">Élement</label>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <select name="moderator_log_model" id="moderator_log_model" class="form-control">
+                                {% list_values_report_moderation__model_enum as enum_list %}
+                                {% for name, value in enum_list %}
+                                <option value="{{ value }}">{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="moderator_log_message">Message</label>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <textarea name="moderator_log_message" id="moderator_log_message" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="text-secondary">Bannir l'utilisateur fait qui ne peux plus publier publiquement du contenu (shadowban)</p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="action_ban_user">Ban User</label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <div class="form-switch">
+                                <input class="form-check-input form-control" name="action_ban_user" type="checkbox" id="action_ban_user">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="action_ban_reason">Motif ban</label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <textarea name="action_ban_reason" class="form-control" id="action_ban_reason" maxlength="255"></textarea>
+                        </div>
+                                  <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="action_ban_duration">Durée ban <small>(mois)</small></label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <input type="number" name="action_ban_duration" id="action_ban_duration" class="form-control" value="6" min="1" max="60" step="1">
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-success float-end" type="submit">Envoyer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

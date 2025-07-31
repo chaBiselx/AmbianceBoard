@@ -35,13 +35,13 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 FROM python:3.11.4-slim-buster
 
 # create directory for the app user & create the app user
-RUN mkdir -p /home/app && addgroup --system app && adduser --system --group app
+RUN mkdir -p /main/app && addgroup --system app && adduser --system --group app
 
 # create the appropriate directories
-ENV HOME=/home/app
-ENV APP_HOME=/home/app/web
-RUN mkdir "$APP_HOME" "$APP_HOME/staticfiles" "$APP_HOME/mediafiles"
-WORKDIR $APP_HOME
+ENV main=/main/app
+ENV APP_main=/main/app/web
+RUN mkdir "$APP_main" "$APP_main/staticfiles" "$APP_main/mediafiles"
+WORKDIR $APP_main
 
 # install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends netcat && apt-get clean
@@ -51,16 +51,16 @@ RUN pip install --upgrade pip && pip install --no-cache /wheels/*
 
 # copy entrypoint.prod.sh
 COPY ./entrypoint.prod.sh .
-RUN sed -i 's/\r$//g'  "$APP_HOME/entrypoint.prod.sh" && chmod +x  "$APP_HOME/entrypoint.prod.sh"
+RUN sed -i 's/\r$//g'  "$APP_main/entrypoint.prod.sh" && chmod +x  "$APP_main/entrypoint.prod.sh"
 
 # copy project
-COPY . $APP_HOME
+COPY . $APP_main
 
 # chown all the files to the app user
-RUN chown -R app:app "$APP_HOME"
+RUN chown -R app:app "$APP_main"
 
 # change to the app user
 USER app
 
 # run entrypoint.prod.sh
-ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
+ENTRYPOINT ["/main/app/web/entrypoint.prod.sh"]

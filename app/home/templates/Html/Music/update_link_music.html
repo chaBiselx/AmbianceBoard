@@ -1,6 +1,0 @@
-<!-- Mode édition : formulaire classique -->
-<form method="post" action="{% url 'editLink' playlist.uuid link.id %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button class="btn btn-primary btn-block mt-2" type="submit">Modifier le lien</button>
-</form>

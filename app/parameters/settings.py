@@ -72,7 +72,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    "home",
+    "main",
     "django_crontab",
 ]
 
@@ -162,7 +162,7 @@ LOGGING = {
             'level': 'DEBUG' ,
             'propagate': False,
         },
-        'home': {
+        'main': {
             'handlers': ['console', 'APP_file'],
             'level': level_log_debug,
             'propagate': False,
@@ -190,7 +190,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "home.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
+    "main.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
 ]
 
 ROOT_URLCONF = "parameters.urls"
@@ -206,8 +206,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'home.context_processors.sidebar_processor.sidebar_processor',
-                'home.context_processors.user_preference_processor.user_preference_processor',
+                'main.context_processors.sidebar_processor.sidebar_processor',
+                'main.context_processors.user_preference_processor.user_preference_processor',
             ],
         },
     },
@@ -238,7 +238,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'home.User'
+AUTH_USER_MODEL = 'main.User'
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -316,18 +316,18 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 CRON_CLASSES = []
 CRONJOBS = []
 if RUN_CRONS:
-    CRON_CLASSES.append('home.cron.CleanMediaFolderCron.run')
-    CRON_CLASSES.append('home.cron.DeleteAccountCron.run')
-    CRON_CLASSES.append('home.cron.DeleteSharedSoundboardExpiredCron.run')
-    CRON_CLASSES.append('home.cron.UserTierExpirationCron.run')
-    CRON_CLASSES.append('home.cron.SyncDomainBlacklistCronJob.run')
+    CRON_CLASSES.append('main.cron.CleanMediaFolderCron.run')
+    CRON_CLASSES.append('main.cron.DeleteAccountCron.run')
+    CRON_CLASSES.append('main.cron.DeleteSharedSoundboardExpiredCron.run')
+    CRON_CLASSES.append('main.cron.UserTierExpirationCron.run')
+    CRON_CLASSES.append('main.cron.SyncDomainBlacklistCronJob.run')
     
     
-    CRONJOBS.append(('0 10 * * *', 'home.cron.CleanMediaFolderCron.run'))
-    CRONJOBS.append(('0 10 * * *', 'home.cron.DeleteAccountCron.run'))
-    CRONJOBS.append(('0 18 * * *', 'home.cron.DeleteSharedSoundboardExpiredCron.run'))
-    CRONJOBS.append(('0 6 * * *', 'home.cron.UserTierExpirationCron.run'))  # Tous les jours à 6h
-    CRONJOBS.append(('0 12 1,7,14,21,28 * *', 'home.cron.SyncDomainBlacklistCronJob.run'))  # Tous les jours à 12h
+    CRONJOBS.append(('0 10 * * *', 'main.cron.CleanMediaFolderCron.run'))
+    CRONJOBS.append(('0 10 * * *', 'main.cron.DeleteAccountCron.run'))
+    CRONJOBS.append(('0 18 * * *', 'main.cron.DeleteSharedSoundboardExpiredCron.run'))
+    CRONJOBS.append(('0 6 * * *', 'main.cron.UserTierExpirationCron.run'))  # Tous les jours à 6h
+    CRONJOBS.append(('0 12 1,7,14,21,28 * *', 'main.cron.SyncDomainBlacklistCronJob.run'))  # Tous les jours à 12h
 
 
 # message brokers 
@@ -344,11 +344,11 @@ MEDIA_AUDIO_MESSENGER_NB_MAX_FILE = 100
 MEDIA_IMG_MESSENGER_NB_MAX_FILE = 100
 
 # auth 
-from home.enum.GroupEnum import GroupEnum
+from main.enum.GroupEnum import GroupEnum
 
 GROUPS = GroupEnum.convert_to_dict()
 
-from home.enum.PermissionEnum import PermissionEnum
+from main.enum.PermissionEnum import PermissionEnum
 
 PERMISSIONS = PermissionEnum.convert_to_dict()
 

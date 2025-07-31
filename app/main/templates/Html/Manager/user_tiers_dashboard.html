@@ -1,0 +1,150 @@
+{% extends 'Html/base_manager.html' %}
+{% load static %}
+
+{% block title %}Gestion des Tiers Utilisateurs{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1><i class="fas fa-crown"></i> Gestion des Tiers Utilisateurs</h1>
+        </div>
+    </div>
+
+    <!-- Navigation rapide -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="{% url 'adminUserTiersListing' %}" class="btn btn-primary btn-block">
+                                <i class="fas fa-list"></i> Liste des Utilisateurs
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{% url 'managerUserTiersExpiring' %}" class="btn btn-warning btn-block">
+                                <i class="fas fa-exclamation-triangle"></i> Expirations Prochaines
+                                {% if expiring_soon > 0 %}
+                                <span class="badge badge-light">{{ expiring_soon }}</span>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alertes d'expiration -->
+    {% if expired > 0 %}
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-circle"></i>
+                <strong>{{ expired }}</strong> abonnement(s) expiré(s) nécessitent votre attention.
+                <a href="{% url 'managerUserTiersExpiring' %}?days=0" class="alert-link">Voir les détails</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Statistiques des tiers -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-pie"></i> Répartition des Tiers</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for tier_name, stats in tier_stats.items %}
+                        <div class="col-md-3 mb-3">
+                            <div class="card tier-card border-left-{% if tier_name == 'STANDARD' %}secondary{% elif tier_name == 'PREMIUM_BASIC' %}primary{% elif tier_name == 'PREMIUM_ADVANCED' %}warning{% else %}success{% endif %}">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-{% if tier_name == 'STANDARD' %}secondary{% elif tier_name == 'PREMIUM_BASIC' %}primary{% elif tier_name == 'PREMIUM_ADVANCED' %}warning{% else %}success{% endif %} text-uppercase mb-1">
+                                                {{ stats.display_name }}
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.count }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-{% if tier_name == 'STANDARD' %}user{% elif tier_name == 'PREMIUM_BASIC' %}star{% elif tier_name == 'PREMIUM_ADVANCED' %}crown{% else %}gem{% endif %} fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comparaison des tiers -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-balance-scale"></i> Comparaison des Tiers</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tier</th>
+                                    <th>Soundboards</th>
+                                    <th>Playlists</th>
+                                    <th>Musiques/Playlist</th>
+                                    <th>Taille Max (MB)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for tier_name, comparison in tier_comparison.items %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ comparison.display_name }}</strong>
+                                        {% if tier_name != 'STANDARD' %}
+                                        <i class="fas fa-crown text-warning ml-1"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ comparison.limits.soundboard }}</td>
+                                    <td>{{ comparison.limits.playlist }}</td>
+                                    <td>{{ comparison.limits.music_per_playlist }}</td>
+                                    <td>{{ comparison.limits.weight_music_mb }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .tier-card {
+        border-left: 0.25rem solid;
+    }
+
+    .border-left-secondary {
+        border-left-color: #6c757d !important;
+    }
+
+    .border-left-primary {
+        border-left-color: #007bff !important;
+    }
+
+    .border-left-warning {
+        border-left-color: #ffc107 !important;
+    }
+
+    .border-left-success {
+        border-left-color: #28a745 !important;
+    }
+</style>
+{% endblock %}
