@@ -73,7 +73,8 @@ function simulatePlaylistColor() {
     if (imgInput.value != "") {
         const reader = new FileReader();
         reader.addEventListener("load", () => {
-            demo.innerHTML = "<img class='playlist-img' src=" + reader.result?.toString() + " ></img>";
+            const text = reader.result?.toString() || '';
+            demo.innerHTML = "<img class='playlist-img' src=" + text + " ></img>";
         });
         if (imgInput.files?.[0]) {
             reader.readAsDataURL(imgInput.files[0])

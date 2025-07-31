@@ -48,6 +48,9 @@ EMAIL_SMTP_USERNAME = str(os.environ.get("EMAIL_SMTP_USERNAME"))
 EMAIL_SMTP_PASSWORD = str(os.environ.get("EMAIL_SMTP_PASSWORD"))
 EMAIL_SMTP_USE_TLS = bool(os.environ.get("EMAIL_SMTP_USE_TLS", default=True))
 
+EMAIL_NO_REPLAY = os.environ.get("EMAIL_NO_REPLAY")
+EMAILS_LISTING_MODERATORS = os.environ.get("EMAILS_LISTING_MODERATORS", default="").split(";")
+
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
 APP_HOST = os.getenv('WEB_HOST')
@@ -69,7 +72,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    "home",
+    "main",
     "django_crontab",
 ]
 
@@ -78,6 +81,14 @@ INSTALLED_APPS = [
 # Logging configuration
 if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
     os.mkdir(os.path.join(BASE_DIR, 'logs'), mode=0o777 if DEBUG else 0o666)
+
+
+LOGGER_TYPE = "file"
+if DEBUG :
+    LOGGER_TYPE = "file" # TODO set other for production 
+# For tests, use the MemoryLogger
+if TESTING:
+    LOGGER_TYPE = "memory"
     
 level_log_debug = 'DEBUG' if DEBUG else 'WARNING'
 timed_rotating_file_handler = 'logging.handlers.TimedRotatingFileHandler'
@@ -151,7 +162,7 @@ LOGGING = {
             'level': 'DEBUG' ,
             'propagate': False,
         },
-        'home': {
+        'main': {
             'handlers': ['console', 'APP_file'],
             'level': level_log_debug,
             'propagate': False,
@@ -179,7 +190,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "home.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
+    "main.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
 ]
 
 ROOT_URLCONF = "parameters.urls"
@@ -195,8 +206,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'home.context_processors.sidebar_processor.sidebar_processor',
-                'home.context_processors.user_preference_processor.user_preference_processor',
+                'main.context_processors.sidebar_processor.sidebar_processor',
+                'main.context_processors.user_preference_processor.user_preference_processor',
             ],
         },
     },
@@ -227,7 +238,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'home.User'
+AUTH_USER_MODEL = 'main.User'
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -305,18 +316,18 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 CRON_CLASSES = []
 CRONJOBS = []
 if RUN_CRONS:
-    CRON_CLASSES.append('home.cron.CleanMediaFolderCron.run')
-    CRON_CLASSES.append('home.cron.DeleteAccountCron.run')
-    CRON_CLASSES.append('home.cron.DeleteSharedSoundboardExpiredCron.run')
-    CRON_CLASSES.append('home.cron.UserTierExpirationCron.run')
-    CRON_CLASSES.append('home.cron.SyncDomainBlacklistCronJob.run')
+    CRON_CLASSES.append('main.cron.CleanMediaFolderCron.run')
+    CRON_CLASSES.append('main.cron.DeleteAccountCron.run')
+    CRON_CLASSES.append('main.cron.DeleteSharedSoundboardExpiredCron.run')
+    CRON_CLASSES.append('main.cron.UserTierExpirationCron.run')
+    CRON_CLASSES.append('main.cron.SyncDomainBlacklistCronJob.run')
     
     
-    CRONJOBS.append(('0 10 * * *', 'home.cron.CleanMediaFolderCron.run'))
-    CRONJOBS.append(('0 10 * * *', 'home.cron.DeleteAccountCron.run'))
-    CRONJOBS.append(('0 18 * * *', 'home.cron.DeleteSharedSoundboardExpiredCron.run'))
-    CRONJOBS.append(('0 6 * * *', 'home.cron.UserTierExpirationCron.run'))  # Tous les jours à 6h
-    CRONJOBS.append(('0 12 1,7,14,21,28 * *', 'home.cron.SyncDomainBlacklistCronJob.run'))  # Tous les jours à 12h
+    CRONJOBS.append(('0 10 * * *', 'main.cron.CleanMediaFolderCron.run'))
+    CRONJOBS.append(('0 10 * * *', 'main.cron.DeleteAccountCron.run'))
+    CRONJOBS.append(('0 18 * * *', 'main.cron.DeleteSharedSoundboardExpiredCron.run'))
+    CRONJOBS.append(('0 6 * * *', 'main.cron.UserTierExpirationCron.run'))  # Tous les jours à 6h
+    CRONJOBS.append(('0 12 1,7,14,21,28 * *', 'main.cron.SyncDomainBlacklistCronJob.run'))  # Tous les jours à 12h
 
 
 # message brokers 
@@ -333,13 +344,13 @@ MEDIA_AUDIO_MESSENGER_NB_MAX_FILE = 100
 MEDIA_IMG_MESSENGER_NB_MAX_FILE = 100
 
 # auth 
-from home.enum.GroupEnum import GroupEnum
+from main.enum.GroupEnum import GroupEnum
 
-GROUPS = {group.name: group.value for group in GroupEnum}
+GROUPS = GroupEnum.convert_to_dict()
 
-from home.enum.PermissionEnum import PermissionEnum
+from main.enum.PermissionEnum import PermissionEnum
 
-PERMISSIONS = {permission.name: permission.value for permission in PermissionEnum}
+PERMISSIONS = PermissionEnum.convert_to_dict()
 
 ATTRIB_PERMISSIONS = {
     GroupEnum.ADMIN.name: {
@@ -420,6 +431,8 @@ USER_TIERS = {
         'group_enum': 'USER_PREMIUM_PRO'  # À ajouter dans GroupEnum
     }
 }
+
+TIER_EXPIRATION_WARNING_DAYS = int(os.environ.get("TIER_EXPIRATION_WARNING_DAYS", 14))  # Nombre de jours avant l'expiration pour envoyer un avertissement avant downgrade
 
 
 

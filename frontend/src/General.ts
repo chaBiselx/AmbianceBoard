@@ -5,6 +5,7 @@ import {TagManager} from '@/modules/TagManager';
 import * as bootstrap from 'bootstrap';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import Csrf from "./modules/General/Csrf";
+import Cookie from "@/modules/General/Cookie";
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
 document.addEventListener('DOMContentLoaded', () => {
@@ -97,7 +98,7 @@ class GeneralTheme {
     buttonToggle: HTMLButtonElement
 
     constructor() {
-        this.theme = localStorage.getItem('theme') ?? 'light';
+        this.theme = Cookie.get('theme') ?? 'light';
         this.buttonToggle = document.getElementById('darkModeToggle') as HTMLButtonElement;
         this.toggleIcon();
         this.toggleAttribute();
@@ -116,9 +117,7 @@ class GeneralTheme {
         this.toggleIcon();
         this.toggleAttribute();
         this.saveTheme();
-        localStorage.setItem('theme', this.theme);
-
-
+        Cookie.set('theme', this.theme);
     }
 
     private toggleAttribute() {

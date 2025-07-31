@@ -1,0 +1,25 @@
+{% include "Email/base.html" %}
+
+
+{% block content %} 
+
+<div>
+    <h1>Contenu signalé</h1>
+    <p>
+        <h2>Détails du contenu signalé :</h2>
+        <strong>Element :</strong> {{ report.typeElement }}<br>
+        <strong>Precision :</strong> {{ report.precisionElement }}<br>
+        <strong>Description :</strong> {{ report.descriptionElement }} <br>
+        <strong>Date de signalement :</strong> {{ report.created_at|date:"Y-m-d H:i:s" }}<br>
+    </p>
+    {% if report.creator %}
+        <p>
+            <h2>Informations sur l'utilisateur :</h2>
+            <strong>Email :</strong> {{ report.creator.email }}<br>
+            <strong>Nom d'utilisateur :</strong> {{ report.creator.username }}<br>
+            <strong>Date d'inscription :</strong> {{ report.creator.date_joined }}<br>
+        </p>
+    {% endif %}
+</div>
+
+{% endblock content %}

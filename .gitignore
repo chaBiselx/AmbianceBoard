@@ -4,6 +4,7 @@ __pycache
 .env
 .env.prod
 .env.prod.db
+user.csv
 
 #foilder
 app/mediafiles/musics/*

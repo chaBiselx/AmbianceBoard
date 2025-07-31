@@ -1,0 +1,157 @@
+{% extends 'Html/base_manager.html' %}
+{% load static %}
+{% load FrontJs %}
+{% load PaginationLinks %}
+
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "ManagerListTier"|search_true_file %}"></script>
+{% endblock javascript %}
+
+{% block title %}Liste des Tiers Utilisateurs{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <!-- Filtres -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" class="form-inline">
+                        <div class="form-group mr-3">
+                            <label for="search" class="sr-only">Recherche</label>
+                            <input type="text" class="form-control" id="search" name="search" placeholder="Rechercher par nom ou email..." value="{{ search }}">
+                        </div>
+                        <div class="form-group mr-3">
+                            <select name="tier" class="form-control">
+                                <option value="">Tous les tiers</option>
+                                {% for tier_key, tier_name in tier_choices %}
+                                <option value="{{ tier_key }}" {% if tier_filter == tier_key %}selected{% endif %}>
+                                    {{ tier_name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i> Filtrer
+                        </button>
+                        <a href="{% url 'adminUserTiersListing' %}" class="btn btn-outline-secondary ml-2">
+                            <i class="fas fa-times"></i> Réinitialiser
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions en lot -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <form method="post" action="{% url 'managerUserTierBulkAction' %}" id="bulk-action-form">
+                {% csrf_token %}
+                <div class="d-flex align-items-center">
+                    <select name="action" class="form-control mr-2" style="max-width: 200px;">
+                        <option value="">Actions en lot...</option>
+                        <option value="downgrade_to_standard">Rétrograder au Standard</option>
+                        <option value="extend_subscription">Étendre l'abonnement</option>
+                    </select>
+                    <input type="number" name="extend_days" placeholder="Jours" class="form-control mr-2" style="max-width: 100px; display: none;" id="extend-days-input">
+                    <button type="submit" class="btn btn-warning" disabled id="bulk-action-btn">
+                        <i class="fas fa-play"></i> Exécuter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Liste des utilisateurs -->
+    {% if page_objects %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" id="select-all">
+                                    </th>
+                                    <th>Utilisateur</th>
+                                    <th>Tier Actuel</th>
+                                    <th>Béta testeur</th>
+                                    <th>Date de Début</th>
+                                    <th>Date d'Expiration</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user_tier in page_objects %}
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="user_ids" value="{{ user_tier.user.uuid }}" class="user-checkbox">
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong>{{ user_tier.user.username }}</strong><br>
+                                            <small class="text-muted">{{ user_tier.user.email }}</small>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge {% if user_tier.tier_name == 'STANDARD' %}badge-secondary{% elif user_tier.tier_name == 'PREMIUM_BASIC' %}badge-primary{% elif user_tier.tier_name == 'PREMIUM_ADVANCED' %}badge-warning{% else %}badge-success{% endif %}">
+                                            {{ user_tier.get_tier_name_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            {% if user_tier.user.betaTester %}
+                                            <span class="badge badge-info">Oui</span>
+                                            {% else %}
+                                            <span class="badge badge-secondary">Non</span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    <td>{{ user_tier.tier_start_date|date:"d/m/Y H:i" }}</td>
+                                    <td>
+                                        {% if user_tier.tier_expiry_date %}
+                                        {{ user_tier.tier_expiry_date|date:"d/m/Y" }}
+                                        {% if user_tier.is_subscription_expired %}
+                                        <span class="badge badge-danger ml-1">Expiré</span>
+                                        {% endif %}
+                                        {% else %}
+                                        <em class="text-muted">Pas d'expiration</em>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="{% url 'adminUserTierEdit' user_tier.user.uuid %}" class="btn btn-sm btn-warning" title="Modifier">
+                                                <i class="fas fa-edit"></i> Modifier
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% applys_pagination paginator %}
+    {% else %}
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> Aucun utilisateur trouvé avec les critères de recherche.
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}

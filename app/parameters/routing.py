@@ -1,6 +1,6 @@
 from django.urls import re_path
 from channels.routing import ProtocolTypeRouter, URLRouter
-from home.channels.SharedSoundboard import SharedSoundboard
+from main.channels.SharedSoundboard import SharedSoundboard
 
 
 websocket_urlpatterns = [

@@ -15,6 +15,10 @@ AmbianceBoard est une soundboard conçue pour les jeux de rôle, permettant d'aj
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=chaBiselx_AmbianceBoard&metric=alert_status)](https://sonarcloud.io/project/overview?id=chaBiselx_AmbianceBoard)  
 👉 [Voir le rapport SonarCloud](https://sonarcloud.io/project/overview?id=chaBiselx_AmbianceBoard)  
 
+## 🤝 Avancement 
+Suivi du projet
+[clickUp](https://sharing.clickup.com/9014791178/l/h/8cn5k0a-554/d11e2ded9d8d1d4)
+
 ## 🏗️ Installation  
 
 ### 1. Créer un fichier `.env`  

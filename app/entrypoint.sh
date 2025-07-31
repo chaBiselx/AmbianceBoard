@@ -21,7 +21,7 @@ if [ "$RUNCRON" != "1" ]; then
 fi
 
 # Démarrer Celery en arrière-plan
-celery -A home worker --queues=default --concurrency=4 --loglevel=info &
+celery -A main worker --queues=default --concurrency=4 --loglevel=info &
 
 if [ "$RUNCRON" = "1" ]; then
     echo "Adding crontab..."

@@ -1,0 +1,346 @@
+{% extends 'Html/base_manager.html' %}
+{% load static %}
+{% load FrontJs %}
+
+{% block title %}Modifier le Tier de {{ user.username }}{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "ManagerEditTier"|search_true_file %}"></script>
+{% endblock javascript %}
+
+{% block navbar %}
+{% include "Html/navbar_manager.html" %}
+{% endblock navbar %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1><i class="fas fa-crown"></i> Modifier le Tier de {{ user.username }}</h1>
+                <a href="{% url 'adminUserTiersListing' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Informations utilisateur -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-user"></i> Informations Utilisateur</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-5">Nom d'utilisateur:</dt>
+                        <dd class="col-sm-7">{{ user.username }}</dd>
+
+                         <dt class="col-sm-5">Beta testeur:</dt>
+                        <dd class="col-sm-7">{% if user.betaTester %}
+                            <span class="badge badge-success">Oui</span>
+                            {% else %}
+                            <span class="badge badge-secondary">Non</span>
+                        {% endif %}</dd>
+
+
+                        <dt class="col-sm-5">Email:</dt>
+                        <dd class="col-sm-7">{{ user.email }}</dd>
+
+                        <dt class="col-sm-5">Prénom:</dt>
+                        <dd class="col-sm-7">{{ user.first_name|default:"Non renseigné" }}</dd>
+
+                        <dt class="col-sm-5">Nom:</dt>
+                        <dd class="col-sm-7">{{ user.last_name|default:"Non renseigné" }}</dd>
+
+                        <dt class="col-sm-5">Date d'inscription:</dt>
+                        <dd class="col-sm-7">{{ user.date_joined|date:"d/m/Y H:i" }}</dd>
+
+                       
+                        <dt class="col-sm-5">Actif:</dt>
+                        <dd class="col-sm-7">
+                            {% if user.is_active %}
+                            <span class="badge badge-success">Oui</span>
+                            {% else %}
+                            <span class="badge badge-danger">Non</span>
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Tier actuel -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5><i class="fas fa-star"></i> Tier Actuel</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-5">Tier:</dt>
+                        <dd class="col-sm-7">
+                            <span class="badge {% if user_tier.tier_name == 'STANDARD' %}badge-secondary{% elif user_tier.tier_name == 'PREMIUM_BASIC' %}badge-primary{% elif user_tier.tier_name == 'PREMIUM_ADVANCED' %}badge-warning{% else %}badge-success{% endif %}">
+                                {{ user_tier.get_tier_name_display }}
+                            </span>
+                        </dd>
+
+                        <dt class="col-sm-5">Date de début:</dt>
+                        <dd class="col-sm-7">{{ user_tier.tier_start_date|date:"d/m/Y H:i" }}</dd>
+
+                        <dt class="col-sm-5">Date d'expiration:</dt>
+                        <dd class="col-sm-7">
+                            {% if user_tier.tier_expiry_date %}
+                            {{ user_tier.tier_expiry_date|date:"d/m/Y H:i" }}
+                            {% if user_tier.is_subscription_expired %}
+                            <span class="badge badge-danger ml-1">Expiré</span>
+                            {% endif %}
+                            {% else %}
+                            <em class="text-muted">Pas d'expiration</em>
+                            {% endif %}
+                        </dd>
+
+                        <dt class="col-sm-5">Renouvellement auto:</dt>
+                        <dd class="col-sm-7">
+                            {% if user_tier.auto_renew %}
+                            <span class="badge badge-success">Activé</span>
+                            {% else %}
+                            <span class="badge badge-secondary">Désactivé</span>
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Limites actuelles -->
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5><i class="fas fa-chart-bar"></i> Limites Actuelles</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-8">Soundboards:</dt>
+                        <dd class="col-sm-4">{{ current_limits.soundboard }}</dd>
+
+                        <dt class="col-sm-8">Playlists:</dt>
+                        <dd class="col-sm-4">{{ current_limits.playlist }}</dd>
+
+                        <dt class="col-sm-8">Musiques/playlist:</dt>
+                        <dd class="col-sm-4">{{ current_limits.music_per_playlist }}</dd>
+
+                        <dt class="col-sm-8">Taille max. fichier (MB):</dt>
+                        <dd class="col-sm-4">{{ current_limits.weight_music_mb }}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire de modification -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-edit"></i> Modification du Tier</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="edit-tier-form">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tier_name" class="form-label">
+                                        <i class="fas fa-crown"></i> Nouveau Tier
+                                    </label>
+                                    <select name="tier_name" id="tier_name" class="form-control" required>
+                                        {% for tier_key, tier_info in tier_choices_form.items %}
+                                        <option value="{{ tier_key }}" {% if tier_key == user_tier.tier_name %}selected{% endif %}>
+                                            {{ tier_info.display_name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                    <small class="form-text text-muted">
+                                        Sélectionnez le nouveau tier pour cet utilisateur
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="tier_expiry_date" class="form-label">
+                                        <i class="fas fa-calendar"></i> Date d'expiration
+                                    </label>
+                                    <input type="date" name="tier_expiry_date" id="tier_expiry_date" class="form-control" value="{% if user_tier.tier_expiry_date %}{{ user_tier.tier_expiry_date|date:'Y-m-d' }}{% endif %}">
+                                    <small class="form-text text-muted">
+                                        Laisser vide pour un tier sans expiration (généralement pour STANDARD)
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="payment_reference" class="form-label">
+                                        <i class="fas fa-credit-card"></i> Référence de paiement
+                                    </label>
+                                    <input type="text" name="payment_reference" id="payment_reference" class="form-control" maxlength="255" placeholder="Ex: stripe_pi_1234567890">
+                                    <small class="form-text text-muted">
+                                        Référence de transaction ou ID de paiement (optionnel)
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <div class="form-check mt-4">
+                                        <input class="form-check-input" type="checkbox" name="auto_renew" id="auto_renew" {% if user_tier.auto_renew %}checked{% endif %}>
+                                        <label class="form-check-label" for="auto_renew">
+                                            <i class="fas fa-sync"></i> Renouvellement automatique
+                                        </label>
+                                    </div>
+                                    <small class="form-text text-muted">
+                                        Active le renouvellement automatique de l'abonnement
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes" class="form-label">
+                                <i class="fas fa-sticky-note"></i> Notes administratives
+                            </label>
+                            <textarea name="notes" id="notes" class="form-control" rows="3" placeholder="Notes internes sur ce changement de tier...">{{ user_tier.notes }}</textarea>
+                            <small class="form-text text-muted">
+                                Notes visibles uniquement par les administrateurs
+                            </small>
+                        </div>
+
+                        <!-- Aperçu des nouvelles limites -->
+                        <div class="card mt-3" id="tier-preview" style="display: none;">
+                            <div class="card-header bg-info text-white">
+                                <h6 class="mb-0"><i class="fas fa-eye"></i> Aperçu des nouvelles limites</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row" id="preview-content">
+                                    <!-- Contenu généré par JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button type="submit" class="btn btn-success" id="submit-btn">
+                                    <i class="fas fa-save"></i> Enregistrer les modifications
+                                </button>
+                                <a href="{% url 'adminUserTiersListing' %}" class="btn btn-secondary ml-2">
+                                    <i class="fas fa-times"></i> Annuler
+                                </a>
+                            </div>
+
+                            <div>
+                                {% if user_tier.tier_name != 'STANDARD' %}
+                                <button type="button" class="btn btn-warning" id="downgrade-btn" data-url="{% url 'adminUserTierEdit' user.uuid %}" data-user="{{ user.username }}">
+                                    <i class="fas fa-arrow-down"></i> Rétrograder au Standard
+                                </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Historique des changements de tier -->
+            {% if user.tier_history.all %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5><i class="fas fa-history"></i> Historique des Tiers</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Changement</th>
+                                    <th>Raison</th>
+                                    <th>Modifié par</th>
+                                    <th>Durée</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for history in user.tier_history.all|slice:":10" %}
+                                <tr>
+                                    <td><small>{{ history.created_at|date:"d/m/Y H:i" }}</small></td>
+                                    <td>
+                                        <span class="badge badge-light">{{ history.previous_tier }}</span>
+                                        <i class="fas fa-arrow-right text-muted mx-1"></i>
+                                        <span class="badge {% if history.new_tier == 'STANDARD' %}badge-secondary{% elif history.new_tier == 'PREMIUM_BASIC' %}badge-primary{% elif history.new_tier == 'PREMIUM_ADVANCED' %}badge-warning{% else %}badge-success{% endif %}">
+                                            {{ history.new_tier }}
+                                        </span>
+                                        {% if history.is_upgrade %}
+                                        <i class="fas fa-arrow-up text-success ml-1" title="Upgrade"></i>
+                                        {% elif history.is_downgrade %}
+                                        <i class="fas fa-arrow-down text-warning ml-1" title="Downgrade"></i>
+                                        {% endif %}
+                                    </td>
+                                    <td><small>{{ history.get_change_reason_display }}</small></td>
+                                    <td><small>{{ history.changed_by.username|default:"Système" }}</small></td>
+                                    <td>
+                                        {% if history.tier_duration_days %}
+                                        <small>{{ history.tier_duration_days }} jour(s)</small>
+                                        {% else %}
+                                        <small class="text-muted">-</small>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% if user.tier_history.count > 10 %}
+                        <div class="text-center">
+                            <small class="text-muted">Affichage des 10 derniers changements ({{ user.tier_history.count }} au total)</small>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<template id="downgradeModalBody">
+    <p>Êtes-vous sûr de vouloir rétrograder <strong id="modal-username"></strong> au tier Standard ?</p>
+    <div class="alert alert-warning">
+        <i class="fas fa-info-circle"></i>
+        <strong>Attention :</strong> Cette action :
+        <ul class="mb-0">
+            <li>Rétrograda immédiatement l'utilisateur au tier Standard</li>
+            <li>Supprimera la date d'expiration</li>
+            <li>Désactivera le renouvellement automatique</li>
+            <li>Créera une entrée dans l'historique</li>
+        </ul>
+    </div>
+
+</template>
+
+<template id="downgradeModalFooter">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+    <form method="post" style="display: inline;" id="downgrade-form">
+        {% csrf_token %}
+        <input type="hidden" name="tier_name" value="STANDARD">
+        <input type="hidden" name="tier_expiry_date" value="">
+        <input type="hidden" name="auto_renew" value="">
+        <input type="hidden" name="notes" value="Rétrogradation manuelle par administrateur">
+        <button type="submit" class="btn btn-warning">
+            <i class="fas fa-arrow-down"></i> Confirmer la rétrogradation
+        </button>
+    </form>
+</template>
+<!-- Données pour JavaScript -->
+<script type="application/json" id="tier-choices-data">{{ tier_choices|safe }}</script>
+
+{% endblock %}

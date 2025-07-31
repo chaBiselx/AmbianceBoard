@@ -13,6 +13,22 @@ class ModalCustom {
         return document.getElementById('mainModal')! as HTMLDivElement
     }
 
+    public static wait() {
+        // Récupérer le template modal-template-wait
+        const template = document.getElementById('modal-template-wait') as HTMLTemplateElement;
+        if (!template) {
+            console.error('Template modal-template-wait not found');
+            return;
+        }
+
+        ModalCustom.show({
+            title: "Chargement en cours",
+            body: template.innerHTML,
+            footer: "",
+            width: "sm",
+        });
+    }
+
 
     public static show(param: ModalJson = {
         title: "",
@@ -29,9 +45,13 @@ class ModalCustom {
         const config = { ...defaultValues, ...param };
         const mainModalElement = ModalCustom.getMainHTMLElement();
 
-        const mainModal = new Modal(mainModalElement, {
-            keyboard: false
-        });
+        // Récupérer l'instance existante ou en créer une nouvelle
+        let mainModal = Modal.getInstance(mainModalElement);
+        if (!mainModal) {
+            mainModal = new Modal(mainModalElement, {
+                keyboard: false
+            });
+        }
 
         mainModalElement.classList.remove('modal-lg');
         mainModalElement.classList.remove('modal-sm');
@@ -64,14 +84,22 @@ class ModalCustom {
         }
     }
 
-    static hide() {
+    public static hide() {
         const myModalEl = ModalCustom.getMainHTMLElement();
         let modal = Modal.getInstance(myModalEl)
+        if (!modal) {
+            return;
+        }
         modal.hide();
 
-        document.getElementById("mainModalTitle")!.innerHTML = "";
-        document.getElementById("mainModalBody")!.innerHTML = "";
-        document.getElementById("mainModalFooter")!.innerHTML = "";
+        // Nettoyer le contenu après la fermeture
+        myModalEl.addEventListener('hidden.bs.modal', function cleanupContent() {
+            document.getElementById("mainModalTitle")!.innerHTML = "";
+            document.getElementById("mainModalBody")!.innerHTML = "";
+            document.getElementById("mainModalFooter")!.innerHTML = "";
+            // Supprimer l'event listener après utilisation
+            myModalEl.removeEventListener('hidden.bs.modal', cleanupContent);
+        }, { once: true });
     }
 
 }
