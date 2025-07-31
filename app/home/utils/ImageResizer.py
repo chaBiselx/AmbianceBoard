@@ -1,3 +1,11 @@
+"""
+Utilitaire pour le redimensionnement d'images.
+
+Gère le redimensionnement automatique des images uploadées
+avec support de différents formats et optimisation de la taille.
+"""
+
+from typing import Any, Union, Optional
 from PIL import Image, ImageSequence
 import os
 from home.enum.ImageFormatEnum import ImageFormatEnum
@@ -5,13 +13,28 @@ from home.utils.logger import LoggerFactory
 
  
 class ImageResizer:
+    """
+    Utilitaire pour le redimensionnement d'images.
+    
+    Gère le redimensionnement des images avec :
+    - Support de multiples formats (JPG, PNG, GIF, etc.)
+    - Préservation du ratio d'aspect
+    - Optimisation de la taille de fichier
+    - Gestion spécifique des GIFs animés
+    """
+    
     max_size = 200  # Taille maximale du bord le plus grand par défaut
     
-    def __init__(self, input_path, output_path):
+    def __init__(self, input_path: str, output_path: str) -> None:
         """
-        Initialise le redimensionneur d'image avec le chemin d'entrée et de sortie.
-        :param input_path: Chemin de l'image source.
-        :param output_path: Chemin pour enregistrer l'image redimensionnée.
+        Initialise le redimensionneur d'image avec les chemins source et destination.
+        
+        Args:
+            input_path: Chemin de l'image source
+            output_path: Chemin pour enregistrer l'image redimensionnée
+            
+        Raises:
+            FileNotFoundError: Si le fichier source n'existe pas
         """
         self.logger = LoggerFactory.get_default_logger()
         
@@ -21,10 +44,15 @@ class ImageResizer:
         if not os.path.exists(self.input_path):
             raise FileNotFoundError(f"File {self.input_path} not found")
  
-    def resize_image(self, max_size=200):
+    def resize_image(self, max_size: int = 200) -> Union[str, bool]:
         """
-        Redimensionne l'image afin que son bord le plus grand fasse max_size pixels.
-        :param max_size: Taille maximale du bord le plus grand (par défaut 200px).
+        Redimensionne l'image pour que son bord le plus grand fasse max_size pixels.
+        
+        Préserve le ratio d'aspect et applique la méthode de redimensionnement
+        appropriée selon le format de l'image.
+        
+        Args:
+            max_size: Taille maximale du bord le plus grand en pixels (défaut: 200)
         """
         self.max_size = max_size
         self.logger.debug(f"resize_image STARTED : {self.input_path}")

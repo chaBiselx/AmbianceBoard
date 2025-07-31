@@ -7,6 +7,14 @@ from encrypted_model_fields.fields import EncryptedCharField
 
 
 class User(AbstractUser):
+    """
+    Modèle utilisateur personnalisé étendant AbstractUser de Django.
+    
+    Ajoute des fonctionnalités de gestion des bans, confirmation d'email,
+    réinitialisation de mot de passe et statut de bêta-testeur.
+    Les données sensibles (prénom, nom) sont chiffrées.
+    """
+    
     id = models.BigAutoField(primary_key=True) 
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False, db_index=True)
     first_name = EncryptedCharField(
@@ -56,12 +64,32 @@ class User(AbstractUser):
         return True
     
     def __str__(self) -> str:
+        """
+        Représentation textuelle de l'utilisateur.
+        
+        Returns:
+            str: Nom d'utilisateur et email de l'utilisateur
+        """
         return f"{self.username} {self.email}"
     
     def get_confirmation_token(self) -> Optional[str]:
+        """
+        Récupère le token de confirmation d'email de l'utilisateur.
+        
+        Returns:
+            Optional[str]: Le token de confirmation sous forme de string, 
+                          ou None s'il n'existe pas
+        """
         return str(self.confirmationToken) if self.confirmationToken is not None else self.confirmationToken
     
     def get_reinitialisation_token(self) -> Optional[str]:
+        """
+        Récupère le token de réinitialisation de mot de passe de l'utilisateur.
+        
+        Returns:
+            Optional[str]: Le token de réinitialisation sous forme de string,
+                          ou None s'il n'existe pas
+        """
         return str(self.tokenReinitialisation) if self.tokenReinitialisation is not None else self.tokenReinitialisation
         
         

@@ -1,3 +1,10 @@
+"""
+Middleware pour l'enregistrement et le suivi des requêtes HTTP.
+
+Enregistre toutes les requêtes avec des identifiants uniques
+pour faciliter le débogage et le monitoring de l'application.
+"""
+
 from typing import Callable, Any, Dict
 from django.http import HttpRequest, HttpResponse
 import uuid
@@ -6,12 +13,37 @@ import secrets
 from home.utils.logger import LoggerFactory
 
 class LogRequestsMiddleware:
+    """
+    Middleware pour l'enregistrement des requêtes HTTP.
+    
+    Enregistre toutes les requêtes avec :
+    - Identifiants uniques pour les utilisateurs (UUID ou cookie)
+    - Temps de traitement
+    - Codes de réponse
+    - Gestion sécurisée des cookies pour les utilisateurs anonymes
+    """
+    
     def __init__(self, get_response: Callable[[HttpRequest], HttpResponse]) -> None:
+        """
+        Initialise le middleware avec les loggers.
+        
+        Args:
+            get_response: Fonction pour obtenir la réponse HTTP
+        """
         self.get_response = get_response
         self.logger = LoggerFactory.get_default_logger('request')
         self.logger_home = LoggerFactory.get_default_logger()
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
+        """
+        Traite la requête et enregistre les informations de log.
+        
+        Args:
+            request: Requête HTTP entrante
+            
+        Returns:
+            HttpResponse: Réponse HTTP avec cookies de suivi si nécessaire
+        """
         start_time = time.time()
         
         try:

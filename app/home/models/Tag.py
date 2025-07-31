@@ -4,6 +4,14 @@ from django.core.validators import MinLengthValidator
 
 
 class Tag(models.Model):
+    """
+    Modèle représentant un tag pour catégoriser les soundboards.
+    
+    Les tags permettent d'organiser et de filtrer les soundboards.
+    Ils ont un nom unique, une description optionnelle et peuvent être 
+    activés ou désactivés.
+    """
+    
     id = models.BigAutoField(primary_key=True)
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -29,9 +37,21 @@ class Tag(models.Model):
         verbose_name = "Tag"
         verbose_name_plural = "Tags"
 
-    def __str__(self):
+    def __str__(self) -> str:
+        """
+        Représentation textuelle du tag.
+        
+        Returns:
+            str: Nom du tag
+        """
         return f"{self.name}"
 
-    def clean(self):
+    def clean(self) -> None:
+        """
+        Valide et nettoie les données du modèle.
+        
+        Normalise le nom du tag en supprimant les espaces et en convertissant
+        en minuscules pour assurer la cohérence.
+        """
         if self.name:
             self.name = self.name.strip().lower()

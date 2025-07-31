@@ -29,15 +29,52 @@ from home.utils.logger import logger
 @detect_not_confirmed_account()
 @require_http_methods(['GET'])
 def home(request: HttpRequest) -> HttpResponse:
+    """
+    Vue de la page d'accueil.
+    
+    Affiche la page d'accueil principale de l'application.
+    Redirige les utilisateurs non confirmés selon le décorateur.
+    
+    Args:
+        request (HttpRequest): Requête HTTP
+        
+    Returns:
+        HttpResponse: Page d'accueil rendue
+    """
     return render(request, "Html/General/home.html", {"title": "Accueil"})
 
 
 @require_http_methods(['GET'])
 def legal_notice(request: HttpRequest) -> HttpResponse:
+    """
+    Vue de la page des mentions légales.
+    
+    Args:
+        request (HttpRequest): Requête HTTP
+        
+    Returns:
+        HttpResponse: Page des mentions légales rendue
+    """
     return render(request, "Html/General/legal_notice.html", {"title": "Mention légal"})
 
 @require_http_methods(['GET', 'POST'])
 def create_account(request: HttpRequest) -> HttpResponse:
+    """
+    Vue de création de compte utilisateur.
+    
+    Gère la création d'un nouveau compte utilisateur avec :
+    - Validation du formulaire
+    - Attribution du groupe utilisateur standard
+    - Envoi d'emails de bienvenue et de confirmation
+    - Création du tier utilisateur
+    - Gestion des erreurs
+    
+    Args:
+        request (HttpRequest): Requête HTTP
+        
+    Returns:
+        HttpResponse: Page de création de compte ou redirection vers login
+    """
     errors = []
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
@@ -68,6 +105,22 @@ def create_account(request: HttpRequest) -> HttpResponse:
 
 @require_http_methods(['GET', 'POST'])
 def login_view(request: HttpRequest) -> HttpResponse:
+    """
+    Vue de connexion utilisateur.
+    
+    Gère l'authentification des utilisateurs avec :
+    - Validation des identifiants
+    - Gestion des tentatives de connexion échouées
+    - Protection contre le brute force
+    - Redirection vers la page d'accueil en cas de succès
+    
+    Args:
+        request (HttpRequest): Requête HTTP
+        
+    Returns:
+        HttpResponse: Page de connexion ou redirection, 
+                     peut retourner une erreur 429 en cas de trop nombreuses tentatives
+    """
     context = {}
     if request.method == 'POST':
         username = request.POST['username']
@@ -87,6 +140,17 @@ def login_view(request: HttpRequest) -> HttpResponse:
 
 @require_http_methods(['GET'])
 def logout_view(request: HttpRequest) -> HttpResponse:
+    """
+    Vue de déconnexion utilisateur.
+    
+    Déconnecte l'utilisateur s'il est authentifié et redirige vers l'accueil.
+    
+    Args:
+        request (HttpRequest): Requête HTTP
+        
+    Returns:
+        HttpResponse: Redirection vers la page d'accueil
+    """
     if request.user.is_authenticated:
         logout(request)
     return redirect('home')
