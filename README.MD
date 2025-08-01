@@ -36,6 +36,11 @@ sous WSL en cas d'erreur avec l'entrypoint utiliser dos2unix
 dos2unix ./app/entrypoint.sh
 ```
 
+ou 
+```shell
+find . -type f -print0 | xargs -0 dos2unix
+```
+
 ### 3. Accéder au conteneur  
 ```shell  
 docker exec -it AmbianceBoard-back-1 bash  
