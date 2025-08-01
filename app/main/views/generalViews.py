@@ -1,3 +1,4 @@
+import uuid
 from typing import Union
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
@@ -22,6 +23,8 @@ from main.service.ResetPasswordService import ResetPasswordService
 from main.forms.UserPasswordForm import UserPasswordForm
 from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.models.UserNotificationDismissal import UserNotificationDismissal
+from main.models.GeneralNotification import GeneralNotification
 from main.models.UserTier import UserTier
 from main.utils.logger import logger
 
@@ -172,6 +175,26 @@ def resend_email_confirmation(request) -> JsonResponse:
             logger.error(f"resend confirmation error : {e}")
             return JsonResponse({"error": "Cannot send email"}, status=500)
     return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.value}, status=406)
+
+@login_required
+@require_http_methods(['POST'])
+@ratelimit(key='ip', rate='3/m', method='POST', block=True)
+def dismiss_general_notification(request, notification_uuid: uuid.UUID) -> JsonResponse:
+    if request.method == 'POST':
+        try:
+            general_information = GeneralNotification.objects.get(uuid=notification_uuid)
+            if not general_information:
+                raise ValidationError("Notification not found")
+            _,_ = UserNotificationDismissal.objects.get_or_create(
+                user=request.user,
+                notification_id=general_information.id
+            )
+            return JsonResponse({"message": "Notification dismissed"}, status=200)
+        except Exception as e:
+            logger.error(f"dismiss notification error : {e}")
+            return JsonResponse({"error": "Cannot dismiss notification"}, status=500)
+    return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.value}, status=406)
+            
 
 @require_http_methods(['GET', 'POST'])
 @ratelimit(key='ip', rate='3/m', method='POST', block=True)

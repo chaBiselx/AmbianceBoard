@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
@@ -10,7 +11,13 @@ class GeneralNotification(models.Model):
     Permet d'afficher des messages temporaires avec du contenu HTML,
     ciblés vers les utilisateurs connectés ou non connectés.
     """
-    
+    uuid = models.UUIDField(
+        db_index=True, 
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+        help_text="Identifiant unique de la notification"
+    )
     message = models.TextField(
         help_text="Message de la notification en HTML"
     )

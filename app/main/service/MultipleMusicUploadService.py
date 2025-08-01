@@ -27,9 +27,7 @@ class MultipleMusicUploadService:
 
         for file in self.request.FILES.values():
             try:
-                print(f"Processing file: {file.name}")
                 music = self.music_service.save_multiple_files_item(playlist, file)
-                print(f"Processed file: {file.name}")
 
                 if music:
                     results.append({

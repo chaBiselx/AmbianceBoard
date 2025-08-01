@@ -1,12 +1,26 @@
 {% load Bootstrap %}
+{% load Json %}
 
 
 {% if messages %}
 <div class="row">
     <div class="col-12">
-        <section class="pt-0 pb-0">
+        <section class="pt-0 pb-0" id="notifications-general">
             {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags|applys_boostrap_class }}{% endif %}" role="alert">{{ message }}</div>
+            {% with meta_data=message.extra_tags|parse_meta_json %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags|applys_boostrap_class }}{% endif %} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button class="btn-close close-notification" data-dismiss="alert" aria-label="Close"
+                {% if meta_data %}
+                    {% for key, value in meta_data.items %}
+                        data-meta-{{ key }}="{{ value }}"
+                    {% endfor %}
+                {% endif %}>
+                </button>
+            </div>
+            {% endwith %}
+
+            
             {% endfor %}
         </section>
     </div>

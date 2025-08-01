@@ -25,6 +25,5 @@ class GeneralNotificationFilter:
         return self.queryset
 
     def filter_by_user_has_notifications(self, user: User):
-        print(list(UserNotificationDismissal.objects.filter(user=user).values_list('notification_id', flat=True)))
         self.queryset = self.queryset.exclude(id__in=UserNotificationDismissal.objects.filter(user=user).values_list('notification_id', flat=True))
         return self.queryset
