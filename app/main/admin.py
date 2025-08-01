@@ -16,6 +16,8 @@ from main.models.Tag import Tag
 from main.models.UserTier import UserTier
 from main.models.UserTierHistory import UserTierHistory
 from main.models.DomainBlacklist import DomainBlacklist
+from main.models.GeneralNotification import GeneralNotification
+from main.models.UserNotificationDismissal import UserNotificationDismissal
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -34,3 +36,4 @@ admin.site.register(Tag)
 admin.site.register(UserTier)
 admin.site.register(UserTierHistory)
 admin.site.register(DomainBlacklist)
+admin.site.register(GeneralNotification)

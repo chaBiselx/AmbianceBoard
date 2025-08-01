@@ -15,7 +15,8 @@ from main.utils.url import get_full_url
 from main.decorator.detectNotConfirmedAccount import detect_not_confirmed_account
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+
 from django_ratelimit.decorators import ratelimit
 from main.service.ResetPasswordService import ResetPasswordService
 from main.forms.UserPasswordForm import UserPasswordForm
@@ -88,7 +89,9 @@ def create_account(request: HttpRequest) -> HttpResponse:
                     confirmation_user_service = ConfirmationUserService(user)
                     url = get_full_url(confirmation_user_service.generation_uri())
                     UserMail(user).send_account_confirmation_email(url)
-                    messages.info(request, "Compte créé")
+                    ServerNotificationBuilder(request).set_message(
+                        "Un email de confirmation a été envoyé à votre adresse."
+                    ).set_statut("info").send()
                 except Exception as e:
                     logger.error(e)
                 logger.info(f"User {user.username} created")
@@ -183,7 +186,7 @@ def send_reset_password(request):
                 UserMail(user).send_reset_password_email(url)
         except Exception as e:
             logger.error(f"reset password error : {e}")
-        messages.info(request, "Email envoyé si l'addresse existe")
+        ServerNotificationBuilder(request).set_message("Email envoyé si l'addresse existe").set_statut("info").send()
     else : 
         form = UserResetPasswordForm()
     return render(request, 'Html/Account/send_reset_password.html', {'form':form})
@@ -217,7 +220,7 @@ def token_validation_reset_password(request, uuid_user:str, token_reinitialisati
             try:
                 user = form.save()
                 logger.info(f"User password modified{user.username}")
-                messages.info(request, "Mot de passe modifié")
+                ServerNotificationBuilder(request).set_message("Mot de passe modifié").set_statut("info").send()
                 UserMail(user).send_password_changed_email()
                 reset_password_service.clean()
                 return redirect('login')

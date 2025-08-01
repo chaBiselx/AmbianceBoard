@@ -4,8 +4,8 @@ from main.models.SoundBoard import SoundBoard
 from main.models.SharedSoundboard import SharedSoundboard
 from main.forms.SoundBoardForm import SoundBoardForm
 from main.enum.PermissionEnum import PermissionEnum
-from django.contrib import messages
 from main.factory.UserParametersFactory import UserParametersFactory
+from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 
 class SoundBoardService:
@@ -121,7 +121,9 @@ class SoundBoardService:
         limit_soundboard = user_parameters.limit_soundboard
         
         if len(SoundBoard.objects.filter(user=self.request.user)) >= limit_soundboard:
-            messages.error(self.request, "Vous avez atteint la limite de soundboard (" + str(limit_soundboard) + " max).")
+            ServerNotificationBuilder(self.request).set_message(
+                "Vous avez atteint la limite de soundboard (" + str(limit_soundboard) + " max)."
+            ).set_statut("error").send()
             return None
         
         form = SoundBoardForm(self.request.POST, self.request.FILES)

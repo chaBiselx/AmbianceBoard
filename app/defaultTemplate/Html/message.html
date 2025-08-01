@@ -1,8 +1,10 @@
-{% if messages %}
 {% load Bootstrap %}
+
+
+{% if messages %}
 <div class="row">
     <div class="col-12">
-        <section class="pt-0 pb-0" >
+        <section class="pt-0 pb-0">
             {% for message in messages %}
             <div class="alert {% if message.tags %}alert-{{ message.tags|applys_boostrap_class }}{% endif %}" role="alert">{{ message }}</div>
             {% endfor %}
