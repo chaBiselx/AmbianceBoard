@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from main.models.Music import Music
@@ -12,6 +11,7 @@ from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.enum.MusicFormatEnum import MusicFormatEnum
 from main.utils.UserTierManager import UserTierManager
+from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from main.service.LinkService import LinkService
 from main.forms.LinkMusicForm import LinkMusicForm
 
@@ -50,7 +50,7 @@ def music_create(request, playlist_uuid):
             try:
                 (MusicService(request)).save_form(playlist)
             except ValueError as e:
-                messages.error(request, str(e))
+                ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
             return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
         else:
             form = MusicForm()
@@ -84,7 +84,7 @@ def music_update(request, playlist_uuid, music_id):
         try:
             (MusicService(request)).save_form(playlist, music)
         except ValueError as e:
-            messages.error(request, str(e))
+            ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
         return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
     else:
         form = MusicForm(instance=music)
@@ -129,9 +129,9 @@ def link_create(request, playlist_uuid):
     if request.method == 'POST':
         try:
             (LinkService(request)).save_form(playlist)
-            messages.success(request, "Lien musical ajouté avec succès!")
+            ServerNotificationBuilder(request).set_message("Lien musical ajouté avec succès!").set_statut("success").send()
         except ValueError as e:
-            messages.error(request, str(e))
+            ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
         return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
     else:
         form = LinkMusicForm()
@@ -157,9 +157,9 @@ def link_update(request, playlist_uuid, link_id):
     if request.method == 'POST':
         try:
             (LinkService(request)).save_form(playlist, link)
-            messages.success(request, "Lien musical modifié avec succès!")
+            ServerNotificationBuilder(request).set_message("Lien musical modifié avec succès!").set_statut("success").send()
         except ValueError as e:
-            messages.error(request, str(e))
+            ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
         return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
     else:
         form = LinkMusicForm(instance=link)

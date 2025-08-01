@@ -6,7 +6,6 @@ import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
-from django.contrib import messages
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -19,6 +18,8 @@ from main.models.UserTier import UserTier
 from main.enum.PermissionEnum import PermissionEnum
 from main.utils.ExtractPaginator import extract_context_to_paginator
 from main.utils.UserTierManager import UserTierManager
+from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+
 
 
 @login_required
@@ -114,7 +115,7 @@ def manager_user_tier_edit(request, user_uuid) -> HttpResponse:
             
             # Validation
             if new_tier not in UserTierManager.get_all_tiers():
-                messages.error(request, 'Tier invalide sélectionné')
+                ServerNotificationBuilder(request).set_message('Tier invalide sélectionné').set_statut("error").send()
                 return redirect('adminUserTierEdit', user_uuid=user_uuid)
             
             # Conversion de la date d'expiration
@@ -126,7 +127,7 @@ def manager_user_tier_edit(request, user_uuid) -> HttpResponse:
                         datetime.combine(parsed_expiry, datetime.min.time())
                     )
                 except ValueError:
-                    messages.error(request, 'Format de date invalide')
+                    ServerNotificationBuilder(request).set_message('Format de date invalide').set_statut("error").send()
                     return redirect('adminUserTierEdit', user_uuid=user_uuid)
             
             # Mise à jour du tier
@@ -142,13 +143,13 @@ def manager_user_tier_edit(request, user_uuid) -> HttpResponse:
             
 
             user_tier.save()
-            
-            messages.success(request, f'Tier de {user.username} mis à jour avec succès')
+
+            ServerNotificationBuilder(request).set_message(f'Tier de {user.username} mis à jour avec succès').set_statut("success").send()
             return redirect('adminUserTiersListing')
             
         except Exception as e:
-            messages.error(request, f'Erreur lors de la mise à jour: {str(e)}')
-    
+            ServerNotificationBuilder(request).set_message(f'Erreur lors de la mise à jour: {str(e)}').set_statut("error").send()
+
     context = {
         'user': user,
         'user_tier': user_tier,
@@ -170,7 +171,7 @@ def manager_user_tier_bulk_action(request) -> HttpResponse:
     user_ids = request.POST.getlist('user_ids')
     
     if not action or not user_ids:
-        messages.error(request, 'Action ou utilisateurs non spécifiés')
+        ServerNotificationBuilder(request).set_message('Action ou utilisateurs non spécifiés').set_statut("error").send()
         return redirect('adminUserTiersListing')
     
     try:
@@ -180,9 +181,7 @@ def manager_user_tier_bulk_action(request) -> HttpResponse:
             for user in users:
                 user_tier, _ = UserTier.objects.get_or_create(user=user)
                 user_tier.downgrade_to_standard()
-            
-            messages.success(request, f'{len(users)} utilisateur(s) rétrogradé(s) au tier Standard')
-        
+            ServerNotificationBuilder(request).set_message(f'{len(users)} utilisateur(s) rétrogradé(s) au tier Standard').set_statut("success").send()
         elif action == 'extend_subscription':
             days = int(request.POST.get('extend_days', 30))
             for user in users:
@@ -192,15 +191,12 @@ def manager_user_tier_bulk_action(request) -> HttpResponse:
                 else:
                     user_tier.tier_expiry_date = timezone.now() + timedelta(days=days)
                 user_tier.save()
-            
-            messages.success(request, f'Abonnement étendu de {days} jours pour {len(users)} utilisateur(s)')
-        
+
+            ServerNotificationBuilder(request).set_message(f'Abonnement étendu de {days} jours pour {len(users)} utilisateur(s)').set_statut("success").send()
         else:
-            messages.error(request, 'Action non reconnue')
-    
+            ServerNotificationBuilder(request).set_message('Action non reconnue').set_statut("error").send()
     except Exception as e:
-        messages.error(request, f'Erreur lors de l\'action en lot: {str(e)}')
-    
+        ServerNotificationBuilder(request).set_message(f'Erreur lors de l\'action en lot: {str(e)}').set_statut("error").send()
     return redirect('adminUserTiersListing')
 
 

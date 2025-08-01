@@ -1,4 +1,3 @@
-from django.contrib import messages
 from main.models.User import User
 import hashlib
 import secrets
@@ -6,6 +5,7 @@ from django.utils import timezone
 from django.urls import reverse
 from main.exceptions.SecurityException import SecurityException
 from main.utils.logger import logger
+
 
 
 class ResetPasswordService():

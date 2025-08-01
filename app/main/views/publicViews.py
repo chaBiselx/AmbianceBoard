@@ -17,13 +17,13 @@ from main.models.Tag import Tag
 from django.db.models import Count
 from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.enum.ErrorMessageEnum import ErrorMessageEnum
-from django.contrib import messages
 from main.service.ReportContentService import ReportContentService
 from main.service.SharedSoundboardService import SharedSoundboardService
 from main.service.TagService import TagService
 from main.utils.url import redirection_url
 from main.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
 from main.utils.logger import logger
+from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 
 
@@ -149,10 +149,10 @@ def reporting_content(request):
     if request.method == 'POST':
         
         if(ReportContentService(request).save_report()):
-            messages.info(request, 'Votre signalement a bien été pris en compte, merci de votre contribution')
+            ServerNotificationBuilder(request).set_message("Votre signalement a bien été pris en compte, merci de votre contribution").set_statut("info").send()
         else : 
-            messages.error(request, 'Une erreur est survenue, merci de re-essayer plus tard')
-        
+            ServerNotificationBuilder(request).set_message("Une erreur est survenue, merci de re-essayer plus tard").set_statut("error").send()
+
         
         if(request.POST.get('redirect')):
             return redirect(redirection_url(request.POST.get('redirect')))

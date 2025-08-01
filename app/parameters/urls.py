@@ -3,7 +3,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from main.views.generalViews import home, create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice
+from main.views.generalViews import home, create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice, dismiss_general_notification
 from main.views.privateSoundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
 from main.views.privateSoundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
 from main.views.privateShowSoundboardViews import playlist_show, music_stream, update_direct_volume
@@ -33,7 +33,9 @@ urlpatterns = [
     path("resend-email/confirm/<uuid:uuid_user>/<uuid:confirmation_token>", confirm_account, name="confirm_account"),
     path("reset-password", send_reset_password, name="send_reset_password"),
     path("reset-password/validate/<uuid:uuid_user>/<str:token_reinitialisation>", token_validation_reset_password, name="token_validation_reset_password"),
-    
+
+    path("notification/dismiss/<uuid:notification_uuid>/", dismiss_general_notification, name="dismissGeneralNotification"),
+
     path("soundBoards/", soundboard_list, name="soundboardsList"),
     path("soundBoards/new", soundboard_create, name="soundboardsNew"),
     path("soundBoards/<uuid:soundboard_uuid>", playlist_show, name="soundboardsRead"),

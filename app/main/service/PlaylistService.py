@@ -1,11 +1,11 @@
 from typing import Optional, List
 from django.http import HttpRequest
-from django.contrib import messages
 from main.enum.PermissionEnum import PermissionEnum
 from main.models.Playlist import Playlist
 from main.filters.PlaylistFilter import PlaylistFilter
 from main.forms.PlaylistForm import PlaylistForm
 from main.factory.UserParametersFactory import UserParametersFactory
+from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 
 class PlaylistService:
@@ -37,7 +37,9 @@ class PlaylistService:
         limit_playlist = user_parameters.limit_playlist
         
         if len(Playlist.objects.filter(user=self.request.user)) >= limit_playlist:
-            messages.error(self.request, "Vous avez atteint la limite de playlist total (" + str(limit_playlist) + ").")
+            ServerNotificationBuilder(self.request).set_message(
+                "Vous avez atteint la limite de playlist total (" + str(limit_playlist) + ")."
+            ).set_statut("error").send()
             return None
 
         form = PlaylistForm(self.request.POST, self.request.FILES)
@@ -49,6 +51,6 @@ class PlaylistService:
         else:
             for(field, errors) in form.errors.items():
                 for error in errors:
-                    messages.error(self.request, error)
+                    ServerNotificationBuilder(self.request).set_message(error).set_statut("error").send()
         return None
         

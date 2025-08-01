@@ -208,6 +208,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 'main.context_processors.sidebar_processor.sidebar_processor',
                 'main.context_processors.user_preference_processor.user_preference_processor',
+                'main.context_processors.general_information_processor.general_information_processor',
             ],
         },
     },
