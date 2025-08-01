@@ -22,7 +22,7 @@ def detect_not_confirmed_account():
             if request.user.is_authenticated:
                 if request.user.isConfirmed == False:
                     url = reverse("resend_email_confirmation")
-                    ServerNotificationBuilder(request).set_message('Votre addresse email n\'est pas confirmé, merci de regarder dans vos email').set_statut("info").send()
+                    ServerNotificationBuilder(request).set_message(f'Votre addresse email n\'est pas confirmé, merci de regarder dans vos email <br/> <button class="btn btn-secondary" id="resend_email_confirmation_account" data-url="{url}" >Renvoyer un email de confirmation</button>').set_statut("info").send()
                 
             return view_func(request, *args, **kwargs)
         return wrapper
