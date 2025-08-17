@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.conf import settings
+from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 
 from main.views.generalViews import home, create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice, dismiss_general_notification
@@ -22,10 +23,16 @@ from main.channels.SharedSoundboard import SharedSoundboard
 
 
 urlpatterns = [
+    #SEO 
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots_txt"),
+    path("sitemap.xml", TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml"), name="sitemap_xml"),
+
+    # Pages publiques
     path("", home, name="home"),
     path("admin/", admin.site.urls),
     path("legal-notice", legal_notice, name="legalNotice"),
     
+    # Pages d'authentification
     path("create-account/", create_account, name="createAccount"),
     path("login/", login_view, name="login"),
     path("logout/", logout_view, name="logout"),
