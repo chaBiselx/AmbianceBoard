@@ -12,6 +12,7 @@ from main.models.SoundboardPlaylist import SoundboardPlaylist
 from main.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from django.core.cache import cache
 from parameters import settings
+from main.utils.OverwriteStorage import OverwriteStorage
 
 
 class Playlist(models.Model):
@@ -38,7 +39,7 @@ class Playlist(models.Model):
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
     volume = models.IntegerField(default=75, validators=[MinValueValidator(0), MaxValueValidator(100)])
-    icon = models.FileField(upload_to=PLAYLIST_FOLDER, default=None, null=True, blank=True)
+    icon = models.FileField(upload_to=PLAYLIST_FOLDER,storage=OverwriteStorage(), default=None, null=True, blank=True)
     useSpecificDelay = models.BooleanField(default=False, )
     maxDelay = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     

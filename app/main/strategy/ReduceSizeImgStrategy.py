@@ -22,9 +22,7 @@ class ReduceSizeImgStrategyBase():
         if default_storage.exists(original_path) and original_path != image_output_path:
             default_storage.delete(original_path)
         
-        # Delete the temporary resized file created by ImageResizer
-        if os.path.exists(image_output_path):
-            os.remove(image_output_path)
+  
             
     def get_content_file(self, image_output_path):
         with open(image_output_path, 'rb') as f:

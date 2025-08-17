@@ -8,6 +8,7 @@ from main.models.Playlist import Playlist
 from main.models.SoundboardPlaylist import SoundboardPlaylist
 from main.models.Tag import Tag
 from main.message.ReduceSizeImgMessenger import reduce_size_img
+from main.utils.OverwriteStorage import OverwriteStorage
 
 
 # Create your models here.
@@ -32,8 +33,8 @@ class SoundBoard(models.Model):
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
     is_public = models.BooleanField(default=False)
-    icon = models.FileField(upload_to=SOUNDBOARD_FOLDER, default=None, null=True, blank=True)
-    
+    icon = models.FileField(upload_to=SOUNDBOARD_FOLDER, storage=OverwriteStorage(), default=None, null=True, blank=True)
+
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """
         Initialise une nouvelle instance de SoundBoard.

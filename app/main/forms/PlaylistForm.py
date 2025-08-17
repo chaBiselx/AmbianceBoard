@@ -84,8 +84,6 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
         # Si le fichier doit être supprimé, on l'initialise à None
         if self.cleaned_data.get('clear_icon'):
             instance.icon = None
-        print('===================')
-        print(instance.useSpecificDelay)
 
         if commit:
             instance.save()
