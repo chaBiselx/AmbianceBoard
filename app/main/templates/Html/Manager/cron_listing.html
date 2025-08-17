@@ -31,6 +31,11 @@
                                 </button>
                             </div>
                             <div class="col-md-4 mb-2">
+                                <button data-title="Purger les Partages de Soundboard Expirés" data-url="{% url 'managerPurgeExpiredSharedSoundboard' %}" class="btn btn-danger btn-block cron-execute-button">
+                                    <i class="fas fa-trash"></i> Purger les Partages de Soundboard Expirés
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-2">
                                 <button data-title="Synchroniser la Liste Noire de Domaines" data-url="{% url 'managerSyncDomainBlacklist' %}" class="btn btn-info btn-block cron-execute-button">
                                     <i class="fas fa-sync"></i> Synchroniser la Liste Noire de Domaines
                                 </button>

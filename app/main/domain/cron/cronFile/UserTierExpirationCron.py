@@ -1,5 +1,5 @@
 
-from main.service.cron.UserTierExpirationService import UserTierExpirationService
+from main.domain.cron.service.UserTierExpirationService import UserTierExpirationService
 
 from main.utils.logger import logger
 

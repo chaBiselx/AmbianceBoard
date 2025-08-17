@@ -1,4 +1,4 @@
-from main.service.cron import DomainBlacklistCronService
+from main.domain.cron.service.DomainBlacklistCronService import DomainBlacklistCronService
 
 from main.utils.logger import logger
 

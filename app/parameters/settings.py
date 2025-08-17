@@ -317,18 +317,18 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 CRON_CLASSES = []
 CRONJOBS = []
 if RUN_CRONS:
-    CRON_CLASSES.append('main.cron.CleanMediaFolderCron.run')
-    CRON_CLASSES.append('main.cron.DeleteAccountCron.run')
-    CRON_CLASSES.append('main.cron.DeleteSharedSoundboardExpiredCron.run')
-    CRON_CLASSES.append('main.cron.UserTierExpirationCron.run')
-    CRON_CLASSES.append('main.cron.SyncDomainBlacklistCronJob.run')
-    
-    
-    CRONJOBS.append(('0 10 * * *', 'main.cron.CleanMediaFolderCron.run'))
-    CRONJOBS.append(('0 10 * * *', 'main.cron.DeleteAccountCron.run'))
-    CRONJOBS.append(('0 18 * * *', 'main.cron.DeleteSharedSoundboardExpiredCron.run'))
-    CRONJOBS.append(('0 6 * * *', 'main.cron.UserTierExpirationCron.run'))  # Tous les jours à 6h
-    CRONJOBS.append(('0 12 1,7,14,21,28 * *', 'main.cron.SyncDomainBlacklistCronJob.run'))  # Tous les jours à 12h
+    CRON_CLASSES.append('main.domain.cron.cronFile.CleanMediaFolderCron.run')
+    CRON_CLASSES.append('main.domain.cron.cronFile.DeleteAccountCron.run')
+    CRON_CLASSES.append('main.domain.cron.cronFile.DeleteSharedSoundboardExpiredCron.run')
+    CRON_CLASSES.append('main.domain.cron.cronFile.UserTierExpirationCron.run')
+    CRON_CLASSES.append('main.domain.cron.cronFile.SyncDomainBlacklistCronJob.run')
+
+
+    CRONJOBS.append(('0 10 * * *', 'main.domain.cron.cronFile.CleanMediaFolderCron.run'))
+    CRONJOBS.append(('0 10 * * *', 'main.domain.cron.cronFile.DeleteAccountCron.run'))
+    CRONJOBS.append(('0 18 * * *', 'main.domain.cron.cronFile.DeleteSharedSoundboardExpiredCron.run'))
+    CRONJOBS.append(('0 6 * * *', 'main.domain.cron.cronFile.UserTierExpirationCron.run'))  # Tous les jours à 6h
+    CRONJOBS.append(('0 12 1,7,14,21,28 * *', 'main.domain.cron.cronFile.SyncDomainBlacklistCronJob.run'))  # Tous les jours à 12h
 
 
 # message brokers 

@@ -1,4 +1,4 @@
-from main.service.cron.RGPDService import RGPDService
+from main.domain.cron.service.RGPDService import RGPDService
 from main.utils.logger import logger
 
 

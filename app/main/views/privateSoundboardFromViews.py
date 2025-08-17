@@ -8,7 +8,6 @@ from main.manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
 from main.service.SoundBoardService import SoundBoardService
 from main.service.PlaylistService import PlaylistService
 from main.service.SoundboardPlaylistService import SoundboardPlaylistService
-from main.service.SharedSoundboardService import SharedSoundboardService
 from main.forms.SoundBoardForm import SoundBoardForm
 from main.filters.SoundBoardFilter import SoundBoardFilter
 from main.enum.PermissionEnum import PermissionEnum
