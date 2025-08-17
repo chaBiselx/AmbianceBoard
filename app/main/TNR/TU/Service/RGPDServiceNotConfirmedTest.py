@@ -2,7 +2,7 @@
 import datetime
 from django.test import TestCase
 from main.models.User import User
-from main.service.cron.RGPDService import RGPDService
+from main.domain.cron.service.RGPDService import RGPDService
 from django.utils.timezone import make_aware
 
 class RGPDServiceNotConfirmedTest(TestCase):

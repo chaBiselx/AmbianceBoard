@@ -1,6 +1,6 @@
-from main.service.MediaAudioService import MediaAudioService
-from main.service.MediaImgPlaylistService import MediaImgPlaylistService
-from main.service.MediaImgSoundboardService import MediaImgSoundboardService
+from main.domain.cron.service.MediaAudioService import MediaAudioService
+from main.domain.cron.service.MediaImgPlaylistService import MediaImgPlaylistService
+from main.domain.cron.service.MediaImgSoundboardService import MediaImgSoundboardService
 from main.utils.logger import logger
 
 

@@ -1,4 +1,4 @@
-from main.service.cron.SharedSoundboardService import SharedSoundboardService
+from main.domain.cron.service.SharedSoundboardService import SharedSoundboardService
 from main.utils.logger import logger
 
 

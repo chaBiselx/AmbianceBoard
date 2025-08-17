@@ -2,13 +2,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
-from main.service.MediaAudioService import MediaAudioService
-from main.service.MediaImgPlaylistService import MediaImgPlaylistService
-from main.service.MediaImgSoundboardService import MediaImgSoundboardService
 from main.enum.PermissionEnum import PermissionEnum
 from main.enum.ErrorMessageEnum import ErrorMessageEnum
-from main.service.cron.UserTierExpirationService import UserTierExpirationService
-from main.service.cron.DomainBlacklistCronService import DomainBlacklistCronService
+from main.domain.cron.service.MediaAudioService import MediaAudioService
+from main.domain.cron.service.MediaImgPlaylistService import MediaImgPlaylistService
+from main.domain.cron.service.MediaImgSoundboardService import MediaImgSoundboardService
+from main.domain.cron.service.UserTierExpirationService  import UserTierExpirationService
+from main.domain.cron.service.DomainBlacklistCronService import DomainBlacklistCronService
+from main.domain.cron.service.SharedSoundboardService import SharedSoundboardService
 from main.utils.logger import logger
 
 @login_required
@@ -65,3 +66,15 @@ def sync_domain_blacklist(request) -> JsonResponse:
     except Exception as e:
         return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
     
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def purge_expired_shared_soundboard(request) -> JsonResponse:
+    try:
+        logger.warning("Starting PurgeExpiredSharedSoundboard View")
+        (SharedSoundboardService()).purge_expired_shared_soundboard()
+        logger.warning("Ending PurgeExpiredSharedSoundboard View")
+        return JsonResponse({"message": "OK"}, status=200)
+    except Exception as e:
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
