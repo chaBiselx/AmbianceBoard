@@ -11,6 +11,9 @@ from main.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.forms.PlaylistForm import PlaylistForm
 from main.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from main.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
+from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
+from main.formatter.TypePlaylistFormater import TypePlaylistFormater
 
 
 

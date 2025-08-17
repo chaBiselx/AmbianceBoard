@@ -8,7 +8,17 @@ from main.enum.ImageFormatEnum import ImageFormatEnum
 class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = Playlist
-        fields = ('name', 'typePlaylist', 'useSpecificColor', 'color', 'colorText', 'volume', 'icon', 'maxDelay')
+        fields = (
+            'name',
+            'typePlaylist',
+            'useSpecificColor',
+            'color',
+            'colorText',
+            'volume',
+            'icon',
+            'useSpecificDelay',
+            'maxDelay',
+        )
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -74,6 +84,8 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
         # Si le fichier doit être supprimé, on l'initialise à None
         if self.cleaned_data.get('clear_icon'):
             instance.icon = None
+        print('===================')
+        print(instance.useSpecificDelay)
 
         if commit:
             instance.save()
