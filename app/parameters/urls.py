@@ -14,7 +14,7 @@ from main.views.privatePlaylistFormTrackViews import link_create, link_update, l
 from main.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
 from main.views.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
 from main.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
-from main.views.managerViews import manager_dashboard
+from main.views.managerViews import manager_dashboard, user_activity_dashboard
 from main.views.managerCronViews import listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard
 from main.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_stop_stream, favorite_update, reporting_content, public_favorite
 from main.views.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream
@@ -124,6 +124,8 @@ urlpatterns = [
     path("manager/cron/user-tiers", expire_account, name="managerExpireUserTiers"),
     path("manager/cron/sync-domain-blacklist", sync_domain_blacklist, name="managerSyncDomainBlacklist"),
     path("manager/cron/purge-expired-shared-soundboard", purge_expired_shared_soundboard, name="managerPurgeExpiredSharedSoundboard"),
+
+    path("manager/dashboard/user-activity/", user_activity_dashboard, name="managerUserActivityDashboard"),
 
 
     # Administration des tiers d'utilisateurs
