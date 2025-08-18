@@ -1,0 +1,24 @@
+@import "../variables";
+
+.pricing-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.pricing-section {
+
+    border-bottom: 1px solid ;
+    @at-root {
+        html:not([data-bs-theme="dark"]) & {
+            border-bottom-color: $border_color_light;
+        }
+        html[data-bs-theme="dark"] & {
+            border-bottom-color: $border_color_dark;
+        }
+    }
+    padding-bottom: 1rem;
+}

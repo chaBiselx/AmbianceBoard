@@ -388,7 +388,9 @@ AUDIO_BITRATE_REDUCER_TARGET_BITRATE = 128  # En kbps
 USER_TIERS = {
     'STANDARD': {
         'name': 'Standard',
+        'pricing' : None,
         'display_name': 'Utilisateur Standard',
+        'display_name_short': 'Standard',
         'limits': {
             'soundboard': 5,
             'playlist': 75,
@@ -399,7 +401,12 @@ USER_TIERS = {
     },
     'PREMIUM_BASIC': {
         'name': 'Premium Basic',
+        'pricing' : {
+            'monthly': 4,
+            'yearly': 40
+        },
         'display_name': 'Premium Basique',
+        'display_name_short': 'Basique',
         'limits': {
             'soundboard': 25,
             'playlist': 150,
@@ -411,7 +418,12 @@ USER_TIERS = {
     # Prêt pour de futures versions premium
     'PREMIUM_ADVANCED': {
         'name': 'Premium advanced',
+        'pricing': {
+            'monthly': 8,
+            'yearly': 80
+        },
         'display_name': 'Premium Avancée',
+        'display_name_short': 'Avancée',
         'limits': {
             'soundboard': 50,
             'playlist': 250,
@@ -422,7 +434,13 @@ USER_TIERS = {
     },
     'PREMIUM_PRO': {
         'name': 'Premium Professionnel',
+        'pricing': {
+            'monthly': 15,
+            'yearly': 150,
+            'currency': 'EUR'
+        },
         'display_name': 'Premium Professionnel',
+        'display_name_short': 'Professionnel',
         'limits': {
             'soundboard': 100,
             'playlist': 500,

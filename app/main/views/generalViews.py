@@ -1,4 +1,5 @@
 import uuid
+from django.conf import settings
 from typing import Union
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
@@ -252,3 +253,22 @@ def token_validation_reset_password(request, uuid_user:str, token_reinitialisati
     if request.method == 'GET':
         form = UserPasswordForm(instance=user)
     return render(request, 'Html/Account/reset_password.html', {'form':form})
+
+
+@require_http_methods(['GET'])
+def pricing(request: HttpRequest) -> HttpResponse:
+    """
+    Vue de la page de tarification.
+    
+    Affiche les différents tiers d'utilisateurs avec leurs tarifs et fonctionnalités.
+    
+    Args:
+        request (HttpRequest): Requête HTTP
+        
+    Returns:
+        HttpResponse: Page de tarification rendue
+    """
+    return render(request, "Html/General/general_pricing.html", {
+        "title": "Tarification", 
+        "user_tiers": settings.USER_TIERS
+    })

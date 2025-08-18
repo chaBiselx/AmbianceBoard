@@ -1,0 +1,104 @@
+{% extends 'Html/base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="text-center mb-3">
+                <h2 class="display-5 fw-bold text-primary">Nos Formules</h2>
+                <p class="lead text-muted">Choisissez l'offre qui correspond le mieux à vos besoins</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        {% for tier_key, tier_data in user_tiers.items %}
+        <div class="col-12 col-md-4 col-sm-6  col-xl-3">
+            <div class="card pricing-card h-100 shadow-sm {% if tier_key == 'PREMIUM_BASIC' %}border-primary{% elif tier_key == 'PREMIUM_ADVANCED' %}border-warning{% elif tier_key == 'PREMIUM_PRO' %}border-success{% endif %}">
+                {% if tier_key == 'PREMIUM_BASIC' %}
+                <div class="card-header bg-primary text-white text-center">
+                    <i class="fas fa-star fa-1x mb-2"></i>
+                    <h4 class="mb-0">{{ tier_data.display_name_short }}</h4>
+                    <small>Pour soutenir</small>
+                </div>
+                {% elif tier_key == 'PREMIUM_ADVANCED' %}
+                <div class="card-header bg-warning text-dark text-center">
+                    <i class="fas fa-crown fa-1x mb-2"></i>
+                    <h4 class="mb-0">{{ tier_data.display_name_short }}</h4>
+                    <small>Pour les créateurs</small>
+                </div>
+                {% elif tier_key == 'PREMIUM_PRO' %}
+                <div class="card-header bg-success text-white text-center">
+                    <i class="fas fa-trophy fa-1x mb-2"></i>
+                    <h4 class="mb-0">{{ tier_data.display_name_short }}</h4>
+                    <small>Solution professionnelle</small>
+                </div>
+                {% else %}
+                <div class="card-header bg-transparent text-center">
+                    <i class="fas fa-user fa-1x mb-2 text-muted"></i>
+                    <h4 class="mb-0">{{ tier_data.display_name_short }}</h4>
+                    <small class="text-muted">Gratuit</small>
+                </div>
+                {% endif %}
+
+                <div class="card-body text-center">
+                    {% if tier_data.pricing %}
+                    <div class="pricing-section mb-4">
+                        <div class="d-flex justify-content-center align-items-center mb-2">
+                            <span class="display-5 fw-bold text-primary">{{ tier_data.pricing.monthly }}€</span>
+                            <span class="text-muted">/mois</span>
+                        </div>
+                        {% if tier_data.pricing.yearly %}
+                        <div class="text-muted">
+                            <small>ou {{ tier_data.pricing.yearly }}€/an </small>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div class="pricing-section mb-4">
+                        <span class="display-5 fw-bold text-success">Gratuit</span>
+                    </div>
+                    {% endif %}
+
+                    <ul class="list-unstyled mb-4">
+                        <li class="mb-1">
+                            <i class="fas fa-music text-primary me-2"></i>
+                            <strong>{{ tier_data.limits.soundboard }}</strong> soundboards
+                        </li>
+                        <li class="mb-1">
+                            <i class="fas fa-list text-primary me-2"></i>
+                            <strong>{{ tier_data.limits.playlist }}</strong> playlists
+                        </li>
+                        <li class="mb-1">
+                            <i class="fas fa-headphones text-primary me-2"></i>
+                            <strong>{{ tier_data.limits.music_per_playlist }}</strong> musiques par playlist
+                        </li>
+                        <li class="mb-1">
+                            <i class="fas fa-file-audio text-primary me-2"></i>
+                            Fichiers jusqu'à <strong>{{ tier_data.limits.weight_music_mb }}MB</strong>
+                        </li>
+
+                    </ul>
+                </div>
+                {% if user.is_authenticated %}
+                <div class="card-footer bg-transparent text-center">
+                    {% if user.tier_info.tier_name == tier_key %}
+                    <button class="btn btn-outline-primary w-100" disabled>
+                        <i class="fas fa-check me-2"></i>Formule actuelle
+                    </button>
+                    {% else %}
+                    <button class="btn btn-primary w-100" onclick="upgradeTier('{{ tier_key }}')">
+                        <i class="fas fa-arrow-up me-2"></i>Passer à cette formule
+                    </button>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
