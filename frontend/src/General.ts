@@ -1,7 +1,7 @@
 import Notification from '@/modules/General/Notifications';
 import ReportingContent from '@/modules/ReportingContent'
-import {PaginationManager} from '@/modules/PaginationManager';
-import {TagManager} from '@/modules/TagManager';
+import { PaginationManager } from '@/modules/PaginationManager';
+import { TagManager } from '@/modules/TagManager';
 import * as bootstrap from 'bootstrap';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import Csrf from "./modules/General/Csrf";
@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new PaginationManager().addEventListeners();
     new TagManager().addEventListeners();
     new NotificationGeneral().addEvent();
+    new DeleteAccount().addEvent();
 
 });
 
@@ -221,13 +222,13 @@ class NotificationGeneral {
     }
 
     public addEvent() {
-        if( this.sectionMessage) {
+        if (this.sectionMessage) {
             const listCloseButton = this.sectionMessage.getElementsByClassName('close-notification') as HTMLCollectionOf<HTMLButtonElement>;
             Array.from(listCloseButton).forEach((element: HTMLButtonElement) => {
                 element.addEventListener('click', this.dismissNotification.bind(this));
             });
         }
-        
+
     }
 
     private dismissNotification(event: Event) {
@@ -237,11 +238,11 @@ class NotificationGeneral {
             if (alertElement) {
                 alertElement.remove();
             }
-            
+
             if (target.dataset.metaUrl_dismiss) {
                 this.dismissNotificationFromServer(target.dataset.metaUrl_dismiss);
             }
-            
+
         }
     }
 
@@ -256,10 +257,48 @@ class NotificationGeneral {
             })
                 // .then(response => response.json())
                 .then(_ => {
-                
+
                 })
                 .catch(_ => {
                 });
+        }
+    }
+}
+
+class DeleteAccount {
+    private deleteAccountButton: HTMLButtonElement | null = null;
+
+    constructor() {
+        this.deleteAccountButton = document.getElementById('delete-account') as HTMLButtonElement;
+    }
+
+    public addEvent() {
+        if (this.deleteAccountButton) {
+            this.deleteAccountButton.addEventListener('click', this.confirmDelete.bind(this));
+        }
+    }
+
+    private confirmDelete(event: Event) {
+        event.preventDefault();
+        if (confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.")) {
+            const method = this.deleteAccountButton?.closest('form')?.attributes.getNamedItem('method')?.value;
+            const url = this.deleteAccountButton?.closest('form')?.action;
+            if (method && url) {
+                fetch(url, {
+                    method: method,
+                    headers: {
+                        'X-CSRFToken': Csrf.getToken()!
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = '/';
+                        } else {
+                            Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                        }
+                    });
+            }
+
         }
     }
 }

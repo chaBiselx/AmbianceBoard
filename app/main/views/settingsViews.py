@@ -1,5 +1,6 @@
 import json
 from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
@@ -90,6 +91,7 @@ def update_theme(request):
 @require_http_methods(['GET'])
 def update_dimensions(request):
     return render(request, 'Html/Account/Settings/update_dimensions.html')
+
 @login_required
 @require_http_methods(['UPDATE'])
 def update_playlist_dim(request):
@@ -124,4 +126,23 @@ def update_soundboard_dim(request):
         except Exception as e:
             logger.error(f"update dimensions soundboard error : {e}")
             return JsonResponse({'error': 'Failed to update dimensions.'}, status=500)
+    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.value}, status=400)
+
+@login_required
+@require_http_methods(['GET', 'DELETE'])
+def delete_account(request):
+    print('==========================================')
+    print(request.method)
+    if request.method == 'GET':
+        return render(request, 'Html/Account/Settings/delete_account.html')
+    if request.method == 'DELETE':
+        try:
+            user = request.user
+            user.delete()
+            logout(request)
+            logger.info(f"User {user.username} deleted successfully.")
+            return JsonResponse({'message': 'Account deleted successfully.'}, status=200)
+        except Exception as e:
+            logger.error(f"delete account error : {e}")
+            return JsonResponse({'error': 'Failed to delete account.'}, status=500)
     return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.value}, status=400)

@@ -13,7 +13,7 @@ from main.views.privatePlaylistFormTrackViews import music_create, music_update,
 from main.views.privatePlaylistFormTrackViews import link_create, link_update, link_delete
 from main.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
 from main.views.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
-from main.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions
+from main.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
 from main.views.managerViews import manager_dashboard
 from main.views.managerCronViews import listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard
 from main.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_stop_stream, favorite_update, reporting_content, public_favorite
@@ -61,7 +61,8 @@ urlpatterns = [
     path('account/settings/playlists/style',settings_update_default_style, name="defaultPlaylistType"),
     path('account/settings/playlists/dimension',update_playlist_dim, name="updatePlaylistDim"),
     path('account/settings/soundboards/dimension',update_soundboard_dim, name="updateSoundboardDim"),
-    
+    path('account/settings/delete-account',delete_account, name="deleteAccount"),
+
     path("soundBoards/<uuid:soundboard_uuid>/music/create", playlist_create_with_soundboard, name="addPlaylistWithSoundboard"),
     path("playlist/create", playlist_create, name="addPlaylist"),
     path("playlist/all", playlist_read_all, name="playlistsAllList"),

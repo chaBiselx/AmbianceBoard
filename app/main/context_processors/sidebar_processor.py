@@ -12,6 +12,7 @@ def sidebar_processor(request):
                 {'title': 'Index', 'url': reverse("settingsIndex"), 'classIcon':None},
                 {'title': 'Playlist type', 'url': reverse("defaultPlaylistType"), 'classIcon':None},
                 {'title': 'Dimensions boutons', 'url': reverse("updateDimensions"), 'classIcon':None},
+                {'title': 'Suppression de compte', 'url': reverse("deleteAccount"), 'classIcon':None},
             ]
         }
         
