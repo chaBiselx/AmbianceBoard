@@ -1,75 +1,227 @@
 {% extends 'Html/base.html' %}
 
 {% block content %}
-<div>
-    <section>
-        <h2>1. Éditeur du site</h2>
-        <p>
-            L'application <strong>Ambiance Soundboard</strong> est éditée par :<br />
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-9">
+            <!-- En-tête -->
+            <div class="text-center mb-5">
+                <p class="lead text-muted">Informations légales relatives à l'application Ambiance Soundboard</p>
+                <hr class="mx-auto" style="width: 100px; height: 3px;">
+            </div>
 
-            Nom ou raison sociale : BISELX Charles<br />
-            Email : contact@... <br />
-            Directeur de la publication : BISELX Charles
-        </p>
-    </section>
-    <section>
-        <h2>2. Hébergeur</h2>
-        L'hébergement du service est assuré par : <br />
-        Nom de l'hébergeur : [société d'hebergement] <br />
-        Adresse : [Adresse de l'hébergeur] <br />
-        Email / Contact : [Email du support hébergeur] <br />
-    </section>
-    <section>
-        <h2>3. Objet du service</h2>
-        [Nom du projet] est une application permettant aux utilisateurs d'ajouter et d'organiser des sons/musiques sous forme de soundboard.
+            <!-- Section 1 -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-user-edit me-2"></i>
+                        1. Éditeur du site
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">L'application <strong class="text-primary">Ambiance Soundboard</strong> est éditée par :</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li><strong>Nom ou raison sociale :</strong> BISELX Charles</li>
+                                <li><strong>Email :</strong> contact@...</li>
+                                <li><strong>Directeur de la publication :</strong> BISELX Charles</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    </section>
-    <section>
-        <h2> 4. Responsabilité de l'éditeur</h2>
-        L'éditeur met à disposition une plateforme technique mais n'est pas responsable des contenus téléchargés par les utilisateurs. <br />
-        L'utilisateur est seul responsable des fichiers qu'il met en ligne et s'engage à respecter les droits d'auteur ainsi que les lois en vigueur.
+            <!-- Section 2 -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-server me-2"></i>
+                        2. Hébergeur
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">L'hébergement du service est assuré par :</p>
+                    <ul class="list-unstyled">
+                        <li><strong>Nom de l'hébergeur :</strong> [société d'hebergement]</li>
+                        <li><strong>Adresse :</strong> [Adresse de l'hébergeur]</li>
+                        <li><strong>Email / Contact :</strong> [Email du support hébergeur]</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Section 3 -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-bullseye me-2"></i>
+                        3. Objet du service
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">
+                        <strong class="text-info">[Nom du projet]</strong> est une application permettant aux utilisateurs d'ajouter et d'organiser des sons/musiques sous forme de soundboard.
+                    </p>
+                </div>
+            </div>
 
-    </section>
-    <section>
-        <h2>5. Responsabilité des utilisateurs</h2>
-        L'utilisateur s'engage à :
-        <ul>
-            <li>Ne pas mettre en ligne de contenus protégés par des droits d'auteur sans autorisation.</li>
-            <li>Ne pas utiliser le service pour héberger ou diffuser des contenus illégaux (incitation à la haine, diffamation, atteinte à la vie privée, etc.).</li>
-            <li>Respecter les conditions générales d'utilisation du service.</li>
-            <li>Tout contenu illicite signalé pourra signalé pourra être supprimé sans préavis, et l'éditeur se reserve le droit de suspendre ou bannir les comptes concernés.</li>
-        </ul>
-    </section>
-    <section>
-        <h2> 6. Propriété intellectuelle</h2>
-        Le design, le code et les fonctionnalités de Ambiance soundboard sont protégés par les droits de propriété intellectuelle. Toute reproduction non autorisée est interdite.
+            <!-- Section 4 -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-balance-scale me-2"></i>
+                        4. Responsabilité de l'éditeur
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Important :</strong> L'éditeur met à disposition une plateforme technique mais n'est pas responsable des contenus téléchargés par les utilisateurs.
+                    </div>
+                    <p class="mb-0">L'utilisateur est seul responsable des fichiers qu'il met en ligne et s'engage à respecter les droits d'auteur ainsi que les lois en vigueur.</p>
+                </div>
+            </div>
 
-    </section>
+            <!-- Section 5 -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-users me-2"></i>
+                        5. Responsabilité des utilisateurs
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">L'utilisateur s'engage à :</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            Ne pas mettre en ligne de contenus protégés par des droits d'auteur sans autorisation.
+                        </li>
+                        <li class="list-group-item d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            Ne pas utiliser le service pour héberger ou diffuser des contenus illégaux (incitation à la haine, diffamation, atteinte à la vie privée, etc.).
+                        </li>
+                        <li class="list-group-item d-flex align-items-start">
+                            <i class="fas fa-check-circle text-success me-3 mt-1"></i>
+                            Respecter les conditions générales d'utilisation du service.
+                        </li>
+                        <li class="list-group-item d-flex align-items-start">
+                            <i class="fas fa-exclamation-triangle text-warning me-3 mt-1"></i>
+                            Tout contenu illicite signalé pourra être supprimé sans préavis, et l'éditeur se réserve le droit de suspendre ou bannir les comptes concernés.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Section 6 -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-copyright me-2"></i>
+                        6. Propriété intellectuelle
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">
+                        Le design, le code et les fonctionnalités de <strong class="text-primary">Ambiance soundboard</strong> sont protégés par les droits de propriété intellectuelle. Toute reproduction non autorisée est interdite.
+                    </p>
+                </div>
+            </div>
 
-    <section>
-        <h2>7. Signalement et suppression de contenu</h2>
-        Si un titulaire de droits constate qu'un contenu portant atteinte à ses droits est hébergé sur Ambiance soundboard, il peut contacter l'éditeur via contact@... en précisant :
-        <ul>
+            <!-- Section 7 -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-flag me-2"></i>
+                        7. Signalement et suppression de contenu
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">
+                        Si un titulaire de droits constate qu'un contenu portant atteinte à ses droits est hébergé sur Ambiance soundboard, 
+                        il peut contacter l'éditeur via <strong>contact@...</strong> en précisant :
+                    </p>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="fas fa-link text-primary me-3"></i>
+                                    L'URL du contenu litigieux
+                                </li>
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="fas fa-certificate text-success me-3"></i>
+                                    La preuve de la titularité des droits
+                                </li>
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="fas fa-trash-alt text-danger me-3"></i>
+                                    Une demande de suppression
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="alert alert-info mt-3" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        L'éditeur s'engage à examiner et traiter la demande dans un délai raisonnable.
+                    </div>
+                </div>
+            </div>
 
-            <li>L'URL du contenu litigieux</li>
-            <li>La preuve de la titularité des droits</li>
-            <li>Une demande de suppression</li>
-        </ul>
+            <!-- Section 8 -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        8. Protection des données personnelles
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="mb-3">Les données des utilisateurs sont collectées uniquement dans le cadre du fonctionnement du service et ne sont pas revendues à des tiers.</p>
+                            
+                            <div class="alert alert-success" role="alert">
+                                <h5 class="alert-heading">
+                                    <i class="fas fa-balance-scale me-2"></i>
+                                    Conformité RGPD
+                                </h5>
+                                <p class="mb-0">
+                                    Conformément au RGPD, chaque utilisateur dispose d'un droit d'accès, de rectification et de suppression de ses données via [email/contact dédié].
+                                </p>
+                            </div>
+                            
+                            <div class="alert alert-warning" role="alert">
+                                <i class="fas fa-clock me-2"></i>
+                                <strong>Rétention des données :</strong> Au bout de 24 mois d'inactivité, les données personnelles des utilisateurs seront supprimées automatiquement.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        L'éditeur s'engage à examiner et traiter la demande dans un délai raisonnable.
-    </section>
-    <section>
-        <h2>8. Protection des données personnelles</h2>
-        Les données des utilisateurs sont collectées uniquement dans le cadre du fonctionnement du service et ne sont pas revendues à des tiers.<br />
-        Conformément au RGPD, chaque utilisateur dispose d'un droit d'accès, de rectification et de suppression de ses données via [email/contact dédié].<br/>
+            <!-- Section 9 -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-header bg-dark text-white">
+                    <h2 class="h4 mb-0">
+                        <i class="fas fa-gavel me-2"></i>
+                        9. Droit applicable et juridiction compétente
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">
+                        Les présentes mentions légales sont soumises au <strong>droit français</strong>. 
+                        En cas de litige, les tribunaux compétents seront ceux du ressort du domicile de l'éditeur.
+                    </p>
+                </div>
+            </div>
 
-        Au bout de 24 mois d'inactivité, les données personnelles des utilisateurs seront supprimées.
-
-    </section>
-    <section>
-        <h2>9. Droit applicable et juridiction compétente</h2>
-        Les présentes mentions légales sont soumises au droit français. En cas de litige, les tribunaux compétents seront ceux du ressort du domicile de l'éditeur.<br />
-    </section>
+            <!-- Footer de la page -->
+            <div class="text-center mt-5">
+                <hr class="mx-auto mb-4" style="width: 100px; height: 2px;">
+                <p class="text-muted">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    Dernière mise à jour : Août 2025
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
