@@ -1,7 +1,9 @@
 {% if soundboard %}
+{% if request.user.is_authenticated %}
 <div class="row fullScreen-element" id="share-soundboard-block">
     <div class="col">
         <button class="btn btn-outline-secondary float-end" id="btn-publish-soundboard" data-url="{% url 'publish_soundboard' soundboard.uuid %}"><i class="fa-solid fa-square-share-nodes"></i> Partager l'écoute</button>
     </div>
 </div>
+{% endif %}
 {% endif %}
