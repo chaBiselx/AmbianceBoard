@@ -23,9 +23,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <ul class="list-unstyled">
-                                <li><strong>Nom ou raison sociale :</strong> BISELX Charles</li>
-                                <li><strong>Email :</strong> contact@...</li>
-                                <li><strong>Directeur de la publication :</strong> BISELX Charles</li>
+                                <li><strong>Nom ou raison sociale :</strong> {{ legal_raison_sociale }}</li>
+                                <li><strong>Email :</strong> {{ email_contact }}</li>
                             </ul>
                         </div>
                     </div>
@@ -43,9 +42,9 @@
                 <div class="card-body">
                     <p class="mb-3">L'hébergement du service est assuré par :</p>
                     <ul class="list-unstyled">
-                        <li><strong>Nom de l'hébergeur :</strong> [société d'hebergement]</li>
-                        <li><strong>Adresse :</strong> [Adresse de l'hébergeur]</li>
-                        <li><strong>Email / Contact :</strong> [Email du support hébergeur]</li>
+                        <li><strong>Nom de l'hébergeur :</strong> {{ legal_hebergeur_name }}</li>
+                        <li><strong>Adresse :</strong> {{ legal_hebergeur_adress }}</li>
+                        <li><strong>Email / Contact :</strong> {{ legal_hebergeur_contact }}</li>
                     </ul>
                 </div>
             </div>
@@ -59,7 +58,7 @@
                 </div>
                 <div class="card-body">
                     <p class="mb-0">
-                        <strong class="text-info">[Nom du projet]</strong> est une application permettant aux utilisateurs d'ajouter et d'organiser des sons/musiques sous forme de soundboard.
+                        <strong class="text-info">AmbianceBoard</strong> est une application permettant aux utilisateurs d'ajouter et d'organiser des sons/musiques sous forme de soundboard.
                     </p>
                 </div>
             </div>
@@ -137,7 +136,7 @@
                 <div class="card-body">
                     <p class="mb-3">
                         Si un titulaire de droits constate qu'un contenu portant atteinte à ses droits est hébergé sur Ambiance soundboard, 
-                        il peut contacter l'éditeur via <strong>contact@...</strong> en précisant :
+                        il peut contacter l'éditeur via <strong>{{ email_contact }}</strong> en précisant :
                     </p>
                     <div class="row">
                         <div class="col-md-8">
@@ -183,7 +182,7 @@
                                     Conformité RGPD
                                 </h5>
                                 <p class="mb-0">
-                                    Conformément au RGPD, chaque utilisateur dispose d'un droit d'accès, de rectification et de suppression de ses données via [email/contact dédié].
+                                    Conformément au RGPD, chaque utilisateur dispose d'un droit d'accès, de rectification et de suppression de ses données via sa page de paramètres accessible depuis son profil.
                                 </p>
                             </div>
                             

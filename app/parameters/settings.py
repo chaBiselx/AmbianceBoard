@@ -50,6 +50,12 @@ EMAIL_SMTP_USE_TLS = bool(os.environ.get("EMAIL_SMTP_USE_TLS", default=True))
 
 EMAIL_NO_REPLAY = os.environ.get("EMAIL_NO_REPLAY")
 EMAILS_LISTING_MODERATORS = os.environ.get("EMAILS_LISTING_MODERATORS", default="").split(";")
+EMAIL_CONTACT=os.environ.get("EMAIL_CONTACT")
+
+LEGAL_RAISON_SOCIALE=os.environ.get("LEGAL_RAISON_SOCIALE")
+LEGAL_HEBERGEUR_NAME=os.environ.get("LEGAL_HEBERGEUR_NAME")
+LEGAL_HEBERGEUR_ADRESS=os.environ.get("LEGAL_HEBERGEUR_ADRESS")
+LEGAL_HEBERGEUR_CONTACT=os.environ.get("LEGAL_HEBERGEUR_CONTACT")
 
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'

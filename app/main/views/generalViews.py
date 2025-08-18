@@ -60,7 +60,14 @@ def legal_notice(request: HttpRequest) -> HttpResponse:
     Returns:
         HttpResponse: Page des mentions légales rendue
     """
-    return render(request, "Html/General/legal_notice.html", {"title": "Mention légal"})
+    return render(request, 
+                  "Html/General/legal_notice.html",
+                  {"title": "Mention légal", 
+                   "email_contact": settings.EMAIL_CONTACT, 
+                   "legal_raison_sociale": settings.LEGAL_RAISON_SOCIALE, 
+                   "legal_hebergeur_name": settings.LEGAL_HEBERGEUR_NAME, 
+                   "legal_hebergeur_adress": settings.LEGAL_HEBERGEUR_ADRESS, 
+                   "legal_hebergeur_contact": settings.LEGAL_HEBERGEUR_CONTACT})
 
 @require_http_methods(['GET', 'POST'])
 def create_account(request: HttpRequest) -> HttpResponse:
