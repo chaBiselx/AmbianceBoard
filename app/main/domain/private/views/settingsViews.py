@@ -131,8 +131,6 @@ def update_soundboard_dim(request):
 @login_required
 @require_http_methods(['GET', 'DELETE'])
 def delete_account(request):
-    print('==========================================')
-    print(request.method)
     if request.method == 'GET':
         return render(request, 'Html/Account/Settings/delete_account.html')
     if request.method == 'DELETE':
