@@ -25,11 +25,21 @@
                         <h5>Evolutions utilisateurs</h5>
                     </div>
                     <div class="card-body">
-                        <div id="evolution-user" data-url="{% url 'managerUserActivityDashboard' %}"></div>
+                        <div id="evolution-user" data-url="{% url 'managerUserAccountDashboard' %}"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Activités utilisateurs</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="activity-user" data-url="{% url 'managerUsersActivityDashboard' %}"></div>
                     </div>
                 </div>
             </div>
-
         </div>
 
     </div>

@@ -4,7 +4,8 @@ from datetime import datetime
 from main.models.User import User
 
 class UserStatsService:
-    def get_user_activity_data(self, start_date: datetime, end_date: datetime) -> dict:
+    @staticmethod
+    def get_user_activity_data(start_date: datetime, end_date: datetime) -> dict:
         """
         Récupère les données d'activité des utilisateurs entre deux dates.
         """
@@ -47,6 +48,16 @@ class UserStatsService:
         return {
             'start_date': start_date.strftime('%Y-%m-%d'),
             'end_date': end_date.strftime('%Y-%m-%d'),
-            'users_created': created_data,
-            'users_connected': connected_data
+            'data': [
+                {
+                    'key' : 'users_created',
+                    'label': 'Utilisateurs créés',
+                    'data': created_data,
+                },
+                {
+                    'key' : 'users_connected',
+                    'label': 'Utilisateurs connectés',
+                    'data': connected_data,
+                }
+            ]
         }

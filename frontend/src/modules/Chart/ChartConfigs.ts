@@ -63,13 +63,13 @@ export class ChartConfigs {
      * @returns Données formatées pour Chart.js
      */
     static processingDataForLineEvolution(
-        labels: string[], 
+        labels: string[],
         datasets: Array<{ label: string; data: number[]; customColors?: { border: string; background: string } }>
     ): LineEvolutionData {
         const formattedDatasets: DatasetConfig[] = datasets.map((dataset, index) => {
             // Utiliser les couleurs personnalisées ou les couleurs par défaut
             const colors = dataset.customColors || this.CHART_COLORS[index % this.CHART_COLORS.length];
-            
+
             return {
                 label: dataset.label,
                 data: dataset.data,

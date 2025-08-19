@@ -6,6 +6,7 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from main.domain.manager.service.UserStatsService import UserStatsService
 from main.enum.PermissionEnum import PermissionEnum
+from main.domain.manager.service.UserActivityStatsService import UserActivityStatsService
 
 
 @login_required
@@ -17,7 +18,7 @@ def manager_dashboard(request) -> HttpResponse:
 @login_required
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
-def user_activity_dashboard(request) -> JsonResponse:
+def user_account_dashboard(request) -> JsonResponse:
     """
     Récupère les données pour chart.js :
     - Nombre d'utilisateurs créés par jour (date_joined)
@@ -33,9 +34,8 @@ def user_activity_dashboard(request) -> JsonResponse:
         end_date = timezone.now().date() + timedelta(days=1)
         start_date = end_date - timedelta(days=days-1)
 
-        user_stats_service = UserStatsService()
-        response_data = user_stats_service.get_user_activity_data(start_date, end_date)
-
+        response_data = UserStatsService.get_user_activity_data(start_date, end_date)
+        print(response_data)
         return JsonResponse(response_data)
         
     except Exception as e:
@@ -44,6 +44,25 @@ def user_activity_dashboard(request) -> JsonResponse:
             'message': str(e)
         }, status=500)
     
-    
-    
 
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def user_activity_dashboard(request) -> JsonResponse:
+    try:
+        days = int(request.GET.get('days', 30 * 6))
+        end_date = timezone.now().date() + timedelta(days=1)
+        start_date = end_date - timedelta(days=days-1)
+
+        service = UserActivityStatsService()
+        response_data = service.get_user_nb_activity_data(start_date, end_date)
+
+        return JsonResponse(response_data)
+        
+    except Exception as e:
+        print(e)
+        return JsonResponse({
+            'error': 'Erreur lors de la récupération des données',
+            'message': str(e)
+        }, status=500)
+    

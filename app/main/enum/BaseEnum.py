@@ -34,3 +34,13 @@ class BaseEnum(Enum):
             Dict[str, Any]: Dictionnaire avec les noms comme clés et valeurs comme valeurs
         """
         return {c.name: c.value for c in cls}
+    
+    @classmethod
+    def convert_to_choices(cls) -> List[tuple]:
+        """
+        Convertit l'énumération en liste de tuples pour les choix (label, value).
+        
+        Returns:
+            List[tuple]: Liste de tuples avec le nom comme label et la valeur comme valeur
+        """
+        return [(c.value, c.name) for c in cls]

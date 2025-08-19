@@ -1,17 +1,18 @@
 import { ChartWrapper } from '@/modules/Chart/ChartWrapper';
-import { ChartConfigs, OptionChartConfig, LineEvolutionData } from '@/modules/Chart/ChartConfigs';
+import { ChartConfigs, OptionChartConfig, LineEvolutionData} from '@/modules/Chart/ChartConfigs';
 import { DataProcessor } from '@/modules/Util/DataProcessor';
 
 document.addEventListener("DOMContentLoaded", () => {
-    new DashboardUser().init();
+    new DashboardLineGraph('evolution-user').init();
+    new DashboardLineGraph('activity-user').init();
 });
 
-class DashboardUser {
+class DashboardLineGraph {
     private element: HTMLElement | null;
     private chartWrapper: ChartWrapper | null = null;
 
-    constructor() {
-        this.element = document.getElementById('evolution-user');
+    constructor(id: string) {
+        this.element = document.getElementById(id);
     }
 
     public init() {
@@ -38,34 +39,24 @@ class DashboardUser {
     private dataProcessing(data: any) {
         // Valider les données requises
         DataProcessor.validateRequiredData(data, [
-            'start_date', 
-            'end_date', 
-            'users_created', 
-            'users_connected'
+            'start_date',
+            'end_date',
+            'data'
         ]);
 
         const dateLabels = DataProcessor.generateDateRange(data.start_date, data.end_date);
-        const datasets: { [key: string]: number[] } = {};
-        
-        Object.entries({
-                'users_created': data.users_created,
-                'users_connected': data.users_connected
-            }
-        ).forEach(([seriesName, data]) => {
-            const dataDict = DataProcessor.createDataDictionary(data);
-            datasets[seriesName] = DataProcessor.fillMissingDatas(dateLabels, dataDict);
-        });
+        let datasets = {} as { [key: string]: any };
 
-        return ChartConfigs.processingDataForLineEvolution(dateLabels, [
-            {
-                label: 'Utilisateurs créés',
-                data: datasets.users_created
-            },
-            {
-                label: 'Connexions',
-                data: datasets.users_connected
-            }
-        ]);
+        Object.entries(data.data as { [key: string]: any })
+            .forEach(([_key, element]) => {
+                const dataDict = DataProcessor.createDataDictionary(element.data);
+                datasets[element.key] = {
+                    'label': element.label,
+                    'data': DataProcessor.fillMissingDatas(dateLabels, dataDict) as number[]
+                };
+            });
+
+        return ChartConfigs.processingDataForLineEvolution(dateLabels, Object.values(datasets));
     }
 
     private renderChart(data: LineEvolutionData) {
