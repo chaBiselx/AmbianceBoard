@@ -8,8 +8,8 @@ from main.models.SoundBoard import SoundBoard
 from main.service.SoundBoardService import SoundBoardService
 from main.service.MusicService import MusicService
 from main.service.RandomizeTrackService import RandomizeTrackService
-from main.decorator.detectBan import detect_ban
-from main.decorator.reportingContent import add_reporting_btn
+from main.domain.public.decorator.detectBan import detect_ban
+from main.domain.public.decorator.reportingContent import add_reporting_btn
 from django.template.response import TemplateResponse
 from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from django.views.decorators.http import require_http_methods

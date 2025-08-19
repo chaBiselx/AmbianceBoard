@@ -4,18 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from main.models.SoundBoard import SoundBoard
-from main.manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
 from main.service.SoundBoardService import SoundBoardService
-from main.service.PlaylistService import PlaylistService
-from main.service.SoundboardPlaylistService import SoundboardPlaylistService
 from main.forms.SoundBoardForm import SoundBoardForm
-from main.filters.SoundBoardFilter import SoundBoardFilter
-from main.enum.PermissionEnum import PermissionEnum
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.enum.ErrorMessageEnum import ErrorMessageEnum
-from django.core import exceptions
 
 from main.utils.logger import logger
 

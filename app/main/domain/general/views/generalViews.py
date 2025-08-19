@@ -14,7 +14,7 @@ from main.service.FailedLoginAttemptService import FailedLoginAttemptService
 from django.core.exceptions import ValidationError
 from main.service.ConfirmationUserService import ConfirmationUserService
 from main.utils.url import get_full_url
-from main.decorator.detectNotConfirmedAccount import detect_not_confirmed_account
+from main.domain.common.decorator.detectNotConfirmedAccount import detect_not_confirmed_account
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from main.utils.ServerNotificationBuilder import ServerNotificationBuilder

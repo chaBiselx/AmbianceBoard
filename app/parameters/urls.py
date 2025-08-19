@@ -6,14 +6,14 @@ from django.conf.urls.static import static
 
 from main.domain.general.views.generalViews import home, pricing,  create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification
 from main.domain.general.views.confirmViews import confirm_account
-from main.views.privateSoundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
-from main.views.privateSoundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
-from main.views.privateShowSoundboardViews import playlist_show, music_stream, update_direct_volume
-from main.views.privatePlaylistFormViews import playlist_read_all, playlist_create, playlist_create_with_soundboard, playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete
-from main.views.privatePlaylistFormTrackViews import music_create, music_update, music_delete, upload_multiple_music
-from main.views.privatePlaylistFormTrackViews import link_create, link_update, link_delete
+from main.domain.private.views.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
+from main.domain.private.views.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
+from main.domain.private.views.showSoundboardViews import playlist_show, music_stream, update_direct_volume
+from main.domain.private.views.playlistFormViews import playlist_read_all, playlist_create, playlist_create_with_soundboard, playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete
+from main.domain.private.views.playlistFormTrackViews import music_create, music_update, music_delete, upload_multiple_music
+from main.domain.private.views.playlistFormTrackViews import link_create, link_update, link_delete
+from main.domain.private.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
 from main.domain.moderator.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
-from main.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
 from main.domain.manager.views.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
 from main.domain.manager.views.managerViews import manager_dashboard, user_activity_dashboard
 from main.domain.manager.views.managerCronViews import listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard
