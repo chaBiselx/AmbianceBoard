@@ -29,6 +29,9 @@ from main.models.GeneralNotification import GeneralNotification
 from main.models.UserTier import UserTier
 from main.utils.logger import logger
 
+from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.decorator.ActivityTracker import track_logout, ActivityContextManager
+
 
 
 @detect_not_confirmed_account()
@@ -110,6 +113,7 @@ def create_account(request: HttpRequest) -> HttpResponse:
                     user=user,
                     tier_name='STANDARD'
                 )
+                ActivityContextManager(activity_type=UserActivityTypeEnum.REGISTRATION, user=user).action()
                 return redirect('login')
             except Exception as e:
                 logger.error(e)
@@ -136,6 +140,11 @@ def login_view(request: HttpRequest) -> HttpResponse:
                      peut retourner une erreur 429 en cas de trop nombreuses tentatives
     """
     context = {}
+  
+    return render(request, 'Html/Account/login.html', context)
+
+@require_http_methods(['POST'])
+def login_post(request: HttpRequest): 
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -144,14 +153,16 @@ def login_view(request: HttpRequest) -> HttpResponse:
         if user is not None:
             login(request, user)
             failed_login_attempt_service.purge()
+            ActivityContextManager(activity_type=UserActivityTypeEnum.LOGIN, user=user).action()
             return redirect('home')
         # wrong password
         failed_login_attempt_service.add_or_create_failed_login_attempt()
         if(failed_login_attempt_service.is_timeout()) :
             return render(request, HtmlDefaultPageEnum.ERROR_429.value, status=429)
-    
-    return render(request, 'Html/Account/login.html', context)
+    return redirect('login')
 
+
+@track_logout
 @require_http_methods(['GET'])
 def logout_view(request: HttpRequest) -> HttpResponse:
     """

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 
-from main.domain.general.views.generalViews import home, pricing,  create_account, login_view, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification
+from main.domain.general.views.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification
 from main.domain.general.views.confirmViews import confirm_account
 from main.domain.private.views.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
 from main.domain.private.views.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
@@ -37,6 +37,7 @@ urlpatterns = [
     # Pages d'authentification
     path("create-account/", create_account, name="createAccount"),
     path("login/", login_view, name="login"),
+    path("login/post", login_post, name="loginPost"),
     path("logout/", logout_view, name="logout"),
     path("resend-email/", resend_email_confirmation, name="resend_email_confirmation"),
     path("resend-email/confirm/<uuid:uuid_user>/<uuid:confirmation_token>", confirm_account, name="confirm_account"),

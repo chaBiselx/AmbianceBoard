@@ -58,18 +58,12 @@ class UserActivityStatsService:
         # Conversion en format de sortie structuré
         result_data = {}
         for activity_type, daily_counts in data_by_type.items():
-            activity_type_str = str(activity_type)
-            if activity_type_str not in result_data:
-                result_data[activity_type_str] = {
-                    'key': activity_type_str,
-                    'label': activity_type_str,
-                    'data': []
-                }
+            result_data[activity_type] = {
+                'key': activity_type,
+                'label': activity_type,
+                'data': daily_counts
+            }
 
-            result_data[activity_type_str]['data'].append({
-                'date': date,
-                'count': count
-            })
 
         return {
             'start_date': start_date.strftime('%Y-%m-%d'),
