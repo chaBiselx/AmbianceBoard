@@ -2,16 +2,8 @@ import uuid
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from django.contrib.auth import login,logout, authenticate
-from django.contrib.auth.models import Group
 from main.models.User import User
-from main.enum.GroupEnum import GroupEnum
-from django.http import JsonResponse
 from main.utils.logger import logger
-from main.forms.CreateUserForm import CreateUserForm
-from main.email.UserMail import UserMail
-from main.service.FailedLoginAttemptService import FailedLoginAttemptService
-from django.core.exceptions import ValidationError
 from main.service.ConfirmationUserService import ConfirmationUserService
 from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 
