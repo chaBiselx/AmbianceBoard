@@ -121,29 +121,13 @@ def create_account(request: HttpRequest) -> HttpResponse:
         form = CreateUserForm()
     return render(request, 'Html/Account/create_account.html', {'form': form, 'errors':errors})
 
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(['GET'])
 def login_view(request: HttpRequest) -> HttpResponse:
-    """
-    Vue de connexion utilisateur.
-    
-    Gère l'authentification des utilisateurs avec :
-    - Validation des identifiants
-    - Gestion des tentatives de connexion échouées
-    - Protection contre le brute force
-    - Redirection vers la page d'accueil en cas de succès
-    
-    Args:
-        request (HttpRequest): Requête HTTP
-        
-    Returns:
-        HttpResponse: Page de connexion ou redirection, 
-                     peut retourner une erreur 429 en cas de trop nombreuses tentatives
-    """
     context = {}
-  
     return render(request, 'Html/Account/login.html', context)
 
 @require_http_methods(['POST'])
+@ratelimit(key='ip', rate='10/m', method='POST', block=True)
 def login_post(request: HttpRequest): 
     if request.method == 'POST':
         username = request.POST['username']
