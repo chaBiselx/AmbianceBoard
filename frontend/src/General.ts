@@ -6,6 +6,7 @@ import * as bootstrap from 'bootstrap';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import Csrf from "./modules/General/Csrf";
 import Cookie from "@/modules/General/Cookie";
+import Time from "@/modules/Util/Time";
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
 document.addEventListener('DOMContentLoaded', () => {
@@ -325,7 +326,7 @@ class UserActivityLog {
             //envoyer toutes les 15 min en cas de coupure
             setInterval(() => {
                 this.postActivityLog();
-            }, 15 * 60 * 1000);
+            }, Time.get_minutes(15));
         }
     }
 

@@ -9,6 +9,7 @@ import AudioFadeManager from '@/modules/AudioFadeManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import Cookie from '@/modules/General/Cookie';
 import Boolean from "@/modules/Util/Boolean";
+import Time from "@/modules/Util/Time";
 
 
 
@@ -250,7 +251,7 @@ class MusicElement {
                 if (buttonPlaylist && buttonPlaylist.isActive() && this.butonPlaylistToken == buttonPlaylist.getToken()) {
                     callback()
                 }
-            }, delay * 1000);
+            }, Time.get_seconds(delay));
         } else {
             callback();
         }

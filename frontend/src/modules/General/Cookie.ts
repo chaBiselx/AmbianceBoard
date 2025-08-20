@@ -1,3 +1,4 @@
+import Time from "@/modules/Util/Time";
 
 class Cookie {
 
@@ -22,7 +23,7 @@ class Cookie {
 
     static set(name: string, value: string) {
         let date = new Date();
-        date.setTime(date.getTime() + (7 * 24 * 60 * 60 * 1000));
+        date.setTime(date.getTime() + Time.get_days(7));
         let expires = "expires=" + date.toUTCString();
         document.cookie = name + "=" + value + ";" + expires + ";path=/";
     }

@@ -1,6 +1,7 @@
 import * as Model from '@/modules/FadeStartegy';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { MusicElement } from "@/modules/MusicElement";
+import Time from "@/modules/Util/Time";
 
 
 class AudioFadeManager {
@@ -34,7 +35,7 @@ class AudioFadeManager {
     }
 
     public setDuration(durationInSec: number) {
-        this.duration = durationInSec * 1000;
+        this.duration = Time.get_seconds(durationInSec);
     }
 
     public setFadeStrategy(fadeStrategy: Model.FadeStrategyInterface) {
