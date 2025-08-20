@@ -77,6 +77,12 @@
                             <i class="fas fa-file-audio text-primary me-2"></i>
                             Fichiers jusqu'à <strong>{{ tier_data.limits.weight_music_mb }}MB</strong>
                         </li>
+                        {% if tier_data.limits.share_soundboard %}
+                            <li class="mb-1">
+                                <i class="fas fa-share-alt text-primary me-2"></i>
+                                <strong>partage</strong> de l'écoute des soundboards
+                            </li>
+                        {% endif %}
 
                     </ul>
                 </div>

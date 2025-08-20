@@ -1,4 +1,5 @@
 
+{% if can_share_soundboard %}
 <div class="row">
     <div class="col-12 text-center">
         Lien de la playlist =<button class="btn btn-primary share-link-btn" data-url="{{ shared_url }}">
@@ -6,3 +7,5 @@
         </button>
     </div>
 </div>
+{% endif %}
+
