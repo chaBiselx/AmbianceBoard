@@ -10,6 +10,7 @@ from main.domain.cron.service.MediaImgSoundboardService import MediaImgSoundboar
 from main.domain.cron.service.UserTierExpirationService  import UserTierExpirationService
 from main.domain.cron.service.DomainBlacklistCronService import DomainBlacklistCronService
 from main.domain.cron.service.SharedSoundboardService import SharedSoundboardService
+from main.domain.cron.service.PurgeUserActivityService import PurgeUserActivityService
 from main.utils.logger import logger
 
 @login_required
@@ -75,6 +76,18 @@ def purge_expired_shared_soundboard(request) -> JsonResponse:
         logger.warning("Starting PurgeExpiredSharedSoundboard View")
         (SharedSoundboardService()).purge_expired_shared_soundboard()
         logger.warning("Ending PurgeExpiredSharedSoundboard View")
+        return JsonResponse({"message": "OK"}, status=200)
+    except Exception as e:
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def purge_old_user_activity(request) -> JsonResponse:
+    try:
+        logger.warning("Starting PurgeOldUserActivity View")
+        (PurgeUserActivityService()).purge_old()
+        logger.warning("Ending PurgeOldUserActivity View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
         return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
