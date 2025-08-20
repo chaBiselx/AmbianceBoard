@@ -214,27 +214,6 @@ class ErrorTrackingMiddlewareTest(TestCase):
             # Vérifier que la réponse est toujours retournée
             self.assertEqual(response.status_code, 404)
 
-    def test_process_exception_method(self):
-        """Test de la méthode process_exception."""
-        # Préparer la requête
-        request = self.factory.get('/exception-page/')
-        request.user = self.test_user
-        request.session = MagicMock()
-        request.session.session_key = 'test_session'
-        
-        # Simuler une exception
-        exception = ValueError("Test exception")
-        
-        # Exécuter process_exception
-        self.middleware.process_exception(request, exception)
-        
-        # Vérifier qu'une activité d'erreur 500 a été créée
-        activities = UserActivity.objects.filter(
-            user=self.test_user,
-            activity_type=UserActivityTypeEnum.ERROR_500.value
-        )
-        self.assertEqual(activities.count(), 1)
-
     def test_excluded_urls_not_tracked(self):
         """Test que les URLs exclues ne sont pas tracées."""
         excluded_urls = [

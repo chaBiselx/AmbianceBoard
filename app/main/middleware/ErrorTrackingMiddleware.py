@@ -141,9 +141,6 @@ class ErrorTrackingMiddleware:
         try:
             # Vérifier si cette URL doit être exclue du traçage
             if self._should_exclude_url(request):
-                self.logger.debug(
-                    f"URL exclue du traçage d'erreur: {request.get_full_path()} (status: {status_code})"
-                )
                 return
             
             # Déterminer le type d'activité basé sur le code d'erreur
@@ -161,12 +158,6 @@ class ErrorTrackingMiddleware:
                     activity_type=activity_type,
                     user=user,
                     session_key=session_key,
-                )
-                
-                # Logger l'erreur pour debug
-                user_info = f"User {user.username}" if user else f"Anonymous (session: {session_key})"
-                self.logger.warning(
-                    f"Erreur {status_code} tracée pour {user_info} sur {request.get_full_path()}"
                 )
                 
         except Exception as e:
@@ -198,30 +189,3 @@ class ErrorTrackingMiddleware:
         # Pas une erreur à tracer
         return None
 
-    def process_exception(self, request: HttpRequest, exception: Exception) -> None:
-        """
-        Traite les exceptions non gérées.
-        
-        Args:
-            request: Requête HTTP
-            exception: Exception levée
-        """
-        try:
-            # Vérifier si cette URL doit être exclue du traçage
-            if not self._should_exclude_url(request):
-                # Tracer l'erreur 500 pour les exceptions non gérées
-                self._track_error(request, 500)
-            
-            # Logger l'exception
-            self.logger.error(
-                f"Exception non gérée: {type(exception).__name__}: {str(exception)}",
-                extra={
-                    'request_path': request.get_full_path(),
-                    'request_method': request.method,
-                    'user': str(request.user) if request.user.is_authenticated else 'Anonymous'
-                }
-            )
-            
-        except Exception as e:
-            # En cas d'erreur lors du traçage, ne pas faire échouer la requête
-            self.logger.error(f"Erreur lors du traçage de l'exception: {e}")
