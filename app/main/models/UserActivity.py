@@ -71,7 +71,6 @@ class UserActivity(models.Model):
     # Données additionnelles
     session_key = models.CharField(
         max_length=40,
-        null=True,
         blank=True,
         help_text="Clé de session pour identifier les utilisateurs non connectés",
         db_index=True

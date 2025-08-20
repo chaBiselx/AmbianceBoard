@@ -8,8 +8,8 @@ export interface ChartConfig {
 
 export class ChartWrapper {
     private chart: Chart | null = null;
-    private canvas: HTMLCanvasElement;
-    private container: HTMLElement;
+    private readonly canvas: HTMLCanvasElement;
+    private readonly container: HTMLElement;
 
     constructor(container: HTMLElement, canvasId: string = 'chart') {
         this.container = container;

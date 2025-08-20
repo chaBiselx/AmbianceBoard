@@ -268,7 +268,7 @@ class NotificationGeneral {
 }
 
 class DeleteAccount {
-    private deleteAccountButton: HTMLButtonElement | null = null;
+    private readonly deleteAccountButton: HTMLButtonElement | null = null;
 
     constructor() {
         this.deleteAccountButton = document.getElementById('delete-account') as HTMLButtonElement;

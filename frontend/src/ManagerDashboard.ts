@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 class DashboardLineGraph {
-    private element: HTMLElement | null;
+    private readonly element: HTMLElement | null;
     private chartWrapper: ChartWrapper | null = null;
 
     constructor(id: string) {
@@ -52,7 +52,7 @@ class DashboardLineGraph {
                 const dataDict = DataProcessor.createDataDictionary(element.data);
                 datasets[element.key] = {
                     'label': element.label,
-                    'data': DataProcessor.fillMissingDatas(dateLabels, dataDict) as number[]
+                    'data': DataProcessor.fillMissingDatas(dateLabels, dataDict)
                 };
             });
 
