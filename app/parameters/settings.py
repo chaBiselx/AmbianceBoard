@@ -197,6 +197,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "main.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
+    "main.middleware.ErrorTrackingMiddleware.ErrorTrackingMiddleware",
 ]
 
 ROOT_URLCONF = "parameters.urls"

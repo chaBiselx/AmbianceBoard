@@ -6,5 +6,5 @@ from main.utils.logger import logger
 def run():
     # code de votre tâche cron
     logger.info("Starting PurgeUserActivityCron")
-    (PurgeUserActivityService()).purge_old()
+    (PurgeUserActivityService()).purge()
     logger.info("Ending PurgeUserActivityCron")

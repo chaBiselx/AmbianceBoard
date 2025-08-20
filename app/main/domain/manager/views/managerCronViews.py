@@ -86,7 +86,7 @@ def purge_expired_shared_soundboard(request) -> JsonResponse:
 def purge_old_user_activity(request) -> JsonResponse:
     try:
         logger.warning("Starting PurgeOldUserActivity View")
-        (PurgeUserActivityService()).purge_old()
+        (PurgeUserActivityService()).purge()
         logger.warning("Ending PurgeOldUserActivity View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:

@@ -38,8 +38,11 @@ def detect_ban(func: Callable[..., HttpResponse]) -> Callable[..., HttpResponse]
             HttpResponse: Page d'erreur 404 si banni, sinon résultat de la vue originale
         """
         if kwargs['soundboard_uuid'] is not None:
-            soundboard = SoundBoard.objects.get(uuid=kwargs['soundboard_uuid'])
-            if soundboard.user.checkBanned(): 
-                return render(args[0], HtmlDefaultPageEnum.ERROR_404.value, status=404)
+            try:
+                soundboard = SoundBoard.objects.get(uuid=kwargs['soundboard_uuid'])
+                if soundboard.user.checkBanned(): 
+                    return render(args[0], HtmlDefaultPageEnum.ERROR_404.value, status=404)
+            except SoundBoard.DoesNotExist:
+                pass
         return func(*args, **kwargs)
     return wrapper

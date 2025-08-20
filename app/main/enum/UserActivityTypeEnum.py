@@ -24,7 +24,7 @@ class UserActivityTypeEnum(BaseEnum):
     
     # Actions sur les soundboards
     SOUNDBOARD_CREATE = "soundboard_create"
-    SOUNDBOARD_VIEW = "soundboard_view" #TODO
+    SOUNDBOARD_VIEW = "soundboard_view"
     SOUNDBOARD_SHARE = "soundboard_share"
     SOUNDBOARD_DELETE = "soundboard_delete"
 
@@ -42,6 +42,22 @@ class UserActivityTypeEnum(BaseEnum):
     REPORT_CONTENT = "report_content"
     
     # Actions d'erreur
-    ERROR_404 = "error_404" #TODO
-    ERROR_500 = "error_500" #TODO
-    ERROR_PERMISSION = "error_permission" #TODO
+    ERROR_404 = "error_404"
+    ERROR_405 = "error_405"
+    ERROR_406 = "error_406"
+    ERROR_429 = "error_429"
+    ERROR_4XX = "error_4xx"
+    ERROR_500 = "error_500"
+    ERROR_5XX = "error_5xx"
+
+    @classmethod
+    def listing_errors(cls):
+        return {
+            "404": cls.ERROR_404, 
+            "405": cls.ERROR_405, 
+            "406": cls.ERROR_406, 
+            "429": cls.ERROR_429, 
+            "500": cls.ERROR_500,
+            "4XX": cls.ERROR_4XX,
+            "5XX": cls.ERROR_5XX
+        }
