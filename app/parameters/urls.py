@@ -4,7 +4,7 @@ from django.conf import settings
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 
-from main.domain.general.views.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification
+from main.domain.general.views.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification, dismiss_trace_user_activity
 from main.domain.general.views.confirmViews import confirm_account
 from main.domain.private.views.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
 from main.domain.private.views.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
@@ -45,6 +45,7 @@ urlpatterns = [
     path("reset-password/validate/<uuid:uuid_user>/<str:token_reinitialisation>", token_validation_reset_password, name="token_validation_reset_password"),
 
     path("notification/dismiss/<uuid:notification_uuid>/", dismiss_general_notification, name="dismissGeneralNotification"),
+    path("trace-user-activity/<uuid:trace_user_activity_uuid>/dismiss/<str:type_activity>/", dismiss_trace_user_activity, name="dismissTraceUserActivity"),
 
     path("soundBoards/", soundboard_list, name="soundboardsList"),
     path("soundBoards/new", soundboard_create, name="soundboardsNew"),

@@ -15,6 +15,9 @@ from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from main.formatter.TypePlaylistFormater import TypePlaylistFormater
 
+from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
+
 
 
 from main.utils.logger import logger
@@ -31,6 +34,7 @@ def playlist_read_all(request):
 def playlist_create(request):
     if request.method == 'POST':
         playlist = (PlaylistService(request)).save_form()
+        ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_CREATE, user=request.user, content_object=playlist)
         return redirect('playlistUpdate', playlist_uuid=playlist.uuid)
     else:
         form = PlaylistForm()
@@ -51,6 +55,7 @@ def playlist_create_with_soundboard(request, soundboard_uuid):
             playlist = (PlaylistService(request)).save_form()
             if(playlist):
                 soundboard.playlists.add(playlist)
+                ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_CREATE, user=request.user, content_object=playlist)
             return redirect('soundboardsRead', soundboard_uuid=soundboard.uuid)
         else:
             form = PlaylistForm()
@@ -151,7 +156,9 @@ def playlist_delete(request, playlist_uuid) -> JsonResponse:
         if not playlist:
             return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         else :
+            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_DELETE, user=request.user, content_object=playlist)
             playlist.delete()
+
             return JsonResponse({'success': 'Suppression playlist réussie'}, status=200)
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
    

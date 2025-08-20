@@ -9,6 +9,9 @@ from main.forms.SoundBoardForm import SoundBoardForm
 from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.enum.ErrorMessageEnum import ErrorMessageEnum
 
+from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
+from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+
 from main.utils.logger import logger
 
 
@@ -17,7 +20,8 @@ from main.utils.logger import logger
 def soundboard_create(request):
     """Création d'un nouveau soundboard"""
     if request.method == 'POST':
-        (SoundBoardService(request)).save_form()
+        soundboard = (SoundBoardService(request)).save_form()
+        ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_CREATE, user=request.user, content_object=soundboard)
         return redirect('soundboardsList')
     else:
         form = SoundBoardForm()
@@ -55,6 +59,7 @@ def soundboard_delete(request, soundboard_uuid) -> JsonResponse:
         if not soundboard:
             return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         else:
+            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_DELETE, user=request.user, content_object=soundboard)
             soundboard.delete()
             return JsonResponse({'success': 'Suppression soundboard réussie'}, status=200)
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)

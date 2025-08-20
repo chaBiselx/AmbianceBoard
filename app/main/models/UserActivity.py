@@ -77,17 +77,6 @@ class UserActivity(models.Model):
         db_index=True
     )
     
-    user_agent = models.TextField(
-        null=True,
-        blank=True,
-        help_text="User agent du navigateur"
-    )
-    referrer = models.URLField(
-        null=True,
-        blank=True,
-        help_text="URL de référence"
-    )
-    
     class Meta:
         """Métadonnées du modèle UserActivity."""
         
@@ -155,8 +144,6 @@ class UserActivity(models.Model):
         user: Optional[User] = None,
         content_object: Optional[Any] = None,
         session_key: Optional[str] = None,
-        user_agent: Optional[str] = None,
-        referrer: Optional[str] = None
     ) -> 'UserActivity':
         """
         Crée une nouvelle activité utilisateur.
@@ -166,8 +153,6 @@ class UserActivity(models.Model):
             user: Utilisateur (None pour utilisateur anonyme)
             content_object: Objet associé à l'activité
             session_key: Clé de session
-            user_agent: User agent du navigateur
-            referrer: URL de référence
             
         Returns:
             UserActivity: Instance créée
@@ -178,8 +163,6 @@ class UserActivity(models.Model):
             activity_type=activity_type.value,
             content_object=content_object,
             session_key=session_key,
-            user_agent=user_agent,
-            referrer=referrer
         )
         activity.save()
         return activity

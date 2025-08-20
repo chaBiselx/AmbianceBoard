@@ -3,6 +3,9 @@ from django.http import HttpRequest
 from main.models.Playlist import Playlist
 from main.service.MusicService import MusicService
 
+from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
+
 from main.utils.logger import logger
 
 class MultipleMusicUploadService:
@@ -35,6 +38,7 @@ class MultipleMusicUploadService:
                         'filename': music.fileName,
                         'alternativeName': music.alternativeName
                     })
+                    ActivityContextHelper.set_action(self.request, activity_type=UserActivityTypeEnum.MUSIC_UPLOAD, user=self.request.user, content_object=music)
                 else:
                     errors.append(f"Erreur lors de la sauvegarde de {file.name}")
             except Exception as e:

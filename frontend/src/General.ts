@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new TagManager().addEventListeners();
     new NotificationGeneral().addEvent();
     new DeleteAccount().addEvent();
+    new UserActivityLog().addEvent();
 
 });
 
@@ -299,6 +300,51 @@ class DeleteAccount {
                     });
             }
 
+        }
+    }
+}
+
+class UserActivityLog {
+    url: string | null = null;
+    element: HTMLElement | null = null;
+    constructor() {
+        this.element = document.getElementById('trace_user_activity') || null;
+    }
+
+    private getUrl() {
+        return this.element?.dataset.url || null;
+    }
+
+    public addEvent() {
+        if (this.element) {
+            // Détection de la fermeture volontaire de la page (fermeture onglet, navigation, rafraîchissement)
+            window.addEventListener('beforeunload', () => {
+                this.postActivityLog();
+            });
+
+            //envoyer toutes les 15 min en cas de coupure
+            setInterval(() => {
+                this.postActivityLog();
+            }, 15 * 60 * 1000);
+        }
+    }
+
+    private postActivityLog() {
+        const url = this.getUrl();
+        if (url) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': Csrf.getToken()!
+                },
+            })
+                .then(_response => {
+                    // Log envoyé avec succès
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                });
         }
     }
 }

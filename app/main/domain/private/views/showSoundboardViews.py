@@ -15,7 +15,8 @@ from main.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from main.service.SoundBoardService import SoundBoardService
 from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
-
+from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
 from main.utils.logger import logger
 
@@ -30,9 +31,11 @@ def playlist_show(request, soundboard_uuid):
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     else:
+        activity = ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW, user=request.user, content_object=soundboard)
         return render(request, 'Html/Soundboard/soundboard_read.html', {
             'soundboard': soundboard, 
-            'PlaylistTypeEnum': list(PlaylistTypeEnum)
+            'PlaylistTypeEnum': list(PlaylistTypeEnum),
+            'trace_user_activity': activity
         })
 
 @login_required

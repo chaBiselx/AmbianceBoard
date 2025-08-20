@@ -25,7 +25,8 @@ from main.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboar
 from main.utils.logger import logger
 from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
-
+from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
 @require_http_methods(['GET'])
 def public_index(request):
@@ -90,7 +91,12 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     else:   
-        return TemplateResponse(request, 'Html/Public/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) })
+        activity = ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW, user=request.user, content_object=soundboard)
+        return TemplateResponse(request, 'Html/Public/soundboard_read.html', {
+            'soundboard': soundboard, 
+            'PlaylistTypeEnum' : list(PlaylistTypeEnum),
+            'trace_user_activity': activity 
+        })
     
 @require_http_methods(['GET'])
 @detect_ban
@@ -147,9 +153,10 @@ def favorite_update(request, soundboard_uuid) -> JsonResponse:
 @require_http_methods(['POST'])
 def reporting_content(request):
     if request.method == 'POST':
-        
-        if(ReportContentService(request).save_report()):
+        report = ReportContentService(request).save_report()
+        if report:
             ServerNotificationBuilder(request).set_message("Votre signalement a bien été pris en compte, merci de votre contribution").set_statut("info").send()
+            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.REPORT_CONTENT, user=request.user, content_object=report)
         else : 
             ServerNotificationBuilder(request).set_message("Une erreur est survenue, merci de re-essayer plus tard").set_statut("error").send()
 

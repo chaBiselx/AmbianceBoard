@@ -30,7 +30,7 @@ from main.models.UserTier import UserTier
 from main.utils.logger import logger
 
 from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
-from main.domain.common.decorator.ActivityTracker import track_logout, ActivityContextManager
+from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
 
 
@@ -113,7 +113,7 @@ def create_account(request: HttpRequest) -> HttpResponse:
                     user=user,
                     tier_name='STANDARD'
                 )
-                ActivityContextManager(activity_type=UserActivityTypeEnum.REGISTRATION, user=user).action()
+                ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.REGISTRATION, user=user)
                 return redirect('login')
             except Exception as e:
                 logger.error(e)
@@ -153,7 +153,7 @@ def login_post(request: HttpRequest):
         if user is not None:
             login(request, user)
             failed_login_attempt_service.purge()
-            ActivityContextManager(activity_type=UserActivityTypeEnum.LOGIN, user=user).action()
+            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LOGIN, user=user)
             return redirect('home')
         # wrong password
         failed_login_attempt_service.add_or_create_failed_login_attempt()
@@ -162,7 +162,6 @@ def login_post(request: HttpRequest):
     return redirect('login')
 
 
-@track_logout
 @require_http_methods(['GET'])
 def logout_view(request: HttpRequest) -> HttpResponse:
     """
@@ -178,6 +177,7 @@ def logout_view(request: HttpRequest) -> HttpResponse:
     """
     if request.user.is_authenticated:
         logout(request)
+        ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LOGOUT, user=request.user)
     return redirect('home')
 
 @login_required
@@ -290,3 +290,16 @@ def pricing(request: HttpRequest) -> HttpResponse:
         "title": "Tarification", 
         "user_tiers": settings.USER_TIERS
     })
+
+@require_http_methods(['POST'])
+def dismiss_trace_user_activity(request, trace_user_activity_uuid: uuid.UUID, type_activity: str) -> JsonResponse:
+    if request.method == 'POST':
+        try:
+            activity = ActivityContextHelper.find_activity(trace_user_activity_uuid, type_activity)
+            if activity:
+                activity.set_end_time()
+                return JsonResponse({"message": "Trace user activity dismissed"}, status=200)
+        except Exception as e:
+            logger.error(f"dismiss trace user activity error : {e}")
+            return JsonResponse({"error": "Cannot dismiss trace user activity"}, status=500)
+    return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.value}, status=406)

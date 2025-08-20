@@ -15,6 +15,8 @@ from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from main.service.LinkService import LinkService
 from main.forms.LinkMusicForm import LinkMusicForm
 
+from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
 from main.utils.logger import logger
 
@@ -48,7 +50,9 @@ def music_create(request, playlist_uuid):
     if playlist:
         if request.method == 'POST':
             try:
-                (MusicService(request)).save_form(playlist)
+                music = (MusicService(request)).save_form(playlist)
+                ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.MUSIC_UPLOAD, user=request.user, content_object=music)
+
             except ValueError as e:
                 ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
             return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
@@ -108,7 +112,7 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
         music = Music.objects.get(id=music_id)
         if not music:
             return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
-        
+        ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.MUSIC_DELETE, user=request.user, content_object=music)
         music.file.delete()
         music.delete()
         return JsonResponse({'success': 'Suppression musique réussie'}, status=200)
@@ -128,7 +132,8 @@ def link_create(request, playlist_uuid):
     
     if request.method == 'POST':
         try:
-            (LinkService(request)).save_form(playlist)
+            link = (LinkService(request)).save_form(playlist)
+            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LINK_CREATE, user=request.user, content_object=link)
             ServerNotificationBuilder(request).set_message("Lien musical ajouté avec succès!").set_statut("success").send()
         except ValueError as e:
             ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
@@ -184,6 +189,7 @@ def link_delete(request, playlist_uuid, link_id) -> JsonResponse:
         if not link:
             return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
 
+        ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LINK_DELETE, user=request.user, content_object=link)
         link.delete()
         return JsonResponse({'success': 'Suppression lien musical réussie'}, status=200)
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)

@@ -1,14 +1,9 @@
-"""
-Décorateurs pour le traçage automatique des activités utilisateur.
-
-Ces décorateurs permettent de tracer automatiquement les actions des utilisateurs
-sans avoir à ajouter manuellement le code de traçage dans chaque vue.
-"""
-
+import uuid
 from typing import Any, Optional
 from django.http import HttpRequest
 from main.models.UserActivity import UserActivity
 from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from django.utils import timezone
 
 class ActivityContextHelper:
     """
@@ -23,20 +18,30 @@ class ActivityContextHelper:
     def set_action(
         request: HttpRequest,
         activity_type: UserActivityTypeEnum,
-        user: Optional[Any] = None
+        user: Optional[Any] = None,
+        content_object: Optional[Any] = None
     ) -> UserActivity:
         """Démarre le traçage de l'activité."""
         activity = UserActivity.create_activity(
             activity_type=activity_type,
             user=user,
-            session_key=request.session.session_key if request else None
+            session_key=request.session.session_key if request else None,
+            content_object=content_object
         )
         return activity
+    
+    @staticmethod
+    def find_activity(activity_uuid: uuid.UUID, activity_type: UserActivityTypeEnum) -> Optional[UserActivity]:
+        """Recherche une activité par son UUID."""
+        try:
+            return UserActivity.objects.get(uuid=activity_uuid, activity_type=activity_type)
+        except UserActivity.DoesNotExist:
+            return None
 
     @staticmethod
     def set_end_action(activity: UserActivity):
         """Termine le traçage de l'activité."""
         if activity:
-            activity.end_time = timezone.now()
-            activity.save()
+            activity.end_date = timezone.now()
+            activity.save(update_fields=['end_date'])
         return activity

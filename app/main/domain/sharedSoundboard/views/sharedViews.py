@@ -16,14 +16,17 @@ from main.utils.url import get_full_url
 from main.service.RandomizeTrackService import RandomizeTrackService
 from main.enum.ErrorMessageEnum import ErrorMessageEnum
 
-
-
-
+from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
 @require_http_methods(['GET'])
 def publish_soundboard(request, soundboard_uuid):
-    
-    shared = SharedSoundboard.objects.create(soundboard=SoundBoard.objects.get(uuid=soundboard_uuid))
+
+    soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
+    if not soundboard:
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+
+    shared = SharedSoundboard.objects.create(soundboard=soundboard)
     shared.save()
     
     response = render (request, 'Html/Shared/publich_soundboard.html', {'shared_url' :  get_full_url(reverse('shared_soundboard', args=[soundboard_uuid, shared.token]))})
@@ -49,6 +52,7 @@ def publish_soundboard(request, soundboard_uuid):
                             secure=True,    # HTTPS uniquement
                             samesite='Strict'  # Protection contre les attaques CSRF
                         )
+    ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_SHARE, user=request.user)
     return response
 
     
