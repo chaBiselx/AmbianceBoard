@@ -30,7 +30,7 @@ def user_account_dashboard(request) -> JsonResponse:
     """
     try:
         # Définir la période (30 derniers jours par défaut)
-        days = int(request.GET.get('days', 30 * 6))
+        days = int(request.GET.get('period', 30 * 6))
         end_date = timezone.now().date() + timedelta(days=1)
         start_date = end_date - timedelta(days=days-1)
 
@@ -50,7 +50,7 @@ def user_account_dashboard(request) -> JsonResponse:
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def user_activity_dashboard(request) -> JsonResponse:
     try:
-        days = int(request.GET.get('days', 30 * 6))
+        days = int(request.GET.get('period', 30 * 6))
         end_date = timezone.now().date() + timedelta(days=1)
         start_date = end_date - timedelta(days=days-1)
 

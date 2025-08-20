@@ -20,6 +20,25 @@
         <!-- Outils d'administration -->
         <div class="row mb-4">
             <div class="col-12">
+                <h3>Paramètre</h3>
+                <div class="row">
+                    
+                    <div class="col-12 col-md-4 col-xl-2 form-group">
+                        <label for="periode-line-chart">Période</label>
+                        <select name="periode-line-chart" id="periode-line-chart" class="form-select">
+                            <option value="7">1 semaine</option>
+                            <option value="14">2 semaines</option>
+                            <option value="31">1 mois</option>
+                            <option value="61">2 mois</option>
+                            <option value="91" selected>3 mois</option>
+                            <option value="183">6 mois</option>
+                            <option value="365">1 an</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h5>Evolutions utilisateurs</h5>
@@ -30,7 +49,7 @@
 
                 </div>
             </div>
-            <div class="col-12">
+            <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-header">
                         <h5>Activités utilisateurs</h5>

@@ -3,16 +3,24 @@ import { ChartConfigs, OptionChartConfig, LineEvolutionData} from '@/modules/Cha
 import { DataProcessor } from '@/modules/Util/DataProcessor';
 
 document.addEventListener("DOMContentLoaded", () => {
-    new DashboardLineGraph('evolution-user').init();
-    new DashboardLineGraph('activity-user').init();
+    const listIdGraphLine = [
+        'evolution-user',
+        'activity-user'
+    ]
+    listIdGraphLine.forEach(id => {
+        new DashboardLineGraph(id).init();
+    });
 });
 
 class DashboardLineGraph {
     private readonly element: HTMLElement | null;
     private chartWrapper: ChartWrapper | null = null;
+    private periodeLineChart: HTMLSelectElement | null;
 
     constructor(id: string) {
         this.element = document.getElementById(id);
+        this.periodeLineChart = document.getElementById('periode-line-chart') as HTMLSelectElement | null;
+
     }
 
     public init() {
@@ -21,11 +29,21 @@ class DashboardLineGraph {
             this.chartWrapper = new ChartWrapper(this.element, 'userEvolutionChart');
             this.fetchData(url);
         }
+        this.addEventListeners();
+    }
+
+    public addEventListeners() {
+        if( this.periodeLineChart && this.element){
+            this.periodeLineChart.addEventListener('change', () => {
+                this.fetchData(this.element!.dataset.url!);
+            });
+        }
+
     }
 
     private fetchData(url: string) {
-
-        fetch(url)
+        const selectedPeriod = this.periodeLineChart?.value || '91';
+        fetch(`${url}?period=${selectedPeriod}`)
             .then(response => response.json())
             .then(data => {
                 data = this.dataProcessing(data);
