@@ -10,6 +10,7 @@ from django.http import HttpRequest, HttpResponse
 from main.models.UserActivity import UserActivity
 from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.utils.logger import LoggerFactory
+from main.enum.ImageFormatEnum import ImageFormatEnum
 
 
 class ErrorTrackingMiddleware:
@@ -116,7 +117,12 @@ class ErrorTrackingMiddleware:
             bool: True si l'URL doit être exclue, False sinon
         """
         path = request.get_full_path()
-        
+
+        # Exclure tous les apple-touch-icon*.png
+        excluded_image_formats = ImageFormatEnum.values()
+        if path.endswith(tuple(excluded_image_formats)):
+            return True
+
         # Vérifier chaque pattern d'exclusion
         for pattern in self.excluded_url_patterns:
             if pattern.endswith('/'):
@@ -127,7 +133,7 @@ class ErrorTrackingMiddleware:
                 # Pattern de fichier - vérifier correspondance exacte ou si le chemin se termine par ce pattern
                 if path == pattern or path.endswith(pattern):
                     return True
-        
+
         return False
 
     def _track_error(self, request: HttpRequest, status_code: int) -> None:

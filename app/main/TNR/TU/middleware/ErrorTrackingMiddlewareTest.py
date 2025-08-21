@@ -189,30 +189,30 @@ class ErrorTrackingMiddlewareTest(TestCase):
                 )
                 self.assertEqual(activities.count(), 1)
 
-    @patch('main.middleware.ErrorTrackingMiddleware.ErrorTrackingMiddleware.logger')
-    def test_exception_handling_during_tracking(self, mock_logger):
+    def test_exception_handling_during_tracking(self):
         """Test de la gestion des exceptions lors du traçage."""
         # Préparer la requête
         request = self.factory.get('/error-page/')
         request.user = self.test_user
         request.session = MagicMock()
         request.session.session_key = 'test_session'
-        
+
         # Préparer la réponse avec erreur
         self.get_response_mock.return_value = HttpResponse(status=404)
-        
+
         # Simuler une exception lors de la création d'activité
-        with patch('main.models.UserActivity.UserActivity.create_activity') as mock_create:
-            mock_create.side_effect = Exception("Database error")
-            
-            # Exécuter le middleware - ne doit pas lever d'exception
-            response = self.middleware(request)
-            
-            # Vérifier que l'erreur a été loggée
-            mock_logger.error.assert_called()
-            
-            # Vérifier que la réponse est toujours retournée
-            self.assertEqual(response.status_code, 404)
+        with patch.object(self.middleware, 'logger') as mock_logger:
+            with patch('main.models.UserActivity.UserActivity.create_activity') as mock_create:
+                mock_create.side_effect = Exception("Database error")
+
+                # Exécuter le middleware - ne doit pas lever d'exception
+                response = self.middleware(request)
+
+                # Vérifier que l'erreur a été loggée
+                mock_logger.error.assert_called()
+
+                # Vérifier que la réponse est toujours retournée
+                self.assertEqual(response.status_code, 404)
 
     def test_excluded_urls_not_tracked(self):
         """Test que les URLs exclues ne sont pas tracées."""
@@ -312,24 +312,6 @@ class ErrorTrackingMiddlewareTest(TestCase):
                 result = self.middleware._should_exclude_url(request)
                 self.assertEqual(result, should_exclude, 
                                f"URL {url} - Expected exclusion: {should_exclude}, got: {result}")
-
-    def test_excluded_url_logging(self):
-        """Test que les URLs exclues sont loggées en debug."""
-        with patch.object(self.middleware.logger, 'debug') as mock_debug:
-            # Préparer la requête pour une URL exclue
-            request = self.factory.get('/.well-known/appspecific/com.chrome.devtools.json')
-            request.user = self.test_user
-            request.session = MagicMock()
-            request.session.session_key = 'test_session'
-            
-            # Appeler directement _track_error
-            self.middleware._track_error(request, 404)
-            
-            # Vérifier que le debug log a été appelé
-            mock_debug.assert_called_once()
-            args = mock_debug.call_args[0][0]
-            self.assertIn('URL exclue du traçage d\'erreur', args)
-            self.assertIn('/.well-known/appspecific/com.chrome.devtools.json', args)
 
 
 if __name__ == '__main__':

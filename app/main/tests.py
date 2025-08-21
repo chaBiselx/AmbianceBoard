@@ -25,4 +25,6 @@ from main.TNR.TU.UserParametersFactoryTest import *
 
 from main.TNR.TU.config.PlaylistConfigTest import *
 
+from main.TNR.TU.middleware.ErrorTrackingMiddlewareTest import *
+
 # Create your tests here.
