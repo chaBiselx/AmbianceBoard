@@ -1,5 +1,5 @@
 from django import template
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 register = template.Library()
 

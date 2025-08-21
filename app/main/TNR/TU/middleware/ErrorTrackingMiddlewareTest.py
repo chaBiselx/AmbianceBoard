@@ -13,7 +13,7 @@ from django.http import HttpResponse, Http404
 from main.middleware.ErrorTrackingMiddleware import ErrorTrackingMiddleware
 from main.models.User import User
 from main.models.UserActivity import UserActivity
-from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 
 class ErrorTrackingMiddlewareTest(TestCase):

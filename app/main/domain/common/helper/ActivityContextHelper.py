@@ -2,7 +2,7 @@ import uuid
 from typing import Any, Optional
 from django.http import HttpRequest
 from main.models.UserActivity import UserActivity
-from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from django.utils import timezone
 
 class ActivityContextHelper:

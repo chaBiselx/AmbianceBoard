@@ -10,11 +10,11 @@ from main.service.PlaylistService import PlaylistService
 from main.service.SoundboardPlaylistService import SoundboardPlaylistService
 from main.forms.SoundBoardForm import SoundBoardForm
 from main.filters.SoundBoardFilter import SoundBoardFilter
-from main.enum.PermissionEnum import PermissionEnum
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
-from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
-from main.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from django.core import exceptions
 from main.utils.logger import logger
 

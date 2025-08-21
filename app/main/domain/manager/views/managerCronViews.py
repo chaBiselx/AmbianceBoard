@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
-from main.enum.PermissionEnum import PermissionEnum
-from main.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.cron.service.MediaAudioService import MediaAudioService
 from main.domain.cron.service.MediaImgPlaylistService import MediaImgPlaylistService
 from main.domain.cron.service.MediaImgSoundboardService import MediaImgSoundboardService

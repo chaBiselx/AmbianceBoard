@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from main.models.SoundBoard import SoundBoard
 from main.models.SharedSoundboard import SharedSoundboard
 from main.forms.SoundBoardForm import SoundBoardForm
-from main.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.factory.UserParametersFactory import UserParametersFactory
 from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 

@@ -8,7 +8,7 @@ basées sur le tier de l'utilisateur.
 from typing import Dict, Any
 from parameters import settings
 from main.models.User import User
-from main.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.utils.UserTierManager import UserTierManager
 
 class UserParametersFactory:

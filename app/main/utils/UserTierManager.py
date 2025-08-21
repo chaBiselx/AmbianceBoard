@@ -5,7 +5,7 @@ Centralise la logique de gestion des différents niveaux d'utilisateurs
 
 from django.conf import settings
 from typing import Dict, Any, Optional
-from main.enum.GroupEnum import GroupEnum
+from main.domain.common.enum.GroupEnum import GroupEnum
 
 
 class UserTierManager:

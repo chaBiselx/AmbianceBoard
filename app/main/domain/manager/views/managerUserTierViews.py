@@ -15,7 +15,7 @@ from django.utils import timezone
 
 from main.models.User import User
 from main.models.UserTier import UserTier
-from main.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.utils.ExtractPaginator import extract_context_to_paginator
 from main.utils.UserTierManager import UserTierManager
 from main.utils.ServerNotificationBuilder import ServerNotificationBuilder

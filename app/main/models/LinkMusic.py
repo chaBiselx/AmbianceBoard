@@ -1,6 +1,6 @@
 from django.db import models
 from .Track import Track
-from main.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
+from main.domain.common.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
 
 class LinkMusic(Track):
     """

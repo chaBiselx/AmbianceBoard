@@ -8,7 +8,7 @@ avec support de différents formats et optimisation de la taille.
 from typing import Any, Union, Optional
 from PIL import Image, ImageSequence
 import os
-from main.enum.ImageFormatEnum import ImageFormatEnum
+from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
 from main.utils.logger import LoggerFactory
 
  

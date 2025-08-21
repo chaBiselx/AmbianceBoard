@@ -1,5 +1,5 @@
 from django.urls import reverse
-from main.enum.ThemeEnum import ThemeEnum
+from main.domain.common.enum.ThemeEnum import ThemeEnum
 from main.models.UserPreference import UserPreference
 from main.utils.UserTierManager import UserTierManager
 

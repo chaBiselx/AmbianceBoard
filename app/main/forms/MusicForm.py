@@ -1,7 +1,7 @@
 from django import forms
 from main.models.Music import Music
 from main.mixins.BootstrapFormMixin import BootstrapFormMixin
-from main.enum.MusicFormatEnum import MusicFormatEnum
+from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 
 class MusicForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from main.domain.manager.service.UserStatsService import UserStatsService
-from main.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.manager.service.UserActivityStatsService import UserActivityStatsService
 
 

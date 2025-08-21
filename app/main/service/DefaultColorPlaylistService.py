@@ -1,4 +1,4 @@
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.models.PlaylistColorUser import PlaylistColorUser
 from django.core.cache import cache
 from parameters import settings

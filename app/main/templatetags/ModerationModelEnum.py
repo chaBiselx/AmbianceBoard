@@ -1,5 +1,5 @@
 from django import template
-from main.enum.ModerationModelEnum import ModerationModelEnum
+from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
 
 register = template.Library()
 

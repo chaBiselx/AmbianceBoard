@@ -1,5 +1,5 @@
-from main.enum.MusicFormatEnum import MusicFormatEnum
-from main.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
+from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
+from main.domain.common.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
 import requests
 
 from main.utils.logger import logger

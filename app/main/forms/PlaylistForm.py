@@ -1,7 +1,7 @@
 from django import forms
 from main.models.Playlist import Playlist
 from main.mixins.BootstrapFormMixin import BootstrapFormMixin
-from main.enum.ImageFormatEnum import ImageFormatEnum
+from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
 
 
 

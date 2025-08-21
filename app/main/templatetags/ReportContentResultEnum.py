@@ -1,5 +1,5 @@
 from django import template
-from main.enum.ReportContentResultEnum import ReportContentResultEnum
+from main.domain.common.enum.ReportContentResultEnum import ReportContentResultEnum
 
 register = template.Library()
 

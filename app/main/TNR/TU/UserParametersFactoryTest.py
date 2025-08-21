@@ -5,8 +5,8 @@ from parameters import settings
 from main.models.User import User
 from main.models.UserTier import UserTier
 from main.factory.UserParametersFactory import UserParametersFactory
-from main.enum.PermissionEnum import PermissionEnum
-from main.enum.GroupEnum import GroupEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.GroupEnum import GroupEnum
 from main.utils.UserTierManager import UserTierManager
 
 

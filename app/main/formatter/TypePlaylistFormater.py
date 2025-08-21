@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.strategy.PlaylistStrategy import PlaylistStrategy
 from main.strategy.playlistConfig.AbstractConfig import AbstractConfig
 

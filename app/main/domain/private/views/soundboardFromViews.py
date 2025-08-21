@@ -6,11 +6,11 @@ from django.views.decorators.http import require_http_methods
 from main.models.SoundBoard import SoundBoard
 from main.service.SoundBoardService import SoundBoardService
 from main.forms.SoundBoardForm import SoundBoardForm
-from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
-from main.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
-from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 from main.utils.logger import logger
 

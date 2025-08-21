@@ -5,7 +5,7 @@ from django.db import models
 from django.db.models import QuerySet
 from main.models.User import User
 from django.core.validators import MinValueValidator, MaxValueValidator
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.strategy.PlaylistStrategy import PlaylistStrategy
 from main.message.ReduceSizeImgMessenger import reduce_size_img
 from main.models.SoundboardPlaylist import SoundboardPlaylist

@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from main.models.Playlist import Playlist
 from main.service.MusicService import MusicService
 
-from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
 from main.utils.logger import logger

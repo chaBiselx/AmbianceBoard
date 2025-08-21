@@ -1,7 +1,7 @@
 import os 
 from main.utils.logger import LoggerFactory
 from main.domain.common.repository.UserActivityRepository import UserActivityRepository
-from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 class PurgeUserActivityService:
     

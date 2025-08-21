@@ -1,7 +1,7 @@
 from django.db import models
 from main.models.User import User
-from main.enum.ModerationEnum import ModerationEnum
-from main.enum.ModerationModelEnum import ModerationModelEnum
+from main.domain.common.enum.ModerationEnum import ModerationEnum
+from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
 from django.utils import timezone
 
 

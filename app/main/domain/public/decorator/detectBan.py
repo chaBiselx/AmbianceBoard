@@ -10,7 +10,7 @@ import functools
 from django.http import HttpRequest, HttpResponse
 from main.models.SoundBoard import SoundBoard
 from django.shortcuts import render
-from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 
 def detect_ban(func: Callable[..., HttpResponse]) -> Callable[..., HttpResponse]:
     """

@@ -2,7 +2,7 @@ import uuid
 from typing import Optional, List
 from django.http import HttpRequest
 from django.core.files.uploadedfile import UploadedFile
-from main.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.models.Playlist import Playlist
 from main.models.Music import Music
 from main.models.Track import Track
@@ -10,7 +10,7 @@ from main.filters.MusicFilter import MusicFilter
 from main.forms.MusicForm import MusicForm
 from main.factory.UserParametersFactory import UserParametersFactory
 from main.service.SoundBoardService import SoundBoardService
-from main.enum.MusicFormatEnum import MusicFormatEnum
+from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 
 
 class MusicService:

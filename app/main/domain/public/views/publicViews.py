@@ -11,12 +11,12 @@ from main.service.RandomizeTrackService import RandomizeTrackService
 from main.domain.public.decorator.detectBan import detect_ban
 from main.domain.public.decorator.reportingContent import add_reporting_btn
 from django.template.response import TemplateResponse
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from django.views.decorators.http import require_http_methods
 from main.models.Tag import Tag
 from django.db.models import Count
-from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
-from main.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.service.ReportContentService import ReportContentService
 from main.service.SharedSoundboardService import SharedSoundboardService
 from main.service.TagService import TagService
@@ -25,7 +25,7 @@ from main.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboar
 from main.utils.logger import logger
 from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
-from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
 @require_http_methods(['GET'])

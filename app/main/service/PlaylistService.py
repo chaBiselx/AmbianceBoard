@@ -1,6 +1,6 @@
 from typing import Optional, List
 from django.http import HttpRequest
-from main.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.models.Playlist import Playlist
 from main.filters.PlaylistFilter import PlaylistFilter
 from main.forms.PlaylistForm import PlaylistForm

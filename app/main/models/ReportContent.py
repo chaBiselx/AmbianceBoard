@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
 from main.models.Playlist import Playlist
-from main.enum.ReportContentResultEnum import ReportContentResultEnum
+from main.domain.common.enum.ReportContentResultEnum import ReportContentResultEnum
 
 class ReportContent(models.Model):
     """

@@ -5,7 +5,7 @@ Définit les différents types d'actions que peuvent effectuer les utilisateurs
 et qui peuvent être tracées à des fins statistiques.
 """
 
-from main.enum.BaseEnum import BaseEnum
+from main.domain.common.enum.BaseEnum import BaseEnum
 
 
 class UserActivityTypeEnum(BaseEnum):

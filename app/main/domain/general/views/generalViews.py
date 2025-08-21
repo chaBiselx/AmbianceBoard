@@ -6,7 +6,7 @@ from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.models import Group
 from django.http import JsonResponse, HttpRequest, HttpResponse
 from main.models.User import User
-from main.enum.GroupEnum import GroupEnum
+from main.domain.common.enum.GroupEnum import GroupEnum
 from main.forms.CreateUserForm import CreateUserForm
 from main.forms.UserResetPasswordForm import UserResetPasswordForm
 from main.email.UserMail import UserMail
@@ -22,14 +22,14 @@ from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from django_ratelimit.decorators import ratelimit
 from main.service.ResetPasswordService import ResetPasswordService
 from main.forms.UserPasswordForm import UserPasswordForm
-from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
-from main.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.models.UserNotificationDismissal import UserNotificationDismissal
 from main.models.GeneralNotification import GeneralNotification
 from main.models.UserTier import UserTier
 from main.utils.logger import logger
 
-from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
 

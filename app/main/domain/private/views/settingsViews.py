@@ -12,8 +12,8 @@ from main.forms.PlaylistColorUserForm import PlaylistColorUserForm
 from main.models.PlaylistColorUser import PlaylistColorUser
 from main.models.UserPreference import UserPreference
 from main.service.DefaultColorPlaylistService import DefaultColorPlaylistService
-from main.enum.ThemeEnum import ThemeEnum
-from main.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.enum.ThemeEnum import ThemeEnum
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.exceptions.PostDataException import PostDataException
 from main.utils.UserTierManager import UserTierManager
 from main.utils.logger import logger

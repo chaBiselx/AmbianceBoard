@@ -9,8 +9,8 @@ from main.models.Playlist import Playlist
 from main.models.SoundBoard import SoundBoard
 from main.models.UserModerationLog import UserModerationLog
 from main.models.ReportContent import ReportContent
-from main.enum.PermissionEnum import PermissionEnum
-from main.enum.ModerationModelEnum import ModerationModelEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
 from main.models.User import User
 from main.utils.ExtractPaginator import extract_context_to_paginator
 from django.views.decorators.http import require_http_methods

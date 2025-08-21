@@ -352,11 +352,11 @@ MEDIA_AUDIO_MESSENGER_NB_MAX_FILE = 100
 MEDIA_IMG_MESSENGER_NB_MAX_FILE = 100
 
 # auth 
-from main.enum.GroupEnum import GroupEnum
+from main.domain.common.enum.GroupEnum import GroupEnum
 
 GROUPS = GroupEnum.convert_to_dict()
 
-from main.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
 
 PERMISSIONS = PermissionEnum.convert_to_dict()
 

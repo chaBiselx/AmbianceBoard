@@ -1,7 +1,7 @@
 from django.db import models
 from main.models.User import User
 from main.models.SoundBoard import SoundBoard
-from main.enum.ThemeEnum import ThemeEnum
+from main.domain.common.enum.ThemeEnum import ThemeEnum
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 

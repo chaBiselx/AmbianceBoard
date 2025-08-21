@@ -1,7 +1,7 @@
 from typing import Any
 from django.db import models
 from main.models.User import User
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from django.core.cache import cache
 
 

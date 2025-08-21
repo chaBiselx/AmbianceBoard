@@ -7,16 +7,16 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
 from main.service.SoundBoardService import SoundBoardService #
-from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum #
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum #
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.models.SharedSoundboard import SharedSoundboard
 from main.models.SoundBoard import SoundBoard
 from django.contrib.sites.shortcuts import get_current_site
 from main.utils.url import get_full_url
 from main.service.RandomizeTrackService import RandomizeTrackService
-from main.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 
-from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
 @require_http_methods(['GET'])

@@ -6,16 +6,16 @@ from django.views.decorators.http import require_http_methods
 from main.service.MusicService import MusicService
 from main.service.RandomizeTrackService import RandomizeTrackService
 from main.service.PlaylistService import PlaylistService
-from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
-from main.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.forms.PlaylistForm import PlaylistForm
 from main.service.DefaultColorPlaylistService import DefaultColorPlaylistService
-from main.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
+from main.domain.common.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from main.formatter.TypePlaylistFormater import TypePlaylistFormater
 
-from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
 

@@ -11,7 +11,7 @@ from django.core.files.uploadedfile import UploadedFile
 from main.models.SoundBoard import SoundBoard
 from main.models.Tag import Tag
 from main.mixins.BootstrapFormMixin import BootstrapFormMixin
-from main.enum.ImageFormatEnum import ImageFormatEnum
+from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
 
 class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     """

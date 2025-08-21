@@ -5,7 +5,7 @@ from django.views.decorators.http import require_http_methods
 from main.models.User import User
 from main.utils.logger import logger
 from main.service.ConfirmationUserService import ConfirmationUserService
-from main.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 
 
 @login_required

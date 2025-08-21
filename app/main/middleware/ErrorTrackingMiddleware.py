@@ -8,9 +8,9 @@ permettant de collecter des statistiques sur les erreurs rencontrées par les ut
 from typing import Callable
 from django.http import HttpRequest, HttpResponse
 from main.models.UserActivity import UserActivity
-from main.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.utils.logger import LoggerFactory
-from main.enum.ImageFormatEnum import ImageFormatEnum
+from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
 
 
 class ErrorTrackingMiddleware:

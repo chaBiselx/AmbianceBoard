@@ -10,7 +10,7 @@ from .playlistConfig.AbstractConfig import AbstractConfig
 from .playlistConfig.ConfigInstant import ConfigInstant
 from .playlistConfig.ConfigAmbient import ConfigAmbient
 from .playlistConfig.ConfigMusic import ConfigMusic
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 class PlaylistStrategy:
     """

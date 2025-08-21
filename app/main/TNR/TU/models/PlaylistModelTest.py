@@ -5,7 +5,7 @@ from unittest.mock import patch, Mock
 import uuid
 from main.models.Playlist import Playlist
 from main.models.User import User
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 playlist_name = "Test Playlist"
 
