@@ -28,7 +28,7 @@ cp .env.dev.sample .env
 
 ### 2. Lancer Docker  
 ```shell  
-docker compose up --build  
+make build
 ```  
 
 sous WSL en cas d'erreur avec l'entrypoint utiliser dos2unix
@@ -43,7 +43,7 @@ find . -type f -print0 | xargs -0 dos2unix
 
 ### 3. Accéder au conteneur  
 ```shell  
-docker exec -it AmbianceBoard-back-1 bash  
+make enter S=back
 ```  
 
 ### 4. Créer un super utilisateur  

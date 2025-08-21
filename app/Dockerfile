@@ -12,12 +12,10 @@ ENV PYTHONUNBUFFERED 1
 RUN apt-get update && apt-get --no-install-recommends install -y build-essential --purge cron \
     dos2unix \
     ffmpeg \
-    make \
     netcat \
     procps\
     rsyslog\
     systemd \
-    vim \
     # clean cache
     && apt-get clean 
 
