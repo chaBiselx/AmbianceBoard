@@ -1,9 +1,5 @@
-###########
-# BUILDER #
-###########
-
 # pull official base image
-FROM python:3.11.4-slim-buster AS builder
+FROM python:3.11.4-slim-bullseye
 
 # set work directory
 WORKDIR /usr/src/app
@@ -13,54 +9,42 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc
-
-# lint
-RUN pip install --upgrade pip
-RUN pip install flake8==6.0.0
-COPY . /usr/src/app/
-RUN flake8 --ignore=E501,F401 .
-
-# install python dependencies
-COPY ./requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+RUN apt-get update && apt-get --no-install-recommends install -y build-essential --purge cron \
+    dos2unix \
+    ffmpeg \
+    netcat \
+    procps\
+    rsyslog\
+    systemd \
+    # clean cache
+    && apt-get clean 
 
 
-#########
-# FINAL #
-#########
-
-# pull official base image
-FROM python:3.11.4-slim-buster
-
-# create directory for the app user & create the app user
-RUN mkdir -p /main/app && addgroup --system app && adduser --system --group app
-
-# create the appropriate directories
-ENV main=/main/app
-ENV APP_main=/main/app/web
-RUN mkdir "$APP_main" "$APP_main/staticfiles" "$APP_main/mediafiles"
-WORKDIR $APP_main
+    
 
 # install dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends netcat && apt-get clean
-COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/requirements.txt .
-RUN pip install --upgrade pip && pip install --no-cache /wheels/*
+COPY ./requirements.txt .
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-# copy entrypoint.prod.sh
-COPY ./entrypoint.prod.sh .
-RUN sed -i 's/\r$//g'  "$APP_main/entrypoint.prod.sh" && chmod +x  "$APP_main/entrypoint.prod.sh"
+
+
+
+
 
 # copy project
-COPY . $APP_main
+COPY . .
 
-# chown all the files to the app user
-RUN chown -R app:app "$APP_main"
+# installer gunicorn pour la prod
+RUN pip install gunicorn
 
-# change to the app user
-USER app
+# collectstatic pour Django (ignorer les erreurs si settings non configuré)
+RUN python manage.py collectstatic --noinput || true
 
-# run entrypoint.prod.sh
-ENTRYPOINT ["/main/app/web/entrypoint.prod.sh"]
+
+# copy entrypoint.prod.sh
+COPY ./entrypoint.prod.sh ./entrypoint.prod.sh
+RUN dos2unix ./entrypoint.prod.sh && chmod +x ./entrypoint.prod.sh
+
+# utiliser entrypoint.prod.sh comme entrypoint
+ENTRYPOINT ["/usr/src/app/entrypoint.prod.sh"]

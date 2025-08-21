@@ -17,7 +17,7 @@ services:
     command: python manage.py runserver 0.0.0.0:${WEB_PORT}
     volumes:
       - ./app/:/usr/src/app/
-      - static_volume:/usr/src/app/static/
+      - front_build:/usr/src/app/static/
     ports:
       - ${WEB_PORT}:${WEB_PORT}
     env_file:
@@ -35,7 +35,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-      - static_volume:/app/static/
+      - front_build:/app/static/
     ports:
       - "3000:3000"
     command: npm run dev
@@ -75,4 +75,4 @@ services:
 volumes:
   db-data: null
   rabbitmq-data: null 
-  static_volume: null
+  front_build: null

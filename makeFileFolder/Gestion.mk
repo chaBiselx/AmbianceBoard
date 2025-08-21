@@ -1,9 +1,29 @@
-build:
-	@# Help: Construire les ressources de l'application
+init:
+	@# Help: Initialiser les ressources de l'application
 	@if [ ! -f ".env" ]; then \
 		@cp .env.dev.sample .env; \
 	fi
+
+init-prod:
+	@# Help: Initialiser les ressources de l'application en mode production
+	@if [ ! -f ".env" ]; then \
+		@cp .env.prod.sample .env; \
+	fi
+	@if [ ! -f "nginx/cert.pem" ] || [ ! -f "nginx/key.pem" ]; then \
+		echo "[ERREUR] Certificat SSL manquant : nginx/cert.pem ou nginx/key.pem"; \
+		echo "Générez un certificat SSL avant de lancer la production (voir documentation)"; \
+		exit 1; \
+	else \
+		echo "[OK] Certificats SSL trouvés."; \
+	fi
+
+build:
+	@# Help: Construire les ressources de l'application
 	@docker compose build --no-cache
+
+build-prod:
+	@# Help: Construire les ressources de l'application en mode production
+	@docker compose -f docker-compose.prod.yml build --no-cache
 
 up:
 	@# Help: Demarrer les ressources de l'application

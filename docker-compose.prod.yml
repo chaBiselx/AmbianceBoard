@@ -1,37 +1,86 @@
-version: '3.8'
-
 services:
-  web:
+  cronjob:
+    build: ./app
+    command: cron -f
+    volumes:
+      - ./app/:/usr/src/app/
+    env_file:
+      - ./.env
+    environment:
+      - RUNCRON=1
+    depends_on:
+      - db
+      - rabbitmq  # Ajout de la dépendance à RabbitMQ
+
+  back:
     build:
       context: ./app
       dockerfile: Dockerfile.prod
-    command: gunicorn parameters.wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn parameters.wsgi:application --bind 0.0.0.0:${WEB_PORT} --workers=3
     volumes:
-      - static_volume:/main/app/web/staticfiles
-      - media_volume:/main/app/web/mediafiles
-    expose:
-      - 8000
+      - ./app/:/usr/src/app/
+      - static_volume:/usr/src/app/static/
+      - media_volume:/usr/src/app/media/
     env_file:
-      - ./.env.prod
+      - ./.env
+    environment:
+      - RUNCRON=0
     depends_on:
       - db
-  db:
-    image: postgres:15
+      - rabbitmq
+
+  front:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    command: npm run build
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - ./.env.prod.db
-  nginx:
-    build: ./nginx
-    volumes:
-      - static_volume:/main/app/web/staticfiles
-      - media_volume:/main/app/web/mediafiles
-    ports:
-      - 1337:80
+      - ./frontend:/app
+      - /app/node_modules
+      - front_build:/app/static
+    environment:
+      - DEBUG=0
     depends_on:
-      - web
+      - back
+    entrypoint: ["/bin/sh", "-c", "npm install && npm run build"]
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - back
+      - front
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_volume:/usr/src/app/static/
+      - media_volume:/usr/src/app/media/
+      - front_build:/usr/share/nginx/html/
+
+  db:
+    image: postgres:15.8
+    ports:
+      - $SQL_PORT:$SQL_PORT
+    environment:
+      - POSTGRES_USER=${SQL_USER}
+      - POSTGRES_PASSWORD=${SQL_PASSWORD}
+      - POSTGRES_DB=${SQL_DATABASE}
+    volumes:
+      - ./db-data/:/var/lib/postgresql/data/
+
+  rabbitmq:
+    image: rabbitmq:3-management  # Version avec interface de gestion
+    ports:
+      - ${RABBIT_MQ_PORT_AMQP}:${RABBIT_MQ_PORT_AMQP}    # Port pour AMQP
+      - ${RABBIT_MQ_PORT_WEB}:${RABBIT_MQ_PORT_WEB}  # Port pour l'interface web de gestion
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_MQ_USER}     # Utilisateur par défaut
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_MQ_PASSWORD}      # Mot de passe par défaut
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq # Persistance des données
 
 volumes:
-  postgres_data:
-  static_volume:
-  media_volume:
+  db-data: null
+  rabbitmq-data: null
+  static_volume: null
+  media_volume: null
+  front_build: null
