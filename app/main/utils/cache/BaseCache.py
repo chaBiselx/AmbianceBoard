@@ -1,4 +1,4 @@
-from django.conf import settings
+from main.utils.settings import Settings
 from typing import Optional, Any
 
 
@@ -8,4 +8,4 @@ class BaseCache():
     """
 
     def __init__(self):
-        self.expiration_duration: float = settings.LIMIT_CACHE_DEFAULT
+        self.expiration_duration: float = Settings.get('LIMIT_CACHE_DEFAULT')

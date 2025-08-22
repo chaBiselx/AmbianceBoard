@@ -1,4 +1,4 @@
-from django.conf import settings
+from main.utils.settings import Settings
 from typing import Optional
 from .ICache import ICache
 from .CacheSystem import CacheSystem
@@ -37,4 +37,4 @@ class CacheFactory:
         Returns:
             ICache: Cache par défaut configuré
         """
-        return CacheFactory.create_cache(settings.CACHE_TYPE)
+        return CacheFactory.create_cache(Settings.get('CACHE_TYPE'))

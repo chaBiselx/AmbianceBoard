@@ -3,7 +3,7 @@ import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from main.utils.cache.CacheFactory import CacheFactory
-from django.conf import settings
+from main.utils.settings import Settings
 from main.utils.logger import logger
 
 class SharedSoundboard(AsyncWebsocketConsumer):
@@ -260,7 +260,7 @@ class SharedSoundboard(AsyncWebsocketConsumer):
                 soundboard=soundboard, 
                 token=self.token
             ).first()
-            cache.set(cache_key, shared_soundboard, timeout=settings.LIMIT_CACHE_DEFAULT)
+            cache.set(cache_key, shared_soundboard, timeout=Settings.get('LIMIT_CACHE_DEFAULT'))
             
             return shared_soundboard
         except SharedSoundboard.DoesNotExist:

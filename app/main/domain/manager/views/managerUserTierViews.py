@@ -6,7 +6,7 @@ import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
-from django.conf import settings
+from main.utils.settings import Settings
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views.decorators.http import require_http_methods
@@ -207,8 +207,8 @@ def manager_user_tiers_expiring(request) -> HttpResponse:
     """Liste des abonnements expirant bientôt"""
     
     page_number = int(request.GET.get('page', 1))
-    days_ahead = int(request.GET.get('days', settings.TIER_EXPIRATION_WARNING_DAYS))
-    
+    days_ahead = int(request.GET.get('days', Settings.get('TIER_EXPIRATION_WARNING_DAYS')))
+
     expiry_threshold = timezone.now() + timedelta(days=days_ahead)
     
     queryset = UserTier.objects.filter(

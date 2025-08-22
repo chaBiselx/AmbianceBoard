@@ -1,6 +1,6 @@
 from main.utils.logger.ILogger import ILogger
 from django.template.loader import render_to_string
-from django.conf import settings
+from main.utils.settings import Settings
 from main.models.ReportContent import ReportContent
 from main.utils.EmailSender import EmailSender
 from main.utils.logger import LoggerFactory
@@ -9,8 +9,8 @@ from main.utils.logger import LoggerFactory
 class ModeratorEmail():
     def __init__(self) -> None:
         self.logger: ILogger = LoggerFactory.get_default_logger()
-        self.from_email: str = settings.EMAIL_NO_REPLAY
-        self.to_emails: list[str] = settings.EMAILS_LISTING_MODERATORS
+        self.from_email: str = Settings.get('EMAIL_NO_REPLAY')
+        self.to_emails: list[str] = Settings.get('EMAILS_LISTING_MODERATORS')
 
     def report_content_reported(self, report: ReportContent) -> None:
         """

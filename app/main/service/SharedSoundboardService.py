@@ -2,7 +2,6 @@
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.urls import reverse
-from django.conf import settings
 
 from main.models.SharedSoundboard import SharedSoundboard
 from main.models.SoundBoard import SoundBoard

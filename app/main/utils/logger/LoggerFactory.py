@@ -3,7 +3,7 @@ Factory pour créer des instances de logger.
 Permet une création centralisée et configurée des loggers.
 """
 
-from django.conf import settings
+from main.utils.settings import Settings
 from typing import Optional
 from .ILogger import ILogger
 from .LoggerFile import LoggerFile
@@ -48,5 +48,5 @@ class LoggerFactory:
         Returns:
             ILogger: Logger par défaut configuré pour 'main'
         """
-        default_logger = settings.LOGGER_TYPE
+        default_logger = Settings.get('LOGGER_TYPE')
         return LoggerFactory.create_logger(logger_name, default_logger)

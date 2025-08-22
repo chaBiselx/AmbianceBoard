@@ -1,5 +1,5 @@
 import uuid
-from django.conf import settings
+from main.utils.settings import Settings
 from typing import Union
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
@@ -66,11 +66,11 @@ def legal_notice(request: HttpRequest) -> HttpResponse:
     return render(request, 
                   "Html/General/legal_notice.html",
                   {"title": "Mention légal", 
-                   "email_contact": settings.EMAIL_CONTACT, 
-                   "legal_raison_sociale": settings.LEGAL_RAISON_SOCIALE, 
-                   "legal_hebergeur_name": settings.LEGAL_HEBERGEUR_NAME, 
-                   "legal_hebergeur_adress": settings.LEGAL_HEBERGEUR_ADRESS, 
-                   "legal_hebergeur_contact": settings.LEGAL_HEBERGEUR_CONTACT})
+                   "email_contact": Settings.get('EMAIL_CONTACT'), 
+                   "legal_raison_sociale": Settings.get('LEGAL_RAISON_SOCIALE'), 
+                   "legal_hebergeur_name": Settings.get('LEGAL_HEBERGEUR_NAME'), 
+                   "legal_hebergeur_adress": Settings.get('LEGAL_HEBERGEUR_ADRESS'), 
+                   "legal_hebergeur_contact": Settings.get('LEGAL_HEBERGEUR_CONTACT')})
 
 @require_http_methods(['GET', 'POST'])
 def create_account(request: HttpRequest) -> HttpResponse:
@@ -272,7 +272,7 @@ def pricing(request: HttpRequest) -> HttpResponse:
     """
     return render(request, "Html/General/general_pricing.html", {
         "title": "Tarification", 
-        "user_tiers": settings.USER_TIERS
+        "user_tiers": Settings.get('USER_TIERS')
     })
 
 @require_http_methods(['POST'])

@@ -1,6 +1,5 @@
 import uuid
 from django.db import models
-from django.conf import settings
 from encrypted_model_fields.fields import EncryptedCharField
 from main.models.UserTierHistory import UserTierHistory
 from django.utils import timezone

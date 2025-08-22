@@ -1,20 +1,21 @@
 import urllib
-from django.conf import settings
+from main.utils.settings import Settings
+
 
 def get_full_url(path: str) -> str:
-    scheme = settings.APP_SCHEME
-    host = settings.APP_HOST
+    scheme = Settings.get('APP_SCHEME')
+    host = Settings.get('APP_HOST')
     port = ''
-    if(settings.APP_PORT):
-        port = ':' + str(settings.APP_PORT)
+    if(Settings.get('APP_PORT')):
+        port = ':' + str(Settings.get('APP_PORT'))
     return f"{scheme}://{host}{port}{path}"
 
 def redirection_url(url: str) -> str:
-    scheme = settings.APP_SCHEME
-    host = settings.APP_HOST
+    scheme = Settings.get('APP_SCHEME')
+    host = Settings.get('APP_HOST')
     port = ''
-    if(settings.APP_PORT):
-        port = ':' + str(settings.APP_PORT)
+    if(Settings.get('APP_PORT')):
+        port = ':' + str(Settings.get('APP_PORT'))
     allow_list = [f'{host}{port}']
     parsed_url = urllib.parse.urlparse(url)
     

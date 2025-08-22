@@ -1,5 +1,4 @@
 from django import template
-from django.conf import settings
 from main.service.utils.StaticFilesService import StaticFilesService
 
 register = template.Library()

@@ -3,7 +3,7 @@ Gestionnaire des tiers d'utilisateurs
 Centralise la logique de gestion des différents niveaux d'utilisateurs
 """
 
-from django.conf import settings
+from main.utils.settings import Settings
 from typing import Dict, Any, Optional
 from main.domain.common.enum.GroupEnum import GroupEnum
 
@@ -14,18 +14,18 @@ class UserTierManager:
     @staticmethod
     def get_all_tiers() -> Dict[str, Any]:
         """Retourne tous les tiers disponibles"""
-        return settings.USER_TIERS
+        return Settings.get('USER_TIERS')
     
     @staticmethod
     def get_tier_info(tier_name: str) -> Optional[Dict[str, Any]]:
         """Retourne les informations complètes d'un tier"""
-        return settings.USER_TIERS.get(tier_name)
+        return Settings.get('USER_TIERS').get(tier_name)
     
     @staticmethod
     def get_tier_limits(tier_name: str) -> Dict[str, int]:
         """Retourne les limites d'un tier"""
         tier_info = UserTierManager.get_tier_info(tier_name)
-        return tier_info['limits'] if tier_info else settings.USER_TIERS['STANDARD']['limits']
+        return tier_info['limits'] if tier_info else Settings.get('USER_TIERS')['STANDARD']['limits']
     
     @staticmethod
     def get_tier_display_name(tier_name: str) -> str:
@@ -75,7 +75,7 @@ class UserTierManager:
     def get_tier_comparison() -> Dict[str, Dict[str, Any]]:
         """Retourne une comparaison de tous les tiers pour l'affichage"""
         comparison = {}
-        for tier_name, tier_info in settings.USER_TIERS.items():
+        for tier_name, tier_info in Settings.get('USER_TIERS').items():
             comparison[tier_name] = {
                 'display_name': tier_info['display_name'],
                 'limits': tier_info['limits'],

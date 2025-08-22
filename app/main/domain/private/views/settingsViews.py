@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.forms import formset_factory
-from django.conf import settings
+from main.utils.settings import Settings
 from main.service.PlaylistService import PlaylistService
 from main.service.SoundBoardService import SoundBoardService
 from main.forms.PlaylistColorUserForm import PlaylistColorUserForm
@@ -26,7 +26,7 @@ def settings_index(request):
     nb_playlist = len(PlaylistService(request).get_all_playlist())
     nb_soundboard = len(SoundBoardService(request).get_all_soundboard())
     app_setting = {
-        'target_bitrate': settings.AUDIO_BITRATE_REDUCER_TARGET_BITRATE
+        'target_bitrate': Settings.get('AUDIO_BITRATE_REDUCER_TARGET_BITRATE')
     }
     return render(request, 'Html/Account/Settings/index.html', {'limit': limit, 'user_tiers': user_tiers, 'nb_playlist': nb_playlist, 'nb_soundboard': nb_soundboard, 'app_setting': app_setting})
 

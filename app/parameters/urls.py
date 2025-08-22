@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from django.conf import settings
+from main.utils.settings import Settings
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 
@@ -146,11 +146,11 @@ urlpatterns = [
 ]
 
 
-if bool(settings.DEBUG):
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
+if bool(Settings.get('DEBUG')):
+    urlpatterns += static(Settings.get('MEDIA_URL'), document_root=Settings.get('MEDIA_ROOT'))
+
 # debug toolbar
-if bool(settings.DEBUG_TOOLBAR): 
+if bool(Settings.get('DEBUG_TOOLBAR')):
     from django.conf.urls import include
     import debug_toolbar
     urlpatterns = [
