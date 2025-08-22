@@ -10,7 +10,7 @@ from django import forms
 from django.core.files.uploadedfile import UploadedFile
 from main.models.SoundBoard import SoundBoard
 from main.models.Tag import Tag
-from main.mixins.BootstrapFormMixin import BootstrapFormMixin
+from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
 
 class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):

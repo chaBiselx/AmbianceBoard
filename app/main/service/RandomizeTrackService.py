@@ -5,7 +5,7 @@ from main.models.Music import Music
 from main.models.Track import Track
 from main.filters.MusicFilter import MusicFilter
 from main.forms.MusicForm import MusicForm
-from main.factory.UserParametersFactory import UserParametersFactory
+from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 

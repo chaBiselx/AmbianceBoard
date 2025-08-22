@@ -3,7 +3,7 @@ from main.utils.logger import LoggerFactory
 from parameters import settings
 from email.message import EmailMessage
 from typing import List, Optional
-from main.exceptions.EmailException import DebugModeActivedWitoutDebugMailException, AttachementException, SendException
+from main.domain.common.exceptions.EmailException import DebugModeActivedWitoutDebugMailException, AttachementException, SendException
 from email.mime.text import MIMEText
 
 class EmailSender:

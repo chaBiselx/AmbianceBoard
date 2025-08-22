@@ -1,7 +1,7 @@
 import re
 from django import forms
 from main.models.User import User
-from main.mixins.BootstrapFormMixin import BootstrapFormMixin
+from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 class UserPasswordForm(BootstrapFormMixin, forms.ModelForm):
     password = forms.CharField(max_length=64,label='Mot de passe', widget=forms.PasswordInput)

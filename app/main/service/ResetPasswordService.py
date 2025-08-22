@@ -3,7 +3,7 @@ import hashlib
 import secrets
 from django.utils import timezone
 from django.urls import reverse
-from main.exceptions.SecurityException import SecurityException
+from main.domain.common.exceptions.SecurityException import SecurityException
 from main.utils.logger import logger
 
 

@@ -4,7 +4,7 @@ from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.models.Playlist import Playlist
 from main.filters.PlaylistFilter import PlaylistFilter
 from main.forms.PlaylistForm import PlaylistForm
-from main.factory.UserParametersFactory import UserParametersFactory
+from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 

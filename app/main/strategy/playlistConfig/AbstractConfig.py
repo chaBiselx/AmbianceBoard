@@ -1,7 +1,7 @@
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.FadeEnum import FadeEnum
 from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
-from main.exceptions.ConfigPlaylistTypeException import ConfigPlaylistTypeException
+from main.domain.common.exceptions.ConfigPlaylistTypeException import ConfigPlaylistTypeException
 
 class AbstractConfig():
     structure_data = {

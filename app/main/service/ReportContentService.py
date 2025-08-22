@@ -1,7 +1,7 @@
 from main.utils.logger import LoggerFactory
 import uuid
 from main.models.ReportContent import ReportContent
-from main.exceptions.PostDataException import PostDataException
+from main.domain.common.exceptions.PostDataException import PostDataException
 from main.email.ModeratorEmail import ModeratorEmail
 
 

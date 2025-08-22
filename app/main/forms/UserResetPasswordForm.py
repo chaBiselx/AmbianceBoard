@@ -2,7 +2,7 @@ from django import forms
 from main.models.User import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from main.mixins.BootstrapFormMixin import BootstrapFormMixin
+from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 
 class UserResetPasswordForm(BootstrapFormMixin, forms.Form):

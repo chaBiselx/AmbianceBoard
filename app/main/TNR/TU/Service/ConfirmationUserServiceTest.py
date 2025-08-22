@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 from django.test import TestCase
 from main.models.User import User
 from main.service.ConfirmationUserService import ConfirmationUserService
-from main.exceptions.SecurityException import SecurityException
+from main.domain.common.exceptions.SecurityException import SecurityException
 from django.utils import timezone
 from datetime import datetime, timedelta
 

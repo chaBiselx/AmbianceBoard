@@ -2,7 +2,7 @@ from main.utils.logger import LoggerFactory
 import uuid
 from django.urls import reverse
 from main.models.User import User
-from main.exceptions.SecurityException import SecurityException
+from main.domain.common.exceptions.SecurityException import SecurityException
 from django.utils import timezone
 
 

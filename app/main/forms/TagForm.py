@@ -1,6 +1,6 @@
 from django import forms
 from main.models.Tag import Tag
-from main.mixins.BootstrapFormMixin import BootstrapFormMixin
+from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 
 class TagForm(BootstrapFormMixin, forms.ModelForm):
