@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 from main.models.User import User
 from django.utils import timezone
-from main.email.UserMail import UserMail
+from main.domain.common.email.UserMail import UserMail
 from main.service.ConfirmationUserService import ConfirmationUserService
 from main.utils.url import get_full_url
 from main.utils.logger import LoggerFactory

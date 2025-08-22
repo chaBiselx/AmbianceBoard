@@ -9,7 +9,7 @@ from main.models.User import User
 from main.domain.common.enum.GroupEnum import GroupEnum
 from main.forms.CreateUserForm import CreateUserForm
 from main.forms.UserResetPasswordForm import UserResetPasswordForm
-from main.email.UserMail import UserMail
+from main.domain.common.email.UserMail import UserMail
 from main.service.FailedLoginAttemptService import FailedLoginAttemptService
 from django.core.exceptions import ValidationError
 from main.service.ConfirmationUserService import ConfirmationUserService

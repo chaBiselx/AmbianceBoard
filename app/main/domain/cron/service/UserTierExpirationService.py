@@ -6,7 +6,7 @@ from main.utils.settings import Settings
 from datetime import timedelta
 from main.models.UserTier import UserTier
 from main.utils.logger import logger
-from main.email.UserMail import UserMail
+from main.domain.common.email.UserMail import UserMail
 
 
 
