@@ -12,6 +12,7 @@ from main.TNR.TU.utils.EmailSenderTest import *
 from main.TNR.TU.utils.UrlsUtilsTest import *
 
 from main.TNR.TU.utils.logger.LoggerFactoryTest import *
+from main.TNR.TU.utils.cache.TestCacheSystem import *
 
 
 from main.TNR.TU.Service.FailedLoginAttemptServiceTest import *
@@ -27,4 +28,4 @@ from main.TNR.TU.config.PlaylistConfigTest import *
 
 from main.TNR.TU.middleware.ErrorTrackingMiddlewareTest import *
 
-# Create your tests here.
+

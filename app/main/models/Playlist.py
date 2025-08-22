@@ -10,7 +10,7 @@ from main.strategy.PlaylistStrategy import PlaylistStrategy
 from main.message.ReduceSizeImgMessenger import reduce_size_img
 from main.models.SoundboardPlaylist import SoundboardPlaylist
 from main.service.DefaultColorPlaylistService import DefaultColorPlaylistService
-from django.core.cache import cache
+from main.utils.cache.CacheFactory import CacheFactory
 from parameters import settings
 from main.utils.OverwriteStorage import OverwriteStorage
 
@@ -55,7 +55,8 @@ class Playlist(models.Model):
         """
         super().__init__(*args, **kwargs)
         self._icon_original = self.icon if self.pk else None
-        
+        self.cache = CacheFactory.get_default_cache()
+
     def __str__(self) -> str:
         """
         Représentation textuelle de la playlist.
@@ -149,10 +150,10 @@ class Playlist(models.Model):
             return self.color
         else:
             cache_key = f"user:{self.user_id}"
-            user = cache.get(cache_key)
+            user = self.cache.get(cache_key)
             if user is None:
-                user = self.user 
-                cache.set(cache_key, user, timeout=settings.LIMIT_CACHE_DEFAULT)
+                user = self.user
+                self.cache.set(cache_key, user, timeout=settings.LIMIT_CACHE_DEFAULT)
             d_c_p_service = DefaultColorPlaylistService(user)
             return d_c_p_service.get_default_color(self.typePlaylist)
         
@@ -171,10 +172,10 @@ class Playlist(models.Model):
             return self.colorText
         else:
             cache_key = f"user:{self.user_id}"
-            user = cache.get(cache_key)
+            user = self.cache.get(cache_key)
             if user is None:
-                user = self.user 
-                cache.set(cache_key, user, timeout=3600)
+                user = self.user
+                self.cache.set(cache_key, user, timeout=3600)
             d_c_p_service = DefaultColorPlaylistService(user)
             return d_c_p_service.get_default_color_text(self.typePlaylist)
             

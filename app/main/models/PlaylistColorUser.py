@@ -2,7 +2,7 @@ from typing import Any
 from django.db import models
 from main.models.User import User
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from django.core.cache import cache
+from main.utils.cache.CacheFactory import CacheFactory
 
 
 class PlaylistColorUser(models.Model):
@@ -68,6 +68,7 @@ class PlaylistColorUser(models.Model):
         ou suppression pour maintenir la cohérence du cache.
         """
         if self.user_id and self.typePlaylist:
+            cache = CacheFactory.get_default_cache()
             cache_key = f"default_color:{self.user_id}:{self.typePlaylist}"
             cache.delete(cache_key)
         

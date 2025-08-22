@@ -2,12 +2,12 @@
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.urls import reverse
-from django.core.cache import cache
 from django.conf import settings
 
 from main.models.SharedSoundboard import SharedSoundboard
 from main.models.SoundBoard import SoundBoard
 from main.utils.logger import logger
+from main.utils.cache.CacheFactory import CacheFactory
 
 class SharedSoundboardService():
     
@@ -15,6 +15,7 @@ class SharedSoundboardService():
         self.token = request.COOKIES.get('WebSocketToken')
         self.soundboard_uuid = soundboard_uuid
         self.group_name = f"soundboard_{soundboard_uuid}_{self.token}"
+        self.cache = CacheFactory.get_default_cache()
         
     
     def music_start(self, playlist_uuid, music):
@@ -60,7 +61,7 @@ class SharedSoundboardService():
     def _get_shared_soundboard(self):
         """Récupère le SharedSoundboard de manière asynchrone"""
         cache_key = f"shared_soundboard:{self.soundboard_uuid}:{self.token}"
-        shared_soundboard = cache.get(cache_key)
+        shared_soundboard = self.cache.get(cache_key)
         if shared_soundboard is not None:
             return True
             
@@ -76,7 +77,7 @@ class SharedSoundboardService():
                 soundboard=soundboard, 
                 token=self.token
             ).first()
-            cache.set(cache_key, shared_soundboard, timeout=settings.LIMIT_CACHE_DEFAULT)
+            self.cache.set(cache_key, shared_soundboard)
             return True
         except SharedSoundboard.DoesNotExist:
             logger.error(f"Soundboard introuvable: {self.soundboard_uuid}")

@@ -2,7 +2,7 @@ import json
 import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from django.core.cache import cache
+from main.utils.cache.CacheFactory import CacheFactory
 from django.conf import settings
 from main.utils.logger import logger
 
@@ -242,6 +242,7 @@ class SharedSoundboard(AsyncWebsocketConsumer):
     def _get_shared_soundboard(self):
         """Récupère le SharedSoundboard de manière asynchrone"""
         try:
+            cache = CacheFactory.get_default_cache()
             cache_key = f"shared_soundboard:{self.soundboard_uuid}:{self.token}"
             shared_soundboard = cache.get(cache_key)
             if shared_soundboard is not None:
