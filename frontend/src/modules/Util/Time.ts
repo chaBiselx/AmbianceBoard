@@ -8,7 +8,7 @@ export default class Time {
     private static readonly WEEK = 604800000;
 
     static get_seconds(durationInSecond: number): number {
-        return durationInSecond * Time.MINUTE / Time.SECOND
+        return durationInSecond * Time.SECOND
     }
 
     static get_minutes(durationInMinute: number): number {
