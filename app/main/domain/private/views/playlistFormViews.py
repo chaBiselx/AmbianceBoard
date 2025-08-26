@@ -13,7 +13,7 @@ from main.domain.common.service.DefaultColorPlaylistService import DefaultColorP
 from main.domain.common.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
-from main.formatter.TypePlaylistFormater import TypePlaylistFormater
+from main.domain.private.formatter.TypePlaylistFormater import TypePlaylistFormater
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
