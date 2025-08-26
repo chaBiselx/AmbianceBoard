@@ -6,12 +6,12 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.forms import formset_factory
 from main.utils.settings import Settings
-from main.service.PlaylistService import PlaylistService
+from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SoundBoardService import SoundBoardService
 from main.forms.PlaylistColorUserForm import PlaylistColorUserForm
 from main.models.PlaylistColorUser import PlaylistColorUser
 from main.models.UserPreference import UserPreference
-from main.service.DefaultColorPlaylistService import DefaultColorPlaylistService
+from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from main.domain.common.enum.ThemeEnum import ThemeEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.exceptions.PostDataException import PostDataException

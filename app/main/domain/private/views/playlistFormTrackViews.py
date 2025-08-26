@@ -3,16 +3,16 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from main.models.Music import Music
-from main.service.PlaylistService import PlaylistService
+from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.MusicService import MusicService
-from main.service.MultipleMusicUploadService import MultipleMusicUploadService
+from main.domain.private.service.MultipleMusicUploadService import MultipleMusicUploadService
 from main.forms.MusicForm import MusicForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 from main.utils.UserTierManager import UserTierManager
 from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
-from main.service.LinkService import LinkService
+from main.domain.private.service.LinkService import LinkService
 from main.forms.LinkMusicForm import LinkMusicForm
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum

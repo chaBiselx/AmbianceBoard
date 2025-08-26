@@ -9,7 +9,7 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.strategy.PlaylistStrategy import PlaylistStrategy
 from main.domain.brokers.message.ReduceSizeImgMessenger import reduce_size_img
 from main.models.SoundboardPlaylist import SoundboardPlaylist
-from main.service.DefaultColorPlaylistService import DefaultColorPlaylistService
+from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from main.utils.cache.CacheFactory import CacheFactory
 from parameters import settings
 from main.utils.OverwriteStorage import OverwriteStorage

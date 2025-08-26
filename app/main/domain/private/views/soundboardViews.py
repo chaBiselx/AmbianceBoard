@@ -6,7 +6,7 @@ from django.views.decorators.http import require_http_methods
 from main.models.SoundBoard import SoundBoard
 from main.domain.private.manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
 from main.service.SoundBoardService import SoundBoardService
-from main.service.PlaylistService import PlaylistService
+from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SoundboardPlaylistService import SoundboardPlaylistService
 from main.forms.SoundBoardForm import SoundBoardForm
 from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository

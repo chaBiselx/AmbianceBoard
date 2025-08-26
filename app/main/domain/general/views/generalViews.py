@@ -1,6 +1,5 @@
 import uuid
 from main.utils.settings import Settings
-from typing import Union
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.models import Group
@@ -10,7 +9,7 @@ from main.domain.common.enum.GroupEnum import GroupEnum
 from main.forms.CreateUserForm import CreateUserForm
 from main.forms.UserResetPasswordForm import UserResetPasswordForm
 from main.domain.common.email.UserMail import UserMail
-from main.service.FailedLoginAttemptService import FailedLoginAttemptService
+from main.domain.general.service.FailedLoginAttemptService import FailedLoginAttemptService
 from django.core.exceptions import ValidationError
 from main.service.ConfirmationUserService import ConfirmationUserService
 from main.utils.url import get_full_url
@@ -20,7 +19,7 @@ from django.contrib.auth.decorators import login_required
 from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 from django_ratelimit.decorators import ratelimit
-from main.service.ResetPasswordService import ResetPasswordService
+from main.domain.general.service.ResetPasswordService import ResetPasswordService
 from main.forms.UserPasswordForm import UserPasswordForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum

@@ -8,7 +8,7 @@ des playlists au sein d'un soundboard.
 from typing import List
 from main.models.SoundBoard import SoundBoard
 from main.models.Playlist import Playlist
-from main.service.PlaylistService import PlaylistService
+from main.domain.common.service.PlaylistService import PlaylistService
 
 class SoundBoardPlaylistManager:
     """

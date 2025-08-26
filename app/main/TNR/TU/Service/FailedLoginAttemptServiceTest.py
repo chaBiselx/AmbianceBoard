@@ -3,7 +3,7 @@ from django.test import TestCase, RequestFactory
 from django.utils import timezone
 from datetime import timedelta
 from main.models.FailedLoginAttempt import FailedLoginAttempt
-from main.service.FailedLoginAttemptService import FailedLoginAttemptService
+from main.domain.general.service.FailedLoginAttemptService import FailedLoginAttemptService
 
 class FailedLoginAttemptServiceTest(TestCase):
 

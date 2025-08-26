@@ -5,12 +5,12 @@ from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from django.views.decorators.http import require_http_methods
 from main.service.MusicService import MusicService
 from main.service.RandomizeTrackService import RandomizeTrackService
-from main.service.PlaylistService import PlaylistService
+from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.forms.PlaylistForm import PlaylistForm
-from main.service.DefaultColorPlaylistService import DefaultColorPlaylistService
+from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from main.domain.common.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum

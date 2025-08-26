@@ -17,9 +17,9 @@ from main.models.Tag import Tag
 from django.db.models import Count
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
-from main.service.ReportContentService import ReportContentService
+from main.domain.public.service.ReportContentService import ReportContentService
 from main.service.SharedSoundboardService import SharedSoundboardService
-from main.service.TagService import TagService
+from main.domain.public.service.TagService import TagService
 from main.utils.url import redirection_url
 from main.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
 from main.utils.logger import logger
