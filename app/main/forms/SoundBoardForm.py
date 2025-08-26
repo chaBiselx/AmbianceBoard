@@ -12,6 +12,7 @@ from main.models.SoundBoard import SoundBoard
 from main.models.Tag import Tag
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
+from main.domain.common.repository.TagRepository import TagRepository
 
 class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     """
@@ -38,17 +39,18 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
             **kwargs: Arguments nommés pour ModelForm
         """
         super().__init__(*args, **kwargs)
+        tag_repository = TagRepository()
         # Supprime le lien si un fichier existe
         if self.instance and self.instance.icon:
             self.fields['icon'].widget.attrs.update({'placeholder': 'Choisissez un nouveau fichier'})
             self.fields['icon'].help_text = f"Image déja choisie <a id='id_icon_alreadyexist' href='{ self.instance.icon.url }' target='_blank'>Voir</a>" 
         
         # Configuration du champ tags
-        self.fields['tags'].queryset = Tag.objects.filter(is_active=True).order_by('name')
+        self.fields['tags'].queryset = tag_repository.get_list_active_tags()
         
         # Si c'est une édition, pré-sélectionner les tags existants
         if self.instance and self.instance.pk:
-            self.fields['tags'].initial = self.instance.tags.filter(is_active=True)
+            self.fields['tags'].initial = self.instance.tags.filter(is_active=True) # TODO REPOSITORY
  
     name = forms.CharField(
         label='Nom du soundboard', 
@@ -79,7 +81,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     clear_icon = forms.BooleanField(required=False, label='Supprimer le fichier', initial=False)
     
     tags = forms.ModelMultipleChoiceField(
-        queryset=Tag.objects.filter(is_active=True),
+        queryset=TagRepository().get_list_active_tags(),
         widget=forms.CheckboxSelectMultiple,
         required=False,
         label='Tags',

@@ -20,7 +20,7 @@ def attrib_permissions(sender: AppConfig, **kwargs: Any) -> None: # NOSONAR
             group.permissions.add(permission)
         
         for inherited_permissions in obj["inherited_permissions"]:
-            for permission_codename in settings.ATTRIB_PERMISSIONS[inherited_permissions]["permission"]:
+            for permission_codename in Settings.get('ATTRIB_PERMISSIONS')[inherited_permissions]["permission"]:
                 permission = Permission.objects.get(codename=permission_codename)
                 group.permissions.add(permission)
 

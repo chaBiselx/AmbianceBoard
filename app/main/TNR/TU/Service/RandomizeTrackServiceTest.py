@@ -9,7 +9,7 @@ from main.models.Track import Track
 from main.models.Playlist import Playlist
 from main.models.User import User
 from main.models.SoundBoard import SoundBoard
-from main.filters.MusicFilter import MusicFilter
+from main.domain.common.repository.filters.MusicFilter import MusicFilter
 
 class RandomizeTrackServiceTest(TestCase):
     
@@ -31,33 +31,25 @@ class RandomizeTrackServiceTest(TestCase):
         service = RandomizeTrackService(self.request)
         self.assertEqual(service.request, self.request)
 
-    @patch('main.service.RandomizeTrackService.MusicFilter')
-    @patch('main.service.RandomizeTrackService.RandomizeTrackService._get_random_music_from_playlist')
-    def test_generate_private_success(self, mock_get_random, mock_music_filter):
+    @patch('main.domain.common.repository.TrackRepository.TrackRepository.get_random_private')
+    def test_generate_private_success(self, mock_get_random_private):
         """Test génération aléatoire privée avec succès"""
         # Arrange
         mock_music = Mock(spec=Music)
-        mock_filter_instance = Mock()
-        mock_music_filter.return_value = mock_filter_instance
-        mock_get_random.return_value = mock_music
+        mock_get_random_private.return_value = mock_music
         
         # Act
         result = self.service.generate_private(self.playlist_uuid)
         
         # Assert
         self.assertEqual(result, mock_music)
-        mock_music_filter.assert_called_once()
-        mock_filter_instance.filter_by_user.assert_called_once_with(self.user)
-        mock_get_random.assert_called_once_with(mock_filter_instance, self.playlist_uuid)
+        mock_get_random_private.assert_called_once_with(self.playlist_uuid, self.user)
 
-    @patch('main.service.RandomizeTrackService.MusicFilter')
-    @patch('main.service.RandomizeTrackService.RandomizeTrackService._get_random_music_from_playlist')
-    def test_generate_private_playlist_not_exist(self, mock_get_random, mock_music_filter):
+    @patch('main.domain.common.repository.TrackRepository.TrackRepository.get_random_private')
+    def test_generate_private_playlist_not_exist(self, mock_get_random_private):
         """Test génération aléatoire privée quand la playlist n'existe pas"""
         # Arrange
-        mock_filter_instance = Mock()
-        mock_music_filter.return_value = mock_filter_instance
-        mock_get_random.side_effect = Playlist.DoesNotExist()
+        mock_get_random_private.side_effect = Playlist.DoesNotExist()
         
         # Act
         result = self.service.generate_private(self.playlist_uuid)
@@ -66,20 +58,17 @@ class RandomizeTrackServiceTest(TestCase):
         self.assertIsNone(result)
 
     @patch('main.service.RandomizeTrackService.SoundBoardService')
-    @patch('main.service.RandomizeTrackService.MusicFilter')
-    @patch('main.service.RandomizeTrackService.RandomizeTrackService._get_random_music_from_playlist')
-    def test_generate_public_success(self, mock_get_random, mock_music_filter, mock_soundboard_service):
+    @patch('main.domain.common.repository.TrackRepository.TrackRepository.get_random_public')
+    def test_generate_public_success(self, mock_get_random_public, mock_soundboard_service):
         """Test génération aléatoire publique avec succès"""
         # Arrange
         mock_soundboard = Mock(spec=SoundBoard)
         mock_music = Mock(spec=Music)
         mock_service_instance = Mock()
-        mock_filter_instance = Mock()
         
         mock_soundboard_service.return_value = mock_service_instance
         mock_service_instance.get_public_soundboard.return_value = mock_soundboard
-        mock_music_filter.return_value = mock_filter_instance
-        mock_get_random.return_value = mock_music
+        mock_get_random_public.return_value = mock_music
         
         # Act
         result = self.service.generate_public(self.soundboard_uuid, self.playlist_uuid)
@@ -88,8 +77,7 @@ class RandomizeTrackServiceTest(TestCase):
         self.assertEqual(result, mock_music)
         mock_soundboard_service.assert_called_once_with(self.request)
         mock_service_instance.get_public_soundboard.assert_called_once_with(self.soundboard_uuid)
-        mock_music_filter.assert_called_once()
-        mock_get_random.assert_called_once_with(mock_filter_instance, self.playlist_uuid)
+        mock_get_random_public.assert_called_once_with(self.playlist_uuid)
 
     @patch('main.service.RandomizeTrackService.SoundBoardService')
     def test_generate_public_soundboard_not_found(self, mock_soundboard_service):
@@ -107,19 +95,16 @@ class RandomizeTrackServiceTest(TestCase):
         mock_service_instance.get_public_soundboard.assert_called_once_with(self.soundboard_uuid)
 
     @patch('main.service.RandomizeTrackService.SoundBoardService')
-    @patch('main.service.RandomizeTrackService.MusicFilter')
-    @patch('main.service.RandomizeTrackService.RandomizeTrackService._get_random_music_from_playlist')
-    def test_generate_public_playlist_not_exist(self, mock_get_random, mock_music_filter, mock_soundboard_service):
+    @patch('main.domain.common.repository.TrackRepository.TrackRepository.get_random_public')
+    def test_generate_public_playlist_not_exist(self, mock_get_random_public, mock_soundboard_service):
         """Test génération aléatoire publique quand la playlist n'existe pas"""
         # Arrange
         mock_soundboard = Mock(spec=SoundBoard)
         mock_service_instance = Mock()
-        mock_filter_instance = Mock()
         
         mock_soundboard_service.return_value = mock_service_instance
         mock_service_instance.get_public_soundboard.return_value = mock_soundboard
-        mock_music_filter.return_value = mock_filter_instance
-        mock_get_random.side_effect = Playlist.DoesNotExist()
+        mock_get_random_public.side_effect = Playlist.DoesNotExist()
         
         # Act
         result = self.service.generate_public(self.soundboard_uuid, self.playlist_uuid)
@@ -204,44 +189,4 @@ class RandomizeTrackServiceTest(TestCase):
         
         # Assert
         self.assertIsNone(result)
-
-    def test_get_random_music_from_playlist_success(self):
-        """Test récupération aléatoire d'une musique depuis une playlist avec succès"""
-        # Arrange
-        mock_music = Mock(spec=Music)
-        mock_filter = Mock(spec=MusicFilter)
-        mock_queryset = Mock()
-        mock_ordered_queryset = Mock()
         
-        mock_filter.filter_by_playlist.return_value = mock_queryset
-        mock_queryset.order_by.return_value = mock_ordered_queryset
-        mock_ordered_queryset.first.return_value = mock_music
-        
-        # Act
-        result = self.service._get_random_music_from_playlist(mock_filter, self.playlist_uuid)
-        
-        # Assert
-        self.assertEqual(result, mock_music)
-        mock_filter.filter_by_playlist.assert_called_once_with(self.playlist_uuid)
-        mock_queryset.order_by.assert_called_once_with('?')
-        mock_ordered_queryset.first.assert_called_once()
-
-    def test_get_random_music_from_playlist_no_music(self):
-        """Test récupération aléatoire d'une musique depuis une playlist vide"""
-        # Arrange
-        mock_filter = Mock(spec=MusicFilter)
-        mock_queryset = Mock()
-        mock_ordered_queryset = Mock()
-        
-        mock_filter.filter_by_playlist.return_value = mock_queryset
-        mock_queryset.order_by.return_value = mock_ordered_queryset
-        mock_ordered_queryset.first.return_value = None
-        
-        # Act
-        result = self.service._get_random_music_from_playlist(mock_filter, self.playlist_uuid)
-        
-        # Assert
-        self.assertIsNone(result)
-        mock_filter.filter_by_playlist.assert_called_once_with(self.playlist_uuid)
-        mock_queryset.order_by.assert_called_once_with('?')
-        mock_ordered_queryset.first.assert_called_once()

@@ -9,7 +9,7 @@ from main.service.SoundBoardService import SoundBoardService
 from main.service.PlaylistService import PlaylistService
 from main.service.SoundboardPlaylistService import SoundboardPlaylistService
 from main.forms.SoundBoardForm import SoundBoardForm
-from main.filters.SoundBoardFilter import SoundBoardFilter
+from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
@@ -24,9 +24,7 @@ from main.utils.logger import logger
 def soundboard_list(request):
     """Liste tous les soundboards de l'utilisateur connecté"""
     try:
-        _query_set = SoundBoard.objects.all().order_by('uuid')
-        _filter = SoundBoardFilter(queryset=_query_set)
-        soundboards = _filter.filter_by_user(request.user)
+        soundboards = SoundBoardRepository().get_list_from_user(request.user)
     except Exception:
         soundboards = []
     

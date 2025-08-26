@@ -17,6 +17,8 @@ from main.formatter.TypePlaylistFormater import TypePlaylistFormater
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
+from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+from main.domain.common.repository.PlaylistRepository import PlaylistRepository
 
 
 
@@ -126,8 +128,8 @@ def playlist_describe_type(request)-> HttpResponse:
 def playlist_listing_colors(request) -> JsonResponse:
     """Retourne les couleurs de playlists déja utilisées"""
     default_playlists = DefaultColorPlaylistService(request.user).get_list_default_color_ajax()
-    
-    unique_playlists = Playlist.objects.values('colorText', 'color', 'typePlaylist').distinct().all()
+
+    unique_playlists = PlaylistRepository().get_distinct_styles()
     for playlist in unique_playlists:
         playlist['typePlaylist'] = PlaylistTypeEnum[playlist['typePlaylist']].value
     return JsonResponse({"unique_playlists": list(unique_playlists), "default_playlists": list(default_playlists)}, status=200)
@@ -157,7 +159,7 @@ def playlist_delete(request, playlist_uuid) -> JsonResponse:
             return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         else :
             ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_DELETE, user=request.user, content_object=playlist)
-            playlist.delete()
+            PlaylistRepository().delete(playlist)
 
             return JsonResponse({'success': 'Suppression playlist réussie'}, status=200)
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)

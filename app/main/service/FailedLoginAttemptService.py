@@ -3,6 +3,7 @@ from main.utils.logger import LoggerFactory
 from main.models.FailedLoginAttempt import FailedLoginAttempt
 from django.utils import timezone
 from datetime import timedelta
+from main.domain.common.repository.FailedLoginAttemptRepository import FailedLoginAttemptRepository
 
 class FailedLoginAttemptService:
     
@@ -12,9 +13,10 @@ class FailedLoginAttemptService:
         self.now = timezone.now()
         self.time_threshold = self.now - timedelta(minutes=15)
         self.logger = LoggerFactory.get_default_logger()
-        
+        self.failed_attempt_repository = FailedLoginAttemptRepository()
+
     def add_or_create_failed_login_attempt(self):
-        failed_attempt, created = FailedLoginAttempt.objects.get_or_create(
+        failed_attempt, created = self.failed_attempt_repository.get_or_create(
                 ip_address=self.ip_address,
                 username=self.username,
                 defaults={'timestamp': self.now}
@@ -28,16 +30,15 @@ class FailedLoginAttemptService:
                 failed_attempt.timestamp = self.now
             failed_attempt.save()
         return self
+    
     def purge(self):
-        FailedLoginAttempt.objects.filter(ip_address=self.ip_address, username=self.username).delete()
+        self.failed_attempt_repository.delete(self.ip_address, self.username)
         return self
     
     def is_timeout(self) -> bool:
-        failed_login_list = FailedLoginAttempt.objects.filter(ip_address=self.ip_address, username=self.username)
-        if failed_login_list.exists() :
-            failed_login = failed_login_list[0]
-            if failed_login.attempts > 3 :
-                self.logger.critical(f"User {self.username} has been locked out, attempts: {failed_login.attempts}")
-                return True
+        failed_login = self.failed_attempt_repository.get(ip_address=self.ip_address, username=self.username)
+        if failed_login and failed_login.attempts > 3:
+            self.logger.critical(f"User {self.username} has been locked out, attempts: {failed_login.attempts}")
+            return True
         return False
     

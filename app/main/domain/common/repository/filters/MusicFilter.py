@@ -13,6 +13,7 @@ class MusicFilter:
 
     def filter_by_playlist(self, uuid_playlist):
         if uuid_playlist:
-            self.queryset = self.queryset.filter(playlist__uuid =uuid_playlist)
+            self.queryset = self.queryset.filter(playlist__uuid=uuid_playlist)
         return self.queryset
-
+    
+   

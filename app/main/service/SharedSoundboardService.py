@@ -7,6 +7,8 @@ from main.models.SharedSoundboard import SharedSoundboard
 from main.models.SoundBoard import SoundBoard
 from main.utils.logger import logger
 from main.utils.cache.CacheFactory import CacheFactory
+from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+from main.domain.common.repository.SharedSoundboardRepository import SharedSoundboardRepository
 
 class SharedSoundboardService():
     
@@ -15,8 +17,9 @@ class SharedSoundboardService():
         self.soundboard_uuid = soundboard_uuid
         self.group_name = f"soundboard_{soundboard_uuid}_{self.token}"
         self.cache = CacheFactory.get_default_cache()
-        
-    
+        self.soundboard_repository = SoundBoardRepository()
+
+
     def music_start(self, playlist_uuid, music):
         if(self._get_shared_soundboard()):
             self._diffuser_message(
@@ -68,19 +71,22 @@ class SharedSoundboardService():
             return False
         
         try:
-            soundboard = SoundBoard.objects.get(uuid=self.soundboard_uuid)
+            soundboard = self.soundboard_repository.get_from_uuid(self.soundboard_uuid)
             if not soundboard:
                 return False
-            
-            shared_soundboard = SharedSoundboard.objects.filter(
-                soundboard=soundboard, 
+
+            shared_soundboard = SharedSoundboardRepository().get(
+                soundboard=soundboard,
                 token=self.token
-            ).first()
+            )
+
+            if not shared_soundboard:
+                logger.error(f"Soundboard introuvable: {self.soundboard_uuid} {self.token}")
+                return False
+
             self.cache.set(cache_key, shared_soundboard)
             return True
-        except SharedSoundboard.DoesNotExist:
-            logger.error(f"Soundboard introuvable: {self.soundboard_uuid}")
-            return False
+
         except Exception as e:
             logger.error(f"Erreur lors de la récupération du soundboard: {e}")
             return False

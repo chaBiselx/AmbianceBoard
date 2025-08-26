@@ -24,8 +24,13 @@ from main.TNR.TU.Service.ConfirmationUserServiceTest import *
 
 from main.TNR.TU.UserParametersFactoryTest import *
 
+#Config
 from main.TNR.TU.config.PlaylistConfigTest import *
 
+#MiddleWare
 from main.TNR.TU.middleware.ErrorTrackingMiddlewareTest import *
+
+#Repository
+from main.TNR.TU.repository.TrackRepositoryTest import *
 
 

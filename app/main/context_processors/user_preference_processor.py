@@ -1,6 +1,6 @@
 from django.urls import reverse
 from main.domain.common.enum.ThemeEnum import ThemeEnum
-from main.models.UserPreference import UserPreference
+from main.domain.common.repository.UserPreferenceRepository import UserPreferenceRepository
 from main.utils.UserTierManager import UserTierManager
 
 def user_preference_processor(request):
@@ -12,7 +12,7 @@ def user_preference_processor(request):
     
     if(request.user.is_authenticated):
         try:
-            user_preference = UserPreference.objects.get(user=request.user)
+            user_preference = UserPreferenceRepository().get_user_preferences(request.user)
             theme_temp = user_preference.theme
             if theme_temp != None:
                 theme = theme_temp

@@ -17,6 +17,7 @@ from main.forms.LinkMusicForm import LinkMusicForm
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
+from main.domain.common.repository.MusicRepository import MusicRepository
 
 from main.utils.logger import logger
 
@@ -80,7 +81,7 @@ def music_create(request, playlist_uuid):
 def music_update(request, playlist_uuid, music_id):
     """Mise à jour d'une musique existante"""
     playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
-    music = Music.objects.get(id=music_id)
+    music = MusicRepository().get_music(id_music=music_id)
     if not music or not playlist:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     
@@ -108,8 +109,8 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
             return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
-        
-        music = Music.objects.get(id=music_id)
+
+        music = MusicRepository().get_music(id_music=music_id)
         if not music:
             return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.MUSIC_DELETE, user=request.user, content_object=music)

@@ -3,6 +3,7 @@ from main.models.User import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
+from main.domain.common.repository.UserRepository import UserRepository
 
 
 class UserResetPasswordForm(BootstrapFormMixin, forms.Form):
@@ -18,10 +19,10 @@ class UserResetPasswordForm(BootstrapFormMixin, forms.Form):
         # Vérifier si c'est une adresse e-mail
         try:
             validate_email(value)  # Vérifie la structure de l'e-mail
-            user = User.objects.filter(email=value).first()
+            user = UserRepository().get_user_by_email(value)
         except ValidationError:
             # Ce n'est pas un email valide, donc on cherche par username
-            user = User.objects.filter(username=value).first()
+            user = UserRepository().get_user_by_username(value)
 
         if not user:
             raise ValidationError("Aucun utilisateur trouvé avec cet identifiant ou email.")
