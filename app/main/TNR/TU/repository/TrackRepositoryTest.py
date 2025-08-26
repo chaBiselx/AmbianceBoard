@@ -12,7 +12,7 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 class TrackRepositoryTest(TestCase):
 	def setUp(self):
 		# Patch celery task to avoid launching async processing
-		patcher = patch('main.message.ReduceBiteRateMessenger.reduce_bit_rate.apply_async')
+		patcher = patch('main.domain.brokers.message.ReduceBiteRateMessenger.reduce_bit_rate.apply_async')
 		self.mock_apply_async = patcher.start()
 		self.addCleanup(patcher.stop)
 

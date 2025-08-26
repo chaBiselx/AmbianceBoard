@@ -7,7 +7,7 @@ from main.models.User import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.strategy.PlaylistStrategy import PlaylistStrategy
-from main.message.ReduceSizeImgMessenger import reduce_size_img
+from main.domain.brokers.message.ReduceSizeImgMessenger import reduce_size_img
 from main.models.SoundboardPlaylist import SoundboardPlaylist
 from main.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from main.utils.cache.CacheFactory import CacheFactory
@@ -65,7 +65,8 @@ class Playlist(models.Model):
             str: Nom de la playlist suivi de son UUID entre parenthèses
         """
         return f"{self.name} ({self.uuid}) "
-        
+
+
     def save(self, *args: Any, **kwargs: Any) -> None:
         """
         Sauvegarde la playlist avec traitement de l'icône.
@@ -84,7 +85,7 @@ class Playlist(models.Model):
         if not hasattr(self, 'user') :
             raise ValueError("Playlist must have a user")
             
-        if self.icon and  (is_not_uuid_with_extension(self.icon.name) or self.__is_new_file()): #Remplacement
+        if self.icon and (is_not_uuid_with_extension(self.icon.name) or self.__is_new_file()): #Remplacement
             self.__replace_name_by_uuid()
             new_file = True
 
@@ -93,7 +94,11 @@ class Playlist(models.Model):
 
         super().save(*args, **kwargs)
         if new_file: 
-            reduce_size_img.apply_async(args=[self.__class__.__name__, self.pk], queue='default', priority=1 )
+            reduce_size_img.apply_async(
+                args=[self.__class__.__name__, self.pk], 
+                queue='default', 
+                priority=1 
+            )
             
     def update(self, *args: Any, **kwargs: Any) -> None:
         """

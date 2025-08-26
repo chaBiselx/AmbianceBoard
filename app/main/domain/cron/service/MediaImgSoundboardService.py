@@ -3,7 +3,7 @@ from main.utils.logger import LoggerFactory
 from django.core.files.storage import default_storage
 from parameters import settings
 from main.models.SoundBoard import SoundBoard
-from main.message.MediaImgSoundBoardMessenger import clean_img_files
+from main.domain.brokers.message.MediaImgSoundBoardMessenger import clean_img_files
 
 class MediaImgSoundboardService:
     list_media = []

@@ -7,7 +7,7 @@ from main.models.User import User
 from main.models.Playlist import Playlist
 from main.models.SoundboardPlaylist import SoundboardPlaylist
 from main.models.Tag import Tag
-from main.message.ReduceSizeImgMessenger import reduce_size_img
+from main.domain.brokers.message.ReduceSizeImgMessenger import reduce_size_img
 from main.utils.OverwriteStorage import OverwriteStorage
 
 

@@ -79,7 +79,7 @@ class PlaylistModelTest(TestCase):
             )
             
     @patch('uuid.uuid4')
-    @patch('main.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
+    @patch('main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
     def test_icon_upload_on_create(self, mock_reduce_size, mock_uuid):
         """Test le téléchargement et le traitement de l'icône lors de la création"""
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"
@@ -104,7 +104,7 @@ class PlaylistModelTest(TestCase):
         )
 
     @patch('uuid.uuid4')
-    @patch('main.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
+    @patch('main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
     def test_icon_upload_on_update(self, mock_reduce_size, mock_uuid):
         """Test le téléchargement et le traitement de l'icône lors de la mise à jour"""
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"

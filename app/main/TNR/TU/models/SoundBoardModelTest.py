@@ -55,7 +55,7 @@ class SoundBoardModelTest(TestCase):
             )
 
     @patch('uuid.uuid4')
-    @patch('main.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
+    @patch('main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
     def test_icon_upload(self, mock_reduce_size, mock_uuid):
         """Test le téléchargement et le traitement de l'icône lors de la première utilsation"""
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"
@@ -78,7 +78,7 @@ class SoundBoardModelTest(TestCase):
         )
 
     @patch('uuid.uuid4')
-    @patch('main.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
+    @patch('main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
     def test_icon_new_upload(self, mock_reduce_size, mock_uuid):
         """Test le téléchargement et le traitement de l'icône lors de la second utilsation"""
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"
@@ -104,7 +104,7 @@ class SoundBoardModelTest(TestCase):
             priority=1
         )
 
-    @patch('main.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
+    @patch('main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
     def test_icon_update(self, mock_reduce_size):
         """Test la mise à jour de l'icône"""
         # Créer d'abord un SoundBoard sans icône

@@ -3,7 +3,7 @@ import os
 from typing import Any
 from main.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
-from main.message.ReduceBiteRateMessenger import reduce_bit_rate
+from main.domain.brokers.message.ReduceBiteRateMessenger import reduce_bit_rate
 from .Track import Track
 
 class Music(Track):
