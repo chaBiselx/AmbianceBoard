@@ -88,7 +88,9 @@ class Playlist(models.Model):
             self.__replace_name_by_uuid()
             new_file = True
 
-            
+        if self.useSpecificDelay == False:
+            self.maxDelay = 0
+
         super().save(*args, **kwargs)
         if new_file: 
             reduce_size_img.apply_async(args=[self.__class__.__name__, self.pk], queue='default', priority=1 )
