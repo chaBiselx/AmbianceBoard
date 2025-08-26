@@ -19,7 +19,7 @@ from main.domain.manager.views.managerViews import manager_dashboard, user_accou
 from main.domain.manager.views.managerCronViews import (
     listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity
     )
-from main.domain.public.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_stop_stream, favorite_update, reporting_content, public_favorite
+from main.domain.public.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, favorite_update, reporting_content, public_favorite
 from main.domain.sharedSoundboard.views.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream
 from main.channels.SharedSoundboard import SharedSoundboard
 
@@ -94,7 +94,6 @@ urlpatterns = [
     path("public/soundboards", public_listing_soundboard, name="publicListingSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>", public_soundboard_read_playlist, name="publicReadSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreamMusic"),
-    path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream/stop", public_stop_stream, name="publicStopStreamMusic"),
     path("public/report", reporting_content, name="publicReportingContent"),
     path("public/favorite", public_favorite, name="publicFavorite"),
     

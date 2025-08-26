@@ -30,16 +30,6 @@ class SharedSoundboardService():
                     "playlist_uuid": str(playlist_uuid),
                 }
             )
-  
-    def music_stop(self, playlist_uuid):
-        if(self._get_shared_soundboard()):
-            self._diffuser_message(
-                {
-                    "type": "music_stop",
-                    "track": None,
-                    "playlist_uuid": str(playlist_uuid),
-                }
-            )
             
     def music_stop_all(self):
         if(self._get_shared_soundboard()):
