@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from main.models.GeneralNotification import GeneralNotification
-from main.models.User import User
+from main.architecture.persistence.models.GeneralNotification import GeneralNotification
+from main.architecture.persistence.models.User import User
 
 
 class UserNotificationDismissal(models.Model):

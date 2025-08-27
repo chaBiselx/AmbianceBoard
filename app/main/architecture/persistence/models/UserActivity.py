@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 

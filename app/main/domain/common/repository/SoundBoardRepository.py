@@ -1,6 +1,6 @@
 from typing import Any, Optional, List
-from main.models.User import User
-from main.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.domain.common.repository.filters.SoundBoardFilter import SoundBoardFilter
 
 

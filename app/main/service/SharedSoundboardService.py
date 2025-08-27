@@ -3,8 +3,8 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.urls import reverse
 
-from main.models.SharedSoundboard import SharedSoundboard
-from main.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
+from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.utils.logger import logger
 from main.utils.cache.CacheFactory import CacheFactory
 from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository

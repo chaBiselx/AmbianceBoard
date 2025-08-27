@@ -1,7 +1,7 @@
 
 import os
 from django.core.files.storage import default_storage
-from main.models.Music import Music
+from main.architecture.persistence.models.Music import Music
 from main.domain.common.exceptions.FileManagementException import FileNotInDatabase, FileNoteFound
 from main.utils.logger import LoggerFactory
 

@@ -1,5 +1,5 @@
 from django import forms
-from main.models.Music import Music
+from main.architecture.persistence.models.Music import Music
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 

@@ -1,5 +1,5 @@
 from typing import Any, Optional, List
-from main.models.FailedLoginAttempt import FailedLoginAttempt
+from main.architecture.persistence.models.FailedLoginAttempt import FailedLoginAttempt
 from django.utils import timezone
 
 

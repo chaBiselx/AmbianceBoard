@@ -1,8 +1,8 @@
 import uuid
 from main.domain.common.enum.PermissionEnum import PermissionEnum
-from main.models.Playlist import Playlist
-from main.models.Music import Music
-from main.models.Track import Track
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.Music import Music
+from main.architecture.persistence.models.Track import Track
 from main.domain.common.repository.filters.MusicFilter import MusicFilter
 from main.domain.common.repository.TrackRepository import TrackRepository
 from main.forms.MusicForm import MusicForm

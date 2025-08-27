@@ -1,6 +1,6 @@
 from django.http import HttpRequest
 from django.db import models
-from main.models.Tag import Tag
+from main.architecture.persistence.models.Tag import Tag
 
 class TagService:
     

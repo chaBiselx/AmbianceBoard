@@ -3,8 +3,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 from unittest.mock import patch, Mock
 import uuid
-from main.models.Playlist import Playlist
-from main.models.User import User
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.User import User
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 playlist_name = "Test Playlist"

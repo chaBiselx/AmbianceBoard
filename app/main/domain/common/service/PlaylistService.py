@@ -1,7 +1,7 @@
 from typing import Optional, List
 from django.http import HttpRequest
 from main.domain.common.enum.PermissionEnum import PermissionEnum
-from main.models.Playlist import Playlist
+from main.architecture.persistence.models.Playlist import Playlist
 from main.domain.common.repository.filters.PlaylistFilter import PlaylistFilter
 from main.domain.common.repository.PlaylistRepository import PlaylistRepository
 from main.forms.PlaylistForm import PlaylistForm

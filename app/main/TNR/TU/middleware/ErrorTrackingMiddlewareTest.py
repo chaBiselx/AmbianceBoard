@@ -11,8 +11,8 @@ from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse, Http404
 from main.middleware.ErrorTrackingMiddleware import ErrorTrackingMiddleware
-from main.models.User import User
-from main.models.UserActivity import UserActivity
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 
@@ -202,7 +202,7 @@ class ErrorTrackingMiddlewareTest(TestCase):
 
         # Simuler une exception lors de la création d'activité
         with patch.object(self.middleware, 'logger') as mock_logger:
-            with patch('main.models.UserActivity.UserActivity.create_activity') as mock_create:
+            with patch('main.architecture.persistence.models.UserActivity.UserActivity.create_activity') as mock_create:
                 mock_create.side_effect = Exception("Database error")
 
                 # Exécuter le middleware - ne doit pas lever d'exception

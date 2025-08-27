@@ -6,8 +6,8 @@ des playlists au sein d'un soundboard.
 """
 
 from typing import List
-from main.models.SoundBoard import SoundBoard
-from main.models.Playlist import Playlist
+from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.Playlist import Playlist
 from main.domain.common.service.PlaylistService import PlaylistService
 
 class SoundBoardPlaylistManager:

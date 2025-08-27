@@ -1,8 +1,8 @@
 import re
 from django import forms
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 from main.forms.UserPasswordForm import UserPasswordForm
-from main.models.DomainBlacklist import DomainBlacklist
+from main.architecture.persistence.models.DomainBlacklist import DomainBlacklist
 
 class CreateUserForm(UserPasswordForm):
     first_name = forms.CharField(max_length=64,label='Prénom', required=False)

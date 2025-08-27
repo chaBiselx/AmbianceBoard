@@ -1,5 +1,5 @@
 from django import forms
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin

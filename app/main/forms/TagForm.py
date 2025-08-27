@@ -1,5 +1,5 @@
 from django import forms
-from main.models.Tag import Tag
+from main.architecture.persistence.models.Tag import Tag
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 

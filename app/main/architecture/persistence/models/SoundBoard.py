@@ -3,10 +3,10 @@ from typing import Any
 from main.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
 from django.db.models import QuerySet
-from main.models.User import User
-from main.models.Playlist import Playlist
-from main.models.SoundboardPlaylist import SoundboardPlaylist
-from main.models.Tag import Tag
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.Tag import Tag
 from main.domain.brokers.message.ReduceSizeImgMessenger import reduce_size_img
 from main.utils.OverwriteStorage import OverwriteStorage
 

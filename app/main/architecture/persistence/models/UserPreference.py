@@ -1,5 +1,5 @@
 from django.db import models
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 from main.domain.common.enum.ThemeEnum import ThemeEnum
 from django.core.validators import MinValueValidator, MaxValueValidator
 

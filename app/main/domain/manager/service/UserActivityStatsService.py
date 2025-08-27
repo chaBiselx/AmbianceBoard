@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from django.db.models import Count, Q, Avg, F, QuerySet
 from django.utils import timezone
 from django.contrib.auth import get_user_model
-from main.models.UserActivity import UserActivity
+from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 User = get_user_model()

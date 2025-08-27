@@ -1,7 +1,7 @@
 
 import os
 from django.core.files.storage import default_storage
-from main.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.domain.common.exceptions.FileManagementException import FileNotInDatabase, FileNoteFound
 from main.service.cleanService.BaseCleanService import BaseCleanService
 from main.utils.logger import LoggerFactory

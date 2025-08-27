@@ -1,7 +1,7 @@
 from main.utils.logger.ILogger import ILogger
 from django.template.loader import render_to_string
 from main.utils.settings import Settings
-from main.models.ReportContent import ReportContent
+from main.architecture.persistence.models.ReportContent import ReportContent
 from main.utils.EmailSender import EmailSender
 from main.utils.logger import LoggerFactory
 

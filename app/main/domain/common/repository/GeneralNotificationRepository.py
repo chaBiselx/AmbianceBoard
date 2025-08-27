@@ -1,6 +1,6 @@
 from typing import List
-from main.models.GeneralNotification import GeneralNotification
-from main.models.User import User
+from main.architecture.persistence.models.GeneralNotification import GeneralNotification
+from main.architecture.persistence.models.User import User
 from main.domain.common.repository.filters.GeneralNotificationFilter import GeneralNotificationFilter
 
 class GeneralNotificationRepository:

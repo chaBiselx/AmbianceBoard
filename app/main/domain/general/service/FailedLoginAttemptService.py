@@ -1,6 +1,6 @@
 from main.utils.logger import LoggerFactory
 
-from main.models.FailedLoginAttempt import FailedLoginAttempt
+from main.architecture.persistence.models.FailedLoginAttempt import FailedLoginAttempt
 from django.utils import timezone
 from datetime import timedelta
 from main.domain.common.repository.FailedLoginAttemptRepository import FailedLoginAttemptRepository

@@ -1,8 +1,8 @@
 
 
 from django.db.models.signals import post_migrate
-from main.postMigrate.Group import create_groups
-from main.postMigrate.Permission import create_permissions,  attrib_permissions
+from main.architecture.persistence.postMigrate.Group import create_groups
+from main.architecture.persistence.postMigrate.Permission import create_permissions,  attrib_permissions
 
 
 # Connecter le signal

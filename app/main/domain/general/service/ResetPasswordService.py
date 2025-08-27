@@ -1,4 +1,4 @@
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 import hashlib
 import secrets
 from django.utils import timezone

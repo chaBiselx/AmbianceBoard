@@ -1,7 +1,7 @@
 from typing import Optional
 from django.http import HttpRequest
-from main.models.LinkMusic import LinkMusic
-from main.models.Playlist import Playlist
+from main.architecture.persistence.models.LinkMusic import LinkMusic
+from main.architecture.persistence.models.Playlist import Playlist
 from main.forms.LinkMusicForm import LinkMusicForm
 
 

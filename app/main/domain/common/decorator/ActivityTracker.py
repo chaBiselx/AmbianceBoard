@@ -7,7 +7,7 @@ sans avoir à ajouter manuellement le code de traçage dans chaque vue.
 
 from typing import Any, Optional
 from django.http import HttpRequest
-from main.models.UserActivity import UserActivity
+from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 class ActivityContextHelper:

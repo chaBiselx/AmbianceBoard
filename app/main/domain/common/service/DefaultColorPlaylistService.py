@@ -1,5 +1,5 @@
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.models.PlaylistColorUser import PlaylistColorUser
+from main.architecture.persistence.models.PlaylistColorUser import PlaylistColorUser
 from parameters import settings
 from main.utils.cache.CacheFactory import CacheFactory
 

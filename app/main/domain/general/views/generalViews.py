@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.models import Group
 from django.http import JsonResponse, HttpRequest, HttpResponse
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 from main.domain.common.enum.GroupEnum import GroupEnum
 from main.forms.CreateUserForm import CreateUserForm
 from main.forms.UserResetPasswordForm import UserResetPasswordForm
@@ -23,9 +23,9 @@ from main.domain.general.service.ResetPasswordService import ResetPasswordServic
 from main.forms.UserPasswordForm import UserPasswordForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
-from main.models.UserNotificationDismissal import UserNotificationDismissal
-from main.models.GeneralNotification import GeneralNotification
-from main.models.UserTier import UserTier
+from main.architecture.persistence.models.UserNotificationDismissal import UserNotificationDismissal
+from main.architecture.persistence.models.GeneralNotification import GeneralNotification
+from main.architecture.persistence.models.UserTier import UserTier
 from main.utils.logger import logger
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum

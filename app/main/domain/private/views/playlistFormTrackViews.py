@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from main.models.Music import Music
+from main.architecture.persistence.models.Music import Music
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.MusicService import MusicService
 from main.domain.private.service.MultipleMusicUploadService import MultipleMusicUploadService

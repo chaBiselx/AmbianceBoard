@@ -8,7 +8,7 @@ l'accès en cas de bannissement actif.
 from typing import Callable, Any
 import functools
 from django.http import HttpRequest, HttpResponse
-from main.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SoundBoard import SoundBoard
 from django.shortcuts import render
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 

@@ -3,12 +3,12 @@ import uuid
 from main.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
 from django.db.models import QuerySet
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.strategy.PlaylistStrategy import PlaylistStrategy
 from main.domain.brokers.message.ReduceSizeImgMessenger import reduce_size_img
-from main.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from main.utils.cache.CacheFactory import CacheFactory
 from parameters import settings

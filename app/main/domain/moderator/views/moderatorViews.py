@@ -5,18 +5,18 @@ from django.contrib.auth.models import Group, Permission
 from django.db.models import Avg, Count
 from django.db import models
 from django.core.paginator import Paginator
-from main.models.Playlist import Playlist
-from main.models.SoundBoard import SoundBoard
-from main.models.UserModerationLog import UserModerationLog
-from main.models.ReportContent import ReportContent
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.UserModerationLog import UserModerationLog
+from main.architecture.persistence.models.ReportContent import ReportContent
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 from main.utils.ExtractPaginator import extract_context_to_paginator
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from main.utils.url import redirection_url
-from main.models.Tag import Tag
+from main.architecture.persistence.models.Tag import Tag
 from main.forms.TagForm import TagForm
 
 

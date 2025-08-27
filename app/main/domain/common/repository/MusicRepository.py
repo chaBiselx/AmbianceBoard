@@ -1,5 +1,5 @@
-from main.models.Music import Music
-from main.models.User import User
+from main.architecture.persistence.models.Music import Music
+from main.architecture.persistence.models.User import User
 from main.domain.common.repository.filters.MusicFilter import MusicFilter
 
 class MusicRepository:

@@ -1,5 +1,5 @@
 from django import forms
-from main.models.LinkMusic import LinkMusic
+from main.architecture.persistence.models.LinkMusic import LinkMusic
 
 class LinkMusicForm(forms.ModelForm):
     class Meta:

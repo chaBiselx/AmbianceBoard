@@ -1,5 +1,5 @@
 from django import forms
-from main.models.Playlist import Playlist
+from main.architecture.persistence.models.Playlist import Playlist
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
 

@@ -1,6 +1,6 @@
 from typing import Any, Optional, List
-from main.models.SoundBoard import SoundBoard
-from main.models.SharedSoundboard import SharedSoundboard
+from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
 
 
 class SharedSoundboardRepository:

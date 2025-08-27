@@ -1,6 +1,6 @@
 from django.db.models import Q
-from main.models.User import User
-from main.models.Track import Track
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.Track import Track
 
 class MusicFilter:
     def __init__(self, queryset=None):

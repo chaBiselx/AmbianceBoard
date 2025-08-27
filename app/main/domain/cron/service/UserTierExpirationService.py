@@ -4,7 +4,7 @@ Service pour gérer l'expiration des abonnements utilisateur
 from django.utils import timezone
 from main.utils.settings import Settings
 from datetime import timedelta
-from main.models.UserTier import UserTier
+from main.architecture.persistence.models.UserTier import UserTier
 from main.utils.logger import logger
 from main.domain.common.email.UserMail import UserMail
 

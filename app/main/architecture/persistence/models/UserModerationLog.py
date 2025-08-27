@@ -1,5 +1,5 @@
 from django.db import models
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 from main.domain.common.enum.ModerationEnum import ModerationEnum
 from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
 from django.utils import timezone

@@ -1,6 +1,6 @@
 from typing import Any
 from django.db import models
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.utils.cache.CacheFactory import CacheFactory
 

@@ -1,6 +1,6 @@
 from typing import Any, Optional, List
-from main.models.UserModerationLog import UserModerationLog
-from main.models.User import User
+from main.architecture.persistence.models.UserModerationLog import UserModerationLog
+from main.architecture.persistence.models.User import User
 
 
 class UserModerationLogRepository:

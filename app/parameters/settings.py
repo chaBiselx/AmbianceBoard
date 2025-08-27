@@ -196,8 +196,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "main.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
-    "main.middleware.ErrorTrackingMiddleware.ErrorTrackingMiddleware",
+    "main.architecture.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
+    "main.architecture.middleware.ErrorTrackingMiddleware.ErrorTrackingMiddleware",
 ]
 
 ROOT_URLCONF = "parameters.urls"
@@ -213,9 +213,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'main.context_processors.sidebar_processor.sidebar_processor',
-                'main.context_processors.user_preference_processor.user_preference_processor',
-                'main.context_processors.general_information_processor.general_information_processor',
+                'main.architecture.contextProcessors.sidebar_processor.sidebar_processor',
+                'main.architecture.contextProcessors.user_preference_processor.user_preference_processor',
+                'main.architecture.contextProcessors.general_information_processor.general_information_processor',
             ],
         },
     },

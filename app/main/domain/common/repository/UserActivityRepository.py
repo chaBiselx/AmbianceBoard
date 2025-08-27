@@ -1,4 +1,4 @@
-from main.models.UserActivity import UserActivity
+from main.architecture.persistence.models.UserActivity import UserActivity
 
 class UserActivityRepository:
 

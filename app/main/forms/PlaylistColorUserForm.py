@@ -1,5 +1,5 @@
 from django import forms
-from main.models.PlaylistColorUser import PlaylistColorUser
+from main.architecture.persistence.models.PlaylistColorUser import PlaylistColorUser
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 class PlaylistColorUserForm(BootstrapFormMixin, forms.Form):

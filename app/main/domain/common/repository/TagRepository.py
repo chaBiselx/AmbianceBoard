@@ -1,5 +1,5 @@
 from typing import Any, Optional, List
-from main.models.Tag import Tag
+from main.architecture.persistence.models.Tag import Tag
 
 
 class TagRepository:

@@ -63,8 +63,8 @@ class SoundBoardReduceSizeImgStrategy(ReduceSizeImgStrategyBase):
 
 class ReduceSizeImgStrategy:
     def __init__(self):
-        from main.models.Playlist import Playlist
-        from main.models.SoundBoard import SoundBoard
+        from main.architecture.persistence.models.Playlist import Playlist
+        from main.architecture.persistence.models.SoundBoard import SoundBoard
         self._strategies = {
             Playlist.__name__: PlaylistReduceSizeImgStrategy(),
             SoundBoard.__name__: SoundBoardReduceSizeImgStrategy(),

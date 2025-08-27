@@ -1,8 +1,8 @@
 from django.db.models import Q
 from django.utils import timezone
-from main.models.User import User
-from main.models.GeneralNotification import GeneralNotification
-from main.models.UserNotificationDismissal import UserNotificationDismissal
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.GeneralNotification import GeneralNotification
+from main.architecture.persistence.models.UserNotificationDismissal import UserNotificationDismissal
 
 
 class GeneralNotificationFilter:

@@ -1,7 +1,7 @@
 from django.db.models import Count
 from django.db.models.functions import TruncDate
 from datetime import datetime
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 
 class UserStatsService:
     @staticmethod

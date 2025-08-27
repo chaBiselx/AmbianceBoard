@@ -1,6 +1,6 @@
 from django.db.models import Q
-from main.models.User import User
-from main.models.Playlist import Playlist
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.Playlist import Playlist
 
 class PlaylistFilter:
     def __init__(self, queryset=None):

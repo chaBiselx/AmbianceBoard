@@ -1,6 +1,6 @@
 from typing import Any, Optional, List
-from main.models.Playlist import Playlist
-from main.models.User import User
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.User import User
 from main.domain.common.repository.filters.PlaylistFilter import PlaylistFilter
 
 

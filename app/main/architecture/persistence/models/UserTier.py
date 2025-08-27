@@ -1,7 +1,7 @@
 import uuid
 from django.db import models
 from encrypted_model_fields.fields import EncryptedCharField
-from main.models.UserTierHistory import UserTierHistory
+from main.architecture.persistence.models.UserTierHistory import UserTierHistory
 from django.utils import timezone
 from main.utils.UserTierManager import UserTierManager
 

@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from main.utils.ExtractPaginator import extract_context_to_paginator
-from main.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.service.SoundBoardService import SoundBoardService
 from main.service.MusicService import MusicService
 from main.service.RandomizeTrackService import RandomizeTrackService
@@ -13,7 +13,7 @@ from main.domain.public.decorator.reportingContent import add_reporting_btn
 from django.template.response import TemplateResponse
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from django.views.decorators.http import require_http_methods
-from main.models.Tag import Tag
+from main.architecture.persistence.models.Tag import Tag
 from django.db.models import Count
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
@@ -21,7 +21,7 @@ from main.domain.public.service.ReportContentService import ReportContentService
 from main.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.public.service.TagService import TagService
 from main.utils.url import redirection_url
-from main.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
+from main.architecture.persistence.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
 from main.utils.logger import logger
 from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 

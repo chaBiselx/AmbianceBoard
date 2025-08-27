@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from main.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.domain.private.manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.common.service.PlaylistService import PlaylistService

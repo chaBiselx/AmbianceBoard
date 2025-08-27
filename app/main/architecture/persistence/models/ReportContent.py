@@ -1,6 +1,6 @@
 import uuid
 from django.db import models
-from main.models.Playlist import Playlist
+from main.architecture.persistence.models.Playlist import Playlist
 from main.domain.common.enum.ReportContentResultEnum import ReportContentResultEnum
 
 class ReportContent(models.Model):

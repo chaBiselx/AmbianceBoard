@@ -1,5 +1,5 @@
-from main.models.User import User
-from main.models.UserPreference import UserPreference
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.UserPreference import UserPreference
 
 class UserPreferenceRepository:
 

@@ -4,11 +4,11 @@ from unittest.mock import patch, MagicMock, Mock
 import uuid
 from main.service.RandomizeTrackService import RandomizeTrackService
 from main.service.SoundBoardService import SoundBoardService
-from main.models.Music import Music
-from main.models.Track import Track
-from main.models.Playlist import Playlist
-from main.models.User import User
-from main.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.Music import Music
+from main.architecture.persistence.models.Track import Track
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.domain.common.repository.filters.MusicFilter import MusicFilter
 
 class RandomizeTrackServiceTest(TestCase):

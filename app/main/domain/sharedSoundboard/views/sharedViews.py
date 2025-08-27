@@ -9,8 +9,8 @@ from django.urls import reverse
 from main.service.SoundBoardService import SoundBoardService #
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum #
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.models.SharedSoundboard import SharedSoundboard
-from main.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
+from main.architecture.persistence.models.SoundBoard import SoundBoard
 from django.contrib.sites.shortcuts import get_current_site
 from main.utils.url import get_full_url
 from main.service.RandomizeTrackService import RandomizeTrackService

@@ -7,7 +7,7 @@ permettant de collecter des statistiques sur les erreurs rencontrées par les ut
 
 from typing import Callable
 from django.http import HttpRequest, HttpResponse
-from main.models.UserActivity import UserActivity
+from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.utils.logger import LoggerFactory
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum

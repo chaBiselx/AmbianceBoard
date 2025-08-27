@@ -13,8 +13,8 @@ from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from django.utils import timezone
 
-from main.models.User import User
-from main.models.UserTier import UserTier
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.UserTier import UserTier
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.utils.ExtractPaginator import extract_context_to_paginator
 from main.utils.UserTierManager import UserTierManager

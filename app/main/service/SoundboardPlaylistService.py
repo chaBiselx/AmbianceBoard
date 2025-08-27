@@ -1,6 +1,6 @@
-from main.models.SoundboardPlaylist import SoundboardPlaylist
-from main.models.Playlist import Playlist
-from main.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.SoundBoard import SoundBoard
 
 
 class SoundboardPlaylistService:

@@ -1,6 +1,6 @@
 from django import template
-from main.models.Playlist import Playlist
-from main.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.SoundBoard import SoundBoard
 
 
 register = template.Library()

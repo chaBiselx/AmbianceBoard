@@ -2,10 +2,10 @@ from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch, MagicMock
 from main.domain.common.repository.TrackRepository import TrackRepository
-from main.models.Music import Music
-from main.models.LinkMusic import LinkMusic
-from main.models.Playlist import Playlist
-from main.models.User import User
+from main.architecture.persistence.models.Music import Music
+from main.architecture.persistence.models.LinkMusic import LinkMusic
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.User import User
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 
