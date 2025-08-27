@@ -1,7 +1,7 @@
 import re
 from django import forms
 from main.architecture.persistence.models.User import User
-from main.forms.UserPasswordForm import UserPasswordForm
+from main.domain.general.form.UserPasswordForm import UserPasswordForm
 from main.architecture.persistence.models.DomainBlacklist import DomainBlacklist
 
 class CreateUserForm(UserPasswordForm):

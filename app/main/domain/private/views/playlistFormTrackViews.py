@@ -6,14 +6,14 @@ from main.architecture.persistence.models.Music import Music
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.MusicService import MusicService
 from main.domain.private.service.MultipleMusicUploadService import MultipleMusicUploadService
-from main.forms.MusicForm import MusicForm
+from main.domain.private.form.MusicForm import MusicForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 from main.utils.UserTierManager import UserTierManager
 from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from main.domain.private.service.LinkService import LinkService
-from main.forms.LinkMusicForm import LinkMusicForm
+from main.domain.private.form.LinkMusicForm import LinkMusicForm
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper

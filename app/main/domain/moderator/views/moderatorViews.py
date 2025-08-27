@@ -17,7 +17,7 @@ from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from main.utils.url import redirection_url
 from main.architecture.persistence.models.Tag import Tag
-from main.forms.TagForm import TagForm
+from main.domain.moderator.form.TagForm import TagForm
 
 
 

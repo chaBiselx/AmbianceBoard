@@ -9,7 +9,7 @@ from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
-from main.forms.PlaylistForm import PlaylistForm
+from main.domain.private.form.PlaylistForm import PlaylistForm
 from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from main.domain.common.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from main.service.SoundBoardService import SoundBoardService

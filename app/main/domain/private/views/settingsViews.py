@@ -8,7 +8,7 @@ from django.forms import formset_factory
 from main.utils.settings import Settings
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SoundBoardService import SoundBoardService
-from main.forms.PlaylistColorUserForm import PlaylistColorUserForm
+from main.domain.private.form.PlaylistColorUserForm import PlaylistColorUserForm
 from main.architecture.persistence.models.PlaylistColorUser import PlaylistColorUser
 from main.architecture.persistence.models.UserPreference import UserPreference
 from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
