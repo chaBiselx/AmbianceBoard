@@ -4,8 +4,8 @@ from main.architecture.persistence.models.User import User
 from django.utils import timezone
 from main.domain.common.email.UserMail import UserMail
 from main.service.ConfirmationUserService import ConfirmationUserService
-from main.utils.url import get_full_url
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.url import get_full_url
+from main.domain.common.utils.logger import LoggerFactory
 
 
 class RGPDService:

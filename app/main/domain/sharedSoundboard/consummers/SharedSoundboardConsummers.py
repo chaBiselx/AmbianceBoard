@@ -2,9 +2,9 @@ import json
 import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from main.utils.cache.CacheFactory import CacheFactory
-from main.utils.settings import Settings
-from main.utils.logger import logger
+from main.domain.common.utils.cache.CacheFactory import CacheFactory
+from main.domain.common.utils.settings import Settings
+from main.domain.common.utils.logger import logger
 
 class SharedSoundboardConsummers(AsyncWebsocketConsumer):
     async def connect(self):

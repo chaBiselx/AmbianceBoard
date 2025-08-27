@@ -136,7 +136,7 @@ class UserTierHistory(models.Model):
 
     def get_tier_change_impact(self):
         """Retourne l'impact du changement de tier"""
-        from main.utils.UserTierManager import UserTierManager
+        from main.domain.common.utils.UserTierManager import UserTierManager
         
         prev_limits = UserTierManager.get_tier_limits(self.previous_tier)
         new_limits = UserTierManager.get_tier_limits(self.new_tier)

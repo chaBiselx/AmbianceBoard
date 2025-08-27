@@ -3,7 +3,7 @@ from django.core.files.storage import default_storage
 from parameters import settings
 from main.architecture.persistence.models.Music import Music
 from main.domain.brokers.message.MediaAudioMessenger import clean_audio_messenger
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 
 class MediaAudioService:
     list_media = []

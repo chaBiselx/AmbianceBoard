@@ -9,7 +9,7 @@ from typing import Callable
 from django.http import HttpRequest, HttpResponse
 from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
 
 

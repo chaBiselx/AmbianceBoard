@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from main.architecture.persistence.models.User import User
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 from main.service.ConfirmationUserService import ConfirmationUserService
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 

@@ -1,9 +1,9 @@
-from main.utils.logger.ILogger import ILogger
+from main.domain.common.utils.logger.ILogger import ILogger
 from django.template.loader import render_to_string
-from main.utils.settings import Settings
+from main.domain.common.utils.settings import Settings
 from main.architecture.persistence.models.ReportContent import ReportContent
-from main.utils.EmailSender import EmailSender
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.EmailSender import EmailSender
+from main.domain.common.utils.logger import LoggerFactory
 
 
 class ModeratorEmail():

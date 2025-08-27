@@ -1,6 +1,6 @@
 from celery import shared_task
 from main.service.cleanService.ImgPlaylistCleanService import ImgPlaylistCleanService
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 @shared_task
 def clean_img_files(list_media_file:list):

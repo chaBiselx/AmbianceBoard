@@ -4,7 +4,7 @@ from django.core.files.storage import default_storage
 from main.architecture.persistence.models.Music import Music
 from main.domain.common.exceptions.FileManagementException import FileNotInDatabase, FileNoteFound
 from main.service.cleanService.BaseCleanService import BaseCleanService
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 from main.domain.common.repository.MusicRepository import MusicRepository
 
 class AudioCleanService(BaseCleanService):

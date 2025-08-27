@@ -6,7 +6,7 @@ from main.domain.common.repository.filters.PlaylistFilter import PlaylistFilter
 from main.domain.common.repository.PlaylistRepository import PlaylistRepository
 from main.domain.private.form.PlaylistForm import PlaylistForm
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
-from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 
 class PlaylistService:

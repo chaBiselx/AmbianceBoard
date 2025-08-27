@@ -3,7 +3,7 @@ import os
 from django.core.files.storage import default_storage
 from main.architecture.persistence.models.Music import Music
 from main.domain.common.exceptions.FileManagementException import FileNotInDatabase, FileNoteFound
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 
 class BaseCleanService:
     def __init__(self, storage_location=None, folder=None):

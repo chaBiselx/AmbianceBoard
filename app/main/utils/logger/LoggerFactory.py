@@ -3,7 +3,7 @@ Factory pour créer des instances de logger.
 Permet une création centralisée et configurée des loggers.
 """
 
-from main.utils.settings import Settings
+from main.domain.common.utils.settings import Settings
 from typing import Optional
 from .ILogger import ILogger
 from .LoggerFile import LoggerFile

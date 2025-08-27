@@ -22,7 +22,7 @@ from main.domain.common.repository.PlaylistRepository import PlaylistRepository
 
 
 
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 @login_required
 @require_http_methods(['GET'])

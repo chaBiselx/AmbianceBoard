@@ -2,7 +2,7 @@
 import requests
 from typing import List
 from .BaseProvider import DomainProvider
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 
 class RemoteTextDomainProvider(DomainProvider):

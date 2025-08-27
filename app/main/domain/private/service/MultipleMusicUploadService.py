@@ -6,7 +6,7 @@ from main.service.MusicService import MusicService
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 class MultipleMusicUploadService:
     """Service for handling multiple music uploads."""

@@ -1,5 +1,5 @@
 from django import template
-from main.utils.settings import Settings
+from main.domain.common.utils.settings import Settings
 from main.service.utils.StaticFilesService import StaticFilesService
 import os
 

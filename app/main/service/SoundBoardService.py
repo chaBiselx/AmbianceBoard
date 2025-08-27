@@ -5,7 +5,7 @@ from main.architecture.persistence.models.SharedSoundboard import SharedSoundboa
 from main.domain.private.form.SoundBoardForm import SoundBoardForm
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
-from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 
 class SoundBoardService:

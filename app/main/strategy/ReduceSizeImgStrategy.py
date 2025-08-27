@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from main.utils.ImageResizer import ImageResizer
+from main.domain.common.utils.ImageResizer import ImageResizer
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 import os
 
 

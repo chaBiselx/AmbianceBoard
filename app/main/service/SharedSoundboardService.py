@@ -5,8 +5,8 @@ from django.urls import reverse
 
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
 from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.utils.logger import logger
-from main.utils.cache.CacheFactory import CacheFactory
+from main.domain.common.utils.logger import logger
+from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
 from main.domain.common.repository.SharedSoundboardRepository import SharedSoundboardRepository
 

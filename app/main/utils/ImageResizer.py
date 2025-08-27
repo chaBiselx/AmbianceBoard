@@ -9,7 +9,7 @@ from typing import Any, Union, Optional
 from PIL import Image, ImageSequence
 import os
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 
  
 class ImageResizer:

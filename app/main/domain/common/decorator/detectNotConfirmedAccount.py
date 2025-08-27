@@ -2,7 +2,7 @@ from functools import wraps
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.urls import reverse
-from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 
 
@@ -10,7 +10,7 @@ from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 
 # Configurer le logger
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 def detect_not_confirmed_account():
     """

@@ -16,7 +16,7 @@ from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from django.core import exceptions
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 
 @login_required

@@ -1,7 +1,7 @@
 
 from main.domain.cron.service.UserTierExpirationService import UserTierExpirationService
 
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 def run():
     logger.info("Début de la vérification des expirations de tiers utilisateur via le service.")

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.forms import formset_factory
-from main.utils.settings import Settings
+from main.domain.common.utils.settings import Settings
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.private.form.PlaylistColorUserForm import PlaylistColorUserForm
@@ -15,8 +15,8 @@ from main.domain.common.service.DefaultColorPlaylistService import DefaultColorP
 from main.domain.common.enum.ThemeEnum import ThemeEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.exceptions.PostDataException import PostDataException
-from main.utils.UserTierManager import UserTierManager
-from main.utils.logger import logger
+from main.domain.common.utils.UserTierManager import UserTierManager
+from main.domain.common.utils.logger import logger
 
 @login_required
 @require_http_methods(['GET'])

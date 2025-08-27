@@ -9,7 +9,7 @@ from typing import Dict, Any
 from parameters import settings
 from main.architecture.persistence.models.User import User
 from main.domain.common.enum.PermissionEnum import PermissionEnum
-from main.utils.UserTierManager import UserTierManager
+from main.domain.common.utils.UserTierManager import UserTierManager
 
 class UserParametersFactory:
     """

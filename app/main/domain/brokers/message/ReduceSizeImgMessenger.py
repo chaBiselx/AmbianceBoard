@@ -1,7 +1,7 @@
 from celery import shared_task
 from django.apps import apps
 from main.strategy.ReduceSizeImgStrategy import ReduceSizeImgStrategy
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 @shared_task
 def reduce_size_img(model_name, model_id):

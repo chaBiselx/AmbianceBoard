@@ -5,7 +5,7 @@ from main.domain.common.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 from main.strategy.urlMusicStream.FileStreamExtract import FileStreamExtract
 from main.strategy.urlMusicStream.InfiniteStreamExtract import InfiniteStreamExtract
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 
 class UrlMusicStreamStrategy:

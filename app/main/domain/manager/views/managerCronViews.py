@@ -11,7 +11,7 @@ from main.domain.cron.service.UserTierExpirationService  import UserTierExpirati
 from main.domain.cron.service.DomainBlacklistCronService import DomainBlacklistCronService
 from main.domain.cron.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.cron.service.PurgeUserActivityService import PurgeUserActivityService
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 @login_required
 @require_http_methods(['GET'])

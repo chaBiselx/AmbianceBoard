@@ -12,7 +12,7 @@ from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 
 @login_required

@@ -10,8 +10,8 @@ from main.domain.private.form.MusicForm import MusicForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
-from main.utils.UserTierManager import UserTierManager
-from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.utils.UserTierManager import UserTierManager
+from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from main.domain.private.service.LinkService import LinkService
 from main.domain.private.form.LinkMusicForm import LinkMusicForm
 
@@ -19,7 +19,7 @@ from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.domain.common.repository.MusicRepository import MusicRepository
 
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 @login_required
 @require_http_methods(['POST'])

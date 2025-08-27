@@ -1,5 +1,5 @@
 import smtplib
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 from parameters import settings
 from email.message import EmailMessage
 from typing import List, Optional

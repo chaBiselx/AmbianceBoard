@@ -1,4 +1,4 @@
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 
 from main.architecture.persistence.models.FailedLoginAttempt import FailedLoginAttempt
 from django.utils import timezone

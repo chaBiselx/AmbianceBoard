@@ -7,7 +7,7 @@ from main.architecture.persistence.models.UserTier import UserTier
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.common.enum.GroupEnum import GroupEnum
-from main.utils.UserTierManager import UserTierManager
+from main.domain.common.utils.UserTierManager import UserTierManager
 
 
 class UserParametersFactoryTest(TestCase):

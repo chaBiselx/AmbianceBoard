@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from main.utils.ExtractPaginator import extract_context_to_paginator
+from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.service.SoundBoardService import SoundBoardService
 from main.service.MusicService import MusicService
@@ -20,10 +20,10 @@ from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.public.service.ReportContentService import ReportContentService
 from main.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.public.service.TagService import TagService
-from main.utils.url import redirection_url
+from main.domain.common.utils.url import redirection_url
 from main.architecture.persistence.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
-from main.utils.logger import logger
-from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.utils.logger import logger
+from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper

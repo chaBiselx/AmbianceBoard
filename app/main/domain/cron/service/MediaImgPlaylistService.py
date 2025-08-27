@@ -1,5 +1,5 @@
 import os 
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 from django.core.files.storage import default_storage
 from parameters import settings
 from main.architecture.persistence.models.Playlist import Playlist

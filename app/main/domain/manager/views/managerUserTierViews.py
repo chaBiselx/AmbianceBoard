@@ -6,7 +6,7 @@ import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
-from main.utils.settings import Settings
+from main.domain.common.utils.settings import Settings
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views.decorators.http import require_http_methods
@@ -16,9 +16,9 @@ from django.utils import timezone
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.UserTier import UserTier
 from main.domain.common.enum.PermissionEnum import PermissionEnum
-from main.utils.ExtractPaginator import extract_context_to_paginator
-from main.utils.UserTierManager import UserTierManager
-from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
+from main.domain.common.utils.UserTierManager import UserTierManager
+from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 
 

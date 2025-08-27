@@ -1,6 +1,6 @@
 from typing import Any
 from django.db import migrations
-from main.utils.settings import Settings
+from main.domain.common.utils.settings import Settings
 
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType

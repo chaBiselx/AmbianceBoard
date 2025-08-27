@@ -4,7 +4,7 @@ import secrets
 from django.utils import timezone
 from django.urls import reverse
 from main.domain.common.exceptions.SecurityException import SecurityException
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 
 

@@ -1,5 +1,5 @@
 import uuid
-from main.utils.settings import Settings
+from main.domain.common.utils.settings import Settings
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.models import Group
@@ -12,11 +12,11 @@ from main.domain.common.email.UserMail import UserMail
 from main.domain.general.service.FailedLoginAttemptService import FailedLoginAttemptService
 from django.core.exceptions import ValidationError
 from main.service.ConfirmationUserService import ConfirmationUserService
-from main.utils.url import get_full_url
+from main.domain.common.utils.url import get_full_url
 from main.domain.common.decorator.detectNotConfirmedAccount import detect_not_confirmed_account
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
-from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 from django_ratelimit.decorators import ratelimit
 from main.domain.general.service.ResetPasswordService import ResetPasswordService
@@ -26,7 +26,7 @@ from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.architecture.persistence.models.UserNotificationDismissal import UserNotificationDismissal
 from main.architecture.persistence.models.GeneralNotification import GeneralNotification
 from main.architecture.persistence.models.UserTier import UserTier
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper

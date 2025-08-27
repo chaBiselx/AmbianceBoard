@@ -12,7 +12,7 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from django.contrib.sites.shortcuts import get_current_site
-from main.utils.url import get_full_url
+from main.domain.common.utils.url import get_full_url
 from main.service.RandomizeTrackService import RandomizeTrackService
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 

@@ -1,7 +1,7 @@
 import unittest
-from app.main.utils.cache.CacheSystem import CacheSystem
-from app.main.utils.cache.CacheFactory import CacheFactory
-from app.main.utils.cache.ICache import ICache
+from app.main.domain.common.utils.cache.CacheSystem import CacheSystem
+from app.main.domain.common.utils.cache.CacheFactory import CacheFactory
+from app.main.domain.common.utils.cache.ICache import ICache
 
 class TestCacheSystem(unittest.TestCase):
     def setUp(self):

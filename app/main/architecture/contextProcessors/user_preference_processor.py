@@ -1,7 +1,7 @@
 from django.urls import reverse
 from main.domain.common.enum.ThemeEnum import ThemeEnum
 from main.domain.common.repository.UserPreferenceRepository import UserPreferenceRepository
-from main.utils.UserTierManager import UserTierManager
+from main.domain.common.utils.UserTierManager import UserTierManager
 
 def user_preference_processor(request):
     # Liste des URLs où la sidebar doit apparaître

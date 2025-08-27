@@ -1,6 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 from main.service.GeneralNotificationService import GeneralNotificationService
-from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from django.urls import reverse
 
 

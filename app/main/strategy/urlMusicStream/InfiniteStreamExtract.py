@@ -3,7 +3,7 @@ from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 from main.domain.common.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
 import requests
 
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 class InfiniteStreamExtract:
     def __init__(self, link_music):

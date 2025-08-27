@@ -1,4 +1,4 @@
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 import uuid
 from django.urls import reverse
 from main.architecture.persistence.models.User import User

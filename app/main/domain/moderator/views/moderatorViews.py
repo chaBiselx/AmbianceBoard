@@ -12,10 +12,10 @@ from main.architecture.persistence.models.ReportContent import ReportContent
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
 from main.architecture.persistence.models.User import User
-from main.utils.ExtractPaginator import extract_context_to_paginator
+from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
-from main.utils.url import redirection_url
+from main.domain.common.utils.url import redirection_url
 from main.architecture.persistence.models.Tag import Tag
 from main.domain.moderator.form.TagForm import TagForm
 

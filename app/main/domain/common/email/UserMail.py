@@ -1,9 +1,9 @@
-from main.utils.logger.ILogger import ILogger
-from main.utils.settings import Settings
+from main.domain.common.utils.logger.ILogger import ILogger
+from main.domain.common.utils.settings import Settings
 from django.template.loader import render_to_string
 from main.architecture.persistence.models.User import User
-from main.utils.EmailSender import EmailSender
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.EmailSender import EmailSender
+from main.domain.common.utils.logger import LoggerFactory
 
 
 class UserMail:

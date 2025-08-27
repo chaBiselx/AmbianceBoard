@@ -2,7 +2,7 @@ from typing import Any
 from django.db import models
 from main.architecture.persistence.models.User import User
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.utils.cache.CacheFactory import CacheFactory
+from main.domain.common.utils.cache.CacheFactory import CacheFactory
 
 
 class PlaylistColorUser(models.Model):

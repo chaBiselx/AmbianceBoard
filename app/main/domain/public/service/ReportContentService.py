@@ -1,4 +1,4 @@
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 import uuid
 from main.architecture.persistence.models.ReportContent import ReportContent
 from main.domain.common.exceptions.PostDataException import PostDataException

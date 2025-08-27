@@ -1,6 +1,6 @@
 from celery import shared_task
-from main.utils.AudioBitrateReducer import AudioBitrateReducer
-from main.utils.logger import logger
+from main.domain.common.utils.AudioBitrateReducer import AudioBitrateReducer
+from main.domain.common.utils.logger import logger
 
 @shared_task
 def reduce_bit_rate(path_file:str):

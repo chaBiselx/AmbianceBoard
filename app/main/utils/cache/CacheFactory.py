@@ -1,4 +1,4 @@
-from main.utils.settings import Settings
+from main.domain.common.utils.settings import Settings
 from typing import Optional
 from .ICache import ICache
 from .CacheSystem import CacheSystem

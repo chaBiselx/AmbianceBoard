@@ -10,7 +10,7 @@ from django.http import HttpRequest, HttpResponse
 import uuid
 import time
 import secrets
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 
 class LogRequestsMiddleware:
     """

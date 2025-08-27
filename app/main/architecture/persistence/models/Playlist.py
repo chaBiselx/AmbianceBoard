@@ -1,6 +1,6 @@
 from typing import Any, Optional
 import uuid
-from main.utils.uuidUtils import is_not_uuid_with_extension
+from main.domain.common.utils.uuidUtils import is_not_uuid_with_extension
 from django.db import models
 from django.db.models import QuerySet
 from main.architecture.persistence.models.User import User
@@ -10,9 +10,9 @@ from main.strategy.PlaylistStrategy import PlaylistStrategy
 from main.domain.brokers.message.ReduceSizeImgMessenger import reduce_size_img
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
-from main.utils.cache.CacheFactory import CacheFactory
+from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from parameters import settings
-from main.utils.OverwriteStorage import OverwriteStorage
+from main.domain.common.utils.OverwriteStorage import OverwriteStorage
 
 
 class Playlist(models.Model):
