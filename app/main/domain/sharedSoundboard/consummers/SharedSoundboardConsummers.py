@@ -6,7 +6,7 @@ from main.utils.cache.CacheFactory import CacheFactory
 from main.utils.settings import Settings
 from main.utils.logger import logger
 
-class SharedSoundboard(AsyncWebsocketConsumer):
+class SharedSoundboardConsummers(AsyncWebsocketConsumer):
     async def connect(self):
         # Récupération des paramètres d'URL
         self.soundboard_uuid = self.scope['url_route']['kwargs']['soundboard_uuid']

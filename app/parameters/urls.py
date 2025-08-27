@@ -21,7 +21,7 @@ from main.domain.manager.views.managerCronViews import (
     )
 from main.domain.public.views.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, favorite_update, reporting_content, public_favorite
 from main.domain.sharedSoundboard.views.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream
-from main.channels.SharedSoundboard import SharedSoundboard
+from main.domain.sharedSoundboard.consummers.SharedSoundboardConsummers import SharedSoundboardConsummers
 
 
 urlpatterns = [
@@ -141,7 +141,7 @@ urlpatterns = [
     path("manager/user-tiers/expiring/", manager_user_tiers_expiring, name="managerUserTiersExpiring"),
     
     
-    path('shared/ws/<uuid:soundboard_uuid>/<str:token>', SharedSoundboard.as_asgi(), name='soundboard_ws'),
+    path('shared/ws/<uuid:soundboard_uuid>/<str:token>', SharedSoundboardConsummers.as_asgi(), name='soundboard_ws'),
 ]
 
 
