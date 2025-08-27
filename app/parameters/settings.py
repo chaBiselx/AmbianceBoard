@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "main",
+    "main.architecture.ui",  # App pour les templateTags
     "django_crontab",
 ]
 
@@ -205,7 +206,9 @@ ROOT_URLCONF = "parameters.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'defaultTemplate')],
+        "DIRS": [
+            os.path.join(BASE_DIR, 'defaultTemplate'),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
