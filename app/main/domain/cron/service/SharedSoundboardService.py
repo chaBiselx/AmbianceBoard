@@ -1,6 +1,6 @@
 
 from django.utils import timezone
-from main.service.cleanService.BaseCleanService import BaseCleanService
+from main.domain.brokers.service.cleanService.BaseCleanService import BaseCleanService
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
 from main.domain.common.utils.logger import LoggerFactory
 

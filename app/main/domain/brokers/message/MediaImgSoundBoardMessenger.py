@@ -1,5 +1,5 @@
 from celery import shared_task
-from main.service.cleanService.ImgPlaylistCleanService import ImgPlaylistCleanService
+from main.domain.brokers.service.cleanService.ImgPlaylistCleanService import ImgPlaylistCleanService
 from main.domain.common.utils.logger import logger
 
 @shared_task
