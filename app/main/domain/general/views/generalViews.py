@@ -11,7 +11,7 @@ from main.domain.general.form.UserResetPasswordForm import UserResetPasswordForm
 from main.domain.common.email.UserMail import UserMail
 from main.domain.general.service.FailedLoginAttemptService import FailedLoginAttemptService
 from django.core.exceptions import ValidationError
-from main.service.ConfirmationUserService import ConfirmationUserService
+from main.domain.common.service.ConfirmationUserService import ConfirmationUserService
 from main.domain.common.utils.url import get_full_url
 from main.domain.common.decorator.detectNotConfirmedAccount import detect_not_confirmed_account
 from django.views.decorators.http import require_http_methods

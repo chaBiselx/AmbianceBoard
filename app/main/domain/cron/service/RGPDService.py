@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from main.architecture.persistence.models.User import User
 from django.utils import timezone
 from main.domain.common.email.UserMail import UserMail
-from main.service.ConfirmationUserService import ConfirmationUserService
+from main.domain.common.service.ConfirmationUserService import ConfirmationUserService
 from main.domain.common.utils.url import get_full_url
 from main.domain.common.utils.logger import LoggerFactory
 
