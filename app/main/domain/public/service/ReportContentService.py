@@ -37,10 +37,10 @@ class ReportContentService:
                         ModeratorEmail().report_content_reported(report)
                     except Exception as e:
                         self.logger.error(f"Erreur lors de l'envoi de l'email de signalement: {e}")
-                    return True
+                    return report
                 else: 
                     raise PostDataException(f"Type de contenu ou uuid de contenu non renseigné {{type_element: {type_element}, uuid_element: {uuid_element}}}")
             except Exception as e:
                 self.logger.error(e)
-        return False
+        return None
     
