@@ -6,7 +6,7 @@ de manière cohérente sur tous les formulaires de l'application.
 """
 
 from typing import Any
-from main.strategy.FormStategy import FormStategy
+from main.domain.common.strategy.FormStategy import FormStategy
 
 class BootstrapFormMixin:
     """

@@ -132,7 +132,7 @@ class PlaylistModelTest(TestCase):
             priority=1
         )
 
-    @patch('main.strategy.PlaylistStrategy.PlaylistStrategy.get_strategy')
+    @patch('main.domain.common.strategy.PlaylistStrategy.PlaylistStrategy.get_strategy')
     def test_get_data_set(self, mock_get_strategy):
         """Test la méthode get_data_set avec différents types de playlist"""
         # Créer une mock strategy qui retourne des données test

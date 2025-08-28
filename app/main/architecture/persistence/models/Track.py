@@ -1,7 +1,7 @@
 from django.db import models
 from .Playlist import Playlist
 from django.http import StreamingHttpResponse
-from main.strategy.urlMusicStreamStrategy import UrlMusicStreamStrategy
+from main.domain.common.strategy.urlMusicStreamStrategy import UrlMusicStreamStrategy
 from django.shortcuts import redirect
 
 

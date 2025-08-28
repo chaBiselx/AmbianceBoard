@@ -1,7 +1,7 @@
 from typing import Any, Dict
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.strategy.PlaylistStrategy import PlaylistStrategy
-from main.strategy.playlistConfig.AbstractConfig import AbstractConfig
+from main.domain.common.strategy.PlaylistStrategy import PlaylistStrategy
+from main.domain.common.strategy.playlistConfig.AbstractConfig import AbstractConfig
 
 
 class TypePlaylistFormater():

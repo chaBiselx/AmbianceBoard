@@ -1,6 +1,6 @@
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.FadeEnum import FadeEnum
-from main.strategy.playlistConfig.AbstractConfig import AbstractConfig
+from main.domain.common.strategy.playlistConfig.AbstractConfig import AbstractConfig
 
 class ConfigInstant(AbstractConfig):
     def __init__(self):

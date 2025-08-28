@@ -1,4 +1,4 @@
-from main.strategy.formManager.InputManager import InputManager, PasswordInput, TextInputManager, FileInputManager, NumberInputManager, CheckboxInputManager, SelectInputManager
+from main.domain.common.strategy.formManager.InputManager import InputManager, PasswordInput, TextInputManager, FileInputManager, NumberInputManager, CheckboxInputManager, SelectInputManager
 
 class FormStategy:
     def get_input_manager(self, field) -> InputManager:

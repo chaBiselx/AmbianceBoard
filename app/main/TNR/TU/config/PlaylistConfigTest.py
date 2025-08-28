@@ -1,7 +1,7 @@
 import unittest
-from main.strategy.playlistConfig.ConfigInstant import ConfigInstant
-from main.strategy.playlistConfig.ConfigMusic import  ConfigMusic
-from main.strategy.playlistConfig.ConfigAmbient import ConfigAmbient
+from main.domain.common.strategy.playlistConfig.ConfigInstant import ConfigInstant
+from main.domain.common.strategy.playlistConfig.ConfigMusic import  ConfigMusic
+from main.domain.common.strategy.playlistConfig.ConfigAmbient import ConfigAmbient
 
 class PlaylistConfigTest(unittest.TestCase):
 

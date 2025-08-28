@@ -3,7 +3,7 @@ Gestionnaire des tiers d'utilisateurs
 Centralise la logique de gestion des différents niveaux d'utilisateurs
 """
 
-from main.utils.settings import Settings
+from main.domain.common.utils.settings import Settings
 from typing import Dict, Any, Optional
 from main.domain.common.enum.GroupEnum import GroupEnum
 

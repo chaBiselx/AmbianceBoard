@@ -1,8 +1,8 @@
 
 from pydub import AudioSegment
 import os
-from main.utils.settings import Settings
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.settings import Settings
+from main.domain.common.utils.logger import LoggerFactory
 
 class AudioBitrateReducer:
     def __init__(self, input_file):

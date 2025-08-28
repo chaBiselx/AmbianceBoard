@@ -1,5 +1,5 @@
 import urllib
-from main.utils.settings import Settings
+from main.domain.common.utils.settings import Settings
 
 
 def get_full_url(path: str) -> str:
