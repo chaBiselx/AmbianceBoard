@@ -207,7 +207,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            os.path.join(BASE_DIR, 'defaultTemplate'),
+            os.path.join(BASE_DIR, 'main/interface/ui/defaultTemplate'),
             os.path.join(BASE_DIR, 'main/interface/ui/seo'),  # Templates SEO
         ],
         "APP_DIRS": True,
