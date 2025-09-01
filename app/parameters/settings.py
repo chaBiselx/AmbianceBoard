@@ -41,7 +41,6 @@ if ACTIVE_SSL:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
-EMAIL_DEBUG = bool(os.environ.get("EMAIL_DEBUG", default=None))
 EMAIL_SMTP_SERVEUR = str(os.environ.get("EMAIL_SMTP_SERVEUR"))
 EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT"))
 EMAIL_SMTP_USERNAME = str(os.environ.get("EMAIL_SMTP_USERNAME"))
