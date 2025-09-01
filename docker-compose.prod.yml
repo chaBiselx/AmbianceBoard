@@ -39,7 +39,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-      - front_build:/app/static
+      - static_volume:/app/static
     environment:
       - DEBUG=0
     depends_on:
@@ -74,4 +74,3 @@ volumes:
   rabbitmq-data: null
   static_volume: null
   media_volume: null
-  front_build: null
