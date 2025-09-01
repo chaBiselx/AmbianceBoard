@@ -13,7 +13,7 @@ fi
 cp .dockerignore.prod .dockerignore
 
 # Builder l'image
-docker-compose -f ../docker-compose.prod.yml build --no-cache
+docker compose -f ../docker-compose.prod.yml build --no-cache
 
 # Restaurer le .dockerignore de développement
 if [ -f ".dockerignore.dev.backup" ]; then
