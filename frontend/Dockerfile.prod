@@ -1,0 +1,19 @@
+FROM node:18
+
+WORKDIR /app
+
+COPY package*.json tsconfig.json ./
+COPY vite.config.ts ./
+
+RUN npm install --ignore-scripts
+
+COPY ./src ./src
+COPY ./scss ./scss
+COPY ./assets ./assets
+COPY ./scripts ./scripts
+
+# Créer le dossier static si il n'existe pas
+RUN mkdir -p static/js static/css static/webfonts
+
+# Compiler pour produire les assets
+CMD ["npm", "run", "build"]
