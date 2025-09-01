@@ -20,7 +20,7 @@ services:
     volumes:
       - ./app/:/usr/src/app/
       - ./static:/usr/src/app/static/
-      - ./mediafiles:/usr/src/app/mediafiles/
+      - ./mediafiles:/usr/src/app/media/
     ports:
       - ${WEB_PORT}:${WEB_PORT}
     env_file:
@@ -30,6 +30,7 @@ services:
     depends_on:
       - db
       - rabbitmq
+      - front
 
   front:
     build:
@@ -42,8 +43,7 @@ services:
       - ./static:/app/static
     environment:
       - DEBUG=0
-    depends_on:
-      - back
+      
 
 
   db:

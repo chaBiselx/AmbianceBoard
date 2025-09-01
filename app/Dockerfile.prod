@@ -47,8 +47,8 @@ RUN dos2unix ./entrypoint.prod.sh && chmod +x ./entrypoint.prod.sh
 # change ownership of the app directory to appuser
 RUN chown -R appuser:appuser /usr/src/app
 
-# collectstatic pour Django (run as appuser for most cases)
-RUN python manage.py collectstatic --noinput || true
+# collectstatic pour Django en mode production
+RUN python manage.py collectstatic --noinput --clear || true
 
 # Note: We start as root to allow cron functionality when needed
 # The application should drop privileges when not running cron
