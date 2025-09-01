@@ -1,6 +1,15 @@
 #!/bin/sh
 
-env >> /etc/environment # give environment variables to cron
+# For development: simplified approach
+# In production, you should implement proper user switching
+if [ "$RUNCRON" = "1" ]; then
+    echo "Running in CRON mode (requires root for system cron access)"
+    env >> /etc/environment # give environment variables to cron
+else
+    echo "Running in APP mode (consider switching to non-root user in production)"
+    # In development, we keep it simple but add this reminder
+    echo "Security note: Running as root. In production, consider using non-root user."
+fi
 
 if [ "$DATABASE" = "postgres" ]
 then
