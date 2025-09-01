@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
 class DashboardLineGraph {
     private readonly element: HTMLElement | null;
     private chartWrapper: ChartWrapper | null = null;
-    private periodeLineChart: HTMLSelectElement | null;
+    private readonly periodeLineChart: HTMLSelectElement | null;
 
     constructor(id: string) {
         this.element = document.getElementById(id);
