@@ -23,7 +23,7 @@ build:
 
 build-prod:
 	@# Help: Construire les ressources de l'application en mode production
-	@docker compose -f docker-compose.prod.yml build --no-cache
+	@cd app && ./build-prod.sh
 
 up:
 	@# Help: Demarrer les ressources de l'application

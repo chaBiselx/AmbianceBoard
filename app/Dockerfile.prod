@@ -19,21 +19,19 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
     # clean cache
     && apt-get clean 
 
-
-    
-
 # install dependencies
 COPY ./requirements.txt .
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
+# copy project files explicitly (avoiding sensitive data)
+COPY manage.py ./
+COPY main/ ./main/
+COPY parameters/ ./parameters/
+COPY static/ ./static/
 
-
-
-
-
-# copy project
-COPY . .
+# create necessary directories
+RUN mkdir -p mediafiles/musics mediafiles/playlistIcon mediafiles/soundBoardIcon logs
 
 # installer gunicorn pour la prod
 RUN pip install gunicorn

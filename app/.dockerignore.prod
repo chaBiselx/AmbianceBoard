@@ -1,0 +1,55 @@
+# Ignore sensitive and unnecessary files for production
+logs/
+backup/
+mediafiles/musics/
+mediafiles/playlistIcon/
+mediafiles/soundBoardIcon/
+
+# Development files not needed in production
+requirements-dev.txt
+Dockerfile
+entrypoint.sh
+*test*
+*Test*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Environment files (should be handled via secrets/env vars)
+.env*
+
+# Git
+.git/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Documentation files
+*.md
+*.MD
+
+# Development tools
+Makefile
+makeFileFolder/
+
+# Frontend source (not needed in backend container)
+frontend/src/
+frontend/scss/
+frontend/assets/
+frontend/tests/
