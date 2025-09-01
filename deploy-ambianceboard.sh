@@ -11,8 +11,8 @@ echo "============================================="
 # Variables prédéfinies
 DOMAIN="ambianceboard.com"
 read -p "Entrez votre email pour Let's Encrypt: " EMAIL
-read -p "Port de votre application Django (défaut: 8000): " DJANGO_PORT
-DJANGO_PORT=${DJANGO_PORT:-8000}
+read -p "Port de votre application Django (défaut: 8080): " DJANGO_PORT
+DJANGO_PORT=${DJANGO_PORT:-8080}
 
 # Vérification des prérequis
 echo "📋 Vérification des prérequis..."
@@ -71,9 +71,14 @@ EOF
 sudo ln -sf /etc/nginx/sites-available/ambianceboard-temp /etc/nginx/sites-enabled/
 sudo rm -f /etc/nginx/sites-enabled/default
 
-# Test de la configuration nginx
-echo "🧪 Test de la configuration nginx..."
+# Test de la configuration nginx temporaire
+echo "🧪 Test de la configuration nginx temporaire..."
 sudo nginx -t
+
+if [ $? -ne 0 ]; then
+    echo "❌ Erreur dans la configuration nginx temporaire"
+    exit 1
+fi
 
 # Redémarrage de nginx
 echo "🔄 Redémarrage de nginx..."
@@ -101,20 +106,31 @@ else
     exit 1
 fi
 
-# Activation de la configuration finale avec SSL
-echo "🔧 Activation de la configuration nginx finale avec SSL..."
-sudo ln -sf $(pwd)/ngix.prod /etc/nginx/sites-available/ambianceboard
-sudo ln -sf /etc/nginx/sites-available/ambianceboard /etc/nginx/sites-enabled/
-sudo rm -f /etc/nginx/sites-enabled/ambianceboard-temp
-
 # Configuration des chemins statiques et média
 echo "📝 Configuration des chemins statiques..."
 read -p "Chemin vers vos fichiers statiques (ex: /home/user/app/staticfiles): " STATIC_PATH
 read -p "Chemin vers vos fichiers média (ex: /home/user/app/mediafiles): " MEDIA_PATH
 
+# Vérification que le fichier ngix.prod existe
+if [ ! -f "ngix.prod" ]; then
+    echo "❌ Fichier ngix.prod non trouvé dans le répertoire courant"
+    echo "📁 Répertoire courant: $(pwd)"
+    echo "📂 Fichiers disponibles: $(ls -la)"
+    exit 1
+fi
+
+# Copie et configuration du fichier final avec SSL
+echo "🔧 Création de la configuration nginx finale avec SSL..."
+sudo cp ngix.prod /etc/nginx/sites-available/ambianceboard
+
 # Mise à jour des chemins dans la configuration
-sudo sed -i "s|/path/to/your/staticfiles/|${STATIC_PATH}/|g" /etc/nginx/sites-available/ambianceboard
-sudo sed -i "s|/path/to/your/mediafiles/|${MEDIA_PATH}/|g" /etc/nginx/sites-available/ambianceboard
+if [ ! -z "$STATIC_PATH" ]; then
+    sudo sed -i "s|/path/to/your/staticfiles/|${STATIC_PATH}/|g" /etc/nginx/sites-available/ambianceboard
+fi
+
+if [ ! -z "$MEDIA_PATH" ]; then
+    sudo sed -i "s|/path/to/your/mediafiles/|${MEDIA_PATH}/|g" /etc/nginx/sites-available/ambianceboard
+fi
 
 # Mise à jour du port Django si différent de 8000
 if [ "$DJANGO_PORT" != "8000" ]; then
@@ -127,14 +143,20 @@ sudo nginx -t
 
 if [ $? -eq 0 ]; then
     echo "✅ Configuration nginx valide"
+    
+    # Activation de la configuration finale
+    sudo ln -sf /etc/nginx/sites-available/ambianceboard /etc/nginx/sites-enabled/
+    sudo rm -f /etc/nginx/sites-enabled/ambianceboard-temp
+    
+    # Redémarrage final
+    echo "🔄 Redémarrage final de nginx..."
+    sudo systemctl reload nginx
 else
-    echo "❌ Erreur dans la configuration nginx"
+    echo "❌ Erreur dans la configuration nginx finale"
+    echo "🔍 Vérification des logs d'erreur:"
+    sudo nginx -t
     exit 1
 fi
-
-# Redémarrage final
-echo "🔄 Redémarrage final de nginx..."
-sudo systemctl reload nginx
 
 # Configuration du renouvellement automatique des certificats
 echo "🔄 Configuration du renouvellement automatique des certificats..."
