@@ -286,8 +286,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS  = [BASE_DIR / 'static']
+"""STATIC FILES CONFIGURATION
+Option A: We serve ONLY collected static files from STATIC_ROOT in production.
+
+Behaviour:
+ - During development (DEBUG=1): Django also looks into STATICFILES_DIRS (source assets)
+ - In production (DEBUG=0): STATICFILES_DIRS is emptied so only the collected files are used.
+ - STATIC_ROOT can be overridden via env var STATIC_ROOT (use an absolute path shared with nginx, e.g. /srv/www/AmbianceBoard/staticfiles)
+"""
+
+# Allow override of STATIC_ROOT so the container can write directly into a host / shared volume
+STATIC_ROOT = Path(os.environ.get("STATIC_ROOT", BASE_DIR / "staticfiles"))
+
+# Source static directory (built assets copied here before collectstatic in dev / CI build stage)
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+if not DEBUG:
+    # In production we rely solely on collected files to avoid Nginx/Django traversing source dirs
+    STATICFILES_DIRS = []
 
 LOGIN_URL = '/login'
 
