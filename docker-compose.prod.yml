@@ -21,6 +21,8 @@ services:
       - ./app/:/usr/src/app/
       - static_volume:/usr/src/app/static/
       - media_volume:/usr/src/app/media/
+    ports:
+      - ${WEB_PORT}:${WEB_PORT}
     env_file:
       - ./.env
     environment:
@@ -43,18 +45,7 @@ services:
     depends_on:
       - back
     entrypoint: ["/bin/sh", "-c", "npm install && npm run build"]
-  nginx:
-    image: nginx:alpine
-    depends_on:
-      - back
-      - front
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - static_volume:/usr/src/app/static/
-      - media_volume:/usr/src/app/media/
-      - front_build:/usr/share/nginx/html/
+
 
   db:
     image: postgres:15.8
