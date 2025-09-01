@@ -19,8 +19,8 @@ services:
     command: gunicorn parameters.wsgi:application --bind 0.0.0.0:${WEB_PORT} --workers=3
     volumes:
       - ./app/:/usr/src/app/
-      - static_volume:/usr/src/app/static/
-      - media_volume:/usr/src/app/media/
+      - ./static:/usr/src/app/static/
+      - ./mediafiles:/usr/src/app/mediafiles/
     ports:
       - ${WEB_PORT}:${WEB_PORT}
     env_file:
@@ -39,7 +39,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-      - static_volume:/app/static
+      - ./static:/app/static
     environment:
       - DEBUG=0
     depends_on:
@@ -71,5 +71,3 @@ services:
 volumes:
   db-data: null
   rabbitmq-data: null
-  static_volume: null
-  media_volume: null
