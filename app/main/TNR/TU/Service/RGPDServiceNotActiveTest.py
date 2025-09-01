@@ -1,6 +1,6 @@
 import datetime
 from django.test import TestCase
-from main.models.User import User
+from main.architecture.persistence.models.User import User
 from main.domain.cron.service.RGPDService import RGPDService
 from django.utils.timezone import make_aware
 

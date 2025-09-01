@@ -4,7 +4,7 @@ from django.conf import settings
 from unittest.mock import patch
 from urllib.parse import urlparse
 
-from main.utils.url import redirection_url
+from main.domain.common.utils.url import redirection_url
 
 
 # Tests d'intégration avec différents scénarios

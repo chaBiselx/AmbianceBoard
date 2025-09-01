@@ -27,10 +27,18 @@ if [ "$RUNCRON" = "1" ]; then
     echo "Adding crontab..."
     python manage.py crontab add
 
-    sleep 60
+    echo "Waiting before starting cron..."
+    sleep 10
 
     echo "Starting cron..."
-    exec cron -f &
+    # Créer les répertoires nécessaires pour cron
+    mkdir -p /var/run
+    mkdir -p /var/log
+    
+    # Nettoyer les anciens fichiers PID
+    rm -f /var/run/crond.pid
+
+    exec cron -f
 fi
 
 if [ "$RUNCRON" != "1" ]; then

@@ -2,10 +2,10 @@ from django.test import TestCase, RequestFactory
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch, MagicMock
 from main.service.MusicService import MusicService
-from main.models.Music import Music
-from main.models.Track import Track
-from main.models.Playlist import Playlist
-from main.models.User import User
+from main.architecture.persistence.models.Music import Music
+from main.architecture.persistence.models.Track import Track
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.User import User
 
 class MusicServiceTest(TestCase):
     

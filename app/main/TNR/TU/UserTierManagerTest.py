@@ -1,9 +1,9 @@
 from django.test import TestCase
 from django.contrib.auth.models import Group
-from main.models.User import User
-from main.models.UserTier import UserTier
-from main.utils.UserTierManager import UserTierManager
-from main.enum.GroupEnum import GroupEnum
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.UserTier import UserTier
+from main.domain.common.utils.UserTierManager import UserTierManager
+from main.domain.common.enum.GroupEnum import GroupEnum
 from parameters import settings
 
 

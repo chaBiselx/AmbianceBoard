@@ -1,0 +1,32 @@
+{% extends 'Html/base_moderator.html' %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12 col-xl-10">
+        
+        <!-- Statistiques -->
+        <div class="card">
+            <div class="card-header">
+                <h5>Statistiques</h5>
+            </div>
+            <div class="card-body">
+                <dl>
+                    <dt>Nombre d'utilisateur :</dt><dd>{{ nb_users |  floatformat:2  }}</dd>
+                    <dt>Moyenne de playlist par utilisateur :</dt><dd>{{ moy_playlist_per_user |  floatformat:2  }}</dd>
+                    <dt>Moyenne de musique par utilisateur :</dt><dd>{{ moy_music_per_user }}</dd>
+                    <dt>Moyenne de musique par playlist :</dt><dd>{{ moy_music_per_playlist |  floatformat:2  }}</dd>
+                </dl>
+            </div>
+        </div>
+        
+    </div>
+   
+
+</div>
+
+
+
+
+{% endblock %}

@@ -1,5 +1,5 @@
 from main.domain.cron.service.RGPDService import RGPDService
-from main.utils.logger import logger
+from main.domain.common.utils.logger import logger
 
 
 def run():

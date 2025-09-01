@@ -1,5 +1,5 @@
 from django.test import TestCase
-from main.models import User
+from main.architecture.persistence.models import User
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.core.exceptions import ValidationError

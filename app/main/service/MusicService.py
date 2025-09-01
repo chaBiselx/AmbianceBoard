@@ -2,35 +2,32 @@ import uuid
 from typing import Optional, List
 from django.http import HttpRequest
 from django.core.files.uploadedfile import UploadedFile
-from main.enum.PermissionEnum import PermissionEnum
-from main.models.Playlist import Playlist
-from main.models.Music import Music
-from main.models.Track import Track
-from main.filters.MusicFilter import MusicFilter
-from main.forms.MusicForm import MusicForm
-from main.factory.UserParametersFactory import UserParametersFactory
+from main.domain.common.enum.PermissionEnum import PermissionEnum
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.Music import Music
+from main.architecture.persistence.models.Track import Track
+from main.domain.common.repository.filters.MusicFilter import MusicFilter
+from main.domain.private.form.MusicForm import MusicForm
+from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.service.SoundBoardService import SoundBoardService
-from main.enum.MusicFormatEnum import MusicFormatEnum
+from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
+from main.domain.common.repository.TrackRepository import TrackRepository
 
 
 class MusicService:
     
     def __init__(self, request: HttpRequest) -> None:
         self.request = request
-        
+        self.track_repository = TrackRepository()
+
     def get_specific_music(self, playlist_uuid: int, music_id: int) -> Optional[Music]:
         """        Récupère une musique spécifique par son ID dans une playlist.
         Args:
             playlist_uuid (int): L'UUID de la playlist.
             music_id (int): L'ID de la musique à récupérer.
         """
-        try:
-            return Track.objects.get(pk=music_id, playlist__uuid=playlist_uuid)
-        except Track.DoesNotExist:
-            return None
-        except Playlist.DoesNotExist:
-            return None
-
+        return self.track_repository.get(music_id=music_id, playlist_uuid=playlist_uuid)    
+    
         
     def get_list_music(self, playlist_uuid: int) -> Optional[List[Music]]:
         try:
@@ -44,8 +41,8 @@ class MusicService:
     def save_form(self, playlist: Playlist, music: Optional[Music] = None) -> Optional[Music]:
         user_parameters = UserParametersFactory(self.request.user)
         limit_music_per_playlist = user_parameters.limit_music_per_playlist
-            
-        if(len(Track.objects.filter(playlist=playlist)) >= limit_music_per_playlist):
+
+        if(self.track_repository.get_count(playlist) >= limit_music_per_playlist):
             raise ValueError("Vous avez atteint la limite de musique par playlist (" + str(limit_music_per_playlist) + " max).")
             
         form = MusicForm(self.request.POST, self.request.FILES, instance=music)
@@ -71,8 +68,7 @@ class MusicService:
         limit_music_per_playlist = user_parameters.limit_music_per_playlist
 
         # Vérifier la limite de musiques par playlist
-        current_music_count = Track.objects.filter(playlist=playlist).count()
-        if current_music_count >= limit_music_per_playlist:
+        if self.track_repository.get_count(playlist) >= limit_music_per_playlist:
             raise ValueError("Vous avez atteint la limite de musique par playlist (" + str(limit_music_per_playlist) + " max).")
         
         # Vérifier le poids du fichier

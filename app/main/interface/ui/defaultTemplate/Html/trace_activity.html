@@ -1,0 +1,9 @@
+{% load Bootstrap %}
+{% load Json %}
+
+
+{% if trace_user_activity %}
+<span id="trace_user_activity" data-url="{% url 'dismissTraceUserActivity' trace_user_activity.uuid trace_user_activity.activity_type %}" class="d-none">
+
+</span>
+{% endif %}

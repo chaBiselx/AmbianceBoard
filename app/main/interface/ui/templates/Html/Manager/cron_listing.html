@@ -1,0 +1,57 @@
+{% extends 'Html/base_manager.html' %}
+
+
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12 col-xl-10">
+        <h2>Tableau de bord Manager</h2>
+
+        <!-- Outils d'administration -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Outils d'administration</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-2">
+                                <button data-title="Nettoyer les Médias" data-url="{% url 'adminCleanMediaFolders' %}" class="btn btn-warning btn-block cron-execute-button">
+                                    <i class="fas fa-broom"></i> Nettoyer les Médias
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <button data-title="Expirer les Tiers Utilisateurs" data-url="{% url 'managerExpireUserTiers' %}" class="btn btn-warning btn-block cron-execute-button">
+                                    <i class="fas fa-broom"></i> Expirer les Tiers Utilisateurs
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <button data-title="Purger les Partages de Soundboard Expirés" data-url="{% url 'managerPurgeExpiredSharedSoundboard' %}" class="btn btn-danger btn-block cron-execute-button">
+                                    <i class="fas fa-trash"></i> Purger les Partages de Soundboard Expirés
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <button data-title="Synchroniser la Liste Noire de Domaines" data-url="{% url 'managerSyncDomainBlacklist' %}" class="btn btn-info btn-block cron-execute-button">
+                                    <i class="fas fa-sync"></i> Synchroniser la Liste Noire de Domaines
+                                </button>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <button data-title="Purger les Anciennes Activités Utilisateurs" data-url="{% url 'managerPurgeOldUserActivity' %}" class="btn btn-danger btn-block cron-execute-button">
+                                    <i class="fas fa-trash"></i> Purger les Anciennes Activités Utilisateurs
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}

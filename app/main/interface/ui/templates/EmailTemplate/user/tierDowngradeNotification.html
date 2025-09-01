@@ -1,0 +1,13 @@
+{% extends "Email/base.html" %}
+
+
+{% block content %} 
+
+<div>
+    <h1>Bonjour {{ user.username }} !</h1>
+    <p><strong>Votre compte a été rétrogradé vers le niveau {{ new_tier }}.</strong></p>
+    <p>Si vous avez des questions ou des préoccupations, n'hésitez pas à nous contacter.</p>
+    <p>Merci de votre compréhension.</p>
+</div>
+
+{% endblock content %}

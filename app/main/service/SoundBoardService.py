@@ -1,11 +1,11 @@
 from typing import Optional
 from django.http import HttpRequest
-from main.models.SoundBoard import SoundBoard
-from main.models.SharedSoundboard import SharedSoundboard
-from main.forms.SoundBoardForm import SoundBoardForm
-from main.enum.PermissionEnum import PermissionEnum
-from main.factory.UserParametersFactory import UserParametersFactory
-from main.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
+from main.domain.private.form.SoundBoardForm import SoundBoardForm
+from main.domain.common.enum.PermissionEnum import PermissionEnum
+from main.domain.common.factory.UserParametersFactory import UserParametersFactory
+from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
 
 class SoundBoardService:

@@ -1,8 +1,8 @@
 
 from django.utils import timezone
-from main.service.cleanService.BaseCleanService import BaseCleanService
-from main.models.SharedSoundboard import SharedSoundboard
-from main.utils.logger import LoggerFactory
+from main.domain.brokers.service.cleanService.BaseCleanService import BaseCleanService
+from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
+from main.domain.common.utils.logger import LoggerFactory
 
 class SharedSoundboardService(BaseCleanService):
     def __init__(self):

@@ -1,0 +1,14 @@
+{% extends "Email/base.html" %}
+
+
+{% block content %} 
+
+<div>
+    <h1>Bonjour {{ user.username }} !</h1>
+    <p> Votre compte arrive à expiration dans {{ days_left }} jours.</p>
+    <p>Pour éviter toute diminution de service, veuillez renouveler votre abonnement dès que possible.</p>
+    <p>Merci de votre compréhension.</p>
+
+</div>
+
+{% endblock content %}

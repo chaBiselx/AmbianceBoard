@@ -3,9 +3,9 @@
 import unittest
 from unittest.mock import Mock, patch
 from django.test import TestCase
-from main.models.User import User
-from main.service.ConfirmationUserService import ConfirmationUserService
-from main.exceptions.SecurityException import SecurityException
+from main.architecture.persistence.models.User import User
+from main.domain.common.service.ConfirmationUserService import ConfirmationUserService
+from main.domain.common.exceptions.SecurityException import SecurityException
 from django.utils import timezone
 from datetime import datetime, timedelta
 
@@ -87,7 +87,7 @@ class ConfirmationUserServiceTest(TestCase):
         with self.assertRaises(SecurityException):
             self.confirmation_service.verification_token('invalid_token')
 
-    @patch('main.service.ConfirmationUserService.reverse')
+    @patch('main.domain.common.service.ConfirmationUserService.reverse')
     def test_generation_uri_reverse_called(self, mock_reverse):
         self.confirmation_service.generation_uri()
         mock_reverse.assert_called_once_with('confirm_account', kwargs={'uuid_user': self.user.uuid, 'confirmation_token': self.user.confirmationToken})

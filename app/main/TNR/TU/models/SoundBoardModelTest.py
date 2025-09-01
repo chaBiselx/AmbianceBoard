@@ -3,10 +3,10 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 from unittest.mock import patch, Mock
 import uuid
-from main.models.SoundBoard import SoundBoard
-from main.models.User import User
-from main.models.Playlist import Playlist
-from main.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 
 class SoundBoardModelTest(TestCase):
     def setUp(self):
@@ -55,7 +55,7 @@ class SoundBoardModelTest(TestCase):
             )
 
     @patch('uuid.uuid4')
-    @patch('main.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
+    @patch('main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
     def test_icon_upload(self, mock_reduce_size, mock_uuid):
         """Test le téléchargement et le traitement de l'icône lors de la première utilsation"""
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"
@@ -78,7 +78,7 @@ class SoundBoardModelTest(TestCase):
         )
 
     @patch('uuid.uuid4')
-    @patch('main.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
+    @patch('main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
     def test_icon_new_upload(self, mock_reduce_size, mock_uuid):
         """Test le téléchargement et le traitement de l'icône lors de la second utilsation"""
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"
@@ -104,7 +104,7 @@ class SoundBoardModelTest(TestCase):
             priority=1
         )
 
-    @patch('main.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
+    @patch('main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
     def test_icon_update(self, mock_reduce_size):
         """Test la mise à jour de l'icône"""
         # Créer d'abord un SoundBoard sans icône

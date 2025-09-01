@@ -3,9 +3,9 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 from unittest.mock import patch, Mock
 import uuid
-from main.models.Playlist import Playlist
-from main.models.User import User
-from main.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.User import User
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 playlist_name = "Test Playlist"
 
@@ -79,7 +79,7 @@ class PlaylistModelTest(TestCase):
             )
             
     @patch('uuid.uuid4')
-    @patch('main.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
+    @patch('main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
     def test_icon_upload_on_create(self, mock_reduce_size, mock_uuid):
         """Test le téléchargement et le traitement de l'icône lors de la création"""
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"
@@ -104,7 +104,7 @@ class PlaylistModelTest(TestCase):
         )
 
     @patch('uuid.uuid4')
-    @patch('main.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
+    @patch('main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img.apply_async')
     def test_icon_upload_on_update(self, mock_reduce_size, mock_uuid):
         """Test le téléchargement et le traitement de l'icône lors de la mise à jour"""
         test_uuid = "550e8400-e29b-41d4-a716-446655440000"
@@ -132,7 +132,7 @@ class PlaylistModelTest(TestCase):
             priority=1
         )
 
-    @patch('main.strategy.PlaylistStrategy.PlaylistStrategy.get_strategy')
+    @patch('main.domain.common.strategy.PlaylistStrategy.PlaylistStrategy.get_strategy')
     def test_get_data_set(self, mock_get_strategy):
         """Test la méthode get_data_set avec différents types de playlist"""
         # Créer une mock strategy qui retourne des données test

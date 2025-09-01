@@ -8,10 +8,10 @@ from django.test import TestCase, override_settings
 from django.conf import settings
 from unittest.mock import patch, MagicMock
 
-from main.utils.logger.LoggerFactory import LoggerFactory
-from main.utils.logger.ILogger import ILogger
-from main.utils.logger.LoggerFile import LoggerFile
-from main.utils.logger.MemoryLogger import MemoryLogger
+from main.domain.common.utils.logger.LoggerFactory import LoggerFactory
+from main.domain.common.utils.logger.ILogger import ILogger
+from main.domain.common.utils.logger.LoggerFile import LoggerFile
+from main.domain.common.utils.logger.MemoryLogger import MemoryLogger
 
 
 class LoggerFactoryTestCase(TestCase):
@@ -151,11 +151,11 @@ class LoggerFactoryTestCase(TestCase):
             self.assertIsInstance(logger, MemoryLogger)
             self.assertEqual(logger.logger_name, 'custom_default')
     
-    @patch('main.utils.logger.LoggerFactory.settings')
+    @patch('main.domain.common.utils.logger.LoggerFactory.Settings')
     def test_get_default_logger_missing_setting(self, mock_settings):
         """Test de get_default_logger quand LOGGER_TYPE n'est pas défini"""
         # Simuler l'absence de LOGGER_TYPE dans settings
-        mock_settings.LOGGER_TYPE = None
+        mock_settings.get.return_value = None
         
         with self.assertRaises(AttributeError):
             LoggerFactory.get_default_logger()

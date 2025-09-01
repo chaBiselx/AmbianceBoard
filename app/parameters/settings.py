@@ -41,7 +41,6 @@ if ACTIVE_SSL:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
 
-EMAIL_DEBUG = bool(os.environ.get("EMAIL_DEBUG", default=None))
 EMAIL_SMTP_SERVEUR = str(os.environ.get("EMAIL_SMTP_SERVEUR"))
 EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT"))
 EMAIL_SMTP_USERNAME = str(os.environ.get("EMAIL_SMTP_USERNAME"))
@@ -50,6 +49,12 @@ EMAIL_SMTP_USE_TLS = bool(os.environ.get("EMAIL_SMTP_USE_TLS", default=True))
 
 EMAIL_NO_REPLAY = os.environ.get("EMAIL_NO_REPLAY")
 EMAILS_LISTING_MODERATORS = os.environ.get("EMAILS_LISTING_MODERATORS", default="").split(";")
+EMAIL_CONTACT=os.environ.get("EMAIL_CONTACT")
+
+LEGAL_RAISON_SOCIALE=os.environ.get("LEGAL_RAISON_SOCIALE")
+LEGAL_HEBERGEUR_NAME=os.environ.get("LEGAL_HEBERGEUR_NAME")
+LEGAL_HEBERGEUR_ADRESS=os.environ.get("LEGAL_HEBERGEUR_ADRESS")
+LEGAL_HEBERGEUR_CONTACT=os.environ.get("LEGAL_HEBERGEUR_CONTACT")
 
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
@@ -73,6 +78,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "main",
+    "main.architecture.ui",  # App pour les templateTags
     "django_crontab",
 ]
 
@@ -190,7 +196,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "main.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
+    "main.architecture.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
+    "main.architecture.middleware.ErrorTrackingMiddleware.ErrorTrackingMiddleware",
 ]
 
 ROOT_URLCONF = "parameters.urls"
@@ -198,7 +205,11 @@ ROOT_URLCONF = "parameters.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'defaultTemplate')],
+        "DIRS": [
+            os.path.join(BASE_DIR, 'main/interface/ui/defaultTemplate'),
+            os.path.join(BASE_DIR, 'main/interface/ui/templates'),  # Templates principaux
+            os.path.join(BASE_DIR, 'main/interface/ui/seo'),  # Templates SEO
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -206,9 +217,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                'main.context_processors.sidebar_processor.sidebar_processor',
-                'main.context_processors.user_preference_processor.user_preference_processor',
-                'main.context_processors.general_information_processor.general_information_processor',
+                'main.architecture.contextProcessors.sidebar_processor.sidebar_processor',
+                'main.architecture.contextProcessors.user_preference_processor.user_preference_processor',
+                'main.architecture.contextProcessors.general_information_processor.general_information_processor',
             ],
         },
     },
@@ -345,11 +356,11 @@ MEDIA_AUDIO_MESSENGER_NB_MAX_FILE = 100
 MEDIA_IMG_MESSENGER_NB_MAX_FILE = 100
 
 # auth 
-from main.enum.GroupEnum import GroupEnum
+from main.domain.common.enum.GroupEnum import GroupEnum
 
 GROUPS = GroupEnum.convert_to_dict()
 
-from main.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.PermissionEnum import PermissionEnum
 
 PERMISSIONS = PermissionEnum.convert_to_dict()
 
@@ -388,46 +399,68 @@ AUDIO_BITRATE_REDUCER_TARGET_BITRATE = 128  # En kbps
 USER_TIERS = {
     'STANDARD': {
         'name': 'Standard',
+        'pricing' : None,
         'display_name': 'Utilisateur Standard',
+        'display_name_short': 'Standard',
         'limits': {
             'soundboard': 5,
             'playlist': 75,
             'music_per_playlist': 5,
             'weight_music_mb': 10,
+            'share_soundboard': True
         },
         'group_enum': 'USER_STANDARD'
     },
     'PREMIUM_BASIC': {
         'name': 'Premium Basic',
+        'pricing' : {
+            'monthly': 4,
+            'yearly': 40
+        },
         'display_name': 'Premium Basique',
+        'display_name_short': 'Basique',
         'limits': {
             'soundboard': 25,
             'playlist': 150,
             'music_per_playlist': 10,
             'weight_music_mb': 20,
+            'share_soundboard': True
         },
         'group_enum': 'USER_PREMIUM_BASIC'
     },
     # Prêt pour de futures versions premium
     'PREMIUM_ADVANCED': {
         'name': 'Premium advanced',
+        'pricing': {
+            'monthly': 8,
+            'yearly': 80
+        },
         'display_name': 'Premium Avancée',
+        'display_name_short': 'Avancée',
         'limits': {
             'soundboard': 50,
             'playlist': 250,
             'music_per_playlist': 20,
             'weight_music_mb': 25,
+            'share_soundboard': True
         },
         'group_enum': 'USER_PREMIUM_ADVANCED'  # À ajouter dans GroupEnum
     },
     'PREMIUM_PRO': {
         'name': 'Premium Professionnel',
+        'pricing': {
+            'monthly': 15,
+            'yearly': 150,
+            'currency': 'EUR'
+        },
         'display_name': 'Premium Professionnel',
+        'display_name_short': 'Professionnel',
         'limits': {
             'soundboard': 100,
             'playlist': 500,
             'music_per_playlist': 30,
             'weight_music_mb': 30,
+            'share_soundboard': True
         },
         'group_enum': 'USER_PREMIUM_PRO'  # À ajouter dans GroupEnum
     }
@@ -442,4 +475,5 @@ TIER_EXPIRATION_WARNING_DAYS = int(os.environ.get("TIER_EXPIRATION_WARNING_DAYS"
 
 # CACHE
 
+CACHE_TYPE = "memory"
 LIMIT_CACHE_DEFAULT = 14400 # 4h

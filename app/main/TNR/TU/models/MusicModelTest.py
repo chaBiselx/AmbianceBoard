@@ -3,9 +3,9 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 from unittest.mock import patch
 import uuid
-from main.models.Music import Music
-from main.models.Playlist import Playlist
-from main.models.User import User
+from main.architecture.persistence.models.Music import Music
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.User import User
 
 filename_name1 = "Test Music"
 filename_alt1 = "Alt Name"

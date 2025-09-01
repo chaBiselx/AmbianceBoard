@@ -1,7 +1,7 @@
 import Config from '@/modules/General/Config';
-import Csrf from "@/modules/General/Csrf";
 import Notification from '@/modules/General/Notifications';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
+import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
 
 import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import * as Model from '@/modules/FadeStartegy';
@@ -9,6 +9,7 @@ import AudioFadeManager from '@/modules/AudioFadeManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import Cookie from '@/modules/General/Cookie';
 import Boolean from "@/modules/Util/Boolean";
+import Time from "@/modules/Util/Time";
 
 
 
@@ -250,7 +251,7 @@ class MusicElement {
                 if (buttonPlaylist && buttonPlaylist.isActive() && this.butonPlaylistToken == buttonPlaylist.getToken()) {
                     callback()
                 }
-            }, delay * 1000);
+            }, Time.get_seconds(delay));
         } else {
             callback();
         }
@@ -279,15 +280,13 @@ class MusicElement {
 
     private callAPIToStop() {
         if (this.WebSocketActive && !this.isSlave) {
-            fetch(this.baseUrl + '/stop', {
-                method: 'UPDATE',
-                headers: {
-                    'X-CSRFToken': Csrf.getToken()!,
-                    'Content-Type': 'application/json',
-                },
-            }).then((response) => {
-                ConsoleCustom.log('callAPIToStop', response);
-            })
+            console.log('callAPIToStop');
+
+            SharedSoundBoardWebSocket.getInstance().sendMessage({
+                    "type": "music_stop",
+                    "track": null,
+                    "playlist_uuid": this.idPlaylist,
+                });
         }
     }
 

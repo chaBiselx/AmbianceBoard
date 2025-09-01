@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.core.paginator import Paginator
-from main.utils.ExtractPaginator import extract_context_to_paginator
+from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 
 class ExtractPaginatorTest(TestCase):
     def setUp(self):

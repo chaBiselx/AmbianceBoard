@@ -1,11 +1,12 @@
 import Notification from '@/modules/General/Notifications';
 import ReportingContent from '@/modules/ReportingContent'
-import {PaginationManager} from '@/modules/PaginationManager';
-import {TagManager} from '@/modules/TagManager';
+import { PaginationManager } from '@/modules/PaginationManager';
+import { TagManager } from '@/modules/TagManager';
 import * as bootstrap from 'bootstrap';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import Csrf from "./modules/General/Csrf";
 import Cookie from "@/modules/General/Cookie";
+import Time from "@/modules/Util/Time";
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,6 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
     new PaginationManager().addEventListeners();
     new TagManager().addEventListeners();
     new NotificationGeneral().addEvent();
+    new DeleteAccount().addEvent();
+    new UserActivityLog().addEvent();
 
 });
 
@@ -221,13 +224,13 @@ class NotificationGeneral {
     }
 
     public addEvent() {
-        if( this.sectionMessage) {
+        if (this.sectionMessage) {
             const listCloseButton = this.sectionMessage.getElementsByClassName('close-notification') as HTMLCollectionOf<HTMLButtonElement>;
             Array.from(listCloseButton).forEach((element: HTMLButtonElement) => {
                 element.addEventListener('click', this.dismissNotification.bind(this));
             });
         }
-        
+
     }
 
     private dismissNotification(event: Event) {
@@ -237,11 +240,11 @@ class NotificationGeneral {
             if (alertElement) {
                 alertElement.remove();
             }
-            
+
             if (target.dataset.metaUrl_dismiss) {
                 this.dismissNotificationFromServer(target.dataset.metaUrl_dismiss);
             }
-            
+
         }
     }
 
@@ -256,9 +259,92 @@ class NotificationGeneral {
             })
                 // .then(response => response.json())
                 .then(_ => {
-                
+
                 })
                 .catch(_ => {
+                });
+        }
+    }
+}
+
+class DeleteAccount {
+    private readonly deleteAccountButton: HTMLButtonElement | null = null;
+
+    constructor() {
+        this.deleteAccountButton = document.getElementById('delete-account') as HTMLButtonElement;
+    }
+
+    public addEvent() {
+        if (this.deleteAccountButton) {
+            this.deleteAccountButton.addEventListener('click', this.confirmDelete.bind(this));
+        }
+    }
+
+    private confirmDelete(event: Event) {
+        event.preventDefault();
+        if (confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.")) {
+            const method = this.deleteAccountButton?.closest('form')?.attributes.getNamedItem('method')?.value;
+            const url = this.deleteAccountButton?.closest('form')?.action;
+            if (method && url) {
+                fetch(url, {
+                    method: method,
+                    headers: {
+                        'X-CSRFToken': Csrf.getToken()!
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = '/';
+                        } else {
+                            Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                        }
+                    });
+            }
+
+        }
+    }
+}
+
+class UserActivityLog {
+    url: string | null = null;
+    element: HTMLElement | null = null;
+    constructor() {
+        this.element = document.getElementById('trace_user_activity') || null;
+    }
+
+    private getUrl() {
+        return this.element?.dataset.url || null;
+    }
+
+    public addEvent() {
+        if (this.element) {
+            // Détection de la fermeture volontaire de la page (fermeture onglet, navigation, rafraîchissement)
+            window.addEventListener('beforeunload', () => {
+                this.postActivityLog();
+            });
+
+            //envoyer toutes les 15 min en cas de coupure
+            setInterval(() => {
+                this.postActivityLog();
+            }, Time.get_minutes(15));
+        }
+    }
+
+    private postActivityLog() {
+        const url = this.getUrl();
+        if (url) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': Csrf.getToken()!
+                },
+            })
+                .then(_response => {
+                    // Log envoyé avec succès
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
                 });
         }
     }

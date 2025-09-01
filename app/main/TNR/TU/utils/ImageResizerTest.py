@@ -3,7 +3,7 @@ import unittest
 from unittest.mock import mock_open, patch, MagicMock
 import os
 from PIL import Image
-from main.utils.ImageResizer import ImageResizer  # Assurez-vous que le fichier s'appelle image_resizer.py
+from main.domain.common.utils.ImageResizer import ImageResizer  # Assurez-vous que le fichier s'appelle image_resizer.py
 
 os_path_exist = 'os.path.exists'
 class ImageResizerTest(unittest.TestCase):

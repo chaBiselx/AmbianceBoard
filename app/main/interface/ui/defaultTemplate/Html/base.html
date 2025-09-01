@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load FrontJs %}
+{% load Theme %}
+
+<html lang="fr" {% include 'Html/theme.html' %} data-bs-theme="{% get_user_theme %}">
+
+<head>
+    <title>Ambiance Soundboard</title>
+    {% include 'Html/meta.html' %}
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    {% block resource %}
+    {% endblock %}
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+</head>
+
+<body id="mainBody" class="{% include 'Html/sidebar_class.html'%}">
+    <!-- Show base layout -->
+    <button class="show-base-layout rounded fullScreen-element-inline"  id="showBaseLayoutButton">
+        <i class="fa-solid fa-eye"></i>
+    </button>
+
+    <!-- Navbar -->
+    <header class="navbar navbar-expand-lg fixed-top border-bottom bg-body shadow-sm fullScreen-element" id="mainNav">
+        <div class="container-fluid">
+            {% include 'Html/sidebar_button.html'%}
+
+
+            <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
+                <img src="{% static 'img/logo.png' %}" class="d-none d-sm-inline" alt="img main logo" width="40" height="40">
+                <span class="main-title">{% block title %} Ambiance Soundboard {% endblock %}</span>
+
+            </a>
+
+
+
+            <div class="ms-auto d-flex align-items-center gap-1 gap-lg-2 gap-lg-3">
+                <button class="btn btn-link url_link p-1" id="darkModeToggle" aria-label="Toggle dark mode" data-url="{% url 'updateTheme' %}">
+                    {% include 'Html/theme_icon.html' %}
+                </button>
+                <button class="btn btn-link url_link p-1" aria-label="hide all" id="hideAll">
+                    <i class="fa-solid fa-eye-slash"></i>
+                </button>
+                {% block navbar %}
+                {% include 'Html/navbar.html' %}
+                {% endblock navbar %}
+
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    {% include 'Html/sidebar.html'%}
+
+
+    <!-- Main Content -->
+    <main class="container-fluid py-4 py-lg-5 px-3 px-lg-4" id="main-content">
+        <div class="row">
+            {% include 'Html/message.html' %}
+            {% include 'Html/trace_activity.html' %}
+            <div class="col-12">
+                <section class="pt-0 pb-0">
+                    {% if title is not None %}<h1 id="mainTitle">{{ title }}</h1>{% endif %}
+                    {% block content %}{% endblock %}
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    {% include 'Html/footer.html'%}
+
+    <!-- Modal -->
+    {% include 'Html/modal.html'%}
+
+    <!-- Bootstrap core JS-->
+    <!-- Core JS-->
+    <script type="module" src="{% static "General"|search_true_file %}"></script>
+    {% block javascript %} {% endblock javascript %}
+
+
+</body>
+
+</html>

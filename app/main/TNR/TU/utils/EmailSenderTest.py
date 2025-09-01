@@ -3,8 +3,8 @@ from unittest.mock import patch, mock_open, MagicMock
 from email.message import EmailMessage
 import smtplib
 from parameters import settings
-from main.exceptions.EmailException import DebugModeActivedWitoutDebugMailException, AttachementException, SendException
-from main.utils.EmailSender import EmailSender
+from main.domain.common.exceptions.EmailException import DebugModeActivedWitoutDebugMailException, AttachementException, SendException
+from main.domain.common.utils.EmailSender import EmailSender
 
 subject_test = "Test Subject"
 body_test = "Test Body"

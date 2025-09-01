@@ -1,0 +1,13 @@
+{% extends 'Html/base.html' %}
+{% load FrontJs %}
+{% load static %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "Moderator_General"|search_true_file %}"></script>
+{% endblock javascript %}
+
+{% block navbar %}
+{% include "Html/navbar_moderator.html" %}
+{% endblock navbar %}
+

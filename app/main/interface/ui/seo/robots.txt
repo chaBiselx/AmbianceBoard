@@ -1,0 +1,15 @@
+User-agent: *
+# Allow essential assets
+Allow: /static/
+
+# Disallow non-public and duplicate content
+Disallow: /admin/
+Disallow: /manager/
+Disallow: /account/
+Disallow: /moderator/
+Disallow: /shared/
+Disallow: /playlist/
+Disallow: /soundBoards/
+
+# Sitemap (update URL to your domain if served)
+Sitemap: /sitemap.xml

@@ -1,9 +1,9 @@
 import os 
-from main.utils.logger import LoggerFactory
+from main.domain.common.utils.logger import LoggerFactory
 from django.core.files.storage import default_storage
 from parameters import settings
-from main.models.Playlist import Playlist
-from main.message.MediaImgPlaylistMessenger import clean_img_files
+from main.architecture.persistence.models.Playlist import Playlist
+from main.domain.brokers.message.MediaImgPlaylistMessenger import clean_img_files
 
 class MediaImgPlaylistService:
     list_media = []

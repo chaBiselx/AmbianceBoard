@@ -2,12 +2,12 @@ from django.test import TestCase
 from django.contrib.auth.models import Permission, Group
 from django.contrib.contenttypes.models import ContentType
 from parameters import settings
-from main.models.User import User
-from main.models.UserTier import UserTier
-from main.factory.UserParametersFactory import UserParametersFactory
-from main.enum.PermissionEnum import PermissionEnum
-from main.enum.GroupEnum import GroupEnum
-from main.utils.UserTierManager import UserTierManager
+from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.UserTier import UserTier
+from main.domain.common.factory.UserParametersFactory import UserParametersFactory
+from main.domain.common.enum.PermissionEnum import PermissionEnum
+from main.domain.common.enum.GroupEnum import GroupEnum
+from main.domain.common.utils.UserTierManager import UserTierManager
 
 
 class UserParametersFactoryTest(TestCase):
