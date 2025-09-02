@@ -87,7 +87,7 @@ class SharedSoundBoardWebSocket {
                 ConsoleCustom.log('WebSocket Error:', error);
             };
         } catch (error) {
-
+            console.error('Error during WebSocket initialization:', error);
         }
 
     }
