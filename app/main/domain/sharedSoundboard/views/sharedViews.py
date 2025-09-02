@@ -36,7 +36,7 @@ def publish_soundboard(request, soundboard_uuid):
         'soundboard_uuid': soundboard_uuid,
         'token': shared.token,
     })
-    const proto = 'wss:' if Settings.get('ACTIVE_SSL') else 'ws:'
+    proto = 'wss:' if Settings.get('ACTIVE_SSL') else 'ws:' # TODO sortir du code et regrouper 
     ws_url = f'{proto}//{request.get_host()}{ws_path}'
     response.set_cookie(
                             'WebSocketToken', 
@@ -71,7 +71,7 @@ def shared_soundboard_read(request, soundboard_uuid, token):
             'soundboard_uuid': soundboard.uuid,
             'token': token,
         })
-        const proto = 'wss:' if Settings.get('ACTIVE_SSL') else 'ws:'
+        proto = 'wss:' if Settings.get('ACTIVE_SSL') else 'ws:'
         ws_url = f'{proto}//{request.get_host()}{ws_path}'
         return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url})
 
