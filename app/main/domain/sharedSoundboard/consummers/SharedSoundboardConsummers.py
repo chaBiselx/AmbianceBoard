@@ -12,6 +12,10 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
         self.soundboard_uuid = self.scope['url_route']['kwargs']['soundboard_uuid']
         self.token = self.scope['url_route']['kwargs']['token']
         
+        print('==================================================')
+        print('soundboard_uuid:', self.soundboard_uuid)
+        print('token:', self.token)
+
         # Validation des paramètres
         if not await self.validate_connection():
             await self.close(code=4000)  # Code d'erreur personnalisé
