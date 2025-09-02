@@ -24,7 +24,6 @@ services:
       - ./mediafiles:/usr/src/app/mediafiles/
     ports:
       - ${WEB_PORT}:${WEB_PORT}
-      - ${WS_PORT}:${WS_PORT}
     env_file:
       - ./.env
     environment:
@@ -33,6 +32,21 @@ services:
       - db
       - rabbitmq
       - front
+
+  websocket:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
+    command: daphne -b 0.0.0.0 -p ${WS_PORT} parameters.asgi:application
+    volumes:
+      - ./app:/usr/src/app/
+      - ./mediafiles:/usr/src/app/mediafiles/
+    ports:
+      - ${WS_PORT}:${WS_PORT}
+    env_file:
+      - ./.env
+    depends_on:
+      - db
 
   front:
     build:
