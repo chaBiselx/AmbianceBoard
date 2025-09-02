@@ -25,6 +25,7 @@ services:
       - ./mediafiles:/usr/src/app/mediafiles/
     ports:
       - ${WEB_PORT}:${WEB_PORT}
+      - ${WS_PORT}:${WS_PORT}
     env_file:
       - ./.env
     environment:
