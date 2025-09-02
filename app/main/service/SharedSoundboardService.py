@@ -55,6 +55,8 @@ class SharedSoundboardService():
         cache_key = f"shared_soundboard:{self.soundboard_uuid}:{self.token}"
         shared_soundboard = self.cache.get(cache_key)
         if shared_soundboard is not None:
+            logger.error('******************************') #TODO remove
+            logger.error('cache') #TODO remove
             return True
             
         if self.token is None:
@@ -69,6 +71,8 @@ class SharedSoundboardService():
                 soundboard=soundboard,
                 token=self.token
             )
+            logger.error('******************************') #TODO remove
+            logger.error('soundboard') #TODO remove
 
             if not shared_soundboard:
                 logger.error(f"Soundboard introuvable: {self.soundboard_uuid} {self.token}")
