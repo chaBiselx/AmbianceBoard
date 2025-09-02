@@ -157,7 +157,7 @@ class ErrorTrackingMiddleware:
                 user = request.user if request.user.is_authenticated else None
                 
                 # Récupérer la clé de session pour les utilisateurs anonymes
-                session_key = request.session.session_key if hasattr(request, 'session') else None
+                session_key = request.session.session_key if hasattr(request, 'session') else ''
                 
                 # Créer l'activité d'erreur
                 UserActivity.create_activity(

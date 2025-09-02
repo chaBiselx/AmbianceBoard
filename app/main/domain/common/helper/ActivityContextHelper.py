@@ -25,7 +25,7 @@ class ActivityContextHelper:
         activity = UserActivity.create_activity(
             activity_type=activity_type,
             user=user,
-            session_key=request.session.session_key if request else None,
+            session_key=request.session.session_key if request else '',
             content_object=content_object
         )
         return activity
