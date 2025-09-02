@@ -14,6 +14,7 @@ from main.domain.common.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from main.domain.private.formatter.TypePlaylistFormater import TypePlaylistFormater
+from main.service.SoundBoardService import SoundBoardService
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
