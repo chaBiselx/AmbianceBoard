@@ -8,6 +8,7 @@ pydub==0.25.1
 celery[redis] 
 kombu
 channels[daphne]
-channels-redis>=4.0.0
+channels-redis>=4.3.0
+redis>=5.2.0
 django-encrypted-model-fields==0.6.5
 requests==2.32.4
