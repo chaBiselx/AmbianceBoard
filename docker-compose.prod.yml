@@ -3,6 +3,7 @@ services:
     build: ./app
     command: cron -f
     volumes:
+      - ./app:/usr/src/app/
       - ./mediafiles:/usr/src/app/mediafiles/
     env_file:
       - ./.env
@@ -18,6 +19,7 @@ services:
       dockerfile: Dockerfile.prod
     command: gunicorn parameters.wsgi:application --bind 0.0.0.0:${WEB_PORT} --workers=3
     volumes:
+      - ./app:/usr/src/app/
       - ./staticfiles:/usr/src/app/static/
       - ./mediafiles:/usr/src/app/mediafiles/
     ports:
