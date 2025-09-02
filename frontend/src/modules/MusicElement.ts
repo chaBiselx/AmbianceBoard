@@ -280,8 +280,6 @@ class MusicElement {
 
     private callAPIToStop() {
         if (this.WebSocketActive && !this.isSlave) {
-            console.log('callAPIToStop');
-
             SharedSoundBoardWebSocket.getInstance().sendMessage({
                     "type": "music_stop",
                     "track": null,

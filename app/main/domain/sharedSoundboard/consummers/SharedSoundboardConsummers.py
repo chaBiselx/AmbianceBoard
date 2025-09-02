@@ -16,6 +16,8 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
             await self.close(code=4000)  # Code d'erreur personnalisé
             return
 
+        logger.error("HERE")
+
         logger.info(f"Connecting to soundboard: {self.scope['url_route']['kwargs']['soundboard_uuid']} {self.scope['url_route']['kwargs']['token']}")
         self.soundboard_uuid = self.scope['url_route']['kwargs']['soundboard_uuid']
         self.token = self.scope['url_route']['kwargs']['token']
