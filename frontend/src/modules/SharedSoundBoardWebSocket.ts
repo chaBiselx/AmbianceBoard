@@ -61,8 +61,6 @@ class SharedSoundBoardWebSocket {
         }
 
         try {
-            console.log('TODO remove console.log');
-            console.log('url', this.url);
             this.socket = new WebSocket(this.url);
 
             this.socket.onopen = (event) => {
