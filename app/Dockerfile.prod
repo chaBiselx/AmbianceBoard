@@ -48,7 +48,9 @@ RUN dos2unix ./entrypoint.prod.sh && chmod +x ./entrypoint.prod.sh
 RUN chown -R appuser:appuser /usr/src/app
 
 # collectstatic pour Django en mode production
-RUN python manage.py collectstatic --noinput --clear || true
+RUN python manage.py collectstatic --noinput
+# cp -r staticfiles/admin static/admin 
+# TODO UPDATE this part
 
 # Note: We start as root to allow cron functionality when needed
 # The application should drop privileges when not running cron
