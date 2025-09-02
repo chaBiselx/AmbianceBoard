@@ -19,7 +19,7 @@ services:
     command: gunicorn parameters.wsgi:application --bind 0.0.0.0:${WEB_PORT} --workers=3
     volumes:
       - ./app/:/usr/src/app/
-      - ./static:/usr/src/app/static/
+      - ./staticfiles:/usr/src/app/static/
       - ./mediafiles:/usr/src/app/media/
     ports:
       - ${WEB_PORT}:${WEB_PORT}
@@ -40,7 +40,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-      - ./static:/app/static
+      - ./staticfiles:/app/static
     environment:
       - DEBUG=0
       
