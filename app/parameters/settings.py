@@ -27,9 +27,9 @@ FIELD_ENCRYPTION_KEY = os.environ.get("FIELD_ENCRYPTION_KEY")
 DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
 ACTIVE_SSL = bool(int(os.environ.get("ACTIVE_SSL", default=1)))
 DEBUG_TOOLBAR = bool(int(os.environ.get("DEBUG_TOOLBAR", default=0)))
-if(DEBUG ==0):
-    DEBUG_TOOLBAR = False
-    
+
+APP_ENV = str(os.environ.get("APP_ENV", default='dev'))
+
 RUN_CRONS = bool(int(os.environ.get("RUN_CRONS", default=0)))
     
     
@@ -61,6 +61,7 @@ LEGAL_HEBERGEUR_CONTACT=os.environ.get("LEGAL_HEBERGEUR_CONTACT")
 APP_HOST = os.getenv('WEB_HOST')
 APP_PORT = int(os.getenv('WEB_PORT'))
 APP_SCHEME  = 'https' if ACTIVE_SSL else 'http'
+
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="localhost 127.0.0.1 [::1]").split(" ")
 
