@@ -60,31 +60,36 @@ class SharedSoundBoardWebSocket {
             return;
         }
 
-        this.socket = new WebSocket(this.url);
+        try {
+            this.socket = new WebSocket(this.url);
 
-        this.socket.onopen = (event) => {
-            ConsoleCustom.log('WebSocket is connected.');
-        };
+            this.socket.onopen = (event) => {
+                ConsoleCustom.log('WebSocket is connected.');
+            };
 
-        this.socket.onmessage = (event) => {
-            this.responseProcessing(JSON.parse(event.data) as WebSocketResponse);
-        };
+            this.socket.onmessage = (event) => {
+                this.responseProcessing(JSON.parse(event.data) as WebSocketResponse);
+            };
 
-        this.socket.onclose = (event) => {
-            if (Config.DEBUG) {
-                if (event.wasClean) {
-                    console.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
-                } else {
-                    console.log('Connection died');
+            this.socket.onclose = (event) => {
+                if (Config.DEBUG) {
+                    if (event.wasClean) {
+                        console.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
+                    } else {
+                        console.log('Connection died');
+                    }
                 }
-            }
 
-            this.socket = null;
-        };
+                this.socket = null;
+            };
 
-        this.socket.onerror = (error) => {
-            ConsoleCustom.log('WebSocket Error:', error);
-        };
+            this.socket.onerror = (error) => {
+                ConsoleCustom.log('WebSocket Error:', error);
+            };
+        } catch (error) {
+
+        }
+
     }
 
     public close(): void {
