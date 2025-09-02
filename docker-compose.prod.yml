@@ -9,6 +9,7 @@ services:
       - ./.env
     environment:
       - RUNCRON=1
+      - DAPHNE=0
     depends_on:
       - db
       - rabbitmq  # Ajout de la dépendance à RabbitMQ
@@ -28,6 +29,7 @@ services:
       - ./.env
     environment:
       - RUNCRON=0
+      - DAPHNE=0
     depends_on:
       - db
       - rabbitmq
@@ -44,7 +46,8 @@ services:
     ports:
       - ${WS_PORT}:${WS_PORT}
     env_file:
-      - ./.env
+      - RUNCRON=0
+      - DAPHNE=1
     depends_on:
       - db
 

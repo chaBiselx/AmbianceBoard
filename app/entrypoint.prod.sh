@@ -50,9 +50,9 @@ if [ "$RUNCRON" = "1" ]; then
     exec cron -f
 fi
 
-if [ "$RUNCRON" != "1" ]; then
+if [ "$DAPHNE" == "1" ]; then
     echo "Start WebSocket Daphne..."
-    exec daphne parameters.asgi:application --bind 0.0.0.0 --port ${WS_PORT:-8000} &
+    exec daphne parameters.asgi:application --bind 0.0.0.0 --port ${WS_PORT:-8081} &
 fi
 
 
