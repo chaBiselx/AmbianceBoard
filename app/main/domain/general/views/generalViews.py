@@ -159,8 +159,8 @@ def logout_view(request: HttpRequest) -> HttpResponse:
         HttpResponse: Redirection vers la page d'accueil
     """
     if request.user.is_authenticated:
-        logout(request)
         ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LOGOUT, user=request.user)
+        logout(request)
     return redirect('home')
 
 @login_required
