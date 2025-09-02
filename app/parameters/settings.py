@@ -299,6 +299,7 @@ Behaviour:
 STATIC_ROOT = Path(os.environ.get("STATIC_ROOT", BASE_DIR / "staticfiles"))
 
 # Source static directory (built assets copied here before collectstatic in dev / CI build stage)
+LOCAL_STATIC = BASE_DIR / 'static'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
 if not DEBUG:
@@ -306,7 +307,7 @@ if not DEBUG:
     STATICFILES_DIRS = []
     
 # Choix unifié du répertoire principal à utiliser par le code applicatif
-STATIC_PRIMARY_DIR = (STATICFILES_DIRS[0] if STATICFILES_DIRS else STATIC_ROOT)
+STATIC_PRIMARY_DIR = LOCAL_STATIC
 
 LOGIN_URL = '/login'
 
