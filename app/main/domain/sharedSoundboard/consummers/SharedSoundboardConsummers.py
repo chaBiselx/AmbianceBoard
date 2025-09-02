@@ -49,6 +49,8 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         try:
+            logger.error('******************************') #TODO remove
+            logger.error('receive') #TODO remove
             data = json.loads(text_data)
             message_type = data.get('type')
             
