@@ -20,7 +20,7 @@ services:
     volumes:
       - ./app/:/usr/src/app/
       - ./staticfiles:/usr/src/app/static/
-      - ./mediafiles:/usr/src/app/media/
+      - ./mediafiles:/usr/src/app/mediafiles/
     ports:
       - ${WEB_PORT}:${WEB_PORT}
     env_file:
