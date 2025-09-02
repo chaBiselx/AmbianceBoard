@@ -46,6 +46,8 @@ services:
     ports:
       - ${WS_PORT}:${WS_PORT}
     env_file:
+      - ./.env
+    environment:
       - RUNCRON=0
       - DAPHNE=1
     depends_on:
