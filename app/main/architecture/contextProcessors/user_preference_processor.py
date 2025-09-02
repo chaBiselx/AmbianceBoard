@@ -11,8 +11,9 @@ def user_preference_processor(request):
     can_share_soundboard = False
     
     if(request.user.is_authenticated):
-        try:
-            user_preference = UserPreferenceRepository().get_user_preferences(request.user)
+        
+        user_preference = UserPreferenceRepository().get_user_preferences(request.user)
+        if user_preference:
             theme_temp = user_preference.theme
             if theme_temp != None:
                 theme = theme_temp
@@ -23,8 +24,6 @@ def user_preference_processor(request):
             if playlist_dim_temp != None:
                 playlist_dim = playlist_dim_temp
 
-        except UserPreference.DoesNotExist:
-            pass
         
         # Vérifier si l'utilisateur peut partager des soundboards
         can_share_soundboard = UserTierManager.can_user_share_soundboard(request.user)
