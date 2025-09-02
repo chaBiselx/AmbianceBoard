@@ -237,26 +237,25 @@ WSGI_APPLICATION = "parameters.wsgi.application"
 
 ASGI_APPLICATION = 'parameters.asgi.application'
 
-# Variables RabbitMQ (définies plus bas dans le fichier)
-# RABBIT_MQ_HOST, RABBIT_MQ_PORT, RABBIT_MQ_USER, RABBIT_MQ_PASSWORD
+# Configuration Redis pour Django Channels
+REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
+REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))
+REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD", "")
 
-if not DEBUG:  # Production avec RabbitMQ
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels_rabbitmq.core.RabbitmqChannelLayer',
-            'CONFIG': {
-                "host": f"amqp://{RABBIT_MQ_USER}:{RABBIT_MQ_PASSWORD}@{RABBIT_MQ_HOST}:{RABBIT_MQ_PORT}/",
-                "prefix": "asgi:",
-                "expiry": 60,
-            },
+# Configuration Redis pour les channels (dev et prod)
+REDIS_URL = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [REDIS_URL],
+            "capacity": 1500,  # messages par channel
+            "expiry": 60,      # TTL en secondes
         },
-    }
-else:  # Développement
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels.layers.InMemoryChannelLayer'
-        }
-    }
+    },
+}
+
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

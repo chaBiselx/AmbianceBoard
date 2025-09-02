@@ -12,7 +12,7 @@ services:
       - DAPHNE=0
     depends_on:
       - db
-      - rabbitmq  # Ajout de la dépendance à RabbitMQ
+      - rabbitmq
 
   back:
     build:
@@ -38,6 +38,7 @@ services:
       - db
       - rabbitmq
       - front
+      - redis
 
   # websocket:
   #   build:
@@ -56,6 +57,23 @@ services:
   #     - DAPHNE=1
   #   depends_on:
   #     - db
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT}:6379"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    command: >
+      sh -c "
+        if [ -n \"$$REDIS_PASSWORD\" ]; then
+          redis-server --requirepass $$REDIS_PASSWORD
+        else
+          redis-server
+        fi
+      "
+    volumes:
+      - redis-data:/data
 
   front:
     build:
@@ -95,4 +113,5 @@ services:
 
 volumes:
   db-data: null
+  redis-data: null
   rabbitmq-data: null
