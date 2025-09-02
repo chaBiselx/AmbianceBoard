@@ -231,11 +231,27 @@ WSGI_APPLICATION = "parameters.wsgi.application"
 # Websocket
 
 ASGI_APPLICATION = 'parameters.asgi.application'
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+
+# Variables RabbitMQ (définies plus bas dans le fichier)
+# RABBIT_MQ_HOST, RABBIT_MQ_PORT, RABBIT_MQ_USER, RABBIT_MQ_PASSWORD
+
+if not DEBUG:  # Production avec RabbitMQ
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels_rabbitmq.core.RabbitmqChannelLayer',
+            'CONFIG': {
+                "host": f"amqp://{RABBIT_MQ_USER}:{RABBIT_MQ_PASSWORD}@{RABBIT_MQ_HOST}:{RABBIT_MQ_PORT}/",
+                "prefix": "asgi:",
+                "expiry": 60,
+            },
+        },
     }
-}
+else:  # Développement
+    CHANNEL_LAYERS = {
+        'default': {
+            'BACKEND': 'channels.layers.InMemoryChannelLayer'
+        }
+    }
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
