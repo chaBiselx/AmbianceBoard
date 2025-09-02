@@ -304,6 +304,9 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 if not DEBUG:
     # In production we rely solely on collected files to avoid Nginx/Django traversing source dirs
     STATICFILES_DIRS = []
+    
+# Choix unifié du répertoire principal à utiliser par le code applicatif
+STATIC_PRIMARY_DIR = (STATICFILES_DIRS[0] if STATICFILES_DIRS else STATIC_ROOT)
 
 LOGIN_URL = '/login'
 
