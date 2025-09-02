@@ -11,10 +11,6 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
         # Récupération des paramètres d'URL
         logger.error("=================================================================")
         logger.error(self.scope['url_route']['kwargs'])
-        if not self.scope['url_route']['kwargs'].get('soundboard_uuid') or not self.scope['url_route']['kwargs'].get('token'):
-            logger.error("Missing soundboard_uuid or token")
-            await self.close(code=4000)  # Code d'erreur personnalisé
-            return
 
         logger.error("HERE")
 
