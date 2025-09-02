@@ -62,6 +62,11 @@ APP_HOST = os.getenv('WEB_HOST')
 APP_PORT = int(os.getenv('WEB_PORT'))
 APP_SCHEME  = 'https' if ACTIVE_SSL else 'http'
 
+RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
+RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
+RABBIT_MQ_USER = os.environ.get("RABBIT_MQ_USER")
+RABBIT_MQ_PASSWORD = os.environ.get("RABBIT_MQ_PASSWORD")
+
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="localhost 127.0.0.1 [::1]").split(" ")
 
@@ -380,10 +385,7 @@ if RUN_CRONS:
 
 
 # message brokers 
-RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
-RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
-RABBIT_MQ_USER = os.environ.get("RABBIT_MQ_USER")
-RABBIT_MQ_PASSWORD = os.environ.get("RABBIT_MQ_PASSWORD")
+
 
 CELERY_BROKER_URL = f"amqp://{RABBIT_MQ_USER}:{RABBIT_MQ_PASSWORD}@{RABBIT_MQ_HOST}:{RABBIT_MQ_PORT}/"  # URL de RabbitMQ 
 CELERY_ACCEPT_CONTENT = ['json']
