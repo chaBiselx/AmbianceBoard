@@ -22,10 +22,10 @@ USER nodeuser
 RUN npm config set cache /app/.npm-cache && \
     npm install --ignore-scripts
 
-COPY --chown=nodeuser:nodeuser ./src ./src
-COPY --chown=nodeuser:nodeuser ./scss ./scss
-COPY --chown=nodeuser:nodeuser ./assets ./assets
-COPY --chown=nodeuser:nodeuser ./scripts ./scripts
+COPY --chown=nodeuser:nodeuser --chmod=555 ./src ./src
+COPY --chown=nodeuser:nodeuser --chmod=555 ./scss ./scss
+COPY --chown=nodeuser:nodeuser --chmod=555 ./assets ./assets
+COPY --chown=nodeuser:nodeuser --chmod=555 ./scripts ./scripts
 
 # Créer le dossier static si il n'existe pas
 RUN mkdir -p static/js static/css static/webfonts
