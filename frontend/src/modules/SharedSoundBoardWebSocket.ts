@@ -1,4 +1,5 @@
 import Config from '@/modules/General/Config';
+import Cookie from '@/modules/General/Cookie';
 import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MusicElement } from '@/modules/MusicElement';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
@@ -36,12 +37,28 @@ class SharedSoundBoardWebSocket {
         this.master = master;
     }
 
-    public static getInstance(url?: string, master: boolean = false): SharedSoundBoardWebSocket {
+    public static setNewInstance(url: string, master: boolean = false): void {
+        if (SharedSoundBoardWebSocket.instance) {
+            SharedSoundBoardWebSocket.instance.close();
+        }
+        SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, master);
+    }
+
+    public static getSlaveInstance(url: string): SharedSoundBoardWebSocket {
         if (!SharedSoundBoardWebSocket.instance) {
-            if (!url) {
+            SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, false);
+        }
+        return SharedSoundBoardWebSocket.instance;
+    }
+
+    public static getMasterInstance(): SharedSoundBoardWebSocket {
+        if (!SharedSoundBoardWebSocket.instance) {
+            const urlBase64 = Cookie.get('WebSocketUrl');
+            if (!urlBase64) {
                 throw new Error('URL is required for first instantiation');
             }
-            SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, master);
+            const url = atob(urlBase64);
+            SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, true);
         }
         return SharedSoundBoardWebSocket.instance;
     }
