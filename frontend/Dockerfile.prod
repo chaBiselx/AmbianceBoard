@@ -18,8 +18,8 @@ RUN chown -R nodeuser:nodeuser /app
 # Passer à l'utilisateur non-root avant d'installer les dépendances
 USER nodeuser
 
-# Configurer npm et installer les dépendances
-RUN npm config set cache /app/.npm-cache --global && \
+# Configurer npm localement et installer les dépendances
+RUN npm config set cache /app/.npm-cache && \
     npm install --ignore-scripts
 
 COPY --chown=nodeuser:nodeuser ./src ./src
