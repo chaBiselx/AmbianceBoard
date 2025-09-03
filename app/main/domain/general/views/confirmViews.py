@@ -8,7 +8,6 @@ from main.domain.common.service.ConfirmationUserService import ConfirmationUserS
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 
 
-@login_required
 @require_http_methods(['GET'])
 def confirm_account(request, uuid_user:str, confirmation_token:str):
     logger.info("Starting ConfirmAccount View")
