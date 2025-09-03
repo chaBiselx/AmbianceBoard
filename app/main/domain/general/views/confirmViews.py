@@ -15,14 +15,16 @@ def confirm_account(request, uuid_user:str, confirmation_token:str):
     logger.info("Starting ConfirmAccount View")
     user = UserRepository().get_user(uuid_user)
     if user:
-        confirmed = ConfirmationUserService(user).verification_token(confirmation_token)
-        if confirmed:
-            ServerNotificationBuilder(request).set_message(
-                "Votre compte a été validé."
+        try:
+            confirmed = ConfirmationUserService(user).verification_token(confirmation_token)
+            if confirmed:
+                ServerNotificationBuilder(request).set_message(
+                    "Votre compte a été validé."
                 ).set_statut("info").send()
-            
-        return redirect('login')
-    else:
-        logger.error("confirm_account User not found")
-        return render(request,  HtmlDefaultPageEnum.ERROR_404.value, status=404)
+                
+            return redirect('login')
+        except Exception as e:
+            logger.error(e)
+    logger.error("confirm_account User not found")
+    return render(request,  HtmlDefaultPageEnum.ERROR_404.value, status=404)
     
