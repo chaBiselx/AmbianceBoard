@@ -512,30 +512,5 @@ TIER_EXPIRATION_WARNING_DAYS = int(os.environ.get("TIER_EXPIRATION_WARNING_DAYS"
 
 # CACHE
 
-# Configuration du cache Django (optionnel mais recommandé avec Redis)
-if not DEBUG:
-    # En production, utiliser Redis pour le cache Django aussi
-    if REDIS_PASSWORD:
-        REDIS_CACHE_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB + 1}'
-    else:
-        REDIS_CACHE_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB + 1}'
-        
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-            'LOCATION': REDIS_CACHE_URL,
-            'KEY_PREFIX': 'ambianceboard_cache',
-            'TIMEOUT': 300,  # 5 minutes par défaut
-        }
-    }
-    CACHE_TYPE = "redis"
-else:
-    # En développement, garder le cache en mémoire
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        }
-    }
-    CACHE_TYPE = "memory"
-
+CACHE_TYPE = "memory"
 LIMIT_CACHE_DEFAULT = 14400 # 4h
