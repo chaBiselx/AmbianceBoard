@@ -23,8 +23,6 @@ class SharedSoundboardService():
     def music_start(self, playlist_uuid, music):
         
         if(self._get_shared_soundboard()):
-            logger.error('******************************') #TODO remove
-            logger.error('music_start') #TODO remove
             self._diffuser_message(
                 {
                     "type": "music_start",
@@ -35,10 +33,7 @@ class SharedSoundboardService():
             )
             
     def music_stop_all(self):
-        logger.error('******************************') #TODO remove
-        logger.error('music_stop_all') #TODO remove
         if(self._get_shared_soundboard()):
-            logger.error('diffusion') #TODO remove
             self._diffuser_message(
                 {
                     "type": "music_stop_all",
@@ -49,8 +44,6 @@ class SharedSoundboardService():
 
     def _diffuser_message(self, message):
         channel_layer = get_channel_layer()
-        logger.error('_diffuser_message') #TODO remove
-        logger.error(message) #TODO remove
                     
         # Diffuser le message
         async_to_sync(channel_layer.group_send)(
@@ -63,8 +56,6 @@ class SharedSoundboardService():
         cache_key = f"shared_soundboard:{self.soundboard_uuid}:{self.token}"
         shared_soundboard = self.cache.get(cache_key)
         if shared_soundboard is not None:
-            logger.error('******************************') #TODO remove
-            logger.error('cache') #TODO remove
             return True
             
         if self.token is None:
@@ -79,8 +70,6 @@ class SharedSoundboardService():
                 soundboard=soundboard,
                 token=self.token
             )
-            logger.error('******************************') #TODO remove
-            logger.error('soundboard') #TODO remove
 
             if not shared_soundboard:
                 logger.error(f"Soundboard introuvable: {self.soundboard_uuid} {self.token}")

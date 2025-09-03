@@ -9,11 +9,6 @@ from main.domain.common.utils.logger import logger
 class SharedSoundboardConsummers(AsyncWebsocketConsumer):
     async def connect(self):
         # Récupération des paramètres d'URL
-        logger.error("=================================================================")
-        logger.error(self.scope['url_route']['kwargs'])
-
-        logger.error("HERE")
-
         logger.info(f"Connecting to soundboard: {self.scope['url_route']['kwargs']['soundboard_uuid']} {self.scope['url_route']['kwargs']['token']}")
         self.soundboard_uuid = self.scope['url_route']['kwargs']['soundboard_uuid']
         self.token = self.scope['url_route']['kwargs']['token']
@@ -45,8 +40,6 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         try:
-            logger.error('******************************') #TODO remove
-            logger.error('receive') #TODO remove
             data = json.loads(text_data)
             message_type = data.get('type')
             
