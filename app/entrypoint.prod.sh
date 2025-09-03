@@ -26,6 +26,10 @@ if [ "$RUNCRON" != "1" ]; then
 
     # python manage.py flush --no-input
     python manage.py migrate
+    
+    # Collectstatic en production (nécessite les variables d'environnement)
+    echo "Collecting static files..."
+    python manage.py collectstatic --noinput
 
 fi
 
