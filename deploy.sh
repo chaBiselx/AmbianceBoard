@@ -27,7 +27,7 @@ chmod +x ./app/entrypoint.sh
 chmod +x ./app/entrypoint.prod.sh
 
 echo "🐳 Build des conteneurs Docker..."
-docker compose -f docker-compose.prod.yml build --no-cache
+docker compose -f docker-compose.prod.yml build
 
 echo "🚀 Démarrage des conteneurs..."
 docker compose -f docker-compose.prod.yml up -d
