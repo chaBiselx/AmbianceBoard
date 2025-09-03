@@ -42,7 +42,7 @@ if ACTIVE_SSL:
     CSRF_COOKIE_SECURE = True
 
 EMAIL_SMTP_SERVEUR = str(os.environ.get("EMAIL_SMTP_SERVEUR"))
-EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT"))
+EMAIL_SMTP_PORT = os.environ.get("EMAIL_SMTP_PORT", 587)
 EMAIL_SMTP_USERNAME = str(os.environ.get("EMAIL_SMTP_USERNAME"))
 EMAIL_SMTP_PASSWORD = str(os.environ.get("EMAIL_SMTP_PASSWORD"))
 EMAIL_SMTP_USE_TLS = bool(os.environ.get("EMAIL_SMTP_USE_TLS", default=True))
@@ -59,13 +59,18 @@ LEGAL_HEBERGEUR_CONTACT=os.environ.get("LEGAL_HEBERGEUR_CONTACT")
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
 APP_HOST = os.getenv('WEB_HOST')
-APP_PORT = int(os.getenv('WEB_PORT'))
+APP_PORT = os.getenv('WEB_PORT')
 APP_SCHEME  = 'https' if ACTIVE_SSL else 'http'
 
 RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
 RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
 RABBIT_MQ_USER = os.environ.get("RABBIT_MQ_USER")
 RABBIT_MQ_PASSWORD = os.environ.get("RABBIT_MQ_PASSWORD")
+
+REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
+REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))
+REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD", "")
+REDIS_DB = int(os.environ.get("REDIS_DB", 0))
 
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="localhost 127.0.0.1 [::1]").split(" ")
@@ -238,10 +243,15 @@ WSGI_APPLICATION = "parameters.wsgi.application"
 ASGI_APPLICATION = 'parameters.asgi.application'
 
 # Configuration Redis pour Django Channels
+# Utilise Redis pour permettre la communication entre services séparés
+REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer'
-    }
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [REDIS_URL],
+        },
+    },
 }
 
 
@@ -502,5 +512,30 @@ TIER_EXPIRATION_WARNING_DAYS = int(os.environ.get("TIER_EXPIRATION_WARNING_DAYS"
 
 # CACHE
 
-CACHE_TYPE = "memory"
+# Configuration du cache Django (optionnel mais recommandé avec Redis)
+if not DEBUG:
+    # En production, utiliser Redis pour le cache Django aussi
+    if REDIS_PASSWORD:
+        REDIS_CACHE_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB + 1}'
+    else:
+        REDIS_CACHE_URL = f'redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB + 1}'
+        
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': REDIS_CACHE_URL,
+            'KEY_PREFIX': 'ambianceboard_cache',
+            'TIMEOUT': 300,  # 5 minutes par défaut
+        }
+    }
+    CACHE_TYPE = "redis"
+else:
+    # En développement, garder le cache en mémoire
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        }
+    }
+    CACHE_TYPE = "memory"
+
 LIMIT_CACHE_DEFAULT = 14400 # 4h
