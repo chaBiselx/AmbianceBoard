@@ -1,7 +1,7 @@
 FROM node:18
 
 # Créer un utilisateur non-root pour des raisons de sécurité
-RUN groupadd -r nodeuser && useradd -r -g nodeuser nodeuser
+RUN groupadd -r nodeuser && useradd -r -g nodeuser -m nodeuser
 
 WORKDIR /app
 
@@ -12,10 +12,15 @@ RUN chown -R nodeuser:nodeuser /app
 COPY package*.json tsconfig.json ./
 COPY vite.config.ts ./
 
+# Changer le propriétaire des fichiers copiés
+RUN chown -R nodeuser:nodeuser /app
+
 # Passer à l'utilisateur non-root avant d'installer les dépendances
 USER nodeuser
 
-RUN npm install --ignore-scripts
+# Configurer npm et installer les dépendances
+RUN npm config set cache /app/.npm-cache --global && \
+    npm install --ignore-scripts
 
 COPY --chown=nodeuser:nodeuser ./src ./src
 COPY --chown=nodeuser:nodeuser ./scss ./scss
