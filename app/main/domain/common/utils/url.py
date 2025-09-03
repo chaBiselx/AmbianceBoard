@@ -24,3 +24,7 @@ def redirection_url(url: str) -> str:
     if parsed_url.netloc in allow_list and parsed_url.scheme == scheme:
         return f"{scheme}://" + parsed_url.netloc
     return "/"
+
+def get_full_ws(path: str) -> str:
+    proto = 'wss:' if Settings.get('ACTIVE_SSL') else 'ws:'
+    return f'{proto}//{path}'

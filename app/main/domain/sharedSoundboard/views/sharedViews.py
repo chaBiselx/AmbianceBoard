@@ -12,7 +12,7 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from django.contrib.sites.shortcuts import get_current_site
-from main.domain.common.utils.url import get_full_url
+from main.domain.common.utils.url import get_full_url, get_full_ws
 from main.service.RandomizeTrackService import RandomizeTrackService
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.utils.settings import Settings
@@ -36,8 +36,7 @@ def publish_soundboard(request, soundboard_uuid):
         'soundboard_uuid': soundboard_uuid,
         'token': shared.token,
     })
-    proto = 'wss:' if Settings.get('ACTIVE_SSL') else 'ws:' # TODO sortir du code et regrouper 
-    ws_url = f'{proto}//{request.get_host()}{ws_path}'
+    ws_url = get_full_ws(f'{request.get_host()}{ws_path}')
     response.set_cookie(
                             'WebSocketToken', 
                             shared.token, 
@@ -71,8 +70,7 @@ def shared_soundboard_read(request, soundboard_uuid, token):
             'soundboard_uuid': soundboard.uuid,
             'token': token,
         })
-        proto = 'wss:' if Settings.get('ACTIVE_SSL') else 'ws:'
-        ws_url = f'{proto}//{request.get_host()}{ws_path}'
+        ws_url = get_full_ws(f'{request.get_host()}{ws_path}')
         return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url})
 
 
