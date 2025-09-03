@@ -45,9 +45,7 @@ class SharedSoundBoardWebSocket {
     }
 
     public static getSlaveInstance(url: string): SharedSoundBoardWebSocket {
-        if (!SharedSoundBoardWebSocket.instance) {
-            SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, false);
-        }
+        SharedSoundBoardWebSocket.instance ??= new SharedSoundBoardWebSocket(url, false);
         return SharedSoundBoardWebSocket.instance;
     }
 
