@@ -31,7 +31,7 @@ if [ "$RUNCRON" != "1" ]; then
     echo "Collecting static files..."
     python manage.py collectstatic --noinput
 
-    cp -r /app/staticfiles/* /app/static
+     cp -r ./staticfiles/admin ./static
 
 fi
 
