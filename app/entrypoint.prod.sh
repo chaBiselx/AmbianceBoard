@@ -31,6 +31,8 @@ if [ "$RUNCRON" != "1" ]; then
     echo "Collecting static files..."
     python manage.py collectstatic --noinput
 
+    cp -r /app/staticfiles/* /app/static
+
 fi
 
 # Démarrer Celery en arrière-plan
