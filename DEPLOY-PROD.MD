@@ -37,6 +37,10 @@ vi /srv/www/AmbianceBoard/.env
 ## pull la branch 
 cd /srv/www/AmbianceBoard/ && chmod +x deploy.sh && sh deploy.sh
 
+ou manuellement 
+
+cd /srv/www/AmbianceBoard/ && chmod +x app/entrypoint.sh && chmod +x app/entrypoint.prod.sh
+
 ## deployement du back (lors de la première fois)
 python manage.py makemigrations main
 python manage.py migrate main
@@ -47,8 +51,16 @@ mettre les roles et les tiers utilisateur a l'admin
 
 # Utiles 
 
-## suppression des container 
+## docker
+
+### build 
+docker compose -f docker-compose.prod.yml build --no-cache
+docker compose -f docker-compose.prod.yml up
+
+### suppression des container
 docker rm -f $(docker ps -aq)
+
+
 
 ## creation user app
 sudo useradd -M -s /bin/bash ambianceboard-app
