@@ -42,10 +42,13 @@ if ACTIVE_SSL:
     CSRF_COOKIE_SECURE = True
 
 EMAIL_SMTP_SERVEUR = str(os.environ.get("EMAIL_SMTP_SERVEUR"))
-EMAIL_SMTP_PORT = os.environ.get("EMAIL_SMTP_PORT", 587)
+EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT", 587))
 EMAIL_SMTP_USERNAME = str(os.environ.get("EMAIL_SMTP_USERNAME"))
 EMAIL_SMTP_PASSWORD = str(os.environ.get("EMAIL_SMTP_PASSWORD"))
-EMAIL_SMTP_USE_TLS = bool(os.environ.get("EMAIL_SMTP_USE_TLS", default=True))
+_email_tls_string = os.environ.get("EMAIL_SMTP_USE_TLS", default='True')
+EMAIL_SMTP_USE_TLS = False
+if (_email_tls_string == 'True'):
+    EMAIL_SMTP_USE_TLS = True
 
 EMAIL_NO_REPLAY = os.environ.get("EMAIL_NO_REPLAY")
 EMAILS_LISTING_MODERATORS = os.environ.get("EMAILS_LISTING_MODERATORS", default="").split(";")

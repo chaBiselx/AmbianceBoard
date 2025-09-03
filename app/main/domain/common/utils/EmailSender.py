@@ -1,6 +1,7 @@
 import smtplib
 from main.domain.common.utils.logger import LoggerFactory
 from parameters import settings
+from main.domain.common.utils.settings import Settings
 from email.message import EmailMessage
 from typing import List, Optional
 from main.domain.common.exceptions.EmailException import DebugModeActivedWitoutDebugMailException, AttachementException, SendException
@@ -9,11 +10,11 @@ from email.mime.text import MIMEText
 class EmailSender:
     def __init__(
             self, 
-            smtp_server: str = settings.EMAIL_SMTP_SERVEUR, 
-            smtp_port: int = settings.EMAIL_SMTP_PORT, 
-            username: str = settings.EMAIL_SMTP_USERNAME, 
-            password: str = settings.EMAIL_SMTP_PASSWORD,
-            use_tls: bool = settings.EMAIL_SMTP_USE_TLS
+            smtp_server: str = Settings.get('EMAIL_SMTP_SERVEUR'), 
+            smtp_port: int = Settings.get('EMAIL_SMTP_PORT'), 
+            username: str = Settings.get('EMAIL_SMTP_USERNAME'), 
+            password: str = Settings.get('EMAIL_SMTP_PASSWORD'),
+            use_tls: bool = Settings.get('EMAIL_SMTP_USE_TLS')
         ):
         """
         Initialise l'EmailSender.
@@ -72,7 +73,11 @@ class EmailSender:
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
                 if(self.use_tls) :
                     server.starttls()  # Active la connexion sécurisée
-                server.login(self.username, self.password)
+                
+                # N'effectuer l'authentification que si des identifiants sont fournis
+                if self.username and self.password:
+                    server.login(self.username, self.password)
+                
                 self.logger.info(f"Email envoyé de {msg['From']} à {msg['To']} : {msg['Subject']}")
                 server.send_message(msg)
                 return True
