@@ -108,7 +108,10 @@ def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse
     
     SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
     
-    response = track.get_reponse_content()
+    try:
+        response = track.get_reponse_content()
+    except Exception:
+        response = None
     if(not response):
         return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
     return response

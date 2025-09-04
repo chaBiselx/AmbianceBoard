@@ -16,6 +16,7 @@ from main.domain.common.utils.url import get_full_url, get_full_ws
 from main.service.RandomizeTrackService import RandomizeTrackService
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.utils.settings import Settings
+from main.domain.common.utils.logger import logger
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
@@ -86,5 +87,5 @@ def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id
         if response:
             return response
     except Exception as e:
-        logging.error(f"Error in music_stream: {e}")
+        logger.error(f"Error in music_stream: {e}")
     return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
