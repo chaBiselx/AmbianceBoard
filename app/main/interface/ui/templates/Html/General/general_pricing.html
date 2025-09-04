@@ -77,6 +77,12 @@
                             <i class="fas fa-file-audio text-primary me-2"></i>
                             Fichiers jusqu'à <strong>{{ tier_data.limits.weight_music_mb }}MB</strong>
                         </li>
+                        <li class="mb-1">
+                            <i class="fas fa-rectangle-ad text-primary me-2"></i>
+                            Publicité (A venir) : <strong>
+                                {{ tier_data.limits.advertising.get_text_pricing }}
+                            </strong>
+                        </li>
                         {% if tier_data.limits.share_soundboard %}
                             <li class="mb-1">
                                 <i class="fas fa-share-alt text-primary me-2"></i>

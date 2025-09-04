@@ -434,6 +434,7 @@ ATTRIB_PERMISSIONS = {
 
 # USER TIERS AND LIMITS CONFIGURATION
 # Configuration flexible pour différents niveaux d'utilisateurs
+from main.domain.common.enum.AdvertisingEnum import AdvertisingEnum
 
 AUDIO_BITRATE_REDUCER_TARGET_BITRATE = 128  # En kbps
 USER_TIERS = {
@@ -443,11 +444,12 @@ USER_TIERS = {
         'display_name': 'Utilisateur Standard',
         'display_name_short': 'Standard',
         'limits': {
-            'soundboard': 5,
-            'playlist': 75,
+            'soundboard': 2,
+            'playlist': 50,
             'music_per_playlist': 5,
             'weight_music_mb': 10,
-            'share_soundboard': True
+            'share_soundboard': True,
+            'advertising' : AdvertisingEnum.FULL
         },
         'group_enum': 'USER_STANDARD'
     },
@@ -460,11 +462,12 @@ USER_TIERS = {
         'display_name': 'Premium Basique',
         'display_name_short': 'Basique',
         'limits': {
-            'soundboard': 25,
+            'soundboard': 15,
             'playlist': 150,
             'music_per_playlist': 10,
             'weight_music_mb': 20,
-            'share_soundboard': True
+            'share_soundboard': True,
+            'advertising' : AdvertisingEnum.PARTIAL
         },
         'group_enum': 'USER_PREMIUM_BASIC'
     },
@@ -482,7 +485,8 @@ USER_TIERS = {
             'playlist': 250,
             'music_per_playlist': 20,
             'weight_music_mb': 25,
-            'share_soundboard': True
+            'share_soundboard': True,
+            'advertising' : AdvertisingEnum.NONE
         },
         'group_enum': 'USER_PREMIUM_ADVANCED'  # À ajouter dans GroupEnum
     },
@@ -500,7 +504,8 @@ USER_TIERS = {
             'playlist': 500,
             'music_per_playlist': 30,
             'weight_music_mb': 30,
-            'share_soundboard': True
+            'share_soundboard': True,
+            'advertising' : AdvertisingEnum.NONE
         },
         'group_enum': 'USER_PREMIUM_PRO'  # À ajouter dans GroupEnum
     }
