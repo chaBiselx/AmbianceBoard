@@ -67,3 +67,6 @@ sudo useradd -M -s /bin/bash ambianceboard-app
 sudo passwd ambianceboard-app
 sudo chown ambianceboard-app:ambianceboard-app /srv/www/AmbianceBoard
 
+
+# TODO 
+sortir des logs du conntainer 
