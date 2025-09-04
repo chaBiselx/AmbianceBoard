@@ -134,7 +134,7 @@ def link_create(request, playlist_uuid):
     if request.method == 'POST':
         try:
             link = (LinkService(request)).save_form(playlist)
-            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LINK_CREATE, user=request.user, content_object=link)
+            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LINK_UPLOAD, user=request.user, content_object=link)
             ServerNotificationBuilder(request).set_message("Lien musical ajouté avec succès!").set_statut("success").send()
         except ValueError as e:
             ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
