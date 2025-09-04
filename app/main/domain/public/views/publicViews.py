@@ -14,12 +14,10 @@ from django.template.response import TemplateResponse
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from django.views.decorators.http import require_http_methods
 from main.architecture.persistence.models.Tag import Tag
-from django.db.models import Count
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.public.service.ReportContentService import ReportContentService
 from main.service.SharedSoundboardService import SharedSoundboardService
-from main.domain.public.service.TagService import TagService
 from main.domain.common.utils.url import redirection_url
 from main.architecture.persistence.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
 from main.domain.common.utils.logger import logger
@@ -27,6 +25,7 @@ from main.domain.common.utils.ServerNotificationBuilder import ServerNotificatio
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
+from main.domain.common.repository.TagRepository import TagRepository
 
 @require_http_methods(['GET'])
 def public_index(request):
@@ -35,6 +34,7 @@ def public_index(request):
 @require_http_methods(['GET'])
 @add_reporting_btn()
 def public_listing_soundboard(request):
+    tag_repository = TagRepository()
     page_number = int(request.GET.get('page', 1))
     selected_tag = request.GET.get('tag', None)
     
@@ -52,9 +52,9 @@ def public_listing_soundboard(request):
     queryset = queryset.order_by('uuid')
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
-    
-    
-    context['listTags'] = TagService(request).get_tag_with_count()
+
+
+    context['listTags'] = tag_repository.get_tag_with_count()
     context['listFavorite'] = list_favorite
     context['selected_tag'] = selected_tag
     return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)

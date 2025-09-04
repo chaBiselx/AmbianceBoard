@@ -16,11 +16,12 @@ from main.domain.common.utils.ExtractPaginator import extract_context_to_paginat
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from main.domain.common.utils.url import redirection_url
-from main.architecture.persistence.models.Tag import Tag
 from main.domain.moderator.form.TagForm import TagForm
 from main.domain.common.repository.UserRepository import UserRepository
 from main.domain.moderator.service.TreatmentReportService import TreatmentReportService
 from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
+from main.domain.common.repository.TagRepository import TagRepository
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 
 
 
@@ -160,7 +161,8 @@ def reporting_add_log(request) -> HttpResponse:
 def moderator_listing_tags(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
     
-    queryset = Tag.objects.all().order_by('name')
+    tag_repository = TagRepository()
+    queryset = tag_repository.get_all_queryset()
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
     
@@ -184,8 +186,9 @@ def moderator_create_tag(request) -> HttpResponse:
 @require_http_methods(['GET', 'POST'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_edit_tag(request, tag_uuid) -> HttpResponse:
-    tag = Tag.objects.get(uuid=tag_uuid)
-    
+    tag_repository = TagRepository()
+    tag = tag_repository.get_with_uuid(uuid=tag_uuid)
+
     if request.method == 'POST':
         form = TagForm(request.POST, instance=tag)
         if form.is_valid():
@@ -201,5 +204,9 @@ def moderator_edit_tag(request, tag_uuid) -> HttpResponse:
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_tag(request, tag_uuid) -> HttpResponse:
-    tag = Tag.objects.get(uuid=tag_uuid)
-    return render(request, 'Html/Moderator/info_tag.html', {"tag": tag})
+    tag_repository = TagRepository()
+    tag = tag_repository.get_with_uuid(uuid=tag_uuid)
+    if tag:
+        return render(request, 'Html/Moderator/info_tag.html', {"tag": tag})
+    else : 
+        return render(request,  HtmlDefaultPageEnum.ERROR_404.value, status=404)
