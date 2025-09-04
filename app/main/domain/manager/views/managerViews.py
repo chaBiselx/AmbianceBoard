@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from main.domain.manager.service.UserStatsService import UserStatsService
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.manager.service.UserActivityStatsService import UserActivityStatsService
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 
 
 @login_required
@@ -40,7 +41,7 @@ def user_account_dashboard(request) -> JsonResponse:
         
     except Exception as e:
         return JsonResponse({
-            'error': 'Erreur lors de la récupération des données',
+            'error': ErrorMessageEnum.DATA_RECUPERATION,
             'message': str(e)
         }, status=500)
     
@@ -61,7 +62,7 @@ def user_activity_dashboard(request) -> JsonResponse:
         
     except Exception as e:
         return JsonResponse({
-            'error': 'Erreur lors de la récupération des données',
+            'error': ErrorMessageEnum.DATA_RECUPERATION,
             'message': str(e)
         }, status=500)
 
@@ -81,6 +82,6 @@ def error_activity_dashboard(request) -> JsonResponse:
 
     except Exception as e:
         return JsonResponse({
-            'error': 'Erreur lors de la récupération des données',
+            'error': ErrorMessageEnum.DATA_RECUPERATION,
             'message': str(e)
         }, status=500)
