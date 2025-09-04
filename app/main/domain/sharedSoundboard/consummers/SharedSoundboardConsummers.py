@@ -9,7 +9,6 @@ from main.domain.common.utils.logger import logger
 class SharedSoundboardConsummers(AsyncWebsocketConsumer):
     async def connect(self):
         # Récupération des paramètres d'URL
-        logger.info(f"Connecting to soundboard: {self.scope['url_route']['kwargs']['soundboard_uuid']} {self.scope['url_route']['kwargs']['token']}")
         self.soundboard_uuid = self.scope['url_route']['kwargs']['soundboard_uuid']
         self.token = self.scope['url_route']['kwargs']['token']
         
