@@ -18,6 +18,7 @@ from datetime import datetime, timedelta
 from main.domain.common.utils.url import redirection_url
 from main.domain.moderator.form.TagForm import TagForm
 from main.domain.common.repository.UserRepository import UserRepository
+from main.domain.common.repository.PlaylistRepository import PlaylistRepository
 from main.domain.moderator.service.TreatmentReportService import TreatmentReportService
 from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
 from main.domain.common.repository.TagRepository import TagRepository
@@ -30,16 +31,13 @@ from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 @require_http_methods(['GET'])
 def moderator_dashboard(request) -> HttpResponse:
-    nb_users = User.objects.all().count() # TODO repository
-    moy_playlist_per_user = (User.objects.annotate(playlist_count=models.Count('playlist')).aggregate(avg_playlists=Avg('playlist_count')))['avg_playlists']
-    # TODO repository
-    moy_music_per_user = User.objects.annotate(
-        music_count=models.Count('playlist__tracks')
-        ).aggregate(avg_music=Avg('music_count'))['avg_music']
-    moy_music_per_playlist = Playlist.objects.annotate(
-        music_count=models.Count('tracks')
-        ).aggregate(avg_music=Avg('music_count'))['avg_music']
-    # TODO repository
+    user_repository = UserRepository()
+    playlist_repository = PlaylistRepository()
+    nb_users = user_repository.get_stats_nb_user()
+    moy_playlist_per_user = user_repository.get_stats_avg_playlist_per_user()
+    moy_music_per_user = user_repository.get_stats_avg_track_per_user() 
+    moy_music_per_playlist = playlist_repository.get_stat_nb_track_per_playlist()
+    
     return render(request, 'Html/Moderator/dashboard.html', {
             'nb_users': nb_users, 
             'moy_playlist_per_user': moy_playlist_per_user, 

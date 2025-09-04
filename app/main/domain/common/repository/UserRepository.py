@@ -1,4 +1,7 @@
 from typing import Any, Optional, List
+
+from django.db.models import Avg, Count
+from django.db import models
 from main.architecture.persistence.models.User import User
 
 
@@ -22,4 +25,16 @@ class UserRepository:
             return User.objects.filter(username=username).first()
         except User.DoesNotExist:
             return None
+        
+    def get_stats_nb_user(self) -> int :
+        return User.objects.all().count()
+        
+    def get_stats_avg_playlist_per_user(self) -> int : 
+        return (User.objects.annotate(playlist_count=models.Count('playlist')).aggregate(avg_playlists=Avg('playlist_count')))['avg_playlists']
+        
+    def get_stats_avg_track_per_user(self) -> int : 
+        return  User.objects.annotate(
+        music_count=models.Count('playlist__tracks')
+        ).aggregate(avg_music=Avg('music_count'))['avg_music']
+   
 
