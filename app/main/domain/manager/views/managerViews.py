@@ -60,9 +60,27 @@ def user_activity_dashboard(request) -> JsonResponse:
         return JsonResponse(response_data)
         
     except Exception as e:
-        print(e)
         return JsonResponse({
             'error': 'Erreur lors de la récupération des données',
             'message': str(e)
         }, status=500)
-    
+
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def error_activity_dashboard(request) -> JsonResponse:
+    try:
+        days = int(request.GET.get('period', 30 * 6))
+        end_date = timezone.now().date() + timedelta(days=1)
+        start_date = end_date - timedelta(days=days-1)
+
+        service = UserActivityStatsService()
+        response_data = service.get_error_activity_data(start_date, end_date)
+        return JsonResponse(response_data)
+
+    except Exception as e:
+        return JsonResponse({
+            'error': 'Erreur lors de la récupération des données',
+            'message': str(e)
+        }, status=500)

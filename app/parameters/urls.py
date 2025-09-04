@@ -15,7 +15,7 @@ from main.domain.private.views.playlistFormTrackViews import link_create, link_u
 from main.domain.private.views.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
 from main.domain.moderator.views.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
 from main.domain.manager.views.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
-from main.domain.manager.views.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard
+from main.domain.manager.views.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard
 from main.domain.manager.views.managerCronViews import (
     listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity
     )
@@ -131,6 +131,7 @@ urlpatterns = [
 
     path("manager/dashboard/user-account/", user_account_dashboard, name="managerUserAccountDashboard"),
     path("manager/dashboard/users-activity/", user_activity_dashboard, name="managerUsersActivityDashboard"),
+    path("manager/dashboard/error-activity/", error_activity_dashboard, name="managerErrorActivityDashboard"),
 
 
     # Administration des tiers d'utilisateurs

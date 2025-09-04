@@ -5,7 +5,8 @@ import { DataProcessor } from '@/modules/Util/DataProcessor';
 document.addEventListener("DOMContentLoaded", () => {
     const listIdGraphLine = [
         'evolution-user',
-        'activity-user'
+        'activity-user',
+        'activity-errors'
     ]
     listIdGraphLine.forEach(id => {
         new DashboardLineGraph(id).init();

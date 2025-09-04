@@ -61,3 +61,35 @@ class UserActivityTypeEnum(BaseEnum):
             "4XX": cls.ERROR_4XX,
             "5XX": cls.ERROR_5XX
         }
+        
+    @classmethod
+    def listing_reporting_errors(cls):
+        return {
+            "error_404": cls.ERROR_404, 
+            "error_405": cls.ERROR_405, 
+            "error_406": cls.ERROR_406, 
+            "error_429": cls.ERROR_429, 
+            "error_500": cls.ERROR_500,
+            "error_4XX": cls.ERROR_4XX,
+            "error_5XX": cls.ERROR_5XX
+        }
+        
+    @classmethod
+    def listing_reporting_activities(cls):
+        return {
+            "login": cls.LOGIN,
+            "logout": cls.LOGOUT,
+            "registration": cls.REGISTRATION,
+            "soundboard_create": cls.SOUNDBOARD_CREATE,
+            "soundboard_view": cls.SOUNDBOARD_VIEW,
+            "soundboard_share": cls.SOUNDBOARD_SHARE,
+            "soundboard_delete": cls.SOUNDBOARD_DELETE,
+            "playlist_create": cls.PLAYLIST_CREATE,
+            "playlist_delete": cls.PLAYLIST_DELETE,
+            "music_upload": cls.MUSIC_UPLOAD,
+            "music_delete": cls.MUSIC_DELETE,
+            "link_upload": cls.LINK_UPLOAD,
+            "link_delete": cls.LINK_DELETE,
+            "report_content": cls.REPORT_CONTENT
+        }
+
