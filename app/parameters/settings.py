@@ -31,8 +31,8 @@ DEBUG_TOOLBAR = bool(int(os.environ.get("DEBUG_TOOLBAR", default=0)))
 APP_ENV = str(os.environ.get("APP_ENV", default='dev'))
 
 RUN_CRONS = bool(int(os.environ.get("RUN_CRONS", default=0)))
-    
-    
+
+
 TESTING = 'test' in sys.argv
 
 if ACTIVE_SSL:
@@ -274,6 +274,11 @@ DATABASES = {
 }
 
 AUTH_USER_MODEL = 'main.User'
+
+AUTHENTICATION_BACKENDS = [
+    "main.application.auth.UsernameOrEmailBackend.UsernameOrEmailBackend",   # d'abord notre backend custom
+    "django.contrib.auth.backends.ModelBackend",  # fallback standard
+]
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

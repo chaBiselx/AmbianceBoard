@@ -2,10 +2,13 @@ from typing import Any, Optional, List
 
 from django.db.models import Avg, Count
 from django.db import models
+from django.db.models import Q
 from main.architecture.persistence.models.User import User
 
 
 class UserRepository:
+    
+
     
     def get_user(self, uuid_user: str) -> User | None:
         try:
@@ -23,6 +26,12 @@ class UserRepository:
     def get_user_by_username(self, username: str) -> User | None:
         try:
             return User.objects.filter(username=username).first()
+        except User.DoesNotExist:
+            return None
+        
+    def search_login_user(self, identifiant) -> User | None : 
+        try:
+            return User.objects.get(Q(username=identifiant) | Q(email=identifiant))
         except User.DoesNotExist:
             return None
         

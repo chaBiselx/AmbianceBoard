@@ -130,15 +130,18 @@ def login_view(request: HttpRequest) -> HttpResponse:
 @ratelimit(key='ip', rate='10/m', method='POST', block=True)
 def login_post(request: HttpRequest): 
     if request.method == 'POST':
-        username = request.POST['username']
+        identifiant = request.POST['identifiant']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        failed_login_attempt_service = FailedLoginAttemptService(request, username)
+        failed_login_attempt_service = FailedLoginAttemptService(request, identifiant)
+        
+        user = authenticate(request, username=identifiant, password=password)
+            
         if user is not None:
             login(request, user)
             failed_login_attempt_service.purge()
             ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LOGIN, user=user)
             return redirect('home')
+        
         # wrong password
         failed_login_attempt_service.add_or_create_failed_login_attempt()
         if(failed_login_attempt_service.is_timeout()) :
