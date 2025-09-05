@@ -26,7 +26,7 @@ echo "🐳 Arret des container..."
 docker compose -f docker-compose.prod.yml down
 
 echo "suppression des dossier static"
-rm -rf ./statiticfiles/*
+rm -rf staticfiles/
 
 echo "🔧 Configuration des permissions..."
 chmod +x ./app/entrypoint.sh
