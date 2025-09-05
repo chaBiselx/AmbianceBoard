@@ -22,6 +22,12 @@ else
     git pull origin master
 fi
 
+echo "🐳 Arret des container..."
+docker compose -f docker-compose.prod.yml down
+
+echo "suppression des dossier static"
+rm -rf ./statiticfiles/*
+
 echo "🔧 Configuration des permissions..."
 chmod +x ./app/entrypoint.sh
 chmod +x ./app/entrypoint.prod.sh
