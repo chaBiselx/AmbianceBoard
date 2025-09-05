@@ -49,7 +49,7 @@ def home(request: HttpRequest) -> HttpResponse:
     Returns:
         HttpResponse: Page d'accueil rendue
     """
-    return render(request, "Html/General/home.html", {"title": "Accueil"})
+    return render(request, "Html/General/home.html", {"title": "Accueil", "link_donation" : Settings.get("LINK_DONATION")})
 
 
 @require_http_methods(['GET'])
