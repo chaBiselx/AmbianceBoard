@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
         'activity-errors'
     ]
     listIdGraphLine.forEach(id => {
+        console.log(id);
+        
         new DashboardLineGraph(id).init();
     });
 });
