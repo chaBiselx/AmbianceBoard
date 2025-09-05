@@ -36,8 +36,13 @@ def user_account_dashboard(request) -> JsonResponse:
         start_date = end_date - timedelta(days=days-1)
 
         response_data = UserStatsService.get_user_activity_data(start_date, end_date)
-        print(response_data)
-        return JsonResponse(response_data)
+        json = {
+            'title' : f"Évolution des utilisateurs - {days} jours",
+            'x_label': 'Date',
+            'y_label': 'Utilisateurs',
+            'data':response_data
+        }
+        return JsonResponse(json)
         
     except Exception as e:
         return JsonResponse({
@@ -58,7 +63,13 @@ def user_activity_dashboard(request) -> JsonResponse:
         service = UserActivityStatsService()
         response_data = service.get_user_nb_activity_data(start_date, end_date)
 
-        return JsonResponse(response_data)
+        json = {
+            'title' : f"Évolution des consultations - {days} jours",
+            'x_label': 'Date',
+            'y_label': 'Consultations',
+            'data':response_data
+        }
+        return JsonResponse(json)
         
     except Exception as e:
         return JsonResponse({
@@ -78,7 +89,14 @@ def error_activity_dashboard(request) -> JsonResponse:
 
         service = UserActivityStatsService()
         response_data = service.get_error_activity_data(start_date, end_date)
-        return JsonResponse(response_data)
+        
+        json = {
+            'title' : f"Évolution des erreurs - {days} jours",
+            'x_label': 'Date',
+            'y_label': 'Erreurs',
+            'data':response_data
+        }
+        return JsonResponse(json)
 
     except Exception as e:
         return JsonResponse({

@@ -20,6 +20,10 @@ class DashboardLineGraph {
     private chartWrapper: ChartWrapper | null = null;
     private readonly periodeLineChart: HTMLSelectElement | null;
 
+    private title: string = '';
+    private x_label: string = '';
+    private y_label: string = '';
+
     constructor(id: string) {
         this.element = document.getElementById(id);
         this.periodeLineChart = document.getElementById('periode-line-chart') as HTMLSelectElement | null;
@@ -48,9 +52,11 @@ class DashboardLineGraph {
         const selectedPeriod = this.periodeLineChart?.value || '91';
         fetch(`${url}?period=${selectedPeriod}`)
             .then(response => response.json())
-            .then(data => {
-                data = this.dataProcessing(data);
-                this.renderChart(data);
+            .then(response => {
+                this.title = response.title;
+                this.x_label = response.x_label;
+                this.y_label = response.y_label;
+                this.renderChart(this.dataProcessing(response.data));
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -87,9 +93,9 @@ class DashboardLineGraph {
 
         const chartConfig = ChartConfigs.getLineEvolution(data,
             {
-                'title': 'Évolution des utilisateurs - 6 derniers mois',
-                'x': { text: 'Mois' },
-                'y': { text: 'Utilisateurs' }
+                'title': this.title,
+                'x': { text: this.x_label },
+                'y': { text: this.y_label }
             } as OptionChartConfig);
         this.chartWrapper.createChart(chartConfig);
     }
