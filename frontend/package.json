@@ -2,10 +2,11 @@
     "name": "frontend",
     "version": "1.0.0",
     "scripts": {
-        "build": "npm run prebuild && npm run sass:build && vite build --outDir ../app/static/js ",
+        "build": "npm run prebuild && npm run sass:build && vite build --outDir static/js",
+        "build:dev": "npm run prebuild && npm run sass:build && vite build --outDir ../app/static/js",
         "dev": "concurrently \"npm run prebuild\" \"npm run sass:watch\" \"npm run vite:watch\"",
         "vite:watch": "vite build --watch --outDir ../app/static/js",
-        "sass:build": "sass scss/main.scss static/css/style.css --no-source-map compressed",
+        "sass:build": "sass scss/main.scss static/css/style.css --no-source-map --style=compressed",
         "sass:watch": "sass scss/main.scss static/css/style.css --no-source-map --watch",
         "prebuild": "node scripts/pre-build.js",
         "test": "npm run test:smoke && npm run test:all",

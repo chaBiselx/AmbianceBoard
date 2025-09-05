@@ -1,5 +1,5 @@
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.architecture.persistence.models.PlaylistColorUser import PlaylistColorUser
+from main.domain.common.repository.PlaylistColorUserRepository import PlaylistColorUserRepository
 from parameters import settings
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 
@@ -10,9 +10,10 @@ class DefaultColorPlaylistService():
     def __init__(self, user):
         self.user = user
         self.cache = CacheFactory.get_default_cache()
-    
+        self.playlist_color_user_repository = PlaylistColorUserRepository()
+
     def get_list_default_color(self):
-        existing_data = {pcu.typePlaylist: pcu for pcu in PlaylistColorUser.objects.filter(user=self.user)}
+        existing_data = {pcu.typePlaylist: pcu for pcu in self.playlist_color_user_repository.get_list_with_user(self.user)}
         
         initial_data = []
         for playlist_type in PlaylistTypeEnum:
@@ -26,7 +27,7 @@ class DefaultColorPlaylistService():
     
     
     def get_list_default_color_ajax(self):
-        existing_data = {pcu.typePlaylist: pcu for pcu in PlaylistColorUser.objects.filter(user=self.user)}
+        existing_data = {pcu.typePlaylist: pcu for pcu in  self.PlaylistColorUserRepository.get_list_with_user(self.user)}
         
         initial_data = []
         for playlist_type in PlaylistTypeEnum:
@@ -43,8 +44,8 @@ class DefaultColorPlaylistService():
         color_found = self.cache.get(cache_key)
         if color_found:
             return color_found
-        
-        existing_data = {pcu.typePlaylist: pcu for pcu in PlaylistColorUser.objects.filter(user=self.user, typePlaylist=playlist_type)}
+
+        existing_data = {pcu.typePlaylist: pcu for pcu in self.playlist_color_user_repository.get_list_with_user_and_type(user=self.user, playlist_type=playlist_type)}
         if existing_data.get(playlist_type):
             color_found = existing_data[playlist_type].color
         else : 
@@ -58,8 +59,8 @@ class DefaultColorPlaylistService():
         color_text_found = self.cache.get(cache_key)
         if color_text_found:
             return color_text_found
-        
-        existing_data = {pcu.typePlaylist: pcu for pcu in PlaylistColorUser.objects.filter(user=self.user, typePlaylist=playlist_type)}
+
+        existing_data = {pcu.typePlaylist: pcu for pcu in self.playlist_color_user_repository.get_list_with_user(self.user)}
         if existing_data.get(playlist_type):
             color_text_found = existing_data[playlist_type].colorText
         else :

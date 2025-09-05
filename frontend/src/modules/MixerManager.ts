@@ -45,14 +45,24 @@ class MixerElement {
 
 class MixerManager {
     private readonly listMixer: HTMLCollectionOf<Element>;
-    private readonly sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
+    private urlWebSocket : string | null = null;
+    private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
+
 
     constructor() {
         this.listMixer = document.getElementsByClassName('mixer-playlist');
 
-        const WebSocketUrl = Cookie.get('WebSocketUrl');
-        if (WebSocketUrl) {
-            this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getInstance(atob(WebSocketUrl), true));
+        this.urlWebSocket = this.getWebSocketUrl();
+        this.startWebSocket();
+    }
+
+    private getWebSocketUrl(): string | null {
+        return Cookie.get('WebSocketUrl');
+    }
+
+    private startWebSocket(): void {
+        if (this.urlWebSocket) {
+            this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
             this.sharedSoundBoardWebSocket.start();
         }
     }
@@ -64,6 +74,12 @@ class MixerManager {
     }
 
     private eventChangeVolume(event: Event): void {
+        const actualWebSocket = this.getWebSocketUrl()
+        if(actualWebSocket != null && actualWebSocket != this.urlWebSocket){
+            this.urlWebSocket = actualWebSocket;
+            this.startWebSocket();
+        }
+
         const mixer = new MixerBuilder(event.target as HTMLInputElement).getMixer();
         if (mixer.id === 'mixer-general') {
             this.sharedSoundBoardWebSocket?.sendMessage({ type: 'send_mixer_update', data: { type: 'General', value: MixerManager.getMixerValue('general') } });

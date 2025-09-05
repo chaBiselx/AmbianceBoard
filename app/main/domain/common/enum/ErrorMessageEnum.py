@@ -22,3 +22,4 @@ class ErrorMessageEnum(BaseEnum):
     INTERNAL_SERVER_ERROR = 'une erreur est survenue.'
     INVALID_REQUEST_METHOD = 'Invalid request method.'
     ELEMENT_NOT_FOUND = 'Element introuvable.'
+    DATA_RECUPERATION = 'Erreur lors de la récupération des données'

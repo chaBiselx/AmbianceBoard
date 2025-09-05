@@ -22,10 +22,15 @@ class ActivityContextHelper:
         content_object: Optional[Any] = None
     ) -> UserActivity:
         """Démarre le traçage de l'activité."""
+        # Vérifier si l'utilisateur est authentifié et valide
+        authenticated_user = None
+        if user and hasattr(user, 'is_authenticated') and user.is_authenticated:
+            authenticated_user = user
+        
         activity = UserActivity.create_activity(
             activity_type=activity_type,
-            user=user,
-            session_key=request.session.session_key if request else None,
+            user=authenticated_user,
+            session_key=request.session.session_key if request else '',
             content_object=content_object
         )
         return activity

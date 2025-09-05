@@ -23,6 +23,7 @@ from main.domain.general.service.ResetPasswordService import ResetPasswordServic
 from main.domain.general.form.UserPasswordForm import UserPasswordForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.enum.AdvertisingEnum import AdvertisingEnum
 from main.architecture.persistence.models.UserNotificationDismissal import UserNotificationDismissal
 from main.architecture.persistence.models.GeneralNotification import GeneralNotification
 from main.architecture.persistence.models.UserTier import UserTier
@@ -48,7 +49,7 @@ def home(request: HttpRequest) -> HttpResponse:
     Returns:
         HttpResponse: Page d'accueil rendue
     """
-    return render(request, "Html/General/home.html", {"title": "Accueil"})
+    return render(request, "Html/General/home.html", {"title": "Accueil", "link_donation" : Settings.get("LINK_DONATION")})
 
 
 @require_http_methods(['GET'])
@@ -129,15 +130,18 @@ def login_view(request: HttpRequest) -> HttpResponse:
 @ratelimit(key='ip', rate='10/m', method='POST', block=True)
 def login_post(request: HttpRequest): 
     if request.method == 'POST':
-        username = request.POST['username']
+        identifiant = request.POST['identifiant']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        failed_login_attempt_service = FailedLoginAttemptService(request, username)
+        failed_login_attempt_service = FailedLoginAttemptService(request, identifiant)
+        
+        user = authenticate(request, username=identifiant, password=password)
+            
         if user is not None:
             login(request, user)
             failed_login_attempt_service.purge()
             ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LOGIN, user=user)
             return redirect('home')
+        
         # wrong password
         failed_login_attempt_service.add_or_create_failed_login_attempt()
         if(failed_login_attempt_service.is_timeout()) :
@@ -159,8 +163,8 @@ def logout_view(request: HttpRequest) -> HttpResponse:
         HttpResponse: Redirection vers la page d'accueil
     """
     if request.user.is_authenticated:
-        logout(request)
         ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LOGOUT, user=request.user)
+        logout(request)
     return redirect('home')
 
 @login_required

@@ -163,6 +163,8 @@ class UserActivity(models.Model):
             content_object=content_object,
             session_key=session_key,
         )
+        if session_key is None:
+            activity.session_key = ''
         activity.save()
         return activity
     

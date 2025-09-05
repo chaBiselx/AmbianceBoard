@@ -1,4 +1,5 @@
 import Config from '@/modules/General/Config';
+import Cookie from '@/modules/General/Cookie';
 import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MusicElement } from '@/modules/MusicElement';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
@@ -36,12 +37,26 @@ class SharedSoundBoardWebSocket {
         this.master = master;
     }
 
-    public static getInstance(url?: string, master: boolean = false): SharedSoundBoardWebSocket {
+    public static setNewInstance(url: string, master: boolean = false): void {
+        if (SharedSoundBoardWebSocket.instance) {
+            SharedSoundBoardWebSocket.instance.close();
+        }
+        SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, master);
+    }
+
+    public static getSlaveInstance(url: string): SharedSoundBoardWebSocket {
+        SharedSoundBoardWebSocket.instance ??= new SharedSoundBoardWebSocket(url, false);
+        return SharedSoundBoardWebSocket.instance;
+    }
+
+    public static getMasterInstance(): SharedSoundBoardWebSocket {
         if (!SharedSoundBoardWebSocket.instance) {
-            if (!url) {
+            const urlBase64 = Cookie.get('WebSocketUrl');
+            if (!urlBase64) {
                 throw new Error('URL is required for first instantiation');
             }
-            SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, master);
+            const url = atob(urlBase64);
+            SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, true);
         }
         return SharedSoundBoardWebSocket.instance;
     }
@@ -60,31 +75,36 @@ class SharedSoundBoardWebSocket {
             return;
         }
 
-        this.socket = new WebSocket(this.url);
+        try {
+            this.socket = new WebSocket(this.url);
 
-        this.socket.onopen = (event) => {
-            ConsoleCustom.log('WebSocket is connected.');
-        };
+            this.socket.onopen = (event) => {
+                ConsoleCustom.log('WebSocket is connected.');
+            };
 
-        this.socket.onmessage = (event) => {
-            this.responseProcessing(JSON.parse(event.data) as WebSocketResponse);
-        };
+            this.socket.onmessage = (event) => {
+                this.responseProcessing(JSON.parse(event.data) as WebSocketResponse);
+            };
 
-        this.socket.onclose = (event) => {
-            if (Config.DEBUG) {
-                if (event.wasClean) {
-                    console.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
-                } else {
-                    console.log('Connection died');
+            this.socket.onclose = (event) => {
+                if (Config.DEBUG) {
+                    if (event.wasClean) {
+                        console.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
+                    } else {
+                        console.log('Connection died');
+                    }
                 }
-            }
 
-            this.socket = null;
-        };
+                this.socket = null;
+            };
 
-        this.socket.onerror = (error) => {
-            ConsoleCustom.log('WebSocket Error:', error);
-        };
+            this.socket.onerror = (error) => {
+                ConsoleCustom.log('WebSocket Error:', error);
+            };
+        } catch (error) {
+            console.error('Error during WebSocket initialization:', error);
+        }
+
     }
 
     public close(): void {

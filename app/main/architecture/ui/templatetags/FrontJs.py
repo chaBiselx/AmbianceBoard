@@ -8,7 +8,7 @@ register = template.Library()
 @register.filter
 def search_true_file(name_file):
     name_file = name_file.strip()
-    static_root = Settings.get('STATICFILES_DIRS')[0]
+    static_root = Settings.get('STATIC_PRIMARY_DIR')
     js_dir = os.path.join(static_root, 'js')
     
     static_files_service = StaticFilesService(js_dir)

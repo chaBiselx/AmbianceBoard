@@ -1,6 +1,7 @@
 
 import Config from '@/modules/General/Config';
 import Csrf from "@/modules/General/Csrf";
+import Cookie from '@/modules/General/Cookie';
 
 import { ButtonPlaylist } from '@/modules/ButtonPlaylist';
 import { MixerManager } from '@/modules/MixerManager';
@@ -117,6 +118,12 @@ function publishSoundboard(event: Event) {
             width: "sm"
         });
         (new ShareLinkManager()).addEvent();
+        const WebSocketUrl = Cookie.get('WebSocketUrl');
+        if(WebSocketUrl){
+            SharedSoundBoardWebSocket.setNewInstance(atob(WebSocketUrl), true);
+            const sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
+            sharedSoundBoardWebSocket.start();
+        }
     })
 
 }
@@ -157,7 +164,7 @@ function activeWebSocket() {
         const url = activeWS.dataset.url
         if (!url) return
 
-        (SharedSoundBoardWebSocket.getInstance(url)).start();
+        (SharedSoundBoardWebSocket.getSlaveInstance(url)).start();
 
 
     }

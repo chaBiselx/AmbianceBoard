@@ -27,12 +27,12 @@ FIELD_ENCRYPTION_KEY = os.environ.get("FIELD_ENCRYPTION_KEY")
 DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
 ACTIVE_SSL = bool(int(os.environ.get("ACTIVE_SSL", default=1)))
 DEBUG_TOOLBAR = bool(int(os.environ.get("DEBUG_TOOLBAR", default=0)))
-if(DEBUG ==0):
-    DEBUG_TOOLBAR = False
-    
+
+APP_ENV = str(os.environ.get("APP_ENV", default='dev'))
+
 RUN_CRONS = bool(int(os.environ.get("RUN_CRONS", default=0)))
-    
-    
+
+
 TESTING = 'test' in sys.argv
 
 if ACTIVE_SSL:
@@ -42,10 +42,13 @@ if ACTIVE_SSL:
     CSRF_COOKIE_SECURE = True
 
 EMAIL_SMTP_SERVEUR = str(os.environ.get("EMAIL_SMTP_SERVEUR"))
-EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT"))
+EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT", 587))
 EMAIL_SMTP_USERNAME = str(os.environ.get("EMAIL_SMTP_USERNAME"))
 EMAIL_SMTP_PASSWORD = str(os.environ.get("EMAIL_SMTP_PASSWORD"))
-EMAIL_SMTP_USE_TLS = bool(os.environ.get("EMAIL_SMTP_USE_TLS", default=True))
+_email_tls_string = os.environ.get("EMAIL_SMTP_USE_TLS", default='True')
+EMAIL_SMTP_USE_TLS = False
+if (_email_tls_string == 'True'):
+    EMAIL_SMTP_USE_TLS = True
 
 EMAIL_NO_REPLAY = os.environ.get("EMAIL_NO_REPLAY")
 EMAILS_LISTING_MODERATORS = os.environ.get("EMAILS_LISTING_MODERATORS", default="").split(";")
@@ -59,8 +62,19 @@ LEGAL_HEBERGEUR_CONTACT=os.environ.get("LEGAL_HEBERGEUR_CONTACT")
 # 'DJANGO_ALLOWED_HOSTS' should be a single string of hosts with a space between each.
 # For example: 'DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]'
 APP_HOST = os.getenv('WEB_HOST')
-APP_PORT = int(os.getenv('WEB_PORT'))
+APP_PORT = os.getenv('WEB_PORT')
 APP_SCHEME  = 'https' if ACTIVE_SSL else 'http'
+
+RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
+RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
+RABBIT_MQ_USER = os.environ.get("RABBIT_MQ_USER")
+RABBIT_MQ_PASSWORD = os.environ.get("RABBIT_MQ_PASSWORD")
+
+REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
+REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))
+REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD", "")
+REDIS_DB = int(os.environ.get("REDIS_DB", 0))
+
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="localhost 127.0.0.1 [::1]").split(" ")
 
@@ -230,11 +244,20 @@ WSGI_APPLICATION = "parameters.wsgi.application"
 # Websocket
 
 ASGI_APPLICATION = 'parameters.asgi.application'
+
+# Configuration Redis pour Django Channels
+# Utilise Redis pour permettre la communication entre services séparés
+REDIS_URL = f'redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}'
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer'
-    }
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [REDIS_URL],
+        },
+    },
 }
+
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -251,6 +274,11 @@ DATABASES = {
 }
 
 AUTH_USER_MODEL = 'main.User'
+
+AUTHENTICATION_BACKENDS = [
+    "main.application.auth.UsernameOrEmailBackend.UsernameOrEmailBackend",   # d'abord notre backend custom
+    "django.contrib.auth.backends.ModelBackend",  # fallback standard
+]
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -286,8 +314,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS  = [BASE_DIR / 'static']
+"""STATIC FILES CONFIGURATION
+Option A: We serve ONLY collected static files from STATIC_ROOT in production.
+
+Behaviour:
+ - During development (DEBUG=1): Django also looks into STATICFILES_DIRS (source assets)
+ - In production (DEBUG=0): STATICFILES_DIRS is emptied so only the collected files are used.
+ - STATIC_ROOT can be overridden via env var STATIC_ROOT (use an absolute path shared with nginx, e.g. /srv/www/AmbianceBoard/staticfiles)
+"""
+
+# Allow override of STATIC_ROOT so the container can write directly into a host / shared volume
+STATIC_ROOT = Path(os.environ.get("STATIC_ROOT", BASE_DIR / "staticfiles"))
+
+# Source static directory (built assets copied here before collectstatic in dev / CI build stage)
+LOCAL_STATIC = BASE_DIR / 'static'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+if not DEBUG:
+    # In production we rely solely on collected files to avoid Nginx/Django traversing source dirs
+    STATICFILES_DIRS = []
+    
+# Choix unifié du répertoire principal à utiliser par le code applicatif
+STATIC_PRIMARY_DIR = LOCAL_STATIC
 
 LOGIN_URL = '/login'
 
@@ -343,10 +391,7 @@ if RUN_CRONS:
 
 
 # message brokers 
-RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
-RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
-RABBIT_MQ_USER = os.environ.get("RABBIT_MQ_USER")
-RABBIT_MQ_PASSWORD = os.environ.get("RABBIT_MQ_PASSWORD")
+
 
 CELERY_BROKER_URL = f"amqp://{RABBIT_MQ_USER}:{RABBIT_MQ_PASSWORD}@{RABBIT_MQ_HOST}:{RABBIT_MQ_PORT}/"  # URL de RabbitMQ 
 CELERY_ACCEPT_CONTENT = ['json']
@@ -394,6 +439,7 @@ ATTRIB_PERMISSIONS = {
 
 # USER TIERS AND LIMITS CONFIGURATION
 # Configuration flexible pour différents niveaux d'utilisateurs
+from main.domain.common.enum.AdvertisingEnum import AdvertisingEnum
 
 AUDIO_BITRATE_REDUCER_TARGET_BITRATE = 128  # En kbps
 USER_TIERS = {
@@ -403,11 +449,12 @@ USER_TIERS = {
         'display_name': 'Utilisateur Standard',
         'display_name_short': 'Standard',
         'limits': {
-            'soundboard': 5,
-            'playlist': 75,
+            'soundboard': 2,
+            'playlist': 50,
             'music_per_playlist': 5,
             'weight_music_mb': 10,
-            'share_soundboard': True
+            'share_soundboard': True,
+            'advertising' : AdvertisingEnum.FULL
         },
         'group_enum': 'USER_STANDARD'
     },
@@ -420,11 +467,12 @@ USER_TIERS = {
         'display_name': 'Premium Basique',
         'display_name_short': 'Basique',
         'limits': {
-            'soundboard': 25,
+            'soundboard': 15,
             'playlist': 150,
             'music_per_playlist': 10,
             'weight_music_mb': 20,
-            'share_soundboard': True
+            'share_soundboard': True,
+            'advertising' : AdvertisingEnum.PARTIAL
         },
         'group_enum': 'USER_PREMIUM_BASIC'
     },
@@ -442,7 +490,8 @@ USER_TIERS = {
             'playlist': 250,
             'music_per_playlist': 20,
             'weight_music_mb': 25,
-            'share_soundboard': True
+            'share_soundboard': True,
+            'advertising' : AdvertisingEnum.NONE
         },
         'group_enum': 'USER_PREMIUM_ADVANCED'  # À ajouter dans GroupEnum
     },
@@ -460,7 +509,8 @@ USER_TIERS = {
             'playlist': 500,
             'music_per_playlist': 30,
             'weight_music_mb': 30,
-            'share_soundboard': True
+            'share_soundboard': True,
+            'advertising' : AdvertisingEnum.NONE
         },
         'group_enum': 'USER_PREMIUM_PRO'  # À ajouter dans GroupEnum
     }
@@ -477,3 +527,7 @@ TIER_EXPIRATION_WARNING_DAYS = int(os.environ.get("TIER_EXPIRATION_WARNING_DAYS"
 
 CACHE_TYPE = "memory"
 LIMIT_CACHE_DEFAULT = 14400 # 4h
+
+
+# APP 
+LINK_DONATION = os.environ.get("LINK_DONATION", "reis")

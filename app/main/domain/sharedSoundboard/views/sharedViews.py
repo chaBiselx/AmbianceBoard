@@ -12,9 +12,11 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from django.contrib.sites.shortcuts import get_current_site
-from main.domain.common.utils.url import get_full_url
+from main.domain.common.utils.url import get_full_url, get_full_ws
 from main.service.RandomizeTrackService import RandomizeTrackService
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.utils.settings import Settings
+from main.domain.common.utils.logger import logger
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
@@ -35,7 +37,7 @@ def publish_soundboard(request, soundboard_uuid):
         'soundboard_uuid': soundboard_uuid,
         'token': shared.token,
     })
-    ws_url = f'ws://{request.get_host()}{ws_path}'
+    ws_url = get_full_ws(f'{request.get_host()}{ws_path}')
     response.set_cookie(
                             'WebSocketToken', 
                             shared.token, 
@@ -69,7 +71,7 @@ def shared_soundboard_read(request, soundboard_uuid, token):
             'soundboard_uuid': soundboard.uuid,
             'token': token,
         })
-        ws_url = f'ws://{request.get_host()}{ws_path}'
+        ws_url = get_full_ws(f'{request.get_host()}{ws_path}')
         return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url})
 
 
@@ -85,5 +87,5 @@ def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id
         if response:
             return response
     except Exception as e:
-        logging.error(f"Error in music_stream: {e}")
+        logger.error(f"Error in music_stream: {e}")
     return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)

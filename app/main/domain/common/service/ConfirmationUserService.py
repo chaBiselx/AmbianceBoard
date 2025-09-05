@@ -30,7 +30,7 @@ class ConfirmationUserService:
             raise SecurityException("Confirmation token not found")
         if confirmation_token is None :
             raise SecurityException("token invalid")
-        if self.user.get_confirmation_token() != str(confirmation_token):
+        if str(self.user.get_confirmation_token()) != str(confirmation_token):
             raise SecurityException("Confirmation token dont match")
         if self.user.demandeConfirmationDate is None:
             raise SecurityException("Confirmation date not found")

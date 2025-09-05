@@ -1,6 +1,8 @@
 services:
   cronjob:
-    build: ./app
+    build:
+      context: ./app
+      dockerfile: Dockerfile
     command: cron -f
     volumes:
       - ./app/:/usr/src/app/
@@ -10,10 +12,11 @@ services:
       - RUNCRON=1
     depends_on:
       - db
-      - rabbitmq  # Ajout de la dépendance à RabbitMQ
 
   back:
-    build: ./app
+    build:
+      context: ./app
+      dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:${WEB_PORT}
     volumes:
       - ./app/:/usr/src/app/
@@ -26,7 +29,25 @@ services:
       - RUNCRON=0
     depends_on:
       - db
-      - rabbitmq  # Ajout de la dépendance à RabbitMQ
+      - redis
+  
+  websocket:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    command: daphne -b 0.0.0.0 -p ${WS_PORT} parameters.asgi:application
+    volumes:
+      - ./app:/usr/src/app/
+      - ./mediafiles:/usr/src/app/mediafiles/
+    ports:
+      - ${WS_PORT}:${WS_PORT}
+    env_file:
+      - ./.env
+    environment:
+      - RUNCRON=0
+    depends_on:
+      - db
+      - redis
 
   front:
     build:
@@ -72,7 +93,20 @@ services:
       - "${EMAIL_SMTP_PORT}:${EMAIL_SMTP_PORT}"  # Port SMTP pour envoyer les emails
       - "8025:8025"  # Interface web de MailHog pour visualiser les emails
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+
+
+
 volumes:
   db-data: null
-  rabbitmq-data: null 
+  rabbitmq-data: null
   front_build: null
+  redis-data: null
