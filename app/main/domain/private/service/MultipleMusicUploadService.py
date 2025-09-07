@@ -41,6 +41,10 @@ class MultipleMusicUploadService:
                     ActivityContextHelper.set_action(self.request, activity_type=UserActivityTypeEnum.MUSIC_UPLOAD, user=self.request.user, content_object=music)
                 else:
                     errors.append(f"Erreur lors de la sauvegarde de {file.name}")
+                    
+            except ValueError as ve:
+                logger.warning(f"Erreur de validation pour {file.name}: {str(ve)}")
+                errors.append(f"Erreur de validation avec {file.name}: {str(ve)}")
             except Exception as e:
                 logger.error(f"Erreur lors de l'upload de {file.name}: {str(e)}")
                 errors.append(f"Erreur interne avec {file.name}")
