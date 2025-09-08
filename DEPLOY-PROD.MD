@@ -42,6 +42,8 @@ ou manuellement
 cd /srv/www/AmbianceBoard/ && chmod +x app/entrypoint.sh && chmod +x app/entrypoint.prod.sh
 
 ## deployement du back (lors de la première fois)
+dans le container back
+
 python manage.py makemigrations main
 python manage.py migrate main
 python manage.py migrate
