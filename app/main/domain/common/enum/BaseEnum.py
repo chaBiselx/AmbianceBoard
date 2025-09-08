@@ -7,7 +7,8 @@ Fournit des méthodes utilitaires communes pour toutes les énumérations.
 from enum import Enum
 from typing import List, Dict, Any
 
-class BaseEnum(Enum):
+
+class BaseEnum(str, Enum):
     """
     Classe de base pour toutes les énumérations du projet.
     
@@ -44,3 +45,20 @@ class BaseEnum(Enum):
             List[tuple]: Liste de tuples avec le nom comme label et la valeur comme valeur
         """
         return [(c.value, c.name) for c in cls]
+    
+    def __json__(self):
+        """
+        Méthode pour la sérialisation JSON.
+        
+        Returns:
+            str: Valeur de l'énumération pour JSON
+        """
+        return self.value
+
+    def __str__(self) -> str:
+        """Return the string value for printing and JSON serialization helpers."""
+        return str(self.value)
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}.{self.name}"
+

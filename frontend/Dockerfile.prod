@@ -1,0 +1,34 @@
+FROM node:18
+
+# Créer un utilisateur non-root pour des raisons de sécurité
+# RUN groupadd -r nodeuser && useradd -r -g nodeuser -m nodeuser
+
+WORKDIR /app
+
+# Changer le propriétaire du répertoire de travail
+# RUN chown -R nodeuser:nodeuser /app
+
+# Copier les fichiers de configuration en tant que root
+COPY package*.json tsconfig.json ./
+COPY vite.config.ts ./
+
+# Changer le propriétaire des fichiers copiés
+# RUN chown -R nodeuser:nodeuser /app
+
+# Passer à l'utilisateur non-root avant d'installer les dépendances
+# USER nodeuser
+
+# Configurer npm localement et installer les dépendances
+RUN npm config set cache /app/.npm-cache && \
+    npm install --ignore-scripts
+
+# COPY --chown=nodeuser:nodeuser ./src ./src
+# COPY --chown=nodeuser:nodeuser ./scss ./scss
+# COPY --chown=nodeuser:nodeuser ./assets ./assets
+# COPY --chown=nodeuser:nodeuser ./scripts ./scripts
+
+# Créer le dossier static si il n'existe pas
+RUN mkdir -p static/js static/css static/webfonts
+
+# Compiler pour produire les assets
+CMD ["npm", "run", "build"]

@@ -16,8 +16,14 @@ from main.domain.common.utils.ExtractPaginator import extract_context_to_paginat
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from main.domain.common.utils.url import redirection_url
-from main.architecture.persistence.models.Tag import Tag
 from main.domain.moderator.form.TagForm import TagForm
+from main.domain.common.repository.UserRepository import UserRepository
+from main.domain.common.repository.PlaylistRepository import PlaylistRepository
+from main.domain.moderator.service.TreatmentReportService import TreatmentReportService
+from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
+from main.domain.common.repository.TagRepository import TagRepository
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+
 
 
 
@@ -25,14 +31,13 @@ from main.domain.moderator.form.TagForm import TagForm
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 @require_http_methods(['GET'])
 def moderator_dashboard(request) -> HttpResponse:
-    nb_users = User.objects.all().count()
-    moy_playlist_per_user = (User.objects.annotate(playlist_count=models.Count('playlist')).aggregate(avg_playlists=Avg('playlist_count')))['avg_playlists']
-    moy_music_per_user = User.objects.annotate(
-        music_count=models.Count('playlist__tracks')
-        ).aggregate(avg_music=Avg('music_count'))['avg_music']
-    moy_music_per_playlist = Playlist.objects.annotate(
-        music_count=models.Count('tracks')
-        ).aggregate(avg_music=Avg('music_count'))['avg_music']
+    user_repository = UserRepository()
+    playlist_repository = PlaylistRepository()
+    nb_users = user_repository.get_stats_nb_user()
+    moy_playlist_per_user = user_repository.get_stats_avg_playlist_per_user()
+    moy_music_per_user = user_repository.get_stats_avg_track_per_user() 
+    moy_music_per_playlist = playlist_repository.get_stat_nb_track_per_playlist()
+    
     return render(request, 'Html/Moderator/dashboard.html', {
             'nb_users': nb_users, 
             'moy_playlist_per_user': moy_playlist_per_user, 
@@ -95,7 +100,8 @@ def moderator_listing_log_moderation(request) -> HttpResponse:
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_user(request, user_uuid) -> HttpResponse:
-    user = User.objects.get(id=user_uuid)
+    user_repository = UserRepository()
+    user = user_repository.get_user(user_uuid)
     return render(request, 'Html/Moderator/info_user.html', {"user":user})
 
 @login_required
@@ -127,8 +133,8 @@ def moderator_listing_report_archived(request) -> HttpResponse:
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_report(request, report_id) -> HttpResponse:
-    user = ReportContent.objects.get(id=report_id)
-    return render(request, 'Html/Moderator/info_content_report.html', {"user":user})
+    content_report = ReportContent.objects.get(id=report_id)
+    return render(request, 'Html/Moderator/info_content_report.html', {"content_report":content_report})
 
 
 @login_required
@@ -136,43 +142,15 @@ def moderator_get_infos_report(request, report_id) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def reporting_add_log(request) -> HttpResponse:
     # info reportContent 
-    user = User.objects.get(uuid=request.POST.get('user_id'))
+    user_repository = UserRepository()
+    user = user_repository.get_user(request.POST.get('user_id'))
     if user is not None:
-        report_content = None
-        content_report_accepted = request.POST.get('contentReport_accepted')
-        if content_report_accepted:
-            id_report_content = request.POST.get('contentReport_id')
-            content_moderator_response = request.POST.get('content_moderator_response')
-            if id_report_content and content_moderator_response:
-                report_content = ReportContent.objects.get(id=id_report_content)
-                if report_content is not None:
-                    report_content.resultModerator = content_moderator_response
-                    report_content.moderator = request.user
-                    report_content.dateResultModerator = datetime.now()
-                    # report_content.save()
-        
-        moderator_log_accepted = request.POST.get('moderator_log_accepted')
-        if moderator_log_accepted:
-            UserModerationLog.objects.create(
-                user = user,
-                moderator = request.user,
-                message = request.POST.get('moderator_log_message'),
-                tag = request.POST.get('moderator_log_tag'),
-                model = request.POST.get('moderator_log_model', ModerationModelEnum.UNKNOWN.name),
-                report = report_content
-            )
-            
-        
-        action_ban_user = request.POST.get('action_ban_user')
-        if action_ban_user:
-            duration_ban = int(request.POST.get('action_ban_duration', '12'))
-            if(duration_ban <=0):
-                duration_ban = 12
-            user.isBan = True
-            user.reasonBan = request.POST.get('action_ban_reason')
-            user.banExpiration = datetime.now() + timedelta(days=duration_ban * 31)
-            user.save()
-        
+        dto = TreatmentReportDto.from_request(request)
+        treatment_report_service = TreatmentReportService(dto, user, request.user)
+        treatment_report_service.update_content_report()
+        treatment_report_service.create_log_moderation()
+        treatment_report_service.action_ban()
+
     return redirect(redirection_url(request.POST.get('redirect_uri', 'moderatorDashboard')))
 
 @login_required
@@ -181,7 +159,8 @@ def reporting_add_log(request) -> HttpResponse:
 def moderator_listing_tags(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
     
-    queryset = Tag.objects.all().order_by('name')
+    tag_repository = TagRepository()
+    queryset = tag_repository.get_all_queryset()
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
     
@@ -205,8 +184,9 @@ def moderator_create_tag(request) -> HttpResponse:
 @require_http_methods(['GET', 'POST'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_edit_tag(request, tag_uuid) -> HttpResponse:
-    tag = Tag.objects.get(uuid=tag_uuid)
-    
+    tag_repository = TagRepository()
+    tag = tag_repository.get_with_uuid(uuid=tag_uuid)
+
     if request.method == 'POST':
         form = TagForm(request.POST, instance=tag)
         if form.is_valid():
@@ -222,5 +202,9 @@ def moderator_edit_tag(request, tag_uuid) -> HttpResponse:
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_tag(request, tag_uuid) -> HttpResponse:
-    tag = Tag.objects.get(uuid=tag_uuid)
-    return render(request, 'Html/Moderator/info_tag.html', {"tag": tag})
+    tag_repository = TagRepository()
+    tag = tag_repository.get_with_uuid(uuid=tag_uuid)
+    if tag:
+        return render(request, 'Html/Moderator/info_tag.html', {"tag": tag})
+    else : 
+        return render(request,  HtmlDefaultPageEnum.ERROR_404.value, status=404)

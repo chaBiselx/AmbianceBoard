@@ -3,14 +3,16 @@ services:
     build: ./app
     command: cron -f
     volumes:
-      - ./app/:/usr/src/app/
+      - ./app:/usr/src/app/
+      - ./mediafiles:/usr/src/app/mediafiles/
     env_file:
       - ./.env
     environment:
       - RUNCRON=1
     depends_on:
       - db
-      - rabbitmq  # Ajout de la dépendance à RabbitMQ
+      - rabbitmq
+      - redis
 
   back:
     build:
@@ -18,9 +20,11 @@ services:
       dockerfile: Dockerfile.prod
     command: gunicorn parameters.wsgi:application --bind 0.0.0.0:${WEB_PORT} --workers=3
     volumes:
-      - ./app/:/usr/src/app/
-      - static_volume:/usr/src/app/static/
-      - media_volume:/usr/src/app/media/
+      - ./app:/usr/src/app/
+      - ./staticfiles:/usr/src/app/static/
+      - ./mediafiles:/usr/src/app/mediafiles/
+    ports:
+      - ${WEB_PORT}:${WEB_PORT}
     env_file:
       - ./.env
     environment:
@@ -28,33 +32,41 @@ services:
     depends_on:
       - db
       - rabbitmq
+      - redis
+      - front
+
+  websocket:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
+    command: daphne -b 0.0.0.0 -p ${WS_PORT} parameters.asgi:application
+    volumes:
+      - ./app:/usr/src/app/
+      - ./mediafiles:/usr/src/app/mediafiles/
+    ports:
+      - ${WS_PORT}:${WS_PORT}
+    env_file:
+      - ./.env
+    environment:
+      - RUNCRON=0
+      - DAPHNE=1
+    depends_on:
+      - db
+      - redis
 
   front:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     command: npm run build
     volumes:
       - ./frontend:/app
       - /app/node_modules
-      - front_build:/app/static
+      - ./staticfiles:/app/static
     environment:
       - DEBUG=0
-    depends_on:
-      - back
-    entrypoint: ["/bin/sh", "-c", "npm install && npm run build"]
-  nginx:
-    image: nginx:alpine
-    depends_on:
-      - back
-      - front
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - static_volume:/usr/src/app/static/
-      - media_volume:/usr/src/app/media/
-      - front_build:/usr/share/nginx/html/
+      
+
 
   db:
     image: postgres:15.8
@@ -78,9 +90,17 @@ services:
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq # Persistance des données
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes --requirepass "${REDIS_PASSWORD}"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+
 volumes:
   db-data: null
   rabbitmq-data: null
-  static_volume: null
-  media_volume: null
-  front_build: null
+  redis-data: null

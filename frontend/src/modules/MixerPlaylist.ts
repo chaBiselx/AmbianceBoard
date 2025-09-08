@@ -10,13 +10,24 @@ import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
 
 
 class MixerPlaylist {
-    private readonly sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null;
     private readonly classEvent: string = 'mixer-playlist-update'
+    private urlWebSocket : string | null = null;
+    private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
 
     constructor() {
-        const WebSocketUrl = Cookie.get('WebSocketUrl');
-        if (WebSocketUrl) {
-            this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getInstance(atob(WebSocketUrl), true));
+        this.urlWebSocket = this.getWebSocketUrl();
+        if (this.urlWebSocket) {
+            this.startWebSocket();
+        }
+    }
+
+    private getWebSocketUrl(): string | null {
+        return Cookie.get('WebSocketUrl');
+    }
+
+    private startWebSocket(): void {
+        if (this.urlWebSocket) {
+            this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
             this.sharedSoundBoardWebSocket.start();
         }
     }
@@ -33,6 +44,11 @@ class MixerPlaylist {
     }
 
     private eventUpdatePlaylistVolume(event: Event) {
+        const actualWebSocket = this.getWebSocketUrl()
+        if(actualWebSocket != null && actualWebSocket != this.urlWebSocket){
+            this.urlWebSocket = actualWebSocket;
+            this.startWebSocket();
+        }
         if (event.target instanceof HTMLInputElement) {
             if (event.target.dataset.idplaylist) {
                 const buttonPlaylist = ButtonPlaylistFinder.search(event.target.dataset.idplaylist)

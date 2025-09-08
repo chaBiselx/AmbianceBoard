@@ -67,15 +67,21 @@
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-list text-primary me-2"></i>
-                            <strong>{{ tier_data.limits.playlist }}</strong> playlists
+                            <strong>{{ tier_data.limits.playlist }}</strong> boutons
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-headphones text-primary me-2"></i>
-                            <strong>{{ tier_data.limits.music_per_playlist }}</strong> musiques par playlist
+                            <strong>{{ tier_data.limits.music_per_playlist }}</strong> musiques par boutons
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-file-audio text-primary me-2"></i>
                             Fichiers jusqu'à <strong>{{ tier_data.limits.weight_music_mb }}MB</strong>
+                        </li>
+                        <li class="mb-1">
+                            <i class="fas fa-rectangle-ad text-primary me-2"></i>
+                            Publicité <i>(A venir)</i> : <strong>
+                                {{ tier_data.limits.advertising.get_text_pricing }}
+                            </strong>
                         </li>
                         {% if tier_data.limits.share_soundboard %}
                             <li class="mb-1">

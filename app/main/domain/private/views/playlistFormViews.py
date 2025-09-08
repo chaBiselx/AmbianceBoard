@@ -14,6 +14,7 @@ from main.domain.common.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from main.domain.private.formatter.TypePlaylistFormater import TypePlaylistFormater
+from main.service.SoundBoardService import SoundBoardService
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
@@ -143,7 +144,10 @@ def playlist_create_track_stream(request, playlist_uuid, music_id) -> HttpRespon
     if not track:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     
-    ret = track.get_reponse_content()
+    try:
+        ret = track.get_reponse_content()
+    except Exception:
+        ret = None
     if ret is None:
         return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
     return ret

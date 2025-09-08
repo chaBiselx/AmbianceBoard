@@ -26,6 +26,12 @@ if [ "$RUNCRON" != "1" ]; then
 
     # python manage.py flush --no-input
     python manage.py migrate
+    
+    # Collectstatic en production (nécessite les variables d'environnement)
+    echo "Collecting static files..."
+    python manage.py collectstatic --noinput
+
+     cp -r ./staticfiles/admin ./static
 
 fi
 
@@ -49,12 +55,6 @@ if [ "$RUNCRON" = "1" ]; then
 
     exec cron -f
 fi
-
-if [ "$RUNCRON" != "1" ]; then
-    echo "Start WebSocket Daphne..."
-    exec daphne parameters.asgi:application --bind 0.0.0.0 --port ${WS_PORT:-8000} &
-fi
-
 
 
 exec "$@"

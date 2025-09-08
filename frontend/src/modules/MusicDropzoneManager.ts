@@ -80,9 +80,9 @@ export class MusicDropzoneManager {
         }, 500);
     }
 
-    private handleUploadError(_files: DropZoneFileList, errorMessage: any): void {
-        ConsoleCustom.error('Upload error:', errorMessage);
-        const errors = errorMessage.errors || (typeof errorMessage === 'string' ? [errorMessage] : ['An unknown error occurred']);
+    private handleUploadError(_files: DropZoneFileList, json: any): void {
+        ConsoleCustom.error('Upload error:', json);
+        const errors = json.error || (typeof json === 'string' ? [json] : ['An unknown error occurred']);
         this.showErrors(errors);
     }
 

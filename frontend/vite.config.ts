@@ -1,6 +1,9 @@
 /// <reference types="vitest" />
 import { defineConfig, loadEnv } from 'vite';
 import { resolve } from 'path';
+import { fileURLToPath, URL } from 'url';
+
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
@@ -14,7 +17,6 @@ export default defineConfig(({ mode }) => {
         },
         build: {
             rollupOptions: {
-                dir: resolve(__dirname, 'static/js'),
                 input: {
                     SoundboardPlayer: resolve(__dirname, 'src/SoundboardPlayer.ts'),
                     FormPlaylist: resolve(__dirname, 'src/FormPlaylist.ts'),

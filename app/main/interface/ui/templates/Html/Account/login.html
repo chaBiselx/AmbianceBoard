@@ -10,8 +10,8 @@
             <div class="card-body">
                 <form id="connexion-form" method="post" action="{% url 'loginPost' %}">
                     {% csrf_token %}
-                    <label for="username"class="form-label">Nom d'utilisateur :</label>
-                    <input type="text" class="form-control" id="username" name="username" required>
+                    <label for="identifiant"class="form-label">Nom d'utilisateur (ou email) :</label>
+                    <input type="text" class="form-control" id="identifiant" name="identifiant" required>
 
                     <label for="password" class="form-label">Mot de passe :</label>
                     <input type="password" class="form-control" id="password" name="password" required>

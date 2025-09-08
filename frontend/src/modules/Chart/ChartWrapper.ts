@@ -25,7 +25,7 @@ export class ChartWrapper {
         if (!canvas) {
             canvas = document.createElement('canvas');
             canvas.id = canvasId;
-            canvas.height = 100;
+            canvas.height = 250;
             this.container.appendChild(canvas);
         }
         
