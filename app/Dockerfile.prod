@@ -33,6 +33,7 @@ COPY manage.py ./
 COPY main/ ./main/
 COPY parameters/ ./parameters/
 COPY static/ ./static/
+COPY migrations/ ./migrations/
 
 # create necessary directories
 RUN mkdir -p mediafiles/musics mediafiles/playlistIcon mediafiles/soundBoardIcon logs
