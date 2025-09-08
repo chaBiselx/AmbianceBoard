@@ -27,6 +27,9 @@ server {
     ssl_certificate /etc/letsencrypt/live/ambianceboard.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/ambianceboard.com/privkey.pem;
 
+    # Autoriser jusqu'à 100 Mo par requête
+    client_max_body_size 31M;
+
     # Fichiers statiques
     location /static/ {
         alias /srv/www/AmbianceBoard/staticfiles/;
