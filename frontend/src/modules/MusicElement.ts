@@ -19,7 +19,6 @@ class MusicElement {
     idPlaylist: string = '';
     playlistType: string = '';
     defaultVolume: number = 1;
-    autoplay: boolean = true;
     levelFade: number = 1;
     fadeInOnGoing: boolean = false;
     fadeIn: boolean = false;
@@ -117,7 +116,6 @@ class MusicElement {
         }
         this.DOMElement.src = src;
         this.DOMElement.controls = Config.DEBUG;
-        this.DOMElement.autoplay = true;
     }
 
     public setDefaultVolume(volume: number) {
@@ -128,6 +126,10 @@ class MusicElement {
     public addToDOM(): this {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
         audioElementDiv.appendChild(this.DOMElement);
+        this.DOMElement.preload = 'metadata';
+        this.DOMElement.load();
+       
+
         return this
     }
 
@@ -163,8 +165,30 @@ class MusicElement {
         } else {
             this.DOMElement.addEventListener('ended', this.eventDeleteNoFadeOut);
         }
-        this.DOMElement.play();
+        // TEST IOS PLAY 
+        // this.DOMElement.play();
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+        ConsoleTraceServeur.error('is IOS:', (isIOS ? 'yes': 'no'));
 
+        if (isIOS) {
+            // Sur iOS, on doit attendre que l'audio soit prêt avant de jouer
+            const playPromise = this.DOMElement.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    ConsoleTraceServeur.error('Play failed on iOS:', ` ${JSON.stringify(error)}`);
+                    // Retry après un court délai
+                    setTimeout(() => {
+                        this.DOMElement.load(); // Recharger l'audio
+                        this.DOMElement.play().catch(e => {
+                            ConsoleTraceServeur.error('Second play attempt failed', ` ${JSON.stringify(e)}`);
+                        });
+                    }, 100);
+                });
+            }
+        } else {
+            this.DOMElement.play();
+        }
+        // END TEST IOS PLAY
     }
 
     public checkLoop(): boolean {
@@ -396,7 +420,6 @@ class MusicElement {
 
                 // Log détaillé pour TOUTES les erreurs
                 ConsoleTraceServeur.error('handleAudioError', JSON.stringify(debugInfo, null, 2));
-
 
                 const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
                 buttonPlaylist.disactive();
