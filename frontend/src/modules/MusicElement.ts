@@ -374,10 +374,29 @@ class MusicElement {
 
     private handleAudioError(event: Event) {
         if (event.target && event.target instanceof HTMLAudioElement) {
-            if (event.target.error && event.target.error.code === 4) { // => ERROR 404
-                ConsoleTraceServeur.error('handleAudioError', event.target.error.message);
+            const audioElement = event.target;
+            if (audioElement.error && audioElement.error.code === 4) { // => ERROR 404
+                let new_music = new MusicElement(audioElement);
 
-                let new_music = new MusicElement(event.target);
+                // Log toutes les informations disponibles
+                const debugInfo = {
+                    hasError: !!audioElement.error,
+                    errorCode: audioElement.error?.code || 'undefined',
+                    errorMessage: audioElement.error?.message || 'no message',
+                    src: audioElement.src || 'no src',
+                    currentSrc: audioElement.currentSrc || 'no currentSrc',
+                    readyState: audioElement.readyState,
+                    networkState: audioElement.networkState,
+                    playlistId: new_music.idPlaylist || 'no playlist id',
+                    playlistType: new_music.playlistType || 'no playlist type',
+                    baseUrl: new_music.baseUrl || 'no base url',
+                    isSlave: new_music.isSlave,
+                    userAgent: navigator.userAgent
+                };
+
+                // Log détaillé pour TOUTES les erreurs
+                ConsoleTraceServeur.error('handleAudioError', JSON.stringify(debugInfo, null, 2));
+
 
                 const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
                 buttonPlaylist.disactive();
