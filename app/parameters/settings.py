@@ -110,7 +110,7 @@ if DEBUG :
 if TESTING:
     LOGGER_TYPE = "memory"
     
-level_log_debug = 'DEBUG' if DEBUG else 'WARNING'
+level_log_debug = 'DEBUG' if DEBUG else 'INFO'
 timed_rotating_file_handler = 'logging.handlers.TimedRotatingFileHandler'
 
 LOGGING = {

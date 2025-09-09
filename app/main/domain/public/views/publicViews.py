@@ -110,7 +110,8 @@ def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse
     
     try:
         response = track.get_reponse_content()
-    except Exception:
+    except Exception as e:
+        logger.error(f"public_music_stream : {e}")
         response = None
     if(not response):
         return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
