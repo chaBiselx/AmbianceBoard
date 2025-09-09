@@ -479,8 +479,8 @@ USER_TIERS = {
     'PREMIUM_BASIC': {
         'name': 'Premium Basic',
         'pricing' : {
-            'monthly': 4,
-            'yearly': 40
+            'monthly': 3.33,
+            'yearly': 33.33,
         },
         'display_name': 'Premium Basique',
         'display_name_short': 'Basique',
@@ -498,8 +498,8 @@ USER_TIERS = {
     'PREMIUM_ADVANCED': {
         'name': 'Premium advanced',
         'pricing': {
-            'monthly': 8,
-            'yearly': 80
+            'monthly': 6.67,
+            'yearly': 66.67, 
         },
         'display_name': 'Premium Avancée',
         'display_name_short': 'Avancée',
@@ -516,9 +516,8 @@ USER_TIERS = {
     'PREMIUM_PRO': {
         'name': 'Premium Professionnel',
         'pricing': {
-            'monthly': 15,
-            'yearly': 150,
-            'currency': 'EUR'
+            'monthly': 12.50,
+            'yearly': 125.00,  
         },
         'display_name': 'Premium Professionnel',
         'display_name_short': 'Professionnel',
@@ -549,3 +548,6 @@ LIMIT_CACHE_DEFAULT = 14400 # 4h
 
 # APP 
 LINK_DONATION = os.environ.get("LINK_DONATION", "reis")
+
+APP_TVA = 20.0  # en pourcentage
+APP_CURRENCY = "EUR"

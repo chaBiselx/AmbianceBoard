@@ -1,4 +1,5 @@
 {% extends 'Html/base.html' %}
+{% load Pricing %}
 
 {% block content %}
 <div class="container-fluid">
@@ -45,14 +46,22 @@
                     {% if tier_data.pricing %}
                     <div class="pricing-section mb-4">
                         <div class="d-flex justify-content-center align-items-center mb-2">
-                            <span class="display-5 fw-bold text-primary">{{ tier_data.pricing.monthly }}€</span>
+                            <span class="display-5 fw-bold text-primary">{{ tier_data.pricing.monthly|ht_to_ttc }}{% get_currency_symbol %}</span>
                             <span class="text-muted">/mois</span>
                         </div>
                         {% if tier_data.pricing.yearly %}
                         <div class="text-muted">
-                            <small>ou {{ tier_data.pricing.yearly }}€/an </small>
+                            <small>ou {{ tier_data.pricing.yearly|ht_to_ttc }}{% get_currency_symbol %}/an</small>
                         </div>
                         {% endif %}
+                        <div class="text-muted mt-1">
+                            <small>
+                                <i class="fas fa-info-circle me-1"></i>
+                                Prix HT: {{ tier_data.pricing.monthly }}{% get_currency_symbol %}/mois
+                                {% if tier_data.pricing.yearly %}- {{ tier_data.pricing.yearly }}{% get_currency_symbol %}/an{% endif %}<br/>
+                                (TVA {% get_tva_rate %}% incluse)
+                            </small>
+                        </div>
                     </div>
                     {% else %}
                     <div class="pricing-section mb-4">
