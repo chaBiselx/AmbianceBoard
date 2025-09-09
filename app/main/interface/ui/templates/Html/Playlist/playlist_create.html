@@ -28,7 +28,7 @@
                 <div>
                     {% if method == 'update' %}
                     <div>
-                        <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.uuid %}" data-redirecturl="{% url 'playlistsAllList' %}">Delete playlist</button>
+                        <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.uuid %}" data-redirecturl="{% url 'playlistsAllList' %}">Suppression playlist</button>
                     </div>
                     {% endif %}
                     <form method="post" enctype="multipart/form-data">

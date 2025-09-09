@@ -34,6 +34,7 @@ COPY main/ ./main/
 COPY parameters/ ./parameters/
 COPY static/ ./static/
 COPY migrations/ ./migrations/
+COPY logs/ ./logs/
 
 # create necessary directories
 RUN mkdir -p mediafiles/musics mediafiles/playlistIcon mediafiles/soundBoardIcon logs
