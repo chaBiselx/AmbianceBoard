@@ -14,3 +14,11 @@ app/logs/*
 app/backup/*
 db-data/*
 tmp/*
+
+
+
+#prod
+staticfiles/*
+mediafiles/*
+logs/*
+frontend/.npm-cache
