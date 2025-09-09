@@ -127,7 +127,7 @@ class MusicElement {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
         audioElementDiv.appendChild(this.DOMElement);
         this.DOMElement.preload = 'metadata';
-        this.DOMElement.load();
+        this.DOMElement.muted = true;
        
 
         return this
@@ -165,30 +165,8 @@ class MusicElement {
         } else {
             this.DOMElement.addEventListener('ended', this.eventDeleteNoFadeOut);
         }
-        // TEST IOS PLAY 
-        // this.DOMElement.play();
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-        ConsoleTraceServeur.error('is IOS:', (isIOS ? 'yes': 'no'));
-
-        if (isIOS) {
-            // Sur iOS, on doit attendre que l'audio soit prêt avant de jouer
-            const playPromise = this.DOMElement.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    ConsoleTraceServeur.error('Play failed on iOS:', ` ${JSON.stringify(error)}`);
-                    // Retry après un court délai
-                    setTimeout(() => {
-                        this.DOMElement.load(); // Recharger l'audio
-                        this.DOMElement.play().catch(e => {
-                            ConsoleTraceServeur.error('Second play attempt failed', ` ${JSON.stringify(e)}`);
-                        });
-                    }, 100);
-                });
-            }
-        } else {
-            this.DOMElement.play();
-        }
-        // END TEST IOS PLAY
+        this.DOMElement.muted = false;
+        this.DOMElement.play();
     }
 
     public checkLoop(): boolean {
