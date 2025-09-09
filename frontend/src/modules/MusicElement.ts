@@ -1,6 +1,7 @@
 import Config from '@/modules/General/Config';
 import Notification from '@/modules/General/Notifications';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
+import ConsoleTraceServeur from '@/modules/General/ConsoleTraceServeur';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
 
 import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
@@ -374,6 +375,8 @@ class MusicElement {
     private handleAudioError(event: Event) {
         if (event.target && event.target instanceof HTMLAudioElement) {
             if (event.target.error && event.target.error.code === 4) { // => ERROR 404
+                ConsoleTraceServeur.error('handleAudioError', event.target.error.message);
+
                 let new_music = new MusicElement(event.target);
 
                 const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;

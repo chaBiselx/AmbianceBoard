@@ -129,6 +129,10 @@ LOGGING = {
             'format': '{asctime} {method:<8} {request} {post} {status} {duration}sec id:{unique_id}',
             'style': '{',
         },
+        'front': {
+            'format': '{message}',
+            'style': '{',
+        },
     },
     'handlers': {
         'console': {
@@ -162,6 +166,15 @@ LOGGING = {
             'backupCount': 7,  # Keep 7 days of logs
             'formatter': 'request',
         },
+        'front_file': {
+            'level': 'INFO',
+            'class': timed_rotating_file_handler,
+            'filename': os.path.join(BASE_DIR, 'logs', 'front_logs.log'),
+            'when': 'D',  # Daily rotation
+            'interval': 1,  # Every day
+            'backupCount': 7,  # Keep 7 days of logs
+            'formatter': 'front',
+        },
         'Mail_file': {
             'level': 'INFO',
             'class': timed_rotating_file_handler,
@@ -184,6 +197,11 @@ LOGGING = {
         },
         'main': {
             'handlers': ['console', 'APP_file'],
+            'level': level_log_debug,
+            'propagate': False,
+        },
+        'front': {
+            'handlers': ['console', 'front_file'],
             'level': level_log_debug,
             'propagate': False,
         },
