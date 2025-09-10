@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     audioPermissionManager.addAutoUnlockListeners();
     
     // Demander l'autorisation audio si nécessaire
-    console.log('here');
     await audioPermissionManager.requestAudioPermission();
 });
 
