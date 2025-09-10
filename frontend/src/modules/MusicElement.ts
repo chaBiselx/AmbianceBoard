@@ -127,10 +127,7 @@ class MusicElement {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
         audioElementDiv.appendChild(this.DOMElement);
         this.DOMElement.preload = 'metadata';
-        this.DOMElement.playsInline = true;
-        this.DOMElement.autoPlay = true;
-        this.DOMElement.muted = true;
-        this.DOMElement.loop = true;
+
 
         return this
     }
@@ -169,10 +166,6 @@ class MusicElement {
             this.DOMElement.addEventListener('ended', this.eventDeleteNoFadeOut);
         }
         this.DOMElement.play();
-        this.DOMElement.playsInline = false;
-        this.DOMElement.autoPlay = false;
-        this.DOMElement.muted = false;
-        this.DOMElement.loop = false;
     }
 
     public checkLoop(): boolean {
