@@ -7,9 +7,11 @@ import ConsoleCustom from "./modules/General/ConsoleCustom";
 import Csrf from "./modules/General/Csrf";
 import Cookie from "@/modules/General/Cookie";
 import Time from "@/modules/Util/Time";
+import AudioPermissionManager from '@/modules/General/AudioPermissionManager';
+
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Dropdown
     document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(element => {
         try {
@@ -36,6 +38,14 @@ document.addEventListener('DOMContentLoaded', () => {
             ConsoleCustom.warn(`Bootstrap Popover initialization failed: ${error}`);
         }
     });
+
+     // Initialiser le gestionnaire de permissions audio pour iOS
+    const audioPermissionManager = AudioPermissionManager.getInstance();
+    audioPermissionManager.addAutoUnlockListeners();
+    
+    // Demander l'autorisation audio si nécessaire
+    console.log('here');
+    await audioPermissionManager.requestAudioPermission();
 });
 
 
