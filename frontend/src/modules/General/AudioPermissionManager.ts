@@ -126,15 +126,15 @@ class AudioPermissionManager {
     public async requestAudioPermission(): Promise<boolean> {
         // Si pas iOS ou déjà débloqué, retourner true
 
-        if (!this.isIOS() || this.isAudioUnlocked) {
-            return true;
-        }
+        // if (!this.isIOS() || this.isAudioUnlocked) {
+        //     return true;
+        // }
 
-        // Tenter de débloquer silencieusement d'abord
-        const silentUnlock = await this.attemptUnlockAudio();
-        if (silentUnlock) {
-            return true;
-        }
+        // // Tenter de débloquer silencieusement d'abord
+        // const silentUnlock = await this.attemptUnlockAudio();
+        // if (silentUnlock) {
+        //     return true;
+        // }
 
         // Si échec, afficher la modal
         return await this.showAudioPermissionModal();
