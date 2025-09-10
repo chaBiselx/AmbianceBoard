@@ -1,4 +1,6 @@
-import ModalCustom from './Modal';
+import ModalCustom from '@/modules/General/Modal';
+import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
+
 
 /**
  * Gestionnaire des permissions audio pour iOS
@@ -38,16 +40,22 @@ class AudioPermissionManager {
      * Tente de débloquer l'audio silencieusement
      */
     private async attemptUnlockAudio(): Promise<boolean> {
+        ConsoleTesteur.log('Tentative de déblocage silencieux de l\'audio');
         try {
+            ConsoleTesteur.log(!this.audioContext);
+
             // Créer un AudioContext si pas déjà fait
             if (!this.audioContext) {
                 this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
             }
 
+            ConsoleTesteur.log(this.audioContext?.state);
             // Reprendre le contexte audio s'il est suspendu
             if (this.audioContext.state === 'suspended') {
                 await this.audioContext.resume();
             }
+
+            ConsoleTesteur.log(this.audioContext?.state);
 
             // Créer et jouer un son silencieux
             if (!this.tempAudio) {
@@ -60,7 +68,7 @@ class AudioPermissionManager {
             this.isAudioUnlocked = true;
             return true;
         } catch (error) {
-            console.warn('Impossible de débloquer l\'audio automatiquement:', error);
+            ConsoleTesteur.warn('Impossible de débloquer l\'audio automatiquement:', error);
             return false;
         }
     }

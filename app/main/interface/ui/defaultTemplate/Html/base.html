@@ -71,6 +71,11 @@
                 </section>
             </div>
         </div>
+        {% if request.user.isBetaTester or True %}
+        {% include 'Html/partial/betaTestConsole.html' %}
+
+        {% endif %}
+
     </main>
 
     <!-- Footer -->

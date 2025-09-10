@@ -4,6 +4,7 @@ import { PaginationManager } from '@/modules/PaginationManager';
 import { TagManager } from '@/modules/TagManager';
 import * as bootstrap from 'bootstrap';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
+import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
 import Csrf from "./modules/General/Csrf";
 import Cookie from "@/modules/General/Cookie";
 import Time from "@/modules/Util/Time";
@@ -39,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    ConsoleTesteur.log('Console Testeur initialisée');
      // Initialiser le gestionnaire de permissions audio pour iOS
     const audioPermissionManager = AudioPermissionManager.getInstance();
     audioPermissionManager.addAutoUnlockListeners();
