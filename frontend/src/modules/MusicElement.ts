@@ -48,7 +48,7 @@ class MusicElement {
         // iOS Safari requirements for inline playback
         this.DOMElement.setAttribute('playsinline', '');
         this.DOMElement.setAttribute('webkit-playsinline', '');
-       
+
         this.DOMElement.preload = 'auto';
 
         if (Cookie.get('WebSocketToken') != null) {
@@ -171,41 +171,16 @@ class MusicElement {
         }
 
 
-        this.DOMElement.muted = true;
         const playPromise = this.DOMElement.play();
-        this.DOMElement.muted = false;
-        if (playPromise && typeof playPromise.then === 'function') {
-            console.log(1);
-
-            playPromise.then(() => {
-                console.log('remove this.DOMElement.muted = false;');
-
-                // Once actually playing, launch fadeIn if requested
-                if (this.fadeIn) {
-                    const onPlaying = () => {
-                        this.DOMElement.removeEventListener('playing', onPlaying);
-                        // Unmute before starting fadeIn progression
-                        this.addFadeIn();
-                    }
-                    this.DOMElement.addEventListener('playing', onPlaying, { once: true });
-                }
-            }).catch((e: any) => {
-                ConsoleCustom.warn && ConsoleCustom.warn('Audio play blocked', e);
-                Notification.createClientNotification({
-                    message: 'Touchez pour lancer la lecture audio',
-                    type: 'info',
-                    duration: 3000
+        if (playPromise !== undefined) {
+            playPromise
+                .then(_ => {
+            })
+                .catch(error => {
+                    ConsoleTraceServeur.error('playPromise error', error);
                 });
-            });
-        } else {
-            console.log(2);
-            // Fallback (older browsers). Start fadeIn immediately.
-            if (this.fadeIn) {
-                this.DOMElement.addEventListener('playing', () => {
-                    this.addFadeIn();
-                }, { once: true });
-            }
         }
+
     }
 
     public checkLoop(): boolean {
@@ -213,6 +188,7 @@ class MusicElement {
     }
 
     public addFadeIn() {
+        ConsoleCustom.log('addFadeIn');
         this.levelFade = 0;
         this.fadeInGoing = true;
         const typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeInType);
