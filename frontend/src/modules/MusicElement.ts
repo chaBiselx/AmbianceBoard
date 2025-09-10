@@ -380,28 +380,13 @@ class MusicElement {
                 let new_music = new MusicElement(audioElement);
 
                 // Log toutes les informations disponibles
-                const debugInfo = {
-                    hasError: !!audioElement.error,
-                    errorCode: audioElement.error?.code || 'undefined',
-                    errorMessage: audioElement.error?.message || 'no message',
-                    src: audioElement.src || 'no src',
-                    currentSrc: audioElement.currentSrc || 'no currentSrc',
-                    readyState: audioElement.readyState,
-                    networkState: audioElement.networkState,
-                    playlistId: new_music.idPlaylist || 'no playlist id',
-                    playlistType: new_music.playlistType || 'no playlist type',
-                    baseUrl: new_music.baseUrl || 'no base url',
-                    isSlave: new_music.isSlave,
-                    userAgent: navigator.userAgent
-                };
+               
 
-                // Log détaillé pour TOUTES les erreurs
-                ConsoleTraceServeur.error('handleAudioError', JSON.stringify(debugInfo, null, 2));
+                ConsoleTraceServeur.error('handleAudioError', audioElement.error.code, audioElement.error.message, new_music.idPlaylist, new_music.baseUrl, audioElement.src);
 
                 const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
                 buttonPlaylist.disactive();
                 Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
-                Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 4000 });
                 event.target.remove();
             }
         }
