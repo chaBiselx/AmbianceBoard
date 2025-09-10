@@ -12,7 +12,7 @@ class AudioPermissionManager {
     private audioContext: AudioContext | null = null;
     private tempAudio: HTMLAudioElement | null = null;
 
-    private constructor() {}
+    private constructor() { }
 
     public static getInstance(): AudioPermissionManager {
         if (!AudioPermissionManager.instance) {
@@ -25,8 +25,8 @@ class AudioPermissionManager {
      * Vérifie si l'appareil est iOS
      */
     private isIOS(): boolean {
-        return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-               (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     }
 
     /**
@@ -42,7 +42,7 @@ class AudioPermissionManager {
     private async attemptUnlockAudio(): Promise<boolean> {
         ConsoleTesteur.log('Tentative de déblocage silencieux de l\'audio');
         try {
-            ConsoleTesteur.log(!this.audioContext);
+            ConsoleTesteur.log('this.audioContext', !this.audioContext);
 
             // Créer un AudioContext si pas déjà fait
             if (!this.audioContext) {
@@ -65,6 +65,8 @@ class AudioPermissionManager {
             }
 
             await this.tempAudio.play();
+            ConsoleTesteur.log('return true', true);
+
             this.isAudioUnlocked = true;
             return true;
         } catch (error) {
@@ -109,7 +111,10 @@ class AudioPermissionManager {
                     const enableBtn = document.getElementById('audio-permission-enable');
                     if (enableBtn) {
                         enableBtn.addEventListener('click', async () => {
+                            ConsoleTesteur.log('click enable audio');
                             const success = await this.attemptUnlockAudio();
+                            ConsoleTesteur.log('click enable audio', success);
+
                             ModalCustom.hide();
                             resolve(success);
                         });
@@ -137,12 +142,19 @@ class AudioPermissionManager {
         // if (!this.isIOS() || this.isAudioUnlocked) {
         //     return true;
         // }
+        if (!this.isIOS()) {
+            ConsoleTesteur.log('achichage Popup IOS');
+            return true;
+        }
 
-        // // Tenter de débloquer silencieusement d'abord
-        // const silentUnlock = await this.attemptUnlockAudio();
-        // if (silentUnlock) {
-        //     return true;
-        // }
+        // Tenter de débloquer silencieusement d'abord
+        const silentUnlock = await this.attemptUnlockAudio();
+        ConsoleTesteur.log('silentUnlock', silentUnlock);
+        if (silentUnlock) {
+            return true;
+        }
+
+        ConsoleTesteur.log('showAudioPermissionModal');
 
         // Si échec, afficher la modal
         return await this.showAudioPermissionModal();
