@@ -45,6 +45,12 @@ class MusicElement {
             this.setDefaultFromPlaylist(Element);
         }
 
+        // iOS Safari requirements for inline playback
+        this.DOMElement.setAttribute('playsinline', '');
+        this.DOMElement.setAttribute('webkit-playsinline', '');
+       
+        this.DOMElement.preload = 'auto';
+
         if (Cookie.get('WebSocketToken') != null) {
             this.WebSocketActive = true;
         }
@@ -148,7 +154,6 @@ class MusicElement {
     }
 
     public play() {
-  
         ConsoleCustom.log('play');
         this.DOMElement.addEventListener('error', this.handleAudioError);
 
@@ -158,14 +163,49 @@ class MusicElement {
 
         if (this.fadeOut) {
             this.DOMElement.addEventListener('ended', this.eventDeleteFadeOut);
-            this.DOMElement.addEventListener('loadedmetadata', () => {
+            this.DOMElement.addEventListener('loadeddata', () => {
                 this.DOMElement.addEventListener('timeupdate', this.eventFadeOut);
             });
-
         } else {
             this.DOMElement.addEventListener('ended', this.eventDeleteNoFadeOut);
         }
-        this.DOMElement.play();
+
+
+        this.DOMElement.muted = true;
+        const playPromise = this.DOMElement.play();
+        this.DOMElement.muted = false;
+        if (playPromise && typeof playPromise.then === 'function') {
+            console.log(1);
+
+            playPromise.then(() => {
+                console.log('remove this.DOMElement.muted = false;');
+
+                // Once actually playing, launch fadeIn if requested
+                if (this.fadeIn) {
+                    const onPlaying = () => {
+                        this.DOMElement.removeEventListener('playing', onPlaying);
+                        // Unmute before starting fadeIn progression
+                        this.addFadeIn();
+                    }
+                    this.DOMElement.addEventListener('playing', onPlaying, { once: true });
+                }
+            }).catch((e: any) => {
+                ConsoleCustom.warn && ConsoleCustom.warn('Audio play blocked', e);
+                Notification.createClientNotification({
+                    message: 'Touchez pour lancer la lecture audio',
+                    type: 'info',
+                    duration: 3000
+                });
+            });
+        } else {
+            console.log(2);
+            // Fallback (older browsers). Start fadeIn immediately.
+            if (this.fadeIn) {
+                this.DOMElement.addEventListener('playing', () => {
+                    this.addFadeIn();
+                }, { once: true });
+            }
+        }
     }
 
     public checkLoop(): boolean {
@@ -174,25 +214,19 @@ class MusicElement {
 
     public addFadeIn() {
         this.levelFade = 0;
-
         this.fadeInGoing = true;
-
-        let typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeInType)
-
-        let audioFade = new AudioFadeManager(this, typeFade, true, () => {
+        const typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeInType);
+        const audioFade = new AudioFadeManager(this, typeFade, true, () => {
             this.levelFade = 1;
             this.fadeInGoing = false;
         });
         audioFade.setDuration(this.fadeInDuration);
-        this.DOMElement.addEventListener('playing', () => {
-            let time = Date.now();
-            while (this.DOMElement.readyState != 2) {
-                if (time + 1 < Date.now()) {
-                    break;
-                }
-            }
+        // Start immediately (play() already ensures we are in a playing state listener) but guard if not ready
+        if (this.DOMElement.readyState >= 2) {
             audioFade.start();
-        })
+        } else {
+            this.DOMElement.addEventListener('canplay', () => audioFade.start(), { once: true });
+        }
 
     }
 
@@ -380,7 +414,7 @@ class MusicElement {
                 let new_music = new MusicElement(audioElement);
 
                 // Log toutes les informations disponibles
-               
+
 
                 ConsoleTraceServeur.error('handleAudioError', audioElement.error.code, audioElement.error.message, new_music.idPlaylist, new_music.baseUrl, audioElement.src);
 
