@@ -71,7 +71,7 @@
                 </section>
             </div>
         </div>
-        {% if request.user.isBetaTester or True %}
+        {% if request.user.isBetaTester %}
         {% include 'Html/partial/betaTestConsole.html' %}
 
         {% endif %}

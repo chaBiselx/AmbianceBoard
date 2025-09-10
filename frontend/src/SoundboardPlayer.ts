@@ -8,7 +8,6 @@ import { MixerManager } from '@/modules/MixerManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import WakeLock from '@/modules/General/WakeLock';
 import ModalCustom from './modules/General/Modal';
-import AudioPermissionManager from '@/modules/General/AudioPermissionManager';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
 import {MixerPlaylist} from "@/modules/MixerPlaylist";
 import ShareLinkManager from '@/modules/Event/ShareLinkManager';
@@ -28,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // Activer le Wake Lock au chargement de la page
     new WakeLock().start();
-
 });
 
 function addEventShowHidePlayslitMixer(): void {
@@ -74,29 +72,13 @@ function eventTogglePlaylist(event: Event) {
     if (event.target instanceof HTMLElement) {
         const buttonPlaylist = new ButtonPlaylist(event.target)
         if (!buttonPlaylist.isActive()) {
-            // Vérifier les permissions audio avant d'activer une playlist
-            ensureAudioPermissionAndExecute(async () => {
+ 
                 buttonPlaylist.active();
                 SoundBoardManager.addPlaylist(buttonPlaylist);
-            });
         } else {
             buttonPlaylist.disactive();
             SoundBoardManager.removePlaylist(buttonPlaylist);
         }
-    }
-}
-
-/**
- * Utilitaire pour s'assurer que l'audio est autorisé avant d'exécuter une action
- */
-async function ensureAudioPermissionAndExecute(callback: () => void | Promise<void>): Promise<void> {
-    const audioPermissionManager = AudioPermissionManager.getInstance();
-    const hasPermission = await audioPermissionManager.ensureAudioEnabled();
-    
-    if (hasPermission) {
-        await callback();
-    } else {
-        console.warn('Permission audio refusée par l\'utilisateur');
     }
 }
 

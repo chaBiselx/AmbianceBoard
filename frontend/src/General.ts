@@ -8,7 +8,6 @@ import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
 import Csrf from "./modules/General/Csrf";
 import Cookie from "@/modules/General/Cookie";
 import Time from "@/modules/Util/Time";
-import AudioPermissionManager from '@/modules/General/AudioPermissionManager';
 
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
@@ -40,13 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    ConsoleTesteur.log('Console Testeur initialisée');
-     // Initialiser le gestionnaire de permissions audio pour iOS
-    const audioPermissionManager = AudioPermissionManager.getInstance();
-    audioPermissionManager.addAutoUnlockListeners();
-    
-    // Demander l'autorisation audio si nécessaire
-    await audioPermissionManager.requestAudioPermission();
+    ConsoleTesteur.log('General Event initialised');
 });
 
 
@@ -61,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new NotificationGeneral().addEvent();
     new DeleteAccount().addEvent();
     new UserActivityLog().addEvent();
+    new ShowConsoleBetaTester().addEvent();
 
 });
 
@@ -357,6 +351,30 @@ class UserActivityLog {
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
                 });
+        }
+    }
+}
+
+class ShowConsoleBetaTester {
+    buttonShow: HTMLButtonElement | null = null;
+    consoleElement: HTMLElement | null = null;
+
+    constructor() {
+        this.buttonShow = document.getElementById('showLoggerBetaTest') as HTMLButtonElement;
+        this.consoleElement = document.getElementById('betaTestConsole');
+    }
+
+    public addEvent() {
+        if (this.buttonShow && this.consoleElement) {
+            console.log('Show Console Beta Tester initialized');
+            this.buttonShow.addEventListener('click', this.toggleConsole.bind(this));
+        }
+    }
+
+    private toggleConsole() {
+        console.log('console toggled');
+        if (this.consoleElement) {
+            this.consoleElement.classList.toggle('d-none');
         }
     }
 }

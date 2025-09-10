@@ -12,6 +12,11 @@
             </div>
             <div class="col-12 col-md-3 text-center text-md-end mb-1 mb-md-3">
                 <div class="d-flex justify-content-center justify-content-md-end gap-3">
+                    {% if request.user.isBetaTester %}
+                    <button id="showLoggerBetaTest" class="footer-link url_link">
+                       <i class="fa-solid fa-bug"></i>
+                    </button>
+                    {% endif %}
                     <a href="https://discord.com/channels/1412533422504546389/1412533423339470860" class="footer-link url_link">
                         <i class="fa-brands fa-discord"></i>
                     </a>
