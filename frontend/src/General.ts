@@ -3,12 +3,12 @@ import ReportingContent from '@/modules/ReportingContent'
 import { PaginationManager } from '@/modules/PaginationManager';
 import { TagManager } from '@/modules/TagManager';
 import * as bootstrap from 'bootstrap';
-import ConsoleCustom from "./modules/General/ConsoleCustom";
+import ConsoleCustom from "@/modules/General/ConsoleCustom";
 import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
-import Csrf from "./modules/General/Csrf";
+import Csrf from "@/modules/General/Csrf";
 import Cookie from "@/modules/General/Cookie";
 import Time from "@/modules/Util/Time";
-
+import IOSAudioPopup from "@/modules/IOSAudioPopup";
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
 document.addEventListener('DOMContentLoaded', async () => {
@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new DeleteAccount().addEvent();
     new UserActivityLog().addEvent();
     new ShowConsoleBetaTester().addEvent();
+    new IOSAudioPopup().addEvent();
 
 });
 

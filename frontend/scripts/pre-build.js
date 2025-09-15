@@ -32,6 +32,7 @@ async function moveFiles() {
 
     try {
         // Déplacer les images
+        await fs.copy(`${outputDir}/sound`, `${targetDir}/sound`);
         await fs.copy(`${outputDir}/img`, `${targetDir}/img`);
         console.log('✔️ Images déplacées !');
 
