@@ -6,7 +6,7 @@ import * as bootstrap from 'bootstrap';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
 import Csrf from "./modules/General/Csrf";
-import Cookie from "@/modules/General/Cookie";
+import GeneralTheme from "@/modules/General/GeneralTheme";
 import Time from "@/modules/Util/Time";
 
 
@@ -102,68 +102,6 @@ class EmailConfirmationAccount {
     }
 }
 
-class GeneralTheme {
-    theme: string
-    buttonToggle: HTMLButtonElement
-
-    constructor() {
-        this.theme = Cookie.get('theme') ?? 'light';
-        this.buttonToggle = document.getElementById('darkModeToggle') as HTMLButtonElement;
-        this.toggleIcon();
-        this.toggleAttribute();
-
-
-    }
-
-    public addEvent() {
-        if (this.buttonToggle) {
-            this.buttonToggle.addEventListener('click', this.toggleTheme.bind(this));
-        }
-    }
-
-    private toggleTheme() {
-        this.theme = this.theme === 'light' ? 'dark' : 'light';
-        this.toggleIcon();
-        this.toggleAttribute();
-        this.saveTheme();
-        Cookie.set('theme', this.theme);
-    }
-
-    private toggleAttribute() {
-        const htmlElement = document.documentElement;
-        htmlElement.setAttribute('data-bs-theme', this.theme);
-    }
-
-    private toggleIcon() {
-        if (this.theme === 'dark') {
-            this.buttonToggle.innerHTML = `<i class="fa-solid fa-sun"></i>`;
-        } else {
-            this.buttonToggle.innerHTML = `<i class="fa-solid fa-moon"></i>`;
-        }
-    }
-
-    private saveTheme() {
-        const url = this.buttonToggle.dataset.url
-        const csrfToken = Csrf.getToken();
-
-        if (url && csrfToken) {
-            fetch(url, {
-                method: 'UPDATE',
-                headers: {
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({ theme: this.theme })
-            })
-                .then(response => response.json())
-                .then(data => {
-                })
-                .catch(error => {
-                    console.error(error)
-                });
-        }
-    }
-
-}
 
 class FullScreen {
     hideAll: HTMLElement | null = null;
