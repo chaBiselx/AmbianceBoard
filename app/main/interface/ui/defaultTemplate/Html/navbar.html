@@ -1,6 +1,7 @@
 {% load static %}
+{% load Theme %}
 
-<button class="btn btn-link url_link p-1" id="darkModeToggle" aria-label="Toggle dark mode" data-url="{% url 'updateTheme' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Changer le thème">
+<button class="btn btn-link url_link p-1" id="darkModeToggle" data-backend-saved="{% is_backend_saved %}" aria-label="Toggle dark mode" data-url="{% url 'updateTheme' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Changer le thème">
     {% include 'Html/theme_icon.html' %}
 </button>
 <button class="btn btn-link url_link p-1" aria-label="hide all" id="hideAll" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Masquer tout">

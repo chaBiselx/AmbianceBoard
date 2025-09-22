@@ -1,5 +1,6 @@
 import Cookie from "@/modules/General/Cookie";
 import Csrf from "@/modules/General/Csrf";
+import Boolean from "@/modules/Util/Boolean";
 import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
 
 
@@ -9,13 +10,22 @@ class GeneralTheme {
     buttonToggle: HTMLButtonElement
 
     constructor() {
-        this.theme = Cookie.get('theme') ?? 'light';
-        ConsoleTesteur.log(`Theme from Cookie: ${this.theme}`);
+    
         
         this.buttonToggle = document.getElementById('darkModeToggle') as HTMLButtonElement;
         ConsoleTesteur.log(`Button Toggle Element: ${this.buttonToggle.innerHTML.trim()}`);
+        if(this.buttonToggle.dataset?.backendSaved && Boolean.convert(this.buttonToggle.dataset?.backendSaved)){ // by User Preference
+            this.theme = this.getHtmlAttribute() ?? 'light';
+            Cookie.set('theme', this.theme);
+            ConsoleTesteur.log(`Theme from Backend: ${this.theme}`);
+        }else{// By Cookie
+            this.theme = Cookie.get('theme') ?? 'light';
+            ConsoleTesteur.log(`Theme from Cookie: ${this.theme}`);
+        }
+    
+
         this.toggleIcon();
-        this.toggleAttribute();
+        this.toggleHtmlAttribute();
 
 
     }
@@ -29,16 +39,20 @@ class GeneralTheme {
     private toggleTheme() {
         this.theme = this.theme === 'light' ? 'dark' : 'light';
         this.toggleIcon();
-        this.toggleAttribute();
+        this.toggleHtmlAttribute();
         this.saveTheme();
         Cookie.set('theme', this.theme);
         ConsoleTesteur.log(`Set Theme cookie: ${this.theme}`);
 
     }
 
-    private toggleAttribute() {
+    private toggleHtmlAttribute() {
         const htmlElement = document.documentElement;
         htmlElement.setAttribute('data-bs-theme', this.theme);
+    }
+
+    private getHtmlAttribute(): string | null {
+        return document.documentElement.getAttribute('data-bs-theme');
     }
 
     private toggleIcon() {
