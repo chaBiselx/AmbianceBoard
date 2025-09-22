@@ -21,7 +21,7 @@
 
 <body id="mainBody" class="{% include 'Html/sidebar_class.html'%}">
     <!-- Show base layout -->
-    <button class="show-base-layout rounded fullScreen-element-inline"  id="showBaseLayoutButton">
+    <button class="show-base-layout rounded fullScreen-element-inline" id="showBaseLayoutButton">
         <i class="fa-solid fa-minimize"></i>
     </button>
 
@@ -40,7 +40,10 @@
 
 
             <div class="ms-auto d-flex align-items-center gap-1 gap-lg-2 gap-lg-3">
-                
+
+                <button class="btn btn-link url_link p-1" id="darkModeToggle" data-backend-saved="{% is_backend_saved %}" aria-label="Toggle dark mode" data-url="{% url 'updateTheme' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Changer le thème">
+                    {% include 'Html/theme_icon.html' %}
+                </button>
                 {% block navbar %}
                 {% include 'Html/navbar.html' %}
                 {% endblock navbar %}

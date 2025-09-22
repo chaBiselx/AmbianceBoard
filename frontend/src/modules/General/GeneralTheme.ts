@@ -1,7 +1,6 @@
 import Cookie from "@/modules/General/Cookie";
 import Csrf from "@/modules/General/Csrf";
 import Boolean from "@/modules/Util/Boolean";
-import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
 
 
 
@@ -13,14 +12,11 @@ class GeneralTheme {
     
         
         this.buttonToggle = document.getElementById('darkModeToggle') as HTMLButtonElement;
-        ConsoleTesteur.log(`Button Toggle Element: ${this.buttonToggle.innerHTML.trim()}`);
         if(this.buttonToggle.dataset?.backendSaved && Boolean.convert(this.buttonToggle.dataset?.backendSaved)){ // by User Preference
             this.theme = this.getHtmlAttribute() ?? 'light';
             Cookie.set('theme', this.theme);
-            ConsoleTesteur.log(`Theme from Backend: ${this.theme}`);
         }else{// By Cookie
             this.theme = Cookie.get('theme') ?? 'light';
-            ConsoleTesteur.log(`Theme from Cookie: ${this.theme}`);
         }
     
 
@@ -42,7 +38,6 @@ class GeneralTheme {
         this.toggleHtmlAttribute();
         this.saveTheme();
         Cookie.set('theme', this.theme);
-        ConsoleTesteur.log(`Set Theme cookie: ${this.theme}`);
 
     }
 
@@ -66,7 +61,6 @@ class GeneralTheme {
     private saveTheme() {
         const url = this.buttonToggle.dataset.url
         const csrfToken = Csrf.getToken();
-        ConsoleTesteur.log(`Set Theme backend: ${this.theme}`);
 
         if (url && csrfToken) {
             fetch(url, {
@@ -77,9 +71,7 @@ class GeneralTheme {
                 body: JSON.stringify({ theme: this.theme })
             })
                 .then(response => response.json())
-                .then(data => {
-                    ConsoleTesteur.log(`Backend response : ${JSON.stringify(data)}`);
-
+                .then(_data => {
                 })
                 .catch(error => {
                     console.error(error)
