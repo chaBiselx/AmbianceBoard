@@ -40,12 +40,12 @@
     </div>
     <div class="col-12 col-xl-2 fullScreen-element" id="soundboard-menu">
         <div>
-            <a class="btn btn-primary btn-block py-1 my-1" href="{% url 'addPlaylistWithSoundboard' soundboard.uuid %}">Ajouter une playlist</a>
+            <a class="btn btn-primary btn-block py-1 my-1" href="{% url 'addPlaylistWithSoundboard' soundboard.uuid %}">Ajouter un bouton</a>
 
             <a class="btn btn-primary btn-block py-1 my-1" href="{% url 'organizeSoundboard' soundboard.uuid %}">Organiser</a>
 
             <input type="checkbox" class="btn-check" id="inputShowMixerPlaylist" autocomplete="off">
-            <label class="btn btn-outline-primary btn-block py-1 my-1" for="inputShowMixerPlaylist"> <span id="inputShowMixerPlaylist-show">Afficher</span><span id="inputShowMixerPlaylist-hide" class="d-none">Masquer</span> les mixers des playlists</label>
+            <label class="btn btn-outline-primary btn-block py-1 my-1" for="inputShowMixerPlaylist"> <span id="inputShowMixerPlaylist-show">Afficher</span><span id="inputShowMixerPlaylist-hide" class="d-none">Masquer</span> les mixers des boutons</label>
 
             <a class="btn btn-warning btn-block py-1 my-1" href="{% url 'soundboardsUpdate' soundboard.uuid %}">Modifier le general du SoundBoard</a>
 

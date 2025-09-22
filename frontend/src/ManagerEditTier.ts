@@ -89,7 +89,7 @@ class TiersManager {
                 </div>
                 <div class="col-md-3">
                     <div class="text-center">
-                        <div class="text-muted small">Playlists</div>
+                        <div class="text-muted small">Boutons</div>
                         <div class="h5 mb-0">${limits.playlist}</div>
                     </div>
                 </div>
