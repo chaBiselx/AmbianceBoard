@@ -22,7 +22,7 @@
 <body id="mainBody" class="{% include 'Html/sidebar_class.html'%}">
     <!-- Show base layout -->
     <button class="show-base-layout rounded fullScreen-element-inline"  id="showBaseLayoutButton">
-        <i class="fa-solid fa-eye"></i>
+        <i class="fa-solid fa-minimize"></i>
     </button>
 
     <!-- Navbar -->
@@ -44,7 +44,7 @@
                     {% include 'Html/theme_icon.html' %}
                 </button>
                 <button class="btn btn-link url_link p-1" aria-label="hide all" id="hideAll">
-                    <i class="fa-solid fa-eye-slash"></i>
+                    <i class="fa-solid fa-maximize"></i>
                 </button>
                 {% block navbar %}
                 {% include 'Html/navbar.html' %}
