@@ -7,6 +7,7 @@ import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import { MixerElement } from "@/modules/MixerManager";
 import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
+import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 type DataMusic = {
     'track': number | null
@@ -138,30 +139,39 @@ class SharedSoundBoardWebSocket {
     private responseProcessing(response: WebSocketResponse): void {
         if (this.master) return
         ConsoleCustom.log('Message reçu:', response);
+        ConsoleTesteur.log(`WebSocket response : ${JSON.stringify(response)}`);
         ConsoleCustom.log('master', this.master);
+
+
         switch (response.type) {
             case 'music_start':
                 ConsoleCustom.log('▶️ Démarrage musique:', response);
+                ConsoleTesteur.log(`music_start`);
                 this.startMusic(response.data as DataMusic);
                 break;
             case 'music_stop':
                 this.stopMusic(response.data as DataMusic);
+                ConsoleTesteur.log(`music_stop`);
                 ConsoleCustom.log('⏹️ Arrêt musique:', response);
                 break;
             case 'music_stop_all':
                 this.stopAll();
+                ConsoleTesteur.log(`music_stop_all`);
                 ConsoleCustom.log('⏹️ Arrêt toutes musiques:', response);
                 break;
             case 'mixer_update':
                 this.updateMixer(response.data as DataMixer);
                 ConsoleCustom.log('🔄 update mixer:', response);
+                ConsoleTesteur.log(`mixer_update`);
                 break;
             case 'playlist_update_volume':
                 this.updateVolumePlaylist(response.data as DataVolumePlaylist);
                 ConsoleCustom.log('🔄 update volume playlist:', response);
+                ConsoleTesteur.log(`playlist_update_volume`);
                 break;
             default:
                 ConsoleCustom.error('❌ Erreur:', response);
+                ConsoleTesteur.log(`Unknown response type: ${response.type}`);
                 break;
         }
     }
