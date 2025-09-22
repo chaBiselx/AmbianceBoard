@@ -40,12 +40,7 @@
 
 
             <div class="ms-auto d-flex align-items-center gap-1 gap-lg-2 gap-lg-3">
-                <button class="btn btn-link url_link p-1" id="darkModeToggle" aria-label="Toggle dark mode" data-url="{% url 'updateTheme' %}">
-                    {% include 'Html/theme_icon.html' %}
-                </button>
-                <button class="btn btn-link url_link p-1" aria-label="hide all" id="hideAll">
-                    <i class="fa-solid fa-maximize"></i>
-                </button>
+                
                 {% block navbar %}
                 {% include 'Html/navbar.html' %}
                 {% endblock navbar %}
