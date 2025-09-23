@@ -35,7 +35,6 @@ class MusicElement {
     fadeInGoing: boolean = false;
     baseUrl: string = ''; // url of playlist to stream music
     WebSocketActive: boolean = false; // user has websocket connection to command shared soundboard
-    isSlave: boolean = false; // is manuplated by websocket (shared soundboard)
 
 
     constructor(Element: HTMLAudioElement | ButtonPlaylist) {
@@ -92,9 +91,6 @@ class MusicElement {
         if (this.DOMElement.dataset.baseurl) {
             this.baseUrl = this.DOMElement.dataset.baseurl!;
         }
-        if (this.DOMElement.dataset.isslave) {
-            this.isSlave = this.DOMElement.dataset.isslave == "true";
-        }
     }
 
     private setDefaultFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
@@ -113,7 +109,7 @@ class MusicElement {
 
         this.DOMElement.classList.add('audio-' + buttonPlaylist.dataset.playlistType)
         let src = this.baseUrl
-        if (!this.isSlave) {
+        if (!this.isSlave()) {
             src += "?i=" + Date.now();
         }
         this.DOMElement.src = src;
@@ -142,8 +138,9 @@ class MusicElement {
         this.callAPIToStop()
     }
 
+
+
     public setSpecificMusic(baseUrl: string) {
-        this.setSlave(true);
         this.baseUrl = baseUrl;
         this.DOMElement.dataset.baseurl = this.baseUrl;
         this.DOMElement.src = this.baseUrl;
@@ -171,7 +168,7 @@ class MusicElement {
     }
 
     public checkLoop(): boolean {
-        return this.playlistLoop && !this.isSlave
+        return this.playlistLoop && !this.isSlave()
     }
 
     public addFadeIn() {
@@ -211,6 +208,10 @@ class MusicElement {
         });
         audioFade.setDuration(this.fadeOutDuration);
         audioFade.start();
+    }
+
+    private isSlave(): boolean {
+        return SharedSoundBoardUtil.isSlavePage()
     }
 
     private eventFadeOut(event: Event) {
@@ -283,8 +284,8 @@ class MusicElement {
     }
 
     private callAPIToStop() {
-        ConsoleTesteur.log(`enter MusicElement.callAPIToStop ${this.WebSocketActive} ${this.isSlave} ${SharedSoundBoardUtil.isSlavePage()}`);
-        if (this.WebSocketActive && (!this.isSlave || !SharedSoundBoardUtil.isSlavePage())) {
+        ConsoleTesteur.log(`enter MusicElement.callAPIToStop ${this.WebSocketActive} ${this.isSlave()}`);
+        if (this.WebSocketActive && !this.isSlave()) {
             ConsoleTesteur.log("WebSocket Master call from MusicElement.callAPIToStop");
 
             (SharedSoundBoardWebSocket.getMasterInstance()).sendMessage({
@@ -372,11 +373,7 @@ class MusicElement {
         this.DOMElement.dataset.baseurl = this.baseUrl;
     }
 
-    private setSlave(slave: boolean): this {
-        this.isSlave = slave;
-        this.DOMElement.dataset.isslave = this.isSlave.toString();
-        return this
-    }
+
 
     private handleAudioError(event: Event) {
         if (event.target && event.target instanceof HTMLAudioElement) {
