@@ -96,6 +96,13 @@ INSTALLED_APPS = [
     "django_crontab",
 ]
 
+# Emplacement personnalisé des migrations de l'app "main".
+# Sans ce mapping, Django chercherait un package "main.migrations" (qui n'existe pas)
+# et considérerait potentiellement l'app comme "unmigrated", provoquant des incohérences.
+MIGRATION_MODULES = {
+    'main': 'main.architecture.persistence.migrations',
+}
+
 
 
 # Logging configuration

@@ -7,9 +7,9 @@ test-all: test-backend-tu test-frontend-tu
 test-backend-tu:
 	@# Help: lance l'ensemble des test unitaire et fonctionnel
 	@-if [ -z "$(FILTER)" ]; then \
-		$(CONTAINER_BACKEND) python manage.py test; \
+		$(CONTAINER_BACKEND) python manage.py test --noinput; \
 	else \
-		$(CONTAINER_BACKEND) python manage.py test $(FILTER); \
+		$(CONTAINER_BACKEND) python manage.py test $(FILTER) --noinput; \
 	fi
 
 test-frontend-tu:
