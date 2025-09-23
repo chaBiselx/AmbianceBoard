@@ -36,16 +36,19 @@ class SharedSoundBoardWebSocket {
     private constructor(url: string, master: boolean = false) {
         this.url = url;
         this.master = master;
+        ConsoleTesteur.log(`WebSocket instance created. Master: ${this.master}`);
     }
 
     public static setNewInstance(url: string, master: boolean = false): void {
         if (SharedSoundBoardWebSocket.instance) {
             SharedSoundBoardWebSocket.instance.close();
         }
+        ConsoleTesteur.log(`WebSocket listen : ${url}`);
         SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, master);
     }
 
     public static getSlaveInstance(url: string): SharedSoundBoardWebSocket {
+        ConsoleTesteur.log(`WebSocket listen : ${url}`);
         SharedSoundBoardWebSocket.instance ??= new SharedSoundBoardWebSocket(url, false);
         return SharedSoundBoardWebSocket.instance;
     }
@@ -59,6 +62,7 @@ class SharedSoundBoardWebSocket {
             const url = atob(urlBase64);
             SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, true);
         }
+        ConsoleTesteur.log(`WebSocket listen : ${SharedSoundBoardWebSocket.instance.url}`);
         return SharedSoundBoardWebSocket.instance;
     }
 
@@ -135,6 +139,7 @@ class SharedSoundBoardWebSocket {
             return false;
         }
     }
+
 
     private responseProcessing(response: WebSocketResponse): void {
         if (this.master) return
