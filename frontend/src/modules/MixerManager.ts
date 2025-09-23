@@ -3,6 +3,7 @@ import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { MusicElement } from '@/modules/MusicElement';
 import Cookie from '@/modules/General/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
+import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 type mixer = {
     id: string,
@@ -62,6 +63,8 @@ class MixerManager {
 
     private startWebSocket(): void {
         if (this.urlWebSocket) {
+                        ConsoleTesteur.log("WebSocket Master call from MixerManager.startWebSocket");
+            
             this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
             this.sharedSoundBoardWebSocket.start();
         }

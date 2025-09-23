@@ -83,7 +83,7 @@ class SharedSoundBoardWebSocket {
         try {
             this.socket = new WebSocket(this.url);
 
-            this.socket.onopen = (event) => {
+            this.socket.onopen = (_event) => {
                 ConsoleCustom.log('WebSocket is connected.');
             };
 

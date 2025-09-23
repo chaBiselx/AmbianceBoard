@@ -11,6 +11,7 @@ import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import Cookie from '@/modules/General/Cookie';
 import Boolean from "@/modules/Util/Boolean";
 import Time from "@/modules/Util/Time";
+import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 
 
@@ -148,7 +149,7 @@ class MusicElement {
     }
 
     public play() {
-  
+
         ConsoleCustom.log('play');
         this.DOMElement.addEventListener('error', this.handleAudioError);
 
@@ -282,6 +283,8 @@ class MusicElement {
 
     private callAPIToStop() {
         if (this.WebSocketActive && !this.isSlave) {
+            ConsoleTesteur.log("WebSocket Master call from MusicElement.callAPIToStop");
+
             (SharedSoundBoardWebSocket.getMasterInstance()).sendMessage({
                 "type": "music_stop",
                 "track": null,
@@ -380,7 +383,7 @@ class MusicElement {
                 let new_music = new MusicElement(audioElement);
 
                 // Log toutes les informations disponibles
-               
+
 
                 ConsoleTraceServeur.error('handleAudioError', audioElement.error.code, audioElement.error.message, new_music.idPlaylist, new_music.baseUrl, audioElement.src);
 

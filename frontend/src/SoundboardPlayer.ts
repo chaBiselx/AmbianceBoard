@@ -9,8 +9,9 @@ import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import WakeLock from '@/modules/General/WakeLock';
 import ModalCustom from './modules/General/Modal';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
-import {MixerPlaylist} from "@/modules/MixerPlaylist";
+import { MixerPlaylist } from "@/modules/MixerPlaylist";
 import ShareLinkManager from '@/modules/Event/ShareLinkManager';
+import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -72,9 +73,9 @@ function eventTogglePlaylist(event: Event) {
     if (event.target instanceof HTMLElement) {
         const buttonPlaylist = new ButtonPlaylist(event.target)
         if (!buttonPlaylist.isActive()) {
- 
-                buttonPlaylist.active();
-                SoundBoardManager.addPlaylist(buttonPlaylist);
+
+            buttonPlaylist.active();
+            SoundBoardManager.addPlaylist(buttonPlaylist);
         } else {
             buttonPlaylist.disactive();
             SoundBoardManager.removePlaylist(buttonPlaylist);
@@ -118,8 +119,9 @@ function publishSoundboard(event: Event) {
         });
         (new ShareLinkManager()).addEvent();
         const WebSocketUrl = Cookie.get('WebSocketUrl');
-        if(WebSocketUrl){
+        if (WebSocketUrl) {
             SharedSoundBoardWebSocket.setNewInstance(atob(WebSocketUrl), true);
+            ConsoleTesteur.log("WebSocket Master call from publishSoundboard");
             const sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
             sharedSoundBoardWebSocket.start();
         }
