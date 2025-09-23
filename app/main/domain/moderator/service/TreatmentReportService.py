@@ -6,7 +6,8 @@ from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
 from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
 
 from main.architecture.persistence.models.User import User
-from datetime import datetime, timedelta
+from datetime import timedelta
+from django.utils import timezone
 
 
 class TreatmentReportService:
@@ -26,7 +27,8 @@ class TreatmentReportService:
                 if self.report_content is not None:
                     self.report_content.resultModerator = self.dto.content_moderator_response
                     self.report_content.moderator = self.moderator
-                    self.report_content.dateResultModerator = datetime.now()
+                    # Use timezone-aware timestamp
+                    self.report_content.dateResultModerator = timezone.now()
                     self.report_content.save()
     
     def create_log_moderation(self):
@@ -50,6 +52,7 @@ class TreatmentReportService:
                 duration_ban = 12
             self.user.isBan = True
             self.user.reasonBan = self.dto.action_ban_reason
-            self.user.banExpiration = datetime.now() + timedelta(days=duration_ban * 31)
+            # Store a timezone-aware expiration date
+            self.user.banExpiration = timezone.now() + timedelta(days=duration_ban * 31)
             self.user.save()
 
