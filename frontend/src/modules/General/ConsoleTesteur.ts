@@ -32,6 +32,7 @@ class ConsoleTesteur implements Console {
                 overflow-y: auto;
                 white-space: pre-wrap;
             }
+            .console-timestamp { color: #7a7a7aff; }
             .console-log { color: #d4d4d4; }
             .console-error { color: #f14c4c; }
             .console-warn { color: #ffcc02; }
@@ -54,7 +55,7 @@ class ConsoleTesteur implements Console {
         const div = document.createElement('div');
         div.className = className;
         div.style.marginLeft = `${this.groupLevel * 20}px`;
-        div.textContent = `[${timestamp}] ${message}`;
+        div.innerHTML = `<span class="console-timestamp">[${timestamp}]</span> ${message}`;
         
         this.DOM!.appendChild(div);
         this.DOM!.scrollTop = this.DOM!.scrollHeight;
