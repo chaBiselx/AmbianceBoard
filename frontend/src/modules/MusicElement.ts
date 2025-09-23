@@ -283,6 +283,7 @@ class MusicElement {
     }
 
     private callAPIToStop() {
+        ConsoleTesteur.log(`enter MusicElement.callAPIToStop ${this.WebSocketActive} ${this.isSlave} ${SharedSoundBoardUtil.isSlavePage()}`);
         if (this.WebSocketActive && (!this.isSlave || !SharedSoundBoardUtil.isSlavePage())) {
             ConsoleTesteur.log("WebSocket Master call from MusicElement.callAPIToStop");
 
