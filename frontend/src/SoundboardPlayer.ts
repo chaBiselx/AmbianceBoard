@@ -9,6 +9,7 @@ import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import WakeLock from '@/modules/General/WakeLock';
 import ModalCustom from './modules/General/Modal';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
+import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil';
 import { MixerPlaylist } from "@/modules/MixerPlaylist";
 import ShareLinkManager from '@/modules/Event/ShareLinkManager';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
@@ -119,7 +120,7 @@ function publishSoundboard(event: Event) {
         });
         (new ShareLinkManager()).addEvent();
         const WebSocketUrl = Cookie.get('WebSocketUrl');
-        if (WebSocketUrl) {
+        if (WebSocketUrl && !SharedSoundBoardUtil.isSlavePage()) {
             SharedSoundBoardWebSocket.setNewInstance(atob(WebSocketUrl), true);
             ConsoleTesteur.log("WebSocket Master call from publishSoundboard");
             const sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
@@ -130,7 +131,7 @@ function publishSoundboard(event: Event) {
 }
 
 function showPopupSharedPlaylist() {
-    const activeWS = document.getElementById('active-WS')
+    const activeWS = SharedSoundBoardUtil.isSlavePage()
     if (activeWS) {
         const button = document.createElement("button");
         button.id = "btn-start-websocket";
@@ -160,10 +161,8 @@ function showPopupSharedPlaylist() {
 
 function activeWebSocket() {
     ModalCustom.hide();
-    const activeWS = document.getElementById('active-WS')
-    if (activeWS) {
-        const url = activeWS.dataset.url
-        if (!url) return
+    const url = SharedSoundBoardUtil.getSlaveUrl()
+    if (url) {
 
         (SharedSoundBoardWebSocket.getSlaveInstance(url)).start();
 

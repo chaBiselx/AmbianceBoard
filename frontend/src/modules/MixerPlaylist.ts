@@ -6,6 +6,7 @@ import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 
 import Cookie from './General/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
+import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 
@@ -27,7 +28,7 @@ class MixerPlaylist {
     }
 
     private startWebSocket(): void {
-        if (this.urlWebSocket) {
+        if (this.urlWebSocket && !SharedSoundBoardUtil.isSlavePage()) {
             ConsoleTesteur.log("WebSocket Master call from MixerPlaylist.startWebSocket");
 
             this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());

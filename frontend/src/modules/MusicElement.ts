@@ -3,6 +3,7 @@ import Notification from '@/modules/General/Notifications';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import ConsoleTraceServeur from '@/modules/General/ConsoleTraceServeur';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
+import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil';
 
 import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import * as Model from '@/modules/FadeStartegy';
@@ -282,7 +283,7 @@ class MusicElement {
     }
 
     private callAPIToStop() {
-        if (this.WebSocketActive && !this.isSlave) {
+        if (this.WebSocketActive && (!this.isSlave || !SharedSoundBoardUtil.isSlavePage())) {
             ConsoleTesteur.log("WebSocket Master call from MusicElement.callAPIToStop");
 
             (SharedSoundBoardWebSocket.getMasterInstance()).sendMessage({

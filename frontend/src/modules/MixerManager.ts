@@ -3,6 +3,7 @@ import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { MusicElement } from '@/modules/MusicElement';
 import Cookie from '@/modules/General/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
+import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 type mixer = {
@@ -38,7 +39,7 @@ class MixerElement {
     }
 
     update(value: number): void {
-        if(!this.DOMMixerElement) return
+        if (!this.DOMMixerElement) return
         this.DOMMixerElement.value = value.toString();
         this.DOMMixerElement.dispatchEvent(new Event('change'));
     }
@@ -46,7 +47,7 @@ class MixerElement {
 
 class MixerManager {
     private readonly listMixer: HTMLCollectionOf<Element>;
-    private urlWebSocket : string | null = null;
+    private urlWebSocket: string | null = null;
     private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
 
 
@@ -62,9 +63,9 @@ class MixerManager {
     }
 
     private startWebSocket(): void {
-        if (this.urlWebSocket) {
-                        ConsoleTesteur.log("WebSocket Master call from MixerManager.startWebSocket");
-            
+        if (this.urlWebSocket && !SharedSoundBoardUtil.isSlavePage()) {
+            ConsoleTesteur.log("WebSocket Master call from MixerManager.startWebSocket");
+
             this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
             this.sharedSoundBoardWebSocket.start();
         }
@@ -78,7 +79,7 @@ class MixerManager {
 
     private eventChangeVolume(event: Event): void {
         const actualWebSocket = this.getWebSocketUrl()
-        if(actualWebSocket != null && actualWebSocket != this.urlWebSocket){
+        if (actualWebSocket != null && actualWebSocket != this.urlWebSocket) {
             this.urlWebSocket = actualWebSocket;
             this.startWebSocket();
         }
