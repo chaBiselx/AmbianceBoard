@@ -25,7 +25,7 @@ class TagManager {
     }
 
     private changePage(tag: string) {
-        const url = new URL(window.location.href);
+        const url = new URL(globalThis.location.href);
         url.searchParams.set('tag', tag);
         url.searchParams.delete(PaginationManager.getParameterName()); // Remove the page parameter to reset pagination
 

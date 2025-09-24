@@ -100,10 +100,10 @@ function eventChangeVolume(event: Event) {
 
 function setVolumeToAllMusic(volume: number) {
     const listMusic = document.querySelectorAll('.music-player');
-    listMusic.forEach((el) => {
+    for (const el of listMusic) {
         const music = el as HTMLAudioElement;
         music.volume = volume / 100;
-    });
+    }
 }
 
 function toggleShowColorForm() {
@@ -169,7 +169,7 @@ function deleteEntity(config: { delete_url: string, redirect_url: string }) {
     })
         .then(response => {
             if (response.status === 200) {
-                window.location.href = config.redirect_url;
+                globalThis.location.href = config.redirect_url;
             } else {
                 // Gestion des erreurs
                 ConsoleCustom.error('Erreur lors de la suppression');

@@ -40,10 +40,10 @@ function addEventShowHidePlayslitMixer(): void {
 
 function addEventListenerDom() {
     const formElements = document.querySelectorAll('.playlist-link');
-    formElements.forEach(element => {
-        if (element.classList.contains('disabled')) return
+    for (const element of formElements) {
+        if (element.classList.contains('disabled')) continue
         element.addEventListener('click', eventTogglePlaylist);
-    });
+    }
 }
 
 function togglePlaylistMixer() {

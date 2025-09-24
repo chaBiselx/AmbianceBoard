@@ -135,7 +135,7 @@ function callAjax(config: deleteConfig, method: string = 'POST') {
     })
         .then(response => {
             if (response.status === 200) {
-                window.location.href = config.redirect_url;
+                globalThis.location.href = config.redirect_url;
             } else {
                 // Gestion des erreurs
                 console.error('Erreur lors de la suppression');

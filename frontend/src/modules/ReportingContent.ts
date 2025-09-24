@@ -157,7 +157,7 @@ class ReportFormBase implements ReportFormElement {
     }
 
     addRedirectLink(): string {
-        return `<input type="hidden" name="redirect" value="${window.location.href}">`
+        return `<input type="hidden" name="redirect" value="${globalThis.location.href}">`
     }
 
     addHidden(): string {

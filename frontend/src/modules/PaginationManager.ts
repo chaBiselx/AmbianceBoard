@@ -12,12 +12,12 @@ class PaginationManager {
             return;
         }
         const paginationButtons = this.DOMPagination.querySelectorAll('.page-item');
-        paginationButtons.forEach(pageItem => {
+        for (const pageItem of paginationButtons) {
             if (pageItem.classList.contains('disabled')) {
-                return;
+                continue;
             }
             const button = pageItem.querySelector('.page-link') as HTMLButtonElement;
-            if (!button) return;
+            if (!button) continue;
             
             button.addEventListener('click', (event) => {
                 const target = event.target as HTMLElement;
@@ -26,7 +26,7 @@ class PaginationManager {
                     this.changePage(Number.parseInt(page));
                 }
             });
-        });
+        }
 
     }
 
