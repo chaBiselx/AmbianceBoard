@@ -13,31 +13,31 @@ import Time from "@/modules/Util/Time";
 // Initialise automatiquement tous les composants Bootstrap disponibles
 document.addEventListener('DOMContentLoaded', async () => {
     // Dropdown
-    document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(element => {
+    for (const element of document.querySelectorAll('[data-bs-toggle="dropdown"]')) {
         try {
             new bootstrap.Dropdown(element);
         } catch (error) {
             ConsoleCustom.warn(`Bootstrap Dropdown initialization failed: ${error}`);
         }
-    });
+    }
 
     // Tooltip
-    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(element => {
+    for (const element of document.querySelectorAll('[data-bs-toggle="tooltip"]')) {
         try {
             new bootstrap.Tooltip(element);
         } catch (error) {
             ConsoleCustom.warn(`Bootstrap Tooltip initialization failed: ${error}`);
         }
-    });
+    }
 
     // Popover
-    document.querySelectorAll('[data-bs-toggle="popover"]').forEach(element => {
+    for (const element of document.querySelectorAll('[data-bs-toggle="popover"]')) {
         try {
             new bootstrap.Popover(element);
         } catch (error) {
             ConsoleCustom.warn(`Bootstrap Popover initialization failed: ${error}`);
         }
-    });
+    }
 
     ConsoleTesteur.log('General Event initialised');
 });
@@ -123,13 +123,13 @@ class FullScreen {
     }
     private toggle() {
         const elementToToggles = document.getElementsByClassName('fullScreen-element');
-        Array.from(elementToToggles).forEach(element => {
+        for (const element of Array.from(elementToToggles)) {
             element.classList.toggle('d-none');
-        });
+        }
         const elementToTogglesInline = document.getElementsByClassName('fullScreen-element-inline');
-        Array.from(elementToTogglesInline).forEach(element => {
+        for (const element of Array.from(elementToTogglesInline)) {
             element.classList.toggle('d-inline');
-        });
+        }
         const mainBody = document.getElementById('mainBody')
         if (mainBody) mainBody.classList.toggle('p-0');
         const mainContent = document.getElementById('main-content');
@@ -169,9 +169,9 @@ class NotificationGeneral {
     public addEvent() {
         if (this.sectionMessage) {
             const listCloseButton = this.sectionMessage.getElementsByClassName('close-notification') as HTMLCollectionOf<HTMLButtonElement>;
-            Array.from(listCloseButton).forEach((element: HTMLButtonElement) => {
+            for (const element of Array.from(listCloseButton)) {
                 element.addEventListener('click', this.dismissNotification.bind(this));
-            });
+            }
         }
 
     }
@@ -237,7 +237,7 @@ class DeleteAccount {
                 })
                     .then(response => {
                         if (response.ok) {
-                            window.location.href = '/';
+                            globalThis.location.href = '/';
                         } else {
                             Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
                         }

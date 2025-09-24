@@ -42,12 +42,12 @@ class GeneralTheme {
     }
 
     private toggleHtmlAttribute() {
-        const htmlElement = document.documentElement;
-        htmlElement.setAttribute('data-bs-theme', this.theme);
+        const htmlElement = document.documentElement as HTMLElement;
+        (htmlElement.dataset as DOMStringMap).bsTheme = this.theme;
     }
 
     private getHtmlAttribute(): string | null {
-        return document.documentElement.getAttribute('data-bs-theme');
+        return document.documentElement.dataset.bsTheme ?? null;
     }
 
     private toggleIcon() {

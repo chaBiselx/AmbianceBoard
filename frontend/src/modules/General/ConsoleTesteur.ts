@@ -1,8 +1,8 @@
 
 class ConsoleTesteur implements Console {
     DOM: HTMLElement | null;
-    private counters: Map<string, number> = new Map();
-    private timers: Map<string, number> = new Map();
+    private readonly counters: Map<string, number> = new Map();
+    private readonly timers: Map<string, number> = new Map();
     private groupLevel: number = 0;
 
     constructor() {
@@ -16,7 +16,7 @@ class ConsoleTesteur implements Console {
 
     private initializeStyles(): void {
         if (!this.valid()) return;
-        
+
         // Ajouter les styles CSS pour la console
         const style = document.createElement('style');
         style.textContent = `
@@ -43,20 +43,20 @@ class ConsoleTesteur implements Console {
             .console-trace { color: #ff8c00; }
         `;
         document.head.appendChild(style);
-        
+
         // Initialiser la classe CSS sur le DOM
         this.DOM!.classList.add('console-testeur');
     }
 
     private writeToDOM(message: string, className: string = 'console-log'): void {
         if (!this.valid()) return;
-        
+
         const timestamp = new Date().toLocaleTimeString();
         const div = document.createElement('div');
         div.className = className;
         div.style.marginLeft = `${this.groupLevel * 20}px`;
         div.innerHTML = `<span class="console-timestamp">[${timestamp}]</span> ${message}`;
-        
+
         this.DOM!.appendChild(div);
         this.DOM!.scrollTop = this.DOM!.scrollHeight;
     }
@@ -86,15 +86,15 @@ class ConsoleTesteur implements Console {
         }
     }
 
-    count(label?: string): void {
-        const key = label || 'default';
+    count(label: string = 'default'): void {
+        const key = label;
         const current = this.counters.get(key) || 0;
         this.counters.set(key, current + 1);
         this.writeToDOM(`${key}: ${current + 1}`, 'console-info');
     }
 
-    countReset(label?: string): void {
-        const key = label || 'default';
+    countReset(label: string = 'default'): void {
+        const key = label;
         this.counters.set(key, 0);
         this.writeToDOM(`${key}: 0`, 'console-info');
     }
@@ -104,8 +104,8 @@ class ConsoleTesteur implements Console {
     }
 
     dir(item?: any, _options?: any): void {
-        const formatted = typeof item === 'object' ? 
-            JSON.stringify(item, null, 2) : 
+        const formatted = typeof item === 'object' ?
+            JSON.stringify(item, null, 2) :
             String(item);
         this.writeToDOM(formatted, 'console-info');
     }
@@ -149,7 +149,7 @@ class ConsoleTesteur implements Console {
     table(tabularData?: any, properties?: string[]): void {
         if (Array.isArray(tabularData)) {
             const table = tabularData.map((row, index) => {
-                const cols = properties ? 
+                const cols = properties ?
                     properties.map(prop => row[prop]).join(' | ') :
                     Object.values(row).join(' | ');
                 return `${index}: ${cols}`;
@@ -160,41 +160,41 @@ class ConsoleTesteur implements Console {
         }
     }
 
-    time(label?: string): void {
-        const key = label || 'default';
+    time(label: string = 'default'): void {
+        const key = label;
         this.timers.set(key, performance.now());
         this.writeToDOM(`Timer '${key}' started`, 'console-time');
     }
 
-    timeEnd(label?: string): void {
-        const key = label || 'default';
+    timeEnd(label: string = 'default'): void {
+        const key = label;
         const startTime = this.timers.get(key);
-        if (startTime !== undefined) {
+        if (startTime === undefined) {
+            this.writeToDOM(`Timer '${key}' does not exist`, 'console-warn');
+        } else {
             const duration = performance.now() - startTime;
             this.writeToDOM(`${key}: ${duration.toFixed(3)}ms`, 'console-time');
             this.timers.delete(key);
-        } else {
-            this.writeToDOM(`Timer '${key}' does not exist`, 'console-warn');
         }
     }
 
-    timeLog(label?: string, ...data: any[]): void {
-        const key = label || 'default';
+    timeLog(label: string = 'default', ...data: any[]): void {
+        const key = label;
         const startTime = this.timers.get(key);
-        if (startTime !== undefined) {
+        if (startTime === undefined) {
+            this.writeToDOM(`Timer '${key}' does not exist`, 'console-warn');
+        } else {
             const duration = performance.now() - startTime;
-            const message = data.length > 0 ? 
+            const message = data.length > 0 ?
                 `${key}: ${duration.toFixed(3)}ms ${this.formatData(...data)}` :
                 `${key}: ${duration.toFixed(3)}ms`;
             this.writeToDOM(message, 'console-time');
-        } else {
-            this.writeToDOM(`Timer '${key}' does not exist`, 'console-warn');
         }
     }
 
     timeStamp(label?: string): void {
         const timestamp = performance.now();
-        const message = label ? 
+        const message = label ?
             `${label} @${timestamp.toFixed(3)}ms` :
             `Timestamp @${timestamp.toFixed(3)}ms`;
         this.writeToDOM(message, 'console-time');
@@ -202,7 +202,7 @@ class ConsoleTesteur implements Console {
 
     trace(...data: any[]): void {
         const stack = new Error().stack || 'No stack trace available';
-        const message = data.length > 0 ? 
+        const message = data.length > 0 ?
             `${this.formatData(...data)}\n${stack}` :
             stack;
         this.writeToDOM(message, 'console-trace');

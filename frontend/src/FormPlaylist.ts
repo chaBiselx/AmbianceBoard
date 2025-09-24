@@ -30,7 +30,7 @@ for (const element of DomElementAddEvent) {
 
 document.addEventListener("DOMContentLoaded", () => {
     const volumeInput = document.getElementById('id_volume') as HTMLInputElement;
-    setVolumeToAllMusic(parseFloat(volumeInput.value));
+    setVolumeToAllMusic(Number.parseFloat(volumeInput.value));
     volumeInput.addEventListener('change', eventChangeVolume);
     const id_useSpecificColor = document.getElementById('id_useSpecificColor');
     if (id_useSpecificColor) {
@@ -95,7 +95,7 @@ function simulatePlaylistColor() {
 
 function eventChangeVolume(event: Event) {
     const volumeInput = event.target as HTMLInputElement;
-    setVolumeToAllMusic(parseFloat(volumeInput.value));
+    setVolumeToAllMusic(Number.parseFloat(volumeInput.value));
 }
 
 function setVolumeToAllMusic(volume: number) {
@@ -301,9 +301,7 @@ function appendChildPlaylist(divRow: HTMLElement, playlist: playlist) {
     divElement.innerHTML = "<small>Lorem</small>";
     divElement.style.backgroundColor = playlist.color;
     divElement.style.color = playlist.colorText;
-    divElement.classList.add("playlist-element");
-    divElement.classList.add("playlist-dim-75");
-    divElement.classList.add("m-1")
+    divElement.classList.add("playlist-element", "playlist-dim-75", "m-1")
 
     const divCol2 = document.createElement("div");
     divCol2.classList.add("col-5")
@@ -313,9 +311,7 @@ function appendChildPlaylist(divRow: HTMLElement, playlist: playlist) {
     divCol3.classList.add("col-3")
 
     const button = document.createElement("button");
-    button.classList.add("btn");
-    button.classList.add("btn-primary");
-    button.classList.add("btn-select-playlist-color");
+    button.classList.add("btn", "btn-primary", "btn-select-playlist-color");
     button.type = "button";
     button.title = "choisir cette couleur";
     button.textContent = "choisir";

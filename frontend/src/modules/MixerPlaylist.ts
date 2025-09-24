@@ -58,8 +58,8 @@ class MixerPlaylist {
                 const buttonPlaylist = ButtonPlaylistFinder.search(event.target.dataset.idplaylist)
                 if (buttonPlaylist) {
                     const uri = event.target.dataset.playlistupdatevolumeuri as uri;
-                    this.updateLocalVolume(buttonPlaylist, parseFloat(event.target.value), uri)
-                    this.updateWsVolume(buttonPlaylist, parseFloat(event.target.value))
+                    this.updateLocalVolume(buttonPlaylist, Number.parseFloat(event.target.value), uri)
+                    this.updateWsVolume(buttonPlaylist, Number.parseFloat(event.target.value))
                 }
             }
         }

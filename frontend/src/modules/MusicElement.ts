@@ -56,7 +56,7 @@ class MusicElement {
             this.butonPlaylistToken = this.DOMElement.dataset.butonPlaylistToken;
         }
         if (this.DOMElement.dataset.defaultvolume) {
-            this.defaultVolume = parseFloat(this.DOMElement.dataset.defaultvolume);
+            this.defaultVolume = Number.parseFloat(this.DOMElement.dataset.defaultvolume);
         }
         if (this.DOMElement.dataset.fadein) {
             this.fadeIn = this.DOMElement.dataset.fadein == "true";
@@ -65,7 +65,7 @@ class MusicElement {
             this.fadeInType = this.DOMElement.dataset.fadeintype;
         }
         if (this.DOMElement.dataset.fadeinduration) {
-            this.fadeInDuration = parseFloat(this.DOMElement.dataset.fadeinduration);
+            this.fadeInDuration = Number.parseFloat(this.DOMElement.dataset.fadeinduration);
         }
         if (this.DOMElement.dataset.fadeout) {
             this.fadeOut = this.DOMElement.dataset.fadeout == "true";
@@ -74,7 +74,7 @@ class MusicElement {
             this.fadeOutType = this.DOMElement.dataset.fadeouttype;
         }
         if (this.DOMElement.dataset.fadeoutduration) {
-            this.fadeOutDuration = parseFloat(this.DOMElement.dataset.fadeoutduration);
+            this.fadeOutDuration = Number.parseFloat(this.DOMElement.dataset.fadeoutduration);
         }
         if (this.DOMElement.dataset.playlisttype) {
             this.playlistType = this.DOMElement.dataset.playlisttype;
@@ -86,7 +86,7 @@ class MusicElement {
             this.playlistLoop = this.DOMElement.dataset.playlistloop == "true";
         }
         if (this.DOMElement.dataset.playlistdelay) {
-            this.delay = parseFloat(this.DOMElement.dataset.playlistdelay);
+            this.delay = Number.parseFloat(this.DOMElement.dataset.playlistdelay);
         }
         if (this.DOMElement.dataset.baseurl) {
             this.baseUrl = this.DOMElement.dataset.baseurl!;
@@ -312,7 +312,7 @@ class MusicElement {
             this.DOMElement.dataset.fadeintype = this.fadeInType;
         }
         if (buttonPlaylist.dataset.playlistFadeinduration) {
-            this.fadeInDuration = parseFloat(buttonPlaylist.dataset.playlistFadeinduration);
+            this.fadeInDuration = Number.parseFloat(buttonPlaylist.dataset.playlistFadeinduration);
             this.DOMElement.dataset.fadeinduration = this.fadeInDuration.toString();
         }
     }
@@ -327,7 +327,7 @@ class MusicElement {
             this.DOMElement.dataset.fadeouttype = this.fadeOutType;
         }
         if (buttonPlaylist.dataset.playlistFadeoutduration) {
-            this.fadeOutDuration = parseFloat(buttonPlaylist.dataset.playlistFadeoutduration);
+            this.fadeOutDuration = Number.parseFloat(buttonPlaylist.dataset.playlistFadeoutduration);
             this.DOMElement.dataset.fadeoutduration = this.fadeOutDuration.toString();
         }
     }
@@ -355,7 +355,7 @@ class MusicElement {
 
     private setPlaylistDelayFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistDelay) {
-            this.delay = parseFloat(buttonPlaylist.dataset.playlistDelay);
+            this.delay = Number.parseFloat(buttonPlaylist.dataset.playlistDelay);
             this.DOMElement.dataset.playlistdelay = this.delay.toString();
         }
     }

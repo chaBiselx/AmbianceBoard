@@ -19,7 +19,7 @@ class ButtonPlaylist {
     public getVolume(): number {
         const volume = this.dataset.playlistVolume
         if (volume === undefined) return 1
-        return parseFloat(volume) / 100;
+        return Number.parseFloat(volume) / 100;
     }
 
     public delete() {

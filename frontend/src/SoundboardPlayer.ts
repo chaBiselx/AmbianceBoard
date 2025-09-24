@@ -135,9 +135,7 @@ function showPopupSharedPlaylist() {
     if (activeWS) {
         const button = document.createElement("button");
         button.id = "btn-start-websocket";
-        button.classList.add("btn");
-        button.classList.add("btn-primary");
-        button.classList.add("btn-block");
+        button.classList.add("btn", "btn-primary", "btn-block");
         button.textContent = "Activer la playlist";
         document.getElementById('btn-shared-playlist')?.appendChild(button);
 

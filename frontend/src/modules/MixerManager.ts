@@ -109,7 +109,7 @@ class MixerManager {
 
     static getMixerValue(type: string): number {
         let input = document.getElementById(`mixer-${type}`) as HTMLInputElement;
-        if (input) return parseFloat(input.value);
+        if (input) return Number.parseFloat(input.value);
         return 1;
     }
 }
