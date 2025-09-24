@@ -96,6 +96,13 @@ INSTALLED_APPS = [
     "django_crontab",
 ]
 
+# Emplacement personnalisé des migrations de l'app "main".
+# Sans ce mapping, Django chercherait un package "main.migrations" (qui n'existe pas)
+# et considérerait potentiellement l'app comme "unmigrated", provoquant des incohérences.
+MIGRATION_MODULES = {
+    'main': 'main.architecture.persistence.migrations',
+}
+
 
 
 # Logging configuration
@@ -110,7 +117,7 @@ if DEBUG :
 if TESTING:
     LOGGER_TYPE = "memory"
     
-level_log_debug = 'DEBUG' if DEBUG else 'WARNING'
+level_log_debug = 'DEBUG' if DEBUG else 'INFO'
 timed_rotating_file_handler = 'logging.handlers.TimedRotatingFileHandler'
 
 LOGGING = {
@@ -127,6 +134,10 @@ LOGGING = {
         },
         'request': {
             'format': '{asctime} {method:<8} {request} {post} {status} {duration}sec id:{unique_id}',
+            'style': '{',
+        },
+        'front': {
+            'format': '{message}',
             'style': '{',
         },
     },
@@ -162,6 +173,15 @@ LOGGING = {
             'backupCount': 7,  # Keep 7 days of logs
             'formatter': 'request',
         },
+        'front_file': {
+            'level': 'INFO',
+            'class': timed_rotating_file_handler,
+            'filename': os.path.join(BASE_DIR, 'logs', 'front_logs.log'),
+            'when': 'D',  # Daily rotation
+            'interval': 1,  # Every day
+            'backupCount': 7,  # Keep 7 days of logs
+            'formatter': 'front',
+        },
         'Mail_file': {
             'level': 'INFO',
             'class': timed_rotating_file_handler,
@@ -184,6 +204,11 @@ LOGGING = {
         },
         'main': {
             'handlers': ['console', 'APP_file'],
+            'level': level_log_debug,
+            'propagate': False,
+        },
+        'front': {
+            'handlers': ['console', 'front_file'],
             'level': level_log_debug,
             'propagate': False,
         },
@@ -461,8 +486,8 @@ USER_TIERS = {
     'PREMIUM_BASIC': {
         'name': 'Premium Basic',
         'pricing' : {
-            'monthly': 4,
-            'yearly': 40
+            'monthly': 3.33,
+            'yearly': 33.33,
         },
         'display_name': 'Premium Basique',
         'display_name_short': 'Basique',
@@ -480,8 +505,8 @@ USER_TIERS = {
     'PREMIUM_ADVANCED': {
         'name': 'Premium advanced',
         'pricing': {
-            'monthly': 8,
-            'yearly': 80
+            'monthly': 6.67,
+            'yearly': 66.67, 
         },
         'display_name': 'Premium Avancée',
         'display_name_short': 'Avancée',
@@ -498,15 +523,14 @@ USER_TIERS = {
     'PREMIUM_PRO': {
         'name': 'Premium Professionnel',
         'pricing': {
-            'monthly': 15,
-            'yearly': 150,
-            'currency': 'EUR'
+            'monthly': 12.50,
+            'yearly': 125.00,  
         },
         'display_name': 'Premium Professionnel',
         'display_name_short': 'Professionnel',
         'limits': {
-            'soundboard': 100,
-            'playlist': 500,
+            'soundboard': float('inf'),
+            'playlist': float('inf'),
             'music_per_playlist': 30,
             'weight_music_mb': 30,
             'share_soundboard': True,
@@ -531,3 +555,6 @@ LIMIT_CACHE_DEFAULT = 14400 # 4h
 
 # APP 
 LINK_DONATION = os.environ.get("LINK_DONATION", "reis")
+
+APP_TVA = 20.0  # en pourcentage
+APP_CURRENCY = "EUR"

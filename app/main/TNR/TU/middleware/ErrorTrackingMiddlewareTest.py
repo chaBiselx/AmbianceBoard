@@ -10,7 +10,7 @@ from unittest.mock import Mock, patch, MagicMock
 from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse, Http404
-from main.middleware.ErrorTrackingMiddleware import ErrorTrackingMiddleware
+from main.architecture.middleware.ErrorTrackingMiddleware import ErrorTrackingMiddleware
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum

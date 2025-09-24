@@ -10,6 +10,6 @@ class SharedSoundboardService(BaseCleanService):
 
 
     def purge_expired_shared_soundboard(self):
-        SharedSoundboard.objects.filter(expiration_date=timezone.now()).delete()
-        
+        # Utiliser une comparaison inclusive (<=) pour éviter les problèmes de microsecondes
+        SharedSoundboard.objects.filter(expiration_date__lte=timezone.now()).delete()
 

@@ -16,5 +16,13 @@ def get_user_theme(context):
         return cookie_theme
     
     return 'light'
+
+@register.simple_tag(takes_context=True)
+def is_backend_saved(context):
+    request = context['request']
+    user_preference = getattr(request.user, 'UserPreference', None)
+    if user_preference and user_preference.theme:
+        return True
+    return False
     
     

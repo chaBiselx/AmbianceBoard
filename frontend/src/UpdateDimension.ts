@@ -76,7 +76,7 @@ class UpdateDimensionElement {
     }
 
     private getNewDiemnsion(Type: string): number {
-        let actualDim = parseInt(this.classDimension.replace(this.type + '-dim-', ''));
+        let actualDim = Number.parseInt(this.classDimension.replace(this.type + '-dim-', ''));
         if (Type === 'increase') {
             return Math.min(this.maxDimension, actualDim + this.step);
         } else {

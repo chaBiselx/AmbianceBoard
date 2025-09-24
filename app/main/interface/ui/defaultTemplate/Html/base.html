@@ -21,8 +21,8 @@
 
 <body id="mainBody" class="{% include 'Html/sidebar_class.html'%}">
     <!-- Show base layout -->
-    <button class="show-base-layout rounded fullScreen-element-inline"  id="showBaseLayoutButton">
-        <i class="fa-solid fa-eye"></i>
+    <button class="show-base-layout rounded fullScreen-element-inline" id="showBaseLayoutButton">
+        <i class="fa-solid fa-minimize"></i>
     </button>
 
     <!-- Navbar -->
@@ -40,11 +40,9 @@
 
 
             <div class="ms-auto d-flex align-items-center gap-1 gap-lg-2 gap-lg-3">
-                <button class="btn btn-link url_link p-1" id="darkModeToggle" aria-label="Toggle dark mode" data-url="{% url 'updateTheme' %}">
+
+                <button class="btn btn-link url_link p-1" id="darkModeToggle" data-backend-saved="{% is_backend_saved %}" aria-label="Toggle dark mode" data-url="{% url 'updateTheme' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Changer le thème">
                     {% include 'Html/theme_icon.html' %}
-                </button>
-                <button class="btn btn-link url_link p-1" aria-label="hide all" id="hideAll">
-                    <i class="fa-solid fa-eye-slash"></i>
                 </button>
                 {% block navbar %}
                 {% include 'Html/navbar.html' %}
@@ -71,6 +69,11 @@
                 </section>
             </div>
         </div>
+        {% if request.user.isBetaTester %}
+        {% include 'Html/partial/betaTestConsole.html' %}
+
+        {% endif %}
+
     </main>
 
     <!-- Footer -->

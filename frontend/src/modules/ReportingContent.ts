@@ -47,15 +47,15 @@ class ReportingContent {
         let selectElement = document.createElement('div');
         selectElement.classList.add('flex-container');
         const reportableElements = document.querySelectorAll('.reportable')
-        reportableElements.forEach(element => {
+        for (const element of reportableElements) {
             let clonedElement = element.cloneNode(true) as HTMLElement;
-            clonedElement.querySelectorAll('.reportable-ignore').forEach(el => {
+            for (const el of clonedElement.children) {
                 el.remove();
-            })
+            }
 
             clonedElement.classList.add('event-report');
             selectElement.appendChild(clonedElement);
-        });
+        };
         return selectElement
 
     }
@@ -68,9 +68,9 @@ class ReportingContent {
             width: "xl",
             callback: () => {
                 const reportableElements = document.querySelectorAll('.event-report')
-                reportableElements.forEach(element => {
+                for (const element of reportableElements) {
                     element.addEventListener('click', this.handleClickForm.bind(this));
-                });
+                }
             }
         })
 
@@ -157,7 +157,7 @@ class ReportFormBase implements ReportFormElement {
     }
 
     addRedirectLink(): string {
-        return `<input type="hidden" name="redirect" value="${window.location.href}">`
+        return `<input type="hidden" name="redirect" value="${globalThis.location.href}">`
     }
 
     addHidden(): string {

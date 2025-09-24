@@ -16,9 +16,9 @@
     <div class="card-header">
         <h2>
             {% if method == 'update' %}
-            Modifier la playlist {{ form.instance.name }}
+            Modifier le bouton {{ form.instance.name }}
             {% else %}
-            Créer une nouvelle playlist
+            Créer un nouveau bouton
             {% endif %}
         </h2>
     </div>
@@ -28,7 +28,7 @@
                 <div>
                     {% if method == 'update' %}
                     <div>
-                        <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.uuid %}" data-redirecturl="{% url 'playlistsAllList' %}">Delete playlist</button>
+                        <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.uuid %}" data-redirecturl="{% url 'playlistsAllList' %}">Suppression bouton</button>
                     </div>
                     {% endif %}
                     <form method="post" enctype="multipart/form-data">
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                <button type="button" id="btn-show-description-playlist-type" class="btn btn-info" data-url="{% url 'playlistDescribeType' %}">Show description</button>
+                                <button type="button" id="btn-show-description-playlist-type" class="btn btn-info" data-url="{% url 'playlistDescribeType' %}">Afficher description</button>
                             </div>
                             <div class="col-12">
                                 {{ form.useSpecificColor.label_tag }} <br /> {{ form.useSpecificColor }}
@@ -146,11 +146,11 @@
                 <div class="gestion">
                     <div class="row">
                         <div class="col-12 col-sm-6">
-                            <button class="btn btn-primary btn-block btn-add-music" title="Ajouter musique" data-url="{% url 'addMusic' form.instance.uuid %}">Ajouter musique</button>
+                            <button class="btn btn-primary btn-block btn-add-music" title="Ajouter musique" data-url="{% url 'addMusic' form.instance.uuid %}">Ajouter fichier</button>
                         </div>
                         {% if LinkMusicAllowedEnum|length > 0 %}
                         <div class="col-12 col-sm-6">
-                            <button class="btn btn-primary btn-block btn-add-music" title="Ajouter lien" data-url="{% url 'addLink' form.instance.uuid %}">Ajouter Lien</button>
+                            <button class="btn btn-primary btn-block btn-add-music" title="Ajouter lien" data-url="{% url 'addLink' form.instance.uuid %}">Ajouter lien</button>
                         </div>
                         {% endif %}
 

@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 
 from main.domain.general.views.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification, dismiss_trace_user_activity
 from main.domain.general.views.confirmViews import confirm_account
+from main.domain.general.views.traceFrontViews import trace_front
 from main.domain.private.views.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
 from main.domain.private.views.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
 from main.domain.private.views.showSoundboardViews import playlist_show, music_stream, update_direct_volume
@@ -34,6 +35,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("legal-notice", legal_notice, name="legalNotice"),
     path("pricing", pricing, name="pricing"),
+
+    #technique
+    path("trace-front", trace_front, name="traceFront"),
 
 
     # Pages d'authentification

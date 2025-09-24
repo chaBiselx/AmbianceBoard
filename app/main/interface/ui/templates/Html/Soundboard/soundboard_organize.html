@@ -9,15 +9,15 @@
 {% endblock javascript %}
 
 {% block content %}
-<h2>Playlists</h2>
+<h2>Boutons</h2>
 <div class="row">
     <div class="col-12">
         <a type="button" href="{% url 'soundboardsRead' soundboard.uuid %}" class="btn btn-info float-end">Retour</a>
     </div>
     <div class="col-6">
-        <h3>Playlists non associées</h3>
+        <h3>Boutons non associés</h3>
         <div class="flex-container zone-dragAndDrop border border-secondary rounded" id="unassociated-playlists">
-            <span class="unassociated-playlists-empty " hidden="true">Aucune playlist non associée</span>
+            <span class="unassociated-playlists-empty " hidden="true">Aucun bouton non associé</span>
             {% for playlist in unassociatedPlaylists %}
             <div class="playlist-dragAndDrop flex-item position-relative" data-order="" id="{{ playlist.uuid }}" draggable="true">
                 <div class="playlist-link playlist-element playlist-dim-{{ playlist_dim }} m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
@@ -30,9 +30,9 @@
 
 
     <div class="col-6">
-        <h3>Playlists associées</h3>
+        <h3>Boutons associés</h3>
         <div class="flex-container zone-dragAndDrop border border-primary rounded" id="associated-playlists" data-url="{% url 'organizeSoundboardUpdate' soundboard.uuid %}">
-            <span class="associated-playlists-empty" hidden="true">Aucune playlist associée</span>
+            <span class="associated-playlists-empty" hidden="true">Aucun bouton associé</span>
             {% for playlist in actualPlaylist %}
             <div class="playlist-dragAndDrop flex-item position-relative" data-order="{{ playlist.get_order }}" id="{{ playlist.uuid }}" draggable="true">
                 <div class="playlist-link  playlist-element playlist-dim-{{ playlist_dim }} m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">

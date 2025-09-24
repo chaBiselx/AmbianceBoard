@@ -9,8 +9,10 @@ import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import WakeLock from '@/modules/General/WakeLock';
 import ModalCustom from './modules/General/Modal';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
-import {MixerPlaylist} from "@/modules/MixerPlaylist";
+import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil';
+import { MixerPlaylist } from "@/modules/MixerPlaylist";
 import ShareLinkManager from '@/modules/Event/ShareLinkManager';
+import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // Activer le Wake Lock au chargement de la page
     new WakeLock().start();
-
 });
 
 function addEventShowHidePlayslitMixer(): void {
@@ -39,10 +40,10 @@ function addEventShowHidePlayslitMixer(): void {
 
 function addEventListenerDom() {
     const formElements = document.querySelectorAll('.playlist-link');
-    formElements.forEach(element => {
-        if (element.classList.contains('disabled')) return
+    for (const element of formElements) {
+        if (element.classList.contains('disabled')) continue
         element.addEventListener('click', eventTogglePlaylist);
-    });
+    }
 }
 
 function togglePlaylistMixer() {
@@ -72,12 +73,12 @@ function addEventListenerPlaylistVolumeUpdate() {
 function eventTogglePlaylist(event: Event) {
     if (event.target instanceof HTMLElement) {
         const buttonPlaylist = new ButtonPlaylist(event.target)
-        if (!buttonPlaylist.isActive()) {
-            buttonPlaylist.active();
-            SoundBoardManager.addPlaylist(buttonPlaylist);
-        } else {
+        if (buttonPlaylist.isActive()) {
             buttonPlaylist.disactive();
             SoundBoardManager.removePlaylist(buttonPlaylist);
+        } else {
+            buttonPlaylist.active();
+            SoundBoardManager.addPlaylist(buttonPlaylist);
 
         }
     }
@@ -119,8 +120,9 @@ function publishSoundboard(event: Event) {
         });
         (new ShareLinkManager()).addEvent();
         const WebSocketUrl = Cookie.get('WebSocketUrl');
-        if(WebSocketUrl){
+        if (WebSocketUrl && !SharedSoundBoardUtil.isSlavePage()) {
             SharedSoundBoardWebSocket.setNewInstance(atob(WebSocketUrl), true);
+            ConsoleTesteur.log("WebSocket Master call from publishSoundboard");
             const sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
             sharedSoundBoardWebSocket.start();
         }
@@ -129,13 +131,11 @@ function publishSoundboard(event: Event) {
 }
 
 function showPopupSharedPlaylist() {
-    const activeWS = document.getElementById('active-WS')
+    const activeWS = SharedSoundBoardUtil.isSlavePage()
     if (activeWS) {
         const button = document.createElement("button");
         button.id = "btn-start-websocket";
-        button.classList.add("btn");
-        button.classList.add("btn-primary");
-        button.classList.add("btn-block");
+        button.classList.add("btn", "btn-primary", "btn-block");
         button.textContent = "Activer la playlist";
         document.getElementById('btn-shared-playlist')?.appendChild(button);
 
@@ -159,10 +159,8 @@ function showPopupSharedPlaylist() {
 
 function activeWebSocket() {
     ModalCustom.hide();
-    const activeWS = document.getElementById('active-WS')
-    if (activeWS) {
-        const url = activeWS.dataset.url
-        if (!url) return
+    const url = SharedSoundBoardUtil.getSlaveUrl()
+    if (url) {
 
         (SharedSoundBoardWebSocket.getSlaveInstance(url)).start();
 

@@ -26,16 +26,10 @@ class PlayerCustom {
 
     private generateHtmlPlayer() {
         let container = document.createElement("div");
-        container.classList.add("player-custom-container");
-        container.classList.add("border");
-        container.classList.add("border-primary");
-        container.classList.add("rounded");
-        container.classList.add("d-block");
+        container.classList.add("player-custom-container", "border", "border-primary", "rounded", "d-block");
 
         let divButton = document.createElement("div");
-        divButton.classList.add("d-inline-block");
-        divButton.classList.add("btn-group");
-        divButton.classList.add("btn-group-player");
+        divButton.classList.add("d-inline-block", "btn-group", "btn-group-player");
 
         const buttonStart = this.generateButtonPlayPause();
         divButton.appendChild(buttonStart);
@@ -59,10 +53,7 @@ class PlayerCustom {
 
     private generateButtonPlayPause() {
         let buttonStart = document.createElement("button");
-        buttonStart.classList.add("btn");
-        buttonStart.classList.add("btn-sm");
-        buttonStart.classList.add("btn-primary");
-        buttonStart.classList.add("btn-play");
+        buttonStart.classList.add("btn", "btn-sm", "btn-primary", "btn-play");
         buttonStart.type = "button";
         buttonStart.innerHTML = "<i class=\"play-icon fa-solid fa-play\"></i><i class=\"pause-icon fa-solid fa-pause d-none\"></i>";
         return buttonStart
@@ -70,10 +61,7 @@ class PlayerCustom {
 
     private generateButtonRestart() {
         let buttonReload = document.createElement("button");
-        buttonReload.classList.add("btn");
-        buttonReload.classList.add("btn-sm");
-        buttonReload.classList.add("btn-secondary");
-        buttonReload.classList.add("btn-reload");
+        buttonReload.classList.add("btn", "btn-sm", "btn-secondary", "btn-reload");
         buttonReload.type = "button";
         buttonReload.innerHTML = "<i class=\"fa-solid fa-arrows-rotate\"></i>";
         return buttonReload
@@ -81,19 +69,14 @@ class PlayerCustom {
 
     private generateTimerBlock() {
         let divCurrent = document.createElement("div");
-        divCurrent.classList.add("timer");
-        divCurrent.classList.add("d-none");
-        divCurrent.classList.add("float-end");
-        divCurrent.classList.add("mx-2");
+        divCurrent.classList.add("timer", "d-none", "float-end", "mx-2");
         divCurrent.innerHTML = "<span class=\"current-time\">0:00</span> / <span class=\"duration\">0:00</span>";
         return divCurrent
     }
 
     private generateSeekerBlock() {
         let divSeeker = document.createElement("div");
-        divSeeker.classList.add("seeker");
-        divSeeker.classList.add("d-none");
-        divSeeker.classList.add("mx-2");
+        divSeeker.classList.add("seeker", "d-none", "mx-2");
         divSeeker.innerHTML = "<input disabled class=\"seeker-input form-range \" type=\"range\" min=\"0\" max=\"100\" value=\"0\" class=\"seeker-range\" step=\"1\"/>";
 
         return divSeeker;

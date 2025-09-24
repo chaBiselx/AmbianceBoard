@@ -30,7 +30,7 @@ for (const element of DomElementAddEvent) {
 
 document.addEventListener("DOMContentLoaded", () => {
     const volumeInput = document.getElementById('id_volume') as HTMLInputElement;
-    setVolumeToAllMusic(parseFloat(volumeInput.value));
+    setVolumeToAllMusic(Number.parseFloat(volumeInput.value));
     volumeInput.addEventListener('change', eventChangeVolume);
     const id_useSpecificColor = document.getElementById('id_useSpecificColor');
     if (id_useSpecificColor) {
@@ -95,15 +95,15 @@ function simulatePlaylistColor() {
 
 function eventChangeVolume(event: Event) {
     const volumeInput = event.target as HTMLInputElement;
-    setVolumeToAllMusic(parseFloat(volumeInput.value));
+    setVolumeToAllMusic(Number.parseFloat(volumeInput.value));
 }
 
 function setVolumeToAllMusic(volume: number) {
     const listMusic = document.querySelectorAll('.music-player');
-    listMusic.forEach((el) => {
+    for (const el of listMusic) {
         const music = el as HTMLAudioElement;
         music.volume = volume / 100;
-    });
+    }
 }
 
 function toggleShowColorForm() {
@@ -169,7 +169,7 @@ function deleteEntity(config: { delete_url: string, redirect_url: string }) {
     })
         .then(response => {
             if (response.status === 200) {
-                window.location.href = config.redirect_url;
+                globalThis.location.href = config.redirect_url;
             } else {
                 // Gestion des erreurs
                 ConsoleCustom.error('Erreur lors de la suppression');
@@ -260,9 +260,9 @@ function getListingOtherColors(event: Event) {
                 title.classList.add("text-center");
                 title.innerHTML = "Playlist Defauts"
                 divRow.appendChild(title);
-                body.default_playlists.forEach((playlist: playlist) => {
+                for (const playlist of body.default_playlists) {
                     appendChildPlaylist(divRow, playlist)
-                })
+                }
             }
             if (body.unique_playlists) {
                 divRow.appendChild(document.createElement("hr"));
@@ -270,9 +270,9 @@ function getListingOtherColors(event: Event) {
                 title.classList.add("text-center");
                 title.innerHTML = "Playlist Uniques"
                 divRow.appendChild(title);
-                body.default_playlists.forEach((playlist: playlist) => {
+                for (const playlist of body.unique_playlists) {
                     appendChildPlaylist(divRow, playlist)
-                })
+                }
             }
             ModalCustom.show({
                 title: title,
@@ -301,9 +301,7 @@ function appendChildPlaylist(divRow: HTMLElement, playlist: playlist) {
     divElement.innerHTML = "<small>Lorem</small>";
     divElement.style.backgroundColor = playlist.color;
     divElement.style.color = playlist.colorText;
-    divElement.classList.add("playlist-element");
-    divElement.classList.add("playlist-dim-75");
-    divElement.classList.add("m-1")
+    divElement.classList.add("playlist-element", "playlist-dim-75", "m-1")
 
     const divCol2 = document.createElement("div");
     divCol2.classList.add("col-5")
@@ -313,9 +311,7 @@ function appendChildPlaylist(divRow: HTMLElement, playlist: playlist) {
     divCol3.classList.add("col-3")
 
     const button = document.createElement("button");
-    button.classList.add("btn");
-    button.classList.add("btn-primary");
-    button.classList.add("btn-select-playlist-color");
+    button.classList.add("btn", "btn-primary", "btn-select-playlist-color");
     button.type = "button";
     button.title = "choisir cette couleur";
     button.textContent = "choisir";
@@ -373,7 +369,7 @@ function showPopupMusic(event: Event) {
                 callback: () => {
                     const dropZone = document.getElementById('music-dropzone');
                     if (dropZone) {
-                        const uploadUrl = dropZone.getAttribute('data-upload-url');
+                        const uploadUrl = dropZone.dataset.uploadUrl;
                         const csrf = Csrf.getToken();
                         
 
@@ -383,13 +379,13 @@ function showPopupMusic(event: Event) {
                         }
 
                         try {
-                            window.musicDropzoneManager = new MusicDropzoneManager(
+                            (globalThis as typeof globalThis & { musicDropzoneManager?: MusicDropzoneManager }).musicDropzoneManager = new MusicDropzoneManager(
                                 {
                                     containerSelector: '#music-dropzone',
                                     uploadUrl: uploadUrl,
                                     csrf : csrf,
                                     fileFormat: dropZone.dataset.format,
-                                    nbfile: parseInt(dropZone.dataset.musicremaining!),
+                                    nbfile: Number.parseInt(dropZone.dataset.musicremaining!),
                                 } as MusicDropzoneConfig);
                         } catch (error) {
                             ConsoleCustom.error('Error initializing MusicDropzoneManager:', error);
@@ -413,9 +409,9 @@ function autoSetAlternateName(event: Event) {
     const fileInputOrigin = event.target as HTMLInputElement;
     const fileDest = document.getElementById('id_alternativeName') as HTMLInputElement;
     if (fileDest && fileInputOrigin && fileDest.value == '') {
-        const regexExtenstion = /\.[^.]*$/g;
+        const regexFileExtension = /\.[^.]*$/g;
         if (fileInputOrigin.files?.[0]) {
-            fileDest.value = fileInputOrigin.files[0].name.replace(regexExtenstion, '').substring(0, 50);
+            fileDest.value = fileInputOrigin.files[0].name.replace(regexFileExtension, '').substring(0, 50);
         }
     }
 

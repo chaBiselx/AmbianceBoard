@@ -6,12 +6,14 @@ import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 
 import Cookie from './General/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
+import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
+import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 
 
 class MixerPlaylist {
     private readonly classEvent: string = 'mixer-playlist-update'
-    private urlWebSocket : string | null = null;
+    private urlWebSocket: string | null = null;
     private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
 
     constructor() {
@@ -26,7 +28,9 @@ class MixerPlaylist {
     }
 
     private startWebSocket(): void {
-        if (this.urlWebSocket) {
+        if (this.urlWebSocket && !SharedSoundBoardUtil.isSlavePage()) {
+            ConsoleTesteur.log("WebSocket Master call from MixerPlaylist.startWebSocket");
+
             this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
             this.sharedSoundBoardWebSocket.start();
         }
@@ -45,7 +49,7 @@ class MixerPlaylist {
 
     private eventUpdatePlaylistVolume(event: Event) {
         const actualWebSocket = this.getWebSocketUrl()
-        if(actualWebSocket != null && actualWebSocket != this.urlWebSocket){
+        if (actualWebSocket != null && actualWebSocket != this.urlWebSocket) {
             this.urlWebSocket = actualWebSocket;
             this.startWebSocket();
         }
@@ -54,8 +58,8 @@ class MixerPlaylist {
                 const buttonPlaylist = ButtonPlaylistFinder.search(event.target.dataset.idplaylist)
                 if (buttonPlaylist) {
                     const uri = event.target.dataset.playlistupdatevolumeuri as uri;
-                    this.updateLocalVolume(buttonPlaylist, parseFloat(event.target.value), uri)
-                    this.updateWsVolume(buttonPlaylist, parseFloat(event.target.value))
+                    this.updateLocalVolume(buttonPlaylist, Number.parseFloat(event.target.value), uri)
+                    this.updateWsVolume(buttonPlaylist, Number.parseFloat(event.target.value))
                 }
             }
         }

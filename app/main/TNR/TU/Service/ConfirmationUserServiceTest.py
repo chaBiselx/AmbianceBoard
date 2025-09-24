@@ -13,7 +13,7 @@ from datetime import datetime, timedelta
 class ConfirmationUserServiceTest(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.user = User.objects.create_user(username='testuser', password='testpassword') # NOSONAR
         self.confirmation_service = ConfirmationUserService(self.user)
 
     def test_generation_uri(self):

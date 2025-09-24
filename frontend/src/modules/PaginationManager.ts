@@ -12,28 +12,28 @@ class PaginationManager {
             return;
         }
         const paginationButtons = this.DOMPagination.querySelectorAll('.page-item');
-        paginationButtons.forEach(pageItem => {
+        for (const pageItem of paginationButtons) {
             if (pageItem.classList.contains('disabled')) {
-                return;
+                continue;
             }
             const button = pageItem.querySelector('.page-link') as HTMLButtonElement;
-            if (!button) return;
+            if (!button) continue;
             
             button.addEventListener('click', (event) => {
                 const target = event.target as HTMLElement;
                 const page = target.dataset.page;
                 if (page) {
-                    this.changePage(parseInt(page));
+                    this.changePage(Number.parseInt(page));
                 }
             });
-        });
+        }
 
     }
 
     private changePage(page: number) {
-        const url = new URL(window.location.href);
+        const url = new URL(globalThis.location.href);
         url.searchParams.set(PaginationManager.getParameterName(), page.toString());
-        window.location.replace(url.toString());
+        globalThis.location.replace(url.toString());
     }
 
     public static getParameterName(): string {

@@ -24,8 +24,9 @@ class PurgeUserActivityService:
     def _purge_old(self):
         """Purge user activities older than a certain number of days"""
         try:
-            from datetime import datetime, timedelta
-            threshold_date = datetime.now() - timedelta(days=self.days_older)
+            from datetime import timedelta
+            from django.utils import timezone
+            threshold_date = timezone.now() - timedelta(days=self.days_older)
             old_activities = self.user_activity_repository.get_activity_before(threshold_date)
             if old_activities.exists():
                 self.logger.info(f"Purged {old_activities.count()} old user activities.")
@@ -38,8 +39,9 @@ class PurgeUserActivityService:
     def _purge_error_log(self):
         """Purge user activities related to errors older than a certain number of days"""
         try:
-            from datetime import datetime, timedelta
-            threshold_date = datetime.now() - timedelta(days=self.days_error)
+            from datetime import timedelta
+            from django.utils import timezone
+            threshold_date = timezone.now() - timedelta(days=self.days_error)
             error_activities = self.user_activity_repository.get_activity_before_with_type(threshold_date, activity_type=[e.value for e in UserActivityTypeEnum.listing_errors().values()])
             if error_activities.exists():
                 self.logger.info(f"Purged {error_activities.count()} old error user activities.")

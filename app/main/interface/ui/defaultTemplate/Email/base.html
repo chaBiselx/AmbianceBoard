@@ -1,9 +1,173 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <title> {{ subject }}</title>
-    </head>
-    <body>
-        {% block content %}{% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }}</title>
+    <style>
+        /* Reset styles pour la compatibilité email */
+        body, table, td, p, a, li, blockquote {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        table, td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+        }
+        
+        /* Styles généraux */
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+        }
+        
+        /* Container principal */
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Header */
+        .email-header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: bold;
+            text-decoration: none;
+            margin: 0;
+            vertical-align: middle;
+        }
+        
+        .tagline {
+            color: #e3f2fd;
+            font-size: 14px;
+            margin: 10px 0 0 0;
+        }
+        
+        /* Contenu principal */
+        .email-content {
+            padding: 40px 30px;
+        }
+        
+        .email-content h1 {
+            color: #333333;
+            font-size: 24px;
+            margin: 0 0 20px 0;
+            font-weight: 600;
+        }
+        
+        .email-content h2 {
+            color: #007bff;
+            font-size: 20px;
+            margin: 25px 0 15px 0;
+            font-weight: 600;
+        }
+        
+        .email-content p {
+            margin: 0 0 16px 0;
+            line-height: 1.6;
+        }
+        
+        .email-content ul {
+            margin: 16px 0;
+            padding-left: 20px;
+        }
+        
+        .email-content li {
+            margin-bottom: 8px;
+        }
+        
+        /* Footer */
+        .email-footer {
+            background-color: #f8f9fa;
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .copyright {
+            font-size: 12px;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        /* Responsive */
+        @media only screen and (max-width: 600px) {
+            .email-container {
+                width: 100% !important;
+                margin: 0 !important;
+                border-radius: 0 !important;
+            }
+            
+            .email-header,
+            .email-content,
+            .email-footer {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+            
+            .logo-text {
+                font-size: 24px !important;
+            }
+            
+            .email-content h1 {
+                font-size: 20px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="email-header">
+            <div>
+                <img src="https://ambianceboard.com/static/img/logo.png" alt="AmbianceBoard Logo" class="logo-img">
+                <h1 class="logo-text">AmbianceBoard</h1>
+                <p class="tagline">Soundboard pour jeux de rôle</p>
+            </div>
+        </div>
+        
+        <!-- Contenu principal -->
+        <div class="email-content">
+            {% block content %}{% endblock %}
+        </div>
+        
+        <!-- Footer -->
+        <div class="email-footer">
+            <p class="copyright">
+                © 2025 AmbianceBoard. Tous droits réservés.<br>
+                Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+            </p>
+        </div>
+    </div>
+</body>
 </html>

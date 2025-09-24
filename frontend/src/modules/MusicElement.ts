@@ -1,7 +1,9 @@
 import Config from '@/modules/General/Config';
 import Notification from '@/modules/General/Notifications';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
+import ConsoleTraceServeur from '@/modules/General/ConsoleTraceServeur';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
+import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil';
 
 import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import * as Model from '@/modules/FadeStartegy';
@@ -10,6 +12,7 @@ import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import Cookie from '@/modules/General/Cookie';
 import Boolean from "@/modules/Util/Boolean";
 import Time from "@/modules/Util/Time";
+import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 
 
@@ -18,7 +21,6 @@ class MusicElement {
     idPlaylist: string = '';
     playlistType: string = '';
     defaultVolume: number = 1;
-    autoplay: boolean = true;
     levelFade: number = 1;
     fadeInOnGoing: boolean = false;
     fadeIn: boolean = false;
@@ -33,7 +35,6 @@ class MusicElement {
     fadeInGoing: boolean = false;
     baseUrl: string = ''; // url of playlist to stream music
     WebSocketActive: boolean = false; // user has websocket connection to command shared soundboard
-    isSlave: boolean = false; // is manuplated by websocket (shared soundboard)
 
 
     constructor(Element: HTMLAudioElement | ButtonPlaylist) {
@@ -55,7 +56,7 @@ class MusicElement {
             this.butonPlaylistToken = this.DOMElement.dataset.butonPlaylistToken;
         }
         if (this.DOMElement.dataset.defaultvolume) {
-            this.defaultVolume = parseFloat(this.DOMElement.dataset.defaultvolume);
+            this.defaultVolume = Number.parseFloat(this.DOMElement.dataset.defaultvolume);
         }
         if (this.DOMElement.dataset.fadein) {
             this.fadeIn = this.DOMElement.dataset.fadein == "true";
@@ -64,7 +65,7 @@ class MusicElement {
             this.fadeInType = this.DOMElement.dataset.fadeintype;
         }
         if (this.DOMElement.dataset.fadeinduration) {
-            this.fadeInDuration = parseFloat(this.DOMElement.dataset.fadeinduration);
+            this.fadeInDuration = Number.parseFloat(this.DOMElement.dataset.fadeinduration);
         }
         if (this.DOMElement.dataset.fadeout) {
             this.fadeOut = this.DOMElement.dataset.fadeout == "true";
@@ -73,7 +74,7 @@ class MusicElement {
             this.fadeOutType = this.DOMElement.dataset.fadeouttype;
         }
         if (this.DOMElement.dataset.fadeoutduration) {
-            this.fadeOutDuration = parseFloat(this.DOMElement.dataset.fadeoutduration);
+            this.fadeOutDuration = Number.parseFloat(this.DOMElement.dataset.fadeoutduration);
         }
         if (this.DOMElement.dataset.playlisttype) {
             this.playlistType = this.DOMElement.dataset.playlisttype;
@@ -85,13 +86,10 @@ class MusicElement {
             this.playlistLoop = this.DOMElement.dataset.playlistloop == "true";
         }
         if (this.DOMElement.dataset.playlistdelay) {
-            this.delay = parseFloat(this.DOMElement.dataset.playlistdelay);
+            this.delay = Number.parseFloat(this.DOMElement.dataset.playlistdelay);
         }
         if (this.DOMElement.dataset.baseurl) {
             this.baseUrl = this.DOMElement.dataset.baseurl!;
-        }
-        if (this.DOMElement.dataset.isslave) {
-            this.isSlave = this.DOMElement.dataset.isslave == "true";
         }
     }
 
@@ -111,12 +109,11 @@ class MusicElement {
 
         this.DOMElement.classList.add('audio-' + buttonPlaylist.dataset.playlistType)
         let src = this.baseUrl
-        if (!this.isSlave) {
+        if (!this.isSlave()) {
             src += "?i=" + Date.now();
         }
         this.DOMElement.src = src;
         this.DOMElement.controls = Config.DEBUG;
-        this.DOMElement.autoplay = true;
     }
 
     public setDefaultVolume(volume: number) {
@@ -127,6 +124,9 @@ class MusicElement {
     public addToDOM(): this {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
         audioElementDiv.appendChild(this.DOMElement);
+        this.DOMElement.preload = 'metadata';
+
+
         return this
     }
 
@@ -138,14 +138,16 @@ class MusicElement {
         this.callAPIToStop()
     }
 
+
+
     public setSpecificMusic(baseUrl: string) {
-        this.setSlave(true);
         this.baseUrl = baseUrl;
         this.DOMElement.dataset.baseurl = this.baseUrl;
         this.DOMElement.src = this.baseUrl;
     }
 
     public play() {
+
         ConsoleCustom.log('play');
         this.DOMElement.addEventListener('error', this.handleAudioError);
 
@@ -163,11 +165,10 @@ class MusicElement {
             this.DOMElement.addEventListener('ended', this.eventDeleteNoFadeOut);
         }
         this.DOMElement.play();
-
     }
 
     public checkLoop(): boolean {
-        return this.playlistLoop && !this.isSlave
+        return this.playlistLoop && !this.isSlave()
     }
 
     public addFadeIn() {
@@ -207,6 +208,10 @@ class MusicElement {
         });
         audioFade.setDuration(this.fadeOutDuration);
         audioFade.start();
+    }
+
+    private isSlave(): boolean {
+        return SharedSoundBoardUtil.isSlavePage()
     }
 
     private eventFadeOut(event: Event) {
@@ -279,7 +284,10 @@ class MusicElement {
     }
 
     private callAPIToStop() {
-        if (this.WebSocketActive && !this.isSlave) {
+        ConsoleTesteur.log(`enter MusicElement.callAPIToStop ${this.WebSocketActive} ${this.isSlave()}`);
+        if (this.WebSocketActive && !this.isSlave()) {
+            ConsoleTesteur.log("WebSocket Master call from MusicElement.callAPIToStop");
+
             (SharedSoundBoardWebSocket.getMasterInstance()).sendMessage({
                 "type": "music_stop",
                 "track": null,
@@ -304,7 +312,7 @@ class MusicElement {
             this.DOMElement.dataset.fadeintype = this.fadeInType;
         }
         if (buttonPlaylist.dataset.playlistFadeinduration) {
-            this.fadeInDuration = parseFloat(buttonPlaylist.dataset.playlistFadeinduration);
+            this.fadeInDuration = Number.parseFloat(buttonPlaylist.dataset.playlistFadeinduration);
             this.DOMElement.dataset.fadeinduration = this.fadeInDuration.toString();
         }
     }
@@ -319,7 +327,7 @@ class MusicElement {
             this.DOMElement.dataset.fadeouttype = this.fadeOutType;
         }
         if (buttonPlaylist.dataset.playlistFadeoutduration) {
-            this.fadeOutDuration = parseFloat(buttonPlaylist.dataset.playlistFadeoutduration);
+            this.fadeOutDuration = Number.parseFloat(buttonPlaylist.dataset.playlistFadeoutduration);
             this.DOMElement.dataset.fadeoutduration = this.fadeOutDuration.toString();
         }
     }
@@ -347,7 +355,7 @@ class MusicElement {
 
     private setPlaylistDelayFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistDelay) {
-            this.delay = parseFloat(buttonPlaylist.dataset.playlistDelay);
+            this.delay = Number.parseFloat(buttonPlaylist.dataset.playlistDelay);
             this.DOMElement.dataset.playlistdelay = this.delay.toString();
         }
     }
@@ -365,16 +373,18 @@ class MusicElement {
         this.DOMElement.dataset.baseurl = this.baseUrl;
     }
 
-    private setSlave(slave: boolean): this {
-        this.isSlave = slave;
-        this.DOMElement.dataset.isslave = this.isSlave.toString();
-        return this
-    }
+
 
     private handleAudioError(event: Event) {
         if (event.target && event.target instanceof HTMLAudioElement) {
-            if (event.target.error && event.target.error.code === 4) { // => ERROR 404
-                let new_music = new MusicElement(event.target);
+            const audioElement = event.target;
+            if (audioElement.error && audioElement.error.code === 4) { // => ERROR 404
+                let new_music = new MusicElement(audioElement);
+
+                // Log toutes les informations disponibles
+
+
+                ConsoleTraceServeur.error('handleAudioError', audioElement.error.code, audioElement.error.message, new_music.idPlaylist, new_music.baseUrl, audioElement.src);
 
                 const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist) as ButtonPlaylist;
                 buttonPlaylist.disactive();

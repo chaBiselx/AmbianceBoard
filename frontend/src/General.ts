@@ -4,38 +4,42 @@ import { PaginationManager } from '@/modules/PaginationManager';
 import { TagManager } from '@/modules/TagManager';
 import * as bootstrap from 'bootstrap';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
+import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
 import Csrf from "./modules/General/Csrf";
-import Cookie from "@/modules/General/Cookie";
+import GeneralTheme from "@/modules/General/GeneralTheme";
 import Time from "@/modules/Util/Time";
 
+
 // Initialise automatiquement tous les composants Bootstrap disponibles
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Dropdown
-    document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(element => {
+    for (const element of document.querySelectorAll('[data-bs-toggle="dropdown"]')) {
         try {
             new bootstrap.Dropdown(element);
         } catch (error) {
             ConsoleCustom.warn(`Bootstrap Dropdown initialization failed: ${error}`);
         }
-    });
+    }
 
     // Tooltip
-    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(element => {
+    for (const element of document.querySelectorAll('[data-bs-toggle="tooltip"]')) {
         try {
             new bootstrap.Tooltip(element);
         } catch (error) {
             ConsoleCustom.warn(`Bootstrap Tooltip initialization failed: ${error}`);
         }
-    });
+    }
 
     // Popover
-    document.querySelectorAll('[data-bs-toggle="popover"]').forEach(element => {
+    for (const element of document.querySelectorAll('[data-bs-toggle="popover"]')) {
         try {
             new bootstrap.Popover(element);
         } catch (error) {
             ConsoleCustom.warn(`Bootstrap Popover initialization failed: ${error}`);
         }
-    });
+    }
+
+    ConsoleTesteur.log('General Event initialised');
 });
 
 
@@ -50,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new NotificationGeneral().addEvent();
     new DeleteAccount().addEvent();
     new UserActivityLog().addEvent();
+    new ShowConsoleBetaTester().addEvent();
 
 });
 
@@ -97,68 +102,6 @@ class EmailConfirmationAccount {
     }
 }
 
-class GeneralTheme {
-    theme: string
-    buttonToggle: HTMLButtonElement
-
-    constructor() {
-        this.theme = Cookie.get('theme') ?? 'light';
-        this.buttonToggle = document.getElementById('darkModeToggle') as HTMLButtonElement;
-        this.toggleIcon();
-        this.toggleAttribute();
-
-
-    }
-
-    public addEvent() {
-        if (this.buttonToggle) {
-            this.buttonToggle.addEventListener('click', this.toggleTheme.bind(this));
-        }
-    }
-
-    private toggleTheme() {
-        this.theme = this.theme === 'light' ? 'dark' : 'light';
-        this.toggleIcon();
-        this.toggleAttribute();
-        this.saveTheme();
-        Cookie.set('theme', this.theme);
-    }
-
-    private toggleAttribute() {
-        const htmlElement = document.documentElement;
-        htmlElement.setAttribute('data-bs-theme', this.theme);
-    }
-
-    private toggleIcon() {
-        if (this.theme === 'dark') {
-            this.buttonToggle.innerHTML = `<i class="fa-solid fa-sun"></i>`;
-        } else {
-            this.buttonToggle.innerHTML = `<i class="fa-solid fa-moon"></i>`;
-        }
-    }
-
-    private saveTheme() {
-        const url = this.buttonToggle.dataset.url
-        const csrfToken = Csrf.getToken();
-
-        if (url && csrfToken) {
-            fetch(url, {
-                method: 'UPDATE',
-                headers: {
-                    'X-CSRFToken': csrfToken
-                },
-                body: JSON.stringify({ theme: this.theme })
-            })
-                .then(response => response.json())
-                .then(data => {
-                })
-                .catch(error => {
-                    console.error(error)
-                });
-        }
-    }
-
-}
 
 class FullScreen {
     hideAll: HTMLElement | null = null;
@@ -180,13 +123,13 @@ class FullScreen {
     }
     private toggle() {
         const elementToToggles = document.getElementsByClassName('fullScreen-element');
-        Array.from(elementToToggles).forEach(element => {
+        for (const element of Array.from(elementToToggles)) {
             element.classList.toggle('d-none');
-        });
+        }
         const elementToTogglesInline = document.getElementsByClassName('fullScreen-element-inline');
-        Array.from(elementToTogglesInline).forEach(element => {
+        for (const element of Array.from(elementToTogglesInline)) {
             element.classList.toggle('d-inline');
-        });
+        }
         const mainBody = document.getElementById('mainBody')
         if (mainBody) mainBody.classList.toggle('p-0');
         const mainContent = document.getElementById('main-content');
@@ -226,9 +169,9 @@ class NotificationGeneral {
     public addEvent() {
         if (this.sectionMessage) {
             const listCloseButton = this.sectionMessage.getElementsByClassName('close-notification') as HTMLCollectionOf<HTMLButtonElement>;
-            Array.from(listCloseButton).forEach((element: HTMLButtonElement) => {
+            for (const element of Array.from(listCloseButton)) {
                 element.addEventListener('click', this.dismissNotification.bind(this));
-            });
+            }
         }
 
     }
@@ -294,7 +237,7 @@ class DeleteAccount {
                 })
                     .then(response => {
                         if (response.ok) {
-                            window.location.href = '/';
+                            globalThis.location.href = '/';
                         } else {
                             Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
                         }
@@ -346,6 +289,30 @@ class UserActivityLog {
                 .catch(error => {
                     console.error('There was a problem with the fetch operation:', error);
                 });
+        }
+    }
+}
+
+class ShowConsoleBetaTester {
+    buttonShow: HTMLButtonElement | null = null;
+    consoleElement: HTMLElement | null = null;
+
+    constructor() {
+        this.buttonShow = document.getElementById('showLoggerBetaTest') as HTMLButtonElement;
+        this.consoleElement = document.getElementById('betaTestConsole');
+    }
+
+    public addEvent() {
+        if (this.buttonShow && this.consoleElement) {
+            console.log('Show Console Beta Tester initialized');
+            this.buttonShow.addEventListener('click', this.toggleConsole.bind(this));
+        }
+    }
+
+    private toggleConsole() {
+        console.log('console toggled');
+        if (this.consoleElement) {
+            this.consoleElement.classList.toggle('d-none');
         }
     }
 }

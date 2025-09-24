@@ -228,11 +228,10 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
             shared_soundboard = await self._get_shared_soundboard()
             
             if shared_soundboard is None:
-                logger.error(f"Soundboard introuvable: {self.soundboard_uuid}")
                 return False
                 
             # Utilisation du niveau debug pour réduire la verbosité des logs lors des connexions réussies.
-            logger.debug(f"Connexion validée pour soundboard: {self.soundboard_uuid}")
+            logger.debug(f"Connexion validée pour Shared Soundboard: {self.soundboard_uuid}")
             return True
             
         except Exception as e:

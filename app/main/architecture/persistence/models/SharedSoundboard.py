@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 import uuid
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 class SharedSoundboard(models.Model):
     """
@@ -29,7 +29,11 @@ class SharedSoundboard(models.Model):
             *args: Arguments positionnels pour la méthode save
             **kwargs: Arguments nommés pour la méthode save
         """
-        self.expiration_date = timezone.make_aware(datetime.now() + timedelta(days=10))
+        # Ensure timezone-aware expiration using Django's timezone.now()
+        # Only auto-set expiration if it's a full create or expiration_date not explicitly preserved
+        if self.expiration_date is None:
+            # Only assign default if expiration_date not already provided
+            self.expiration_date = timezone.now() + timedelta(days=10)
         super().save(*args, **kwargs)
     
     

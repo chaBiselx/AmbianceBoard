@@ -23,6 +23,7 @@ services:
       - ./app:/usr/src/app/
       - ./staticfiles:/usr/src/app/static/
       - ./mediafiles:/usr/src/app/mediafiles/
+      - ./logs:/usr/src/app/logs/
     ports:
       - ${WEB_PORT}:${WEB_PORT}
     env_file:

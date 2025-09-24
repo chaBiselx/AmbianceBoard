@@ -91,6 +91,15 @@ class User(AbstractUser):
                           ou None s'il n'existe pas
         """
         return str(self.tokenReinitialisation) if self.tokenReinitialisation is not None else self.tokenReinitialisation
+    
+    def isBetaTester(self) -> bool:
+        """
+        Vérifie si l'utilisateur est un bêta-testeur.
+        
+        Returns:
+            bool: True si l'utilisateur est un bêta-testeur, False sinon
+        """
+        return self.betaTester
         
         
         
