@@ -12,7 +12,7 @@ class TagManager {
         if (!this.DOMTag) {
             return;
         }
-        this.DOMTag.querySelectorAll('.tag-element-redirect').forEach(tagElement => {
+        for (const tagElement of this.DOMTag.querySelectorAll('.tag-element-redirect')) {
             tagElement.addEventListener('click', (event) => {
                 const target = event.currentTarget as HTMLElement;
                 const tag = target.dataset.tag;
@@ -20,16 +20,16 @@ class TagManager {
                     this.changePage(tag);
                 }
             });
-        });
+        }
 
     }
 
     private changePage(tag: string) {
-        const url = new URL(globalThis.location.href);
+        const url = new URL(window.location.href);
         url.searchParams.set('tag', tag);
         url.searchParams.delete(PaginationManager.getParameterName()); // Remove the page parameter to reset pagination
 
-        window.location.replace(url.toString());
+        globalThis.location.replace(url.toString());
     }
 
 }

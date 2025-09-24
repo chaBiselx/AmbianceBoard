@@ -12,11 +12,11 @@ class TagSelector {
     public init() {
         const tagBadges = document.querySelectorAll(this.tagBadges);
 
-        tagBadges.forEach((badge) => {
+        for (const badge of tagBadges) {
             badge.addEventListener('click', (e) => {
                 this.actionEvent(e);
             });
-        });
+        }
     }
 
     private actionEvent(event: Event) {
@@ -25,7 +25,7 @@ class TagSelector {
         if (!event.target) return;
         
         let el = event.target as HTMLElement;
-        const tagId = el.getAttribute('data-tag-id');
+        const tagId = el.dataset.tagId;
         
         if (!tagId) {
             ConsoleCustom.warn('Tag ID not found on element:', el);

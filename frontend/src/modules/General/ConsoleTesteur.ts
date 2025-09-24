@@ -201,7 +201,7 @@ class ConsoleTesteur implements Console {
     }
 
     trace(...data: any[]): void {
-        const stack = new Error().stack || 'No stack trace available';
+        const stack = new Error("Console trace").stack || 'No stack trace available';
         const message = data.length > 0 ?
             `${this.formatData(...data)}\n${stack}` :
             stack;

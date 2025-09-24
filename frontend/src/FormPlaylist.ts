@@ -379,7 +379,7 @@ function showPopupMusic(event: Event) {
                         }
 
                         try {
-                            window.musicDropzoneManager = new MusicDropzoneManager(
+                            (globalThis as typeof globalThis & { musicDropzoneManager?: MusicDropzoneManager }).musicDropzoneManager = new MusicDropzoneManager(
                                 {
                                     containerSelector: '#music-dropzone',
                                     uploadUrl: uploadUrl,
