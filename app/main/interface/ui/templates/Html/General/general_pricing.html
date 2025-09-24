@@ -72,11 +72,24 @@
                     <ul class="list-unstyled mb-4">
                         <li class="mb-1">
                             <i class="fas fa-music text-primary me-2"></i>
-                            <strong>{{ tier_data.limits.soundboard }}</strong> soundboards
+                            <strong>
+                                {% if tier_data.limits.soundboard|stringformat:"s" == 'inf' %}
+                                	<i class="fa-solid fa-infinity"></i>
+                                {% else %}
+                                    {{ tier_data.limits.soundboard }}
+                                {% endif %}
+                            
+                            </strong> soundboards
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-list text-primary me-2"></i>
-                            <strong>{{ tier_data.limits.playlist }}</strong> boutons
+                            <strong>
+                                {% if tier_data.limits.playlist|stringformat:"s" == 'inf' %}
+                                    <i class="fa-solid fa-infinity"></i>
+                                {% else %}
+                                    {{ tier_data.limits.playlist }}
+                                {% endif %}
+                            </strong> boutons
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-headphones text-primary me-2"></i>

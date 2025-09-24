@@ -529,8 +529,8 @@ USER_TIERS = {
         'display_name': 'Premium Professionnel',
         'display_name_short': 'Professionnel',
         'limits': {
-            'soundboard': 100,
-            'playlist': 500,
+            'soundboard': float('inf'),
+            'playlist': float('inf'),
             'music_per_playlist': 30,
             'weight_music_mb': 30,
             'share_soundboard': True,
