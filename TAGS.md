@@ -38,3 +38,8 @@ Nouveautés
 - Partage public d’un soundboard (lien accessible)
 - Première version de session partagée en temps réel (mise à jour live précoce)
 - Base des tiers utilisateurs (sans Paiment)
+
+## Historique
+### 0.1.0-beta.2 - 2025/09
+Corrections
+- fix script de deploiement
