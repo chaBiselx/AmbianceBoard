@@ -16,8 +16,8 @@ class TrackRepositoryTest(TestCase):
 		self.mock_apply_async = patcher.start()
 		self.addCleanup(patcher.stop)
 
-		self.user1 = User.objects.create_user(username='user1', password='pw')
-		self.user2 = User.objects.create_user(username='user2', password='pw')
+		self.user1 = User.objects.create_user(username='user1', password='pw') # NOSONAR
+		self.user2 = User.objects.create_user(username='user2', password='pw') # NOSONAR
 
 		self.playlist_user1 = Playlist.objects.create(
 			user=self.user1,

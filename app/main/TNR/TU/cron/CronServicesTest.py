@@ -20,8 +20,8 @@ User = get_user_model()
 
 class CronServicesTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='premium', email='p@ex.com', password='pass', isConfirmed=True)
-        self.user2 = User.objects.create_user(username='standard', email='s@ex.com', password='pass', isConfirmed=True)
+        self.user = User.objects.create_user(username='premium', email='p@ex.com', password='pass', isConfirmed=True) # NOSONAR
+        self.user2 = User.objects.create_user(username='standard', email='s@ex.com', password='pass', isConfirmed=True) # NOSONAR
         self.tier = UserTier.objects.create(user=self.user, tier_name='PREMIUM_BASIC', tier_expiry_date=timezone.now() - timedelta(days=1))
         self.tier2 = UserTier.objects.create(user=self.user2, tier_name='STANDARD')
 

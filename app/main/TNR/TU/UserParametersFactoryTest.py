@@ -19,7 +19,7 @@ class UserParametersFactoryTest(TestCase):
         # Créer un utilisateur standard
         self.standard_user = User.objects.create_user(
             username='standard_user',
-            password='test123'
+            password='test123' # NOSONAR
         )
         self.standard_user.groups.add(self.standard_group)
         
@@ -32,7 +32,7 @@ class UserParametersFactoryTest(TestCase):
         # Créer un utilisateur premium
         self.premium_user = User.objects.create_user(
             username='premium_user',
-            password='test123'
+            password='test123' # NOSONAR
         )
         # Créer le tier pour l'utilisateur premium
         UserTier.objects.create(
@@ -65,7 +65,7 @@ class UserParametersFactoryTest(TestCase):
         """Test qu'un utilisateur sans tier obtient les limites standard"""
         user_no_tier = User.objects.create_user(
             username='no_tier_user',
-            password='test123'
+            password='test123' # NOSONAR
         )
         
         factory = UserParametersFactory(user_no_tier)

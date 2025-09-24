@@ -13,7 +13,7 @@ filename_alt1 = "Alt Name"
 
 class MusicModelTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user(username='test', password='test')
+        self.user = User.objects.create_user(username='test', password='test')  # NOSONAR
         """Initialisation des données de test"""
         self.playlist = Playlist.objects.create(
             name="Test Playlist",

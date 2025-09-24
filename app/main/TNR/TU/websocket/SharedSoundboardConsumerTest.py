@@ -16,7 +16,7 @@ class SharedSoundboardConsumerAsyncTest(TransactionTestCase):
 
     def setUp(self):
         # Initialisation synchrone (TransactionTestCase -> DB accessible)
-        self.user = User.objects.create_user(username='u1', email='u1@ex.com', password='pass')
+        self.user = User.objects.create_user(username='u1', email='u1@ex.com', password='pass') # NOSONAR
         self.soundboard = SoundBoard.objects.create(user=self.user, name='SB')
         self.shared = SharedSoundboard.objects.create(soundboard=self.soundboard)
 
@@ -33,7 +33,7 @@ class SharedSoundboardConsumerAsyncTest(TransactionTestCase):
             'type': 'music_start',
             'track': 'track1',
             'playlist_uuid': 'pl-123',
-            'url_music': 'http://example.com/music.mp3'
+            'url_music': 'http://example.com/music.mp3' #NOSONAR Test URL
         }
         await communicator1.send_json_to(payload)
 

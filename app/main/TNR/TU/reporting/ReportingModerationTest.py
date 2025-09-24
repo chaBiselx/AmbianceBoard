@@ -17,9 +17,9 @@ User = get_user_model()
 class ReportingModerationTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
-        self.user = User.objects.create_user(username='reporter', email='r@ex.com', password='pass', isConfirmed=True)
-        self.moderator = User.objects.create_user(username='moderator', email='m@ex.com', password='pass', isConfirmed=True)
-        self.target_user = User.objects.create_user(username='target', email='t@ex.com', password='pass', isConfirmed=True)
+        self.user = User.objects.create_user(username='reporter', email='r@ex.com', password='pass', isConfirmed=True)  # NOSONAR
+        self.moderator = User.objects.create_user(username='moderator', email='m@ex.com', password='pass', isConfirmed=True)  # NOSONAR
+        self.target_user = User.objects.create_user(username='target', email='t@ex.com', password='pass', isConfirmed=True)  # NOSONAR
         self.soundboard = SoundBoard.objects.create(user=self.target_user, name='SB')
 
     @patch('main.domain.public.service.ReportContentService.ModeratorEmail')

@@ -23,7 +23,7 @@ class MusicServiceTest(TestCase):
     def _create_user(self, username):
         return User.objects.create_user(
             username=username, 
-            password='test'
+            password='test' # NOSONAR
         )
     
     def _create_playlist(self, uuid, user):

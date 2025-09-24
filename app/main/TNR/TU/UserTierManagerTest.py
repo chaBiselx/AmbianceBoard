@@ -17,14 +17,14 @@ class UserTierManagerTest(TestCase):
         # Créer un utilisateur standard
         self.standard_user = User.objects.create_user(
             username='standard_user',
-            password='test123'
+            password='test123' # NOSONAR
         )
         self.standard_user.groups.add(self.standard_group)
         
         # Créer un utilisateur premium
         self.premium_user = User.objects.create_user(
             username='premium_user',
-            password='test123'
+            password='test123' # NOSONAR
         )
         
         # Créer les tiers correspondants
@@ -108,7 +108,7 @@ class UserTierManagerTest(TestCase):
         """Test les limites avec un tier personnalisé"""
         custom_user = User.objects.create_user(
             username='custom_user',
-            password='test123'
+            password='test123' # NOSONAR
         )
         
         # Créer un tier avec des limites personnalisées
