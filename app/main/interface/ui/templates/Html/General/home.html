@@ -3,6 +3,7 @@
 {% block content %}
     <h2>Bienvenue sur Ambiance board 🎵</h2>
 
+
     <p>
         
 
@@ -33,9 +34,10 @@
         </ol>
     </p>
 
-
-  {% if image_url %}
-    <p>File uploaded at: <a href="{{ image_url }}">{{ image_url }}</a></p>
-  {% endif %}
+    
+    <div class="alert alert-warning mt-3" role="alert">
+        <strong>Compatibilité navigateur :</strong> L'application ne fonctionne pas correctement avec les navigateurs utilisant le moteur de rendu WebKit (ex: versions spécifiques de Safari / navigateurs embarqués iOS).<br/>
+        Pour une expérience optimale, utilisez un navigateur basé sur Chromium (Chrome, Edge, Brave) ou Firefox.
+    </div>
 
 {% endblock %}
