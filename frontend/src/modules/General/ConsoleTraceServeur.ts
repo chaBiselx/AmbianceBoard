@@ -42,7 +42,7 @@ class ConsoleTraceServeur implements Console {
         };
         messages.push(debugInfo);
 
-        const url = window.location.origin + this.uriTrace;
+        const url = globalThis.location.origin + this.uriTrace;
         console.log(url);
         const csrfToken = Csrf.getToken();
         if (url && csrfToken) {

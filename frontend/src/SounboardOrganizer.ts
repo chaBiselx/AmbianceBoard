@@ -59,7 +59,7 @@ class DropPointHandler {
     findClosestElement(dropPoint: position) {
         let closestDistance = Infinity;
 
-        this.children.forEach((child) => {
+        for (const child of this.children) {
             if (child === this.playlist) return;
 
             const rect = child.getBoundingClientRect();
@@ -83,7 +83,7 @@ class DropPointHandler {
                     this.insertAfter = dropPoint.y > childCenter.y;
                 }
             }
-        });
+        }
     }
 
     insertElement(e: DragEvent) {

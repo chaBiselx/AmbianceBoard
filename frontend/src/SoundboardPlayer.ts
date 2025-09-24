@@ -73,13 +73,13 @@ function addEventListenerPlaylistVolumeUpdate() {
 function eventTogglePlaylist(event: Event) {
     if (event.target instanceof HTMLElement) {
         const buttonPlaylist = new ButtonPlaylist(event.target)
-        if (!buttonPlaylist.isActive()) {
-
-            buttonPlaylist.active();
-            SoundBoardManager.addPlaylist(buttonPlaylist);
-        } else {
+        if (buttonPlaylist.isActive()) {
             buttonPlaylist.disactive();
             SoundBoardManager.removePlaylist(buttonPlaylist);
+        } else {
+            buttonPlaylist.active();
+            SoundBoardManager.addPlaylist(buttonPlaylist);
+
         }
     }
 }

@@ -31,9 +31,9 @@ class PaginationManager {
     }
 
     private changePage(page: number) {
-        const url = new URL(window.location.href);
+        const url = new URL(globalThis.location.href);
         url.searchParams.set(PaginationManager.getParameterName(), page.toString());
-        window.location.replace(url.toString());
+        globalThis.location.replace(url.toString());
     }
 
     public static getParameterName(): string {

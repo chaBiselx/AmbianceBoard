@@ -260,9 +260,9 @@ function getListingOtherColors(event: Event) {
                 title.classList.add("text-center");
                 title.innerHTML = "Playlist Defauts"
                 divRow.appendChild(title);
-                body.default_playlists.forEach((playlist: playlist) => {
+                for (const playlist of body.default_playlists) {
                     appendChildPlaylist(divRow, playlist)
-                })
+                }
             }
             if (body.unique_playlists) {
                 divRow.appendChild(document.createElement("hr"));
@@ -270,9 +270,9 @@ function getListingOtherColors(event: Event) {
                 title.classList.add("text-center");
                 title.innerHTML = "Playlist Uniques"
                 divRow.appendChild(title);
-                body.default_playlists.forEach((playlist: playlist) => {
+                for (const playlist of body.unique_playlists) {
                     appendChildPlaylist(divRow, playlist)
-                })
+                }
             }
             ModalCustom.show({
                 title: title,
@@ -369,7 +369,7 @@ function showPopupMusic(event: Event) {
                 callback: () => {
                     const dropZone = document.getElementById('music-dropzone');
                     if (dropZone) {
-                        const uploadUrl = dropZone.getAttribute('data-upload-url');
+                        const uploadUrl = dropZone.dataset.uploadUrl;
                         const csrf = Csrf.getToken();
                         
 
@@ -409,9 +409,9 @@ function autoSetAlternateName(event: Event) {
     const fileInputOrigin = event.target as HTMLInputElement;
     const fileDest = document.getElementById('id_alternativeName') as HTMLInputElement;
     if (fileDest && fileInputOrigin && fileDest.value == '') {
-        const regexExtenstion = /\.[^.]*$/g;
+        const regexFileExtension = /\.[^.]*$/g;
         if (fileInputOrigin.files?.[0]) {
-            fileDest.value = fileInputOrigin.files[0].name.replace(regexExtenstion, '').substring(0, 50);
+            fileDest.value = fileInputOrigin.files[0].name.replace(regexFileExtension, '').substring(0, 50);
         }
     }
 
