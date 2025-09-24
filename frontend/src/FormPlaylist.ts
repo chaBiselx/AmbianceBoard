@@ -385,7 +385,7 @@ function showPopupMusic(event: Event) {
                                     uploadUrl: uploadUrl,
                                     csrf : csrf,
                                     fileFormat: dropZone.dataset.format,
-                                    nbfile: parseInt(dropZone.dataset.musicremaining!),
+                                    nbfile: Number.parseInt(dropZone.dataset.musicremaining!),
                                 } as MusicDropzoneConfig);
                         } catch (error) {
                             ConsoleCustom.error('Error initializing MusicDropzoneManager:', error);

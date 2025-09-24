@@ -49,7 +49,7 @@ class CronServicesTest(TestCase):
     @patch('main.domain.cron.service.DomainBlacklistCronService.RemoteTextDomainProvider')
     def test_domain_blacklist_cron_service(self, mock_provider_cls):
         mock_provider = MagicMock()
-        mock_provider.get_domains.return_value = {'disposable.com', 'temp.com', 'temp.com'}
+        mock_provider.get_domains.return_value = {'disposable.com', 'temp.com', 'temp.com'} # NOSONAR
         mock_provider_cls.return_value = mock_provider
         service = DomainBlacklistCronService()
         service.domain_provider = [mock_provider]

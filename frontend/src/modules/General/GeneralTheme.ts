@@ -42,8 +42,8 @@ class GeneralTheme {
     }
 
     private toggleHtmlAttribute() {
-        const htmlElement = document.documentElement as HTMLElement;
-        (htmlElement.dataset as DOMStringMap).bsTheme = this.theme;
+        const htmlElement = document.documentElement;
+        htmlElement.dataset.bsTheme = this.theme;
     }
 
     private getHtmlAttribute(): string | null {

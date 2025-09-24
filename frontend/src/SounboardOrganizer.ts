@@ -90,7 +90,7 @@ class DropPointHandler {
         const position = this.getDropPoint(e);
         this.findClosestElement(position);
         if (this.closestElement === null) return
-        this.newOrder = parseInt(this.closestElement.dataset.order!);
+        this.newOrder = Number.parseInt(this.closestElement.dataset.order!);
 
         if (this.closestElement) {
             if (this.insertAfter) {
@@ -122,7 +122,7 @@ class CleanOrderHandler {
         for (let i = 1; i <= listEl.length; i++) {
             if (i + 1 >= order && order > 1) {
                 if (listEl[i].dataset) {
-                    listEl[i].dataset.order = (parseInt(listEl[i].dataset.order as string) + 1).toString()
+                    listEl[i].dataset.order = (Number.parseInt(listEl[i].dataset.order as string) + 1).toString()
                 }
             }
         }
@@ -148,7 +148,7 @@ class CleanOrderHandler {
             buttonPlaylist.removeBadge(false)
             let order = 0;
             if (element.dataset) {
-                order = parseInt(element.dataset.order!)
+                order = Number.parseInt(element.dataset.order!)
             }
             buttonPlaylist.addBadge(order)
         }

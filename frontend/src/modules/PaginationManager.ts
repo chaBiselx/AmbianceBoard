@@ -23,7 +23,7 @@ class PaginationManager {
                 const target = event.target as HTMLElement;
                 const page = target.dataset.page;
                 if (page) {
-                    this.changePage(parseInt(page));
+                    this.changePage(Number.parseInt(page));
                 }
             });
         });
