@@ -25,6 +25,7 @@ from main.TNR.TU.Service.RandomizeTrackServiceTest import *
 from main.TNR.TU.Service.RGPDServiceNotActiveTest import *
 from main.TNR.TU.Service.RGPDServiceNotConfirmedTest import *
 from main.TNR.TU.Service.ConfirmationUserServiceTest import *
+from main.TNR.TU.Service.ReportContentServiceTest import *
 
 from main.TNR.TU.UserParametersFactoryTest import *
 
