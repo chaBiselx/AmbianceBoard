@@ -10,6 +10,7 @@ from parameters.routing import application
 
 User = get_user_model()
 
+# NOSONAR
 class SharedSoundboardConsumerAsyncTest(TransactionTestCase):
     reset_sequences = True
 
