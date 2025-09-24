@@ -8,7 +8,7 @@ from main.architecture.persistence.models.ReportContent import ReportContent
 from main.domain.common.exceptions.PostDataException import PostDataException
 
 User = get_user_model()
-
+Uri  = '/report'
 class ReportContentServiceTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -16,7 +16,7 @@ class ReportContentServiceTest(TestCase):
 
     @patch('main.domain.public.service.ReportContentService.ModeratorEmail')
     def test_save_report_success_authenticated(self, mock_mail):
-        request = self.factory.post('/report', data={
+        request = self.factory.post(Uri, data={
             'element-type': 'playlist',
             'element-id': str(uuid4()),
             'element-precision': 'image',
@@ -31,7 +31,7 @@ class ReportContentServiceTest(TestCase):
 
     @patch('main.domain.public.service.ReportContentService.ModeratorEmail')
     def test_save_report_success_anonymous(self, mock_mail):
-        request = self.factory.post('/report', data={
+        request = self.factory.post(Uri, data={
             'element-type': 'soundboard',
             'element-id': str(uuid4()),
             'element-precision': 'text',
@@ -52,7 +52,7 @@ class ReportContentServiceTest(TestCase):
         self.assertIsNone(service.save_report())
 
     def test_save_report_invalid_uuid(self):
-        request = self.factory.post('/report', data={
+        request = self.factory.post(Uri, data={
             'element-type': 'playlist',
             'element-id': 'NOT_A_UUID',
         })
@@ -62,7 +62,7 @@ class ReportContentServiceTest(TestCase):
         self.assertEqual(ReportContent.objects.count(), 0)
 
     def test_save_report_invalid_type(self):
-        request = self.factory.post('/report', data={
+        request = self.factory.post(Uri, data={
             'element-type': 'unknown_type',
             'element-id': str(uuid4()),
         })
@@ -74,7 +74,7 @@ class ReportContentServiceTest(TestCase):
     @patch('main.domain.public.service.ReportContentService.ModeratorEmail')
     def test_save_report_defaults(self, mock_mail):
         # precision defaults to 'unknown', description to ''
-        request = self.factory.post('/report', data={
+        request = self.factory.post(Uri, data={
             'element-type': 'playlist',
             'element-id': str(uuid4()),
         })
@@ -87,7 +87,7 @@ class ReportContentServiceTest(TestCase):
         mock_mail.return_value.report_content_reported.assert_called_once()
 
     def test_save_report_missing_uuid(self):
-        request = self.factory.post('/report', data={
+        request = self.factory.post(Uri, data={
             'element-type': 'playlist',
         })
         request.user = self.user
@@ -98,7 +98,7 @@ class ReportContentServiceTest(TestCase):
     # ---------------- Helper methods tests ----------------
     def test__extract_post_data(self):
         u = str(uuid4())
-        request = self.factory.post('/report', data={
+        request = self.factory.post(Uri, data={
             'element-type': 'playlist',
             'element-id': u,
             'element-precision': 'text',
@@ -113,7 +113,7 @@ class ReportContentServiceTest(TestCase):
         self.assertEqual(data['description_element'], 'Desc')
 
     def test__validate_uuid_ok(self):
-        request = self.factory.post('/report')
+        request = self.factory.post(Uri)
         request.user = self.user
         service = ReportContentService(request)
         try:
@@ -122,26 +122,26 @@ class ReportContentServiceTest(TestCase):
             self.fail("_validate_uuid raised PostDataException unexpectedly!")
 
     def test__validate_uuid_invalid(self):
-        request = self.factory.post('/report')
+        request = self.factory.post(Uri)
         request.user = self.user
         service = ReportContentService(request)
         with self.assertRaises(PostDataException):
             service._validate_uuid('BAD_UUID')
 
     def test__is_valid_type_true(self):
-        request = self.factory.post('/report')
+        request = self.factory.post(Uri)
         request.user = self.user
         service = ReportContentService(request)
         self.assertTrue(service._is_valid_type('playlist', str(uuid4())))
 
     def test__is_valid_type_false(self):
-        request = self.factory.post('/report')
+        request = self.factory.post(Uri)
         request.user = self.user
         service = ReportContentService(request)
         self.assertFalse(service._is_valid_type('bad', str(uuid4())))
 
     def test__create_report_sets_creator(self):
-        request = self.factory.post('/report')
+        request = self.factory.post(Uri)
         request.user = self.user
         service = ReportContentService(request)
         report = service._create_report('playlist', str(uuid4()), 'text', 'Desc')
@@ -149,7 +149,7 @@ class ReportContentServiceTest(TestCase):
 
     def test__create_report_anonymous_no_creator(self):
         from django.contrib.auth.models import AnonymousUser
-        request = self.factory.post('/report')
+        request = self.factory.post(Uri)
         request.user = AnonymousUser()
         service = ReportContentService(request)
         report = service._create_report('playlist', str(uuid4()), 'text', 'Desc')
@@ -157,7 +157,7 @@ class ReportContentServiceTest(TestCase):
 
     @patch('main.domain.public.service.ReportContentService.ModeratorEmail')
     def test__notify_moderators_success(self, mock_mail):
-        request = self.factory.post('/report')
+        request = self.factory.post(Uri)
         request.user = self.user
         service = ReportContentService(request)
         report = service._create_report('playlist', str(uuid4()), 'text', 'Desc')
@@ -168,7 +168,7 @@ class ReportContentServiceTest(TestCase):
     def test__notify_moderators_logs_error(self, mock_mail):
         # Force exception in email sending
         mock_mail.return_value.report_content_reported.side_effect = Exception("SMTP failure")
-        request = self.factory.post('/report')
+        request = self.factory.post(Uri)
         request.user = self.user
         service = ReportContentService(request)
         report = service._create_report('playlist', str(uuid4()), 'text', 'Desc')
