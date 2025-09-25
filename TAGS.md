@@ -39,7 +39,11 @@ Nouveautés
 - Première version de session partagée en temps réel (mise à jour live précoce)
 - Base des tiers utilisateurs (sans Paiment)
 
-## Historique
 ### 0.1.0-beta.2 - 2025/09
 Corrections
 - fix script de deploiement
+
+
+### 0.1.0-beta.3 - 2025/09
+Améliorations
+- Amélioration de l'esthétique des page d'erreurs

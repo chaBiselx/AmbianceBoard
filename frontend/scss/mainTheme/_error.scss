@@ -1,0 +1,53 @@
+@import "../variables";
+
+/* Animation douce : halo pulsant et léger flottement */
+@keyframes floatError {
+
+    0%,
+    100% {
+        transform: translateY(0)
+    }
+
+    50% {
+        transform: translateY(-12px)
+    }
+}
+
+@keyframes glowError {
+
+    0%,
+    100% {
+        text-shadow: 0 0 2px rgba(var(--bs-primary-rgb), .35), 0 0 6px rgba(var(--bs-primary-rgb), .25)
+    }
+
+    50% {
+        text-shadow: 0 0 4px rgba(var(--bs-primary-rgb), .55), 0 0 14px rgba(var(--bs-primary-rgb), .35)
+    }
+}
+
+.wrap-error {
+    min-height: 55vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center
+}
+
+.code-error {
+    font-size: clamp(5rem, 15vw, 11rem);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: .05em;
+    animation: floatError 5s ease-in-out infinite, glowError 4.5s ease-in-out infinite;
+    opacity: .9
+}
+
+.msg-error {
+    max-width: 600px
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .code-error {
+        animation: none
+    }
+}
