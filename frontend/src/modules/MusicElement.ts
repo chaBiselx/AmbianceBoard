@@ -164,6 +164,8 @@ class MusicElement {
         } else {
             this.DOMElement.addEventListener('ended', this.eventDeleteNoFadeOut);
         }
+        ConsoleTesteur.log(`▶️ Play ${this.idPlaylist} ${this.isSlave()}`);
+
         this.DOMElement.play();
     }
 
