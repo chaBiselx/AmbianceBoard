@@ -15,6 +15,6 @@ class ImgPlaylistCleanService(BaseCleanService):
 
     def file_exists_in_db(self, file_path):
         """Vérifie si un fichier existe dans la base de données."""
-        return Playlist.objects.filter(icon=file_path).exists()
+        return Playlist.objects.filter(icon=file_path).exists() #TODO repository
 
     

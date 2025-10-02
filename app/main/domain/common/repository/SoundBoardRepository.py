@@ -12,7 +12,7 @@ class SoundBoardRepository:
         soundboards = _filter.filter_by_user(user)
         return soundboards
 
-    def get_from_uuid(self, soundboard_uid: str) -> Optional[SoundBoard]:
+    def get(self, soundboard_uid: str) -> Optional[SoundBoard]:
         try:
             return SoundBoard.objects.get(uuid=soundboard_uid)
         except SoundBoard.DoesNotExist:

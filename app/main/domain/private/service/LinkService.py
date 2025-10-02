@@ -9,13 +9,7 @@ class LinkService:
     
     def __init__(self, request: HttpRequest) -> None:
         self.request = request
-    
-    def get_link(self, link_id: int) -> Optional[LinkMusic]:
-        """Récupère un lien musical par son ID"""
-        try:
-            return LinkMusic.objects.get(id=link_id)
-        except LinkMusic.DoesNotExist:
-            return None
+
     
     def save_form(self, playlist: Playlist, link: Optional[LinkMusic] = None) -> LinkMusic:
         """Sauvegarde un formulaire de lien musical"""

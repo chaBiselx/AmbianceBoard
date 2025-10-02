@@ -10,7 +10,7 @@ class UserStatsService:
         Récupère les données d'activité des utilisateurs entre deux dates.
         """
          # 1. Récupérer le nombre d'utilisateurs créés par jour
-        users_created = User.objects.filter(
+        users_created = User.objects.filter(  #TODO repository
             date_joined__date__gte=start_date,
             date_joined__date__lte=end_date
         ).annotate(
@@ -20,7 +20,7 @@ class UserStatsService:
         ).order_by('date')
         
         # 2. Récupérer le nombre de connexions par jour (based on last_login)
-        users_connected = User.objects.filter(
+        users_connected = User.objects.filter(  #TODO repository
             last_login__date__gte=start_date,
             last_login__date__lte=end_date,
             last_login__isnull=False  # Exclure les utilisateurs qui ne se sont jamais connectés

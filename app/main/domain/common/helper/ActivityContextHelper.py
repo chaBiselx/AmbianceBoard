@@ -27,7 +27,7 @@ class ActivityContextHelper:
         if user and hasattr(user, 'is_authenticated') and user.is_authenticated:
             authenticated_user = user
         
-        activity = UserActivity.create_activity(
+        activity = UserActivity.create_activity( #TODO repository
             activity_type=activity_type,
             user=authenticated_user,
             session_key=request.session.session_key if request else '',
@@ -39,7 +39,7 @@ class ActivityContextHelper:
     def find_activity(activity_uuid: uuid.UUID, activity_type: UserActivityTypeEnum) -> Optional[UserActivity]:
         """Recherche une activité par son UUID."""
         try:
-            return UserActivity.objects.get(uuid=activity_uuid, activity_type=activity_type)
+            return UserActivity.objects.get(uuid=activity_uuid, activity_type=activity_type) #TODO repository
         except UserActivity.DoesNotExist:
             return None
 

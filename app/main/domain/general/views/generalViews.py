@@ -17,6 +17,9 @@ from main.domain.common.decorator.detectNotConfirmedAccount import detect_not_co
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.repository.UserNotificationDismissalRepository import UserNotificationDismissalRepository
+from main.domain.common.repository.GeneralNotificationRepository import GeneralNotificationRepository
+from main.domain.common.repository.UserTiersRepository import UserTiersRepository
 
 from django_ratelimit.decorators import ratelimit
 from main.domain.general.service.ResetPasswordService import ResetPasswordService
@@ -24,9 +27,6 @@ from main.domain.general.form.UserPasswordForm import UserPasswordForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.enum.AdvertisingEnum import AdvertisingEnum
-from main.architecture.persistence.models.UserNotificationDismissal import UserNotificationDismissal
-from main.architecture.persistence.models.GeneralNotification import GeneralNotification
-from main.architecture.persistence.models.UserTier import UserTier
 from main.domain.common.utils.logger import logger
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
@@ -109,10 +109,7 @@ def create_account(request: HttpRequest) -> HttpResponse:
                 except Exception as e:
                     logger.error(e)
                 logger.info(f"User {user.username} created")
-                UserTier.objects.create(
-                    user=user,
-                    tier_name='STANDARD'
-                )
+                UserTiersRepository().create(user)
                 ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.REGISTRATION, user=user)
                 return redirect('login')
             except Exception as e:
@@ -188,13 +185,10 @@ def resend_email_confirmation(request) -> JsonResponse:
 def dismiss_general_notification(request, notification_uuid: uuid.UUID) -> JsonResponse:
     if request.method == 'POST':
         try:
-            general_information = GeneralNotification.objects.get(uuid=notification_uuid)
+            general_information = GeneralNotificationRepository().get_notification_by_uuid(uuid=notification_uuid)
             if not general_information:
                 raise ValidationError("Notification not found")
-            _,_ = UserNotificationDismissal.objects.get_or_create(
-                user=request.user,
-                notification_id=general_information.id
-            )
+            UserNotificationDismissalRepository().dismiss_notification(request.user, general_information.id)
             return JsonResponse({"message": "Notification dismissed"}, status=200)
         except Exception as e:
             logger.error(f"dismiss notification error : {e}")
@@ -225,7 +219,7 @@ def send_reset_password(request):
 def token_validation_reset_password(request, uuid_user:str, token_reinitialisation:str):
     user = None
     try:
-        user = User.objects.get(uuid=uuid_user)
+        user = User.objects.get(uuid=uuid_user)  #TODO repository
     except User.DoesNotExist:
         pass
     if user is None :

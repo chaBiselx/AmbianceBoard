@@ -17,7 +17,7 @@ class RGPDService:
         cutoff_date = self._calculate_cuttoff_date(22)
 
         # Récupérer tous les utilisateurs qui ont une dernière connexion avant la date de coupure
-        inactive_users = User.objects.filter(last_login__lte=cutoff_date)
+        inactive_users = User.objects.filter(last_login__lte=cutoff_date)  #TODO repository
         for user in inactive_users:
             self.logger.info(f"Utilisateur {user.username} alert for suppression.")
             UserMail(user).prevent_account_deletion()
@@ -28,10 +28,10 @@ class RGPDService:
         cutoff_date = self._calculate_cuttoff_date(24)
 
         # Récupérer tous les utilisateurs qui ont une dernière connexion avant la date de coupure
-        inactive_users = User.objects.filter(last_login__lte=cutoff_date)
+        inactive_users = User.objects.filter(last_login__lte=cutoff_date)  #TODO repository
         for user in inactive_users:
             user.delete()
-            self.logger.info(f"Utilisateur {user.username} supprimé.")
+            self.logger.info(f"Utilisateur {user.username} supprimé.") 
             UserMail(user).account_auto_deletion()
         return self
             
@@ -40,7 +40,7 @@ class RGPDService:
         cutoff_date = self._calculate_cuttoff_date(6)
 
         # Récupérer tous les utilisateurs qui ont une derniere connexion avant la date de coupure
-        inactive_users = User.objects.filter(last_login=None, date_joined__lte=cutoff_date)
+        inactive_users = User.objects.filter(last_login=None, date_joined__lte=cutoff_date)  #TODO repository
         
         for user in inactive_users:
             user.delete()
@@ -53,7 +53,7 @@ class RGPDService:
         cutoff_date = self._calculate_cuttoff_date(1)
 
         # Récupérer tous les utilisateurs qui ont une derniere connexion avant la date de coupure
-        not_confirmed_users = User.objects.filter(isConfirmed=False, demandeConfirmationDate__lte=cutoff_date)
+        not_confirmed_users = User.objects.filter(isConfirmed=False, demandeConfirmationDate__lte=cutoff_date)  #TODO repository
         for user in not_confirmed_users:
             url =  get_full_url(ConfirmationUserService(user).generation_uri(False))
             self.logger.info(f"Utilisateur {user.username} alert for suppression not confirmed.")
@@ -64,7 +64,7 @@ class RGPDService:
         cutoff_date = self._calculate_cuttoff_date(2)
 
         # Récupérer tous les utilisateurs qui ont une derniere connexion avant la date de coupure
-        not_confirmed_users = User.objects.filter(isConfirmed=False, demandeConfirmationDate__lte=cutoff_date)
+        not_confirmed_users = User.objects.filter(isConfirmed=False, demandeConfirmationDate__lte=cutoff_date)  #TODO repository
         for user in not_confirmed_users:
             user.delete()
             self.logger.info(f"Utilisateur {user.username} supprimé.")

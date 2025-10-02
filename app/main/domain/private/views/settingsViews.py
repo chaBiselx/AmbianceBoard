@@ -9,7 +9,7 @@ from main.domain.common.utils.settings import Settings
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.private.form.PlaylistColorUserForm import PlaylistColorUserForm
-from main.architecture.persistence.models.PlaylistColorUser import PlaylistColorUser
+from main.domain.common.repository.PlaylistColorUserRepository import PlaylistColorUserRepository
 from main.domain.common.repository.UserDevicePreferenceRepository import UserDevicePreferenceRepository
 from main.domain.common.repository.UserPreferenceRepository import UserPreferenceRepository
 from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
@@ -51,12 +51,9 @@ def settings_update_default_style(request):
                         color_text = form.cleaned_data["colorText"]
                         
                         # Mise à jour ou création de l'entrée
-                        pcu, created = PlaylistColorUser.objects.get_or_create(user=request.user, typePlaylist=type_playlist)
+                        pcu = PlaylistColorUserRepository().get_or_create(user=request.user, type_playlist=type_playlist)
                         pcu.color = color
                         pcu.colorText = color_text
-                        if(created):
-                            pcu.user = request.user
-                            logger.debug(f"pcu.user: {pcu}")
                         pcu.save()
                         
                 

@@ -4,6 +4,11 @@ from main.architecture.persistence.models.SharedSoundboard import SharedSoundboa
 
 
 class SharedSoundboardRepository:
+    
+    def create(self, soundboard: SoundBoard) -> SharedSoundboard:
+        return SharedSoundboard.objects.create(
+            soundboard=soundboard
+        )
 
     def get(self, soundboard: SoundBoard, token: str) -> SharedSoundboard|None:
         try:

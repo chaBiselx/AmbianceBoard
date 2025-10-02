@@ -7,7 +7,7 @@ from main.architecture.persistence.models.UserNotificationDismissal import UserN
 
 class GeneralNotificationFilter:
     def __init__(self, queryset=None):
-        self.queryset = queryset or GeneralNotification.objects.all()
+        self.queryset = queryset or GeneralNotification.objects.all()  #TODO repository
         
     def filter_by_active(self, is_active=True):
         self.queryset = self.queryset.filter(is_active=is_active)
@@ -25,5 +25,5 @@ class GeneralNotificationFilter:
         return self.queryset
 
     def filter_by_user_has_notifications(self, user: User):
-        self.queryset = self.queryset.exclude(id__in=UserNotificationDismissal.objects.filter(user=user).values_list('notification_id', flat=True))
+        self.queryset = self.queryset.exclude(id__in=UserNotificationDismissal.objects.filter(user=user).values_list('notification_id', flat=True))  #TODO repository
         return self.queryset

@@ -1,11 +1,12 @@
 from typing import Optional
 from django.http import HttpRequest
 from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
 from main.domain.private.form.SoundBoardForm import SoundBoardForm
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+from main.domain.common.repository.SharedSoundboardRepository import SharedSoundboardRepository
 
 
 class SoundBoardService:
@@ -91,20 +92,16 @@ class SoundBoardService:
             Optional[SoundBoard]: Le soundboard si le token est valide,
                                  None sinon
         """
-        try:
-            soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
-            if not soundboard:
-                return None
-            
-            shared_soundboard = SharedSoundboard.objects.get(soundboard=soundboard, token=token)
-            if not shared_soundboard : 
-                return None
-            return soundboard
+        soundboard = SoundBoardRepository().get(soundboard_uuid)
+        if not soundboard:
+            return None
 
-        except SoundBoard.DoesNotExist:
+        shared_soundboard = SharedSoundboardRepository().get(soundboard=soundboard, token=token)
+        if not shared_soundboard:
             return None
-        except SharedSoundboard.DoesNotExist:
-            return None
+        return soundboard
+
+      
         
     def save_form(self) -> Optional[SoundBoard]:
         """

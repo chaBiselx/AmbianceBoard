@@ -35,5 +35,5 @@ class DomainBlacklistCronService:
         ]
 
         if new_domains:
-            result = DomainBlacklist.objects.bulk_create(new_domains, ignore_conflicts=True)
+            result = DomainBlacklist.objects.bulk_create(new_domains, ignore_conflicts=True)  #TODO repository
             logger.info(f"Successfully synced domains. {len(result)} new domains were added.")

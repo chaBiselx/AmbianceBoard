@@ -45,5 +45,8 @@ class UserRepository:
         return  User.objects.annotate(
         music_count=models.Count('playlist__tracks')
         ).aggregate(avg_music=Avg('music_count'))['avg_music']
+
+    def get_list_user_in(self, user_ids: List[str]) -> List[User]:
+        return User.objects.filter(uuid__in=user_ids)
    
 

@@ -9,8 +9,8 @@ from django.urls import reverse
 from main.service.SoundBoardService import SoundBoardService #
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum #
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
-from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+from main.domain.common.repository.SharedSoundboardRepository import SharedSoundboardRepository
 from django.contrib.sites.shortcuts import get_current_site
 from main.domain.common.utils.url import get_full_url, get_full_ws
 from main.service.RandomizeTrackService import RandomizeTrackService
@@ -23,13 +23,12 @@ from main.domain.common.helper.ActivityContextHelper import ActivityContextHelpe
 
 @require_http_methods(['GET'])
 def publish_soundboard(request, soundboard_uuid):
-
-    soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
+    """Génère une URL publique pour un soundboard donné"""
+    soundboard = SoundBoardRepository().get(soundboard_uuid)
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
 
-    shared = SharedSoundboard.objects.create(soundboard=soundboard)
-    shared.save()
+    shared = SharedSoundboardRepository().create(soundboard=soundboard)
     
     response = render (request, 'Html/Shared/publich_soundboard.html', {'shared_url' :  get_full_url(reverse('shared_soundboard', args=[soundboard_uuid, shared.token]))})
     

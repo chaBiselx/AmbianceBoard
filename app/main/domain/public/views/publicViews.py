@@ -13,13 +13,12 @@ from main.domain.public.decorator.reportingContent import add_reporting_btn
 from django.template.response import TemplateResponse
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from django.views.decorators.http import require_http_methods
-from main.architecture.persistence.models.Tag import Tag
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.public.service.ReportContentService import ReportContentService
 from main.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.common.utils.url import redirection_url
-from main.architecture.persistence.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
+from main.domain.common.repository.UserFavoritePublicSoundboardRepository import UserFavoritePublicSoundboardRepository
 from main.domain.common.utils.logger import logger
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 
@@ -45,7 +44,7 @@ def public_listing_soundboard(request):
             list_favorite.append(favorite.get_soundboard().uuid)
     
     # Filtrage par tag si spécifié
-    queryset = SoundBoard.objects.filter(is_public=True, user__isBan=False)
+    queryset = SoundBoard.objects.filter(is_public=True, user__isBan=False)  #TODO repository
     if selected_tag:
         queryset = queryset.filter(tags__name=selected_tag)
     
@@ -71,7 +70,7 @@ def public_favorite(request):
             list_favorite.append(favorite.get_soundboard().uuid)
             
     
-    queryset = SoundBoard.objects.filter(
+    queryset = SoundBoard.objects.filter(  #TODO repository
         favorite__user=request.user,
         is_public=True, 
         user__isBan=False
@@ -122,13 +121,13 @@ def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse
 @require_http_methods(['POST', 'DELETE'])
 def favorite_update(request, soundboard_uuid) -> JsonResponse:
     try:
-        soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
+        soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)  #TODO repository
     except SoundBoard.DoesNotExist:
         return JsonResponse({"error": "SoundBoard introuvable."}, status=404)
     
     if request.method == 'POST':
         try:
-            _, _ = UserFavoritePublicSoundboard.objects.get_or_create(user=request.user, uuidSoundboard=soundboard)
+            UserFavoritePublicSoundboardRepository().get_or_create(user=request.user, uuid_soundboard=soundboard)
             return JsonResponse({"message": "success"}, status=200)
 
         except Exception as e:
