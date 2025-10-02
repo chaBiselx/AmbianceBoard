@@ -10,12 +10,14 @@ from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.private.form.PlaylistColorUserForm import PlaylistColorUserForm
 from main.architecture.persistence.models.PlaylistColorUser import PlaylistColorUser
-from main.architecture.persistence.models.UserPreference import UserPreference
+from main.domain.common.repository.UserDevicePreferenceRepository import UserDevicePreferenceRepository
+from main.domain.common.repository.UserPreferenceRepository import UserPreferenceRepository
 from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from main.domain.common.enum.ThemeEnum import ThemeEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.exceptions.PostDataException import PostDataException
 from main.domain.common.utils.UserTierManager import UserTierManager
+from main.domain.common.utils.DeviceDetector import detect_device_type
 from main.domain.common.utils.logger import logger
 
 @login_required
@@ -78,7 +80,7 @@ def update_theme(request):
             
             new_theme = data['theme']
             enum_theme = ThemeEnum(new_theme)
-            user_preference, _ = UserPreference.objects.get_or_create(user=request.user)
+            user_preference = UserPreferenceRepository().get_or_create_user_preferences(request.user)
             user_preference.theme = enum_theme.value
             user_preference.save()
             return JsonResponse({'message': 'Theme updated successfully.'}, status=200)
@@ -97,13 +99,15 @@ def update_dimensions(request):
 def update_playlist_dim(request):
     if request.method == 'UPDATE':
         try:
+            device_type = detect_device_type(request)
             data = json.loads(request.body)  # Décode le JSON
             if 'dim' not in data:
                 raise PostDataException('dim not found in request data.')
             dim = data['dim']
-            user_preference, _ = UserPreference.objects.get_or_create(user=request.user)
-            user_preference.playlistDim = dim
-            user_preference.save()
+            user_preference = UserPreferenceRepository().get_or_create_user_preferences(request.user)
+            user_device_preference = UserDevicePreferenceRepository().get_or_create_user_device_preferences(user_preference, device_type)
+            user_device_preference.playlist_dim = dim
+            user_device_preference.save()
             return JsonResponse({'message': 'Dimensions updated successfully.'}, status=200)
         except Exception as e:
             logger.error(f"update dimensions playlist error : {e}")
@@ -115,13 +119,17 @@ def update_playlist_dim(request):
 def update_soundboard_dim(request):
     if request.method == 'UPDATE':
         try:
+            device_type = detect_device_type(request)
             data = json.loads(request.body)  # Décode le JSON
             if 'dim' not in data:
                 raise PostDataException('dim not found in request data.')
             dim = data['dim']
-            user_preference, _ = UserPreference.objects.get_or_create(user=request.user)
-            user_preference.soundboardDim = dim
-            user_preference.save()
+            print('here')
+            print('device_type:', device_type)
+            user_preference = UserPreferenceRepository().get_or_create_user_preferences(request.user)
+            user_device_preference = UserDevicePreferenceRepository().get_or_create_user_device_preferences(user_preference, device_type)
+            user_device_preference.soundboard_dim = dim
+            user_device_preference.save()
             return JsonResponse({'message': 'Dimensions updated successfully.'}, status=200)
         except Exception as e:
             logger.error(f"update dimensions soundboard error : {e}")

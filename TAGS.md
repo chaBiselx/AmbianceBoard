@@ -44,6 +44,9 @@ Corrections
 - fix script de deploiement
 
 
-### 0.1.0-beta.3 - 2025/09
+### 0.1.0-beta.3 - 2025/10
+Nouveautés
+- Ajout des preference selon le type de support
+
 Améliorations
 - Amélioration de l'esthétique des page d'erreurs
