@@ -112,15 +112,17 @@ class SoundBoard(models.Model):
             self._icon_changed = self.icon != self._icon_original
         super().clean()
         
-    def get_list_playlist_ordered(self) -> "QuerySet[Playlist]":
+    def get_list_playlist_ordered(self) -> "dict[int, List[Playlist]]":
         """
         Retourne la liste des playlists du soundboard ordonnées.
         
         Returns:
-            QuerySet[Playlist]: QuerySet des playlists associées au soundboard,
+            dict[int, List[Playlist]]: Dictionnaire des playlists associées au soundboard,
                               ordonnées selon l'ordre défini dans SoundboardPlaylist
         """
-        return Playlist.objects.filter(soundboards=self).order_by('soundboardplaylist__order')
+        # Import local pour éviter l'importation circulaire
+        from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+        return SoundboardPlaylistRepository().get_soundboard_formated(self)
     
     def get_tags_list(self) -> "QuerySet[Tag]":
         """
