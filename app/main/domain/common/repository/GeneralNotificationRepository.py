@@ -15,3 +15,8 @@ class GeneralNotificationRepository:
             general_notification_filter.filter_by_for_authenticated_users(False)
         return general_notification_filter.queryset.order_by('-start_date')
 
+    def get_notification_by_uuid(self, uuid: str) -> GeneralNotification|None:
+        try:
+            return GeneralNotification.objects.get(uuid=uuid)
+        except GeneralNotification.DoesNotExist:
+            return None

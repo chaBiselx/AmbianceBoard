@@ -29,12 +29,13 @@
 {% include 'Html/navbar_dropdown_user.html'%}
 
 {% else %}
-<a class="btn btn-link url_link p-1" href="{% url 'login' %}" aria-label="Login" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Login">
-    <i class="fa-solid fa-right-to-bracket"></i>
-    <span class="d-none d-lg-inline">Login</span>
-</a>
 <a class="btn btn-link url_link p-1" href="{% url 'createAccount' %}" aria-label="Inscription" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Inscription">
     <i class="fa-solid fa-user-plus"></i>
     <span class="d-none d-lg-inline">Inscription</span>
 </a>
+<a class="btn btn-link url_link p-1" href="{% url 'login' %}" aria-label="Login" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Login">
+    <i class="fa-solid fa-right-to-bracket"></i>
+    <span class="d-none d-lg-inline">Login</span>
+</a>
+
 {% endif %}

@@ -1,3 +1,5 @@
+import ConsoleCustom from "@/modules/General/ConsoleCustom";
+
 
 class ConsoleTesteur implements Console {
     DOM: HTMLElement | null;
@@ -75,18 +77,21 @@ class ConsoleTesteur implements Console {
     }
 
     assert(condition?: boolean, ...data: any[]): void {
+        ConsoleCustom.assert(condition, ...data); // Keep original behavior
         if (!condition) {
             this.writeToDOM(`Assertion failed: ${this.formatData(...data)}`, 'console-error');
         }
     }
 
     clear(): void {
+        ConsoleCustom.clear(); // Keep original behavior
         if (this.valid()) {
             this.DOM!.innerHTML = '';
         }
     }
 
     count(label: string = 'default'): void {
+        ConsoleCustom.count(label);
         const key = label;
         const current = this.counters.get(key) || 0;
         this.counters.set(key, current + 1);
@@ -94,16 +99,19 @@ class ConsoleTesteur implements Console {
     }
 
     countReset(label: string = 'default'): void {
+        ConsoleCustom.countReset(label);
         const key = label;
         this.counters.set(key, 0);
         this.writeToDOM(`${key}: 0`, 'console-info');
     }
 
     debug(...data: any[]): void {
+        ConsoleCustom.debug(...data);
         this.writeToDOM(this.formatData(...data), 'console-debug');
     }
 
     dir(item?: any, _options?: any): void {
+        ConsoleCustom.dir(item, _options);
         const formatted = typeof item === 'object' ?
             JSON.stringify(item, null, 2) :
             String(item);
@@ -111,14 +119,17 @@ class ConsoleTesteur implements Console {
     }
 
     dirxml(...data: any[]): void {
+        ConsoleCustom.dirxml(...data);
         this.writeToDOM(this.formatData(...data), 'console-info');
     }
 
     error(...data: any[]): void {
+        ConsoleCustom.error(...data);
         this.writeToDOM(this.formatData(...data), 'console-error');
     }
 
     group(...data: any[]): void {
+        ConsoleCustom.group(...data);
         if (data.length > 0) {
             this.writeToDOM(`▼ ${this.formatData(...data)}`, 'console-log');
         }
@@ -126,6 +137,7 @@ class ConsoleTesteur implements Console {
     }
 
     groupCollapsed(...data: any[]): void {
+        ConsoleCustom.groupCollapsed(...data);
         if (data.length > 0) {
             this.writeToDOM(`▶ ${this.formatData(...data)}`, 'console-log');
         }
@@ -133,20 +145,24 @@ class ConsoleTesteur implements Console {
     }
 
     groupEnd(): void {
+        ConsoleCustom.groupEnd();
         if (this.groupLevel > 0) {
             this.groupLevel--;
         }
     }
 
     info(...data: any[]): void {
+        ConsoleCustom.info(...data);
         this.writeToDOM(this.formatData(...data), 'console-info');
     }
 
     log(...data: any[]): void {
+        ConsoleCustom.log(...data);
         this.writeToDOM(this.formatData(...data), 'console-log');
     }
 
     table(tabularData?: any, properties?: string[]): void {
+        ConsoleCustom.table(tabularData, properties);
         if (Array.isArray(tabularData)) {
             const table = tabularData.map((row, index) => {
                 const cols = properties ?
@@ -161,12 +177,14 @@ class ConsoleTesteur implements Console {
     }
 
     time(label: string = 'default'): void {
+        ConsoleCustom.time(label);
         const key = label;
         this.timers.set(key, performance.now());
         this.writeToDOM(`Timer '${key}' started`, 'console-time');
     }
 
     timeEnd(label: string = 'default'): void {
+        ConsoleCustom.timeEnd(label);
         const key = label;
         const startTime = this.timers.get(key);
         if (startTime === undefined) {
@@ -179,6 +197,7 @@ class ConsoleTesteur implements Console {
     }
 
     timeLog(label: string = 'default', ...data: any[]): void {
+        ConsoleCustom.timeLog(label, ...data);
         const key = label;
         const startTime = this.timers.get(key);
         if (startTime === undefined) {
@@ -193,6 +212,7 @@ class ConsoleTesteur implements Console {
     }
 
     timeStamp(label?: string): void {
+        ConsoleCustom.timeStamp(label);
         const timestamp = performance.now();
         const message = label ?
             `${label} @${timestamp.toFixed(3)}ms` :
@@ -201,6 +221,7 @@ class ConsoleTesteur implements Console {
     }
 
     trace(...data: any[]): void {
+        ConsoleCustom.trace(...data);
         const stack = new Error("Console trace").stack || 'No stack trace available';
         const message = data.length > 0 ?
             `${this.formatData(...data)}\n${stack}` :
@@ -209,6 +230,7 @@ class ConsoleTesteur implements Console {
     }
 
     warn(...data: any[]): void {
+        ConsoleCustom.warn(...data);
         this.writeToDOM(this.formatData(...data), 'console-warn');
     }
 

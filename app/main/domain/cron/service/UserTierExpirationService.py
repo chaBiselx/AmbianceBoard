@@ -25,7 +25,7 @@ class UserTierExpirationService:
         expired_count = 0
         try:
             now = timezone.now()
-            expired_tiers = UserTier.objects.filter(
+            expired_tiers = UserTier.objects.filter(  #TODO repository
                 tier_expiry_date__lt=now,
                 tier_name__in=['PREMIUM_BASIC', 'PREMIUM_ADVANCED', 'PREMIUM_PRO']
             )
@@ -54,7 +54,7 @@ class UserTierExpirationService:
             now = timezone.now()
             warning_threshold = now + timedelta(days=self.delta_days)
 
-            upcoming_expirations = UserTier.objects.filter(
+            upcoming_expirations = UserTier.objects.filter(  #TODO repository
                 tier_expiry_date__lte=warning_threshold,
                 tier_expiry_date__gt=now,
                 tier_name__in=['PREMIUM_BASIC', 'PREMIUM_ADVANCED', 'PREMIUM_PRO']

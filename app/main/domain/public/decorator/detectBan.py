@@ -39,7 +39,7 @@ def detect_ban(func: Callable[..., HttpResponse]) -> Callable[..., HttpResponse]
         """
         if kwargs['soundboard_uuid'] is not None:
             try:
-                soundboard = SoundBoard.objects.get(uuid=kwargs['soundboard_uuid'])
+                soundboard = SoundBoard.objects.get(uuid=kwargs['soundboard_uuid']) #TODO repository
                 if soundboard.user.checkBanned(): 
                     return render(args[0], HtmlDefaultPageEnum.ERROR_404.value, status=404)
             except SoundBoard.DoesNotExist:

@@ -59,7 +59,7 @@ class ReportContentService:
         return False
 
     def _create_report(self, type_element: str, uuid_element: str, precision_element: str, description_element: str):
-        report = ReportContent.objects.create(
+        report = ReportContent.objects.create(  #TODO repository
             typeElement=type_element,
             uuidElement=uuid_element,
             precisionElement=precision_element,

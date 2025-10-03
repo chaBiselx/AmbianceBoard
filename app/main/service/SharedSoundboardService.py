@@ -62,7 +62,7 @@ class SharedSoundboardService():
             return False
         
         try:
-            soundboard = self.soundboard_repository.get_from_uuid(self.soundboard_uuid)
+            soundboard = self.soundboard_repository.get(self.soundboard_uuid)
             if not soundboard:
                 return False
 

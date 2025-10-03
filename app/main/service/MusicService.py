@@ -5,8 +5,6 @@ from django.core.files.uploadedfile import UploadedFile
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.Music import Music
-from main.architecture.persistence.models.Track import Track
-from main.domain.common.repository.filters.MusicFilter import MusicFilter
 from main.domain.private.form.MusicForm import MusicForm
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.service.SoundBoardService import SoundBoardService
@@ -28,15 +26,6 @@ class MusicService:
         """
         return self.track_repository.get(music_id=music_id, playlist_uuid=playlist_uuid)    
     
-        
-    def get_list_music(self, playlist_uuid: int) -> Optional[List[Music]]:
-        try:
-            music_filter = MusicFilter()
-            queryset = music_filter.filter_by_user(self.request.user)
-            queryset = music_filter.filter_by_playlist(playlist_uuid)
-            return queryset
-        except Playlist.DoesNotExist:
-            return None
         
     def save_form(self, playlist: Playlist, music: Optional[Music] = None) -> Optional[Music]:
         user_parameters = UserParametersFactory(self.request.user)

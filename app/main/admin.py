@@ -19,6 +19,8 @@ from main.architecture.persistence.models.DomainBlacklist import DomainBlacklist
 from main.architecture.persistence.models.GeneralNotification import GeneralNotification
 from main.architecture.persistence.models.UserNotificationDismissal import UserNotificationDismissal
 from main.architecture.persistence.models.UserActivity import UserActivity
+from main.architecture.persistence.models.UserDevicePreference import UserDevicePreference
+
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -40,3 +42,4 @@ admin.site.register(DomainBlacklist)
 admin.site.register(GeneralNotification)
 admin.site.register(UserNotificationDismissal)
 admin.site.register(UserActivity)
+admin.site.register(UserDevicePreference)

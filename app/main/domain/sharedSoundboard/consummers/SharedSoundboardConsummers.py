@@ -252,11 +252,11 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
             from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
             from main.architecture.persistence.models.SoundBoard import SoundBoard
             
-            soundboard = SoundBoard.objects.get(uuid=self.soundboard_uuid)
+            soundboard = SoundBoard.objects.get(uuid=self.soundboard_uuid)  #TODO repository
             if not soundboard:
                 return None
 
-            shared_soundboard = SharedSoundboard.objects.filter(
+            shared_soundboard = SharedSoundboard.objects.filter(  #TODO repository
                 soundboard=soundboard, 
                 token=self.token
             ).first()

@@ -52,33 +52,6 @@ class MusicServiceTest(TestCase):
             content=content,
             content_type='audio/mp3'
         )
-    
-        
-    # Test get_list_music
-    def test_get_list_music(self):
-        request = self.factory.get('/')
-        request.user = self.user
-        
-        music_service = MusicService(request)
-        music = music_service.get_list_music(1)
-        self.assertTrue(music.exists())
-        self.assertEqual(len(music), 3) 
-        
-    def test_get_list_music_incorrect_playlist(self):
-        request = self.factory.get('/')
-        request.user = self.user
-        
-        music_service = MusicService(request)
-        music = music_service.get_list_music(9999)
-        self.assertFalse(music.exists())
-        
-    def test_get_list_music_other_user(self):
-        request = self.factory.get('/')
-        request.user = self.user
-        
-        music_service = MusicService(request)
-        music = music_service.get_list_music(2)
-        self.assertFalse(music.exists())
 
     # Tests pour save_multiple_files_item
     @patch('main.service.MusicService.UserParametersFactory')

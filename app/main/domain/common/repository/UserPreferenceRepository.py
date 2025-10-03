@@ -8,3 +8,8 @@ class UserPreferenceRepository:
             return UserPreference.objects.get(user=user)
         except UserPreference.DoesNotExist:
             return None
+
+
+    def get_or_create_user_preferences(self, user: User) -> UserPreference:
+        user_pref, _ = UserPreference.objects.get_or_create(user=user)
+        return user_pref

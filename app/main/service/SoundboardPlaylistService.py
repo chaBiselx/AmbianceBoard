@@ -1,36 +1,37 @@
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 
 
 class SoundboardPlaylistService:
     
     def __init__(self, soundboard:SoundBoard):
         self.soundboard = soundboard
+        self.soundboard_playlist_repository = SoundboardPlaylistRepository()
         
-    def add(self, playlist:Playlist, order:int|None = None):
+    def add(self, playlist:Playlist, order:int|None = None, section:int = 1):
         order = self.__check_order(order)
 
         if order is not None : 
-            self.reorder_from(order)
-        
-        SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
-            Playlist=playlist,
-            order=order
-        )
+            self.reorder_from(order, section)
+
+
+        self.soundboard_playlist_repository.create(self.soundboard, playlist, order, section)
         return self
     
-    def update(self, playlist:Playlist, order:int|None = None):
+    def update(self, playlist:Playlist, order:int|None = None, section:int = 1):
         order = self.__check_order(order)
             
         if order is not None : 
-            self.reorder_from(order)
-        
-        soundboard_playlist = SoundboardPlaylist.objects.get(SoundBoard=self.soundboard, Playlist=playlist)
-        soundboard_playlist.order = order
-        soundboard_playlist.save()
-        self.reorder()
+            self.reorder_from(order, section)
+
+        soundboard_playlist = self.soundboard_playlist_repository.get(self.soundboard, playlist)
+        if soundboard_playlist is not None:
+            soundboard_playlist.order = order
+            soundboard_playlist.section = section
+            soundboard_playlist.save()
+        self.reorder_section(section)
         
         return self
     
@@ -42,18 +43,18 @@ class SoundboardPlaylistService:
         return order
     
     def remove(self, playlist:Playlist):
-        SoundboardPlaylist.objects.get(SoundBoard=self.soundboard, Playlist=playlist).delete()
+        self.soundboard_playlist_repository.delete(self.soundboard, playlist)
         self.reorder()
         return self
             
     def _new_order(self):
-        if SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard).count() == 0:
+        if self.soundboard_playlist_repository.count(self.soundboard) == 0:
             return 1
         else:
-            return SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard).order_by('-order').first().order + 1
+            return self.soundboard_playlist_repository.get_first(self.soundboard).order + 1
             
     def reorder(self):
-        soundboard_playlists = SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard).order_by('order')
+        soundboard_playlists = self.soundboard_playlist_repository.get_all(self.soundboard)
         new_order = 1
         for soundboard_playlist in soundboard_playlists:
             soundboard_playlist.order = new_order
@@ -62,8 +63,17 @@ class SoundboardPlaylistService:
             
         return self
     
-    def reorder_from(self, order):
-        soundboard_playlists = SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard, order__gte=order ).order_by('order')
+    def reorder_section(self, section=1):
+        soundboard_playlists = self.soundboard_playlist_repository.get_all_by_section(self.soundboard, section)
+        new_order = 1
+        for soundboard_playlist in soundboard_playlists:
+            soundboard_playlist.order = new_order
+            soundboard_playlist.save()
+            new_order += 1
+        return self
+    
+    def reorder_from(self, order, section=1):
+        soundboard_playlists = self.soundboard_playlist_repository.get_order_greater_or_equal_by_section(self.soundboard, order, section)
         new_order = order + 1
         for soundboard_playlist in soundboard_playlists:
             soundboard_playlist.order = new_order

@@ -2,6 +2,10 @@
 
 {% block content %}
 
-  ERROR 429 Trop de tentative de connexion
-
+<div class="wrap-error text-center py-5">
+  <div class="code-error text-danger-emphasis">429</div>
+  <p class="h4 fw-semibold mb-3">Trop de requêtes</p>
+  <p class="msg-error text-body-secondary mb-2">Vous avez effectué trop d'actions en peu de temps. Le service limite temporairement le rythme des demandes.</p>
+  <p class="hint-error text-body-secondary mb-0">Veuillez patienter quelques instants avant de réessayer.</p>
+</div>
 {% endblock %}

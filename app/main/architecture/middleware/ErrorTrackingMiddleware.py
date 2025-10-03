@@ -160,7 +160,7 @@ class ErrorTrackingMiddleware:
                 session_key = request.session.session_key if hasattr(request, 'session') else ''
                 
                 # Créer l'activité d'erreur
-                UserActivity.create_activity(
+                UserActivity.create_activity( #TODO repository
                     activity_type=activity_type,
                     user=user,
                     session_key=session_key,

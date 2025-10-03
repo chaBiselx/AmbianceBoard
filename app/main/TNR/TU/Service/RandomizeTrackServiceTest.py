@@ -49,7 +49,8 @@ class RandomizeTrackServiceTest(TestCase):
     def test_generate_private_playlist_not_exist(self, mock_get_random_private):
         """Test génération aléatoire privée quand la playlist n'existe pas"""
         # Arrange
-        mock_get_random_private.side_effect = Playlist.DoesNotExist()
+        # repository now handles Playlist.DoesNotExist and returns None
+        mock_get_random_private.return_value = None
         
         # Act
         result = self.service.generate_private(self.playlist_uuid)
@@ -104,7 +105,8 @@ class RandomizeTrackServiceTest(TestCase):
         
         mock_soundboard_service.return_value = mock_service_instance
         mock_service_instance.get_public_soundboard.return_value = mock_soundboard
-        mock_get_random_public.side_effect = Playlist.DoesNotExist()
+        # repository now handles Playlist.DoesNotExist and returns None
+        mock_get_random_public.return_value = None
         
         # Act
         result = self.service.generate_public(self.soundboard_uuid, self.playlist_uuid)

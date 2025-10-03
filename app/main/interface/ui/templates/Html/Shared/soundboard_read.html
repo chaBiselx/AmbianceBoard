@@ -20,14 +20,28 @@
             {% add_mixer PlaylistTypeEnum  %}
         </div>
 
-        <div class="flex-container d-none">
-            {% for playlist in soundboard.get_list_playlist_ordered %}
-            <div class="playlist-link disabled playlist-element flex-item playlist-dim-{{ playlist_dim }} m-1" id="playlist-{{ playlist.uuid }}" style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};" data-playlist-uri="" 
-                {% for key, value in playlist.get_data_set.items %} data-playlist-{{ key }}="{{ value }}" {% endfor %} data-id="{{ playlist.uuid }}">
-                {{ playlist | applys_playlist_content}}
-            </div>
+        <div class="responsive-sections-container  d-none">
+            {% for section, list_playlist in soundboard.get_list_playlist_ordered %}
+            <section class="section-{{ section }}">
+                <div class="section-content">
+                    <div class="flex-container">
+                        {% for playlist in list_playlist %}
+                        <div class="playlist-link disabled playlist-element flex-item playlist-dim-{{ playlist_dim }} m-1" id="playlist-{{ playlist.uuid }}" style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};" data-playlist-uri=""
+                            {% for key, value in playlist.get_data_set.items %} data-playlist-{{ key }}="{{ value }}" {% endfor %} data-id="{{ playlist.uuid }}">
+                            {{ playlist | applys_playlist_content}}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
             {% endfor %}
         </div>
+
+        <div class="alert alert-info mt-3" role="alert">
+            L'application est synchonisé avec le soundboard du maitre du jeu. <br/>
+            C'est lui qui controle la lecture des musiques. vous pouvez mettre cette page en arrière plan et profiter de l'ambiance sonore.
+        </div>
+
 
     </div>
 </div>

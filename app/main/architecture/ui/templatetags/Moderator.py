@@ -1,6 +1,7 @@
 from django import template
-from main.architecture.persistence.models.Playlist import Playlist
-from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.domain.common.repository.PlaylistRepository import PlaylistRepository
+from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+
 
 
 register = template.Library()
@@ -31,9 +32,9 @@ def show_data_content_report(content_report):
     temp = defaultjson.copy()
     temp['contentReport'] = content_report
     if content_report.typeElement == 'playlist':
-        temp['playlist'] = Playlist.objects.get(uuid=content_report.uuidElement)
+        temp['playlist'] = PlaylistRepository().get(content_report.uuidElement)
         temp['user'] = temp['playlist'].user
     elif content_report.typeElement == 'soundboard':
-        temp['soundboard'] = SoundBoard.objects.get(uuid=content_report.uuidElement)
+        temp['soundboard'] = SoundBoardRepository().get(content_report.uuidElement)
         temp['user'] = temp['soundboard'].user
     return  temp

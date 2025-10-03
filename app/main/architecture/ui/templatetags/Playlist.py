@@ -11,4 +11,4 @@ def applys_playlist_content(playlist):
     if playlist.icon :
         content = f"<img class=\"playlist-img\" src=\"{playlist.icon.url }\" alt=\"{ name }\" draggable=\"false\" ></img>"
     
-    return mark_safe(content)    
+    return mark_safe(content)
