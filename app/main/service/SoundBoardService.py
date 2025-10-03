@@ -36,7 +36,7 @@ class SoundBoardService:
                              liste vide en cas d'erreur
         """
         try:
-            _query_set = SoundBoard.objects.all().order_by('updated_at')
+            _query_set = SoundBoard.objects.all().order_by('updated_at') # TODO repository
             soundboards = _query_set.filter(user=self.request.user)
         except Exception:
             soundboards = []
@@ -54,7 +54,7 @@ class SoundBoardService:
                                  None sinon
         """
         try:
-            soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
+            soundboard = SoundBoard.objects.get(uuid=soundboard_uuid) # TODO repository
             if not soundboard or soundboard.user != self.request.user:
                 return None
             return soundboard
@@ -73,7 +73,7 @@ class SoundBoardService:
                                  None sinon
         """
         try:
-            soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
+            soundboard = SoundBoard.objects.get(uuid=soundboard_uuid) # TODO repository
             if not soundboard or not soundboard.is_public:
                 return None
             return soundboard
