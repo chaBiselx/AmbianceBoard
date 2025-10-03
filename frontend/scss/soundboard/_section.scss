@@ -19,6 +19,7 @@
     flex-direction: column;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid transparent;
+
     @at-root {
         html:not([data-bs-theme="dark"]) & {
             border-color: $border_color_light;
@@ -29,6 +30,10 @@
 
         }
     }
+
+    /* Adaptation en hauteur selon le contenu */
+    height: auto;
+    min-height: fit-content;
 }
 
 .section-content {
@@ -65,11 +70,7 @@
     }
 }
 
-/* Adaptation en hauteur selon le contenu */
-.responsive-sections-container section {
-    height: auto;
-    min-height: fit-content;
-}
+
 
 /* Pour les écrans très larges */
 @media (min-width: 1600px) {

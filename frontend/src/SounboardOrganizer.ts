@@ -28,9 +28,7 @@ class SectionConfig {
     private static _maxSections: number | null = null;
 
     public static getMaxSections(): number {
-        if (this._maxSections === null) {
-            this._maxSections = this.detectMaxSections();
-        }
+        this._maxSections ??= this.detectMaxSections();
         return this._maxSections;
     }
 
@@ -95,7 +93,7 @@ class OrganizerDragAndDropZone {
 
     public static getUrlFromAnySection(): string {
         const firstSection = this.associatedPlaylistsSection(1);
-        return firstSection.closest('[data-url]')?.getAttribute('data-url') || '';
+        return (firstSection.closest('[data-url]') as HTMLElement)?.dataset?.url || '';
     }
 }
 
@@ -223,22 +221,22 @@ class CleanOrderHandler {
 
     resetBadge() {
 
-        this.allSections.forEach(section => {
+        for (const section of this.allSections) {
             if (section) { // Vérifier que la section existe
                 const listEl = section.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
                 for (const element of listEl) {
-                    if (element && element.id) { // Vérifier que l'élément et son ID existent
+                    if (element?.id) { // Vérifier que l'élément et son ID existent
                         const buttonPlaylist = new OrganizerButtonPlaylist(element.id)
                         buttonPlaylist.removeBadge(false)
                         let order = 0;
-                        if (element.dataset && element.dataset.order) {
+                        if (element.dataset?.order) {
                             order = Number.parseInt(element.dataset.order)
                         }
                         buttonPlaylist.addBadge(order)
                     }
                 }
             }
-        });
+        }
         this.cleanUnsassociatedBadge()
         return this
     }
@@ -247,7 +245,7 @@ class CleanOrderHandler {
         if (this.playlistNonAssociees) { // Vérifier que l'élément existe
             const listUnassociated = this.playlistNonAssociees.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
             for (const unassociated of listUnassociated) {
-                if (unassociated && unassociated.id) { // Vérifier que l'élément et son ID existent
+                if (unassociated?.id) { // Vérifier que l'élément et son ID existent
                     const buttonPlaylist = new OrganizerButtonPlaylist(unassociated.id)
                     buttonPlaylist.removeBadge(true)
                 }
@@ -342,8 +340,8 @@ function setEventDragAndDrop() {
     if (playlistNonAssociees == null || allSections.length === 0) return
 
     // Définir les événements de drag and drop pour chaque section
-    allSections.forEach((sectionEl, index) => {
-        const sectionNumber = index + 1;
+    for (const sectionEl of allSections) {
+        const sectionNumber = allSections.indexOf(sectionEl) + 1;
 
         sectionEl.removeEventListener('dragstart', (_event: DragEvent) => { }); // clear before 
         sectionEl.addEventListener('dragstart', (e: DragEvent) => { // from associées
@@ -436,7 +434,7 @@ function setEventDragAndDrop() {
             const cleanorder = new CleanOrderHandler()
             cleanorder.trueReorder().resetBadge()
         });
-    });
+    };
 
     playlistNonAssociees.addEventListener('dragstart', (e: DragEvent) => { // from non associées
         const EDT = new EventDataTransfert(e)
