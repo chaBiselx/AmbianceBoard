@@ -2,6 +2,7 @@
 {% load Playlist %}
 {% load FrontJs %}
 {% load static %}
+{% load Utils %}
 
 {% block javascript %}
 {{ block.super }}
@@ -9,13 +10,15 @@
 {% endblock javascript %}
 
 {% block content %}
-<h2>Boutons</h2>
+<h2>Organisation de la playlist</h2>
 <div class="row">
-    <div class="col-12">
+    <div class="col-12 mb-2">
         <a type="button" href="{% url 'soundboardsRead' soundboard.uuid %}" class="btn btn-info float-end">Retour</a>
     </div>
     <div class="col-6">
-        <h3>Boutons non associés</h3>
+        <div>
+            <h3>Boutons non associés</h3>
+        </div>
         <div class="flex-container zone-dragAndDrop border border-secondary rounded" id="unassociated-playlists">
             <span class="unassociated-playlists-empty " hidden="true">Aucun bouton non associé</span>
             {% for playlist in unassociatedPlaylists %}
@@ -30,20 +33,44 @@
 
 
     <div class="col-6">
-        <h3>Boutons associés</h3>
-        <div class="flex-container zone-dragAndDrop border border-primary rounded" id="associated-playlists" data-url="{% url 'organizeSoundboardUpdate' soundboard.uuid %}">
-            <span class="associated-playlists-empty" hidden="true">Aucun bouton associé</span>
-            {% for playlist in actualPlaylist %}
-            <div class="playlist-dragAndDrop flex-item position-relative" data-order="{{ playlist.get_order }}" id="{{ playlist.uuid }}" draggable="true">
-                <div class="playlist-link  playlist-element playlist-dim-{{ playlist_dim }} m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
-                    {{ playlist | applys_playlist_content}}
+        <div>
+            <button class="btn btn-sm btn-info rounded-circle btn-lg float-end" id="add-section-button" data-bs-toggle="tooltip" data-bs-title="Ajouter une section">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+            <h3>Boutons associés </h3>
+        </div>
+        <div data-url="{% url 'organizeSoundboardUpdate' soundboard.uuid %}" id="associated-playlists-container">
+            {% for section_num in max_sections %}
+            <div class="mb-3">
+                <h5>Section <span class="num-section">{{ section_num }}</span></h5>
+                <div class="flex-container zone-dragAndDrop border border-primary rounded section-container" id="associated-playlists-section-{{ section_num }}" data-section="{{ section_num }}">
+                    <span class="associated-playlists-empty section-{{ section_num }}-empty" hidden="true">Aucun bouton dans cette section</span>
+                    {% for soundboardPlaylist in actualPlaylist|get_dict_item:section_num %}
+                    {% with playlist=soundboardPlaylist.get_playlist %}
+                    <div class="playlist-dragAndDrop flex-item position-relative" data-order="{{ soundboardPlaylist.order }}" data-section="{{ soundboardPlaylist.get_section|default:1 }}" id="{{ playlist.uuid }}" draggable="true">
+                        <div class="playlist-link playlist-element playlist-dim-{{ playlist_dim }} m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
+                            {{ playlist | applys_playlist_content}}
+                        </div>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
                 </div>
             </div>
             {% endfor %}
-
         </div>
     </div>
 </div>
+
+<template id="add-section-template" data-max-section="3">
+    <div class="mb-3">
+        <h5>Section <span class="num-section">0</span></h5>
+        <div class="flex-container zone-dragAndDrop border border-primary rounded section-container" id="associated-playlists-section-template" data-section="0">
+            <span class="associated-playlists-empty section-0-empty" hidden="true">Aucun bouton dans cette section</span>
+        </div>
+    </div>
+</template>
+
+
 
 
 

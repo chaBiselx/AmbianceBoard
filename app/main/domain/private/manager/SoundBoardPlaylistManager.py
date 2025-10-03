@@ -9,6 +9,7 @@ from typing import List
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.Playlist import Playlist
 from main.domain.common.service.PlaylistService import PlaylistService
+from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 
 class SoundBoardPlaylistManager:
     """
@@ -30,16 +31,24 @@ class SoundBoardPlaylistManager:
         """
         self.request = request
         self.soundboard = soundboard
+        self.sound_play_repository = SoundboardPlaylistRepository()
 
-    def get_playlists(self) -> List[Playlist]:
+    def get_playlists(self) -> dict:
         """
         Récupère toutes les playlists associées au soundboard.
         
         Returns:
-            List[Playlist]: Liste des playlists ordonnées selon leur position
-                           dans le soundboard
+            dict: Dictionnaire des playlists organisées par section {section_number: [playlists]}
         """
-        return list(self.soundboard.playlists.all().order_by('soundboardplaylist__order'))
+        liste_brut = self.sound_play_repository.get_all(self.soundboard)
+        tabul = {}
+        for playlist_soundboard in liste_brut:
+            section = playlist_soundboard.get_section() or 1
+            if section not in tabul:
+                tabul[section] = []
+            tabul[section].append(playlist_soundboard)
+
+        return tabul
 
     def get_unassociated_playlists(self) -> List[Playlist]:
         """

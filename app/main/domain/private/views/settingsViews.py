@@ -121,8 +121,6 @@ def update_soundboard_dim(request):
             if 'dim' not in data:
                 raise PostDataException('dim not found in request data.')
             dim = data['dim']
-            print('here')
-            print('device_type:', device_type)
             user_preference = UserPreferenceRepository().get_or_create_user_preferences(request.user)
             user_device_preference = UserDevicePreferenceRepository().get_or_create_user_device_preferences(user_preference, device_type)
             user_device_preference.soundboard_dim = dim
