@@ -13,7 +13,7 @@ type DataTransfer = {
 
 document.addEventListener("DOMContentLoaded", () => {
     if (OrganizerDragAndDropZone.valid()) {
-        setEventDragAndDrop()
+        new DragAndDropEventManager().setupEvents();
         checkEmptyPlaylist()
         initOrderBadge()
         new SectionAdder().addEvent();
@@ -25,6 +25,35 @@ function initOrderBadge() {
     const cleanorder = new CleanOrderHandler()
     cleanorder.resetBadge()
 }
+
+function checkEmptyPlaylist() {
+    // Vérifier chaque section
+    const maxSections = SectionConfig.getMaxSections();
+    for (let i = 1; i <= maxSections; i++) {
+        const sectionEl = OrganizerDragAndDropZone.associatedPlaylistsSection(i);
+        if (sectionEl) { // Vérifier que la section existe
+            const sectionNodesElement = sectionEl.getElementsByClassName('playlist-dragAndDrop');
+            const sectionEmpty = document.getElementsByClassName(`section-${i}-empty`)[0];
+            if (sectionEmpty) { // Vérifier que l'élément empty existe
+                if (sectionNodesElement.length == 0) {
+                    sectionEmpty.removeAttribute('hidden');
+                } else {
+                    sectionEmpty.setAttribute('hidden', 'true');
+                }
+            }
+        }
+    }
+
+    const unassociatedPlaylists = OrganizerDragAndDropZone.unassociatedPlaylists();
+    const unassociatedNodesElement = unassociatedPlaylists.getElementsByClassName('playlist-dragAndDrop');
+    const unassociatedPlaylistsEmpty = document.getElementsByClassName('unassociated-playlists-empty')[0];
+    if (unassociatedNodesElement.length == 0) {
+        unassociatedPlaylistsEmpty.removeAttribute('hidden');
+    } else {
+        unassociatedPlaylistsEmpty.setAttribute('hidden', 'true');
+    }
+}
+
 
 class SectionConfig {
     private static _maxSections: number | null = null;
@@ -334,89 +363,100 @@ class SendBackendAction {
 
 }
 
-function setEventDragAndDrop() {
-    // Sélectionner les éléments HTML
-    const playlistNonAssociees = OrganizerDragAndDropZone.unassociatedPlaylists();
-    const allSections = OrganizerDragAndDropZone.getAllSections();
+class DragAndDropEventManager {
+    private readonly playlistNonAssociees: HTMLDivElement;
+    private readonly allSections: HTMLDivElement[];
 
-    if (playlistNonAssociees == null || allSections.length === 0) return
+    constructor() {
+        this.playlistNonAssociees = OrganizerDragAndDropZone.unassociatedPlaylists();
+        this.allSections = OrganizerDragAndDropZone.getAllSections();
+    }
 
-    // Définir les événements de drag and drop pour chaque section
-    for (const sectionEl of allSections) {
-        const sectionNumber = allSections.indexOf(sectionEl) + 1;
+    public setupEvents(): void {
+        // Sélectionner les éléments HTML
+        if (this.playlistNonAssociees == null || this.allSections.length === 0) return;
 
-        sectionEl.removeEventListener('dragstart', (_event: DragEvent) => { }); // clear before 
-        sectionEl.addEventListener('dragstart', (e: DragEvent) => { // from associées
+        this.setupSectionEvents();
+        this.setupUnassociatedPlaylistEvents();
+    }
+
+    private setupSectionEvents(): void {
+        // Définir les événements de drag and drop pour chaque section
+        for (const sectionEl of this.allSections) {
+            const sectionNumber = this.allSections.indexOf(sectionEl) + 1;
+
+            sectionEl.removeEventListener('dragstart', (_event: DragEvent) => { }); // clear before 
+            sectionEl.addEventListener('dragstart', (e: DragEvent) => { // from associées
+                const EDT = new EventDataTransfert(e)
+                const target = e.target! as HTMLDivElement;
+                EDT.build(target.id, `playlistAssociees-${sectionNumber}`)
+            });
+
+            sectionEl.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            sectionEl.addEventListener('drop', (elementDragged: DragEvent) => { // to associées
+                this.handleSectionDrop(elementDragged, sectionEl, sectionNumber);
+            });
+        }
+    }
+
+    private setupUnassociatedPlaylistEvents(): void {
+        this.playlistNonAssociees.addEventListener('dragstart', (e: DragEvent) => { // from non associées
             const EDT = new EventDataTransfert(e)
             const target = e.target! as HTMLDivElement;
-            EDT.build(target.id, `playlistAssociees-${sectionNumber}`)
+            EDT.build(target.id, 'playlistNonAssociees')
         });
 
-        sectionEl.addEventListener('dragover', (e) => {
+        this.playlistNonAssociees.addEventListener('dragover', (e) => {
             e.preventDefault();
         });
 
-        sectionEl.addEventListener('drop', (elementDragged: DragEvent) => { // to associées
-            ConsoleTesteur.log('drop event on associées');
+        this.playlistNonAssociees.addEventListener('drop', (e: DragEvent) => { // to non associées
+            this.handleUnassociatedDrop(e);
+        });
+    }
 
-            elementDragged.preventDefault();
-            let orderNewElement = 0
-            const EDT = EventDataTransfert.getClassFromEvent(elementDragged)
-            if (EDT.DataTransfer == null) return
+    private handleSectionDrop(elementDragged: DragEvent, sectionEl: HTMLDivElement, sectionNumber: number): void {
+        ConsoleTesteur.log('drop event on associées');
 
-            const listHtmlPlaylist = [...sectionEl.getElementsByClassName('playlist-dragAndDrop')] as HTMLElement[];
-            const playlist = document.getElementById(EDT.DataTransfer.id) as HTMLDivElement;
+        elementDragged.preventDefault();
+        let orderNewElement = 0
+        const EDT = EventDataTransfert.getClassFromEvent(elementDragged)
+        if (EDT.DataTransfer == null) return
 
-            if (!playlist) {
-                ConsoleTesteur.error(`Playlist element not found with id: ${EDT.DataTransfer.id}`);
-                return;
-            }
+        const listHtmlPlaylist = [...sectionEl.getElementsByClassName('playlist-dragAndDrop')] as HTMLElement[];
+        const playlist = document.getElementById(EDT.DataTransfer.id) as HTMLDivElement;
 
-            const btnPlaylist = new OrganizerButtonPlaylist(EDT.DataTransfer.id)
-            const sendbackend = new SendBackendAction()
+        if (!playlist) {
+            ConsoleTesteur.error(`Playlist element not found with id: ${EDT.DataTransfer.id}`);
+            return;
+        }
 
-            if (EDT.DataTransfer.dragstart.startsWith('playlistAssociees')) {
-                //same section 
-                if (EDT.DataTransfer.dragstart === `playlistAssociees-${sectionNumber}`) {
-                    ConsoleTesteur.group('Updating music in the same section', sectionEl);
-                    ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
+        const btnPlaylist = new OrganizerButtonPlaylist(EDT.DataTransfer.id)
+        const sendbackend = new SendBackendAction()
 
-                    if (listHtmlPlaylist.length === 1 && listHtmlPlaylist[0].id === playlist.id) {
-                        ConsoleTesteur.log('Only one element in section, no need to update');
-                    } else {
-                        const handler = new DropPointHandler(playlist, listHtmlPlaylist)
-                        playlist.remove();
-                        handler.insertElement(elementDragged);
-                        orderNewElement = handler.getNewOrder()
-                        sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber)
-                    }
-                    ConsoleTesteur.groupEnd();
+        if (EDT.DataTransfer.dragstart.startsWith('playlistAssociees')) {
+            //same section 
+            if (EDT.DataTransfer.dragstart === `playlistAssociees-${sectionNumber}`) {
+                ConsoleTesteur.group('Updating music in the same section', sectionEl);
+                ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
+
+                if (listHtmlPlaylist.length === 1 && listHtmlPlaylist[0].id === playlist.id) {
+                    ConsoleTesteur.log('Only one element in section, no need to update');
                 } else {
-                    // different section
-                    ConsoleTesteur.group('Updating music in the different section', sectionEl);
-                    ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
-
-                    if (listHtmlPlaylist.length === 0) {
-                        ConsoleTesteur.log('Section is empty, appending playlist directly');
-
-                        if (sectionEl && playlist) {
-                            sectionEl.appendChild(playlist);
-                            orderNewElement = 1;
-                        }
-                    } else {
-                        const handler = new DropPointHandler(playlist, listHtmlPlaylist)
-                        playlist.remove();
-                        handler.insertElement(elementDragged);
-                        orderNewElement = handler.getNewOrder()
-                    }
+                    const handler = new DropPointHandler(playlist, listHtmlPlaylist)
+                    playlist.remove();
+                    handler.insertElement(elementDragged);
+                    orderNewElement = handler.getNewOrder()
                     sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber)
-
-
-                    ConsoleTesteur.groupEnd();
                 }
-
+                ConsoleTesteur.groupEnd();
             } else {
-                ConsoleTesteur.group('Adding music from unassociated to associated');
+                // different section
+                ConsoleTesteur.group('Updating music in the different section', sectionEl);
+                ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
 
                 if (listHtmlPlaylist.length === 0) {
                     ConsoleTesteur.log('Section is empty, appending playlist directly');
@@ -426,37 +466,43 @@ function setEventDragAndDrop() {
                         orderNewElement = 1;
                     }
                 } else {
-                    ConsoleTesteur.log('Section is not empty, inserting playlist');
                     const handler = new DropPointHandler(playlist, listHtmlPlaylist)
                     playlist.remove();
                     handler.insertElement(elementDragged);
                     orderNewElement = handler.getNewOrder()
                 }
-                sendbackend.addMusic(btnPlaylist, orderNewElement, sectionNumber)
+                sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber)
+
                 ConsoleTesteur.groupEnd();
             }
-            checkEmptyPlaylist();
 
-            const cleanorder = new CleanOrderHandler()
-            cleanorder.trueReorder().resetBadge()
-        });
-    };
+        } else {
+            ConsoleTesteur.group('Adding music from unassociated to associated');
 
-    playlistNonAssociees.addEventListener('dragstart', (e: DragEvent) => { // from non associées
-        const EDT = new EventDataTransfert(e)
-        const target = e.target! as HTMLDivElement;
-        EDT.build(target.id, 'playlistNonAssociees')
-    });
+            if (listHtmlPlaylist.length === 0) {
+                ConsoleTesteur.log('Section is empty, appending playlist directly');
 
+                if (sectionEl && playlist) {
+                    sectionEl.appendChild(playlist);
+                    orderNewElement = 1;
+                }
+            } else {
+                ConsoleTesteur.log('Section is not empty, inserting playlist');
+                const handler = new DropPointHandler(playlist, listHtmlPlaylist)
+                playlist.remove();
+                handler.insertElement(elementDragged);
+                orderNewElement = handler.getNewOrder()
+            }
+            sendbackend.addMusic(btnPlaylist, orderNewElement, sectionNumber)
+            ConsoleTesteur.groupEnd();
+        }
+        checkEmptyPlaylist();
 
+        const cleanorder = new CleanOrderHandler()
+        cleanorder.trueReorder().resetBadge()
+    }
 
-    playlistNonAssociees.addEventListener('dragover', (e) => {
-        e.preventDefault();
-    });
-
-
-
-    playlistNonAssociees.addEventListener('drop', (e: DragEvent) => { // to non associées
+    private handleUnassociatedDrop(e: DragEvent): void {
         ConsoleTesteur.log('drop event on non associées');
 
         e.preventDefault();
@@ -469,8 +515,8 @@ function setEventDragAndDrop() {
         const id = EDT.DataTransfer.id;
         const playlist = document.getElementById(id) as HTMLElement;
 
-        if (playlistNonAssociees && playlist) {
-            playlistNonAssociees.appendChild(playlist);
+        if (this.playlistNonAssociees && playlist) {
+            this.playlistNonAssociees.appendChild(playlist);
         }
         checkEmptyPlaylist();
         const sendbackend = new SendBackendAction()
@@ -478,36 +524,10 @@ function setEventDragAndDrop() {
 
         const cleanorder = new CleanOrderHandler()
         cleanorder.trueReorder().resetBadge()
-    });
-}
-
-function checkEmptyPlaylist() {
-    // Vérifier chaque section
-    const maxSections = SectionConfig.getMaxSections();
-    for (let i = 1; i <= maxSections; i++) {
-        const sectionEl = OrganizerDragAndDropZone.associatedPlaylistsSection(i);
-        if (sectionEl) { // Vérifier que la section existe
-            const sectionNodesElement = sectionEl.getElementsByClassName('playlist-dragAndDrop');
-            const sectionEmpty = document.getElementsByClassName(`section-${i}-empty`)[0];
-            if (sectionEmpty) { // Vérifier que l'élément empty existe
-                if (sectionNodesElement.length == 0) {
-                    sectionEmpty.removeAttribute('hidden');
-                } else {
-                    sectionEmpty.setAttribute('hidden', 'true');
-                }
-            }
-        }
-    }
-
-    const unassociatedPlaylists = OrganizerDragAndDropZone.unassociatedPlaylists();
-    const unassociatedNodesElement = unassociatedPlaylists.getElementsByClassName('playlist-dragAndDrop');
-    const unassociatedPlaylistsEmpty = document.getElementsByClassName('unassociated-playlists-empty')[0];
-    if (unassociatedNodesElement.length == 0) {
-        unassociatedPlaylistsEmpty.removeAttribute('hidden');
-    } else {
-        unassociatedPlaylistsEmpty.setAttribute('hidden', 'true');
     }
 }
+
+
 
 class SectionAdder {
 
@@ -581,7 +601,8 @@ class SectionAdder {
 
                 ConsoleTesteur.info(`Section ${nextSectionNumber} added successfully`);
 
-                setEventDragAndDrop();
+                new DragAndDropEventManager().setupEvents();
+
             }
         }
     }
