@@ -25,22 +25,8 @@ class SoundBoardService:
             request (HttpRequest): Requête HTTP contenant l'utilisateur connecté
         """
         self.request = request
+        self.soundboard_repository = SoundBoardRepository()
         
-    def get_all_soundboard(self) -> list[SoundBoard]:
-        """
-        Récupère tous les soundboards de l'utilisateur connecté.
-        
-        Returns:
-            list[SoundBoard]: Liste des soundboards de l'utilisateur, 
-                             ordonnés par date de mise à jour, 
-                             liste vide en cas d'erreur
-        """
-        try:
-            _query_set = SoundBoard.objects.all().order_by('updated_at') # TODO repository
-            soundboards = _query_set.filter(user=self.request.user)
-        except Exception:
-            soundboards = []
-        return soundboards
     
     def get_soundboard(self, soundboard_uuid: int) -> Optional[SoundBoard]:
         """
@@ -53,13 +39,11 @@ class SoundBoardService:
             Optional[SoundBoard]: Le soundboard si trouvé et appartenant à l'utilisateur,
                                  None sinon
         """
-        try:
-            soundboard = SoundBoard.objects.get(uuid=soundboard_uuid) # TODO repository
-            if not soundboard or soundboard.user != self.request.user:
-                return None
-            return soundboard
-        except SoundBoard.DoesNotExist:
+        soundboard = self.soundboard_repository.get(soundboard_uuid)
+        if not soundboard or soundboard.user != self.request.user:
             return None
+        return soundboard
+      
     
     def get_public_soundboard(self, soundboard_uuid: int) -> Optional[SoundBoard]:
         """
@@ -72,14 +56,11 @@ class SoundBoardService:
             Optional[SoundBoard]: Le soundboard s'il est trouvé et public,
                                  None sinon
         """
-        try:
-            soundboard = SoundBoard.objects.get(uuid=soundboard_uuid) # TODO repository
-            if not soundboard or not soundboard.is_public:
-                return None
-            return soundboard
-        except SoundBoard.DoesNotExist:
+        soundboard = self.soundboard_repository.get(soundboard_uuid)
+        if not soundboard or not soundboard.is_public:
             return None
-        
+        return soundboard
+     
     def get_soundboard_from_shared_soundboard(self, soundboard_uuid: int, token: str) -> Optional[SoundBoard]:
         """
         Récupère un soundboard via un lien de partage avec token.
@@ -92,7 +73,7 @@ class SoundBoardService:
             Optional[SoundBoard]: Le soundboard si le token est valide,
                                  None sinon
         """
-        soundboard = SoundBoardRepository().get(soundboard_uuid)
+        soundboard = self.soundboard_repository.get(soundboard_uuid)
         if not soundboard:
             return None
 
@@ -116,8 +97,8 @@ class SoundBoardService:
         """
         user_parameters = UserParametersFactory(self.request.user)
         limit_soundboard = user_parameters.limit_soundboard
-        
-        if len(SoundBoard.objects.filter(user=self.request.user)) >= limit_soundboard:
+
+        if self.soundboard_repository.get_count_with_user(self.request.user) >= limit_soundboard:
             ServerNotificationBuilder(self.request).set_message(
                 "Vous avez atteint la limite de soundboard (" + str(limit_soundboard) + " max)."
             ).set_statut("error").send()

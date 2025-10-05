@@ -1,8 +1,8 @@
 
-from django.utils import timezone
-from main.domain.brokers.service.cleanService.BaseCleanService import BaseCleanService
-from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
 from main.domain.common.utils.logger import LoggerFactory
+from main.domain.brokers.service.cleanService.BaseCleanService import BaseCleanService
+from main.domain.common.repository.SharedSoundboardRepository import SharedSoundboardRepository
+
 
 class SharedSoundboardService(BaseCleanService):
     def __init__(self):
@@ -11,5 +11,5 @@ class SharedSoundboardService(BaseCleanService):
 
     def purge_expired_shared_soundboard(self):
         # Utiliser une comparaison inclusive (<=) pour éviter les problèmes de microsecondes
-        SharedSoundboard.objects.filter(expiration_date__lte=timezone.now()).delete()  #TODO repository
+        SharedSoundboardRepository().delete_expired()
 

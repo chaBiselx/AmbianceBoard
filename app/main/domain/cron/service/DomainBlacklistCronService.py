@@ -1,6 +1,7 @@
 import requests
 from django.db import IntegrityError
 from main.architecture.persistence.models.DomainBlacklist import DomainBlacklist
+from main.domain.common.repository.DomainBlacklistRepository import DomainBlacklistRepository
 from main.domain.cron.service.domain_providers.RemoteTextDomainProvider import RemoteTextDomainProvider
 
 from main.domain.common.utils.logger import logger
@@ -35,5 +36,5 @@ class DomainBlacklistCronService:
         ]
 
         if new_domains:
-            result = DomainBlacklist.objects.bulk_create(new_domains, ignore_conflicts=True)  #TODO repository
+            result = DomainBlacklistRepository().bulk_create(new_domains)
             logger.info(f"Successfully synced domains. {len(result)} new domains were added.")

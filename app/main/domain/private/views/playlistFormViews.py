@@ -86,7 +86,7 @@ def playlist_update(request, playlist_uuid):
             return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
     else:
         form = PlaylistForm(instance=playlist)
-    list_track = MusicRepository().get_list_music(playlist_uuid)
+    list_track = MusicRepository().get_list_music(playlist_uuid, request.user)
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
     link_music_allowed_values = LinkMusicAllowedEnum.values()
     return render(

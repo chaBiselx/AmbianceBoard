@@ -2,12 +2,13 @@ from django.db.models import Q
 from django.utils import timezone
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.GeneralNotification import GeneralNotification
-from main.architecture.persistence.models.UserNotificationDismissal import UserNotificationDismissal
+from main.domain.common.repository.UserNotificationDismissalRepository import UserNotificationDismissalRepository
+
 
 
 class GeneralNotificationFilter:
     def __init__(self, queryset=None):
-        self.queryset = queryset or GeneralNotification.objects.all()  #TODO repository
+        self.queryset = queryset or GeneralNotification.objects.all()
         
     def filter_by_active(self, is_active=True):
         self.queryset = self.queryset.filter(is_active=is_active)
@@ -25,5 +26,5 @@ class GeneralNotificationFilter:
         return self.queryset
 
     def filter_by_user_has_notifications(self, user: User):
-        self.queryset = self.queryset.exclude(id__in=UserNotificationDismissal.objects.filter(user=user).values_list('notification_id', flat=True))  #TODO repository
+        self.queryset = self.queryset.exclude(id__in=UserNotificationDismissalRepository().get_list_ids(user))
         return self.queryset

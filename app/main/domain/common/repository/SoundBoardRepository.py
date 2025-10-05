@@ -1,6 +1,7 @@
 from typing import Any, Optional, List
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.User import User
 from main.domain.common.repository.filters.SoundBoardFilter import SoundBoardFilter
 
 
@@ -17,3 +18,12 @@ class SoundBoardRepository:
             return SoundBoard.objects.get(uuid=soundboard_uid)
         except SoundBoard.DoesNotExist:
             return None
+        
+    def count_private(self, user: User) -> int:
+        return SoundBoard.objects.filter(user=user).count()
+    
+    def get_count_with_user(self, user: User) -> int:
+        return SoundBoard.objects.filter(user=user).count()
+        
+
+

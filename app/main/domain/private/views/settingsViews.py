@@ -12,7 +12,10 @@ from main.domain.private.form.PlaylistColorUserForm import PlaylistColorUserForm
 from main.domain.common.repository.PlaylistColorUserRepository import PlaylistColorUserRepository
 from main.domain.common.repository.UserDevicePreferenceRepository import UserDevicePreferenceRepository
 from main.domain.common.repository.UserPreferenceRepository import UserPreferenceRepository
+from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+from main.domain.common.repository.PlaylistRepository import PlaylistRepository
 from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
+
 from main.domain.common.enum.ThemeEnum import ThemeEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.exceptions.PostDataException import PostDataException
@@ -25,8 +28,8 @@ from main.domain.common.utils.logger import logger
 def settings_index(request):
     user_tiers = UserTierManager.get_tier_display_name(request.user)
     limit = UserTierManager.get_user_limits(request.user)
-    nb_playlist = len(PlaylistService(request).get_all_playlist())
-    nb_soundboard = len(SoundBoardService(request).get_all_soundboard())
+    nb_playlist = PlaylistRepository().count_private(request.user)
+    nb_soundboard = SoundBoardRepository().count_private(request.user)
     app_setting = {
         'target_bitrate': Settings.get('AUDIO_BITRATE_REDUCER_TARGET_BITRATE')
     }

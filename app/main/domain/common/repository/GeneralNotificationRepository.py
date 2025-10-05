@@ -4,7 +4,7 @@ from main.architecture.persistence.models.User import User
 from main.domain.common.repository.filters.GeneralNotificationFilter import GeneralNotificationFilter
 
 class GeneralNotificationRepository:
-
+    
     def get_list_notifications_actives(self, user: User|None) -> List[GeneralNotification]:
         general_notification_filter = GeneralNotificationFilter()
         general_notification_filter.filter_by_active(True)

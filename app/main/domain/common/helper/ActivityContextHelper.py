@@ -2,6 +2,7 @@ import uuid
 from typing import Any, Optional
 from django.http import HttpRequest
 from main.architecture.persistence.models.UserActivity import UserActivity
+from main.domain.common.repository.UserActivityRepository import UserActivityRepository
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from django.utils import timezone
 
@@ -38,10 +39,8 @@ class ActivityContextHelper:
     @staticmethod
     def find_activity(activity_uuid: uuid.UUID, activity_type: UserActivityTypeEnum) -> Optional[UserActivity]:
         """Recherche une activité par son UUID."""
-        try:
-            return UserActivity.objects.get(uuid=activity_uuid, activity_type=activity_type) #TODO repository
-        except UserActivity.DoesNotExist:
-            return None
+        return UserActivityRepository().get(activity_uuid=activity_uuid, activity_type=activity_type)
+       
 
     @staticmethod
     def set_end_action(activity: UserActivity):

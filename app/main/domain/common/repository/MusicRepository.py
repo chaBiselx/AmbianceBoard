@@ -15,12 +15,12 @@ class MusicRepository:
     def exist_from_path(self, file_path: str) -> bool:
         return Music.objects.filter(file=file_path).exists()
     
-    def get_list_music(self, playlist_uuid: int) -> Optional[List[Music]]:
+    def get_list_music(self, playlist_uuid: int, user:User) -> Optional[List[Music]]:
         try:
             music_filter = MusicFilter() 
-            queryset = music_filter.filter_by_user(self.request.user)
+            queryset = music_filter.filter_by_user(user)
             queryset = music_filter.filter_by_playlist(playlist_uuid)
             return queryset
-        except Playlist.DoesNotExist:
+        except Music.DoesNotExist:
             return None
 

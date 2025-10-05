@@ -3,6 +3,19 @@ from main.architecture.persistence.models.UserActivity import UserActivity
 from django.db.models import Count, Q, Avg, F, QuerySet
 
 class UserActivityRepository:
+    
+    def get(self, activity_uuid: str, activity_type: str) -> Optional[UserActivity]:
+        try:
+            return UserActivity.objects.get(uuid=activity_uuid, activity_type=activity_type)
+        except UserActivity.DoesNotExist:
+            return None
+
+    def create(self, activity_type: str, user: Any, session_key: str = '') -> UserActivity:
+        return UserActivity.create_activity(
+            activity_type=activity_type,
+            user=user,
+            session_key=session_key
+        )
 
     def get_activity_before(self, date):
         # Logic to retrieve user activities before the given date
