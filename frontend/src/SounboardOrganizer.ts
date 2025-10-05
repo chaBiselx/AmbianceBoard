@@ -382,11 +382,15 @@ function setEventDragAndDrop() {
                     ConsoleTesteur.group('Updating music in the same section', sectionEl);
                     ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
 
-                    const handler = new DropPointHandler(playlist, listHtmlPlaylist)
-                    playlist.remove();
-                    handler.insertElement(elementDragged);
-                    orderNewElement = handler.getNewOrder()
-                    sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber)
+                    if (listHtmlPlaylist.length === 1 && listHtmlPlaylist[0].id === playlist.id) {
+                        ConsoleTesteur.log('Only one element in section, no need to update');
+                    } else {
+                        const handler = new DropPointHandler(playlist, listHtmlPlaylist)
+                        playlist.remove();
+                        handler.insertElement(elementDragged);
+                        orderNewElement = handler.getNewOrder()
+                        sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber)
+                    }
                     ConsoleTesteur.groupEnd();
                 } else {
                     // different section
@@ -583,9 +587,6 @@ class ScrollManager {
             const mouseY = e.clientY;
             const windowHeight = window.innerHeight;
 
-            console.log(`mouseY: ${mouseY}, windowHeight: ${windowHeight}, scrollZone: ${this.scrollZone}`);
-
-
             if (mouseY < this.scrollZone) {
                 // Near top edge
                 this.startAutoScroll('up');
@@ -620,8 +621,6 @@ class ScrollManager {
     private startAutoScroll(direction: 'up' | 'down') {
         if (this.scrollInterval) return;
         this.scrollInterval = setInterval(() => {
-            console.log(`Auto-scrolling ${direction}`);
-
             if (direction === 'up') {
                 window.scrollBy(0, -this.scrollSpeed);
                 if (this.detectTop()) {
