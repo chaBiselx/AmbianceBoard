@@ -3,6 +3,8 @@ import type { position } from '@/type/General'
 import { OrganizerButtonPlaylist } from '@/modules/OrganizerButtonPlaylist'
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import ConsoleTesteur from "./modules/General/ConsoleTesteur";
+import Time from "@/modules/Util/Time";
+
 
 type DataTransfer = {
     id: string
@@ -15,7 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
         setEventDragAndDrop()
         checkEmptyPlaylist()
         initOrderBadge()
-        initAddSectionButton()
+        initAddSectionButton();
+        new ScrollManager().addEvent();
     }
 });
 
@@ -560,6 +563,88 @@ function addNewSection() {
             setEventDragAndDrop();
         }
     }
+}
+
+class ScrollManager {
+    private scrollInterval: number | null = null;
+    private scrollSpeed: number; // pixels per interval
+    private scrollZone: number; // pixels from edge to trigger scroll
+
+    constructor() {
+        this.scrollZone = window.innerHeight * 0.15;
+        this.scrollSpeed = window.innerHeight * 0.30;
+    }
+
+    public addEvent() {
+        // Add dragover event to document to handle auto-scroll
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+
+            const mouseY = e.clientY;
+            const windowHeight = window.innerHeight;
+
+            console.log(`mouseY: ${mouseY}, windowHeight: ${windowHeight}, scrollZone: ${this.scrollZone}`);
+
+
+            if (mouseY < this.scrollZone) {
+                // Near top edge
+                this.startAutoScroll('up');
+            } else if (mouseY > windowHeight - this.scrollZone) {
+                // Near bottom edge
+                this.startAutoScroll('down');
+            } else {
+                // In middle area
+                this.stopAutoScroll();
+            }
+        });
+        // Stop scrolling when drag leaves the window
+        document.addEventListener('dragleave', (_) => {
+            this.stopAutoScroll();
+        });
+
+        document.addEventListener('dragdrop', (_) => {
+            this.stopAutoScroll();
+        });
+
+
+    }
+
+    private detectTop(): boolean {
+        return window.scrollY === 0;
+    }
+
+    private detectBottom(): boolean {
+        return (window.innerHeight + window.scrollY) >= document.body.offsetHeight;
+    }
+
+    private startAutoScroll(direction: 'up' | 'down') {
+        if (this.scrollInterval) return;
+        this.scrollInterval = setInterval(() => {
+            console.log(`Auto-scrolling ${direction}`);
+
+            if (direction === 'up') {
+                window.scrollBy(0, -this.scrollSpeed);
+                if (this.detectTop()) {
+                    this.stopAutoScroll();
+                }
+            } else { //down
+                window.scrollBy(0, this.scrollSpeed);
+                if (this.detectBottom()) {
+                    this.stopAutoScroll();
+                }
+            }
+        }, 16);
+    }
+
+    private stopAutoScroll() {
+        if (this.scrollInterval) {
+            clearInterval(this.scrollInterval);
+            this.scrollInterval = null;
+        }
+    }
+
+
+
 }
 
 
