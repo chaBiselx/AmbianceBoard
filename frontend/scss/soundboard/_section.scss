@@ -2,8 +2,8 @@
 
 
 .responsive-sections-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.3rem;
     padding: 0.5rem;
     width: 100%;
@@ -12,12 +12,14 @@
 
 .responsive-sections-container section {
     border-radius: 0.375rem;
-
     padding: 0.4rem;
     display: flex;
     flex-direction: column;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid transparent;
+    flex: 1 1 300px; /* flex-grow, flex-shrink, flex-basis */
+    min-width: 300px;
+    max-width: 100%;
 
     @at-root {
         html:not([data-bs-theme="dark"]) & {
@@ -26,7 +28,6 @@
 
         html[data-bs-theme="dark"] & {
             border-color: $border_color_dark;
-
         }
     }
 
@@ -47,13 +48,6 @@
 @media (max-width: 768px) {
     .responsive-sections-container {
         grid-template-columns: 1fr;
-        gap: 0.5rem;
-        padding: 0.5rem;
-    }
-
-    .responsive-sections-container section {
-        min-height: 150px;
-        padding: 0.75rem;
     }
 }
 
@@ -67,14 +61,25 @@
     .responsive-sections-container {
         grid-template-columns: repeat(4, 1fr);
     }
-}
+    
+    /* Si il n'y a qu'un seul élément, il prend toute la largeur */
+    .responsive-sections-container:has(section:only-child) {
+        grid-template-columns: 1fr;
+    }
 
+    /* Si  divisible par 2 */
+    .responsive-sections-container:has(section:nth-child(2)) 
+    .responsive-sections-container:has(section:nth-child(4)) 
+    .responsive-sections-container:has(section:nth-child(8)) 
+    .responsive-sections-container:has(section:nth-child(10)) 
+    {
+        grid-template-columns: repeat(2, 1fr);
+    }
 
-
-/* Pour les écrans très larges */
-@media (min-width: 1600px) {
-    .responsive-sections-container {
-        max-width: 1400px;
-        margin: 0 auto;
+    /* Si  divisible par 3 */
+    .responsive-sections-container:has(section:nth-child(3)) 
+    .responsive-sections-container:has(section:nth-child(6))
+    .responsive-sections-container:has(section:nth-child(9)){
+        grid-template-columns: repeat(3, 1fr);
     }
 }
