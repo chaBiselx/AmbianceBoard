@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         checkEmptyPlaylist()
         initOrderBadge()
         initAddSectionButton();
+        new SectionAdder().addEvent();
         new ScrollManager().addEvent();
     }
 });
@@ -510,64 +511,85 @@ function checkEmptyPlaylist() {
     }
 }
 
-function initAddSectionButton() {
-    const addSectionButton = document.getElementById('add-section-button');
-    if (addSectionButton) {
-        addSectionButton.addEventListener('click', () => {
-            addNewSection();
-        });
-    }
-}
+class SectionAdder {
 
-function addNewSection() {
-    const template = document.getElementById('add-section-template') as HTMLTemplateElement;
-    if (!template) {
-        ConsoleTesteur.error('Template add-section-template not found');
-        return;
+    private template: HTMLTemplateElement | null = null;
+
+    constructor() { 
+        this.setTemplate();
     }
 
-    const nextSectionNumber = SectionConfig.getNextSectionNumber();
-
-    // Vérifier si on dépasse la limite
-    if (nextSectionNumber > Number.parseInt(template.dataset.maxSection!)) {
-        ConsoleTesteur.warn(`Maximum number of sections reached (${template.dataset.maxSection})`);
-        return;
+    public addEvent() {
+        const addSectionButton = document.getElementById('add-section-button');
+        if (addSectionButton && this.template) {
+            addSectionButton.addEventListener('click', () => {
+                const sectionAdder = new SectionAdder();
+                sectionAdder.addNewSection();
+            });
+        }
     }
 
-    // Cloner le template
-    const clone = template.content.cloneNode(true) as DocumentFragment;
+    private setTemplate(): boolean {
+        this.template = document.getElementById('add-section-template') as HTMLTemplateElement;
+        if (!this.template) {
+            ConsoleTesteur.error('Template add-section-template not found');
+            return false;
+        }
+        return true;
+    }
 
-    // Mettre à jour les IDs et numéros de section
-    const sectionContainer = clone.querySelector('.section-container') as HTMLDivElement;
-    const sectionEmpty = clone.querySelector('[class*="section-"][class*="-empty"]') as HTMLSpanElement;
-    const numSectionSpan = clone.querySelector('.num-section') as HTMLSpanElement;
+    private addNewSection(): void {
+        if (!this.template) {
+            return;
+        }
 
-    if (sectionContainer && sectionEmpty && numSectionSpan) {
-        // Mettre à jour l'ID et les attributs
-        sectionContainer.id = `associated-playlists-section-${nextSectionNumber}`;
-        sectionContainer.dataset.section = nextSectionNumber.toString();
+        const nextSectionNumber = SectionConfig.getNextSectionNumber();
 
-        // Mettre à jour les classes et numéros
-        sectionEmpty.className = sectionEmpty.className.replace(
-            /section-\d+-empty/,
-            `section-${nextSectionNumber}-empty`
-        );
-        numSectionSpan.textContent = nextSectionNumber.toString();
+        // Vérifier si on dépasse la limite
+        if (nextSectionNumber > Number.parseInt(this.template.dataset.maxSection!)) {
+            ConsoleTesteur.warn(`Maximum number of sections reached (${this.template.dataset.maxSection})`);
+            return;
+        }
 
-        // Trouver le conteneur parent pour insérer la nouvelle section
-        const parentContainer = document.getElementById('associated-playlists-container');
-        if (parentContainer) {
-            parentContainer.appendChild(clone);
+        
 
-            // Rafraîchir la configuration des sections
-            SectionConfig.refreshMaxSections();
+        // Cloner le template
+        const clone = this.template.content.cloneNode(true) as DocumentFragment;
 
-            ConsoleTesteur.info(`Section ${nextSectionNumber} added successfully`);
+        // Mettre à jour les IDs et numéros de section
+        const sectionContainer = clone.querySelector('.section-container') as HTMLDivElement;
+        const sectionEmpty = clone.querySelector('[class*="section-"][class*="-empty"]') as HTMLSpanElement;
+        const numSectionSpan = clone.querySelector('.num-section') as HTMLSpanElement;
 
-            setEventDragAndDrop();
+        if (sectionContainer && sectionEmpty && numSectionSpan) {
+            // Mettre à jour l'ID et les attributs
+            sectionContainer.id = `associated-playlists-section-${nextSectionNumber}`;
+            sectionContainer.dataset.section = nextSectionNumber.toString();
+
+            // Mettre à jour les classes et numéros
+            sectionEmpty.className = sectionEmpty.className.replace(
+                /section-\d+-empty/,
+                `section-${nextSectionNumber}-empty`
+            );
+            numSectionSpan.textContent = nextSectionNumber.toString();
+
+            // Trouver le conteneur parent pour insérer la nouvelle section
+            const parentContainer = document.getElementById('associated-playlists-container');
+            if (parentContainer) {
+                parentContainer.appendChild(clone);
+
+                // Rafraîchir la configuration des sections
+                SectionConfig.refreshMaxSections();
+
+                ConsoleTesteur.info(`Section ${nextSectionNumber} added successfully`);
+
+                setEventDragAndDrop();
+            }
         }
     }
 }
+
+
 
 class ScrollManager {
     private scrollInterval: number | null = null;
