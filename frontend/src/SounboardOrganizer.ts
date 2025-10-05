@@ -422,84 +422,91 @@ class DragAndDropEventManager {
         ConsoleTesteur.log('drop event on associées');
 
         elementDragged.preventDefault();
-        let orderNewElement = 0
-        const EDT = EventDataTransfert.getClassFromEvent(elementDragged)
-        if (EDT.DataTransfer == null) return
+        const EDT = EventDataTransfert.getClassFromEvent(elementDragged);
+        if (EDT.DataTransfer == null) return;
 
-        const listHtmlPlaylist = [...sectionEl.getElementsByClassName('playlist-dragAndDrop')] as HTMLElement[];
         const playlist = document.getElementById(EDT.DataTransfer.id) as HTMLDivElement;
-
         if (!playlist) {
             ConsoleTesteur.error(`Playlist element not found with id: ${EDT.DataTransfer.id}`);
             return;
         }
 
-        const btnPlaylist = new OrganizerButtonPlaylist(EDT.DataTransfer.id)
-        const sendbackend = new SendBackendAction()
+        const listHtmlPlaylist = [...sectionEl.getElementsByClassName('playlist-dragAndDrop')] as HTMLElement[];
+        const btnPlaylist = new OrganizerButtonPlaylist(EDT.DataTransfer.id);
+        const sendbackend = new SendBackendAction();
 
-        if (EDT.DataTransfer.dragstart.startsWith('playlistAssociees')) {
-            //same section 
-            if (EDT.DataTransfer.dragstart === `playlistAssociees-${sectionNumber}`) {
-                ConsoleTesteur.group('Updating music in the same section', sectionEl);
-                ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
+        let orderNewElement: number;
+        const isFromAssociatedSection = EDT.DataTransfer.dragstart.startsWith('playlistAssociees');
+        const isSameSection = EDT.DataTransfer.dragstart === `playlistAssociees-${sectionNumber}`;
 
-                if (listHtmlPlaylist.length === 1 && listHtmlPlaylist[0].id === playlist.id) {
-                    ConsoleTesteur.log('Only one element in section, no need to update');
-                } else {
-                    const handler = new DropPointHandler(playlist, listHtmlPlaylist)
-                    playlist.remove();
-                    handler.insertElement(elementDragged);
-                    orderNewElement = handler.getNewOrder()
-                    sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber)
-                }
-                ConsoleTesteur.groupEnd();
-            } else {
-                // different section
-                ConsoleTesteur.group('Updating music in the different section', sectionEl);
-                ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
-
-                if (listHtmlPlaylist.length === 0) {
-                    ConsoleTesteur.log('Section is empty, appending playlist directly');
-
-                    if (sectionEl && playlist) {
-                        sectionEl.appendChild(playlist);
-                        orderNewElement = 1;
-                    }
-                } else {
-                    const handler = new DropPointHandler(playlist, listHtmlPlaylist)
-                    playlist.remove();
-                    handler.insertElement(elementDragged);
-                    orderNewElement = handler.getNewOrder()
-                }
-                sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber)
-
-                ConsoleTesteur.groupEnd();
+        if (isFromAssociatedSection && isSameSection) {
+            orderNewElement = this.handleSameSectionDrop(elementDragged, playlist, listHtmlPlaylist, sectionEl);
+            if (orderNewElement > 0) {
+                sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber);
             }
-
+        } else if (isFromAssociatedSection) {
+            orderNewElement = this.handleDifferentSectionDrop(elementDragged, playlist, listHtmlPlaylist, sectionEl);
+            sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber);
         } else {
-            ConsoleTesteur.group('Adding music from unassociated to associated');
-
-            if (listHtmlPlaylist.length === 0) {
-                ConsoleTesteur.log('Section is empty, appending playlist directly');
-
-                if (sectionEl && playlist) {
-                    sectionEl.appendChild(playlist);
-                    orderNewElement = 1;
-                }
-            } else {
-                ConsoleTesteur.log('Section is not empty, inserting playlist');
-                const handler = new DropPointHandler(playlist, listHtmlPlaylist)
-                playlist.remove();
-                handler.insertElement(elementDragged);
-                orderNewElement = handler.getNewOrder()
-            }
-            sendbackend.addMusic(btnPlaylist, orderNewElement, sectionNumber)
-            ConsoleTesteur.groupEnd();
+            orderNewElement = this.handleUnassociatedToAssociatedDrop(elementDragged, playlist, listHtmlPlaylist, sectionEl);
+            sendbackend.addMusic(btnPlaylist, orderNewElement, sectionNumber);
         }
-        checkEmptyPlaylist();
 
-        const cleanorder = new CleanOrderHandler()
-        cleanorder.trueReorder().resetBadge()
+        checkEmptyPlaylist();
+        const cleanorder = new CleanOrderHandler();
+        cleanorder.trueReorder().resetBadge();
+    }
+
+    private handleSameSectionDrop(elementDragged: DragEvent, playlist: HTMLDivElement, listHtmlPlaylist: HTMLElement[], sectionEl: HTMLDivElement): number {
+        ConsoleTesteur.group('Updating music in the same section', sectionEl);
+        ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
+
+        if (listHtmlPlaylist.length === 1 && listHtmlPlaylist[0].id === playlist.id) {
+            ConsoleTesteur.log('Only one element in section, no need to update');
+            ConsoleTesteur.groupEnd();
+            return 0; // No update needed
+        }
+
+        const handler = new DropPointHandler(playlist, listHtmlPlaylist);
+        playlist.remove();
+        handler.insertElement(elementDragged);
+        const newOrder = handler.getNewOrder();
+        ConsoleTesteur.groupEnd();
+        return newOrder;
+    }
+
+    private handleDifferentSectionDrop(elementDragged: DragEvent, playlist: HTMLDivElement, listHtmlPlaylist: HTMLElement[], sectionEl: HTMLDivElement): number {
+        ConsoleTesteur.group('Updating music in the different section', sectionEl);
+        ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
+
+        const newOrder = this.insertPlaylistInSection(elementDragged, playlist, listHtmlPlaylist, sectionEl);
+        ConsoleTesteur.groupEnd();
+        return newOrder;
+    }
+
+    private handleUnassociatedToAssociatedDrop(elementDragged: DragEvent, playlist: HTMLDivElement, listHtmlPlaylist: HTMLElement[], sectionEl: HTMLDivElement): number {
+        ConsoleTesteur.group('Adding music from unassociated to associated');
+        
+        const newOrder = this.insertPlaylistInSection(elementDragged, playlist, listHtmlPlaylist, sectionEl);
+        ConsoleTesteur.groupEnd();
+        return newOrder;
+    }
+
+    private insertPlaylistInSection(elementDragged: DragEvent, playlist: HTMLDivElement, listHtmlPlaylist: HTMLElement[], sectionEl: HTMLDivElement): number {
+        if (listHtmlPlaylist.length === 0) {
+            ConsoleTesteur.log('Section is empty, appending playlist directly');
+            if (sectionEl && playlist) {
+                sectionEl.appendChild(playlist);
+                return 1;
+            }
+            return 0;
+        }
+
+        ConsoleTesteur.log('Section is not empty, inserting playlist');
+        const handler = new DropPointHandler(playlist, listHtmlPlaylist);
+        playlist.remove();
+        handler.insertElement(elementDragged);
+        return handler.getNewOrder();
     }
 
     private handleUnassociatedDrop(e: DragEvent): void {
