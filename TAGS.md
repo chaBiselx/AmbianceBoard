@@ -51,10 +51,13 @@ Nouveautés
 
 Améliorations
 - Amélioration de l'esthétique des page d'erreurs
-- amélioration du logger pour beta testeur
+- Amélioration du logger pour beta testeur
 
 Fiabilité & Confiance
 - Refactorisation pour utiliser des Repository au lieu des models
+
+Corrections
+- Corrige annomalie qui augmente progressivement lorsque l'utilisateur souhaite report du contenu
 
 ### 0.1.0-beta.4 - TO_DEFINE
 
