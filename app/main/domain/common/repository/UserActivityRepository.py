@@ -25,7 +25,7 @@ class UserActivityRepository:
         # Logic to retrieve user activities before the given date and with specific activity types
         return UserActivity.objects.filter(start_date__lt=date, activity_type__in=activity_type)
     
-    def get(self, start_date, end_date, activities):
+    def get_activity_counts_by_date_and_type(self, start_date, end_date, activities):
         return UserActivity.objects.filter( 
             start_date__gte=start_date,
             start_date__lte=end_date,

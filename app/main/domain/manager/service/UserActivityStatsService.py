@@ -34,7 +34,7 @@ class UserActivityStatsService:
 
     def _generated_data(self, start_date: datetime, end_date: datetime, activities: List[str]) -> dict:
         # Récupération des données groupées par type d'activité et par date
-        activity_data = UserActivityRepository().get(start_date, end_date, activities)
+        activity_data = UserActivityRepository().get_activity_counts_by_date_and_type(start_date, end_date, activities)
         
         # Organisation des données par type d'activité
         data_by_type = {}
