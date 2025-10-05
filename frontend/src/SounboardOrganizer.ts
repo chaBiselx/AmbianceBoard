@@ -3,7 +3,6 @@ import type { position } from '@/type/General'
 import { OrganizerButtonPlaylist } from '@/modules/OrganizerButtonPlaylist'
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import ConsoleTesteur from "./modules/General/ConsoleTesteur";
-import Time from "@/modules/Util/Time";
 
 
 type DataTransfer = {
@@ -17,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         setEventDragAndDrop()
         checkEmptyPlaylist()
         initOrderBadge()
-        initAddSectionButton();
         new SectionAdder().addEvent();
         new ScrollManager().addEvent();
     }
@@ -593,12 +591,12 @@ class SectionAdder {
 
 class ScrollManager {
     private scrollInterval: number | null = null;
-    private scrollSpeed: number; // pixels per interval
-    private scrollZone: number; // pixels from edge to trigger scroll
+    private readonly scrollSpeed: number; // pixels per interval
+    private readonly scrollZone: number; // pixels from edge to trigger scroll
 
     constructor() {
         this.scrollZone = window.innerHeight * 0.15;
-        this.scrollSpeed = window.innerHeight * 0.30;
+        this.scrollSpeed = window.innerHeight * 0.3;
     }
 
     public addEvent() {
