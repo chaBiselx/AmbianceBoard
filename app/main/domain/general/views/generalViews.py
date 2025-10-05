@@ -20,6 +20,7 @@ from main.domain.common.utils.ServerNotificationBuilder import ServerNotificatio
 from main.domain.common.repository.UserNotificationDismissalRepository import UserNotificationDismissalRepository
 from main.domain.common.repository.GeneralNotificationRepository import GeneralNotificationRepository
 from main.domain.common.repository.UserTiersRepository import UserTiersRepository
+from main.domain.common.repository.UserRepository import UserRepository
 
 from django_ratelimit.decorators import ratelimit
 from main.domain.general.service.ResetPasswordService import ResetPasswordService
@@ -217,11 +218,7 @@ def send_reset_password(request):
 @require_http_methods(['GET', 'POST'])
 @ratelimit(key='ip', rate='3/m', method='POST', block=True)
 def token_validation_reset_password(request, uuid_user:str, token_reinitialisation:str):
-    user = None
-    try:
-        user = User.objects.get(uuid=uuid_user)  #TODO repository
-    except User.DoesNotExist:
-        pass
+    user = UserRepository().get_user(uuid_user)
     if user is None :
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     

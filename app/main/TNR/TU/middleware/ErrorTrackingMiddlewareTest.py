@@ -14,6 +14,7 @@ from main.architecture.middleware.ErrorTrackingMiddleware import ErrorTrackingMi
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.repository.UserActivityRepository import UserActivityRepository
 
 
 class ErrorTrackingMiddlewareTest(TestCase):
@@ -202,7 +203,7 @@ class ErrorTrackingMiddlewareTest(TestCase):
 
         # Simuler une exception lors de la création d'activité
         with patch.object(self.middleware, 'logger') as mock_logger:
-            with patch('main.architecture.persistence.models.UserActivity.UserActivity.create_activity') as mock_create:
+            with patch.object(UserActivityRepository, 'create') as mock_create:
                 mock_create.side_effect = Exception("Database error")
 
                 # Exécuter le middleware - ne doit pas lever d'exception

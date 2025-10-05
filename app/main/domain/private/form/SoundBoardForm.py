@@ -50,7 +50,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
         
         # Si c'est une édition, pré-sélectionner les tags existants
         if self.instance and self.instance.pk:
-            self.fields['tags'].initial = self.instance.tags.filter(is_active=True) # TODO REPOSITORY
+            self.fields['tags'].initial = self.instance.tags.filter(is_active=True)
  
     name = forms.CharField(
         label='Nom du soundboard', 

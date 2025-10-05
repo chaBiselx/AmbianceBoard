@@ -3,10 +3,12 @@ Service pour gérer l'expiration des abonnements utilisateur
 """
 from django.utils import timezone
 from main.domain.common.utils.settings import Settings
-from datetime import timedelta
+
 from main.architecture.persistence.models.UserTier import UserTier
 from main.domain.common.utils.logger import logger
 from main.domain.common.email.UserMail import UserMail
+from main.domain.common.repository.UserTiersRepository import UserTiersRepository
+
 
 
 
@@ -24,11 +26,7 @@ class UserTierExpirationService:
         logger.info("Début de la gestion des tiers expirés.")
         expired_count = 0
         try:
-            now = timezone.now()
-            expired_tiers = UserTier.objects.filter(  #TODO repository
-                tier_expiry_date__lt=now,
-                tier_name__in=['PREMIUM_BASIC', 'PREMIUM_ADVANCED', 'PREMIUM_PRO']
-            )
+            expired_tiers = UserTiersRepository().get_expired_user_premium_tiers()
 
             for user_tier in expired_tiers:
                 try:
@@ -51,18 +49,10 @@ class UserTierExpirationService:
         logger.info("Début de l'envoi des avertissements d'expiration.")
         warning_count = 0
         try:
-            now = timezone.now()
-            warning_threshold = now + timedelta(days=self.delta_days)
-
-            upcoming_expirations = UserTier.objects.filter(  #TODO repository
-                tier_expiry_date__lte=warning_threshold,
-                tier_expiry_date__gt=now,
-                tier_name__in=['PREMIUM_BASIC', 'PREMIUM_ADVANCED', 'PREMIUM_PRO']
-            )
-
+            upcoming_expirations = UserTiersRepository().get_upcoming_expirations_user_tiers(self.delta_days)
             for user_tier in upcoming_expirations:
                 try:
-                    days_left = (user_tier.tier_expiry_date - now).days
+                    days_left = (user_tier.tier_expiry_date - timezone.now()).days
                     logger.info(f"Notification d'expiration dans {days_left} jours pour {user_tier.user.username}")
                     self._send_expiration_warning(user_tier.user, days_left)
                     warning_count += 1

@@ -1,7 +1,8 @@
-from django.db.models import Count
-from django.db.models.functions import TruncDate
 from datetime import datetime
 from main.architecture.persistence.models.User import User
+from main.domain.common.repository.UserRepository import UserRepository
+
+
 
 class UserStatsService:
     @staticmethod
@@ -9,26 +10,12 @@ class UserStatsService:
         """
         Récupère les données d'activité des utilisateurs entre deux dates.
         """
+        user_repository = UserRepository()
          # 1. Récupérer le nombre d'utilisateurs créés par jour
-        users_created = User.objects.filter(  #TODO repository
-            date_joined__date__gte=start_date,
-            date_joined__date__lte=end_date
-        ).annotate(
-            date=TruncDate('date_joined')
-        ).values('date').annotate(
-            count=Count('id')
-        ).order_by('date')
-        
+        users_created = user_repository.get_stats_created(start_date, end_date)  # Utilisation du repository
+
         # 2. Récupérer le nombre de connexions par jour (based on last_login)
-        users_connected = User.objects.filter(  #TODO repository
-            last_login__date__gte=start_date,
-            last_login__date__lte=end_date,
-            last_login__isnull=False  # Exclure les utilisateurs qui ne se sont jamais connectés
-        ).annotate(
-            date=TruncDate('last_login')
-        ).values('date').annotate(
-            count=Count('id')
-        ).order_by('date')
+        users_connected = user_repository.get_stats_connected(start_date, end_date)  # Utilisation du repository
         
         # 3. Formatter les données brutes (seulement les jours avec activité)
         created_data = []

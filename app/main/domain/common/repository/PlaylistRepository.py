@@ -2,6 +2,8 @@ from typing import Any, Optional, List
 
 from django.db.models import Avg, Count
 from django.db import models
+from django.db.models import QuerySet
+
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.User import User
@@ -41,3 +43,6 @@ class PlaylistRepository:
         
     def file_exists(self, file_path: str) -> bool:
         return Playlist.objects.filter(icon=file_path).exists()
+
+    def get_all_queryset(self) -> QuerySet:
+        return Playlist.objects.all()

@@ -39,6 +39,6 @@ class SoundBoardRepository:
             is_public=True, 
             user__isBan=False
         ).order_by('uuid')
-        
 
-
+    def get_all_queryset(self) -> QuerySet[SoundBoard]:
+        return SoundBoard.objects.all()

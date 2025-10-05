@@ -27,8 +27,8 @@ class ActivityContextHelper:
         authenticated_user = None
         if user and hasattr(user, 'is_authenticated') and user.is_authenticated:
             authenticated_user = user
-        
-        activity = UserActivity.create_activity( #TODO repository
+
+        activity = UserActivityRepository().create(
             activity_type=activity_type,
             user=authenticated_user,
             session_key=request.session.session_key if request else '',

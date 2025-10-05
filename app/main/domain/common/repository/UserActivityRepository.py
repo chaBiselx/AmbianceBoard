@@ -1,6 +1,9 @@
 from typing import Any, Optional, List
 from main.architecture.persistence.models.UserActivity import UserActivity
 from django.db.models import Count, Q, Avg, F, QuerySet
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.architecture.persistence.models.User import User
+from django.utils import timezone
 
 class UserActivityRepository:
     
@@ -10,12 +13,35 @@ class UserActivityRepository:
         except UserActivity.DoesNotExist:
             return None
 
-    def create(self, activity_type: str, user: Any, session_key: str = '') -> UserActivity:
-        return UserActivity.create_activity(
-            activity_type=activity_type,
+    def create(self, 
+        activity_type: UserActivityTypeEnum,
+        user: Optional[User] = None,
+        content_object: Optional[Any] = None,
+        session_key: Optional[str] = None,
+    ) -> UserActivity:
+        """
+        Crée une nouvelle activité utilisateur.
+        
+        Args:
+            activity_type: Type d'activité
+            user: Utilisateur (None pour utilisateur anonyme)
+            content_object: Objet associé à l'activité
+            session_key: Clé de session
+            
+        Returns:
+            UserActivity: Instance créée
+        """
+        activity = UserActivity(
             user=user,
-            session_key=session_key
+            is_authenticated=user is not None and user.is_authenticated,
+            activity_type=activity_type.value,
+            content_object=content_object,
+            session_key=session_key,
         )
+        if session_key is None:
+            activity.session_key = ''
+        activity.save()
+        return activity
 
     def get_activity_before(self, date):
         # Logic to retrieve user activities before the given date
@@ -35,5 +61,7 @@ class UserActivityRepository:
         ).values('activity_type', 'date').annotate(
             count=Count('id')
         ).order_by('date', 'activity_type')
+        
+
     
     
