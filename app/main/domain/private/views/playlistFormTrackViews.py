@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-from main.architecture.persistence.models.Music import Music
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.MusicService import MusicService
 from main.domain.private.service.MultipleMusicUploadService import MultipleMusicUploadService
@@ -14,6 +13,7 @@ from main.domain.common.utils.UserTierManager import UserTierManager
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from main.domain.private.service.LinkService import LinkService
 from main.domain.private.form.LinkMusicForm import LinkMusicForm
+from main.domain.common.repository.LinkMusicRepository import LinkMusicRepository
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
@@ -156,7 +156,7 @@ def link_update(request, playlist_uuid, link_id):
     if not playlist:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
 
-    link = (LinkService(request)).get_link(link_id)
+    link = LinkMusicRepository().get_link(link_id)
     if not link:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
 
@@ -186,7 +186,7 @@ def link_delete(request, playlist_uuid, link_id) -> JsonResponse:
         if not playlist:
             return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         
-        link = (LinkService(request)).get_link(link_id)
+        link = LinkMusicRepository().get_link(link_id)
         if not link:
             return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
 

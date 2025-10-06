@@ -2,6 +2,8 @@ from typing import Any, Optional, List
 
 from django.db.models import Avg, Count
 from django.db import models
+from django.db.models import QuerySet
+
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.User import User
@@ -14,12 +16,13 @@ class PlaylistRepository:
             return Playlist.objects.get(uuid=playlist_uuid)
         except Playlist.DoesNotExist:
             return None
+        
+    def count_private(self, user: User) -> int:
+        return Playlist.objects.filter(user=user).count()
 
     def get_all_private(self, user:User) -> List[Playlist]:
         try:
-            _query_set = Playlist.objects.all().order_by('updated_at') 
-            _filter = PlaylistFilter(queryset=_query_set)
-            return _filter.filter_by_user(user)
+            return Playlist.objects.all().filter(user=user).order_by('updated_at') 
         except Exception:
             return []
         
@@ -37,3 +40,9 @@ class PlaylistRepository:
     
     def delete(self, playlist: Playlist) -> None:
         playlist.delete()
+        
+    def file_exists(self, file_path: str) -> bool:
+        return Playlist.objects.filter(icon=file_path).exists()
+
+    def get_all_queryset(self) -> QuerySet:
+        return Playlist.objects.all()

@@ -49,6 +49,7 @@ class ReportingContent {
         const reportableElements = document.querySelectorAll('.reportable')
         for (const element of reportableElements) {
             let clonedElement = element.cloneNode(true) as HTMLElement;
+            clonedElement.classList.remove('reportable');
             for (const el of clonedElement.children) {
                 el.remove();
             }

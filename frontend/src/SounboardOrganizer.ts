@@ -2,16 +2,97 @@ import Csrf from "@/modules/General/Csrf";
 import type { position } from '@/type/General'
 import { OrganizerButtonPlaylist } from '@/modules/OrganizerButtonPlaylist'
 import ConsoleCustom from "./modules/General/ConsoleCustom";
+import ConsoleTesteur from "./modules/General/ConsoleTesteur";
+
+
+type DataTransfer = {
+    id: string
+    dragstart: string
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
     if (OrganizerDragAndDropZone.valid()) {
-        setEventDragAndDrop()
+        new DragAndDropEventManager().setupEvents();
         checkEmptyPlaylist()
         initOrderBadge()
+        new SectionAdder().addEvent();
+        new ScrollManager().addEvent();
     }
 });
 
+function initOrderBadge() {
+    const cleanorder = new CleanOrderHandler()
+    cleanorder.resetBadge()
+}
 
+function checkEmptyPlaylist() {
+    // Vérifier chaque section
+    const maxSections = SectionConfig.getMaxSections();
+    for (let i = 1; i <= maxSections; i++) {
+        const sectionEl = OrganizerDragAndDropZone.associatedPlaylistsSection(i);
+        if (sectionEl) { // Vérifier que la section existe
+            const sectionNodesElement = sectionEl.getElementsByClassName('playlist-dragAndDrop');
+            const sectionEmpty = document.getElementsByClassName(`section-${i}-empty`)[0];
+            if (sectionEmpty) { // Vérifier que l'élément empty existe
+                if (sectionNodesElement.length == 0) {
+                    sectionEmpty.removeAttribute('hidden');
+                } else {
+                    sectionEmpty.setAttribute('hidden', 'true');
+                }
+            }
+        }
+    }
+
+    const unassociatedPlaylists = OrganizerDragAndDropZone.unassociatedPlaylists();
+    const unassociatedNodesElement = unassociatedPlaylists.getElementsByClassName('playlist-dragAndDrop');
+    const unassociatedPlaylistsEmpty = document.getElementsByClassName('unassociated-playlists-empty')[0];
+    if (unassociatedNodesElement.length == 0) {
+        unassociatedPlaylistsEmpty.removeAttribute('hidden');
+    } else {
+        unassociatedPlaylistsEmpty.setAttribute('hidden', 'true');
+    }
+}
+
+
+class SectionConfig {
+    private static _maxSections: number | null = null;
+
+    public static getMaxSections(): number {
+        this._maxSections ??= this.detectMaxSections();
+        return this._maxSections;
+    }
+
+    public static refreshMaxSections(): void {
+        this._maxSections = null; // Force la re-détection
+    }
+
+    private static detectMaxSections(): number {
+        let sectionCount = 0;
+        let sectionExists = true;
+        let currentSection = 1;
+
+        while (sectionExists && currentSection <= 10) { // Limite de sécurité à 10 sections
+            const sectionEl = document.getElementById(`associated-playlists-section-${currentSection}`);
+            if (sectionEl) {
+                sectionCount = currentSection;
+                currentSection++;
+            } else {
+                sectionExists = false;
+            }
+        }
+
+        return Math.max(sectionCount, 1); // Au moins 1 section
+    }
+
+    public static getSectionNumbers(): number[] {
+        return Array.from({ length: this.getMaxSections() }, (_, i) => i + 1);
+    }
+
+    public static getNextSectionNumber(): number {
+        return this.getMaxSections() + 1;
+    }
+}
 
 
 
@@ -20,28 +101,42 @@ class OrganizerDragAndDropZone {
         return document.getElementById('associated-playlists') as HTMLDivElement
     }
 
+    public static associatedPlaylistsSection(section: number): HTMLDivElement {
+        return document.getElementById(`associated-playlists-section-${section}`) as HTMLDivElement
+    }
+
+    public static getAllSections(): HTMLDivElement[] {
+        return SectionConfig.getSectionNumbers().map(i => this.associatedPlaylistsSection(i)).filter(el => el !== null)
+    }
+
     public static unassociatedPlaylists(): HTMLDivElement {
         return document.getElementById('unassociated-playlists') as HTMLDivElement
     }
 
     public static valid(): boolean {
-        if (document.getElementById('unassociated-playlists') instanceof HTMLDivElement && document.getElementById('associated-playlists') instanceof HTMLDivElement) {
-            return true;
+        if (document.getElementById('unassociated-playlists') instanceof HTMLDivElement) {
+            const sections = this.getAllSections();
+            const expectedSections = SectionConfig.getMaxSections();
+            return sections.length === expectedSections && expectedSections > 0;
         }
         return false;
+    }
 
+    public static getUrlFromAnySection(): string {
+        const firstSection = this.associatedPlaylistsSection(1);
+        return (firstSection.closest('[data-url]') as HTMLElement)?.dataset?.url || '';
     }
 }
 
 class DropPointHandler {
     playlist: HTMLElement;
-    children: HTMLElement[];
+    PlaylistHtmlElement: HTMLElement[];
     newOrder: number;
     insertAfter: boolean = false;
     closestElement: HTMLElement | null = null;
-    constructor(playlist: HTMLElement, children: HTMLElement[]) {
-        this.playlist = playlist;
-        this.children = children;
+    constructor(playlist: HTMLElement, PlaylistHtmlElement: HTMLElement[]) {
+        this.playlist = playlist.cloneNode(true) as HTMLElement;
+        this.PlaylistHtmlElement = PlaylistHtmlElement;
         this.newOrder = 0;
     }
 
@@ -58,8 +153,11 @@ class DropPointHandler {
 
     findClosestElement(dropPoint: position) {
         let closestDistance = Infinity;
+        ConsoleCustom.info('this.PlaylistHtmlElement', this.PlaylistHtmlElement);
 
-        for (const child of this.children) {
+
+
+        for (const child of this.PlaylistHtmlElement) {
             if (child === this.playlist) return;
 
             const rect = child.getBoundingClientRect();
@@ -86,13 +184,21 @@ class DropPointHandler {
         }
     }
 
-    insertElement(e: DragEvent) {
+    async insertElement(e: DragEvent) {
         const position = this.getDropPoint(e);
         this.findClosestElement(position);
-        if (this.closestElement === null) return
-        this.newOrder = Number.parseInt(this.closestElement.dataset.order!);
+        if (this.closestElement === null || !this.playlist) return;
 
-        if (this.closestElement) {
+        const order = this.closestElement.dataset.order;
+        if (!order) {
+            ConsoleCustom.warn('No order found');
+            return;
+        }
+
+        this.newOrder = Number.parseInt(order);
+
+
+        if (this.closestElement && this.playlist) {
             if (this.insertAfter) {
                 this.newOrder++;
                 this.playlist.dataset.order = this.newOrder.toString();
@@ -101,76 +207,85 @@ class DropPointHandler {
                 this.playlist.dataset.order = this.newOrder.toString();
                 this.closestElement.before(this.playlist);
             }
+            ConsoleCustom.log(`playlist inserted at order: ${this.newOrder}`);
+
         }
     }
 }
 
 class CleanOrderHandler {
-    associatedPlaylists: HTMLDivElement;
+    allSections: HTMLDivElement[];
     playlistNonAssociees: HTMLDivElement;
     constructor() {
-        this.associatedPlaylists = OrganizerDragAndDropZone.associatedPlaylists();
+        this.allSections = OrganizerDragAndDropZone.getAllSections();
         this.playlistNonAssociees = OrganizerDragAndDropZone.unassociatedPlaylists();
     }
 
-    getAssociatedPlaylists() {
-        return this.associatedPlaylists
-    }
 
-    reorderFrom(order = 0) {
-        const listEl = this.associatedPlaylists.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
-        for (let i = 1; i <= listEl.length; i++) {
-            if (i + 1 >= order && order > 1) {
-                if (listEl[i].dataset) {
-                    listEl[i].dataset.order = (Number.parseInt(listEl[i].dataset.order as string) + 1).toString()
-                }
+
+    trueReorderSection(section: number) {
+        ConsoleTesteur.group(`trueReorderSection called section : ${section}`);
+
+        const sectionEl = OrganizerDragAndDropZone.associatedPlaylistsSection(section);
+        const listEl = sectionEl.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
+        let order = 1;
+        for (const element of listEl) {
+            if (element.dataset) {
+                ConsoleTesteur.info('order:', order);
+
+                element.dataset.order = order.toString();
+                element.dataset.section = section.toString();
+                order++;
             }
         }
+        ConsoleTesteur.groupEnd();
         return this
     }
 
     trueReorder() {
-        const listEl = this.associatedPlaylists.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
-        let order = 1;
-        for (const element of listEl) {
-            if (element.dataset) {
-                element.dataset.order = order.toString();
-                order++;
-            }
+        const maxSections = SectionConfig.getMaxSections();
+        for (let i = 1; i <= maxSections; i++) {
+            this.trueReorderSection(i);
         }
         return this
     }
 
     resetBadge() {
-        const listEl = this.associatedPlaylists.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
-        for (const element of listEl) {
-            const buttonPlaylist = new OrganizerButtonPlaylist(element.id)
-            buttonPlaylist.removeBadge(false)
-            let order = 0;
-            if (element.dataset) {
-                order = Number.parseInt(element.dataset.order!)
+
+        for (const section of this.allSections) {
+            if (section) { // Vérifier que la section existe
+                const listEl = section.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
+                for (const element of listEl) {
+                    if (element?.id) { // Vérifier que l'élément et son ID existent
+                        const buttonPlaylist = new OrganizerButtonPlaylist(element.id)
+                        buttonPlaylist.removeBadge(false)
+                        let order = 0;
+                        if (element.dataset?.order) {
+                            order = Number.parseInt(element.dataset.order)
+                        }
+                        buttonPlaylist.addBadge(order)
+                    }
+                }
             }
-            buttonPlaylist.addBadge(order)
         }
         this.cleanUnsassociatedBadge()
-
         return this
     }
 
     cleanUnsassociatedBadge() {
-        const listUnassociated = this.playlistNonAssociees.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
-        for (const unassociated of listUnassociated) {
-            const buttonPlaylist = new OrganizerButtonPlaylist(unassociated.id)
-            buttonPlaylist.removeBadge(true)
+        if (this.playlistNonAssociees) { // Vérifier que l'élément existe
+            const listUnassociated = this.playlistNonAssociees.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
+            for (const unassociated of listUnassociated) {
+                if (unassociated?.id) { // Vérifier que l'élément et son ID existent
+                    const buttonPlaylist = new OrganizerButtonPlaylist(unassociated.id)
+                    buttonPlaylist.removeBadge(true)
+                }
+            }
         }
         return this
     }
 }
 
-type DataTransfer = {
-    id: string
-    dragstart: string
-}
 class EventDataTransfert {
     event: DragEvent;
     DataTransfer: DataTransfer | null = null;
@@ -203,14 +318,14 @@ class EventDataTransfert {
     }
 }
 
-
 class SendBackendAction {
 
-    public addMusic(btnPlaylist: OrganizerButtonPlaylist, newOrder: number) {
+    public addMusic(btnPlaylist: OrganizerButtonPlaylist, newOrder: number, section: number) {
         this.fetch('POST', {
             idPlaylist: btnPlaylist.playlist.id,
-            newOrder: newOrder
-        })
+            newOrder: newOrder,
+            section: section
+        }, section)
     }
 
     public removeMusic(btnPlaylist: OrganizerButtonPlaylist) {
@@ -219,16 +334,17 @@ class SendBackendAction {
         })
     }
 
-    public updateMusic(btnPlaylist: OrganizerButtonPlaylist, newOrder: number) {
+    public updateMusic(btnPlaylist: OrganizerButtonPlaylist, newOrder: number, section: number) {
         this.fetch('UPDATE', {
             idPlaylist: btnPlaylist.playlist.id,
-            newOrder: newOrder
-        })
+            newOrder: newOrder,
+            section: section
+        }, section)
     }
 
-    private fetch(method: string, body: {}) {
-        const associatedPlaylists = OrganizerDragAndDropZone.associatedPlaylists();
-        const url = associatedPlaylists.dataset.url as string;
+    private fetch(method: string, body: {}, section?: number) {
+        ConsoleTesteur.info(`Fetch called with method: ${method}, body: ${JSON.stringify(body)}, section: ${section}`);
+        const url = OrganizerDragAndDropZone.getUrlFromAnySection();
         fetch(url, {
             method: method,
             headers: {
@@ -238,85 +354,164 @@ class SendBackendAction {
             body: JSON.stringify(body)
         })
             .then(response => response.json())
-            .then(data => {
+            .then(_data => {
                 const cleanorder = new CleanOrderHandler()
-                cleanorder.reorderFrom(data.order).resetBadge()
+                cleanorder.resetBadge()
             })
             .catch(error => ConsoleCustom.error(error));
     }
 
 }
 
+class DragAndDropEventManager {
+    private readonly playlistNonAssociees: HTMLDivElement;
+    private readonly allSections: HTMLDivElement[];
 
-function initOrderBadge() {
-    const cleanorder = new CleanOrderHandler()
-    cleanorder.resetBadge()
-}
+    constructor() {
+        this.playlistNonAssociees = OrganizerDragAndDropZone.unassociatedPlaylists();
+        this.allSections = OrganizerDragAndDropZone.getAllSections();
+    }
 
-function setEventDragAndDrop() {
-    // Sélectionner les éléments HTML
-    const playlistNonAssociees = OrganizerDragAndDropZone.unassociatedPlaylists();
-    const playlistAssociees = OrganizerDragAndDropZone.associatedPlaylists();
+    public setupEvents(): void {
+        // Sélectionner les éléments HTML
+        if (this.playlistNonAssociees == null || this.allSections.length === 0) return;
 
-    if (playlistNonAssociees == null || playlistAssociees == null) return
+        this.setupSectionEvents();
+        this.setupUnassociatedPlaylistEvents();
+    }
 
-    // Définir les événements de drag and drop
-    playlistAssociees.addEventListener('dragstart', (e: DragEvent) => { // from associées
-        const EDT = new EventDataTransfert(e)
-        const target = e.target! as HTMLDivElement;
-        EDT.build(target.id, 'playlistAssociees')
-    });
+    private setupSectionEvents(): void {
+        // Définir les événements de drag and drop pour chaque section
+        for (const sectionEl of this.allSections) {
+            const sectionNumber = this.allSections.indexOf(sectionEl) + 1;
 
-    playlistNonAssociees.addEventListener('dragstart', (e: DragEvent) => { // from non associées
-        const EDT = new EventDataTransfert(e)
-        const target = e.target! as HTMLDivElement;
-        EDT.build(target.id, 'playlistNonAssociees')
-    });
+            sectionEl.removeEventListener('dragstart', (_event: DragEvent) => { }); // clear before 
+            sectionEl.addEventListener('dragstart', (e: DragEvent) => { // from associées
+                const EDT = new EventDataTransfert(e)
+                const target = e.target! as HTMLDivElement;
+                EDT.build(target.id, `playlistAssociees-${sectionNumber}`)
+            });
 
-    playlistAssociees.addEventListener('dragover', (e) => {
-        e.preventDefault();
-    });
+            sectionEl.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
 
-    playlistNonAssociees.addEventListener('dragover', (e) => {
-        e.preventDefault();
-    });
-
-    playlistAssociees.addEventListener('drop', (e: DragEvent) => { // to associées
-        e.preventDefault();
-        let orderNewElement = 0
-        const EDT = EventDataTransfert.getClassFromEvent(e)
-        if (EDT.DataTransfer == null) return
-
-        const children = [...playlistAssociees.children] as HTMLElement[];
-        const playlist = document.getElementById(EDT.DataTransfer.id) as HTMLDivElement;
-        const btnPlaylist = new OrganizerButtonPlaylist(EDT.DataTransfer.id)
-        const sendbackend = new SendBackendAction()
-        if (EDT.DataTransfer.dragstart == 'playlistAssociees') {
-
-            const handler = new DropPointHandler(playlist, children)
-            playlist.remove();
-            handler.insertElement(e)
-            orderNewElement = handler.getNewOrder()
-            sendbackend.updateMusic(btnPlaylist, orderNewElement)
-
-        } else {
-            if (children.length === 0) {
-                playlistAssociees.appendChild(playlist);
-            } else {
-                const handler = new DropPointHandler(playlist, children)
-                handler.insertElement(e)
-                orderNewElement = handler.getNewOrder()
-            }
-            sendbackend.addMusic(btnPlaylist, orderNewElement)
+            sectionEl.addEventListener('drop', (elementDragged: DragEvent) => { // to associées
+                this.handleSectionDrop(elementDragged, sectionEl, sectionNumber);
+            });
         }
+    }
+
+    private setupUnassociatedPlaylistEvents(): void {
+        this.playlistNonAssociees.addEventListener('dragstart', (e: DragEvent) => { // from non associées
+            const EDT = new EventDataTransfert(e)
+            const target = e.target! as HTMLDivElement;
+            EDT.build(target.id, 'playlistNonAssociees')
+        });
+
+        this.playlistNonAssociees.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        this.playlistNonAssociees.addEventListener('drop', (e: DragEvent) => { // to non associées
+            this.handleUnassociatedDrop(e);
+        });
+    }
+
+    private handleSectionDrop(elementDragged: DragEvent, sectionEl: HTMLDivElement, sectionNumber: number): void {
+        ConsoleTesteur.log('drop event on associées');
+
+        elementDragged.preventDefault();
+        const EDT = EventDataTransfert.getClassFromEvent(elementDragged);
+        if (EDT.DataTransfer == null) return;
+
+        const playlist = document.getElementById(EDT.DataTransfer.id) as HTMLDivElement;
+        if (!playlist) {
+            ConsoleTesteur.error(`Playlist element not found with id: ${EDT.DataTransfer.id}`);
+            return;
+        }
+
+        const listHtmlPlaylist = [...sectionEl.getElementsByClassName('playlist-dragAndDrop')] as HTMLElement[];
+        const btnPlaylist = new OrganizerButtonPlaylist(EDT.DataTransfer.id);
+        const sendbackend = new SendBackendAction();
+
+        let orderNewElement: number;
+        const isFromAssociatedSection = EDT.DataTransfer.dragstart.startsWith('playlistAssociees');
+        const isSameSection = EDT.DataTransfer.dragstart === `playlistAssociees-${sectionNumber}`;
+
+        if (isFromAssociatedSection && isSameSection) {
+            orderNewElement = this.handleSameSectionDrop(elementDragged, playlist, listHtmlPlaylist, sectionEl);
+            if (orderNewElement > 0) {
+                sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber);
+            }
+        } else if (isFromAssociatedSection) {
+            orderNewElement = this.handleDifferentSectionDrop(elementDragged, playlist, listHtmlPlaylist, sectionEl);
+            sendbackend.updateMusic(btnPlaylist, orderNewElement, sectionNumber);
+        } else {
+            orderNewElement = this.handleUnassociatedToAssociatedDrop(elementDragged, playlist, listHtmlPlaylist, sectionEl);
+            sendbackend.addMusic(btnPlaylist, orderNewElement, sectionNumber);
+        }
+
         checkEmptyPlaylist();
+        const cleanorder = new CleanOrderHandler();
+        cleanorder.trueReorder().resetBadge();
+    }
 
-        const cleanorder = new CleanOrderHandler()
-        cleanorder.trueReorder().resetBadge()
+    private handleSameSectionDrop(elementDragged: DragEvent, playlist: HTMLDivElement, listHtmlPlaylist: HTMLElement[], sectionEl: HTMLDivElement): number {
+        ConsoleTesteur.group('Updating music in the same section', sectionEl);
+        ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
 
-    });
+        if (listHtmlPlaylist.length === 1 && listHtmlPlaylist[0].id === playlist.id) {
+            ConsoleTesteur.log('Only one element in section, no need to update');
+            ConsoleTesteur.groupEnd();
+            return 0; // No update needed
+        }
 
-    playlistNonAssociees.addEventListener('drop', (e: DragEvent) => { // to non associées
+        const handler = new DropPointHandler(playlist, listHtmlPlaylist);
+        playlist.remove();
+        handler.insertElement(elementDragged);
+        const newOrder = handler.getNewOrder();
+        ConsoleTesteur.groupEnd();
+        return newOrder;
+    }
+
+    private handleDifferentSectionDrop(elementDragged: DragEvent, playlist: HTMLDivElement, listHtmlPlaylist: HTMLElement[], sectionEl: HTMLDivElement): number {
+        ConsoleTesteur.group('Updating music in the different section', sectionEl);
+        ConsoleTesteur.log('listHtmlPlaylist', listHtmlPlaylist);
+
+        const newOrder = this.insertPlaylistInSection(elementDragged, playlist, listHtmlPlaylist, sectionEl);
+        ConsoleTesteur.groupEnd();
+        return newOrder;
+    }
+
+    private handleUnassociatedToAssociatedDrop(elementDragged: DragEvent, playlist: HTMLDivElement, listHtmlPlaylist: HTMLElement[], sectionEl: HTMLDivElement): number {
+        ConsoleTesteur.group('Adding music from unassociated to associated');
+        
+        const newOrder = this.insertPlaylistInSection(elementDragged, playlist, listHtmlPlaylist, sectionEl);
+        ConsoleTesteur.groupEnd();
+        return newOrder;
+    }
+
+    private insertPlaylistInSection(elementDragged: DragEvent, playlist: HTMLDivElement, listHtmlPlaylist: HTMLElement[], sectionEl: HTMLDivElement): number {
+        if (listHtmlPlaylist.length === 0) {
+            ConsoleTesteur.log('Section is empty, appending playlist directly');
+            if (sectionEl && playlist) {
+                sectionEl.appendChild(playlist);
+                return 1;
+            }
+            return 0;
+        }
+
+        ConsoleTesteur.log('Section is not empty, inserting playlist');
+        const handler = new DropPointHandler(playlist, listHtmlPlaylist);
+        playlist.remove();
+        handler.insertElement(elementDragged);
+        return handler.getNewOrder();
+    }
+
+    private handleUnassociatedDrop(e: DragEvent): void {
+        ConsoleTesteur.log('drop event on non associées');
+
         e.preventDefault();
         const EDT = EventDataTransfert.getClassFromEvent(e)
         if (EDT.DataTransfer == null) return
@@ -326,32 +521,179 @@ function setEventDragAndDrop() {
         const btnPlaylist = new OrganizerButtonPlaylist(EDT.DataTransfer.id)
         const id = EDT.DataTransfer.id;
         const playlist = document.getElementById(id) as HTMLElement;
-        playlistNonAssociees.appendChild(playlist);
+
+        if (this.playlistNonAssociees && playlist) {
+            this.playlistNonAssociees.appendChild(playlist);
+        }
         checkEmptyPlaylist();
         const sendbackend = new SendBackendAction()
         sendbackend.removeMusic(btnPlaylist)
-    });
-}
 
-function checkEmptyPlaylist() {
-    const associatedPlaylists = OrganizerDragAndDropZone.associatedPlaylists();
-    const associatedNodesElement = associatedPlaylists.getElementsByClassName('playlist-dragAndDrop');
-    const associatedPlaylistsEmpty = document.getElementsByClassName('associated-playlists-empty')[0];
-    if (associatedNodesElement.length == 0) {
-        associatedPlaylistsEmpty.removeAttribute('hidden');
-    } else {
-        associatedPlaylistsEmpty.setAttribute('hidden', 'true');
-    }
-
-    const unassociatedPlaylists = OrganizerDragAndDropZone.unassociatedPlaylists();
-    const unassociatedNodesElement = unassociatedPlaylists.getElementsByClassName('playlist-dragAndDrop');
-    const unassociatedPlaylistsEmpty = document.getElementsByClassName('unassociated-playlists-empty')[0];
-    if (unassociatedNodesElement.length == 0) {
-        unassociatedPlaylistsEmpty.removeAttribute('hidden');
-    } else {
-        unassociatedPlaylistsEmpty.setAttribute('hidden', 'true');
+        const cleanorder = new CleanOrderHandler()
+        cleanorder.trueReorder().resetBadge()
     }
 }
+
+
+
+class SectionAdder {
+
+    private template: HTMLTemplateElement | null = null;
+
+    constructor() { 
+        this.setTemplate();
+    }
+
+    public addEvent() {
+        const addSectionButton = document.getElementById('add-section-button');
+        if (addSectionButton && this.template) {
+            addSectionButton.addEventListener('click', () => {
+                const sectionAdder = new SectionAdder();
+                sectionAdder.addNewSection();
+            });
+        }
+    }
+
+    private setTemplate(): boolean {
+        this.template = document.getElementById('add-section-template') as HTMLTemplateElement;
+        if (!this.template) {
+            ConsoleTesteur.error('Template add-section-template not found');
+            return false;
+        }
+        return true;
+    }
+
+    private addNewSection(): void {
+        if (!this.template) {
+            return;
+        }
+
+        const nextSectionNumber = SectionConfig.getNextSectionNumber();
+
+        // Vérifier si on dépasse la limite
+        if (nextSectionNumber > Number.parseInt(this.template.dataset.maxSection!)) {
+            ConsoleTesteur.warn(`Maximum number of sections reached (${this.template.dataset.maxSection})`);
+            return;
+        }
+
+        
+
+        // Cloner le template
+        const clone = this.template.content.cloneNode(true) as DocumentFragment;
+
+        // Mettre à jour les IDs et numéros de section
+        const sectionContainer = clone.querySelector('.section-container') as HTMLDivElement;
+        const sectionEmpty = clone.querySelector('[class*="section-"][class*="-empty"]') as HTMLSpanElement;
+        const numSectionSpan = clone.querySelector('.num-section') as HTMLSpanElement;
+
+        if (sectionContainer && sectionEmpty && numSectionSpan) {
+            // Mettre à jour l'ID et les attributs
+            sectionContainer.id = `associated-playlists-section-${nextSectionNumber}`;
+            sectionContainer.dataset.section = nextSectionNumber.toString();
+
+            // Mettre à jour les classes et numéros
+            sectionEmpty.className = sectionEmpty.className.replace(
+                /section-\d+-empty/,
+                `section-${nextSectionNumber}-empty`
+            );
+            numSectionSpan.textContent = nextSectionNumber.toString();
+
+            // Trouver le conteneur parent pour insérer la nouvelle section
+            const parentContainer = document.getElementById('associated-playlists-container');
+            if (parentContainer) {
+                parentContainer.appendChild(clone);
+
+                // Rafraîchir la configuration des sections
+                SectionConfig.refreshMaxSections();
+
+                ConsoleTesteur.info(`Section ${nextSectionNumber} added successfully`);
+
+                new DragAndDropEventManager().setupEvents();
+
+            }
+        }
+    }
+}
+
+
+
+class ScrollManager {
+    private scrollInterval: number | null = null;
+    private readonly scrollSpeed: number; // pixels per interval
+    private readonly scrollZone: number; // pixels from edge to trigger scroll
+
+    constructor() {
+        this.scrollZone = window.innerHeight * 0.15;
+        this.scrollSpeed = window.innerHeight * 0.3;
+    }
+
+    public addEvent() {
+        // Add dragover event to document to handle auto-scroll
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+
+            const mouseY = e.clientY;
+            const windowHeight = window.innerHeight;
+
+            if (mouseY < this.scrollZone) {
+                // Near top edge
+                this.startAutoScroll('up');
+            } else if (mouseY > windowHeight - this.scrollZone) {
+                // Near bottom edge
+                this.startAutoScroll('down');
+            } else {
+                // In middle area
+                this.stopAutoScroll();
+            }
+        });
+        // Stop scrolling when drag leaves the window
+        document.addEventListener('dragleave', (_) => {
+            this.stopAutoScroll();
+        });
+
+        document.addEventListener('dragdrop', (_) => {
+            this.stopAutoScroll();
+        });
+
+
+    }
+
+    private detectTop(): boolean {
+        return window.scrollY === 0;
+    }
+
+    private detectBottom(): boolean {
+        return (window.innerHeight + window.scrollY) >= document.body.offsetHeight;
+    }
+
+    private startAutoScroll(direction: 'up' | 'down') {
+        if (this.scrollInterval) return;
+        this.scrollInterval = setInterval(() => {
+            if (direction === 'up') {
+                window.scrollBy(0, -this.scrollSpeed);
+                if (this.detectTop()) {
+                    this.stopAutoScroll();
+                }
+            } else { //down
+                window.scrollBy(0, this.scrollSpeed);
+                if (this.detectBottom()) {
+                    this.stopAutoScroll();
+                }
+            }
+        }, 16);
+    }
+
+    private stopAutoScroll() {
+        if (this.scrollInterval) {
+            clearInterval(this.scrollInterval);
+            this.scrollInterval = null;
+        }
+    }
+
+
+
+}
+
 
 
 

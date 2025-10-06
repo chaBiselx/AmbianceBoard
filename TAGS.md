@@ -39,7 +39,26 @@ Nouveautés
 - Première version de session partagée en temps réel (mise à jour live précoce)
 - Base des tiers utilisateurs (sans Paiment)
 
-## Historique
 ### 0.1.0-beta.2 - 2025/09
 Corrections
 - fix script de deploiement
+
+
+### 0.1.0-beta.3 - 2025/10
+Nouveautés
+- Ajout des preference selon le type de support
+- Ajout des sections pour les playlist pour l'organisation et la lecture des playlist
+
+Améliorations
+- Amélioration de l'esthétique des page d'erreurs
+- Amélioration du logger pour beta testeur
+
+Fiabilité & Confiance
+- Refactorisation pour utiliser des Repository au lieu des models
+
+Corrections
+- Corrige annomalie qui augmente progressivement lorsque l'utilisateur souhaite report du contenu
+
+### 0.1.0-beta.4 - TO_DEFINE
+
+

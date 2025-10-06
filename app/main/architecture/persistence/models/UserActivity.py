@@ -136,36 +136,6 @@ class UserActivity(models.Model):
         """
         return self.end_date is None
     
-    @classmethod
-    def create_activity(
-        cls,
-        activity_type: UserActivityTypeEnum,
-        user: Optional[User] = None,
-        content_object: Optional[Any] = None,
-        session_key: Optional[str] = None,
-    ) -> 'UserActivity':
-        """
-        Crée une nouvelle activité utilisateur.
-        
-        Args:
-            activity_type: Type d'activité
-            user: Utilisateur (None pour utilisateur anonyme)
-            content_object: Objet associé à l'activité
-            session_key: Clé de session
-            
-        Returns:
-            UserActivity: Instance créée
-        """
-        activity = cls(
-            user=user,
-            is_authenticated=user is not None and user.is_authenticated,
-            activity_type=activity_type.value,
-            content_object=content_object,
-            session_key=session_key,
-        )
-        if session_key is None:
-            activity.session_key = ''
-        activity.save()
-        return activity
+
     
    

@@ -18,30 +18,18 @@ class RandomizeTrackService:
         self.track_repository = TrackRepository()
 
     def generate_private(self, playlist_uuid:int)-> Music|None :
-        try:
-            return self.track_repository.get_random_private(playlist_uuid, self.request.user)
-        except Playlist.DoesNotExist:
-            return None
+        return self.track_repository.get_random_private(playlist_uuid, self.request.user)
     
     def generate_public(self, soundboard_uuid:uuid, playlist_uuid:int)-> Music|None :
         soundboard = (SoundBoardService(self.request)).get_public_soundboard(soundboard_uuid)
         if not soundboard:
             return None
-        try:
-            return self.track_repository.get_random_public(playlist_uuid)
-        except Playlist.DoesNotExist:
-            return None
-        
+        return self.track_repository.get_random_public(playlist_uuid)
+
     def get_shared(self, soundboard_uuid:uuid, playlist_uuid:int, token:str, music_id: int)-> Music|None :
         soundboard = (SoundBoardService(self.request)).get_soundboard_from_shared_soundboard(soundboard_uuid, token)
         if not soundboard:
             return None
-        try:
-            return Track.objects.get(pk=music_id, playlist__uuid=playlist_uuid)
-        except Track.DoesNotExist:
-            return None
-        except Playlist.DoesNotExist:
-            return None
-
-        
+        return self.track_repository.get(music_id, playlist_uuid)
+     
         

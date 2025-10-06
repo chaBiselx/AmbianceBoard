@@ -2,6 +2,7 @@ from typing import Any, Optional, List
 from main.architecture.persistence.models.Tag import Tag
 from django.db.models import Count
 from django.db import models
+from django.db.models import QuerySet
 
 
 
@@ -13,7 +14,7 @@ class TagRepository:
         except Tag.DoesNotExist:
             return None
 
-    def get_all_queryset(self, order_by: str = 'name') -> models.QuerySet[Tag]:
+    def get_all_queryset(self, order_by: str = 'name') -> QuerySet[Tag]:
         return Tag.objects.all().order_by(order_by)
 
     def get_list_active_tags(self) -> List[Tag]:

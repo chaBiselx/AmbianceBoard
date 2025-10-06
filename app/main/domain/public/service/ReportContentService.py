@@ -3,6 +3,9 @@ import uuid
 from main.architecture.persistence.models.ReportContent import ReportContent
 from main.domain.common.exceptions.PostDataException import PostDataException
 from main.domain.common.email.ModeratorEmail import ModeratorEmail
+from main.domain.common.repository.ReportContentRepository import ReportContentRepository
+
+
 
 
 class ReportContentService:
@@ -59,17 +62,16 @@ class ReportContentService:
         return False
 
     def _create_report(self, type_element: str, uuid_element: str, precision_element: str, description_element: str):
-        report = ReportContent.objects.create(
-            typeElement=type_element,
-            uuidElement=uuid_element,
-            precisionElement=precision_element,
-            descriptionElement=description_element
-        )
+        user = None
         if getattr(self.request, 'user', None) and self.request.user.is_authenticated:
-            report.creator = self.request.user
-        report.save()
-        report.refresh_from_db()
-        return report
+            user = self.request.user
+        return ReportContentRepository().create(
+            type_element=type_element,
+            uuid_element=uuid_element,
+            precision_element=precision_element,
+            description_element=description_element,
+            creator=user
+        )
 
     def _notify_moderators(self, report: ReportContent):
         try:

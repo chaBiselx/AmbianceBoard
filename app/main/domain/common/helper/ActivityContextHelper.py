@@ -2,6 +2,7 @@ import uuid
 from typing import Any, Optional
 from django.http import HttpRequest
 from main.architecture.persistence.models.UserActivity import UserActivity
+from main.domain.common.repository.UserActivityRepository import UserActivityRepository
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from django.utils import timezone
 
@@ -26,8 +27,8 @@ class ActivityContextHelper:
         authenticated_user = None
         if user and hasattr(user, 'is_authenticated') and user.is_authenticated:
             authenticated_user = user
-        
-        activity = UserActivity.create_activity(
+
+        activity = UserActivityRepository().create(
             activity_type=activity_type,
             user=authenticated_user,
             session_key=request.session.session_key if request else '',
@@ -38,10 +39,8 @@ class ActivityContextHelper:
     @staticmethod
     def find_activity(activity_uuid: uuid.UUID, activity_type: UserActivityTypeEnum) -> Optional[UserActivity]:
         """Recherche une activité par son UUID."""
-        try:
-            return UserActivity.objects.get(uuid=activity_uuid, activity_type=activity_type)
-        except UserActivity.DoesNotExist:
-            return None
+        return UserActivityRepository().get(activity_uuid=activity_uuid, activity_type=activity_type)
+       
 
     @staticmethod
     def set_end_action(activity: UserActivity):

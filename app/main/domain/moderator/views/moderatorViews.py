@@ -11,7 +11,6 @@ from main.architecture.persistence.models.UserModerationLog import UserModeratio
 from main.architecture.persistence.models.ReportContent import ReportContent
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
-from main.architecture.persistence.models.User import User
 from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
@@ -19,6 +18,9 @@ from main.domain.common.utils.url import redirection_url
 from main.domain.moderator.form.TagForm import TagForm
 from main.domain.common.repository.UserRepository import UserRepository
 from main.domain.common.repository.PlaylistRepository import PlaylistRepository
+from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+from main.domain.common.repository.UserModerationLogRepository import UserModerationLogRepository
+from main.domain.common.repository.ReportContentRepository import ReportContentRepository
 from main.domain.moderator.service.TreatmentReportService import TreatmentReportService
 from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
 from main.domain.common.repository.TagRepository import TagRepository
@@ -51,7 +53,7 @@ def moderator_dashboard(request) -> HttpResponse:
 def moderator_listing_images_playlist(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
     
-    queryset = Playlist.objects.all()
+    queryset = PlaylistRepository().get_all_queryset()
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
     
@@ -63,7 +65,7 @@ def moderator_listing_images_playlist(request) -> HttpResponse:
 def moderator_listing_images_soundboard(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
 
-    queryset = SoundBoard.objects.all()
+    queryset = SoundBoardRepository().get_all_queryset()
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
     
@@ -73,7 +75,7 @@ def moderator_listing_images_soundboard(request) -> HttpResponse:
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_playlist(request, playlist_uuid) -> HttpResponse:
-    playlist = Playlist.objects.get(uuid=playlist_uuid)
+    playlist = PlaylistRepository().get(playlist_uuid)
     return render(request, 'Html/Moderator/info_playlist.html', {"playlist":playlist})
     
     
@@ -81,7 +83,7 @@ def moderator_get_infos_playlist(request, playlist_uuid) -> HttpResponse:
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
-    soundboard = SoundBoard.objects.get(uuid=soundboard_uuid)
+    soundboard = SoundBoardRepository().get(soundboard_uuid)
     return render(request, 'Html/Moderator/info_soundboard.html', {"soundboard":soundboard})
     
 @login_required
@@ -89,9 +91,9 @@ def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_log_moderation(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
-    
-    queryset = UserModerationLog.objects.all().order_by('created_at')
-    paginator = Paginator(queryset, 100)  
+
+    queryset = UserModerationLogRepository().get_all_queryset()
+    paginator = Paginator(queryset, 100)
     context = extract_context_to_paginator(paginator, page_number)
     
     return render(request, 'Html/Moderator/listing_log.html', context)
@@ -109,8 +111,7 @@ def moderator_get_infos_user(request, user_uuid) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_report(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
-    queryset = ReportContent.objects.filter(moderator__isnull=True).order_by('created_at')
- 
+    queryset = ReportContentRepository().get_all_queryset(archived=False)
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     context['archive'] = False
@@ -122,7 +123,7 @@ def moderator_listing_report(request) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_report_archived(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
-    queryset = ReportContent.objects.filter(moderator__isnull=False).order_by('created_at')
+    queryset = ReportContentRepository().get_all_queryset(archived=True)
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     context['archive'] = True
@@ -133,7 +134,9 @@ def moderator_listing_report_archived(request) -> HttpResponse:
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_report(request, report_id) -> HttpResponse:
-    content_report = ReportContent.objects.get(id=report_id)
+    content_report = ReportContentRepository().get(report_id)
+    if not content_report:
+        return render(request,  HtmlDefaultPageEnum.ERROR_404.value, status=404)
     return render(request, 'Html/Moderator/info_content_report.html', {"content_report":content_report})
 
 

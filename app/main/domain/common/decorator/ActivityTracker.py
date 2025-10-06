@@ -7,7 +7,9 @@ sans avoir à ajouter manuellement le code de traçage dans chaque vue.
 
 from typing import Any, Optional
 from django.http import HttpRequest
+from django.utils import timezone
 from main.architecture.persistence.models.UserActivity import UserActivity
+from main.domain.common.repository.UserActivityRepository import UserActivityRepository
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 class ActivityContextHelper:
@@ -26,12 +28,8 @@ class ActivityContextHelper:
         user: Optional[Any] = None
     ) -> UserActivity:
         """Démarre le traçage de l'activité."""
-        activity = UserActivity.create_activity(
-            activity_type=activity_type,
-            user=user,
-            session_key=request.session.session_key if request else ''
-        )
-        return activity
+        return UserActivityRepository().create(activity_type=activity_type,user=user,session_key=request.session.session_key if request else '')
+   
 
     @staticmethod
     def set_end_action(activity: UserActivity):

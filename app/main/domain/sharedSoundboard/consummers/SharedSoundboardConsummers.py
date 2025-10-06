@@ -249,17 +249,14 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
                 return shared_soundboard
             
             # Import local pour éviter le problème AppRegistryNotReady
-            from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
-            from main.architecture.persistence.models.SoundBoard import SoundBoard
+            from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+            from main.domain.common.repository.SharedSoundboardRepository import SharedSoundboardRepository
             
-            soundboard = SoundBoard.objects.get(uuid=self.soundboard_uuid)
+            soundboard = SoundBoardRepository().get(self.soundboard_uuid)
             if not soundboard:
                 return None
 
-            shared_soundboard = SharedSoundboard.objects.filter(
-                soundboard=soundboard, 
-                token=self.token
-            ).first()
+            shared_soundboard = SharedSoundboardRepository().get(soundboard, self.token)
             cache.set(cache_key, shared_soundboard, timeout=Settings.get('LIMIT_CACHE_DEFAULT'))
             
             return shared_soundboard

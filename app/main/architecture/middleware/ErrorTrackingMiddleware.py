@@ -7,10 +7,11 @@ permettant de collecter des statistiques sur les erreurs rencontrées par les ut
 
 from typing import Callable
 from django.http import HttpRequest, HttpResponse
-from main.architecture.persistence.models.UserActivity import UserActivity
-from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.repository.UserActivityRepository import UserActivityRepository
 from main.domain.common.utils.logger import LoggerFactory
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
+
 
 
 class ErrorTrackingMiddleware:
@@ -160,11 +161,7 @@ class ErrorTrackingMiddleware:
                 session_key = request.session.session_key if hasattr(request, 'session') else ''
                 
                 # Créer l'activité d'erreur
-                UserActivity.create_activity(
-                    activity_type=activity_type,
-                    user=user,
-                    session_key=session_key,
-                )
+                UserActivityRepository().create(activity_type=activity_type,user=user,session_key=session_key)
                 
         except Exception as e:
             # En cas d'erreur lors du traçage, ne pas faire échouer la requête

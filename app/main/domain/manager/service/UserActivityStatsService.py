@@ -12,6 +12,7 @@ from django.utils import timezone
 from django.contrib.auth import get_user_model
 from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
+from main.domain.common.repository.UserActivityRepository import UserActivityRepository
 
 User = get_user_model()
 
@@ -33,18 +34,7 @@ class UserActivityStatsService:
 
     def _generated_data(self, start_date: datetime, end_date: datetime, activities: List[str]) -> dict:
         # Récupération des données groupées par type d'activité et par date
-        activity_data = UserActivity.objects.filter(
-            start_date__gte=start_date,
-            start_date__lte=end_date,
-            activity_type__in=activities
-        ).extra(
-            select={'date': 'DATE(start_date)'}
-        ).values('activity_type', 'date').annotate(
-            count=Count('id')
-        ).order_by('date', 'activity_type')
-        
-        print(activity_data.query)
-        print(activity_data.query)
+        activity_data = UserActivityRepository().get_activity_counts_by_date_and_type(start_date, end_date, activities)
         
         # Organisation des données par type d'activité
         data_by_type = {}
