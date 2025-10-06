@@ -61,4 +61,9 @@ Corrections
 
 ### 0.1.0-beta.4 - TO_DEFINE
 
+Améliorations
+- Amélioration du visuel pour organiser les boutons d'une playlist
+
+Corrections
+- Fix le script de deploiement qui ne recuperer pas le dernier tag. 
 
