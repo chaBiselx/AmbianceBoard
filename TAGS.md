@@ -46,7 +46,7 @@ Corrections
 
 ### 0.1.0-beta.3 - 2025/10
 Nouveautés
-- Ajout des preference selon le type de support
+- Ajout des préférence selon le type de support
 - Ajout des sections pour les playlist pour l'organisation et la lecture des playlist
 
 Améliorations
@@ -57,7 +57,7 @@ Fiabilité & Confiance
 - Refactorisation pour utiliser des Repository au lieu des models
 
 Corrections
-- Corrige annomalie qui augmente progressivement lorsque l'utilisateur souhaite report du contenu
+- Corrige anomalie qui augmente progressivement lorsque l'utilisateur souhaite report du contenu
 
 ### 0.1.0-beta.4 - TO_DEFINE
 
