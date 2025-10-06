@@ -62,24 +62,5 @@
         grid-template-columns: repeat(4, 1fr);
     }
     
-    /* Si il n'y a qu'un seul élément, il prend toute la largeur */
-    .responsive-sections-container:has(section:only-child) {
-        grid-template-columns: 1fr;
-    }
 
-    /* Si  divisible par 2 */
-    .responsive-sections-container:has(section:nth-child(2)) 
-    .responsive-sections-container:has(section:nth-child(4)) 
-    .responsive-sections-container:has(section:nth-child(8)) 
-    .responsive-sections-container:has(section:nth-child(10)) 
-    {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    /* Si  divisible par 3 */
-    .responsive-sections-container:has(section:nth-child(3)) 
-    .responsive-sections-container:has(section:nth-child(6))
-    .responsive-sections-container:has(section:nth-child(9)){
-        grid-template-columns: repeat(3, 1fr);
-    }
 }
