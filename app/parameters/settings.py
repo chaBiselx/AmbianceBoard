@@ -558,3 +558,5 @@ LINK_DONATION = os.environ.get("LINK_DONATION", "reis")
 
 APP_TVA = 20.0  # en pourcentage
 APP_CURRENCY = "EUR"
+
+SOUNDBOARD_LIMIT_SECTION = 25
