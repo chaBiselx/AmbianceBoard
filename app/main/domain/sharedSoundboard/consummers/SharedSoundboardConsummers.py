@@ -52,6 +52,8 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
                 await self.handle_mixer_update(data)
             elif message_type == 'send_playlist_update_volume':
                 await self.handle_playlist_update_volume(data)
+            elif message_type == 'player_play_on_master':
+                await self.handle_player_play_on_master(data)
                 
             else:
                 # Echo pour les autres messages
@@ -194,6 +196,21 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
                 }
             }))
             
+    async def handle_player_play_on_master(self, data_received):
+        
+        data = data_received.get('data', {})
+        if await self._check_missing_params(data, ['playlist_uuid']):
+            return
+
+        await self.channel_layer.group_send(
+            self.group_name,
+            {
+                'type': 'player_play_on_master',
+                'playlist_uuid': data.get('playlist_uuid'),
+                'sender': self.channel_name
+            }
+        )
+        
     async def handle_playlist_update_volume(self, data_received):
         
         data = data_received.get('data', {})
@@ -218,6 +235,17 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
                 'data' : {
                     'playlist_uuid':event.get('playlist_uuid', None),
                     'volume':event.get('volume', None),
+                }
+            }))
+            
+    async def player_play_on_master(self, event):
+        """Reçoit les messages player_play_on_master du groupe"""
+        # Ne pas renvoyer le message à l'expéditeur
+        if event.get('sender') != self.channel_name:
+            await self.send(text_data=json.dumps({
+                'type': 'player_play_on_master',
+                'data' : {
+                    'playlist_uuid':event.get('playlist_uuid', None),
                 }
             }))
         

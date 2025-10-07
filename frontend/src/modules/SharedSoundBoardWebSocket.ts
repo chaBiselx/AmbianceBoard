@@ -26,6 +26,9 @@ type WebSocketResponse = {
     'type': string
     'data': DataMusic | DataMixer | DataVolumePlaylist
 }
+type DataVolumePlayOnMaster = {
+    'playlist_uuid': string
+}
 
 class SharedSoundBoardWebSocket {
     private static instance: SharedSoundBoardWebSocket | null = null;
@@ -61,6 +64,7 @@ class SharedSoundBoardWebSocket {
             }
             const url = atob(urlBase64);
             SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, true);
+            SharedSoundBoardWebSocket.instance.start();
         }
         ConsoleTesteur.log(`WebSocket listen : ${SharedSoundBoardWebSocket.instance.url}`);
         return SharedSoundBoardWebSocket.instance;
@@ -142,42 +146,59 @@ class SharedSoundBoardWebSocket {
 
 
     private responseProcessing(response: WebSocketResponse): void {
-        if (this.master) return
         ConsoleCustom.log('Message reçu:', response);
         ConsoleTesteur.log(`WebSocket response : ${JSON.stringify(response)}`);
         ConsoleCustom.log('master', this.master);
+        if (this.master) {
+            this.masterProcessing(response);
+        } else {
+            this.slaveProcessing(response);
+        }
 
+    }
 
+    private masterProcessing(response: WebSocketResponse): void {
+        switch (response.type) {
+            case 'player_play_on_master':
+                this.playerPlayOnMaster(response.data as DataVolumePlayOnMaster);
+                ConsoleCustom.log('▶️ Démarrage musique de la part d\'un joueur:', response);
+                ConsoleTesteur.log(`player_play_on_master from player`);
+                return;
+        }
+    }
+
+    private slaveProcessing(response: WebSocketResponse): void {
         switch (response.type) {
             case 'music_start':
                 ConsoleCustom.log('▶️ Démarrage musique:', response);
                 ConsoleTesteur.log(`music_start`);
                 this.startMusic(response.data as DataMusic);
-                break;
+                return;
             case 'music_stop':
                 this.stopMusic(response.data as DataMusic);
                 ConsoleTesteur.log(`music_stop`);
                 ConsoleCustom.log('⏹️ Arrêt musique:', response);
-                break;
+                return;
             case 'music_stop_all':
                 this.stopAll();
                 ConsoleTesteur.log(`music_stop_all`);
                 ConsoleCustom.log('⏹️ Arrêt toutes musiques:', response);
-                break;
+                return;
             case 'mixer_update':
                 this.updateMixer(response.data as DataMixer);
                 ConsoleCustom.log('🔄 update mixer:', response);
                 ConsoleTesteur.log(`mixer_update`);
-                break;
+                return;
             case 'playlist_update_volume':
                 this.updateVolumePlaylist(response.data as DataVolumePlaylist);
                 ConsoleCustom.log('🔄 update volume playlist:', response);
                 ConsoleTesteur.log(`playlist_update_volume`);
-                break;
+                return;
             default:
                 ConsoleCustom.error('❌ Erreur:', response);
                 ConsoleTesteur.log(`Unknown response type: ${response.type}`);
-                break;
+                return;
+
         }
     }
 
@@ -213,6 +234,16 @@ class SharedSoundBoardWebSocket {
         if (!buttonPlaylist) return;
         let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist, data.volume);
         eventUpdateVolumePlaylist.updateVolume();
+    }
+
+    private playerPlayOnMaster(data: DataVolumePlayOnMaster): void {
+        console.group('playerPlayOnMaster');
+        if (!data.playlist_uuid) return;
+        const buttonPlaylist = ButtonPlaylistFinder.search(data.playlist_uuid);
+        if (!buttonPlaylist) return;
+        buttonPlaylist.active();
+        SoundBoardManager.addPlaylist(buttonPlaylist);
+        console.groupEnd();
     }
 }
 

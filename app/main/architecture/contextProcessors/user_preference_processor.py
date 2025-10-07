@@ -14,6 +14,7 @@ def user_preference_processor(request):
     playlist_dim = None
     can_share_soundboard = False
     device_type = detect_device_type(request)
+    can_shared_playlist_playable_by_shared_user = False
     
     if request.user.is_authenticated:
         # Récupérer les préférences générales

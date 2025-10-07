@@ -16,6 +16,10 @@ class ButtonPlaylist {
         this.dataset = el.dataset;
     }
 
+    public getUuid(): string {
+        return this.idPlaylist;
+    }
+
     public getVolume(): number {
         const volume = this.dataset.playlistVolume
         if (volume === undefined) return 1
@@ -48,6 +52,8 @@ class ButtonPlaylist {
     public getIdPlaylist(): string {
         return this.idPlaylist
     }
+
+
 
 }
 
