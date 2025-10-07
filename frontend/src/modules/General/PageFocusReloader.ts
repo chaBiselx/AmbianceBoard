@@ -1,12 +1,8 @@
 
 class PageFocusReloader {
-    constructor() {
-        this.setupFocusListener();
-    }
-
-    private setupFocusListener(): void {
+    public setupFocusListener(): void {
         window.addEventListener('focus', () => {
-            window.location.reload();
+            globalThis.location.reload();
         });
     }
 }

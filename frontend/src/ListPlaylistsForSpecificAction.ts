@@ -3,8 +3,8 @@ import Csrf from '@/modules/General/Csrf';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
 
 document.addEventListener("DOMContentLoaded", () => {
-    new PageFocusReloader();
-    new UpdatePlaylistActionableByPlayers();
+    new PageFocusReloader().setupFocusListener();
+    new UpdatePlaylistActionableByPlayers().initEventListeners;
 });
 
 type valueType = string | boolean | number;
@@ -23,10 +23,9 @@ class UpdatePlaylistActionableByPlayers {
     constructor() {
         this.playlistsTableBody = document.getElementById('playlists-table-body') as HTMLElement;
         this.url = this.playlistsTableBody.dataset.updateUrl as string;
-        this.initEventListeners();
     }
 
-    private initEventListeners(): void {
+    public initEventListeners(): void {
         this.playlistsTableBody.getElementsByClassName('update-action')
         for (const input of this.playlistsTableBody.getElementsByClassName('update-action')) {
             input.addEventListener('change', (event) => this.updateInput(event));
@@ -56,7 +55,7 @@ class UpdatePlaylistActionableByPlayers {
 
     private valueFromInput(input: HTMLInputElement): valueType {
         if (input.type === 'checkbox') {
-            return input.checked ? true : false;
+            return input.checked;
         }
         return input.value;
     }
