@@ -1,4 +1,4 @@
-from typing import Any, Optional, List, TYPE_CHECKING
+from typing import Any, Dict,  Optional, List, TYPE_CHECKING
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.Playlist import Playlist
 from django.db import models
@@ -24,6 +24,12 @@ class SoundboardPlaylistRepository:
             return SoundboardPlaylist.objects.get(SoundBoard=soundboard, Playlist=playlist)
         except SoundboardPlaylist.DoesNotExist:
             return None 
+        
+    def get_id(self, id) -> SoundboardPlaylist|None:
+        try:
+            return SoundboardPlaylist.objects.get(pk=id)
+        except SoundboardPlaylist.DoesNotExist:
+            return None 
     
     def get_first(self, soundboard: "SoundBoard") -> SoundboardPlaylist|None:
         try:
@@ -34,7 +40,7 @@ class SoundboardPlaylistRepository:
     def get_all(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
         return SoundboardPlaylist.objects.filter(SoundBoard=soundboard).order_by('section', 'order')
     
-    def get_soundboard_formated(self, soundboard: "SoundBoard") -> Any:
+    def get_playlist_formated(self, soundboard: "SoundBoard") -> Any:
         list_playlist = self.get_all(soundboard)
         dict_section = {}
         max_section = self.get_max_section(soundboard)
@@ -49,6 +55,16 @@ class SoundboardPlaylistRepository:
         soundboard.max_section = max_section
         
         # Retourner le dictionnaire pour pouvoir l'itérer dans le template
+        return dict_section.items()
+    
+    def get_soundboard_playlist_formated(self, soundboard: "SoundBoard") -> Any:
+        list_playlist = self.get_all(soundboard)
+        dict_section = {}
+        for sp in list_playlist:
+            if sp.section not in dict_section:
+                dict_section[sp.section] = []
+            dict_section[sp.section].append(sp)
+  
         return dict_section.items()
        
     

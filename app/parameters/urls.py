@@ -8,6 +8,7 @@ from main.domain.general.views.generalViews import home, pricing,  create_accoun
 from main.domain.general.views.confirmViews import confirm_account
 from main.domain.general.views.traceFrontViews import trace_front
 from main.domain.private.views.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
+from main.domain.private.views.soundboardSpecifiqueViews import list_playlists_for_specific_action, update_specific_actionable_playlists
 from main.domain.private.views.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
 from main.domain.private.views.showSoundboardViews import playlist_show, music_stream, update_direct_volume
 from main.domain.private.views.playlistFormViews import playlist_read_all, playlist_create, playlist_create_with_soundboard, playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete
@@ -61,6 +62,8 @@ urlpatterns = [
     path("soundBoards/<uuid:soundboard_uuid>/organize", soundboard_organize, name="organizeSoundboard"),
     path("soundBoards/<uuid:soundboard_uuid>/organize/update", soundboard_organize_update, name="organizeSoundboardUpdate"),
     path("soundBoards/<uuid:soundboard_uuid>/user/favorite", favorite_update, name="publicFavoriteSoundboard"),
+    path("soundBoards/<uuid:soundboard_uuid>/specific", list_playlists_for_specific_action, name="listSoundboardPlaylistsSpecific"),
+    path("soundBoards/specific/update", update_specific_actionable_playlists, name="updateActionablePlaylistsForPlayers"),
     
     
     path('account/settings/',settings_index, name="settingsIndex"),

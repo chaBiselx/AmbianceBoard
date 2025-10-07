@@ -8,6 +8,7 @@ class SoundboardPlaylist(models.Model):
     Playlist = models.ForeignKey("Playlist", on_delete=models.CASCADE, null=False, blank=False)
     order = models.IntegerField(default=0)
     section = models.IntegerField(default=1)
+    activable_by_player = models.BooleanField(default=False)
     
     def clean(self):
         """Valide que la section est dans la plage autorisée"""
@@ -18,7 +19,6 @@ class SoundboardPlaylist(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
-    
 
     
     def __str__(self):

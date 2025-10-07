@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
                     FormSoundboard: resolve(__dirname, 'src/FormSoundboard.ts'),
                     PasswordRules: resolve(__dirname, 'src/PasswordRules.ts'),
                     SounboardOrganizer: resolve(__dirname, 'src/SounboardOrganizer.ts'),
+                    ListPlaylistsForSpecificAction: resolve(__dirname, 'src/ListPlaylistsForSpecificAction.ts'),
                     PublicFavorite: resolve(__dirname, 'src/PublicFavorite.ts'),
                     General: resolve(__dirname, 'src/General.ts'),
                     UpdateDimension: resolve(__dirname, 'src/UpdateDimension.ts'),

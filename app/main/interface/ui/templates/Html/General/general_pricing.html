@@ -111,6 +111,12 @@
                                 <strong>partage</strong> de l'écoute des soundboards
                             </li>
                         {% endif %}
+                        {% if tier_data.limits.shared_playlist_playable_by_shared_user %}
+                            <li class="mb-1">
+                                <i class="fa-solid fa-users text-primary me-2"></i>
+                                Interactions <strong> des joueurs possibles</strong> sur les soundboards partagées
+                            </li>
+                        {% endif %}
 
                     </ul>
                 </div>

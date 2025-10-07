@@ -13,7 +13,10 @@
 <h2>Organisation de la playlist</h2>
 <div class="row">
     <div class="col-12 mb-2">
-        <a type="button" href="{% url 'soundboardsRead' soundboard.uuid %}" class="btn btn-info float-end">Retour</a>
+        {% if can_shared_playlist_playable_by_shared_user %}
+        <a type="button" href="{% url 'listSoundboardPlaylistsSpecific' soundboard.uuid %}" class="btn btn-primary float-end" >Ajouter action spécifique</a>
+        {% endif %}
+        <a type="button" href="{% url 'soundboardsRead' soundboard.uuid %}" class="btn btn-info float-end">Retour au soundboard</a>
     </div>
     <div class="col-6">
         <div>
