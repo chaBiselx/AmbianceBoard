@@ -60,9 +60,12 @@ Corrections
 - Corrige anomalie qui augmente progressivement lorsque l'utilisateur souhaite report du contenu
 
 ### 0.1.0-beta.4 - TO_DEFINE
+Nouveautés
+- Pouvoir séléctionner des boutons qui peuvent être joué par les joueurs
 
 Améliorations
 - Amélioration du visuel pour organiser les boutons d'une playlist
+- Ajout de tooltip sur les mixers
 
 Corrections
 - Fix le script de deploiement qui ne recuperer pas le dernier tag. 
