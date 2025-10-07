@@ -4,7 +4,7 @@ import ConsoleCustom from "@/modules/General/ConsoleCustom";
 
 document.addEventListener("DOMContentLoaded", () => {
     new PageFocusReloader().setupFocusListener();
-    new UpdatePlaylistActionableByPlayers().initEventListeners;
+    new UpdatePlaylistActionableByPlayers().initEventListeners();
 });
 
 type valueType = string | boolean | number;
