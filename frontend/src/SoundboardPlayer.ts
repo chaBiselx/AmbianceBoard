@@ -94,8 +94,7 @@ function eventTogglePlaylist(event: Event) {
 function eventPlayInMasterSoundboard(event: Event) {
     if (event.target instanceof HTMLElement) {
         const buttonPlaylist = new ButtonPlaylist(event.target)
-        if (buttonPlaylist.isActive()) {
-        } else {
+        if (!buttonPlaylist.isActive()) {
             new SharedSoundboardSendCmdMaster().sendPlayPlaylistOnMaster(buttonPlaylist.getUuid());
             buttonPlaylist.active();
             setTimeout(() => {

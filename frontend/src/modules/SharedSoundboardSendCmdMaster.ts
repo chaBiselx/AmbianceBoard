@@ -14,7 +14,7 @@ class SharedSoundboardSendCmdMaster {
 
     public sendPlayPlaylistOnMaster(PlaylistUuid: string) {
         if (!this.webSocket) return;
-            this.webSocket.sendMessage({ type: 'player_play_on_master', data: { 'playlist_uuid': PlaylistUuid } });
+        this.webSocket.sendMessage({ type: 'player_play_on_master', data: { 'playlist_uuid': PlaylistUuid } });
     }
 
 }
