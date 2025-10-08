@@ -236,6 +236,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "main.architecture.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
+    "main.architecture.middleware.DailySessionMiddleware.DailySessionMiddleware",
     "main.architecture.middleware.ErrorTrackingMiddleware.ErrorTrackingMiddleware",
 ]
 

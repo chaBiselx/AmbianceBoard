@@ -66,6 +66,7 @@ Nouveautés
 Améliorations
 - Amélioration du visuel pour organiser les boutons d'une playlist
 - Ajout de tooltip sur les mixers
+- Ajout d'une mise ajour des date de connexion avec la variable de session
 
 Corrections
 - Fix le script de deploiement qui ne recuperer pas le dernier tag. 

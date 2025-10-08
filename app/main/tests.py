@@ -34,6 +34,7 @@ from main.TNR.TU.config.PlaylistConfigTest import *
 
 #MiddleWare
 from main.TNR.TU.middleware.ErrorTrackingMiddlewareTest import *
+from main.TNR.TU.middleware.DailySessionMiddlewareTest import *
 
 #Repository
 from main.TNR.TU.repository.TrackRepositoryTest import *
