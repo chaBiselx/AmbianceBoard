@@ -59,7 +59,7 @@ Fiabilité & Confiance
 Corrections
 - Corrige anomalie qui augmente progressivement lorsque l'utilisateur souhaite report du contenu
 
-### 0.1.0-beta.4 - TO_DEFINE
+### 0.1.0-beta.4 - 2025/10
 Nouveautés
 - Pouvoir séléctionner des boutons qui peuvent être joué par les joueurs
 
