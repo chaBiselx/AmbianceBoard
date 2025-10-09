@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from main.domain.common.utils.settings import Settings
 from main.domain.private.manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.common.service.PlaylistService import PlaylistService
@@ -45,6 +46,7 @@ def soundboard_organize(request, soundboard_uuid):
 
     max_sections = SoundboardPlaylistRepository().get_max_section(soundboard)
     return render(request, 'Html/Soundboard/soundboard_organize.html', {
+        'limite_max_section' : Settings.get('SOUNDBOARD_LIMIT_SECTION'),
         'soundboard': soundboard, 
         'actualPlaylist': soundboard_manager.get_playlists, 
         'unassociatedPlaylists': soundboard_manager.get_unassociated_playlists,

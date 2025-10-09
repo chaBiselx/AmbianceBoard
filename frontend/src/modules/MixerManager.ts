@@ -67,7 +67,6 @@ class MixerManager {
             ConsoleTesteur.log("WebSocket Master call from MixerManager.startWebSocket");
 
             this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
-            this.sharedSoundBoardWebSocket.start();
         }
     }
 

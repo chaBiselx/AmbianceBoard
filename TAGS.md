@@ -46,7 +46,7 @@ Corrections
 
 ### 0.1.0-beta.3 - 2025/10
 Nouveautés
-- Ajout des preference selon le type de support
+- Ajout des préférence selon le type de support
 - Ajout des sections pour les playlist pour l'organisation et la lecture des playlist
 
 Améliorations
@@ -57,8 +57,17 @@ Fiabilité & Confiance
 - Refactorisation pour utiliser des Repository au lieu des models
 
 Corrections
-- Corrige annomalie qui augmente progressivement lorsque l'utilisateur souhaite report du contenu
+- Corrige anomalie qui augmente progressivement lorsque l'utilisateur souhaite report du contenu
 
-### 0.1.0-beta.4 - TO_DEFINE
+### 0.1.0-beta.4 - 2025/10
+Nouveautés
+- Pouvoir séléctionner des boutons qui peuvent être joué par les joueurs
 
+Améliorations
+- Amélioration du visuel pour organiser les boutons d'une playlist
+- Ajout de tooltip sur les mixers
+- Ajout d'une mise ajour des date de connexion avec la variable de session
+
+Corrections
+- Fix le script de deploiement qui ne recuperer pas le dernier tag. 
 

@@ -1,0 +1,55 @@
+{% extends 'Html/base.html' %}
+{% load Utils %}
+{% load Playlist %}
+{% load static %}
+{% load FrontJs %}
+
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static 'ListPlaylistsForSpecificAction'|search_true_file %}"></script>
+{% endblock javascript %}
+
+{% block content %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Boutons</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Actionnable par les joueurs</th>
+        </tr>
+    </thead>
+    <tbody id="playlists-table-body" data-update-url="{% url 'updateActionablePlaylistsForPlayers' %}">
+        {% comment %} On regroupe les playlists par section {% endcomment %}
+        {% for section, soundboardPlaylistList in ordered_soundboard_playlist %}
+        <tr class="table-primary">
+            <td colspan="100%" class="text-center">Section {{ section }}</td>
+        </tr>
+        {% for soundboardPlaylist in soundboardPlaylistList %}
+        {% with playlist=soundboardPlaylist.Playlist %}
+        <tr>
+            <td>
+                <div class="playlist-link playlist-element playlist-dim-50 m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};" data-bs-toggle="tooltip" data-bs-title="{{playlist.name}}">
+                    {{ playlist | applys_playlist_content}}
+                </div>
+            </td>
+            <td>
+                {{playlist.name}}
+            </td>
+            <td>
+                <div class="form-switch">
+                    <input type="checkbox" class="form-check-input update-action" data-bs-toggle="tooltip" data-bs-title="Afficher/Masquer les boutons aux joueurs" data-playlist-uuid="{{playlist.uuid}}" data-soundboard-uuid="{{soundboard.uuid}}"
+                        data-soundboard-playlist-id="{{soundboardPlaylist.pk}}" data-label="playable_by_players" {% if soundboardPlaylist.activable_by_player %}checked{% endif %}> 
+                </div>
+            </td>
+        </tr>
+        {% endwith %}
+        {% endfor %}
+        {% endfor %}
+
+    </tbody>
+</table>
+
+
+{% endblock content %}

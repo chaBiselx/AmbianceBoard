@@ -13,7 +13,10 @@
 <h2>Organisation de la playlist</h2>
 <div class="row">
     <div class="col-12 mb-2">
-        <a type="button" href="{% url 'soundboardsRead' soundboard.uuid %}" class="btn btn-info float-end">Retour</a>
+        {% if can_shared_playlist_playable_by_shared_user %}
+        <a type="button" href="{% url 'listSoundboardPlaylistsSpecific' soundboard.uuid %}" class="btn btn-primary float-end" >Ajouter action spécifique</a>
+        {% endif %}
+        <a type="button" href="{% url 'soundboardsRead' soundboard.uuid %}" class="btn btn-info float-end">Retour au soundboard</a>
     </div>
     <div class="col-6">
         <div>
@@ -41,32 +44,54 @@
         </div>
         <div data-url="{% url 'organizeSoundboardUpdate' soundboard.uuid %}" id="associated-playlists-container">
             {% for section_num in max_sections %}
-            <div class="mb-3">
-                <h5>Section <span class="num-section">{{ section_num }}</span></h5>
-                <div class="flex-container zone-dragAndDrop border border-primary rounded section-container" id="associated-playlists-section-{{ section_num }}" data-section="{{ section_num }}">
-                    <span class="associated-playlists-empty section-{{ section_num }}-empty" hidden="true">Aucun bouton dans cette section</span>
-                    {% for soundboardPlaylist in actualPlaylist|get_dict_item:section_num %}
-                    {% with playlist=soundboardPlaylist.get_playlist %}
-                    <div class="playlist-dragAndDrop flex-item position-relative" data-order="{{ soundboardPlaylist.order }}" data-section="{{ soundboardPlaylist.get_section|default:1 }}" id="{{ playlist.uuid }}" draggable="true">
-                        <div class="playlist-link playlist-element playlist-dim-{{ playlist_dim }} m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
-                            {{ playlist | applys_playlist_content}}
+            <div class="accordion m-0">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="panelsSection-{{ section_num }}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-{{ section_num }}" aria-expanded="true" aria-controls="panelsStayOpen-{{ section_num }}">
+                            <strong>Section <span class="num-section">{{ section_num }}</span></strong>
+                        </button>
+                    </h2>
+                    <div id="panelsStayOpen-{{ section_num }}" class="accordion-collapse collapse show" aria-labelledby="panelsSection-{{ section_num }}">
+                        <div class="accordion-body p-0">
+                            <div class="flex-container pt-3 zone-dragAndDrop section-container" id="associated-playlists-section-{{ section_num }}" data-section="{{ section_num }}">
+                                <span class="associated-playlists-empty section-{{ section_num }}-empty" hidden="true">Aucun bouton dans cette section</span>
+                                {% for soundboardPlaylist in actualPlaylist|get_dict_item:section_num %}
+                                {% with playlist=soundboardPlaylist.get_playlist %}
+                                <div class="playlist-dragAndDrop flex-item position-relative" data-order="{{ soundboardPlaylist.order }}" data-section="{{ soundboardPlaylist.get_section|default:1 }}" id="{{ playlist.uuid }}" draggable="true">
+                                    <div class="playlist-link playlist-element playlist-dim-{{ playlist_dim }} m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
+                                        {{ playlist | applys_playlist_content}}
+                                    </div>
+                                </div>
+                                {% endwith %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
-                    {% endwith %}
-                    {% endfor %}
                 </div>
+
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
 
-<template id="add-section-template" data-max-section="5">
-    <div class="mb-3">
-        <h5>Section <span class="num-section">0</span></h5>
-        <div class="flex-container zone-dragAndDrop border border-primary rounded section-container" id="associated-playlists-section-template" data-section="0">
-            <span class="associated-playlists-empty section-0-empty" hidden="true">Aucun bouton dans cette section</span>
+<template id="add-section-template" data-max-section="{{limite_max_section}}">
+    <div class="accordion m-0">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsSection-##SECTION##">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-##SECTION##" aria-expanded="true" aria-controls="panelsStayOpen-##SECTION##">
+                    <strong>Section <span class="num-section">##SECTION##</span></strong>
+                </button>
+            </h2>
+            <div id="panelsStayOpen-##SECTION##" class="accordion-collapse collapse show" aria-labelledby="panelsSection-##SECTION##">
+                <div class="accordion-body p-0">
+                    <div class="flex-container pt-3 zone-dragAndDrop section-container" id="associated-playlists-section-template" data-section="0">
+                        <span class="associated-playlists-empty section-0-empty" hidden="true">Aucun bouton dans cette section</span>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
 </template>
 

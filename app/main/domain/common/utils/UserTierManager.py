@@ -66,10 +66,11 @@ class UserTierManager:
         return file_size_mb <= limits['weight_music_mb']
     
     @staticmethod
-    def can_user_share_soundboard(user) -> bool:
-        """Vérifie si l'utilisateur peut partager un soundboard"""
+    def can_boolean(user, param: str) -> bool:
+        """Vérifie si l'utilisateur peut effectuer une action"""
         limits = UserTierManager.get_user_limits(user)
         return limits.get('share_soundboard', False)
+        
     
     @staticmethod
     def get_tier_comparison() -> Dict[str, Dict[str, Any]]:

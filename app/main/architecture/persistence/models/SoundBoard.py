@@ -122,7 +122,19 @@ class SoundBoard(models.Model):
         """
         # Import local pour éviter l'importation circulaire
         from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
-        return SoundboardPlaylistRepository().get_soundboard_formated(self)
+        return SoundboardPlaylistRepository().get_playlist_formated(self)
+    
+    def get_list_playlist_playable_ordered(self) -> "dict[int, List[Playlist]]":
+        """
+        Retourne la liste des playlists du soundboard ordonnées.
+        
+        Returns:
+            dict[int, List[Playlist]]: Dictionnaire des playlists associées au soundboard,
+                              ordonnées selon l'ordre défini dans SoundboardPlaylist
+        """
+        # Import local pour éviter l'importation circulaire
+        from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+        return SoundboardPlaylistRepository().get_soundboard_playlist_for_player_formated(self)
     
     def get_tags_list(self) -> "QuerySet[Tag]":
         """

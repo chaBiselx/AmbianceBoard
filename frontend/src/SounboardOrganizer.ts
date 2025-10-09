@@ -486,7 +486,7 @@ class DragAndDropEventManager {
 
     private handleUnassociatedToAssociatedDrop(elementDragged: DragEvent, playlist: HTMLDivElement, listHtmlPlaylist: HTMLElement[], sectionEl: HTMLDivElement): number {
         ConsoleTesteur.group('Adding music from unassociated to associated');
-        
+
         const newOrder = this.insertPlaylistInSection(elementDragged, playlist, listHtmlPlaylist, sectionEl);
         ConsoleTesteur.groupEnd();
         return newOrder;
@@ -540,7 +540,7 @@ class SectionAdder {
 
     private template: HTMLTemplateElement | null = null;
 
-    constructor() { 
+    constructor() {
         this.setTemplate();
     }
 
@@ -563,6 +563,65 @@ class SectionAdder {
         return true;
     }
 
+    private replaceTextSection(nextSectionNumber: number) {
+
+        if (!this.template) {
+            return;
+        }
+
+        // Cloner le template
+        const clone = this.template.content.cloneNode(true) as DocumentFragment;
+        const numSectionSpan = clone.querySelector('.num-section') as HTMLSpanElement;
+        if (numSectionSpan) {
+            numSectionSpan.textContent = nextSectionNumber.toString();
+        }
+        // Mettre à jour les IDs et numéros de section
+        const sectionContainer = clone.querySelector('.section-container') as HTMLDivElement;
+        if (sectionContainer) {
+            // Mettre à jour l'ID et les attributs
+            sectionContainer.id = `associated-playlists-section-${nextSectionNumber}`;
+            sectionContainer.dataset.section = nextSectionNumber.toString();
+        }
+        const sectionEmpty = clone.querySelector('[class*="section-"][class*="-empty"]') as HTMLSpanElement;
+        if (sectionEmpty) {
+            // Mettre à jour les classes et numéros
+            sectionEmpty.className = sectionEmpty.className.replace(
+                /section-\d+-empty/,
+                `section-${nextSectionNumber}-empty`
+            );
+        }
+        const accordionHeader = clone.querySelector('.accordion-header') as HTMLDivElement;
+        if (accordionHeader) {
+            // Mettre à jour l'ID et les attributs
+            accordionHeader.id = `apanelsSection-${nextSectionNumber}`;
+        }
+        const accordionButton = clone.querySelector('.accordion-button') as HTMLDivElement;
+        if (accordionButton) {
+            // Mettre à jour l'ID et les attributs
+            accordionButton.setAttribute('aria-controls', `panelsStayOpen-${nextSectionNumber}`);
+            accordionButton.dataset.bsTarget = `#panelsStayOpen-${nextSectionNumber}`;
+        }
+            const accordionCollapse = clone.querySelector('.accordion-collapse') as HTMLDivElement;
+        if (accordionCollapse) {
+            // Mettre à jour l'ID et les attributs
+            accordionCollapse.id = `panelsStayOpen-${nextSectionNumber}`;
+            accordionCollapse.setAttribute('aria-labelledby', `apanelsSection-${nextSectionNumber}`);
+        }
+        
+        // Trouver le conteneur parent pour insérer la nouvelle section
+        const parentContainer = document.getElementById('associated-playlists-container');
+        if (parentContainer) {
+            parentContainer.appendChild(clone);
+
+            // Rafraîchir la configuration des sections
+            SectionConfig.refreshMaxSections();
+
+            ConsoleTesteur.info(`Section ${nextSectionNumber} added successfully`);
+
+            new DragAndDropEventManager().setupEvents();
+        }
+    }
+
     private addNewSection(): void {
         if (!this.template) {
             return;
@@ -576,42 +635,11 @@ class SectionAdder {
             return;
         }
 
-        
+        this.replaceTextSection(nextSectionNumber);
 
-        // Cloner le template
-        const clone = this.template.content.cloneNode(true) as DocumentFragment;
 
-        // Mettre à jour les IDs et numéros de section
-        const sectionContainer = clone.querySelector('.section-container') as HTMLDivElement;
-        const sectionEmpty = clone.querySelector('[class*="section-"][class*="-empty"]') as HTMLSpanElement;
-        const numSectionSpan = clone.querySelector('.num-section') as HTMLSpanElement;
 
-        if (sectionContainer && sectionEmpty && numSectionSpan) {
-            // Mettre à jour l'ID et les attributs
-            sectionContainer.id = `associated-playlists-section-${nextSectionNumber}`;
-            sectionContainer.dataset.section = nextSectionNumber.toString();
 
-            // Mettre à jour les classes et numéros
-            sectionEmpty.className = sectionEmpty.className.replace(
-                /section-\d+-empty/,
-                `section-${nextSectionNumber}-empty`
-            );
-            numSectionSpan.textContent = nextSectionNumber.toString();
-
-            // Trouver le conteneur parent pour insérer la nouvelle section
-            const parentContainer = document.getElementById('associated-playlists-container');
-            if (parentContainer) {
-                parentContainer.appendChild(clone);
-
-                // Rafraîchir la configuration des sections
-                SectionConfig.refreshMaxSections();
-
-                ConsoleTesteur.info(`Section ${nextSectionNumber} added successfully`);
-
-                new DragAndDropEventManager().setupEvents();
-
-            }
-        }
     }
 }
 

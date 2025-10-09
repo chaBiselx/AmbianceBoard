@@ -236,6 +236,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "main.architecture.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
+    "main.architecture.middleware.DailySessionMiddleware.DailySessionMiddleware",
     "main.architecture.middleware.ErrorTrackingMiddleware.ErrorTrackingMiddleware",
 ]
 
@@ -479,7 +480,8 @@ USER_TIERS = {
             'music_per_playlist': 5,
             'weight_music_mb': 10,
             'share_soundboard': True,
-            'advertising' : AdvertisingEnum.FULL
+            'advertising' : AdvertisingEnum.FULL,
+            'shared_playlist_playable_by_shared_user' : False
         },
         'group_enum': 'USER_STANDARD'
     },
@@ -497,7 +499,8 @@ USER_TIERS = {
             'music_per_playlist': 10,
             'weight_music_mb': 20,
             'share_soundboard': True,
-            'advertising' : AdvertisingEnum.PARTIAL
+            'advertising' : AdvertisingEnum.PARTIAL,
+            'shared_playlist_playable_by_shared_user' : True
         },
         'group_enum': 'USER_PREMIUM_BASIC'
     },
@@ -516,7 +519,8 @@ USER_TIERS = {
             'music_per_playlist': 20,
             'weight_music_mb': 25,
             'share_soundboard': True,
-            'advertising' : AdvertisingEnum.NONE
+            'advertising' : AdvertisingEnum.NONE,
+            'shared_playlist_playable_by_shared_user' : True
         },
         'group_enum': 'USER_PREMIUM_ADVANCED'  # À ajouter dans GroupEnum
     },
@@ -534,7 +538,8 @@ USER_TIERS = {
             'music_per_playlist': 30,
             'weight_music_mb': 30,
             'share_soundboard': True,
-            'advertising' : AdvertisingEnum.NONE
+            'advertising' : AdvertisingEnum.NONE,
+            'shared_playlist_playable_by_shared_user' : True
         },
         'group_enum': 'USER_PREMIUM_PRO'  # À ajouter dans GroupEnum
     }
@@ -558,3 +563,5 @@ LINK_DONATION = os.environ.get("LINK_DONATION", "reis")
 
 APP_TVA = 20.0  # en pourcentage
 APP_CURRENCY = "EUR"
+
+SOUNDBOARD_LIMIT_SECTION = 25

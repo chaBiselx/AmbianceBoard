@@ -32,7 +32,6 @@ class MixerPlaylist {
             ConsoleTesteur.log("WebSocket Master call from MixerPlaylist.startWebSocket");
 
             this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
-            this.sharedSoundBoardWebSocket.start();
         }
     }
 
