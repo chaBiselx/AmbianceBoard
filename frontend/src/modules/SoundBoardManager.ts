@@ -1,4 +1,5 @@
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
+import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import { ButtonPlaylist, ListingButtonPlaylist } from '@/modules/ButtonPlaylist';
 import { MusicElement, ListingAudioElement } from '@/modules/MusicElement';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
@@ -6,13 +7,12 @@ import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 
 class SoundBoardManager {
     static createPlaylistLink(buttonPlaylist: ButtonPlaylist) {
-        ConsoleCustom.log('createPlaylistLink', buttonPlaylist);
+        ConsoleTesteur.log('createPlaylistLink', buttonPlaylist);
 
         const musicElement = new MusicElement(buttonPlaylist);
         (new UpdateVolumeElement(musicElement)).update();
         musicElement.addToDOM();
         musicElement.play();
-
     }
 
     static addPlaylist(buttonPlaylist: ButtonPlaylist) {
@@ -39,8 +39,7 @@ class SoundBoardManager {
     }
 
     static deleteSameTypePlaylist(ButtonPlaylist: ButtonPlaylist) {
-        ConsoleCustom.log('deleteSameTypePlaylist');
-        ConsoleCustom.log(ButtonPlaylist.singleConcurrentread);
+        ConsoleTesteur.log('deleteSameTypePlaylist' , ButtonPlaylist.singleConcurrentread);
         if (ButtonPlaylist.singleConcurrentread) {
             const listingMusicElement = ListingAudioElement.getListingAudioElement(ButtonPlaylist.playlistType);
             for (let musicElement of listingMusicElement) {

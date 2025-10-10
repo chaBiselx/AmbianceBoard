@@ -148,7 +148,7 @@ class MusicElement {
 
     public play() {
 
-        ConsoleCustom.log('play');
+        ConsoleTesteur.log('play_action');
         this.DOMElement.addEventListener('error', this.handleAudioError);
 
         if (this.fadeIn) {
@@ -224,12 +224,10 @@ class MusicElement {
         if (timeRemaining <= new_music.fadeOutDuration && new_music.fadeOut) {
             const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist);
             if (buttonPlaylist) {
-
-
                 new_music.DOMElement.removeEventListener('timeupdate', new_music.eventFadeOut);
                 new_music.addFadeOut();
                 if (new_music.checkLoop()) {
-                    ConsoleCustom.log("eventFadeOut loop");
+                    ConsoleTesteur.log("eventFadeOut loop => SoundBoardManager.createPlaylistLink");
                     new_music.applyDelay(() => {
                         SoundBoardManager.createPlaylistLink(buttonPlaylist);
                     })
