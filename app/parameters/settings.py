@@ -110,12 +110,17 @@ if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
     os.mkdir(os.path.join(BASE_DIR, 'logs'), mode=0o777 if DEBUG else 0o666)
 
 
-LOGGER_TYPE = "file"
+LOGGER_TYPE = "composite"
 if DEBUG :
-    LOGGER_TYPE = "file" # TODO set other for production 
+    LOGGER_TYPE = "loki"
 # For tests, use the MemoryLogger
 if TESTING:
     LOGGER_TYPE = "memory"
+
+# Configuration Loki pour le logging vers Grafana
+LOKI_URL = os.environ.get('LOKI_URL')
+LOKI_BATCH_SIZE = int(os.environ.get('LOKI_BATCH_SIZE', '10'))
+LOKI_BATCH_TIMEOUT = float(os.environ.get('LOKI_BATCH_TIMEOUT', '5.0'))
     
 level_log_debug = 'DEBUG' if DEBUG else 'INFO'
 timed_rotating_file_handler = 'logging.handlers.TimedRotatingFileHandler'
