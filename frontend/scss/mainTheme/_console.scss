@@ -1,0 +1,49 @@
+@import "../variables";
+
+.console-testeur {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 10px;
+    border-radius: 4px;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.console-timestamp {
+    color: #7a7a7aff;
+}
+
+.console-log {
+    color: #d4d4d4;
+}
+
+.console-error {
+    color: #f14c4c;
+}
+
+.console-warn {
+    color: #ffcc02;
+}
+
+.console-info {
+    color: #3794ff;
+}
+
+.console-debug {
+    color: #b267e6;
+}
+
+.console-group {
+    margin-left: 20px;
+}
+
+.console-time {
+    color: #4fc1ff;
+}
+
+.console-trace {
+    color: #ff8c00;
+}

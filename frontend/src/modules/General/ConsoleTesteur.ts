@@ -9,45 +9,20 @@ class ConsoleTesteur implements Console {
 
     constructor() {
         this.DOM = document.getElementById('console-testeur');
-        this.initializeStyles();
+        const clearButton = document.getElementById('clear-console-testeur');
+        if (clearButton) {
+            clearButton.addEventListener('click', () => this.clearConsole());
+        }
     }
 
     private valid(): boolean {
         return this.DOM !== null;
     }
 
-    private initializeStyles(): void {
-        if (!this.valid()) return;
-
-        // Ajouter les styles CSS pour la console
-        const style = document.createElement('style');
-        style.textContent = `
-            .console-testeur {
-                font-family: 'Courier New', monospace;
-                font-size: 12px;
-                line-height: 1.4;
-                background: #1e1e1e;
-                color: #d4d4d4;
-                padding: 10px;
-                border-radius: 4px;
-                max-height: 400px;
-                overflow-y: auto;
-                white-space: pre-wrap;
-            }
-            .console-timestamp { color: #7a7a7aff; }
-            .console-log { color: #d4d4d4; }
-            .console-error { color: #f14c4c; }
-            .console-warn { color: #ffcc02; }
-            .console-info { color: #3794ff; }
-            .console-debug { color: #b267e6; }
-            .console-group { margin-left: 20px; }
-            .console-time { color: #4fc1ff; }
-            .console-trace { color: #ff8c00; }
-        `;
-        document.head.appendChild(style);
-
-        // Initialiser la classe CSS sur le DOM
-        this.DOM!.classList.add('console-testeur');
+    private clearConsole(): void {
+        if (this.valid()) {
+            this.DOM!.innerHTML = '';
+        }
     }
 
     private writeToDOM(message: string, className: string = 'console-log'): void {

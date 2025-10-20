@@ -12,3 +12,7 @@ def applys_soundboard_content(playlist):
         content = f"<img class=\"playlist-img\" src=\"{playlist.icon.url }\" alt=\"{ name }\" draggable=\"false\" ></img>"
     
     return mark_safe(content)    
+
+@register.filter
+def get_name(soundboard):
+    return f"{escape(soundboard.name)}"

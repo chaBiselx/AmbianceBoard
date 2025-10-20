@@ -83,10 +83,8 @@ function eventTogglePlaylist(event: Event) {
             buttonPlaylist.disactive();
             SoundBoardManager.removePlaylist(buttonPlaylist);
         } else {
-            console.group('eventTogglePlaylist');
             buttonPlaylist.active();
             SoundBoardManager.addPlaylist(buttonPlaylist);
-            console.groupEnd();
         }
     }
 }

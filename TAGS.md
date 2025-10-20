@@ -71,3 +71,10 @@ Améliorations
 Corrections
 - Fix le script de deploiement qui ne recuperer pas le dernier tag. 
 
+### 0.1.0-beta.4 - 2025/10
+Améliorations
+- Amélioration du logger pour beta-tester
+- Affichage du nom de la soundboard
+
+Nouveautés
+- Ajout de Graphana pour la gestion des logs en productions
