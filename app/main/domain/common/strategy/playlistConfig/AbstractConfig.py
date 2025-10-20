@@ -21,7 +21,7 @@ class AbstractConfig():
     default_data = {}
     
     def get_data(self, playlist):
-        specifique_data = self.default_data
+        specifique_data = self.default_data.copy()
         specifique_data['id'] = playlist.uuid
         if(specifique_data['volume'] is not None and playlist.volume >= 0 and playlist.volume <= 100):
             specifique_data['volume'] = playlist.volume
