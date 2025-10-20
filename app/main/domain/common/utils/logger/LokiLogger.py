@@ -35,7 +35,7 @@ class LokiLogger(ILogger):
             raise ValueError("Le nom du logger ne peut pas être vide")
         
         # Résolution des paramètres à partir des settings Django si non fournis
-        loki_url = Settings.get('LOKI_URL') or 'http://loki:3100'
+        loki_url = Settings.get('LOKI_URL')
         batch_size = Settings.get('LOKI_BATCH_SIZE') or 10
         batch_timeout = Settings.get('LOKI_BATCH_TIMEOUT') or 5.0
 
