@@ -246,12 +246,12 @@ class MusicElement {
     }
 
     private applyDelay(callback: () => void) {
+        ConsoleTesteur.log(`applyDelay => ${this.delay} ${typeof this.delay}`);
         if (this.delay > 0) {
             const delay = this.getTimeDelay();
-            ConsoleCustom.log("delay: " + delay);
+            ConsoleTesteur.log("delay: " + delay);
             setTimeout(() => {
-                ConsoleCustom.log("applyDelay callback: ");
-
+                ConsoleTesteur .log("applyDelay callback: ");
                 const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist);
                 if (buttonPlaylist && buttonPlaylist.isActive() && this.butonPlaylistToken == buttonPlaylist.getToken()) {
                     callback()
