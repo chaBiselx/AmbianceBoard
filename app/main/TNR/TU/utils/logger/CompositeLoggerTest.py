@@ -88,7 +88,8 @@ class CompositeLoggerTestCase(UnitTestCase):
         loggers = [self.memory_logger1, self.memory_logger2, self.mock_logger]
         composite = CompositeLogger('test_debug', loggers)
         
-        composite.debug("Debug message test")
+        msg_debug = "Debug message test"
+        composite.debug(msg_debug)
         
         # Vérifier que les MemoryLoggers ont reçu le message
         logs1 = self.memory_logger1.get_logs()
@@ -96,13 +97,13 @@ class CompositeLoggerTestCase(UnitTestCase):
         
         self.assertEqual(len(logs1), 1)
         self.assertEqual(len(logs2), 1)
-        self.assertEqual(logs1[0]['message'], "Debug message test")
+        self.assertEqual(logs1[0]['message'], msg_debug)
         self.assertEqual(logs1[0]['level'], 'DEBUG')
-        self.assertEqual(logs2[0]['message'], "Debug message test")
+        self.assertEqual(logs2[0]['message'], msg_debug)
         self.assertEqual(logs2[0]['level'], 'DEBUG')
         
         # Vérifier que le mock logger a été appelé
-        self.mock_logger.debug.assert_called_once_with("Debug message test")
+        self.mock_logger.debug.assert_called_once_with(msg_debug)
     
     def test_info_message_delegation(self):
         """Test de délégation des messages INFO"""
@@ -208,8 +209,9 @@ class CompositeLoggerTestCase(UnitTestCase):
         loggers = [self.memory_logger1, failing_logger, self.memory_logger2]
         composite = CompositeLogger('test_error_handling', loggers)
         
+        log_message = "Test message with failing logger"
         # Cela ne devrait pas lever d'exception malgré l'erreur du failing_logger
-        composite.info("Test message with failing logger")
+        composite.info(log_message)
         
         # Vérifier que les autres loggers ont fonctionné
         logs1 = self.memory_logger1.get_logs()
@@ -217,8 +219,8 @@ class CompositeLoggerTestCase(UnitTestCase):
         
         self.assertEqual(len(logs1), 1)
         self.assertEqual(len(logs2), 1)
-        self.assertEqual(logs1[0]['message'], "Test message with failing logger")
-        self.assertEqual(logs2[0]['message'], "Test message with failing logger")
+        self.assertEqual(logs1[0]['message'], log_message)
+        self.assertEqual(logs2[0]['message'], log_message)
         
         # Vérifier que le failing_logger a été appelé mais a échoué
         failing_logger.info.assert_called_once()
@@ -318,14 +320,15 @@ class CompositeLoggerTestCase(UnitTestCase):
         loggers = [file_logger, memory_logger, mock_logger]
         composite = CompositeLogger('mixed_types', loggers)
         
-        composite.info("Test message for mixed types")
+        message = "Test message for mixed types"
+        composite.info(message)
         
         # Vérifier que tous ont été appelés
         memory_logs = memory_logger.get_logs()
         self.assertEqual(len(memory_logs), 1)
-        self.assertEqual(memory_logs[0]['message'], "Test message for mixed types")
+        self.assertEqual(memory_logs[0]['message'], message)
         
-        mock_logger.info.assert_called_once_with("Test message for mixed types")
+        mock_logger.info.assert_called_once_with(message)
         
         # Le LoggerFile devrait avoir traité le message (pas d'exception)
         self.assertEqual(composite.logger_count, 3)
@@ -342,7 +345,8 @@ class CompositeLoggerTestCase(UnitTestCase):
         logger2.error("Direct message to logger2")
         
         # Ajouter un message via le composite
-        composite.info("Composite message")
+        message = "Composite message"
+        composite.info(message)
         
         # Vérifier l'isolation
         logs1 = logger1.get_logs()
@@ -354,12 +358,12 @@ class CompositeLoggerTestCase(UnitTestCase):
         # Vérifier les messages spécifiques
         self.assertEqual(logs1[0]['message'], "Direct message to logger1")
         self.assertEqual(logs1[0]['level'], 'DEBUG')
-        self.assertEqual(logs1[1]['message'], "Composite message")
+        self.assertEqual(logs1[1]['message'], message)
         self.assertEqual(logs1[1]['level'], 'INFO')
         
         self.assertEqual(logs2[0]['message'], "Direct message to logger2")
         self.assertEqual(logs2[0]['level'], 'ERROR')
-        self.assertEqual(logs2[1]['message'], "Composite message")
+        self.assertEqual(logs2[1]['message'], message)
         self.assertEqual(logs2[1]['level'], 'INFO')
 
 

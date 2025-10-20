@@ -320,7 +320,7 @@ class LoggerFactoryTestCase(TestCase):
         instance = LoggerFactory.create_logger(
             'test_loki_custom',
             'loki',
-            loki_url='http://custom-loki:3100',
+            loki_url='http://custom-loki:3100', # NOSONAR
             labels=custom_labels,
             batch_size=20,
             batch_timeout=10.0
@@ -501,7 +501,7 @@ class LoggerFactoryIntegrationTestCase(TestCase):
     
     @override_settings(
         LOGGER_TYPE='loki',
-        LOKI_URL='http://test-loki:3100'
+        LOKI_URL='http://test-loki:3100' # NOSONAR
     )
     @patch('main.domain.common.utils.logger.LoggerFactory.LokiLogger')
     def test_factory_with_django_settings_loki(self, mock_loki_logger):
@@ -572,7 +572,7 @@ class LoggerFactoryIntegrationTestCase(TestCase):
             ])
     
     @override_settings(
-        LOKI_URL='http://settings-loki:3100',
+        LOKI_URL='http://settings-loki:3100', # NOSONAR
         LOKI_BATCH_SIZE=15,
         LOKI_BATCH_TIMEOUT=3.0
     )

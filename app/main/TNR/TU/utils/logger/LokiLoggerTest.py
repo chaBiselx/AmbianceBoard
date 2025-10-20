@@ -17,15 +17,15 @@ class LokiLoggerTestCase(TestCase):
             self.assertIsInstance(logger, ILogger)
             self.assertEqual(logger.logger_name, 'main')
             self.assertTrue(logger._sender_thread.is_alive())
-            self.assertIn('http://loki:3100', logger.loki_url)
+            self.assertIn('http://loki:3100', logger.loki_url) # NOSONAR
         finally:
             logger.shutdown()
 
-    @override_settings(LOKI_URL='http://custom-loki:3100')
+    @override_settings(LOKI_URL='http://custom-loki:3100') # NOSONAR
     def test_initialisation_avec_setting_url(self):
         logger = LokiLogger('custom')
         try:
-            self.assertIn('http://custom-loki:3100', logger.loki_url)
+            self.assertIn('http://custom-loki:3100', logger.loki_url) # NOSONAR
         finally:
             logger.shutdown()
 
@@ -34,7 +34,7 @@ class LokiLoggerTestCase(TestCase):
             LokiLogger(logger_name='')
 
     @patch('requests.post')
-    @override_settings(LOKI_BATCH_SIZE=1, LOKI_BATCH_TIMEOUT=0.1, LOKI_URL='http://test-loki:3100')
+    @override_settings(LOKI_BATCH_SIZE=1, LOKI_BATCH_TIMEOUT=0.1, LOKI_URL='http://test-loki:3100') # NOSONAR
     def test_debug_message(self, mock_post):
         mock_post.return_value.status_code = 204
         logger = LokiLogger('debug_test')
@@ -42,12 +42,12 @@ class LokiLoggerTestCase(TestCase):
             logger.debug('Debug message test')
             time.sleep(0.2)
             self.assertTrue(mock_post.called)
-            self.assertEqual(mock_post.call_args[0][0], 'http://test-loki:3100/loki/api/v1/push')
+            self.assertEqual(mock_post.call_args[0][0], 'http://test-loki:3100/loki/api/v1/push') # NOSONAR
         finally:
             logger.shutdown()
 
     @patch('requests.post')
-    @override_settings(LOKI_BATCH_SIZE=5, LOKI_BATCH_TIMEOUT=0.2, LOKI_URL='http://test-loki:3100')
+    @override_settings(LOKI_BATCH_SIZE=5, LOKI_BATCH_TIMEOUT=0.2, LOKI_URL='http://test-loki:3100') # NOSONAR
     def test_tous_niveaux(self, mock_post):
         mock_post.return_value.status_code = 204
         logger = LokiLogger('levels_test')
@@ -59,7 +59,7 @@ class LokiLoggerTestCase(TestCase):
             logger.shutdown()
 
     @patch('requests.post')
-    @override_settings(LOKI_BATCH_SIZE=1, LOKI_BATCH_TIMEOUT=0.1, LOKI_URL='http://test-loki:3100')
+    @override_settings(LOKI_BATCH_SIZE=1, LOKI_BATCH_TIMEOUT=0.1, LOKI_URL='http://test-loki:3100') # NOSONAR
     def test_exception(self, mock_post):
         mock_post.return_value.status_code = 204
         logger = LokiLogger('exception_test')
@@ -167,7 +167,7 @@ class LokiLoggerTestCase(TestCase):
 
 
 class LokiLoggerIntegrationTestCase(TestCase):
-    @override_settings(LOKI_URL='http://test-loki:3100', LOKI_BATCH_SIZE=1, LOKI_BATCH_TIMEOUT=0.1)
+    @override_settings(LOKI_URL='http://test-loki:3100', LOKI_BATCH_SIZE=1, LOKI_BATCH_TIMEOUT=0.1) # NOSONAR
     @patch('requests.post')
     def test_factory_loki(self, mock_post):
         mock_post.return_value.status_code = 204
