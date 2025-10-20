@@ -24,6 +24,7 @@ sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw allow 22/tcp
 sudo ufw allow 8000/tcp
+sudo ufw allow 3100/tcp
 sudo ufw allow 'Nginx Full'
 
 sudo nginx -t
