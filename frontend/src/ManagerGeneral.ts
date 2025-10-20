@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
 class CronExecuter {
 
     addEvent() {
-        document.querySelectorAll('.cron-execute-button').forEach((el) => {
+        for (const el of document.querySelectorAll('.cron-execute-button')) {
             el.addEventListener('click', this.executeCron.bind(this));
-        });
+        }
     }
 
     private async executeCron(event: Event) {
