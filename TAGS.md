@@ -78,3 +78,7 @@ Améliorations
 
 Nouveautés
 - Ajout de Graphana pour la gestion des logs en productions
+
+### 0.1.0-beta.6 - 2025/10
+Améliorations
+- connections des logs a loki pour graphana
