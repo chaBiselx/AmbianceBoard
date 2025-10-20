@@ -1,0 +1,71 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # Configuration pour les logs de votre application AmbianceBoard
+  - job_name: ambianceboard-app-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: ambianceboard
+          service: app
+          __path__: /app/logs/app_logs.log*
+
+  - job_name: ambianceboard-front-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: ambianceboard
+          service: frontend
+          __path__: /app/logs/front_logs.log*
+
+  - job_name: ambianceboard-mail-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: ambianceboard
+          service: mail
+          __path__: /app/logs/mails_logs.log*
+
+  - job_name: ambianceboard-orm-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: ambianceboard
+          service: orm
+          __path__: /app/logs/orm_logs.log*
+
+  - job_name: ambianceboard-request-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: ambianceboard
+          service: request
+          __path__: /app/logs/request_logs.log*
+
+  # Configuration pour les logs des conteneurs Docker
+  - job_name: docker-containers
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+    relabel_configs:
+      - source_labels: [__meta_docker_container_label_com_docker_compose_service]
+        target_label: service
+      - source_labels: [__meta_docker_container_name]
+        target_label: container
+      - source_labels: [__meta_docker_container_log_stream]
+        target_label: logstream
+      - source_labels: [__meta_docker_container_label_com_docker_compose_project]
+        target_label: compose_project
