@@ -18,7 +18,7 @@ class AppSettings(BaseSettings):
             return value_surcharge
         return getattr(self._settings, key, default)
 
-    def _get_surcharge_settings(self, key: str) -> Any:
+    def _get_surcharge_settings(self, _: str) -> Any:
         # to implement with BDD/files/...
         return None
 

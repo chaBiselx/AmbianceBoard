@@ -16,6 +16,8 @@ from main.TNR.TU.utils.EmailSenderTest import *
 from main.TNR.TU.utils.UrlsUtilsTest import *
 
 from main.TNR.TU.utils.logger.LoggerFactoryTest import *
+from main.TNR.TU.utils.logger.LokiLoggerTest import *
+from main.TNR.TU.utils.logger.CompositeLoggerTest import *
 from main.TNR.TU.utils.cache.TestCacheSystem import *
 
 
