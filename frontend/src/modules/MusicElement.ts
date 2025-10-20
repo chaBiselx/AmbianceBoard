@@ -155,7 +155,7 @@ class MusicElement {
             this.addFadeIn();
         }
 
-        if (this.fadeOut) {
+        if (this.hasFadeout()) {
             this.DOMElement.addEventListener('ended', this.eventDeleteFadeOut);
             this.DOMElement.addEventListener('loadedmetadata', () => {
                 this.DOMElement.addEventListener('timeupdate', this.eventFadeOut);
@@ -219,9 +219,7 @@ class MusicElement {
     private eventFadeOut(event: Event) {
         ConsoleCustom.log('eventFadeOut');
         let new_music = new MusicElement(event.target as HTMLAudioElement);
-        const timeRemaining = new_music.DOMElement.duration - new_music.DOMElement.currentTime;
-
-        if (timeRemaining <= new_music.fadeOutDuration && new_music.fadeOut) {
+        if (this.timeRemaining() <= new_music.fadeOutDuration && new_music.hasFadeout()) {
             const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist);
             if (buttonPlaylist) {
                 new_music.DOMElement.removeEventListener('timeupdate', new_music.eventFadeOut);
@@ -236,6 +234,23 @@ class MusicElement {
                 }
             }
         }
+    }
+
+    /**
+     * Check if the audio element has fade out.
+     * 
+     * @returns True if the audio element has fade out, false otherwise.
+     */
+    private hasFadeout(): boolean {
+        return this.fadeOut;
+    }
+
+    /**
+     * Get the remaining time of the audio element.
+     * @returns The remaining time in seconds.
+     */
+    private timeRemaining(): number {
+        return this.DOMElement.duration - this.DOMElement.currentTime;
     }
 
     private getTimeDelay() {
