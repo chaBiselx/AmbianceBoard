@@ -18,6 +18,7 @@ tmp/*
 
 
 #prod
+static/*
 staticfiles/*
 mediafiles/*
 logs/*

@@ -18,6 +18,7 @@ sudo ln -s /etc/nginx/sites-available/ambianceboard /etc/nginx/sites-enabled/
 sudo nginx -t
 
 sudo certbot --nginx -d ambianceboard.com -d www.ambianceboard.com
+sudo certbot --nginx -d graph.ambianceboard.com -d www.graph.ambianceboard.com
 
 sudo ufw status
 sudo ufw allow 80/tcp
@@ -70,6 +71,3 @@ sudo useradd -M -s /bin/bash ambianceboard-app
 sudo passwd ambianceboard-app
 sudo chown ambianceboard-app:ambianceboard-app /srv/www/AmbianceBoard
 
-
-# TODO 
-sortir des logs du conntainer 
