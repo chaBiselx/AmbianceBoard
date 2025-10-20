@@ -158,6 +158,40 @@ class PlaylistModelTest(TestCase):
             mock_get_strategy.reset_mock()
             mock_strategy.get_data.reset_mock()
 
+    def test_delay_should_be_zero_when_useSpecificDelay_false(self):
+        """Vérifie que delay retourne 0 quand useSpecificDelay est False, sans fuite d'état d'une playlist précédente.
+
+        Ce test reproduit un bug observé en production où le delay conserve une valeur > 0 alors que useSpecificDelay est False.
+        Cause probable: mutation de l'objet default_data dans AbstractConfig.get_data (partagé entre instances) au lieu de travailler sur une copie.
+        """
+        # 1. Créer une playlist avec un délai spécifique
+        playlist_with_delay = Playlist.objects.create(
+            user=self.user,
+            name="Playlist avec delay",
+            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
+            useSpecificDelay=True,
+            maxDelay=42
+        )
+        data_with_delay = playlist_with_delay.get_data_set()
+        self.assertEqual(data_with_delay.get('delay'), 42, "Le délai spécifique devrait être 42")
+
+        # 2. Créer une nouvelle playlist sans délai spécifique
+        playlist_without_delay = Playlist.objects.create(
+            user=self.user,
+            name="Playlist sans delay",
+            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
+            useSpecificDelay=False,
+            maxDelay=999  # devrait être ignoré
+        )
+        data_without_delay = playlist_without_delay.get_data_set()
+
+        # BUG attendu actuellement: data_without_delay['delay'] == 42 au lieu de 0
+        self.assertEqual(
+            data_without_delay.get('delay'),
+            0,
+            "Le délai ne doit pas hériter de la valeur précédente quand useSpecificDelay=False"
+        )
+
     def test_playlist_types(self):
         """Test la validation des types de playlist"""
         for playlist_type in PlaylistTypeEnum:

@@ -82,3 +82,7 @@ Nouveautés
 ### 0.1.0-beta.6 - 2025/10
 Améliorations
 - connections des logs a loki pour graphana
+
+### 0.1.0-beta.7 - 2025/10
+Corrections
+- corrections bugs sur les delai
