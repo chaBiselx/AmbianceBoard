@@ -86,3 +86,7 @@ Améliorations
 ### 0.1.0-beta.7 - 2025/10
 Corrections
 - corrections bugs sur les delai
+
+### 0.1.0-beta.8 - 2025/10
+Corrections
+- fix sur les images sur les contenu reportable n'apparaissait pas
