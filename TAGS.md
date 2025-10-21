@@ -88,6 +88,9 @@ Corrections
 - corrections bugs sur les delai
 
 ### 0.1.0-beta.8 - 2025/10
+Améliorations
+- Ajout de la gestion de son sur un soundboard partagé (stocké uniquement coté support via un cookie)
+
 Corrections
 - fix sur les images sur les contenu reportable n'apparaissait pas
 - ajout de logs pour corriger bugs de production sur les pistes de musique

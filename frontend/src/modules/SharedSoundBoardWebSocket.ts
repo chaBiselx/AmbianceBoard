@@ -209,6 +209,7 @@ class SharedSoundBoardWebSocket {
         if (!buttonPlaylist) return;
 
         const musicElement = new MusicElement(buttonPlaylist);
+        buttonPlaylist.active();
         (new UpdateVolumeElement(musicElement)).update();
         musicElement.addToDOM();
         musicElement.setSpecificMusic(data.url_music);
