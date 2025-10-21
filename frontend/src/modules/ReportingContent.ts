@@ -51,7 +51,9 @@ class ReportingContent {
             let clonedElement = element.cloneNode(true) as HTMLElement;
             clonedElement.classList.remove('reportable');
             for (const el of clonedElement.children) {
-                el.remove();
+                if(!(el instanceof HTMLImageElement)){
+                    el.remove();
+                }
             }
 
             clonedElement.classList.add('event-report');
