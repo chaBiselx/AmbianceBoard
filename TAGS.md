@@ -90,3 +90,4 @@ Corrections
 ### 0.1.0-beta.8 - 2025/10
 Corrections
 - fix sur les images sur les contenu reportable n'apparaissait pas
+- ajout de logs pour corriger bugs de production sur les pistes de musique
