@@ -3,6 +3,7 @@ from .Playlist import Playlist
 from django.http import StreamingHttpResponse
 from main.domain.common.strategy.urlMusicStreamStrategy import UrlMusicStreamStrategy
 from django.shortcuts import redirect
+from main.domain.common.utils.AudioDurationUtils import AudioDurationUtils
 
 
 class Track(models.Model):
@@ -11,6 +12,7 @@ class Track(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     alternativeName = models.CharField(max_length=255, default=None,  blank=True)
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, null=False, blank=False, related_name="tracks")
+    duration = models.FloatField(null=True, blank=True)  # Durée en secondes
 
     class Meta:
         abstract = False
@@ -86,6 +88,31 @@ class Track(models.Model):
                 # Si le type est 'redirect', on redirige vers l'URL du lien
                 return redirect(self.linkmusic.url, permanent=False)
             raise ValueError("Aucun stream audio trouvé pour le lien")
+        return None
+    
+    def get_duration(self):
+        """
+        Retourne la durée de l'audio en secondes.
+        
+        Pour les fichiers Music locaux, utilise pydub pour extraire la durée.
+        Pour les LinkMusic, retourne None car il faudrait télécharger le fichier.
+        
+        Returns:
+            float: La durée en secondes, ou None si impossible à déterminer
+        """
+        if self.duration is not None:
+            return self.duration
+
+        if self.is_music():
+            self.duration = AudioDurationUtils.get_duration_from_file(self.music.file.path)
+            if(self.duration is not None):
+                self.save(update_fields=['duration'])
+                return self.duration
+        if self.is_link_music() and self.linkmusic.urlType == 'FILE':
+            self.duration = AudioDurationUtils.get_duration_from_url_file(self.linkmusic.url)
+            if(self.duration is not None):
+                self.save(update_fields=['duration'])
+                return self.duration
         return None
 
     def __str__(self):

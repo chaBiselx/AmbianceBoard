@@ -39,7 +39,7 @@ def playlist_show(request, soundboard_uuid):
         })
 
 @login_required
-@require_http_methods(['GET'])
+@require_http_methods(['GET', 'HEAD'])
 def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
     """Stream d'une musique aléatoire d'une playlist via soundboard"""
     track = (RandomizeTrackService(request)).generate_private(playlist_uuid)
@@ -49,12 +49,16 @@ def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
     SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
 
     try:
-        response = track.get_reponse_content()
-        if response:
-            return response
+        if request.method == 'HEAD':
+            ret = HttpResponse()
+            ret ['Content-Duration'] = track.get_duration()
+        else:
+            ret = track.get_reponse_content()
+        if ret:
+            return ret
     except Exception as e:
         logger.error(f"Error in music_stream: {e}")
-    return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
 
 
 @login_required

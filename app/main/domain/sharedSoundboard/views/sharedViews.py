@@ -73,7 +73,7 @@ def shared_soundboard_read(request, soundboard_uuid, token):
         return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url})
 
 
-@require_http_methods(['GET'])
+@require_http_methods(['GET', 'HEAD'])
 def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id) -> HttpResponse:
  
     track = (RandomizeTrackService(request)).get_shared(soundboard_uuid, playlist_uuid, token, music_id)
@@ -81,9 +81,13 @@ def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id
         return HttpResponse("Musique introuvable.", status=404)
     
     try:
-        response = track.get_reponse_content()
-        if response:
-            return response
+        if request.method == 'HEAD':
+            ret = HttpResponse()
+            ret ['Content-Duration'] = track.get_duration()
+        else:
+            ret = track.get_reponse_content()
+        if ret:
+            return ret
     except Exception as e:
-        logger.error(f"Error in music_stream: {e}")
-    return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
+        logger.error(f"Error in shared_music_stream: {e}")
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)

@@ -35,6 +35,7 @@ class MusicElement {
     fadeInGoing: boolean = false;
     baseUrl: string = ''; // url of playlist to stream music
     WebSocketActive: boolean = false; // user has websocket connection to command shared soundboard
+    duration : number|null = null;
 
 
     constructor(Element: HTMLAudioElement | ButtonPlaylist) {
@@ -146,9 +147,28 @@ class MusicElement {
         this.DOMElement.src = this.baseUrl;
     }
 
-    public play() {
+    /**
+     * Récupère la durée de la musique à partir des en-têtes HTTP
+     * @return {Promise<void>}
+     */
+    private async getDurationFromHeaders(): Promise<void> {
+        try {
+            const response = await fetch(this.DOMElement.src, { method: 'HEAD' });
+            const contentDuration = response.headers.get('Content-Duration');
+            console.log('Content-Duration from headers:', contentDuration);
+            if (contentDuration) {
+                this.duration = parseFloat(contentDuration);
+            }
+        } catch (error) {
+            console.error('Error fetching Content-Duration:', error);
+        }
+    }
 
+    public async play() {
         ConsoleTesteur.log('play_action');
+        
+        this.getDurationFromHeaders();
+        
         this.DOMElement.addEventListener('error', this.handleAudioError);
 
         if (this.fadeIn) {
@@ -160,7 +180,6 @@ class MusicElement {
             this.DOMElement.addEventListener('loadedmetadata', () => {
                 this.DOMElement.addEventListener('timeupdate', this.eventFadeOut);
             });
-
         } else {
             this.DOMElement.addEventListener('ended', this.eventDeleteNoFadeOut);
         }
@@ -219,9 +238,8 @@ class MusicElement {
     private eventFadeOut(event: Event) {
         ConsoleCustom.log('eventFadeOut');
         let new_music = new MusicElement(event.target as HTMLAudioElement);
-        const timeRemaining = new_music.DOMElement.duration - new_music.DOMElement.currentTime;
 
-        if (timeRemaining <= new_music.fadeOutDuration && new_music.fadeOut) {
+        if (new_music.calculTimeRemaining() <= new_music.fadeOutDuration && new_music.fadeOut) {
             const buttonPlaylist = ButtonPlaylistFinder.search(new_music.idPlaylist);
             if (buttonPlaylist) {
                 new_music.DOMElement.removeEventListener('timeupdate', new_music.eventFadeOut);
@@ -236,6 +254,13 @@ class MusicElement {
                 }
             }
         }
+    }
+
+    private calculTimeRemaining(): number {
+        if(this.duration !== null) {
+            return this.duration - this.DOMElement.currentTime;
+        }
+        return this.DOMElement.duration - this.DOMElement.currentTime;
     }
 
     private getTimeDelay() {

@@ -88,13 +88,16 @@ def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse
     SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
     
     try:
-        response = track.get_reponse_content()
+        if request.method == 'HEAD':
+            ret = HttpResponse()
+            ret ['Content-Duration'] = track.get_duration()
+        else:
+            ret = track.get_reponse_content()
+        if ret:
+            return ret
     except Exception as e:
-        logger.error(f"public_music_stream : {e}")
-        response = None
-    if(not response):
-        return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
-    return response
+        logger.error(f"Error in public_music_stream: {e}")
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
 
 
 @login_required
