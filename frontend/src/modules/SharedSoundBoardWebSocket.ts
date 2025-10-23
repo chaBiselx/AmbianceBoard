@@ -48,6 +48,7 @@ class SharedSoundBoardWebSocket {
         }
         ConsoleTesteur.log(`WebSocket listen : ${url}`);
         SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, master);
+        SharedSoundBoardWebSocket.instance.start();
     }
 
     public static getSlaveInstance(url: string): SharedSoundBoardWebSocket {

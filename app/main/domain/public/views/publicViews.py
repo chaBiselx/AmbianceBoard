@@ -85,13 +85,13 @@ def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse
     if not track :
         return HttpResponse("Musique introuvable.", status=404)
     
-    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
-    
     try:
         if request.method == 'HEAD':
             ret = HttpResponse()
             ret ['Content-Duration'] = track.get_duration()
         else:
+            # Utilisation du service de soundboard partagé pour gérer le stream
+            SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
             ret = track.get_reponse_content()
         if ret:
             return ret
