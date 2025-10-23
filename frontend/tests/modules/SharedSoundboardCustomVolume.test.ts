@@ -7,6 +7,84 @@ import Cookie from '@/modules/General/Cookie';
 vi.mock('@/modules/General/Modal');
 vi.mock('@/modules/General/Cookie');
 
+// ========== HELPERS ==========
+class TestHelpers {
+    /**
+     * Configure le DOM avec un template et un bouton
+     */
+    static setupDOM(options: {
+        templateId?: string;
+        buttonId?: string;
+        soundboardId?: string;
+        playlistCount?: number;
+    } = {}) {
+        const {
+            templateId = 'template-shared',
+            buttonId = 'button-shared',
+            soundboardId = 'soundboard-789',
+            playlistCount = 2
+        } = options;
+
+        const playlists = Array.from({ length: playlistCount }, (_, i) => `
+            <a class="playlist-link" data-playlist-id="playlist-${i + 1}">
+                <img src="icon${i + 1}.png" alt="Playlist ${i + 1}">
+                <span>Playlist ${i + 1}</span>
+            </a>
+        `).join('');
+
+        document.body.innerHTML = `
+            <div id="${templateId}" ${soundboardId ? `data-shared-volume-soundboard-id="${soundboardId}"` : ''}>
+                ${playlists}
+            </div>
+            <button id="${buttonId}"></button>
+        `;
+    }
+
+    /**
+     * Mock le cookie avec des valeurs par défaut
+     */
+    static mockCookie(value: string | null = null) {
+        vi.mocked(Cookie.get).mockReturnValue(value);
+        vi.mocked(Cookie.set).mockImplementation(() => {});
+    }
+
+    /**
+     * Crée une instance avec configuration par défaut
+     */
+    static createInstance(buttonId = 'button-shared', templateId = 'template-shared') {
+        return SharedSoundboardCustomVolumeFactory.create(buttonId, templateId);
+    }
+
+    /**
+     * Crée un événement de changement simulé
+     */
+    static createChangeEvent(playlistId: string, value: string) {
+        return {
+            preventDefault: vi.fn(),
+            target: {
+                dataset: { idplaylist: playlistId },
+                value
+            }
+        } as any;
+    }
+
+    /**
+     * Vérifie les propriétés d'un input range
+     */
+    static verifyRangeInput(input: HTMLInputElement, expected: {
+        min?: string;
+        max?: string;
+        value?: string;
+        playlistId?: string;
+    }) {
+        if (expected.min) expect(input.min).toBe(expected.min);
+        if (expected.max) expect(input.max).toBe(expected.max);
+        if (expected.value) expect(input.value).toBe(expected.value);
+        if (expected.playlistId) expect(input.dataset.idplaylist).toBe(expected.playlistId);
+    }
+}
+
+// ========== TESTS ==========
 describe('SharedSoundboardCustomVolume', () => {
     describe('SharedSoundboardIdFinder', () => {
         beforeEach(() => {
@@ -14,12 +92,8 @@ describe('SharedSoundboardCustomVolume', () => {
         });
 
         it('should return soundboard ID when element exists with valid dataset', () => {
-            document.body.innerHTML = `
-                <div id="template-shared-volume" data-shared-volume-soundboard-id="soundboard-123"></div>
-            `;
-
-            const result = SharedSoundboardIdFinder.findSoundBoardId('template-shared-volume');
-
+            TestHelpers.setupDOM({ soundboardId: 'soundboard-123' });
+            const result = SharedSoundboardIdFinder.findSoundBoardId('template-shared');
             expect(result).toBe('soundboard-123');
         });
 
@@ -40,11 +114,9 @@ describe('SharedSoundboardCustomVolume', () => {
         });
 
         it('should return null when element exists but dataset is empty', () => {
-            document.body.innerHTML = `
-                <div id="template-empty-dataset" data-shared-volume-soundboard-id=""></div>
-            `;
+            TestHelpers.setupDOM({ soundboardId: '' });
 
-            const result = SharedSoundboardIdFinder.findSoundBoardId('template-empty-dataset');
+            const result = SharedSoundboardIdFinder.findSoundBoardId('template-shared');
 
             expect(result).toBeNull();
         });
@@ -57,14 +129,10 @@ describe('SharedSoundboardCustomVolume', () => {
         });
 
         it('should create instance when both elements exist and are valid', () => {
-            document.body.innerHTML = `
-                <div id="template-shared" data-shared-volume-soundboard-id="soundboard-456"></div>
-                <button id="button-shared"></button>
-            `;
+            TestHelpers.setupDOM({ soundboardId: 'soundboard-456' });
+            TestHelpers.mockCookie();
 
-            vi.mocked(Cookie.get).mockReturnValue(null);
-
-            const result = SharedSoundboardCustomVolumeFactory.create('button-shared', 'template-shared');
+            const result = TestHelpers.createInstance();
 
             expect(result).not.toBeNull();
             expect(result?.cookieName).toBe('SharedPlaylistCustomVolume_soundboard-456');
@@ -75,28 +143,23 @@ describe('SharedSoundboardCustomVolume', () => {
                 <button id="button-shared"></button>
             `;
 
-            const result = SharedSoundboardCustomVolumeFactory.create('button-shared', 'non-existent-template');
+            const result = TestHelpers.createInstance('button-shared', 'non-existent-template');
 
             expect(result).toBeNull();
         });
 
         it('should return null when button element does not exist', () => {
-            document.body.innerHTML = `
-                <div id="template-shared" data-shared-volume-soundboard-id="soundboard-456"></div>
-            `;
+            TestHelpers.setupDOM({ soundboardId: 'soundboard-456', playlistCount: 0 });
 
-            const result = SharedSoundboardCustomVolumeFactory.create('non-existent-button', 'template-shared');
+            const result = TestHelpers.createInstance('non-existent-button', 'template-shared');
 
             expect(result).toBeNull();
         });
 
         it('should return null when template has no soundboard ID', () => {
-            document.body.innerHTML = `
-                <div id="template-shared"></div>
-                <button id="button-shared"></button>
-            `;
+            TestHelpers.setupDOM({ soundboardId: '' });
 
-            const result = SharedSoundboardCustomVolumeFactory.create('button-shared', 'template-shared');
+            const result = TestHelpers.createInstance();
 
             expect(result).toBeNull();
         });
@@ -107,36 +170,20 @@ describe('SharedSoundboardCustomVolume', () => {
                 <div id="button-shared"></div>
             `;
 
-            const result = SharedSoundboardCustomVolumeFactory.create('button-shared', 'template-shared');
+            const result = TestHelpers.createInstance();
 
             expect(result).toBeNull();
         });
     });
 
     describe('SharedSoundboardCustomVolume', () => {
-        let templateElement: HTMLElement;
-        let buttonElement: HTMLButtonElement;
         let instance: any;
 
         beforeEach(() => {
-            document.body.innerHTML = `
-                <div id="template-shared" data-shared-volume-soundboard-id="soundboard-789">
-                    <a class="playlist-link" data-playlist-id="playlist-1">
-                        <img src="icon1.png" alt="Playlist 1">
-                        <span>Playlist 1</span>
-                    </a>
-                    <a class="playlist-link" data-playlist-id="playlist-2">
-                        <img src="icon2.png" alt="Playlist 2">
-                        <span>Playlist 2</span>
-                    </a>
-                </div>
-                <button id="button-shared"></button>
-            `;
-
+            TestHelpers.setupDOM();
             vi.clearAllMocks();
-            vi.mocked(Cookie.get).mockReturnValue(null);
-
-            instance = SharedSoundboardCustomVolumeFactory.create('button-shared', 'template-shared');
+            TestHelpers.mockCookie();
+            instance = TestHelpers.createInstance();
         });
 
         describe('constructor', () => {
@@ -202,31 +249,30 @@ describe('SharedSoundboardCustomVolume', () => {
 
             it('should create range inputs with correct default values', () => {
                 const selector = instance.generateSelector();
-                const rangeInputs = selector.querySelectorAll('input[type="range"]');
+                const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
                 expect(rangeInputs).toHaveLength(2);
-                expect((rangeInputs[0] as HTMLInputElement).value).toBe('100');
-                expect((rangeInputs[1] as HTMLInputElement).value).toBe('100');
+                rangeInputs.forEach(input => {
+                    TestHelpers.verifyRangeInput(input, { value: '100' });
+                });
             });
 
             it('should use existing cookie values for range inputs', () => {
                 instance.jsonValue = { 'playlist-1': 60, 'playlist-2': 80 };
 
                 const selector = instance.generateSelector();
-                const rangeInputs = selector.querySelectorAll('input[type="range"]');
+                const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                expect((rangeInputs[0] as HTMLInputElement).value).toBe('60');
-                expect((rangeInputs[1] as HTMLInputElement).value).toBe('80');
+                TestHelpers.verifyRangeInput(rangeInputs[0], { value: '60' });
+                TestHelpers.verifyRangeInput(rangeInputs[1], { value: '80' });
             });
 
             it('should set correct min and max values for range inputs', () => {
                 const selector = instance.generateSelector();
-                const rangeInputs = selector.querySelectorAll('input[type="range"]');
+                const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                rangeInputs.forEach((input: Element) => {
-                    const htmlInput = input as HTMLInputElement;
-                    expect(htmlInput.min).toBe('10');
-                    expect(htmlInput.max).toBe('100');
+                rangeInputs.forEach(input => {
+                    TestHelpers.verifyRangeInput(input, { min: '10', max: '100' });
                 });
             });
 
@@ -235,19 +281,17 @@ describe('SharedSoundboardCustomVolume', () => {
                 const clonedLinks = selector.querySelectorAll('.playlist-link');
 
                 clonedLinks.forEach((link: Element) => {
-                    const images = link.querySelectorAll('img');
-                    const spans = link.querySelectorAll('span');
-                    expect(images.length).toBeGreaterThan(0);
-                    expect(spans).toHaveLength(0); // Les spans doivent être supprimés
+                    expect(link.querySelectorAll('img').length).toBeGreaterThan(0);
+                    expect(link.querySelectorAll('span')).toHaveLength(0);
                 });
             });
 
             it('should set correct data-idplaylist attribute on inputs', () => {
                 const selector = instance.generateSelector();
-                const rangeInputs = selector.querySelectorAll('input[type="range"]');
+                const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                expect((rangeInputs[0] as HTMLInputElement).dataset.idplaylist).toBe('playlist-1');
-                expect((rangeInputs[1] as HTMLInputElement).dataset.idplaylist).toBe('playlist-2');
+                TestHelpers.verifyRangeInput(rangeInputs[0], { playlistId: 'playlist-1' });
+                TestHelpers.verifyRangeInput(rangeInputs[1], { playlistId: 'playlist-2' });
             });
         });
 
@@ -255,13 +299,7 @@ describe('SharedSoundboardCustomVolume', () => {
             it('should update cookie when form changes', () => {
                 vi.mocked(Cookie.set).mockImplementation(() => {});
 
-                const mockEvent = {
-                    preventDefault: vi.fn(),
-                    target: {
-                        dataset: { idplaylist: 'playlist-1' },
-                        value: '75'
-                    }
-                } as any;
+                const mockEvent = TestHelpers.createChangeEvent('playlist-1', '75');
 
                 instance.handleChangeForm(mockEvent);
 
@@ -276,21 +314,8 @@ describe('SharedSoundboardCustomVolume', () => {
             it('should handle multiple changes correctly', () => {
                 vi.mocked(Cookie.set).mockImplementation(() => {});
 
-                const mockEvent1 = {
-                    preventDefault: vi.fn(),
-                    target: {
-                        dataset: { idplaylist: 'playlist-1' },
-                        value: '60'
-                    }
-                } as any;
-
-                const mockEvent2 = {
-                    preventDefault: vi.fn(),
-                    target: {
-                        dataset: { idplaylist: 'playlist-2' },
-                        value: '80'
-                    }
-                } as any;
+                const mockEvent1 = TestHelpers.createChangeEvent('playlist-1', '60');
+                const mockEvent2 = TestHelpers.createChangeEvent('playlist-2', '80');
 
                 instance.handleChangeForm(mockEvent1);
                 instance.handleChangeForm(mockEvent2);
@@ -348,7 +373,7 @@ describe('SharedSoundboardCustomVolume', () => {
             });
 
             it('should attach change event listeners in modal callback', () => {
-                let callbackFn: (() => void) | null = null;
+                let callbackFn: any = null;
 
                 vi.mocked(ModalCustom.show).mockImplementation((options: any) => {
                     callbackFn = options.callback;
@@ -369,9 +394,7 @@ describe('SharedSoundboardCustomVolume', () => {
                 });
 
                 // Exécuter le callback
-                if (callbackFn) {
-                    callbackFn();
-                }
+                if (callbackFn) callbackFn();
 
                 expect(addEventListenerSpy).toHaveBeenCalledTimes(2);
                 expect(addEventListenerSpy).toHaveBeenCalledWith('change', expect.any(Function));
@@ -380,33 +403,35 @@ describe('SharedSoundboardCustomVolume', () => {
 
         describe('edge cases', () => {
             it('should handle empty template', () => {
-                document.body.innerHTML = `
-                    <div id="template-empty" data-shared-volume-soundboard-id="soundboard-empty"></div>
-                    <button id="button-empty"></button>
-                `;
-
-                vi.mocked(Cookie.get).mockReturnValue(null);
-                const emptyInstance = SharedSoundboardCustomVolumeFactory.create('button-empty', 'template-empty');
-
+                TestHelpers.setupDOM({ 
+                    templateId: 'template-empty', 
+                    buttonId: 'button-empty',
+                    soundboardId: 'soundboard-empty',
+                    playlistCount: 0 
+                });
+                TestHelpers.mockCookie();
+                
+                const emptyInstance = TestHelpers.createInstance('button-empty', 'template-empty');
                 const selector = emptyInstance?.generateSelector();
+                
                 expect(selector?.querySelectorAll('.flex-item')).toHaveLength(0);
             });
 
             it('should handle minimum value boundary', () => {
                 const selector = instance.generateSelector();
-                const rangeInputs = selector.querySelectorAll('input[type="range"]');
+                const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                rangeInputs.forEach((input: Element) => {
-                    expect((input as HTMLInputElement).min).toBe(instance.minValue.toString());
+                rangeInputs.forEach(input => {
+                    expect(input.min).toBe(instance.minValue.toString());
                 });
             });
 
             it('should handle maximum value boundary', () => {
                 const selector = instance.generateSelector();
-                const rangeInputs = selector.querySelectorAll('input[type="range"]');
+                const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                rangeInputs.forEach((input: Element) => {
-                    expect((input as HTMLInputElement).max).toBe('100');
+                rangeInputs.forEach(input => {
+                    expect(input.max).toBe('100');
                 });
             });
         });
