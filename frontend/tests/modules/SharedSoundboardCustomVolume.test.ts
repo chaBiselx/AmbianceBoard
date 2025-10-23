@@ -252,9 +252,8 @@ describe('SharedSoundboardCustomVolume', () => {
                 const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
                 expect(rangeInputs).toHaveLength(2);
-                rangeInputs.forEach(input => {
-                    TestHelpers.verifyRangeInput(input, { value: '100' });
-                });
+                const verifyDefaultValue = (input: HTMLInputElement) => TestHelpers.verifyRangeInput(input, { value: '100' });
+                rangeInputs.forEach(verifyDefaultValue);
             });
 
             it('should use existing cookie values for range inputs', () => {
@@ -271,19 +270,19 @@ describe('SharedSoundboardCustomVolume', () => {
                 const selector = instance.generateSelector();
                 const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                rangeInputs.forEach(input => {
-                    TestHelpers.verifyRangeInput(input, { min: '10', max: '100' });
-                });
+                const verifyMinMax = (input: HTMLInputElement) => TestHelpers.verifyRangeInput(input, { min: '10', max: '100' });
+                rangeInputs.forEach(verifyMinMax);
             });
 
             it('should clone only image elements from playlist links', () => {
                 const selector = instance.generateSelector();
                 const clonedLinks = selector.querySelectorAll('.playlist-link');
 
-                clonedLinks.forEach((link: Element) => {
+                const verifyLinkContent = (link: Element) => {
                     expect(link.querySelectorAll('img').length).toBeGreaterThan(0);
                     expect(link.querySelectorAll('span')).toHaveLength(0);
-                });
+                };
+                clonedLinks.forEach(verifyLinkContent);
             });
 
             it('should set correct data-idplaylist attribute on inputs', () => {
@@ -389,9 +388,10 @@ describe('SharedSoundboardCustomVolume', () => {
 
                 const addEventListenerSpy = vi.fn();
                 const mixerElements = document.querySelectorAll('.mixer-playlist-custom-shared-update');
-                mixerElements.forEach((el) => {
+                const attachSpy = (el: Element) => {
                     el.addEventListener = addEventListenerSpy;
-                });
+                };
+                mixerElements.forEach(attachSpy);
 
                 // Exécuter le callback
                 if (callbackFn) callbackFn();
@@ -421,18 +421,20 @@ describe('SharedSoundboardCustomVolume', () => {
                 const selector = instance.generateSelector();
                 const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                rangeInputs.forEach(input => {
+                const verifyMinBoundary = (input: HTMLInputElement) => {
                     expect(input.min).toBe(instance.minValue.toString());
-                });
+                };
+                rangeInputs.forEach(verifyMinBoundary);
             });
 
             it('should handle maximum value boundary', () => {
                 const selector = instance.generateSelector();
                 const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                rangeInputs.forEach(input => {
+                const verifyMaxBoundary = (input: HTMLInputElement) => {
                     expect(input.max).toBe('100');
-                });
+                };
+                rangeInputs.forEach(verifyMaxBoundary);
             });
         });
     });
