@@ -1,4 +1,3 @@
-import Config from '@/modules/General/Config';
 import Cookie from '@/modules/General/Cookie';
 import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MusicElement } from '@/modules/MusicElement';
@@ -97,12 +96,10 @@ class SharedSoundBoardWebSocket {
             };
 
             this.socket.onclose = (event) => {
-                if (Config.DEBUG) {
-                    if (event.wasClean) {
-                        console.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
-                    } else {
-                        console.log('Connection died');
-                    }
+                if (event.wasClean) {
+                    ConsoleCustom.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
+                } else {
+                    ConsoleCustom.log('Connection died');
                 }
 
                 this.socket = null;

@@ -3,9 +3,9 @@ import ReportingContent from '@/modules/ReportingContent'
 import { PaginationManager } from '@/modules/PaginationManager';
 import { TagManager } from '@/modules/TagManager';
 import * as bootstrap from 'bootstrap';
-import ConsoleCustom from "./modules/General/ConsoleCustom";
+import ConsoleCustom from "@/modules/General/ConsoleCustom";
 import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
-import Csrf from "./modules/General/Csrf";
+import Csrf from "@/modules/General/Csrf";
 import GeneralTheme from "@/modules/General/GeneralTheme";
 import Time from "@/modules/Util/Time";
 
@@ -304,13 +304,11 @@ class ShowConsoleBetaTester {
 
     public addEvent() {
         if (this.buttonShow && this.consoleElement) {
-            console.log('Show Console Beta Tester initialized');
             this.buttonShow.addEventListener('click', this.toggleConsole.bind(this));
         }
     }
 
     private toggleConsole() {
-        console.log('console toggled');
         if (this.consoleElement) {
             this.consoleElement.classList.toggle('d-none');
         }
