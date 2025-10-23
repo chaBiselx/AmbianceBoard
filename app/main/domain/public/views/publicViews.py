@@ -94,7 +94,7 @@ def public_music_stream(request, soundboard_uuid, playlist_uuid) ->  HttpRespons
                 if track:
                     ret = JsonResponse({"duration":  track.get_duration()}, status=200)
         else:
-            track = (RandomizeTrackService(request)).generate_private(playlist_uuid)
+            track = (RandomizeTrackService(request)).generate_public(soundboard_uuid, playlist_uuid)
             if track:
                 # Utilisation du service de soundboard partagé pour gérer le stream
                 SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
