@@ -152,22 +152,31 @@ class MusicElement {
      * @return {Promise<void>}
      */
     private async getDurationFromHeaders(): Promise<void> {
-        try {
-            const response = await fetch(this.DOMElement.src, { method: 'HEAD' });
-            const contentDuration = response.headers.get('Content-Duration');
-            ConsoleTesteur.log('Content-Duration from headers:', contentDuration);
-            if (contentDuration) {
-                this.duration = parseFloat(contentDuration);
+        setTimeout(async () => {// délai pour s'assurer de la generation du cache serveur car Firefox envoi trop vite la requete
+            try {
+                const response = await fetch(this.DOMElement.src, { method: 'GET', headers: { 'X-Metadata-Only': 'true' } });
+                if (!response.ok) {
+                    console.error('Failed to fetch metadata:', response.statusText);
+                    return;
+                }
+                const contentDuration = (await response.json()).duration;
+                ConsoleTesteur.log('Content-Duration from headers:', contentDuration);
+                if (contentDuration) {
+                    this.duration = parseFloat(contentDuration);
+                }
+            } catch (error) {
+                console.error('Error fetching Content-Duration:', error);
             }
-        } catch (error) {
-            console.error('Error fetching Content-Duration:', error);
-        }
+        }, 500);
+
+
     }
 
     public play() {
         ConsoleTesteur.log('play_action');
 
         this.DOMElement.addEventListener('error', (e) => this.handleAudioError(e));
+        this.DOMElement.addEventListener('playing', () => this.getDurationFromHeaders());
 
         if (this.fadeIn) {
             this.addFadeIn();
@@ -187,8 +196,6 @@ class MusicElement {
         ConsoleTesteur.log(`▶️ Play ${this.idPlaylist} ${this.isSlave()}`);
 
         this.DOMElement.play();
-
-        this.getDurationFromHeaders();
     }
 
     private disactiveButtonPlaylist() {
@@ -309,6 +316,9 @@ class MusicElement {
 
     private eventDeleteFadeOut() {
         ConsoleCustom.log('eventDeleteFadeOut');
+        if (this.boundEventFadeOut) {
+            this.DOMElement.removeEventListener('timeupdate', this.boundEventFadeOut);
+        }
         this.DOMElement.remove();
     }
 

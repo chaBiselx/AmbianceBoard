@@ -19,6 +19,9 @@ from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.utils.settings import Settings
 from main.domain.common.utils.logger import logger
 
+from main.domain.common.repository.TrackRepository import TrackRepository
+from main.domain.common.utils.cache.CacheFactory import CacheFactory
+
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
@@ -73,19 +76,35 @@ def shared_soundboard_read(request, soundboard_uuid, token):
         return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url})
 
 
-@require_http_methods(['GET', 'HEAD'])
-def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id) -> HttpResponse:
- 
-    track = (RandomizeTrackService(request)).get_shared(soundboard_uuid, playlist_uuid, token, music_id)
-    if not track :
-        return HttpResponse("Musique introuvable.", status=404)
+@require_http_methods(['GET'])
+def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id) ->  HttpResponse|JsonResponse:
+    cache = CacheFactory.get_default_cache()
+    cache_key = f"musicStream:{request.session.session_key}:{soundboard_uuid}:{playlist_uuid}:specific:{music_id}"
     
     try:
-        if request.method == 'HEAD':
-            ret = HttpResponse()
-            ret ['Content-Duration'] = track.get_duration()
+        if request.headers.get('X-Metadata-Only') == 'true':
+            
+            print('X-Metadata-Only detected')
+            track_id = cache.get(cache_key)
+            print('get cache ')
+            print( cache_key)
+            print( track_id)
+            
+            if track_id :
+                print('TrackRepository')
+                track = TrackRepository().get(track_id, playlist_uuid)
+                if track:
+                    print('response')
+                    ret = JsonResponse({"duration":  track.get_duration()}, status=200)
         else:
-            ret = track.get_reponse_content()
+            print('X-Metadata-Only not detected')
+            track = (RandomizeTrackService(request)).get_shared(soundboard_uuid, playlist_uuid, token, music_id )
+            if track:
+                print('set cache ')
+                print( cache_key)
+                print( track.id)
+                cache.set(cache_key, track.id, timeout=20)
+                ret = track.get_reponse_content()
         if ret:
             return ret
     except Exception as e:
