@@ -8,7 +8,7 @@ class SharedSoundboardCustomVolumeFactory {
     static create(idButton: string, idElement: string): SharedSoundboardCustomVolume | null {
         const DOMTemplate = document.getElementById(idElement);
         const DOMButton = document.getElementById(idButton);
-        if (DOMTemplate && DOMTemplate.dataset.sharedVolumeSoundboardId && DOMButton && DOMButton instanceof HTMLButtonElement) {
+        if (DOMTemplate?.dataset?.sharedVolumeSoundboardId && DOMButton && DOMButton instanceof HTMLButtonElement) {
             return new SharedSoundboardCustomVolume(DOMTemplate, DOMButton);
         }
         return null;
@@ -18,7 +18,7 @@ class SharedSoundboardCustomVolumeFactory {
 class SharedSoundboardIdFinder {
     static findSoundBoardId(id: string): string | null {
         const element = document.getElementById(id);
-        return element && element.dataset.sharedVolumeSoundboardId ? element.dataset.sharedVolumeSoundboardId : null;
+        return element?.dataset?.sharedVolumeSoundboardId || null;
     }
 }
 
@@ -117,14 +117,14 @@ class SharedSoundboardCustomVolume {
         const elementClicked = event.target as HTMLInputElement;
         try {
             this.setCookie(
-                elementClicked.dataset!.idplaylist!,
-                parseInt(elementClicked.value)
+                elementClicked!.dataset!.idplaylist!,
+                Number.parseInt(elementClicked.value)
             );
         } catch (error) {
             console.error(error);
         }
 
-        this.updateVolumeElements(elementClicked.dataset!.idplaylist!);
+        this.updateVolumeElements(elementClicked!.dataset!.idplaylist!);
     }
 
     private updateVolumeElements(idPlaylist: string): this {

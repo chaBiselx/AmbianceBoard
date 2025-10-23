@@ -162,7 +162,7 @@ class MusicElement {
                 const contentDuration = (await response.json()).duration;
                 ConsoleTesteur.log('Content-Duration from headers:', contentDuration);
                 if (contentDuration) {
-                    this.duration = parseFloat(contentDuration);
+                    this.duration = Number.parseFloat(contentDuration);
                 }
             } catch (error) {
                 console.error('Error fetching Content-Duration:', error);

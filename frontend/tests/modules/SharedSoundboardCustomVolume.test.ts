@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { SharedSoundboardCustomVolumeFactory, SharedSoundboardIdFinder } from '@/modules/SharedSoundboardCustomVolume';
 import ModalCustom from '@/modules/General/Modal';
 import Cookie from '@/modules/General/Cookie';

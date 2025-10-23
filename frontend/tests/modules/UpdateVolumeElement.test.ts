@@ -83,7 +83,7 @@ describe('UpdateVolumeElement', () => {
             mockMusicElement.levelFade = 1.0;
             vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
                 if (type === 'general') return 0.6;
-                return 1.0;
+                return 1;
             });
             
             updateVolumeElement.update();
@@ -97,9 +97,9 @@ describe('UpdateVolumeElement', () => {
             mockMusicElement.levelFade = 1.0;
             mockMusicElement.playlistType = 'music';
             vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
-                if (type === 'general') return 1.0;
+                if (type === 'general') return 1;
                 if (type === 'music') return 0.7;
-                return 1.0;
+                return 1;
             });
             
             updateVolumeElement.update();
@@ -131,7 +131,7 @@ describe('UpdateVolumeElement', () => {
             vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
                 if (type === 'general') return 0.6;
                 if (type === 'ambient') return 0.5;
-                return 1.0;
+                return 1;
             });
             
             vi.mocked(SharedSoundboardIdFinder.findSoundBoardId).mockReturnValue('soundboard-001');
@@ -235,7 +235,7 @@ describe('UpdateVolumeElement', () => {
             
             vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
                 if (type === 'general') return 0.8;
-                return 1.0;
+                return 1;
             });
             
             // Premier appel
@@ -245,7 +245,7 @@ describe('UpdateVolumeElement', () => {
             // Changement de la valeur du mixer
             vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
                 if (type === 'general') return 0.5;
-                return 1.0;
+                return 1;
             });
             
             // Nettoyage du cache
@@ -314,7 +314,6 @@ describe('UpdateVolumeElement', () => {
             
             // Premier appel remplit le cache
             updateVolumeElement.update();
-            const firstCallCount = getMixerValueSpy.mock.calls.length;
             
             // Second appel avec une autre instance devrait utiliser le cache
             getMixerValueSpy.mockClear();
