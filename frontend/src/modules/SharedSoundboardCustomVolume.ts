@@ -115,16 +115,18 @@ class SharedSoundboardCustomVolume {
     private handleChangeForm(event: Event) {
         event.preventDefault();
         const elementClicked = event.target as HTMLInputElement;
-        try {
-            this.setCookie(
-                elementClicked!.dataset!.idplaylist!,
-                Number.parseInt(elementClicked.value)
-            );
-        } catch (error) {
-            console.error(error);
-        }
+        if (elementClicked.dataset.idplaylist) {
+            try {
+                this.setCookie(
+                    elementClicked.dataset.idplaylist,
+                    Number.parseInt(elementClicked.value)
+                );
+            } catch (error) {
+                console.error(error);
+            }
 
-        this.updateVolumeElements(elementClicked!.dataset!.idplaylist!);
+            this.updateVolumeElements(elementClicked.dataset.idplaylist!);
+        }
     }
 
     private updateVolumeElements(idPlaylist: string): this {
