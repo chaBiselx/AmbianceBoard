@@ -1,7 +1,6 @@
 {% extends 'Html/base.html' %}
 {% load Playlist %}
 {% load SoundBoard %}
-{% load Mixer %}
 {% load FrontJs %}
 {% load static %}
 
@@ -22,25 +21,10 @@
         <div style="display:None;" id="active-WS" data-url="{{ ws_url }}"></div>
 
         <div class="d-none">
-            {% add_mixer PlaylistTypeEnum  %}
+            {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum%}
         </div>
 
-        <div class="responsive-sections-container  d-none">
-            {% for section, list_playlist in soundboard.get_list_playlist_ordered %}
-            <section class="section-{{ section }}">
-                <div class="section-content" id="template-shared-volume" data-shared-volume-soundboard-id="{{soundboard.uuid}}">
-                    <div class="flex-container">
-                        {% for playlist in list_playlist %}
-                        <div class="playlist-link disabled playlist-element flex-item playlist-dim-{{ playlist_dim }} m-1" id="playlist-{{ playlist.uuid }}" style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};" data-playlist-uri=""
-                            {% for key, value in playlist.get_data_set.items %} data-playlist-{{ key }}="{{ value }}" {% endfor %} data-id="{{ playlist.uuid }}">
-                            {{ playlist | applys_playlist_content}}
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </section>
-            {% endfor %}
-        </div>
+        {% include 'Html/partial/soundboard/board.html' with master=False owner=False soundboard=soundboard %}
 
         <div class="alert alert-info mt-3 text-sm" role="alert">
             L'application est synchonisé avec le soundboard du maitre du jeu. <br />

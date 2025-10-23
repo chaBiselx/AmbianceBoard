@@ -1,14 +1,6 @@
 {% extends 'Html/base.html' %}
-{% load Playlist %}
 {% load SoundBoard %}
-{% load Mixer %}
-{% load FrontJs %}
-{% load static %}
 
-{% block javascript %}
-{{ block.super }}
-<script type="module" src="{% static " SoundboardPlayer"|search_true_file %}"></script>
-{% endblock javascript %}
 
 {% block content %}
 
@@ -21,27 +13,9 @@
     <div class="col-12">
         <div style="display:None;" id="players"></div>
 
-        {% add_mixer PlaylistTypeEnum %}
+        {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum%}
 
-        <div class="responsive-sections-container">
-            {% for section, list_playlist in soundboard.get_list_playlist_ordered %}
-            <section class="section-{{ section }}">
-                <div class="section-content">
-                    <div class="flex-container">
-                        {% for playlist in list_playlist %}
-                        <div class="playlist-link reportable playlist-element flex-item playlist-dim-{{ playlist_dim }} m-1" id="playlist-{{ playlist.uuid }}" style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};"
-                            data-playlist-uri="{% url 'publicStreamMusic' soundboard.uuid  playlist.uuid %}" {% for key, value in playlist.get_data_set.items %} data-playlist-{{ key }}="{{ value }}" {% endfor %} data-id="{{ playlist.uuid }}">
-                            {{ playlist | applys_playlist_content}}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    <!-- Contenu de la première section -->
-                </div>
-            </section>
-            {% endfor %}
-        </div>
-
-
+        {% include 'Html/partial/soundboard/board.html' with master=True owner=False soundboard=soundboard %}
 
 
     </div>
