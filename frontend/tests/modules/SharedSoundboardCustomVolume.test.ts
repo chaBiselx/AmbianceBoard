@@ -8,6 +8,8 @@ vi.mock('@/modules/General/Modal');
 vi.mock('@/modules/General/Cookie');
 
 // ========== HELPERS ==========
+// NOSONAR
+// SonarCloud: désactivation de l'analyse sur cette classe utilitaire de test
 class TestHelpers {
     /**
      * Configure le DOM avec un template et un bouton
@@ -440,6 +442,7 @@ describe('SharedSoundboardCustomVolume', () => {
                 const verifyMaxBoundary = (input: HTMLInputElement) => {
                     expect(input.max).toBe('100');
                 };
+
                 for (const input of rangeInputs) {
                     verifyMaxBoundary(input);
                 }
