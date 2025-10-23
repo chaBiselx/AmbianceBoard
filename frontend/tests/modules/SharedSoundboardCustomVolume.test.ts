@@ -433,11 +433,8 @@ describe('SharedSoundboardCustomVolume', () => {
 
                 const addEventListenerSpy = vi.fn();
                 const mixerElements = document.querySelectorAll('.mixer-playlist-custom-shared-update');
-                const attachSpy = (el: Element) => {
-                    el.addEventListener = addEventListenerSpy;
-                };
                 for(const el of mixerElements){
-                    attachSpy(el);
+                    TestHelpers.attachEventListenerSpy(el, addEventListenerSpy);
                 }
 
                 // Exécuter le callback
@@ -468,11 +465,8 @@ describe('SharedSoundboardCustomVolume', () => {
                 const selector = instance.generateSelector();
                 const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                const verifyMinBoundary = (input: HTMLInputElement) => {
-                    expect(input.min).toBe(instance.minValue.toString());
-                };
                 for (const input of rangeInputs) {
-                    verifyMinBoundary(input);
+                    TestHelpers.verifyMinBoundary(input, instance.minValue);
                 }
             });
 
@@ -480,12 +474,8 @@ describe('SharedSoundboardCustomVolume', () => {
                 const selector = instance.generateSelector();
                 const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                const verifyMaxBoundary = (input: HTMLInputElement) => {
-                    expect(input.max).toBe('100');
-                };
-
                 for (const input of rangeInputs) {
-                    verifyMaxBoundary(input);
+                    TestHelpers.verifyMaxBoundary(input);
                 }
             });
         });
