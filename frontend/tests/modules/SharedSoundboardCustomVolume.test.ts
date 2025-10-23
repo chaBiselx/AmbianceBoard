@@ -84,6 +84,49 @@ class TestHelpers {
         if (expected.value) expect(input.value).toBe(expected.value);
         if (expected.playlistId) expect(input.dataset.idplaylist).toBe(expected.playlistId);
     }
+
+    /**
+     * Vérifie la valeur par défaut d'un input
+     */
+    static verifyDefaultValue(input: HTMLInputElement) {
+        TestHelpers.verifyRangeInput(input, { value: '100' });
+    }
+
+    /**
+     * Vérifie les valeurs min et max d'un input
+     */
+    static verifyMinMax(input: HTMLInputElement) {
+        TestHelpers.verifyRangeInput(input, { min: '10', max: '100' });
+    }
+
+    /**
+     * Vérifie le contenu d'un lien (images présentes, spans absents)
+     */
+    static verifyLinkContent(link: Element) {
+        expect(link.querySelectorAll('img').length).toBeGreaterThan(0);
+        expect(link.querySelectorAll('span')).toHaveLength(0);
+    }
+
+    /**
+     * Attache un spy d'événement à un élément
+     */
+    static attachEventListenerSpy(el: Element, spy: any) {
+        el.addEventListener = spy;
+    }
+
+    /**
+     * Vérifie la limite minimale d'un input
+     */
+    static verifyMinBoundary(input: HTMLInputElement, minValue: number) {
+        expect(input.min).toBe(minValue.toString());
+    }
+
+    /**
+     * Vérifie la limite maximale d'un input
+     */
+    static verifyMaxBoundary(input: HTMLInputElement) {
+        expect(input.max).toBe('100');
+    }
 }
 
 // ========== TESTS ==========
@@ -254,9 +297,8 @@ describe('SharedSoundboardCustomVolume', () => {
                 const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
                 expect(rangeInputs).toHaveLength(2);
-                const verifyDefaultValue = (input: HTMLInputElement) => TestHelpers.verifyRangeInput(input, { value: '100' });
                 for (const input of rangeInputs) {
-                    verifyDefaultValue(input);
+                    TestHelpers.verifyDefaultValue(input);
                 }
             });
 
@@ -274,9 +316,8 @@ describe('SharedSoundboardCustomVolume', () => {
                 const selector = instance.generateSelector();
                 const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
-                const verifyMinMax = (input: HTMLInputElement) => TestHelpers.verifyRangeInput(input, { min: '10', max: '100' });
                 for (const input of rangeInputs) {
-                    verifyMinMax(input);
+                    TestHelpers.verifyMinMax(input);
                 }
             });
 
@@ -284,11 +325,9 @@ describe('SharedSoundboardCustomVolume', () => {
                 const selector = instance.generateSelector();
                 const clonedLinks = selector.querySelectorAll('.playlist-link');
 
-                const verifyLinkContent = (link: Element) => {
-                    expect(link.querySelectorAll('img').length).toBeGreaterThan(0);
-                    expect(link.querySelectorAll('span')).toHaveLength(0);
-                };
-                clonedLinks.forEach(verifyLinkContent);
+                for (const link of clonedLinks) {
+                    TestHelpers.verifyLinkContent(link);
+                }
             });
 
             it('should set correct data-idplaylist attribute on inputs', () => {
@@ -397,7 +436,9 @@ describe('SharedSoundboardCustomVolume', () => {
                 const attachSpy = (el: Element) => {
                     el.addEventListener = addEventListenerSpy;
                 };
-                mixerElements.forEach(attachSpy);
+                for(const el of mixerElements){
+                    attachSpy(el);
+                }
 
                 // Exécuter le callback
                 if (callbackFn) callbackFn();

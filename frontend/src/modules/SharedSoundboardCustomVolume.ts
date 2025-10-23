@@ -125,7 +125,7 @@ class SharedSoundboardCustomVolume {
                 console.error(error);
             }
 
-            this.updateVolumeElements(elementClicked.dataset.idplaylist!);
+            this.updateVolumeElements(elementClicked.dataset.idplaylist);
         }
     }
 
