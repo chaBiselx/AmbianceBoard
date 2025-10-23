@@ -1,5 +1,8 @@
 import ModalCustom from '@/modules/General/Modal';
 import Cookie from "@/modules/General/Cookie";
+import { SearchMusicElement } from "@/modules/MusicElement";
+import { ButtonPlaylistFinder } from "@/modules/ButtonPlaylist";
+import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 
 class SharedSoundboardCustomVolumeFactory {
     static create(idButton: string, idElement: string): SharedSoundboardCustomVolume | null {
@@ -12,7 +15,7 @@ class SharedSoundboardCustomVolumeFactory {
     }
 }
 
-class SharedSoundboardIdFinder{
+class SharedSoundboardIdFinder {
     static findSoundBoardId(id: string): string | null {
         const element = document.getElementById(id);
         return element && element.dataset.sharedVolumeSoundboardId ? element.dataset.sharedVolumeSoundboardId : null;
@@ -72,7 +75,7 @@ class SharedSoundboardCustomVolume {
                     el.remove();
                 }
             }
-            const  value = this.jsonValue[`${clonedElement.dataset.playlistId}`] ?  this.jsonValue[`${clonedElement.dataset.playlistId}`] : 100;
+            const value = this.jsonValue[`${clonedElement.dataset.playlistId}`] ? this.jsonValue[`${clonedElement.dataset.playlistId}`] : 100;
 
             const html = `<form class="mixer-playlist-update-container">
             <input class="mixer-playlist-custom-shared-update horizontal-slider-input" type="range" value="${value}" min="${this.minValue}" max="100" id="range__custom_volume_${clonedElement.dataset.playlistId}" 
@@ -114,12 +117,25 @@ class SharedSoundboardCustomVolume {
         const elementClicked = event.target as HTMLInputElement;
         try {
             this.setCookie(
-                elementClicked.dataset!.idplaylist!, 
+                elementClicked.dataset!.idplaylist!,
                 parseInt(elementClicked.value)
             );
         } catch (error) {
             console.error(error);
         }
+
+        this.updateVolumeElements(elementClicked.dataset!.idplaylist!);
+    }
+
+    private updateVolumeElements(idPlaylist: string): this {
+        const button = ButtonPlaylistFinder.search(idPlaylist);
+        if (button) {
+            const listMusic = SearchMusicElement.searchByButton(button);
+            for (const musicElement of listMusic) {
+                new UpdateVolumeElement(musicElement).update();
+            }
+        }
+        return this
     }
 
     private setCookie(id: string, value: number) {
