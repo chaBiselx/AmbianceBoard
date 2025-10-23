@@ -4,11 +4,11 @@
 {% load FrontJs %}
 {% load Theme %}
 
-<html lang="fr" {% include 'Html/theme.html' %} data-bs-theme="{% get_user_theme %}">
+<html lang="fr" {% include 'Html/partial/structure/theme/theme.html' %} data-bs-theme="{% get_user_theme %}">
 
 <head>
     <title>Ambiance Soundboard</title>
-    {% include 'Html/meta.html' %}
+    {% include 'Html/partial/structure/utils/meta.html' %}
 
     <!-- Core theme CSS (includes Bootstrap)-->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -19,7 +19,7 @@
 
 </head>
 
-<body id="mainBody" class="{% include 'Html/sidebar_class.html'%}">
+<body id="mainBody" class="{% include 'Html/partial/structure/sidebar/sidebar_class.html'%}">
     <!-- Show base layout -->
     <button class="show-base-layout rounded fullScreen-element-inline" id="showBaseLayoutButton">
         <i class="fa-solid fa-minimize"></i>
@@ -28,7 +28,7 @@
     <!-- Navbar -->
     <header class="navbar navbar-expand-lg fixed-top border-bottom bg-body shadow-sm fullScreen-element" id="mainNav">
         <div class="container-fluid">
-            {% include 'Html/partial/base/sidebar_button.html'%}
+            {% include 'Html/partial/structure/sidebar/sidebar_button.html'%}
 
 
             <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
@@ -42,10 +42,10 @@
             <div class="ms-auto d-flex align-items-center gap-1 gap-lg-2 gap-lg-3">
 
                 <button class="btn btn-link url_link p-1" id="darkModeToggle" data-backend-saved="{% is_backend_saved %}" aria-label="Toggle dark mode" data-url="{% url 'updateTheme' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Changer le thème">
-                    {% include 'Html/partial/base/theme_icon.html' %}
+                    {% include 'Html/partial/structure/theme/theme_icon.html' %}
                 </button>
                 {% block navbar %}
-                {% include 'Html/navbar.html' %}
+                {% include 'Html/partial/structure/navbar/navbar.html' %}
                 {% endblock navbar %}
 
 
@@ -54,14 +54,14 @@
     </header>
 
     <!-- Sidebar -->
-    {% include 'Html/sidebar.html'%}
+    {% include 'Html/partial/structure/sidebar/sidebar.html'%}
 
 
     <!-- Main Content -->
     <main class="container-fluid py-4 py-lg-5 px-3 px-lg-4" id="main-content">
         <div class="row">
-            {% include 'Html/partial/base/message.html' %}
-            {% include 'Html/partial/base/trace_activity.html' %}
+            {% include 'Html/partial/structure/utils/message.html' %}
+            {% include 'Html/partial/structure/utils/trace_activity.html' %}
             <div class="col-12">
                 <section class="pt-0 pb-0">
                     {% if title is not None %}<h1 id="mainTitle">{{ title }}</h1>{% endif %}
@@ -70,17 +70,17 @@
             </div>
         </div>
         {% if request.user.isBetaTester %}
-        {% include 'Html/partial/betaTestConsole.html' %}
+        {% include 'Html/partial/structure/utils/betaTestConsole.html' %}
 
         {% endif %}
 
     </main>
 
     <!-- Footer -->
-    {% include 'Html/partial/base/footer.html' %}
+    {% include 'Html/partial/structure/footer/footer.html' %}
 
     <!-- Modal -->
-    {% include 'Html/partial/base/modal.html' %}
+    {% include 'Html/partial/structure/utils/modal.html' %}
 
     <!-- Bootstrap core JS-->
     <!-- Core JS-->
