@@ -29,7 +29,7 @@ describe('UpdateVolumeElement', () => {
             idPlaylist: 'playlist-123',
             playlistType: 'music',
             defaultVolume: 0.8,
-            levelFade: 1.0,
+            levelFade: 1,
         } as MusicElement;
 
         // Réinitialisation du cache statique avant chaque test
@@ -60,7 +60,7 @@ describe('UpdateVolumeElement', () => {
 
         it('should update volume with default values', () => {
             mockMusicElement.defaultVolume = 0.5;
-            mockMusicElement.levelFade = 1.0;
+            mockMusicElement.levelFade = 1;
             
             updateVolumeElement.update();
 
@@ -80,7 +80,7 @@ describe('UpdateVolumeElement', () => {
 
         it('should apply mixer general volume', () => {
             mockMusicElement.defaultVolume = 1.0;
-            mockMusicElement.levelFade = 1.0;
+            mockMusicElement.levelFade = 1;
             vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
                 if (type === 'general') return 0.6;
                 return 1;
@@ -94,7 +94,7 @@ describe('UpdateVolumeElement', () => {
 
         it('should apply mixer type volume', () => {
             mockMusicElement.defaultVolume = 1.0;
-            mockMusicElement.levelFade = 1.0;
+            mockMusicElement.levelFade = 1;
             mockMusicElement.playlistType = 'music';
             vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
                 if (type === 'general') return 1;
@@ -110,7 +110,7 @@ describe('UpdateVolumeElement', () => {
 
         it('should apply shared custom volume from cookie', () => {
             mockMusicElement.defaultVolume = 1.0;
-            mockMusicElement.levelFade = 1.0;
+            mockMusicElement.levelFade = 1;
             mockMusicElement.idPlaylist = 'playlist-123';
             
             vi.mocked(SharedSoundboardIdFinder.findSoundBoardId).mockReturnValue('soundboard-456');
@@ -145,7 +145,7 @@ describe('UpdateVolumeElement', () => {
 
         it('should clamp volume to maximum of 1', () => {
             mockMusicElement.defaultVolume = 2.0; // Volume supérieur à 1
-            mockMusicElement.levelFade = 1.0;
+            mockMusicElement.levelFade = 1;
             
             updateVolumeElement.update();
 
@@ -154,7 +154,7 @@ describe('UpdateVolumeElement', () => {
 
         it('should clamp volume to minimum of 0', () => {
             mockMusicElement.defaultVolume = -0.5; // Volume négatif
-            mockMusicElement.levelFade = 1.0;
+            mockMusicElement.levelFade = 1;
             
             updateVolumeElement.update();
 
@@ -178,7 +178,7 @@ describe('UpdateVolumeElement', () => {
 
         it('should return 1 for shared custom volume when soundboard not found', () => {
             mockMusicElement.defaultVolume = 0.5;
-            mockMusicElement.levelFade = 1.0;
+            mockMusicElement.levelFade = 1;
             
             vi.mocked(SharedSoundboardIdFinder.findSoundBoardId).mockReturnValue(null);
             
@@ -190,7 +190,7 @@ describe('UpdateVolumeElement', () => {
 
         it('should return 1 for shared custom volume when playlist not in cookie', () => {
             mockMusicElement.defaultVolume = 0.5;
-            mockMusicElement.levelFade = 1.0;
+            mockMusicElement.levelFade = 1;
             mockMusicElement.idPlaylist = 'playlist-999';
             
             vi.mocked(SharedSoundboardIdFinder.findSoundBoardId).mockReturnValue('soundboard-456');
@@ -305,7 +305,7 @@ describe('UpdateVolumeElement', () => {
                 idPlaylist: 'playlist-456',
                 playlistType: 'music',
                 defaultVolume: 0.9,
-                levelFade: 1.0,
+                levelFade: 1,
             } as MusicElement;
             
             const secondUpdateVolume = new UpdateVolumeElement(secondMusicElement);
@@ -328,7 +328,7 @@ describe('UpdateVolumeElement', () => {
     describe('truncDecimal', () => {
         it('should truncate decimal values to 2 places', () => {
             mockMusicElement.defaultVolume = 0.123456;
-            mockMusicElement.levelFade = 1.0;
+            mockMusicElement.levelFade = 1;
             vi.spyOn(MixerManager, 'getMixerValue').mockReturnValue(1);
             vi.mocked(ButtonPlaylistFinder.search).mockReturnValue(null);
             vi.mocked(SharedSoundboardIdFinder.findSoundBoardId).mockReturnValue(null);
@@ -341,7 +341,7 @@ describe('UpdateVolumeElement', () => {
 
         it('should handle rounding up correctly', () => {
             mockMusicElement.defaultVolume = 0.555;
-            mockMusicElement.levelFade = 1.0;
+            mockMusicElement.levelFade = 1;
             vi.spyOn(MixerManager, 'getMixerValue').mockReturnValue(1);
             vi.mocked(ButtonPlaylistFinder.search).mockReturnValue(null);
             vi.mocked(SharedSoundboardIdFinder.findSoundBoardId).mockReturnValue(null);

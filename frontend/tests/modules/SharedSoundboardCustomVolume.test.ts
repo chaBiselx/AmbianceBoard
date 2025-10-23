@@ -253,7 +253,9 @@ describe('SharedSoundboardCustomVolume', () => {
 
                 expect(rangeInputs).toHaveLength(2);
                 const verifyDefaultValue = (input: HTMLInputElement) => TestHelpers.verifyRangeInput(input, { value: '100' });
-                rangeInputs.forEach(verifyDefaultValue);
+                for (const input of rangeInputs) {
+                    verifyDefaultValue(input);
+                }
             });
 
             it('should use existing cookie values for range inputs', () => {
@@ -271,7 +273,9 @@ describe('SharedSoundboardCustomVolume', () => {
                 const rangeInputs = selector.querySelectorAll('input[type="range"]') as NodeListOf<HTMLInputElement>;
 
                 const verifyMinMax = (input: HTMLInputElement) => TestHelpers.verifyRangeInput(input, { min: '10', max: '100' });
-                rangeInputs.forEach(verifyMinMax);
+                for (const input of rangeInputs) {
+                    verifyMinMax(input);
+                }
             });
 
             it('should clone only image elements from playlist links', () => {
@@ -424,7 +428,9 @@ describe('SharedSoundboardCustomVolume', () => {
                 const verifyMinBoundary = (input: HTMLInputElement) => {
                     expect(input.min).toBe(instance.minValue.toString());
                 };
-                rangeInputs.forEach(verifyMinBoundary);
+                for (const input of rangeInputs) {
+                    verifyMinBoundary(input);
+                }
             });
 
             it('should handle maximum value boundary', () => {
@@ -434,7 +440,9 @@ describe('SharedSoundboardCustomVolume', () => {
                 const verifyMaxBoundary = (input: HTMLInputElement) => {
                     expect(input.max).toBe('100');
                 };
-                rangeInputs.forEach(verifyMaxBoundary);
+                for (const input of rangeInputs) {
+                    verifyMaxBoundary(input);
+                }
             });
         });
     });
