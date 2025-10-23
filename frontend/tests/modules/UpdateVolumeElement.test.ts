@@ -144,7 +144,7 @@ describe('UpdateVolumeElement', () => {
         });
 
         it('should clamp volume to maximum of 1', () => {
-            mockMusicElement.defaultVolume = 2.0; // Volume supérieur à 1
+            mockMusicElement.defaultVolume = 2; // Volume supérieur à 1
             mockMusicElement.levelFade = 1;
             
             updateVolumeElement.update();
