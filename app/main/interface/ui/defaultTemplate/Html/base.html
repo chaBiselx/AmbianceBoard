@@ -28,7 +28,7 @@
     <!-- Navbar -->
     <header class="navbar navbar-expand-lg fixed-top border-bottom bg-body shadow-sm fullScreen-element" id="mainNav">
         <div class="container-fluid">
-            {% include 'Html/sidebar_button.html'%}
+            {% include 'Html/partial/base/sidebar_button.html'%}
 
 
             <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
@@ -42,7 +42,7 @@
             <div class="ms-auto d-flex align-items-center gap-1 gap-lg-2 gap-lg-3">
 
                 <button class="btn btn-link url_link p-1" id="darkModeToggle" data-backend-saved="{% is_backend_saved %}" aria-label="Toggle dark mode" data-url="{% url 'updateTheme' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Changer le thème">
-                    {% include 'Html/theme_icon.html' %}
+                    {% include 'Html/partial/base/theme_icon.html' %}
                 </button>
                 {% block navbar %}
                 {% include 'Html/navbar.html' %}
@@ -60,8 +60,8 @@
     <!-- Main Content -->
     <main class="container-fluid py-4 py-lg-5 px-3 px-lg-4" id="main-content">
         <div class="row">
-            {% include 'Html/message.html' %}
-            {% include 'Html/trace_activity.html' %}
+            {% include 'Html/partial/base/message.html' %}
+            {% include 'Html/partial/base/trace_activity.html' %}
             <div class="col-12">
                 <section class="pt-0 pb-0">
                     {% if title is not None %}<h1 id="mainTitle">{{ title }}</h1>{% endif %}
@@ -77,10 +77,10 @@
     </main>
 
     <!-- Footer -->
-    {% include 'Html/footer.html'%}
+    {% include 'Html/partial/base/footer.html' %}
 
     <!-- Modal -->
-    {% include 'Html/modal.html'%}
+    {% include 'Html/partial/base/modal.html' %}
 
     <!-- Bootstrap core JS-->
     <!-- Core JS-->
