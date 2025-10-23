@@ -79,7 +79,7 @@ describe('UpdateVolumeElement', () => {
         });
 
         it('should apply mixer general volume', () => {
-            mockMusicElement.defaultVolume = 1.0;
+            mockMusicElement.defaultVolume = 1;
             mockMusicElement.levelFade = 1;
             vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
                 if (type === 'general') return 0.6;
@@ -93,7 +93,7 @@ describe('UpdateVolumeElement', () => {
         });
 
         it('should apply mixer type volume', () => {
-            mockMusicElement.defaultVolume = 1.0;
+            mockMusicElement.defaultVolume = 1;
             mockMusicElement.levelFade = 1;
             mockMusicElement.playlistType = 'music';
             vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
@@ -109,7 +109,7 @@ describe('UpdateVolumeElement', () => {
         });
 
         it('should apply shared custom volume from cookie', () => {
-            mockMusicElement.defaultVolume = 1.0;
+            mockMusicElement.defaultVolume = 1;
             mockMusicElement.levelFade = 1;
             mockMusicElement.idPlaylist = 'playlist-123';
             
@@ -231,7 +231,7 @@ describe('UpdateVolumeElement', () => {
         });
 
         it('should clear general mixer from cache', () => {
-            mockMusicElement.defaultVolume = 1.0; // Définir à 1.0 pour simplifier le calcul
+            mockMusicElement.defaultVolume = 1; // Définir à 1.0 pour simplifier le calcul
             
             vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
                 if (type === 'general') return 0.8;
