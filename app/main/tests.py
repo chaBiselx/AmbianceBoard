@@ -18,7 +18,7 @@ from main.TNR.TU.utils.UrlsUtilsTest import *
 from main.TNR.TU.utils.logger.LoggerFactoryTest import *
 from main.TNR.TU.utils.logger.LokiLoggerTest import *
 from main.TNR.TU.utils.logger.CompositeLoggerTest import *
-from main.TNR.TU.utils.cache.TestCacheSystem import *
+from main.TNR.TU.utils.cache.CacheSystemTest import *
 
 
 from main.TNR.TU.Service.FailedLoginAttemptServiceTest import *
@@ -49,5 +49,12 @@ from main.TNR.TU.websocket.SharedSoundboardConsumerTest import *
 
 # Reporting & Moderation tests (P0)
 from main.TNR.TU.reporting.ReportingModerationTest import *
+
+# Helper
+from main.TNR.TU.helper.PricingHelperTest import *
+
+# mailing
+from main.TNR.TU.email.EmailSenderTest import *
+from main.TNR.TU.email.ModeratorAndUserEmailTest import *
 
 

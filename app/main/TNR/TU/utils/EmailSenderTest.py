@@ -11,7 +11,7 @@ body_test = "Test Body"
 from_email_test = "sender@example.com"
 to_emails_test = ["recipient@example.com"]
 
-class TestEmailSender(unittest.TestCase):
+class EmailSenderTest(unittest.TestCase):
     def setUp(self):
         """Configure les paramètres de base pour les tests"""
         self.smtp_server = "smtp.example.com"
