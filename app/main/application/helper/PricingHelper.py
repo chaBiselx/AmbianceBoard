@@ -1,6 +1,6 @@
 from main.domain.common.utils.settings import Settings
 from main.domain.common.enum.DeviseEnum import DeviseEnum
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
 
 
 class PricingHelper:
@@ -41,7 +41,7 @@ class PricingHelper:
             # Arrondir à 2 décimales
             return price_ttc.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
             
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, InvalidOperation):
             return price_ht
 
     @staticmethod

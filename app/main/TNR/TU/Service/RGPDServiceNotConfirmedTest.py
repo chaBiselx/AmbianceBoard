@@ -1,10 +1,11 @@
 # RGPDServiceNotConfirmedTest.py
 import datetime
-from django.test import TestCase
+from django.test import TestCase, tag
 from main.architecture.persistence.models.User import User
 from main.domain.cron.service.RGPDService import RGPDService
 from django.utils.timezone import make_aware
 
+@tag('unitaire')
 class RGPDServiceNotConfirmedTest(TestCase):
     def setUp(self):
         self.user1 = User.objects.create_user(username='user1', email='user1@example.com')

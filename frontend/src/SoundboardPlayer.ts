@@ -15,6 +15,7 @@ import ShareLinkManager from '@/modules/Event/ShareLinkManager';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import SharedSoundboardSendCmdMaster from '@/modules/SharedSoundboardSendCmdMaster';
 import Time from '@/modules/Util/Time';
+import { SharedSoundboardCustomVolumeFactory } from '@/modules/SharedSoundboardCustomVolume';
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -31,6 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // Activer le Wake Lock au chargement de la page
     new WakeLock().start();
+    const sh = SharedSoundboardCustomVolumeFactory.create('shared-custom-volume-button', 'template-shared-volume');
+    if (sh) {
+        sh.addEvent();
+    }
 });
 
 function addEventShowHidePlayslitMixer(): void {
@@ -44,9 +49,9 @@ function addEventListenerDom() {
     const formElements = document.querySelectorAll('.playlist-link');
     for (const element of formElements) {
         if (element.classList.contains('disabled')) continue
-        if(element.classList.contains('playlist-user-playable')){
+        if (element.classList.contains('playlist-user-playable')) {
             element.addEventListener('click', eventPlayInMasterSoundboard);
-        } else{
+        } else {
             element.addEventListener('click', eventTogglePlaylist);
         }
     }

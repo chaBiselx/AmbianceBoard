@@ -1,7 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.core.paginator import Paginator
 from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 
+@tag('unitaire')
 class ExtractPaginatorTest(TestCase):
     def setUp(self):
         """Initialisation des données de test"""

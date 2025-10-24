@@ -37,7 +37,6 @@ class AudioFadeManager {
     public setDuration(durationInSec: number) {
         this.duration = Time.get_seconds(durationInSec);
     }
-
     public setFadeStrategy(fadeStrategy: Model.FadeStrategyInterface) {
         this.fadeStrategy = fadeStrategy;
     }
@@ -56,7 +55,7 @@ class AudioFadeManager {
                 progress
             );
 
-            if (volume < 1 && volume >= lastLevelFade + 0.05 ) { // mise à jour seulement si le volume a changé de 0.05 ou plus
+            if (volume < 1 && this.detectDiffVolume(volume, lastLevelFade)) { // mise à jour seulement si le volume a changé de 0.05 ou plus
                 this.musicElement.levelFade = volume;
                 this.updateVolumeElement.update();
                 lastLevelFade = this.musicElement.levelFade;
@@ -69,6 +68,10 @@ class AudioFadeManager {
                 this.onComplete?.();
             }
         }, this.interval);
+    }
+    
+    private detectDiffVolume(volume: number, lastVolume: number): boolean {
+        return Math.abs(volume - lastVolume) >= 0.05;
     }
 }
 

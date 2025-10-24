@@ -1,10 +1,11 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from main.architecture.persistence.models import User
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
 
+@tag('unitaire')
 class UserModelTest(TestCase):
     def test_checkBanned(self):
         # Créer un utilisateur non banni

@@ -53,9 +53,7 @@ class ModalCustom {
             });
         }
 
-        mainModalElement.classList.remove('modal-lg');
-        mainModalElement.classList.remove('modal-sm');
-        mainModalElement.classList.remove('modal-xl');
+        mainModalElement.classList.remove('modal-lg', 'modal-sm', 'modal-xl');
         let width = null
         switch (config.width) {
             case 'lg':

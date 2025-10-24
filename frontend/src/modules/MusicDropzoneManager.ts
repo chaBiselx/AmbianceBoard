@@ -76,7 +76,7 @@ export class MusicDropzoneManager {
         this.showErrors(response.errors || []);
 
         setTimeout(() => {
-            window.location.reload();
+            globalThis.location.reload();
         }, 500);
     }
 

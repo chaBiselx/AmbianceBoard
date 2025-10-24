@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 // Convertit l'URL du fichier en chemin système
 const __filename = fileURLToPath(import.meta.url);
@@ -17,7 +17,9 @@ async function logDirectoryContent(dir, label) {
         if (files.length === 0) {
             console.log('   (vide)');
         } else {
-            files.forEach(f => console.log('   -', f));
+            for (const f of files) {
+                console.log('   -', f);
+            }
         }
     } catch (err) {
         console.warn(`⚠️ Impossible de lire le dossier ${dir} :`, err.message);

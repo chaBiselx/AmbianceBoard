@@ -1,5 +1,5 @@
 import datetime
-from django.test import TestCase
+from django.test import TestCase, tag
 from main.architecture.persistence.models.User import User
 from main.domain.cron.service.RGPDService import RGPDService
 from django.utils.timezone import make_aware
@@ -7,6 +7,7 @@ from django.utils.timezone import make_aware
 user1_email = "user1@example.com"
 user2_email = "user2@example.com"
 
+@tag('unitaire')
 class RGPDServiceNotActiveTest(TestCase):
     def setUp(self):
         self.user1 = User.objects.create_user(username='user1', email=user1_email)

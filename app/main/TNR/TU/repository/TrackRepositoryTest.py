@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch, MagicMock
 from main.domain.common.repository.TrackRepository import TrackRepository
@@ -9,6 +9,7 @@ from main.architecture.persistence.models.User import User
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 
+@tag('unitaire')
 class TrackRepositoryTest(TestCase):
 	def setUp(self):
 		# Patch celery task to avoid launching async processing

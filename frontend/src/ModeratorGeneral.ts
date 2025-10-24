@@ -2,24 +2,24 @@ import ModalCustom from '@/modules/General/Modal';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.popup-data-playlist').forEach((el) => {
+    for (const el of document.querySelectorAll('.popup-data-playlist')) {
         el.addEventListener('click', getDataPlaylist);
-    })
-    document.querySelectorAll('.popup-data-soundboard').forEach((el) => {
+    }
+    for (const el of document.querySelectorAll('.popup-data-soundboard'))    {
         el.addEventListener('click', getDataSoundboard);
-    })
-    document.querySelectorAll('.popup-data-user').forEach((el) => {
+    }
+    for (const el of document.querySelectorAll('.popup-data-user')) {
         el.addEventListener('click', getDataUser);
-    })
-        document.querySelectorAll('.popup-add-tag').forEach((el) => {
+    }
+    for (const el of document.querySelectorAll('.popup-add-tag')) {
         el.addEventListener('click', getAddtag);
-    })
-    document.querySelectorAll('.popup-info-tag').forEach((el) => {
+    }
+    for (const el of document.querySelectorAll('.popup-info-tag')) {
         el.addEventListener('click', getInfoTag);
-    })
-    document.querySelectorAll('.popup-edit-tag').forEach((el) => {
+    }
+    for (const el of document.querySelectorAll('.popup-edit-tag')) {
         el.addEventListener('click', getEditTag);
-    })
+    }
 
 })
 
@@ -104,7 +104,7 @@ class FetchPopupData {
     }
 
     public setValue() {
-        const currentPath = window.location.pathname + window.location.search;
+        const currentPath = globalThis.location.pathname + globalThis.location.search;
         const redirectInput = document.getElementById('redirect_uri') as HTMLInputElement;
         if (redirectInput) {
             redirectInput.value = currentPath;

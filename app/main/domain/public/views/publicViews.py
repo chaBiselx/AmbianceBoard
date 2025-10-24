@@ -22,6 +22,9 @@ from main.domain.common.repository.UserFavoritePublicSoundboardRepository import
 from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
 from main.domain.common.utils.logger import logger
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
+from main.domain.common.repository.TrackRepository import TrackRepository
+from main.domain.common.utils.cache.CacheFactory import CacheFactory
+
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
@@ -79,22 +82,29 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
     
 @require_http_methods(['GET'])
 @detect_ban
-def public_music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse:
- 
-    track = (RandomizeTrackService(request)).generate_public(soundboard_uuid, playlist_uuid)
-    if not track :
-        return HttpResponse("Musique introuvable.", status=404)
-    
-    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
+def public_music_stream(request, soundboard_uuid, playlist_uuid) ->  HttpResponse|JsonResponse:
+    cache = CacheFactory.get_default_cache()
+    cache_key = f"musicStream:{request.session.session_key}:{soundboard_uuid}:{playlist_uuid}:{request.GET.get('i','0')}"
     
     try:
-        response = track.get_reponse_content()
+        if request.headers.get('X-Metadata-Only') == 'true':
+            track_id = cache.get(cache_key)
+            if track_id :
+                track = TrackRepository().get(track_id, playlist_uuid)
+                if track:
+                    ret = JsonResponse({"duration":  track.get_duration()}, status=200)
+        else:
+            track = (RandomizeTrackService(request)).generate_public(soundboard_uuid, playlist_uuid)
+            if track:
+                # Utilisation du service de soundboard partagé pour gérer le stream
+                SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
+                cache.set(cache_key, track.id, timeout=20)
+                ret = track.get_reponse_content()
+        if ret:
+            return ret
     except Exception as e:
-        logger.error(f"public_music_stream : {e}")
-        response = None
-    if(not response):
-        return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
-    return response
+        logger.error(f"Error in public_music_stream: {e}")
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
 
 
 @login_required

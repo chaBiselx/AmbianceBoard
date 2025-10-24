@@ -35,6 +35,4 @@ class SoundboardPlaylistOptionService:
             soundboard_playlist.activable_by_player = dto.value
 
         soundboard_playlist.save()
-        print('Updated SoundboardPlaylist:', soundboard_playlist.id)
-        print('soundboard_playlist.activable_by_player:', soundboard_playlist.activable_by_player)
         return self

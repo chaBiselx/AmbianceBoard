@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.contrib.auth.models import Group
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.UserTier import UserTier
@@ -7,6 +7,7 @@ from main.domain.common.enum.GroupEnum import GroupEnum
 from parameters import settings
 
 
+@tag('unitaire')
 class UserTierManagerTest(TestCase):
     self.utilisateurStandard = 'Utilisateur Standard'
     

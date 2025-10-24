@@ -1,9 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.contrib.auth import get_user_model
 from main.application.auth.UsernameOrEmailBackend import UsernameOrEmailBackend
 
 User = get_user_model()
 
+@tag('unitaire')
 class AuthBackendTest(TestCase):
     def setUp(self):
         self.backend = UsernameOrEmailBackend()

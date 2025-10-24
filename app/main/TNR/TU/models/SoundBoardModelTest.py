@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 from unittest.mock import patch, Mock
@@ -8,6 +8,7 @@ from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 
+@tag('unitaire')
 class SoundBoardModelTest(TestCase):
     def setUp(self):
         """Initialisation des données de test"""

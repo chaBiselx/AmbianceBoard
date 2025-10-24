@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 from unittest.mock import patch, Mock
@@ -9,6 +9,7 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 playlist_name = "Test Playlist"
 
+@tag('unitaire')
 class PlaylistModelTest(TestCase):
     def setUp(self):
         """Initialisation des données de test"""

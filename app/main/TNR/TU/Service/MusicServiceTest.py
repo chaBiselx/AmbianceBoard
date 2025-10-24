@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, tag
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch, MagicMock
 from main.service.MusicService import MusicService
@@ -7,6 +7,7 @@ from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.User import User
 
+@tag('unitaire')
 class MusicServiceTest(TestCase):
     
     def setUp(self):

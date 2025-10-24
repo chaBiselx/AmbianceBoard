@@ -5,13 +5,15 @@ import smtplib
 from parameters import settings
 from main.domain.common.exceptions.EmailException import DebugModeActivedWitoutDebugMailException, AttachementException, SendException
 from main.domain.common.utils.EmailSender import EmailSender
+from django.test import tag
 
 subject_test = "Test Subject"
 body_test = "Test Body"
 from_email_test = "sender@example.com"
 to_emails_test = ["recipient@example.com"]
 
-class TestEmailSender(unittest.TestCase):
+@tag('unitaire')
+class EmailSenderTest(unittest.TestCase):
     def setUp(self):
         """Configure les paramètres de base pour les tests"""
         self.smtp_server = "smtp.example.com"

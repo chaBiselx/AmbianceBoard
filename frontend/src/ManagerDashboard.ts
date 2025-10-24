@@ -1,5 +1,5 @@
 import { ChartWrapper } from '@/modules/Chart/ChartWrapper';
-import { ChartConfigs, OptionChartConfig, LineEvolutionData} from '@/modules/Chart/ChartConfigs';
+import { ChartConfigs, OptionChartConfig, LineEvolutionData } from '@/modules/Chart/ChartConfigs';
 import { DataProcessor } from '@/modules/Util/DataProcessor';
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -8,11 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
         'activity-user',
         'activity-errors'
     ]
-    listIdGraphLine.forEach(id => {
-        console.log(id);
-        
+    for (const id of listIdGraphLine) {
         new DashboardLineGraph(id).init();
-    });
+    };
 });
 
 class DashboardLineGraph {
@@ -40,7 +38,7 @@ class DashboardLineGraph {
     }
 
     public addEventListeners() {
-        if( this.periodeLineChart && this.element){
+        if (this.periodeLineChart && this.element) {
             this.periodeLineChart.addEventListener('change', () => {
                 this.fetchData(this.element!.dataset.url!);
             });
@@ -74,14 +72,13 @@ class DashboardLineGraph {
         const dateLabels = DataProcessor.generateDateRange(data.start_date, data.end_date);
         let datasets = {} as { [key: string]: any };
 
-        Object.entries(data.data as { [key: string]: any })
-            .forEach(([_key, element]) => {
-                const dataDict = DataProcessor.createDataDictionary(element.data);
-                datasets[element.key] = {
-                    'label': element.label,
-                    'data': DataProcessor.fillMissingDatas(dateLabels, dataDict)
-                };
-            });
+        for (const [_, element] of Object.entries(data.data as { [key: string]: any })) {
+            const dataDict = DataProcessor.createDataDictionary(element.data);
+            datasets[element.key] = {
+                'label': element.label,
+                'data': DataProcessor.fillMissingDatas(dateLabels, dataDict)
+            };
+        }
 
         return ChartConfigs.processingDataForLineEvolution(dateLabels, Object.values(datasets));
     }

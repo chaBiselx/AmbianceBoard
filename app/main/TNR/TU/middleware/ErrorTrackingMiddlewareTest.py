@@ -7,7 +7,7 @@ de traçage des erreurs HTTP.
 
 import unittest
 from unittest.mock import Mock, patch, MagicMock
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, tag
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse, Http404
 from main.architecture.middleware.ErrorTrackingMiddleware import ErrorTrackingMiddleware
@@ -17,6 +17,7 @@ from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.repository.UserActivityRepository import UserActivityRepository
 
 
+@tag('unitaire')
 class ErrorTrackingMiddlewareTest(TestCase):
     """Tests pour le middleware ErrorTrackingMiddleware."""
     

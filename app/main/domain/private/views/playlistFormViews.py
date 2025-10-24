@@ -139,20 +139,23 @@ def playlist_listing_colors(request) -> JsonResponse:
 
 
 @login_required
-@require_http_methods(['GET'])
+@require_http_methods(['GET', 'HEAD'])
 def playlist_create_track_stream(request, playlist_uuid, music_id) -> HttpResponse | StreamingHttpResponse:
     """Stream d'une track spécifique d'une playlist"""
     track = (MusicService(request)).get_specific_music(playlist_uuid, music_id)
     if not track:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
-    
     try:
-        ret = track.get_reponse_content()
-    except Exception:
-        ret = None
-    if ret is None:
-        return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
-    return ret
+        if request.method == 'HEAD':
+            ret = HttpResponse()
+            ret ['Content-Duration'] = track.get_duration()
+        else:
+            ret = track.get_reponse_content()
+        if ret:
+            return ret
+    except Exception as e:
+        logger.error(f"Error in playlist_create_track_stream: {e}")
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
 
 
 

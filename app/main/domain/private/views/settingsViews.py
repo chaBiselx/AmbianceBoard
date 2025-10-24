@@ -69,10 +69,11 @@ def settings_update_default_style(request):
     
     return render(request, 'Html/Account/Settings/update_default_style_playlist.html', {'formset': formset})
 
-@login_required
 @require_http_methods(['UPDATE'])
 def update_theme(request):
     if request.method == 'UPDATE':
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Authentication required.'}, status=401)
         try:
             data = json.loads(request.body)  # Décode le JSON
             if 'theme' not in data:

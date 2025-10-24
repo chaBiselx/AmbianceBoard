@@ -1,6 +1,8 @@
 import { MusicElement } from "@/modules/MusicElement";
 import { MixerManager } from "@/modules/MixerManager";
 import { ButtonPlaylistFinder } from "@/modules/ButtonPlaylist";
+import Cookie from "@/modules/General/Cookie";
+import { SharedSoundboardIdFinder } from "@/modules/SharedSoundboardCustomVolume"
 
 class UpdateVolumeElement {
     musicElement: MusicElement
@@ -15,8 +17,9 @@ class UpdateVolumeElement {
         let VolumeFade = this.musicElement.levelFade
         let VolumeMixerGeneral = this.getVolumeMixerValue('general')
         let VolumeMixerType = this.getVolumeMixerValue(this.musicElement.playlistType)
-        let new_volume = Math.min(1, Math.max(0, this.truncDecimal(VolumeDefault * VolumeFade * VolumeMixerGeneral * VolumeMixerType)));
-        // console.log(`VolumeDefault: ${VolumeDefault}, VolumeFade: ${VolumeFade}, VolumeMixerGeneral: ${VolumeMixerGeneral}, VolumeMixerType: ${VolumeMixerType}, new_volume: ${new_volume}`); // NOSONAR
+        let VolumeSharedCustom = this.getVolumeSharedCustomCookie(this.musicElement.idPlaylist)
+        let new_volume = Math.min(1, Math.max(0, this.truncDecimal(VolumeDefault * VolumeFade * VolumeMixerGeneral * VolumeMixerType * VolumeSharedCustom)));
+        // console.log(`VolumeDefault: ${VolumeDefault}, VolumeFade: ${VolumeFade}, VolumeMixerGeneral: ${VolumeMixerGeneral}, VolumeMixerType: ${VolumeMixerType}, new_volume: ${new_volume}, VolumeSharedCustom: ${VolumeSharedCustom}`); // NOSONAR
         this.musicElement.DOMElement.volume = new_volume;
     }
 
@@ -43,6 +46,14 @@ class UpdateVolumeElement {
             UpdateVolumeElement.mixerCache[type] = this.truncDecimal(MixerManager.getMixerValue(type));
         }
         return UpdateVolumeElement.mixerCache[type];
+    }
+
+    private getVolumeSharedCustomCookie(playlistId: string): number {
+        const soundboardId = SharedSoundboardIdFinder.findSoundBoardId('template-shared-volume');
+        if (!soundboardId) return 1;
+        const cookieValue = Cookie.get(`SharedPlaylistCustomVolume_${soundboardId}`);
+        const jsonValue = cookieValue ? JSON.parse(cookieValue) : {};
+        return jsonValue[playlistId] / 100 || 1;
     }
 
     private truncDecimal(value: number): number {

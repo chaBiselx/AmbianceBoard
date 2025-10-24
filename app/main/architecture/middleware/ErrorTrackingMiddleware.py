@@ -167,7 +167,7 @@ class ErrorTrackingMiddleware:
             # En cas d'erreur lors du traçage, ne pas faire échouer la requête
             self.logger.error(f"Erreur lors du traçage de l'erreur {status_code}: {e}")
 
-    def _get_activity_type_for_status(self, status_code: int) -> UserActivityTypeEnum:
+    def _get_activity_type_for_status(self, status_code: int) -> UserActivityTypeEnum | None:
         """
         Détermine le type d'activité basé sur le code de statut.
         

@@ -1,10 +1,11 @@
 
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, tag
 from django.utils import timezone
 from datetime import timedelta
 from main.architecture.persistence.models.FailedLoginAttempt import FailedLoginAttempt
 from main.domain.general.service.FailedLoginAttemptService import FailedLoginAttemptService
 
+@tag('unitaire')
 class FailedLoginAttemptServiceTest(TestCase):
 
     def setUp(self):

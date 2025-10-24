@@ -1,7 +1,7 @@
 import Csrf from "@/modules/General/Csrf";
 import { ButtonPlaylist } from "./ButtonPlaylist";
 import { SearchMusicElement } from "@/modules/MusicElement";
-import  UpdateVolumeElement  from "@/modules/UpdateVolumeElement";
+import UpdateVolumeElement from "@/modules/UpdateVolumeElement";
 
 import { method, uri } from '@/type/General';
 
@@ -18,12 +18,12 @@ class UpdateVolumePlaylist {
     updateVolume() {
         this.buttonPlaylist.dataset.playlistVolume = this.volume.toString();
         const listMusic = SearchMusicElement.searchByButton(this.buttonPlaylist);
-        
-        listMusic.forEach(musicElement => {
+
+        for (const musicElement of listMusic) {
             musicElement.setDefaultVolume(this.buttonPlaylist.getVolume())
             const updateVolume = new UpdateVolumeElement(musicElement);
             updateVolume.clearCache(musicElement.idPlaylist).update()
-        });
+        }
 
     }
 
@@ -34,7 +34,7 @@ class UpdateVolumePlaylist {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-CSRFToken': Csrf.getToken()! 
+                'X-CSRFToken': Csrf.getToken()!
             },
             body: JSON.stringify({
                 volume: this.volume

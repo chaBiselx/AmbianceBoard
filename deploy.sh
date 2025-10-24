@@ -13,7 +13,7 @@ git fetch --tags
 # Récupérer le dernier tag ou master si aucun tag n'existe
 LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1) || echo "")
 
-if [ -n "$LATEST_TAG" ]; then
+if [[ -n "$LATEST_TAG" ]]; then
     echo "🏷️  Checkout du dernier tag: $LATEST_TAG"
     git checkout "$LATEST_TAG"
 else
