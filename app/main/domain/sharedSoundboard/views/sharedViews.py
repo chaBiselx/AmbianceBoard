@@ -83,26 +83,15 @@ def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id
     
     try:
         if request.headers.get('X-Metadata-Only') == 'true':
-            
-            print('X-Metadata-Only detected')
             track_id = cache.get(cache_key)
-            print('get cache ')
-            print( cache_key)
-            print( track_id)
             
             if track_id :
-                print('TrackRepository')
                 track = TrackRepository().get(track_id, playlist_uuid)
                 if track:
-                    print('response')
                     ret = JsonResponse({"duration":  track.get_duration()}, status=200)
         else:
-            print('X-Metadata-Only not detected')
             track = (RandomizeTrackService(request)).get_shared(soundboard_uuid, playlist_uuid, token, music_id )
             if track:
-                print('set cache ')
-                print( cache_key)
-                print( track.id)
                 cache.set(cache_key, track.id, timeout=20)
                 ret = track.get_reponse_content()
         if ret:

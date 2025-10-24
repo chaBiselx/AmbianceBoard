@@ -70,4 +70,58 @@ from main.TNR.TI.utils.logger.LoggerFactoryIntegrationTestCase import *
 from main.TNR.TI.utils.logger.LokiLoggerIntegrationTestCase import *
 from main.TNR.TI.utils.logger.CompositeLoggerIntegrationTestCase import *
 
+# Tests d'intégration des routes (1 route = 1 fichier = 1 classe)
+# Routes publiques et SEO
+from main.TNR.TI.routing.HomeRouteTest import *
+from main.TNR.TI.routing.PricingRouteTest import *
+from main.TNR.TI.routing.LegalNoticeRouteTest import *
+from main.TNR.TI.routing.RobotsTxtRouteTest import *
+from main.TNR.TI.routing.SitemapXmlRouteTest import *
 
+# Routes d'authentification
+from main.TNR.TI.routing.CreateAccountRouteTest import *
+from main.TNR.TI.routing.LoginRouteTest import *
+from main.TNR.TI.routing.LoginPostRouteTest import *
+from main.TNR.TI.routing.LogoutRouteTest import *
+from main.TNR.TI.routing.ResendEmailConfirmationRouteTest import *
+from main.TNR.TI.routing.SendResetPasswordRouteTest import *
+
+# Routes techniques
+from main.TNR.TI.routing.TraceFrontRouteTest import *
+
+# Routes Soundboards
+from main.TNR.TI.routing.SoundboardsListRouteTest import *
+from main.TNR.TI.routing.SoundboardsNewRouteTest import *
+
+# Routes Settings
+from main.TNR.TI.routing.SettingsIndexRouteTest import *
+from main.TNR.TI.routing.UpdateThemeRouteTest import *
+from main.TNR.TI.routing.DeleteAccountRouteTest import *
+
+# Routes Playlists
+from main.TNR.TI.routing.AddPlaylistRouteTest import *
+from main.TNR.TI.routing.PlaylistsAllListRouteTest import *
+from main.TNR.TI.routing.PlaylistCreateTrackStreamRouteTest import *
+
+# Routes Streaming
+from main.TNR.TI.routing.StreamMusicRouteTest import *
+
+# Routes Publiques
+from main.TNR.TI.routing.PublicIndexRouteTest import *
+from main.TNR.TI.routing.PublicListingSoundboardRouteTest import *
+from main.TNR.TI.routing.PublicReadSoundboardRouteTest import *
+from main.TNR.TI.routing.PublicStreamMusicRouteTest import *
+from main.TNR.TI.routing.ReportingContentRouteTest import *
+from main.TNR.TI.routing.PublicFavoriteRouteTest import *
+
+# Routes Modération
+from main.TNR.TI.routing.ModeratorDashboardRouteTest import *
+from main.TNR.TI.routing.ModeratorListingTagsRouteTest import *
+
+# Routes Manager
+from main.TNR.TI.routing.ManagerDashboardRouteTest import *
+
+# Routes Partage (Shared)
+from main.TNR.TI.routing.PublishSoundboardRouteTest import *
+from main.TNR.TI.routing.SharedSoundboardRouteTest import *
+from main.TNR.TI.routing.SharedStreamMusicRouteTest import *

@@ -207,6 +207,16 @@ LOGGING = {
             'level': 'DEBUG' ,
             'propagate': False,
         },
+        'django.request': {
+            'handlers': [] if TESTING else ['console'],
+            'level': 'ERROR' if TESTING else 'WARNING',
+            'propagate': False,
+        },
+        'django.server': {
+            'handlers': [] if TESTING else ['console'],
+            'level': 'ERROR' if TESTING else 'INFO',
+            'propagate': False,
+        },
         'main': {
             'handlers': ['console', 'APP_file'],
             'level': level_log_debug,
