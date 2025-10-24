@@ -14,6 +14,7 @@ from main.TNR.TU.utils.ImageResizerTest import *
 from main.TNR.TU.utils.ExtractPaginatorTest import *
 from main.TNR.TU.utils.EmailSenderTest import *
 from main.TNR.TU.utils.UrlsUtilsTest import *
+from main.TNR.TU.utils.SettingsTest import *
 
 from main.TNR.TU.utils.logger.LoggerFactoryTest import *
 from main.TNR.TU.utils.logger.LokiLoggerTest import *
@@ -33,6 +34,7 @@ from main.TNR.TU.UserParametersFactoryTest import *
 
 #Config
 from main.TNR.TU.config.PlaylistConfigTest import *
+from main.TNR.TU.config.PlaylistStrategyTest import *
 
 #MiddleWare
 from main.TNR.TU.middleware.ErrorTrackingMiddlewareTest import *
