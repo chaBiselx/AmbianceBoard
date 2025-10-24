@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.utils import timezone
 from unittest.mock import patch, MagicMock
 from datetime import timedelta
@@ -18,6 +18,7 @@ from main.domain.cron.service.SharedSoundboardService import SharedSoundboardSer
 
 User = get_user_model()
 
+@tag('unitaire')
 class CronServicesTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='premium', email='p@ex.com', password='pass', isConfirmed=True) # NOSONAR

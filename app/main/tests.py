@@ -1,5 +1,8 @@
 from django.test import TestCase
 
+# =======================================================================
+# ======================== TEST UNITAIRE ================================
+# =======================================================================
 from main.TNR.TU.auth.AuthBackendTest import *
 
 from main.TNR.TU.signals.GroupsPermissionsSignalsTest import *
@@ -13,7 +16,6 @@ from main.TNR.TU.models.UserModelTest import *
 from main.TNR.TU.utils.ImageResizerTest import *
 from main.TNR.TU.utils.ExtractPaginatorTest import *
 from main.TNR.TU.utils.EmailSenderTest import *
-from main.TNR.TU.utils.UrlsUtilsTest import *
 from main.TNR.TU.utils.SettingsTest import *
 
 from main.TNR.TU.utils.logger.LoggerFactoryTest import *
@@ -58,5 +60,14 @@ from main.TNR.TU.helper.PricingHelperTest import *
 # mailing
 from main.TNR.TU.email.EmailSenderTest import *
 from main.TNR.TU.email.ModeratorAndUserEmailTest import *
+
+# =======================================================================
+# ======================== TEST INTEGRATION =============================
+# =======================================================================
+from main.TNR.TI.utils.UrlsUtilsTest import *
+
+from main.TNR.TI.utils.logger.LoggerFactoryIntegrationTestCase import *
+from main.TNR.TI.utils.logger.LokiLoggerIntegrationTestCase import *
+from main.TNR.TI.utils.logger.CompositeLoggerIntegrationTestCase import *
 
 

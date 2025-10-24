@@ -1,9 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from decimal import Decimal
 from unittest.mock import patch
 from main.application.helper.PricingHelper import PricingHelper
 
 
+@tag('unitaire')
 class PricingHelperTest(TestCase):
     """Tests pour PricingHelper - conversion HT->TTC et formatage prix"""
 

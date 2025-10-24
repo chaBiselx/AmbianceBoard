@@ -1,9 +1,10 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from django.test import TestCase, override_settings
+from django.test import TestCase, override_settings, tag
 from main.domain.common.utils.settings import Settings, AppSettings
 
 
+@tag('unitaire')
 class SettingsTest(TestCase):
     """Tests pour le wrapper Settings - accès aux configurations"""
 
@@ -96,6 +97,7 @@ class SettingsTest(TestCase):
         self.assertFalse(value)
 
 
+@tag('unitaire')
 class AppSettingsTest(TestCase):
     """Tests pour la classe AppSettings"""
 

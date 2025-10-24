@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.contrib.auth.models import Permission, Group
 from django.contrib.contenttypes.models import ContentType
 from parameters import settings
@@ -10,6 +10,7 @@ from main.domain.common.enum.GroupEnum import GroupEnum
 from main.domain.common.utils.UserTierManager import UserTierManager
 
 
+@tag('unitaire')
 class UserParametersFactoryTest(TestCase):
     
     def setUp(self):

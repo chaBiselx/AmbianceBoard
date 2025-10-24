@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from unittest.mock import patch, MagicMock
 from main.domain.common.email.ModeratorEmail import ModeratorEmail
 from main.domain.common.email.UserMail import UserMail
@@ -7,6 +7,7 @@ from main.architecture.persistence.models.ReportContent import ReportContent
 
 
 @patch('main.domain.common.email.ModeratorEmail.LoggerFactory.get_default_logger')
+@tag('unitaire')
 class ModeratorEmailTest(TestCase):
     """Tests pour ModeratorEmail - envoi d'emails aux modérateurs"""
 
@@ -134,6 +135,7 @@ class ModeratorEmailTest(TestCase):
 
 
 @patch('main.domain.common.email.UserMail.LoggerFactory.get_default_logger')
+@tag('unitaire')
 class UserMailTest(TestCase):
     """Tests pour UserMail - envoi d'emails aux utilisateurs"""
 

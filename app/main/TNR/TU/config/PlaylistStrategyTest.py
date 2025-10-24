@@ -4,8 +4,10 @@ from main.domain.common.strategy.playlistConfig.ConfigMusic import ConfigMusic
 from main.domain.common.strategy.playlistConfig.ConfigAmbient import ConfigAmbient
 from main.domain.common.strategy.PlaylistStrategy import PlaylistStrategy
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from django.test import tag
 
 
+@tag('unitaire')
 class PlaylistStrategyTest(unittest.TestCase):
     """Tests pour les configurations de playlist - vérification structure"""
 
@@ -25,6 +27,7 @@ class PlaylistStrategyTest(unittest.TestCase):
         self.assertEqual(set(config.default_data.keys()), set(config.structure_data.keys()))
 
 
+@tag('unitaire')
 class PlaylistStrategyTest(unittest.TestCase):
     """Tests pour PlaylistStrategy - sélection de stratégie selon type"""
 

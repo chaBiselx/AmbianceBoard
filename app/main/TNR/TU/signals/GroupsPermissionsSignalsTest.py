@@ -1,10 +1,11 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from unittest.mock import patch
 from django.contrib.auth.models import Group, Permission
 from main.architecture.persistence.postMigrate.Group import create_groups
 from main.architecture.persistence.postMigrate.Permission import create_permissions, attrib_permissions
 
 
+@tag('unitaire')
 class GroupsPermissionsSignalsTest(TestCase):
     """Tests pour les signals post_migrate - création groupes et permissions"""
 

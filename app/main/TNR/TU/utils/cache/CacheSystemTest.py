@@ -5,7 +5,9 @@ from unittest.mock import patch, MagicMock
 from main.domain.common.utils.cache.CacheSystem import CacheSystem
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.domain.common.utils.cache.ICache import ICache
+from django.test import tag
 
+@tag('unitaire')
 class CacheSystemTest(unittest.TestCase):
     def setUp(self):
         self.cache = CacheSystem()
@@ -74,6 +76,7 @@ class CacheSystemTest(unittest.TestCase):
         self.assertEqual(value, 'value2')
 
 
+@tag('unitaire')
 class TestCacheFactory(unittest.TestCase):
     def test_create_memory_cache(self):
         cache = CacheFactory.create_cache('memory')

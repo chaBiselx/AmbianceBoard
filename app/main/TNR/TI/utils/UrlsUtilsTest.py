@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from unittest.mock import patch
@@ -8,6 +8,7 @@ from main.domain.common.utils.url import redirection_url
 
 
 # Tests d'intégration avec différents scénarios
+@tag('integration')
 class RedirectionUrlIntegrationTestCase(TestCase):
     
     def setUp(self):

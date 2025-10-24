@@ -1,10 +1,11 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from unittest.mock import patch, MagicMock, mock_open
 from main.domain.common.utils.EmailSender import EmailSender
 from main.domain.common.exceptions.EmailException import AttachementException, SendException
 import smtplib
 
 
+@tag('unitaire')
 class EmailSenderTest(TestCase):
     """Tests pour EmailSender - envoi d'emails avec gestion SMTP"""
 
