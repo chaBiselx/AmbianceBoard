@@ -96,3 +96,7 @@ Corrections
 - fix sur les images sur les contenu reportable n'apparaissait pas
 - ajout de logs pour corriger bugs de production sur les pistes de musique
 - tentative de correction des fadeOut en prod
+
+Fiabilité & Confiance
+- Augmentation de la couverture des tests unitaire
+- Création de test d'integration pour les routes
