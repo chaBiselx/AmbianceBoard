@@ -92,7 +92,7 @@ def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id
         else:
             track = (RandomizeTrackService(request)).get_shared(soundboard_uuid, playlist_uuid, token, music_id )
             if track:
-                cache.set(cache_key, track.id, timeout=20)
+                cache.set(cache_key, track.id, timeout=60)
                 ret = track.get_reponse_content()
         if ret:
             return ret

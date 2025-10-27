@@ -98,7 +98,7 @@ def public_music_stream(request, soundboard_uuid, playlist_uuid) ->  HttpRespons
             if track:
                 # Utilisation du service de soundboard partagé pour gérer le stream
                 SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
-                cache.set(cache_key, track.id, timeout=20)
+                cache.set(cache_key, track.id, timeout=60)
                 ret = track.get_reponse_content()
         if ret:
             return ret

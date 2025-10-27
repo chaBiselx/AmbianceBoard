@@ -152,6 +152,7 @@ class MusicElement {
      * @return {Promise<void>}
      */
     private async getDurationFromHeaders(): Promise<void> {
+        ConsoleTesteur.log('getDurationFromHeaders');
         setTimeout(async () => {// délai pour s'assurer de la generation du cache serveur car Firefox envoi trop vite la requete
             try {
                 const response = await fetch(this.DOMElement.src, { method: 'GET', headers: { 'X-Metadata-Only': 'true' } });
