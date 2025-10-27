@@ -6,6 +6,9 @@ __pycache
 .env.prod.db
 user.csv
 
+#test coverage
+.coverage
+
 #foilder
 app/mediafiles/musics/*
 app/mediafiles/playlistIcon/*

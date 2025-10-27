@@ -1,7 +1,7 @@
 import json
 import asyncio
 from channels.testing import WebsocketCommunicator
-from django.test import TransactionTestCase
+from django.test import TransactionTestCase, tag
 from asgiref.sync import sync_to_async
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
@@ -11,6 +11,7 @@ from parameters.routing import application
 User = get_user_model()
 
 # NOSONAR
+@tag('unitaire')
 class SharedSoundboardConsumerAsyncTest(TransactionTestCase):
     reset_sequences = True
 

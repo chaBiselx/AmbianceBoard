@@ -4,7 +4,7 @@ Tests de l'implémentation du logger composite qui combine plusieurs loggers.
 """
 
 from unittest.mock import MagicMock, patch
-from django.test import TestCase
+from django.test import TestCase, tag
 from unittest import TestCase as UnitTestCase
 
 from main.domain.common.utils.logger.CompositeLogger import CompositeLogger
@@ -13,6 +13,7 @@ from main.domain.common.utils.logger.MemoryLogger import MemoryLogger
 from main.domain.common.utils.logger.LoggerFile import LoggerFile
 
 
+@tag('unitaire')
 class CompositeLoggerTestCase(UnitTestCase):
     """Tests unitaires pour CompositeLogger"""
     
@@ -367,6 +368,7 @@ class CompositeLoggerTestCase(UnitTestCase):
         self.assertEqual(logs2[1]['level'], 'INFO')
 
 
+@tag('integration')
 class CompositeLoggerIntegrationTestCase(TestCase):
     """Tests d'intégration pour CompositeLogger avec Django"""
     

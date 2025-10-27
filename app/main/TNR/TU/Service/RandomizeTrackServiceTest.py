@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, tag
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch, MagicMock, Mock
 import uuid
@@ -11,6 +11,7 @@ from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.domain.common.repository.filters.MusicFilter import MusicFilter
 
+@tag('unitaire')
 class RandomizeTrackServiceTest(TestCase):
     
     def setUp(self):

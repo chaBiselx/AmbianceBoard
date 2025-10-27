@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
 from unittest.mock import patch
@@ -11,6 +11,7 @@ filename_name1 = "Test Music"
 filename_alt1 = "Alt Name"
 
 
+@tag('unitaire')
 class MusicModelTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')  # NOSONAR

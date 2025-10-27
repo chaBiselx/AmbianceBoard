@@ -15,7 +15,7 @@ class ListTiersManager {
         this.selectAll = document.getElementById('select-all')! as HTMLInputElement;
         this.userCheckboxes = document.querySelectorAll('.user-checkbox');
         this.bulkActionBtn = document.getElementById('bulk-action-btn')! as HTMLButtonElement;
-        this.actionSelect = document.querySelector('select[name="action"]')! as HTMLSelectElement;
+        this.actionSelect = document.querySelector('select[name="action"]')!;
         this.extendDaysInput = document.getElementById('extend-days-input')! as HTMLInputElement;
         this.bulkActionForm = document.getElementById('bulk-action-form')! as HTMLFormElement;
     }
@@ -24,9 +24,9 @@ class ListTiersManager {
 
         this.selectAll.addEventListener('change', this.toggleSelectAll.bind(this));
         // Mise à jour du bouton d'action en lot
-        this.userCheckboxes.forEach(checkbox => {
+        for (const checkbox of this.userCheckboxes) {
             checkbox.addEventListener('change', this.updateBulkActionButton.bind(this));
-        });
+        }
 
         // Afficher/masquer le champ jours selon l'action
         this.actionSelect.addEventListener('change', () => {
@@ -45,9 +45,9 @@ class ListTiersManager {
 
     private toggleSelectAll() {
         const isChecked = this.selectAll.checked;
-        this.userCheckboxes.forEach(checkbox => {
+        for (const checkbox of this.userCheckboxes) {
             checkbox.checked = isChecked;
-        });
+        }
         this.updateBulkActionButton();
     }
 
@@ -78,16 +78,18 @@ class ListTiersManager {
             // Ajouter les IDs des utilisateurs sélectionnés au formulaire
             // Supprimer les anciens inputs cachés s'ils existent
             const existingInputs = this.bulkActionForm.querySelectorAll('input[name="user_ids"]');
-            existingInputs.forEach(input => input.remove());
+            for (const input of existingInputs) {
+                input.remove();
+            }
 
             // Ajouter un input caché pour chaque utilisateur sélectionné
-            selectedUsers.forEach(checkbox => {
+            for (const checkbox of selectedUsers) {
                 const input = document.createElement('input');
                 input.type = 'hidden';
                 input.name = 'user_ids';
                 input.value = checkbox.value;
                 this.bulkActionForm.appendChild(input);
-            });
+            }
 
             const actionText = this.actionSelect.options[this.actionSelect.selectedIndex].text;
             if (!confirm(`Êtes-vous sûr de vouloir exécuter "${actionText}" sur ${selectedUsers.length} utilisateur(s) ?`)) {

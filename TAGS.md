@@ -86,3 +86,17 @@ Améliorations
 ### 0.1.0-beta.7 - 2025/10
 Corrections
 - corrections bugs sur les delai
+
+### 0.1.0-beta.8 - 2025/10
+Améliorations
+- Ajout de la gestion de son sur un soundboard partagé (stocké uniquement coté support via un cookie)
+- Sauvegarde des durré des musique en BDD pour gagner en performance. 
+
+Corrections
+- fix sur les images sur les contenu reportable n'apparaissait pas
+- ajout de logs pour corriger bugs de production sur les pistes de musique
+- tentative de correction des fadeOut en prod
+
+Fiabilité & Confiance
+- Augmentation de la couverture des tests unitaire
+- Création de test d'integration pour les routes

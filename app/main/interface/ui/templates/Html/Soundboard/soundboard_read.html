@@ -1,53 +1,22 @@
-{% extends 'Html/base.html' %}
-{% load Playlist %}
+{% extends 'Html/partial/structure/base.html' %}
 {% load SoundBoard %}
-{% load Mixer %}
-{% load FrontJs %}
-{% load static %}
 
-{% block javascript %}
-{{ block.super }}
-<!-- here-->
-<script type="module" src="{% static " SoundboardPlayer"|search_true_file %}"></script>
-{% endblock javascript %}
+
+
 
 {% block content %}
 
-{% include 'Html/partial/share_soundboard.html'%}
+{% include 'Html/partial/soundboard/share_soundboard.html'%}
 <div class="row">
     <div class="col-12 fullScreen-element">
-        <h4 class="reportable" id="soundboard-name">{{ soundboard | get_name }}</h4>
+        <h4 id="soundboard-name">{{ soundboard | get_name }}</h4>
     </div>
     <div class="col">
         <div style="display:None;" id="players"></div>
 
-        {% add_mixer PlaylistTypeEnum %}
+        {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum%}
 
-        <div class="responsive-sections-container">
-            {% for section, list_playlist in soundboard.get_list_playlist_ordered %}
-            <section class="section-{{ section }}">
-                <div class="section-content">
-                    <div class="flex-container">
-                        {% for playlist in list_playlist %}
-                        <div class="flex-item">
-                            <div class="playlist-link playlist-element  playlist-dim-{{ playlist_dim }} m-1" id='playlist-{{ playlist.uuid }}' style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};"
-                                data-playlist-uri="{% url 'streamMusic' soundboard.uuid  playlist.uuid %}" {% for key, value in playlist.get_data_set.items %} data-playlist-{{ key }}="{{ value }}" {% endfor %}>
-                                {{ playlist | applys_playlist_content}}
-
-                            </div>
-                            <form class="mixer-playlist-update-container hide-playlist-mixer">
-                                <input class="mixer-playlist-update horizontal-slider-input" type="range" value="{{playlist.volume}}" min="0" max="100" id="range_volume_{{ playlist.uuid }}" data-playlistupdatevolumeuri="{% url 'update_direct_volume' playlist.uuid %}"
-                                    data-defaultvolume="{{ playlist.volume }}" data-idplaylist="{{ playlist.uuid }}" />
-                                <output class="horizontal-slider-output bottom" for="range_volume_{{ playlist.uuid}}" style="--min: 0;--max: 100"></output>
-                            </form>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </section>
-            {% endfor %}
-        </div>
-
+        {% include 'Html/partial/soundboard/board.html' with master=True owner=True soundboard=soundboard %}
 
 
     </div>
@@ -66,4 +35,4 @@
     </div>
 </div>
 
-{% endblock %}
+{% endblock  %}

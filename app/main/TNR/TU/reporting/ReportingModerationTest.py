@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, tag
 from django.contrib.auth import get_user_model
 from uuid import uuid4
 from unittest.mock import patch, MagicMock
@@ -14,6 +14,7 @@ from main.domain.common.decorator.detectNotConfirmedAccount import detect_not_co
 
 User = get_user_model()
 
+@tag('unitaire')
 class ReportingModerationTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()

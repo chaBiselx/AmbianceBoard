@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, tag
 import unittest
 from unittest.mock import mock_open, patch, MagicMock
 import os
@@ -6,6 +6,7 @@ from PIL import Image
 from main.domain.common.utils.ImageResizer import ImageResizer  # Assurez-vous que le fichier s'appelle image_resizer.py
 
 os_path_exist = 'os.path.exists'
+@tag('unitaire')
 class ImageResizerTest(unittest.TestCase):
     def setUp(self):
         self.input_path = "test_input.jpg"

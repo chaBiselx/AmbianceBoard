@@ -2,7 +2,7 @@
 
 import unittest
 from unittest.mock import Mock, patch
-from django.test import TestCase
+from django.test import TestCase, tag
 from main.architecture.persistence.models.User import User
 from main.domain.common.service.ConfirmationUserService import ConfirmationUserService
 from main.domain.common.exceptions.SecurityException import SecurityException
@@ -10,6 +10,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 
 
+@tag('unitaire')
 class ConfirmationUserServiceTest(TestCase):
 
     def setUp(self):

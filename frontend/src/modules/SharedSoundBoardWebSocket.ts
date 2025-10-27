@@ -1,4 +1,3 @@
-import Config from '@/modules/General/Config';
 import Cookie from '@/modules/General/Cookie';
 import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MusicElement } from '@/modules/MusicElement';
@@ -48,6 +47,7 @@ class SharedSoundBoardWebSocket {
         }
         ConsoleTesteur.log(`WebSocket listen : ${url}`);
         SharedSoundBoardWebSocket.instance = new SharedSoundBoardWebSocket(url, master);
+        SharedSoundBoardWebSocket.instance.start();
     }
 
     public static getSlaveInstance(url: string): SharedSoundBoardWebSocket {
@@ -96,12 +96,10 @@ class SharedSoundBoardWebSocket {
             };
 
             this.socket.onclose = (event) => {
-                if (Config.DEBUG) {
-                    if (event.wasClean) {
-                        console.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
-                    } else {
-                        console.log('Connection died');
-                    }
+                if (event.wasClean) {
+                    ConsoleCustom.log(`Connection closed cleanly, code=${event.code}, reason=${event.reason}`);
+                } else {
+                    ConsoleCustom.log('Connection died');
                 }
 
                 this.socket = null;
@@ -209,6 +207,7 @@ class SharedSoundBoardWebSocket {
         if (!buttonPlaylist) return;
 
         const musicElement = new MusicElement(buttonPlaylist);
+        buttonPlaylist.active();
         (new UpdateVolumeElement(musicElement)).update();
         musicElement.addToDOM();
         musicElement.setSpecificMusic(data.url_music);

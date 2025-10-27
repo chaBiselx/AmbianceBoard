@@ -14,6 +14,8 @@ class UserFavoritePublicSoundboardRepository:
         return favorite
     
     def get_list_uuids(self, user: User) -> List[uuid.UUID]:
+        if not user.is_authenticated:
+            return []
         return list(
             UserFavoritePublicSoundboard.objects.filter(user=user)
             .values_list('uuidSoundboard__uuid', flat=True)

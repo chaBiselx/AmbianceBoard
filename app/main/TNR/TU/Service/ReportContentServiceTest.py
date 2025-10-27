@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, tag
 from django.contrib.auth import get_user_model
 from unittest.mock import patch, MagicMock
 from uuid import uuid4
@@ -9,6 +9,7 @@ from main.domain.common.exceptions.PostDataException import PostDataException
 
 User = get_user_model()
 Uri  = '/report'
+@tag('unitaire')
 class ReportContentServiceTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()

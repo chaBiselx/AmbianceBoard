@@ -5,7 +5,7 @@ Vérifie le bon fonctionnement de la gestion des sessions quotidiennes
 et de la mise à jour du champ last_login.
 """
 
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, tag
 from django.contrib.auth import get_user_model
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.utils import timezone
@@ -17,6 +17,7 @@ from main.architecture.middleware.DailySessionMiddleware import DailySessionMidd
 User = get_user_model()
 
 
+@tag('unitaire')
 class DailySessionMiddlewareTest(TestCase):
     """Tests pour DailySessionMiddleware."""
     

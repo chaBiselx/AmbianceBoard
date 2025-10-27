@@ -23,8 +23,8 @@ class TiersManager {
         this.previewContent = document.getElementById('preview-content') as HTMLElement;
         this.downgradeBtn = document.getElementById('downgrade-btn') as HTMLElement;
         this.submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
-        this.templateModalDownGradeBody = document.getElementById('downgradeModalBody')! as HTMLElement;
-        this.templateModalDownGradeFooter = document.getElementById('downgradeModalFooter')! as HTMLElement;
+        this.templateModalDownGradeBody = document.getElementById('downgradeModalBody')!;
+        this.templateModalDownGradeFooter = document.getElementById('downgradeModalFooter')!;
         this.tierChoices = JSON.parse(document.getElementById('tier-choices-data')!.textContent!);
 
     }

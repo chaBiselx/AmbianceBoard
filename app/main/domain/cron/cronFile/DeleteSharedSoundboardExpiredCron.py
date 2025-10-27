@@ -5,6 +5,6 @@ from main.domain.common.utils.logger import logger
 def run():
     # code de votre tâche cron
     logger.info("Starting DeleteSharedSoundboardExpiredCron")
-    (SharedSoundboardService())
+    (SharedSoundboardService())\
         .purge_expired_shared_soundboard()
     logger.info("Ending DeleteSharedSoundboardExpiredCron")

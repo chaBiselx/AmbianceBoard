@@ -19,6 +19,9 @@ from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.utils.settings import Settings
 from main.domain.common.utils.logger import logger
 
+from main.domain.common.repository.TrackRepository import TrackRepository
+from main.domain.common.utils.cache.CacheFactory import CacheFactory
+
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 
@@ -74,16 +77,25 @@ def shared_soundboard_read(request, soundboard_uuid, token):
 
 
 @require_http_methods(['GET'])
-def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id) -> HttpResponse:
- 
-    track = (RandomizeTrackService(request)).get_shared(soundboard_uuid, playlist_uuid, token, music_id)
-    if not track :
-        return HttpResponse("Musique introuvable.", status=404)
+def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id) ->  HttpResponse|JsonResponse:
+    cache = CacheFactory.get_default_cache()
+    cache_key = f"musicStream:{request.session.session_key}:{soundboard_uuid}:{playlist_uuid}:specific:{music_id}"
     
     try:
-        response = track.get_reponse_content()
-        if response:
-            return response
+        if request.headers.get('X-Metadata-Only') == 'true':
+            track_id = cache.get(cache_key)
+            
+            if track_id :
+                track = TrackRepository().get(track_id, playlist_uuid)
+                if track:
+                    ret = JsonResponse({"duration":  track.get_duration()}, status=200)
+        else:
+            track = (RandomizeTrackService(request)).get_shared(soundboard_uuid, playlist_uuid, token, music_id )
+            if track:
+                cache.set(cache_key, track.id, timeout=20)
+                ret = track.get_reponse_content()
+        if ret:
+            return ret
     except Exception as e:
-        logger.error(f"Error in music_stream: {e}")
-    return HttpResponse(ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, status=500)
+        logger.error(f"Error in shared_music_stream: {e}")
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
