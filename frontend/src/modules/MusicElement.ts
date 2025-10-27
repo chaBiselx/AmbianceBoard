@@ -258,8 +258,9 @@ class MusicElement {
     }
 
     private eventFadeOut() {
-        if (this.calculTimeRemaining() <= this.fadeOutDuration && this.fadeOut) {
-            ConsoleTesteur.info(' eventFadeOut triggered');
+        const durationRemaining = this.calculTimeRemaining();
+        if (durationRemaining <= this.fadeOutDuration && this.fadeOut) {
+            ConsoleTesteur.info(`eventFadeOut triggered durationRemaining ${durationRemaining}`);
 
             if (this.boundEventFadeOut) {
                 this.DOMElement.removeEventListener('timeupdate', this.boundEventFadeOut);
