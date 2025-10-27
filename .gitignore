@@ -21,8 +21,9 @@ tmp/*
 
 
 #prod
-app/static
-app/staticfiles
+app/static/*
+app/staticfiles/*
+staticfiles/*
 mediafiles/*
 logs/*
 frontend/.npm-cache
