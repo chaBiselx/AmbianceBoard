@@ -107,3 +107,6 @@ Améliorations
 
 Corrections
 - fix l'affichage du boutons pour le reglage du son des musiques partagés
+
+Fiabilité & Confiance
+- Modification de la structure pour respecter le DDD
