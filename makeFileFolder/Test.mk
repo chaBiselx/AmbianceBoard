@@ -4,6 +4,10 @@ FILTER ?=
 test-all: test-backend test-frontend
 	@# Help: lance l'ensemble des tests (backend et frontend)
 
+test-backend-coverage:
+	@# Help: lance les tests backend avec couverture
+	$(CONTAINER_BACKEND) sh -c "coverage run --source='.' manage.py test && coverage report"
+
 test-backend: test-backend-tu test-backend-ti
 	@# Help: lance l'ensemble des tests backend (unitaires et d'intégration)
 

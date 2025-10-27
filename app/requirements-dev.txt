@@ -1,1 +1,2 @@
 django-debug-toolbar==5.0
+coverage
