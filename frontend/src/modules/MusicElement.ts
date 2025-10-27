@@ -194,7 +194,7 @@ class MusicElement {
             this.DOMElement.addEventListener('ended', this.boundEventFadeOut);
             this.DOMElement.addEventListener('ended', this.disactiveButtonPlaylist.bind(this));
         }
-        ConsoleTesteur.log(`▶️ Play ${this.idPlaylist} ${this.isSlave()}`);
+        ConsoleTesteur.info(`▶️ Play ${this.idPlaylist} ${this.isSlave()}`);
 
         this.DOMElement.play();
     }
@@ -258,9 +258,9 @@ class MusicElement {
     }
 
     private eventFadeOut() {
-        ConsoleCustom.log('eventFadeOut');
-
         if (this.calculTimeRemaining() <= this.fadeOutDuration && this.fadeOut) {
+            ConsoleTesteur.info(' eventFadeOut triggered');
+
             if (this.boundEventFadeOut) {
                 this.DOMElement.removeEventListener('timeupdate', this.boundEventFadeOut);
             }
@@ -270,7 +270,7 @@ class MusicElement {
     }
 
     private startIfLooped() {
-
+        ConsoleTesteur.log('startIfLooped');
         const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist);
         if (!buttonPlaylist) {
             return;
