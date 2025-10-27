@@ -1,7 +1,7 @@
 from typing import Optional
 
-from main.domain.common.repository.ReportContentRepository import ReportContentRepository
-from main.domain.common.repository.UserModerationLogRepository import UserModerationLogRepository
+from main.architecture.persistence.repository.ReportContentRepository import ReportContentRepository
+from main.architecture.persistence.repository.UserModerationLogRepository import UserModerationLogRepository
 from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
 from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
 

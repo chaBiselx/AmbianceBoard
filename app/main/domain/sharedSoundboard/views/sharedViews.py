@@ -9,9 +9,9 @@ from django.urls import reverse
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
-from main.domain.common.repository.SharedSoundboardRepository import SharedSoundboardRepository
-from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
+from main.architecture.persistence.repository.SharedSoundboardRepository import SharedSoundboardRepository
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from django.contrib.sites.shortcuts import get_current_site
 from main.domain.common.utils.url import get_full_url, get_full_ws
 from main.service.RandomizeTrackService import RandomizeTrackService
@@ -19,7 +19,7 @@ from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.utils.settings import Settings
 from main.domain.common.utils.logger import logger
 
-from main.domain.common.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum

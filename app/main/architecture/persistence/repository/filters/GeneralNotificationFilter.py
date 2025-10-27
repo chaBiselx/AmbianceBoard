@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.utils import timezone
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.GeneralNotification import GeneralNotification
-from main.domain.common.repository.UserNotificationDismissalRepository import UserNotificationDismissalRepository
+from main.architecture.persistence.repository.UserNotificationDismissalRepository import UserNotificationDismissalRepository
 
 
 

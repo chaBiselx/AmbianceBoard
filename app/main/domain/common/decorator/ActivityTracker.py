@@ -9,7 +9,7 @@ from typing import Any, Optional
 from django.http import HttpRequest
 from django.utils import timezone
 from main.architecture.persistence.models.UserActivity import UserActivity
-from main.domain.common.repository.UserActivityRepository import UserActivityRepository
+from main.architecture.persistence.repository.UserActivityRepository import UserActivityRepository
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 class ActivityContextHelper:

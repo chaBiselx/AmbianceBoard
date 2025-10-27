@@ -9,7 +9,7 @@ from main.domain.private.form.MusicForm import MusicForm
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
-from main.domain.common.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.TrackRepository import TrackRepository
 
 
 class MusicService:

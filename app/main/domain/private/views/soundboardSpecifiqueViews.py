@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from main.service.SoundBoardService import SoundBoardService
-from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from main.domain.common.utils.UserTierManager import UserTierManager
 from main.domain.common.utils.logger import logger
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum

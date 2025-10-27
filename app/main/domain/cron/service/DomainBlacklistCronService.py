@@ -1,7 +1,7 @@
 import requests
 from django.db import IntegrityError
 from main.architecture.persistence.models.DomainBlacklist import DomainBlacklist
-from main.domain.common.repository.DomainBlacklistRepository import DomainBlacklistRepository
+from main.architecture.persistence.repository.DomainBlacklistRepository import DomainBlacklistRepository
 from main.domain.cron.service.domain_providers.RemoteTextDomainProvider import RemoteTextDomainProvider
 
 from main.domain.common.utils.logger import logger

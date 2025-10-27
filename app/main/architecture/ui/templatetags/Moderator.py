@@ -1,6 +1,6 @@
 from django import template
-from main.domain.common.repository.PlaylistRepository import PlaylistRepository
-from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
+from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
 
 
 

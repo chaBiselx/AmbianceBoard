@@ -1,7 +1,7 @@
 
 
 from django import template
-from main.domain.common.repository.UserModerationLogRepository import UserModerationLogRepository
+from main.architecture.persistence.repository.UserModerationLogRepository import UserModerationLogRepository
 
 register = template.Library()
 

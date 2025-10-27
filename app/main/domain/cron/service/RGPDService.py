@@ -6,7 +6,7 @@ from main.domain.common.service.ConfirmationUserService import ConfirmationUserS
 from main.domain.common.utils.url import get_full_url
 from main.domain.common.utils.logger import LoggerFactory
 
-from main.domain.common.repository.UserRepository import UserRepository
+from main.architecture.persistence.repository.UserRepository import UserRepository
 
 
 

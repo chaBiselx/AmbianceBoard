@@ -12,7 +12,7 @@ from django.utils import timezone
 from django.contrib.auth import get_user_model
 from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
-from main.domain.common.repository.UserActivityRepository import UserActivityRepository
+from main.architecture.persistence.repository.UserActivityRepository import UserActivityRepository
 
 User = get_user_model()
 

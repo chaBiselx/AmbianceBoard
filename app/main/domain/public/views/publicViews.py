@@ -18,17 +18,17 @@ from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.public.service.ReportContentService import ReportContentService
 from main.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.common.utils.url import redirection_url
-from main.domain.common.repository.UserFavoritePublicSoundboardRepository import UserFavoritePublicSoundboardRepository
-from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+from main.architecture.persistence.repository.UserFavoritePublicSoundboardRepository import UserFavoritePublicSoundboardRepository
+from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
 from main.domain.common.utils.logger import logger
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
-from main.domain.common.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
-from main.domain.common.repository.TagRepository import TagRepository
+from main.architecture.persistence.repository.TagRepository import TagRepository
 
 @require_http_methods(['GET'])
 def public_index(request):

@@ -7,7 +7,7 @@ from django.db.models import QuerySet
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.User import User
-from main.domain.common.repository.filters.PlaylistFilter import PlaylistFilter
+from main.architecture.persistence.repository.filters.PlaylistFilter import PlaylistFilter
 
 class PlaylistRepository:
 

@@ -9,7 +9,7 @@ from typing import List
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.Playlist import Playlist
 from main.domain.common.service.PlaylistService import PlaylistService
-from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 
 class SoundBoardPlaylistManager:
     """

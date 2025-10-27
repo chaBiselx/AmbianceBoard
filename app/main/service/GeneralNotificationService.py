@@ -1,7 +1,7 @@
 from typing import List, Optional
 from main.architecture.persistence.models.GeneralNotification import GeneralNotification
 from main.architecture.persistence.models.User import User
-from main.domain.common.repository.GeneralNotificationRepository import GeneralNotificationRepository
+from main.architecture.persistence.repository.GeneralNotificationRepository import GeneralNotificationRepository
 
 class GeneralNotificationService:
     """

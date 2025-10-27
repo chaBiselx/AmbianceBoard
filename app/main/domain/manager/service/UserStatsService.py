@@ -1,6 +1,6 @@
 from datetime import datetime
 from main.architecture.persistence.models.User import User
-from main.domain.common.repository.UserRepository import UserRepository
+from main.architecture.persistence.repository.UserRepository import UserRepository
 
 
 

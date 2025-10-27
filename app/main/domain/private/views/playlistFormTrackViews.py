@@ -13,11 +13,11 @@ from main.domain.common.utils.UserTierManager import UserTierManager
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from main.domain.private.service.LinkService import LinkService
 from main.domain.private.form.LinkMusicForm import LinkMusicForm
-from main.domain.common.repository.LinkMusicRepository import LinkMusicRepository
+from main.architecture.persistence.repository.LinkMusicRepository import LinkMusicRepository
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
-from main.domain.common.repository.MusicRepository import MusicRepository
+from main.architecture.persistence.repository.MusicRepository import MusicRepository
 
 from main.domain.common.utils.logger import logger
 

@@ -3,7 +3,7 @@ from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.Playlist import Playlist
 from django.utils import timezone
-from main.domain.common.repository.filters.MusicFilter import MusicFilter
+from main.architecture.persistence.repository.filters.MusicFilter import MusicFilter
 
 
 class TrackRepository:

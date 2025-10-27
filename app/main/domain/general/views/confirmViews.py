@@ -2,7 +2,7 @@ import uuid
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
-from main.domain.common.repository.UserRepository import UserRepository
+from main.architecture.persistence.repository.UserRepository import UserRepository
 from main.domain.common.utils.logger import logger
 from main.domain.common.service.ConfirmationUserService import ConfirmationUserService
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum

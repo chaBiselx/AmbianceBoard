@@ -12,7 +12,7 @@ from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.Tag import Tag
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
-from main.domain.common.repository.TagRepository import TagRepository
+from main.architecture.persistence.repository.TagRepository import TagRepository
 
 class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     """

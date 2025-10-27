@@ -15,13 +15,13 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from main.domain.private.formatter.TypePlaylistFormater import TypePlaylistFormater
 from main.service.SoundBoardService import SoundBoardService
-from main.domain.common.repository.MusicRepository import MusicRepository
+from main.architecture.persistence.repository.MusicRepository import MusicRepository
 
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
-from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
-from main.domain.common.repository.PlaylistRepository import PlaylistRepository
+from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 
 
 

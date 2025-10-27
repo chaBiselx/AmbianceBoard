@@ -3,7 +3,7 @@ from main.architecture.persistence.models.User import User
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
-from main.domain.common.repository.UserRepository import UserRepository
+from main.architecture.persistence.repository.UserRepository import UserRepository
 
 
 class UserResetPasswordForm(BootstrapFormMixin, forms.Form):

@@ -17,7 +17,7 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
-from main.domain.common.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 
 

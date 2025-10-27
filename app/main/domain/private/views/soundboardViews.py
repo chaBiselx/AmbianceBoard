@@ -9,8 +9,8 @@ from main.service.SoundBoardService import SoundBoardService
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SoundboardPlaylistService import SoundboardPlaylistService
 from main.domain.private.form.SoundBoardForm import SoundBoardForm
-from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
-from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum

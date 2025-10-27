@@ -9,7 +9,7 @@ from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.domain.common.repository.filters.MusicFilter import MusicFilter
+from main.architecture.persistence.repository.filters.MusicFilter import MusicFilter
 
 @tag('unitaire')
 class RandomizeTrackServiceTest(TestCase):
@@ -32,7 +32,7 @@ class RandomizeTrackServiceTest(TestCase):
         service = RandomizeTrackService(self.request)
         self.assertEqual(service.request, self.request)
 
-    @patch('main.domain.common.repository.TrackRepository.TrackRepository.get_random_private')
+    @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_private')
     def test_generate_private_success(self, mock_get_random_private):
         """Test génération aléatoire privée avec succès"""
         # Arrange
@@ -46,7 +46,7 @@ class RandomizeTrackServiceTest(TestCase):
         self.assertEqual(result, mock_music)
         mock_get_random_private.assert_called_once_with(self.playlist_uuid, self.user)
 
-    @patch('main.domain.common.repository.TrackRepository.TrackRepository.get_random_private')
+    @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_private')
     def test_generate_private_playlist_not_exist(self, mock_get_random_private):
         """Test génération aléatoire privée quand la playlist n'existe pas"""
         # Arrange
@@ -60,7 +60,7 @@ class RandomizeTrackServiceTest(TestCase):
         self.assertIsNone(result)
 
     @patch('main.service.RandomizeTrackService.SoundBoardService')
-    @patch('main.domain.common.repository.TrackRepository.TrackRepository.get_random_public')
+    @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_public')
     def test_generate_public_success(self, mock_get_random_public, mock_soundboard_service):
         """Test génération aléatoire publique avec succès"""
         # Arrange
@@ -97,7 +97,7 @@ class RandomizeTrackServiceTest(TestCase):
         mock_service_instance.get_public_soundboard.assert_called_once_with(self.soundboard_uuid)
 
     @patch('main.service.RandomizeTrackService.SoundBoardService')
-    @patch('main.domain.common.repository.TrackRepository.TrackRepository.get_random_public')
+    @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_public')
     def test_generate_public_playlist_not_exist(self, mock_get_random_public, mock_soundboard_service):
         """Test génération aléatoire publique quand la playlist n'existe pas"""
         # Arrange

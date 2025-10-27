@@ -17,10 +17,10 @@ from main.domain.common.decorator.detectNotConfirmedAccount import detect_not_co
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
-from main.domain.common.repository.UserNotificationDismissalRepository import UserNotificationDismissalRepository
-from main.domain.common.repository.GeneralNotificationRepository import GeneralNotificationRepository
-from main.domain.common.repository.UserTiersRepository import UserTiersRepository
-from main.domain.common.repository.UserRepository import UserRepository
+from main.architecture.persistence.repository.UserNotificationDismissalRepository import UserNotificationDismissalRepository
+from main.architecture.persistence.repository.GeneralNotificationRepository import GeneralNotificationRepository
+from main.architecture.persistence.repository.UserTiersRepository import UserTiersRepository
+from main.architecture.persistence.repository.UserRepository import UserRepository
 
 from django_ratelimit.decorators import ratelimit
 from main.domain.general.service.ResetPasswordService import ResetPasswordService

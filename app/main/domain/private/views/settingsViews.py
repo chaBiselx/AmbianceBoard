@@ -9,11 +9,11 @@ from main.domain.common.utils.settings import Settings
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.private.form.PlaylistColorUserForm import PlaylistColorUserForm
-from main.domain.common.repository.PlaylistColorUserRepository import PlaylistColorUserRepository
-from main.domain.common.repository.UserDevicePreferenceRepository import UserDevicePreferenceRepository
-from main.domain.common.repository.UserPreferenceRepository import UserPreferenceRepository
-from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
-from main.domain.common.repository.PlaylistRepository import PlaylistRepository
+from main.architecture.persistence.repository.PlaylistColorUserRepository import PlaylistColorUserRepository
+from main.architecture.persistence.repository.UserDevicePreferenceRepository import UserDevicePreferenceRepository
+from main.architecture.persistence.repository.UserPreferenceRepository import UserPreferenceRepository
+from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 
 from main.domain.common.enum.ThemeEnum import ThemeEnum

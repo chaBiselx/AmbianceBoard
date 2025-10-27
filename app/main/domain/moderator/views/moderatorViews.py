@@ -16,14 +16,14 @@ from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from main.domain.common.utils.url import redirection_url
 from main.domain.moderator.form.TagForm import TagForm
-from main.domain.common.repository.UserRepository import UserRepository
-from main.domain.common.repository.PlaylistRepository import PlaylistRepository
-from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
-from main.domain.common.repository.UserModerationLogRepository import UserModerationLogRepository
-from main.domain.common.repository.ReportContentRepository import ReportContentRepository
+from main.architecture.persistence.repository.UserRepository import UserRepository
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
+from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
+from main.architecture.persistence.repository.UserModerationLogRepository import UserModerationLogRepository
+from main.architecture.persistence.repository.ReportContentRepository import ReportContentRepository
 from main.domain.moderator.service.TreatmentReportService import TreatmentReportService
 from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
-from main.domain.common.repository.TagRepository import TagRepository
+from main.architecture.persistence.repository.TagRepository import TagRepository
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 
 

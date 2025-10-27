@@ -15,14 +15,14 @@ from django.utils import timezone
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 
 
-from main.domain.common.repository.UserRepository import UserRepository
-from main.domain.common.repository.UserTiersRepository import UserTiersRepository
+from main.architecture.persistence.repository.UserRepository import UserRepository
+from main.architecture.persistence.repository.UserTiersRepository import UserTiersRepository
 from main.architecture.persistence.models.UserTier import UserTier
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 from main.domain.common.utils.UserTierManager import UserTierManager
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
-from main.domain.common.repository.UserTiersRepository import UserTiersRepository
+from main.architecture.persistence.repository.UserTiersRepository import UserTiersRepository
 
 
 

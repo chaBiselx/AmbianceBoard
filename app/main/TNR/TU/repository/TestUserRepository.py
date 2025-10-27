@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.utils import timezone
 from datetime import timedelta
-from main.domain.common.repository.UserRepository import UserRepository
+from main.architecture.persistence.repository.UserRepository import UserRepository
 from main.architecture.persistence.models.User import User
 
 

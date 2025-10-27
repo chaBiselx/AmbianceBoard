@@ -7,8 +7,8 @@ from main.architecture.persistence.models.SharedSoundboard import SharedSoundboa
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.domain.common.utils.logger import logger
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
-from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
-from main.domain.common.repository.SharedSoundboardRepository import SharedSoundboardRepository
+from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
+from main.architecture.persistence.repository.SharedSoundboardRepository import SharedSoundboardRepository
 
 class SharedSoundboardService():
     

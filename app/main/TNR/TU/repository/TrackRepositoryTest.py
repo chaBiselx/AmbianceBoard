@@ -1,7 +1,7 @@
 from django.test import TestCase, tag
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch, MagicMock
-from main.domain.common.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.architecture.persistence.models.Music import Music
 from main.architecture.persistence.models.LinkMusic import LinkMusic
 from main.architecture.persistence.models.Playlist import Playlist
