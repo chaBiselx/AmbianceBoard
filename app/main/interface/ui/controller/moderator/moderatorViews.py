@@ -15,7 +15,7 @@ from main.domain.common.utils.ExtractPaginator import extract_context_to_paginat
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from main.domain.common.utils.url import redirection_url
-from main.domain.moderator.form.TagForm import TagForm
+from main.interface.ui.forms.moderator.TagForm import TagForm
 from main.architecture.persistence.repository.UserRepository import UserRepository
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository

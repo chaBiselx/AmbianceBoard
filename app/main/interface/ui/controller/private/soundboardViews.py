@@ -8,7 +8,7 @@ from main.domain.private.manager.SoundBoardPlaylistManager import SoundBoardPlay
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.SoundboardPlaylistService import SoundboardPlaylistService
-from main.domain.private.form.SoundBoardForm import SoundBoardForm
+from main.interface.ui.forms.private.SoundBoardForm import SoundBoardForm
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
 from main.domain.common.enum.PermissionEnum import PermissionEnum

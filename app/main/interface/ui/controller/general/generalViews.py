@@ -6,8 +6,8 @@ from django.contrib.auth.models import Group
 from django.http import JsonResponse, HttpRequest, HttpResponse
 from main.architecture.persistence.models.User import User
 from main.domain.common.enum.GroupEnum import GroupEnum
-from main.domain.general.form.CreateUserForm import CreateUserForm
-from main.domain.general.form.UserResetPasswordForm import UserResetPasswordForm
+from main.interface.ui.forms.general.CreateUserForm import CreateUserForm
+from main.interface.ui.forms.general.UserResetPasswordForm import UserResetPasswordForm
 from main.architecture.messaging.email.UserMail import UserMail
 from main.domain.general.service.FailedLoginAttemptService import FailedLoginAttemptService
 from django.core.exceptions import ValidationError
@@ -24,7 +24,7 @@ from main.architecture.persistence.repository.UserRepository import UserReposito
 
 from django_ratelimit.decorators import ratelimit
 from main.domain.general.service.ResetPasswordService import ResetPasswordService
-from main.domain.general.form.UserPasswordForm import UserPasswordForm
+from main.interface.ui.forms.general.UserPasswordForm import UserPasswordForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.enum.AdvertisingEnum import AdvertisingEnum

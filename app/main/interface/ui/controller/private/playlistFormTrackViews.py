@@ -5,14 +5,14 @@ from django.views.decorators.http import require_http_methods
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.service.MusicService import MusicService
 from main.domain.private.service.MultipleMusicUploadService import MultipleMusicUploadService
-from main.domain.private.form.MusicForm import MusicForm
+from main.interface.ui.forms.private.MusicForm import MusicForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 from main.domain.common.utils.UserTierManager import UserTierManager
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from main.domain.private.service.LinkService import LinkService
-from main.domain.private.form.LinkMusicForm import LinkMusicForm
+from main.interface.ui.forms.private.LinkMusicForm import LinkMusicForm
 from main.architecture.persistence.repository.LinkMusicRepository import LinkMusicRepository
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum

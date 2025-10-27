@@ -5,7 +5,7 @@ from main.architecture.persistence.models.Music import Music
 from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.repository.filters.MusicFilter import MusicFilter
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
-from main.domain.private.form.MusicForm import MusicForm
+from main.interface.ui.forms.private.MusicForm import MusicForm
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
