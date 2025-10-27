@@ -245,7 +245,7 @@ class MusicElement {
             return // ignore fade out if fade in not finished
         }
 
-        let typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeInType)
+        let typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeOutType)
         let audioFade = new AudioFadeManager(this, typeFade, false, () => {
             this.levelFade = 1;
         });
