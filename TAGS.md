@@ -100,3 +100,7 @@ Corrections
 Fiabilité & Confiance
 - Augmentation de la couverture des tests unitaire
 - Création de test d'integration pour les routes
+
+### 0.1.0-beta.9 - 2025/10
+Corrections
+- fix l'affichage du boutons pour le reglage du son des musiques partagés
