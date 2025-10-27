@@ -20,7 +20,6 @@
                     <div class="playlist-link {% if master == False %} disabled {% endif %}{% if owner == False %}reportable{% endif %} playlist-element  playlist-dim-{{ playlist_dim }} m-1" id='playlist-{{ playlist.uuid }}' style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};" data-id='{{ playlist.uuid }}' data-playlist-uri="{% if master == True %}{% if owner == True %}{% url 'streamMusic' soundboard.uuid  playlist.uuid %}{% else %}{% url 'publicStreamMusic' soundboard.uuid  playlist.uuid %}{% endif %}{% endif %}"
                         {% for key, value in playlist.get_data_set.items %} data-playlist-{{ key }}="{{ value }}" {% endfor %}>
                         {{ playlist | applys_playlist_content}}
-
                     </div>
                     {% if owner == True %}
                     <form class="mixer-playlist-update-container hide-playlist-mixer">
