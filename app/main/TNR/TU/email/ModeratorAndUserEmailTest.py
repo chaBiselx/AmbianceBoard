@@ -1,12 +1,12 @@
 from django.test import TestCase, tag
 from unittest.mock import patch, MagicMock
-from main.domain.common.email.ModeratorEmail import ModeratorEmail
-from main.domain.common.email.UserMail import UserMail
+from main.architecture.messaging.email.ModeratorEmail import ModeratorEmail
+from main.architecture.messaging.email.UserMail import UserMail
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.ReportContent import ReportContent
 
 
-@patch('main.domain.common.email.ModeratorEmail.LoggerFactory.get_default_logger')
+@patch('main.architecture.messaging.email.ModeratorEmail.LoggerFactory.get_default_logger')
 @tag('unitaire')
 class ModeratorEmailTest(TestCase):
     """Tests pour ModeratorEmail - envoi d'emails aux modérateurs"""
@@ -16,7 +16,7 @@ class ModeratorEmailTest(TestCase):
         self.from_email = "noreply@test.com"
         self.moderator_emails = ["mod1@test.com", "mod2@test.com"]
 
-    @patch('main.domain.common.email.ModeratorEmail.Settings.get')
+    @patch('main.architecture.messaging.email.ModeratorEmail.Settings.get')
     def test_init_loads_settings(self, mock_settings, mock_logger):
         """Test que l'initialisation charge les settings correctement"""
         mock_settings.side_effect = lambda key: {
@@ -30,9 +30,9 @@ class ModeratorEmailTest(TestCase):
         self.assertEqual(moderator_email.from_email, self.from_email)
         self.assertEqual(moderator_email.to_emails, self.moderator_emails)
 
-    @patch('main.domain.common.email.ModeratorEmail.EmailSender')
-    @patch('main.domain.common.email.ModeratorEmail.render_to_string')
-    @patch('main.domain.common.email.ModeratorEmail.Settings.get')
+    @patch('main.architecture.messaging.email.ModeratorEmail.EmailSender')
+    @patch('main.architecture.messaging.email.ModeratorEmail.render_to_string')
+    @patch('main.architecture.messaging.email.ModeratorEmail.Settings.get')
     def test_report_content_reported_success(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test envoi d'email de signalement avec succès"""
         mock_settings.side_effect = lambda key: {
@@ -57,7 +57,7 @@ class ModeratorEmailTest(TestCase):
             self.moderator_emails
         )
 
-    @patch('main.domain.common.email.ModeratorEmail.Settings.get')
+    @patch('main.architecture.messaging.email.ModeratorEmail.Settings.get')
     def test_report_content_no_moderator_email(self, mock_settings, mock_logger):
         """Test que l'envoi est ignoré si aucun email modérateur n'est configuré"""
         mock_settings.side_effect = lambda key: {
@@ -72,9 +72,9 @@ class ModeratorEmailTest(TestCase):
         # Ne devrait pas lever d'exception
         moderator_email.report_content_reported(report)
 
-    @patch('main.domain.common.email.ModeratorEmail.EmailSender')
-    @patch('main.domain.common.email.ModeratorEmail.render_to_string')
-    @patch('main.domain.common.email.ModeratorEmail.Settings.get')
+    @patch('main.architecture.messaging.email.ModeratorEmail.EmailSender')
+    @patch('main.architecture.messaging.email.ModeratorEmail.render_to_string')
+    @patch('main.architecture.messaging.email.ModeratorEmail.Settings.get')
     def test_report_content_email_send_exception(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test gestion d'erreur lors de l'envoi d'email de signalement"""
         mock_settings.side_effect = lambda key: {
@@ -94,7 +94,7 @@ class ModeratorEmailTest(TestCase):
         # Ne devrait pas lever d'exception (gérée en interne avec log)
         moderator_email.report_content_reported(report)
 
-    @patch('main.domain.common.email.ModeratorEmail.Settings.get')
+    @patch('main.architecture.messaging.email.ModeratorEmail.Settings.get')
     def test_has_moderator_email_true(self, mock_settings, mock_logger):
         """Test _has_moderator_email retourne True si configuré"""
         mock_settings.side_effect = lambda key: {
@@ -107,7 +107,7 @@ class ModeratorEmailTest(TestCase):
         
         self.assertTrue(moderator_email._has_moderator_email())
 
-    @patch('main.domain.common.email.ModeratorEmail.Settings.get')
+    @patch('main.architecture.messaging.email.ModeratorEmail.Settings.get')
     def test_has_moderator_email_false_empty_list(self, mock_settings, mock_logger):
         """Test _has_moderator_email retourne False si liste vide"""
         mock_settings.side_effect = lambda key: {
@@ -120,7 +120,7 @@ class ModeratorEmailTest(TestCase):
         
         self.assertFalse(moderator_email._has_moderator_email())
 
-    @patch('main.domain.common.email.ModeratorEmail.Settings.get')
+    @patch('main.architecture.messaging.email.ModeratorEmail.Settings.get')
     def test_has_moderator_email_false_no_from_email(self, mock_settings, mock_logger):
         """Test _has_moderator_email retourne False si pas de from_email"""
         mock_settings.side_effect = lambda key: {
@@ -134,7 +134,7 @@ class ModeratorEmailTest(TestCase):
         self.assertFalse(moderator_email._has_moderator_email())
 
 
-@patch('main.domain.common.email.UserMail.LoggerFactory.get_default_logger')
+@patch('main.architecture.messaging.email.UserMail.LoggerFactory.get_default_logger')
 @tag('unitaire')
 class UserMailTest(TestCase):
     """Tests pour UserMail - envoi d'emails aux utilisateurs"""
@@ -149,7 +149,7 @@ class UserMailTest(TestCase):
         )
         self.from_email = "noreply@test.com"
 
-    @patch('main.domain.common.email.UserMail.Settings.get')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
     def test_init_loads_settings(self, mock_settings, mock_logger):
         """Test que l'initialisation charge les settings correctement"""
         mock_settings.return_value = self.from_email
@@ -160,9 +160,9 @@ class UserMailTest(TestCase):
         self.assertEqual(user_mail.from_email, self.from_email)
         self.assertEqual(user_mail.user, self.user)
 
-    @patch('main.domain.common.email.UserMail.EmailSender')
-    @patch('main.domain.common.email.UserMail.render_to_string')
-    @patch('main.domain.common.email.UserMail.Settings.get')
+    @patch('main.architecture.messaging.email.UserMail.EmailSender')
+    @patch('main.architecture.messaging.email.UserMail.render_to_string')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
     def test_send_welcome_email_success(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test envoi d'email de bienvenue"""
         mock_settings.return_value = self.from_email
@@ -182,9 +182,9 @@ class UserMailTest(TestCase):
             [self.user.email]
         )
 
-    @patch('main.domain.common.email.UserMail.EmailSender')
-    @patch('main.domain.common.email.UserMail.render_to_string')
-    @patch('main.domain.common.email.UserMail.Settings.get')
+    @patch('main.architecture.messaging.email.UserMail.EmailSender')
+    @patch('main.architecture.messaging.email.UserMail.render_to_string')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
     def test_send_account_confirmation_email_success(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test envoi d'email de confirmation de compte"""
         mock_settings.return_value = self.from_email
@@ -209,9 +209,9 @@ class UserMailTest(TestCase):
             [self.user.email]
         )
 
-    @patch('main.domain.common.email.UserMail.EmailSender')
-    @patch('main.domain.common.email.UserMail.render_to_string')
-    @patch('main.domain.common.email.UserMail.Settings.get')
+    @patch('main.architecture.messaging.email.UserMail.EmailSender')
+    @patch('main.architecture.messaging.email.UserMail.render_to_string')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
     def test_send_reset_password_email_success(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test envoi d'email de réinitialisation de mot de passe"""
         mock_settings.return_value = self.from_email
@@ -231,9 +231,9 @@ class UserMailTest(TestCase):
             [self.user.email]
         )
 
-    @patch('main.domain.common.email.UserMail.EmailSender')
-    @patch('main.domain.common.email.UserMail.render_to_string')
-    @patch('main.domain.common.email.UserMail.Settings.get')
+    @patch('main.architecture.messaging.email.UserMail.EmailSender')
+    @patch('main.architecture.messaging.email.UserMail.render_to_string')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
     def test_send_password_changed_email_success(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test envoi d'email de notification de changement de mot de passe"""
         mock_settings.return_value = self.from_email
@@ -252,9 +252,9 @@ class UserMailTest(TestCase):
             [self.user.email]
         )
 
-    @patch('main.domain.common.email.UserMail.EmailSender')
-    @patch('main.domain.common.email.UserMail.render_to_string')
-    @patch('main.domain.common.email.UserMail.Settings.get')
+    @patch('main.architecture.messaging.email.UserMail.EmailSender')
+    @patch('main.architecture.messaging.email.UserMail.render_to_string')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
     def test_account_auto_deletion_success(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test envoi d'email de suppression automatique de compte"""
         mock_settings.return_value = self.from_email
@@ -273,9 +273,9 @@ class UserMailTest(TestCase):
             [self.user.email]
         )
 
-    @patch('main.domain.common.email.UserMail.EmailSender')
-    @patch('main.domain.common.email.UserMail.render_to_string')
-    @patch('main.domain.common.email.UserMail.Settings.get')
+    @patch('main.architecture.messaging.email.UserMail.EmailSender')
+    @patch('main.architecture.messaging.email.UserMail.render_to_string')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
     def test_tiers_downgrade_notification_success(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test envoi d'email de notification de rétrogradation de tier"""
         mock_settings.return_value = self.from_email
@@ -291,9 +291,9 @@ class UserMailTest(TestCase):
         self.assertIn('new_tier', args[0][1])
         self.assertEqual(args[0][1]['new_tier'], "Free")
 
-    @patch('main.domain.common.email.UserMail.EmailSender')
-    @patch('main.domain.common.email.UserMail.render_to_string')
-    @patch('main.domain.common.email.UserMail.Settings.get')
+    @patch('main.architecture.messaging.email.UserMail.EmailSender')
+    @patch('main.architecture.messaging.email.UserMail.render_to_string')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
     def test_tiers_expiration_warning_success(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test envoi d'email d'avertissement d'expiration de tier"""
         mock_settings.return_value = self.from_email
@@ -309,8 +309,8 @@ class UserMailTest(TestCase):
         self.assertIn('days_left', args[0][1])
         self.assertEqual(args[0][1]['days_left'], 7)
 
-    @patch('main.domain.common.email.UserMail.EmailSender')
-    @patch('main.domain.common.email.UserMail.Settings.get')
+    @patch('main.architecture.messaging.email.UserMail.EmailSender')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
     def test_send_email_exception_handling(self, mock_settings, mock_email_sender, mock_logger):
         """Test que les exceptions d'envoi sont gérées sans crash"""
         mock_settings.return_value = self.from_email
@@ -324,8 +324,8 @@ class UserMailTest(TestCase):
         # Ne devrait pas lever d'exception (gérée en interne avec log)
         user_mail.send_welcome_email()
 
-    @patch('main.domain.common.email.UserMail.render_to_string')
-    @patch('main.domain.common.email.UserMail.Settings.get')
+    @patch('main.architecture.messaging.email.UserMail.render_to_string')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
     def test_template_rendering_with_user_context(self, mock_settings, mock_render, mock_logger):
         """Test que le contexte utilisateur est passé au template"""
         mock_settings.return_value = self.from_email

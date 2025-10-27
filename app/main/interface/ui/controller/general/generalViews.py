@@ -8,7 +8,7 @@ from main.architecture.persistence.models.User import User
 from main.domain.common.enum.GroupEnum import GroupEnum
 from main.domain.general.form.CreateUserForm import CreateUserForm
 from main.domain.general.form.UserResetPasswordForm import UserResetPasswordForm
-from main.domain.common.email.UserMail import UserMail
+from main.architecture.messaging.email.UserMail import UserMail
 from main.domain.general.service.FailedLoginAttemptService import FailedLoginAttemptService
 from django.core.exceptions import ValidationError
 from main.domain.common.service.ConfirmationUserService import ConfirmationUserService
