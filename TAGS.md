@@ -102,14 +102,15 @@ Fiabilité & Confiance
 - Création de test d'integration pour les routes
 
 ### 0.1.0-beta.9 - 2025/10
+Corrections
+- fix l'affichage du boutons pour le reglage du son des musiques partagés
+
+### 0.1.0-beta.10 - 2025/10
 Améliorations
 - utilisation de redis pour le system de cache applicatifs
 
 Nouveautés
 - Ajout de paramètre de customisation pour les fondues d'entrée et de sortie
-
-Corrections
-- fix l'affichage du boutons pour le reglage du son des musiques partagés
 
 Fiabilité & Confiance
 - Modification de la structure pour respecter le DDD
