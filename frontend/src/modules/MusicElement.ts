@@ -16,6 +16,8 @@ import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 
 
+
+
 class MusicElement {
     DOMElement: HTMLAudioElement
     idPlaylist: string = '';
@@ -138,39 +140,17 @@ class MusicElement {
     }
 
     public delete() {
-        console.info('MusicElement.delete - Start', {
-            playlistId: this.idPlaylist,
-            hasBoundEventEnd: !!this.boundEventEnd,
-            timestamp: Date.now()
-        });
-        
         const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist) as ButtonPlaylist;
         buttonPlaylist.disactive();
         this.removeDomElement();
         this.callAPIToStop();
-        
-        console.info('MusicElement.delete - Complete', {
-            playlistId: this.idPlaylist,
-            timestamp: Date.now()
-        });
     }
 
     private removeDomElement() {
-        console.info('removeDomElement - Start', {
-            playlistId: this.idPlaylist,
-            hasBoundEventEnd: !!this.boundEventEnd,
-            timestamp: Date.now()
-        });
-        
         if (this.boundEventEnd) {
             this.DOMElement.removeEventListener('timeupdate', this.boundEventEnd);
         }
         this.DOMElement.remove();
-        
-        console.info('removeDomElement - Complete', {
-            playlistId: this.idPlaylist,
-            timestamp: Date.now()
-        });
     }
 
 
@@ -187,60 +167,21 @@ class MusicElement {
      */
     private async getDurationFromHeaders(): Promise<void> {
         ConsoleTesteur.log('getDurationFromHeaders');
-        console.info('getDurationFromHeaders - Start', {
-            playlistId: this.idPlaylist,
-            src: this.DOMElement.src,
-            timestamp: Date.now()
-        });
         
         setTimeout(async () => {// délai pour s'assurer de la generation du cache serveur car Firefox envoi trop vite la requete
             try {
-                console.info('getDurationFromHeaders - Fetch attempt', {
-                    playlistId: this.idPlaylist,
-                    url: this.DOMElement.src,
-                    timestamp: Date.now()
-                });
-                
                 const response = await fetch(this.DOMElement.src, { method: 'GET', headers: { 'X-Metadata-Only': 'true' } });
-                
-                console.info('getDurationFromHeaders - Fetch response received', {
-                    playlistId: this.idPlaylist,
-                    status: response.status,
-                    ok: response.ok,
-                    headers: Object.fromEntries(response.headers.entries()),
-                    timestamp: Date.now()
-                });
-                
                 if (!response.ok) {
-                    console.error('getDurationFromHeaders - Fetch failed', {
-                        playlistId: this.idPlaylist,
-                        status: response.status,
-                        statusText: response.statusText,
-                        timestamp: Date.now()
-                    });
                     console.error('Failed to fetch metadata:', response.statusText);
                     return;
                 }
                 
                 const contentDuration = (await response.json()).duration;
                 ConsoleTesteur.log('Content-Duration from headers:', contentDuration);
-                console.info('getDurationFromHeaders - Success', {
-                    playlistId: this.idPlaylist,
-                    duration: contentDuration,
-                    timestamp: Date.now()
-                });
-                
                 if (contentDuration) {
                     this.duration = Number.parseFloat(contentDuration);
                 }
             } catch (error) {
-                console.error('getDurationFromHeaders - Exception caught', {
-                    playlistId: this.idPlaylist,
-                    error: error instanceof Error ? error.message : String(error),
-                    errorName: error instanceof Error ? error.name : 'Unknown',
-                    errorStack: error instanceof Error ? error.stack : undefined,
-                    timestamp: Date.now()
-                });
                 console.error('Error fetching Content-Duration:', error);
             }
         }, 500);
@@ -250,36 +191,12 @@ class MusicElement {
 
     public play() {
         ConsoleTesteur.log('play_action');
-        console.info('MusicElement.play - Start', {
-            playlistId: this.idPlaylist,
-            playlistType: this.playlistType,
-            fadeIn: this.fadeIn,
-            fadeOut: this.fadeOut,
-            isSlave: this.isSlave(),
-            src: this.DOMElement.src,
-            timestamp: Date.now()
-        });
-
         this.DOMElement.addEventListener('error', (e) => {
-            console.error('MusicElement.play - Audio error event', {
-                playlistId: this.idPlaylist,
-                timestamp: Date.now()
-            });
             this.handleAudioError(e);
         });
         
         this.DOMElement.addEventListener('playing', () => {
-            console.info('MusicElement.play - Playing event triggered', {
-                playlistId: this.idPlaylist,
-                timestamp: Date.now()
-            });
-            this.getDurationFromHeaders().catch(err => {
-                console.error('MusicElement.play - getDurationFromHeaders promise rejected', {
-                    playlistId: this.idPlaylist,
-                    error: err instanceof Error ? err.message : String(err),
-                    timestamp: Date.now()
-                });
-            });
+            this.getDurationFromHeaders();
         });
 
         if (this.fadeIn) {
@@ -289,11 +206,6 @@ class MusicElement {
         if (this.durationRemainingTriggerNextMusic > 0) {
             this.boundEventEnd = this.eventFadeOut.bind(this);
             this.DOMElement.addEventListener('loadedmetadata', () => {
-                console.info('MusicElement.play - Loadedmetadata event', {
-                    playlistId: this.idPlaylist,
-                    duration: this.DOMElement.duration,
-                    timestamp: Date.now()
-                });
                 this.DOMElement.addEventListener('timeupdate', this.boundEventEnd!);
             });
             this.DOMElement.addEventListener('ended', () => this.eventDeleteFadeOut());
@@ -305,21 +217,8 @@ class MusicElement {
             this.DOMElement.addEventListener('ended', this.boundEventEnd);
         }
         ConsoleTesteur.info(`▶️ Play ${this.idPlaylist} ${this.isSlave()}`);
-
-        console.info('MusicElement.play - About to call play()', {
-            playlistId: this.idPlaylist,
-            readyState: this.DOMElement.readyState,
-            timestamp: Date.now()
-        });
         
-        this.DOMElement.play().catch(err => {
-            console.error('MusicElement.play - play() promise rejected', {
-                playlistId: this.idPlaylist,
-                error: err instanceof Error ? err.message : String(err),
-                errorName: err instanceof Error ? err.name : 'Unknown',
-                timestamp: Date.now()
-            });
-        });
+        this.DOMElement.play();
     }
 
     private disactiveButtonPlaylist() {
@@ -339,13 +238,6 @@ class MusicElement {
 
     public addFadeIn() {
         ConsoleTesteur.info('ajout event addFadeIn');
-        console.info('addFadeIn - Start', {
-            playlistId: this.idPlaylist,
-            fadeInType: this.fadeInType,
-            fadeInDuration: this.fadeInDuration,
-            timestamp: Date.now()
-        });
-
         this.levelFade = 0;
 
         this.fadeInGoing = true;
@@ -353,21 +245,11 @@ class MusicElement {
         let typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeInType)
 
         let audioFade = new AudioFadeManager(this, typeFade, true, () => {
-            console.info('addFadeIn - Callback triggered', {
-                playlistId: this.idPlaylist,
-                timestamp: Date.now()
-            });
             this.levelFade = 1;
             this.fadeInGoing = false;
         });
         audioFade.setDuration(this.fadeInDuration);
         this.DOMElement.addEventListener('playing', () => {
-            console.info('addFadeIn - Playing event in fade handler', {
-                playlistId: this.idPlaylist,
-                readyState: this.DOMElement.readyState,
-                timestamp: Date.now()
-            });
-            
             let time = Date.now();
             while (this.DOMElement.readyState != 2) {
                 if (time + 1 < Date.now()) {
@@ -375,11 +257,6 @@ class MusicElement {
                 }
             }
             ConsoleTesteur.info('addFadeIn trigger start');
-            console.info('addFadeIn - Starting fade', {
-                playlistId: this.idPlaylist,
-                readyState: this.DOMElement.readyState,
-                timestamp: Date.now()
-            });
             audioFade.start();
         })
 
@@ -406,22 +283,9 @@ class MusicElement {
 
     private eventFadeOut() {
         const durationRemaining = this.calculTimeRemaining();
-        console.info('eventFadeOut - Checking', {
-            playlistId: this.idPlaylist,
-            durationRemaining,
-            fadeOutDuration: this.fadeOutDuration,
-            shouldTriggerFadeOut: this.durationRemainingTriggerNextMusic,
-            timestamp: Date.now()
-        });
         
         if (durationRemaining <= this.durationRemainingTriggerNextMusic) {
             ConsoleTesteur.info(`eventFadeOut triggered durationRemaining ${durationRemaining}`);
-            console.info('eventFadeOut - Triggering fade out', {
-                playlistId: this.idPlaylist,
-                durationRemaining,
-                timestamp: Date.now()
-            });
-
             if (this.boundEventEnd) {
                 this.DOMElement.removeEventListener('timeupdate', this.boundEventEnd);
             }
@@ -589,25 +453,9 @@ class MusicElement {
 
 
     private handleAudioError(event: Event) {
-        console.error('handleAudioError - Event triggered', {
-            playlistId: this.idPlaylist,
-            hasTarget: !!event.target,
-            timestamp: Date.now()
-        });
         
         if (event.target && event.target instanceof HTMLAudioElement) {
             const audioElement = event.target;
-            
-            console.error('handleAudioError - Audio element error details', {
-                playlistId: this.idPlaylist,
-                baseUrl: this.baseUrl,
-                src: audioElement.src,
-                errorCode: audioElement.error?.code,
-                errorMessage: audioElement.error?.message,
-                networkState: audioElement.networkState,
-                readyState: audioElement.readyState,
-                timestamp: Date.now()
-            });
             
             if (audioElement.error && audioElement.error.code === 4) { // => ERROR 404
                 // Log toutes les informations disponibles
@@ -617,13 +465,6 @@ class MusicElement {
                 buttonPlaylist.disactive();
                 Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
                 event.target.remove();
-            } else if (audioElement.error) {
-                console.error('handleAudioError - Non-404 error', {
-                    playlistId: this.idPlaylist,
-                    errorCode: audioElement.error.code,
-                    errorMessage: audioElement.error.message,
-                    timestamp: Date.now()
-                });
             }
         }
     }
