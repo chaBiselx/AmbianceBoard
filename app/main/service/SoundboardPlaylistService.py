@@ -1,7 +1,7 @@
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 
 
 class SoundboardPlaylistService:

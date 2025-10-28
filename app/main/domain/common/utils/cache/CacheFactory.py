@@ -2,6 +2,7 @@ from main.domain.common.utils.settings import Settings
 from typing import Optional
 from .ICache import ICache
 from .CacheSystem import CacheSystem
+from .RedisCacheSystem import RedisCacheSystem
 
 
 class CacheFactory:
@@ -26,6 +27,8 @@ class CacheFactory:
         cache_type = cache_type.lower()
         if cache_type == 'memory':
             return CacheSystem()
+        elif cache_type == 'redis':
+            return RedisCacheSystem()
         else:
             raise ValueError(f"Type de cache non supporté: {cache_type}. Type supporté: 'memory'")
 

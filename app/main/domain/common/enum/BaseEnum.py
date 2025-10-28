@@ -44,7 +44,7 @@ class BaseEnum(str, Enum):
         Returns:
             List[tuple]: Liste de tuples avec le nom comme label et la valeur comme valeur
         """
-        return [(c.value, c.name) for c in cls]
+        return [(c.name, c.value) for c in cls]
     
     def __json__(self):
         """

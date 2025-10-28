@@ -1,5 +1,5 @@
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.domain.common.repository.PlaylistColorUserRepository import PlaylistColorUserRepository
+from main.architecture.persistence.repository.PlaylistColorUserRepository import PlaylistColorUserRepository
 from parameters import settings
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 

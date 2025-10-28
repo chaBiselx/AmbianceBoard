@@ -14,7 +14,7 @@ from main.architecture.middleware.ErrorTrackingMiddleware import ErrorTrackingMi
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
-from main.domain.common.repository.UserActivityRepository import UserActivityRepository
+from main.architecture.persistence.repository.UserActivityRepository import UserActivityRepository
 
 
 @tag('unitaire')

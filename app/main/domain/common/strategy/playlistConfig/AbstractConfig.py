@@ -7,10 +7,11 @@ class AbstractConfig():
     structure_data = {
             "id": ConfigTypeDataEnum.PARAM, 
             "type": ConfigTypeDataEnum.STATIC, 
-            "fadeIn": ConfigTypeDataEnum.STATIC, 
+            "durationRemainingTriggerNextMusic": ConfigTypeDataEnum.STATIC,
+            "fadeIn": ConfigTypeDataEnum.PARAM_WITH_DEFAULT, 
             "fadeInDuration": ConfigTypeDataEnum.STATIC,
             "fadeInType": ConfigTypeDataEnum.STATIC,
-            "fadeOut": ConfigTypeDataEnum.STATIC, 
+            "fadeOut": ConfigTypeDataEnum.PARAM_WITH_DEFAULT, 
             "fadeOutDuration": ConfigTypeDataEnum.STATIC,
             "fadeOutType": ConfigTypeDataEnum.STATIC,
             "loop": ConfigTypeDataEnum.STATIC,

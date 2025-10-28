@@ -1,7 +1,7 @@
 from django.urls import reverse
 from main.domain.common.enum.ThemeEnum import ThemeEnum
-from main.domain.common.repository.UserPreferenceRepository import UserPreferenceRepository
-from main.domain.common.repository.UserDevicePreferenceRepository import UserDevicePreferenceRepository
+from main.architecture.persistence.repository.UserPreferenceRepository import UserPreferenceRepository
+from main.architecture.persistence.repository.UserDevicePreferenceRepository import UserDevicePreferenceRepository
 from main.domain.common.utils.UserTierManager import UserTierManager
 from main.domain.common.utils.DeviceDetector import detect_device_type
 

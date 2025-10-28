@@ -21,7 +21,8 @@ tmp/*
 
 
 #prod
-static/*
+app/static/*
+app/staticfiles/*
 staticfiles/*
 mediafiles/*
 logs/*

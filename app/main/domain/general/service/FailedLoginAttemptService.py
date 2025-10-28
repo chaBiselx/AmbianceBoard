@@ -3,7 +3,7 @@ from main.domain.common.utils.logger import LoggerFactory
 
 from django.utils import timezone
 from datetime import timedelta
-from main.domain.common.repository.FailedLoginAttemptRepository import FailedLoginAttemptRepository
+from main.architecture.persistence.repository.FailedLoginAttemptRepository import FailedLoginAttemptRepository
 
 class FailedLoginAttemptService:
     

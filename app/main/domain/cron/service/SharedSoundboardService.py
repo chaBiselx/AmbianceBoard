@@ -1,7 +1,7 @@
 
 from main.domain.common.utils.logger import LoggerFactory
 from main.domain.brokers.service.cleanService.BaseCleanService import BaseCleanService
-from main.domain.common.repository.SharedSoundboardRepository import SharedSoundboardRepository
+from main.architecture.persistence.repository.SharedSoundboardRepository import SharedSoundboardRepository
 
 
 class SharedSoundboardService(BaseCleanService):

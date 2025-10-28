@@ -1,6 +1,6 @@
 from typing import List
 from main.domain.private.dto.UpdateSoundPlaylistDto import UpdateSoundPlaylistDto
-from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 
 
 class SoundboardPlaylistOptionService:

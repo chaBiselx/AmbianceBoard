@@ -3,9 +3,9 @@ from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.Music import Music
 from main.architecture.persistence.models.Track import Track
-from main.domain.common.repository.filters.MusicFilter import MusicFilter
-from main.domain.common.repository.TrackRepository import TrackRepository
-from main.domain.private.form.MusicForm import MusicForm
+from main.architecture.persistence.repository.filters.MusicFilter import MusicFilter
+from main.architecture.persistence.repository.TrackRepository import TrackRepository
+from main.interface.ui.forms.private.MusicForm import MusicForm
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.service.SoundBoardService import SoundBoardService
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum

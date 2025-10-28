@@ -121,7 +121,7 @@ class SoundBoard(models.Model):
                               ordonnées selon l'ordre défini dans SoundboardPlaylist
         """
         # Import local pour éviter l'importation circulaire
-        from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+        from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
         return SoundboardPlaylistRepository().get_playlist_formated(self)
     
     def get_list_playlist_playable_ordered(self) -> "dict[int, List[Playlist]]":
@@ -133,7 +133,7 @@ class SoundBoard(models.Model):
                               ordonnées selon l'ordre défini dans SoundboardPlaylist
         """
         # Import local pour éviter l'importation circulaire
-        from main.domain.common.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+        from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
         return SoundboardPlaylistRepository().get_soundboard_playlist_for_player_formated(self)
     
     def get_tags_list(self) -> "QuerySet[Tag]":

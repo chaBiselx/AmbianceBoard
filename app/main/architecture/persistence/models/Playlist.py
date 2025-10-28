@@ -6,7 +6,7 @@ from django.db.models import QuerySet
 from main.architecture.persistence.models.User import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-from main.domain.common.strategy.PlaylistStrategy import PlaylistStrategy
+from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
 from main.domain.brokers.message.ReduceSizeImgMessenger import reduce_size_img
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
@@ -42,6 +42,16 @@ class Playlist(models.Model):
     icon = models.FileField(upload_to=PLAYLIST_FOLDER,storage=OverwriteStorage(), default=None, null=True, blank=True)
     useSpecificDelay = models.BooleanField(default=False, )
     maxDelay = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    fadeIn = models.CharField(
+        max_length=64, 
+        choices=FadePlaylistEnum.convert_to_choices(),
+        default=FadePlaylistEnum.DEFAULT.name
+    )
+    fadeOut = models.CharField(
+        max_length=64, 
+        choices=FadePlaylistEnum.convert_to_choices(),
+        default=FadePlaylistEnum.DEFAULT.name
+    )
     
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """
@@ -118,19 +128,6 @@ class Playlist(models.Model):
             
         super().save(*args, **kwargs)
     
-    def get_data_set(self) -> "QuerySet[Any]":
-        """
-        Récupère les données de la playlist selon son type.
-        
-        Utilise le pattern Strategy pour obtenir les données appropriées
-        selon le type de playlist (musique, ambiant, instantané).
-        
-        Returns:
-            QuerySet[Any]: QuerySet contenant les données de la playlist
-        """
-        strategy = PlaylistStrategy().get_strategy(self.typePlaylist)
-        return strategy.get_data(self)
-
     def get_order(self) -> Optional[int]:
         """
         Récupère l'ordre de la playlist dans un soundboard.

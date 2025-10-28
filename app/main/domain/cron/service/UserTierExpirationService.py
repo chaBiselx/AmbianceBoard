@@ -6,8 +6,8 @@ from main.domain.common.utils.settings import Settings
 
 from main.architecture.persistence.models.UserTier import UserTier
 from main.domain.common.utils.logger import logger
-from main.domain.common.email.UserMail import UserMail
-from main.domain.common.repository.UserTiersRepository import UserTiersRepository
+from main.architecture.messaging.email.UserMail import UserMail
+from main.architecture.persistence.repository.UserTiersRepository import UserTiersRepository
 
 
 

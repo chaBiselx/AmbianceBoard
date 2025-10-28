@@ -5,7 +5,7 @@ from main.architecture.persistence.models.Music import Music
 from main.domain.common.exceptions.FileManagementException import FileNotInDatabase, FileNoteFound
 from main.domain.brokers.service.cleanService.BaseCleanService import BaseCleanService
 from main.domain.common.utils.logger import LoggerFactory
-from main.domain.common.repository.MusicRepository import MusicRepository
+from main.architecture.persistence.repository.MusicRepository import MusicRepository
 
 class AudioCleanService(BaseCleanService):
     def __init__(self, storage_location=None, folder=None):

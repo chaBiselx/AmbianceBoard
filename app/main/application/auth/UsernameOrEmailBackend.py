@@ -1,7 +1,7 @@
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model
 
-from main.domain.common.repository.UserRepository import UserRepository
+from main.architecture.persistence.repository.UserRepository import UserRepository
 
 
 class UsernameOrEmailBackend(ModelBackend):

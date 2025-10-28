@@ -2,8 +2,8 @@ from main.domain.common.utils.logger import LoggerFactory
 import uuid
 from main.architecture.persistence.models.ReportContent import ReportContent
 from main.domain.common.exceptions.PostDataException import PostDataException
-from main.domain.common.email.ModeratorEmail import ModeratorEmail
-from main.domain.common.repository.ReportContentRepository import ReportContentRepository
+from main.architecture.messaging.email.ModeratorEmail import ModeratorEmail
+from main.architecture.persistence.repository.ReportContentRepository import ReportContentRepository
 
 
 

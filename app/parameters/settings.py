@@ -568,7 +568,11 @@ TIER_EXPIRATION_WARNING_DAYS = int(os.environ.get("TIER_EXPIRATION_WARNING_DAYS"
 
 # CACHE
 
-CACHE_TYPE = "memory"
+if TESTING:
+    CACHE_TYPE = "memory"
+    LIMIT_CACHE_DEFAULT = 60  # 1 minute pour les tests
+else:
+    CACHE_TYPE = "redis"
 LIMIT_CACHE_DEFAULT = 14400 # 4h
 
 

@@ -2,8 +2,8 @@ from typing import Optional, List
 from django.http import HttpRequest
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.architecture.persistence.models.Playlist import Playlist
-from main.domain.common.repository.PlaylistRepository import PlaylistRepository
-from main.domain.private.form.PlaylistForm import PlaylistForm
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
+from main.interface.ui.forms.private.PlaylistForm import PlaylistForm
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 

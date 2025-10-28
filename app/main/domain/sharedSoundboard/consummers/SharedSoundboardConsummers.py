@@ -277,8 +277,8 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
                 return shared_soundboard
             
             # Import local pour éviter le problème AppRegistryNotReady
-            from main.domain.common.repository.SoundBoardRepository import SoundBoardRepository
-            from main.domain.common.repository.SharedSoundboardRepository import SharedSoundboardRepository
+            from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
+            from main.architecture.persistence.repository.SharedSoundboardRepository import SharedSoundboardRepository
             
             soundboard = SoundBoardRepository().get(self.soundboard_uuid)
             if not soundboard:
