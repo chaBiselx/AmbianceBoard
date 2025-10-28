@@ -215,7 +215,7 @@ class MusicElement {
     }
 
     public addFadeIn() {
-        ConsoleCustom.log('addFadeIn');
+        ConsoleTesteur.info('addFadeIn');
 
         this.levelFade = 0;
 
@@ -235,6 +235,7 @@ class MusicElement {
                     break;
                 }
             }
+            ConsoleTesteur.info('Start addFadeIn');
             audioFade.start();
         })
 
