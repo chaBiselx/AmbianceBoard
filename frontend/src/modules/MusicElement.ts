@@ -215,6 +215,8 @@ class MusicElement {
     }
 
     public addFadeIn() {
+        ConsoleCustom.log('addFadeIn');
+
         this.levelFade = 0;
 
         this.fadeInGoing = true;
