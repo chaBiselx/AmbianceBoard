@@ -9,6 +9,46 @@ import Csrf from "@/modules/General/Csrf";
 import GeneralTheme from "@/modules/General/GeneralTheme";
 import Time from "@/modules/Util/Time";
 
+// Gestionnaire global pour les erreurs de promesses non gérées
+window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled Promise Rejection', {
+        reason: event.reason,
+        promise: event.promise,
+        message: event.reason?.message || String(event.reason),
+        stack: event.reason?.stack,
+        timestamp: Date.now(),
+        url: window.location.href,
+        userAgent: navigator.userAgent
+    });
+    
+    // Vérifier si c'est l'erreur spécifique des extensions de navigateur
+    if (event.reason?.message && 
+        (event.reason.message.includes('message channel closed') || 
+         event.reason.message.includes('asynchronous response'))) {
+        console.error('Browser Extension Message Channel Error Detected', {
+            errorMessage: event.reason.message,
+            stack: event.reason.stack,
+            timestamp: Date.now()
+        });
+        // Empêcher l'affichage de l'erreur dans la console si c'est lié aux extensions
+        event.preventDefault();
+    }
+});
+
+// Gestionnaire global pour les erreurs non capturées
+window.addEventListener('error', (event) => {
+    console.error('Uncaught Error', {
+        message: event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        error: event.error,
+        stack: event.error?.stack,
+        timestamp: Date.now(),
+        url: window.location.href
+    });
+});
+
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
 document.addEventListener('DOMContentLoaded', async () => {
