@@ -2,6 +2,7 @@ from django import forms
 from main.architecture.persistence.models.Playlist import Playlist
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
+from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
 
 
 
@@ -18,6 +19,8 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
             'icon',
             'useSpecificDelay',
             'maxDelay',
+            'fadeIn',
+            'fadeOut',
         )
         
     def __init__(self, *args, **kwargs):
@@ -68,6 +71,18 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
         min_value=0,
         max_value=3600,
         initial=0
+    )
+    fadeIn = forms.ChoiceField(
+        label='Fondue d\'entrée (Fade In)',
+        choices=FadePlaylistEnum.convert_to_choices(),
+        initial=FadePlaylistEnum.DEFAULT.name,
+        required=True
+    )
+    fadeOut = forms.ChoiceField(
+        label='Fondue de sortie (Fade Out)',
+        choices=FadePlaylistEnum.convert_to_choices(),
+        initial=FadePlaylistEnum.DEFAULT.name,
+        required=True
     )
     def clean_icon(self):
         if self.cleaned_data.get('clear_icon'):

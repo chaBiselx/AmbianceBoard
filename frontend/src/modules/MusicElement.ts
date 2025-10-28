@@ -22,6 +22,7 @@ class MusicElement {
     playlistType: string = '';
     defaultVolume: number = 1;
     levelFade: number = 1;
+    durationRemainingTriggerNextMusic: number = 0;
     fadeInOnGoing: boolean = false;
     fadeIn: boolean = false;
     fadeInType: string = 'linear';
@@ -63,6 +64,9 @@ class MusicElement {
         if (this.DOMElement.dataset.fadein) {
             this.fadeIn = this.DOMElement.dataset.fadein == "true";
         }
+        if (this.DOMElement.dataset.durationremainingtriggernextmusic) {
+            this.durationRemainingTriggerNextMusic = Number.parseFloat(this.DOMElement.dataset.durationremainingtriggernextmusic);
+        }
         if (this.DOMElement.dataset.fadeintype) {
             this.fadeInType = this.DOMElement.dataset.fadeintype;
         }
@@ -97,6 +101,7 @@ class MusicElement {
 
     private setDefaultFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         this.setDefaultVolumeFromPlaylist(buttonPlaylist);
+        this.setDurationRemainingTriggerNextMusic(buttonPlaylist);
         this.setFadeInFromPlaylist(buttonPlaylist);
         this.setFadeOutFromPlaylist(buttonPlaylist);
         this.setPlaylistTypeFromPlaylist(buttonPlaylist);
@@ -281,7 +286,7 @@ class MusicElement {
             this.addFadeIn();
         }
 
-        if (this.fadeOut) {
+        if (this.durationRemainingTriggerNextMusic > 0) {
             this.boundEventEnd = this.eventFadeOut.bind(this);
             this.DOMElement.addEventListener('loadedmetadata', () => {
                 console.info('MusicElement.play - Loadedmetadata event', {
@@ -405,11 +410,11 @@ class MusicElement {
             playlistId: this.idPlaylist,
             durationRemaining,
             fadeOutDuration: this.fadeOutDuration,
-            shouldTriggerFadeOut: durationRemaining <= this.fadeOutDuration && this.fadeOut,
+            shouldTriggerFadeOut: this.durationRemainingTriggerNextMusic,
             timestamp: Date.now()
         });
         
-        if (durationRemaining <= this.fadeOutDuration && this.fadeOut) {
+        if (durationRemaining <= this.durationRemainingTriggerNextMusic) {
             ConsoleTesteur.info(`eventFadeOut triggered durationRemaining ${durationRemaining}`);
             console.info('eventFadeOut - Triggering fade out', {
                 playlistId: this.idPlaylist,
@@ -420,7 +425,9 @@ class MusicElement {
             if (this.boundEventEnd) {
                 this.DOMElement.removeEventListener('timeupdate', this.boundEventEnd);
             }
-            this.addFadeOut();
+            if( this.fadeOut ){
+                this.addFadeOut();
+            }
             this.startIfLooped();
         }
     }
@@ -498,6 +505,13 @@ class MusicElement {
     private setDefaultVolumeFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
         if (buttonPlaylist.dataset.playlistVolume) {
             this.setDefaultVolume(buttonPlaylist.getVolume());
+        }
+    }
+
+    private setDurationRemainingTriggerNextMusic(buttonPlaylist: ButtonPlaylist): void {
+        if (buttonPlaylist.dataset.playlistDurationremainingtriggernextmusic) {
+            this.durationRemainingTriggerNextMusic = Number.parseFloat(buttonPlaylist.dataset.playlistDurationremainingtriggernextmusic);
+            this.DOMElement.dataset.durationremainingtriggernextmusic = this.durationRemainingTriggerNextMusic.toString();
         }
     }
 

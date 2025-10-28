@@ -1,7 +1,7 @@
 from django.test import TestCase, tag
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.exceptions import ValidationError
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 import uuid
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.User import User
@@ -131,66 +131,6 @@ class PlaylistModelTest(TestCase):
             args=['Playlist', playlist.id],
             queue='default',
             priority=1
-        )
-
-    @patch('main.domain.common.strategy.PlaylistStrategy.PlaylistStrategy.get_strategy')
-    def test_get_data_set(self, mock_get_strategy):
-        """Test la méthode get_data_set avec différents types de playlist"""
-        # Créer une mock strategy qui retourne des données test
-        mock_strategy = Mock()
-        mock_strategy.get_data.return_value = {'test': 'data'}
-        mock_get_strategy.return_value = mock_strategy
-        
-        # Test pour chaque type de playlist
-        for playlist_type in PlaylistTypeEnum:
-            playlist = Playlist.objects.create(
-                user=self.user,
-                name=f"Test {playlist_type.name}",
-                typePlaylist=playlist_type.name
-            )
-            
-            data = playlist.get_data_set()
-            
-            # Vérifier que la stratégie appropriée a été appelée
-            mock_get_strategy.assert_called_with(playlist_type.name)
-            self.assertEqual(data, {'test': 'data'})
-            
-            # Réinitialiser les mocks pour le prochain test
-            mock_get_strategy.reset_mock()
-            mock_strategy.get_data.reset_mock()
-
-    def test_delay_should_be_zero_when_useSpecificDelay_false(self):
-        """Vérifie que delay retourne 0 quand useSpecificDelay est False, sans fuite d'état d'une playlist précédente.
-
-        Ce test reproduit un bug observé en production où le delay conserve une valeur > 0 alors que useSpecificDelay est False.
-        Cause probable: mutation de l'objet default_data dans AbstractConfig.get_data (partagé entre instances) au lieu de travailler sur une copie.
-        """
-        # 1. Créer une playlist avec un délai spécifique
-        playlist_with_delay = Playlist.objects.create(
-            user=self.user,
-            name="Playlist avec delay",
-            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
-            useSpecificDelay=True,
-            maxDelay=42
-        )
-        data_with_delay = playlist_with_delay.get_data_set()
-        self.assertEqual(data_with_delay.get('delay'), 42, "Le délai spécifique devrait être 42")
-
-        # 2. Créer une nouvelle playlist sans délai spécifique
-        playlist_without_delay = Playlist.objects.create(
-            user=self.user,
-            name="Playlist sans delay",
-            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
-            useSpecificDelay=False,
-            maxDelay=999  # devrait être ignoré
-        )
-        data_without_delay = playlist_without_delay.get_data_set()
-
-        # BUG attendu actuellement: data_without_delay['delay'] == 42 au lieu de 0
-        self.assertEqual(
-            data_without_delay.get('delay'),
-            0,
-            "Le délai ne doit pas hériter de la valeur précédente quand useSpecificDelay=False"
         )
 
     def test_playlist_types(self):

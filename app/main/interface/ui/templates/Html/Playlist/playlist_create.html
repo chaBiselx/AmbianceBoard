@@ -45,7 +45,8 @@
                                 {% endif %}
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                {{ form.typePlaylist.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Type de contenu : Musique (lecture aléatoire continue), Ambiant (sons d'ambiance en boucle), Instantané (sons courts déclenchés manuellement)">ⓘ</span><br /> {{ form.typePlaylist }}
+                                {{ form.typePlaylist.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Type de contenu : Musique (lecture aléatoire continue), Ambiant (sons d'ambiance en boucle), Instantané (sons courts déclenchés manuellement)">ⓘ</span><br />
+                                {{ form.typePlaylist }}
                                 {% if form.typePlaylist.errors %}
                                 <ul>
                                     {% for error in form.typePlaylist.errors %}
@@ -63,24 +64,55 @@
                             <div class="col-sm-12 col-md-6">
                                 <button type="button" id="btn-show-description-playlist-type" class="btn btn-info" data-url="{% url 'playlistDescribeType' %}">Afficher description</button>
                             </div>
-                            <div class="col-12">
-                                {{ form.useSpecificColor.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Cochez pour personnaliser les couleurs de cette playlist, sinon les couleurs par défaut de l'utilisateur seront utilisées">ⓘ</span><br /> {{ form.useSpecificColor }}
+                            <div class="col-12 my-2">
+                                <div class="accordion" id="custom-elements-accordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="personnalisation-playlist">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Personnalisation-playlist" aria-expanded="false" aria-controls="Personnalisation-playlist">
+                                                Personnalisation
+                                            </button>
+                                        </h2>
+                                        <div id="Personnalisation-playlist" class="accordion-collapse collapse" aria-labelledby="personnalisation-playlist">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        {{ form.useSpecificColor.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip"
+                                                            data-bs-title="Cochez pour personnaliser les couleurs de cette playlist, sinon les couleurs par défaut de l'utilisateur seront utilisées">ⓘ</span><br />
+                                                        {{ form.useSpecificColor }}
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-4 color_form">
+                                                        {{ form.color.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Couleur de fond du bouton de la playlist">ⓘ</span><br /> {{ form.color }}
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-4 color_form">
+                                                        {{ form.colorText.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Couleur du texte affiché sur le bouton de la playlist">ⓘ</span><br />{{ form.colorText }}
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-4 color_form">
+                                                        <button type="button" class="btn btn-info" id="btn-select-other-color" data-url="{% url 'getListingOtherColors' %}">Selectionner couleurs existantes</button>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        {{ form.useSpecificDelay.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip"
+                                                            data-bs-title="Cochez pour activer un délai personnalisé entre les pistes (uniquement pour les playlists de type Musique et Ambiant)">ⓘ</span><br />
+                                                        {{ form.useSpecificDelay }}
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-12 delay_form">
+                                                        {{ form.maxDelay.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Délai maximum en secondes entre chaque piste (0 = pas de délai)">ⓘ</span><br /> {{ form.maxDelay }}
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-6">
+                                                        {{ form.fadeIn.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Selectionner le fondu d'entrée pour cette playlist">ⓘ</span><br />
+                                                        {{ form.fadeIn }}
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-6">
+                                                        {{ form.fadeOut.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Selectionner le fondu d'entrée pour cette playlist">ⓘ</span><br />
+                                                        {{ form.fadeOut }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
-                            <div class="col-sm-12 col-md-4 color_form">
-                                {{ form.color.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Couleur de fond du bouton de la playlist">ⓘ</span><br /> {{ form.color }}
-                            </div>
-                            <div class="col-sm-12 col-md-4 color_form">
-                                {{ form.colorText.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Couleur du texte affiché sur le bouton de la playlist">ⓘ</span><br />{{ form.colorText }}
-                            </div>
-                            <div class="col-sm-12 col-md-4 color_form">
-                                <button type="button" class="btn btn-info" id="btn-select-other-color" data-url="{% url 'getListingOtherColors' %}">Selectionner couleurs existantes</button>
-                            </div>
-                            <div class="col-12">
-                                {{ form.useSpecificDelay.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Cochez pour activer un délai personnalisé entre les pistes (uniquement pour les playlists de type Musique et Ambiant)">ⓘ</span><br /> {{ form.useSpecificDelay }}
-                            </div>
-                            <div class="col-sm-12 col-md-12 delay_form">
-                                {{ form.maxDelay.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Délai maximum en secondes entre chaque piste (0 = pas de délai)">ⓘ</span><br /> {{ form.maxDelay }}
-                            </div>
+
 
                             <div class="col-sm-12 col-md-6">
                                 {{ form.volume.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Volume par défaut de la playlist (0-100%). Ce volume sera appliqué lors de la lecture des pistes">ⓘ</span><br /> {{ form.volume }}

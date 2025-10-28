@@ -8,6 +8,7 @@ class ConfigInstant(AbstractConfig):
         self.default_data = {
             "id": None, 
             "type": PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT.value, 
+            "durationRemainingTriggerNextMusic": 0,
             "fadeIn": False, 
             "fadeInDuration": 0,
             "fadeInType": FadeEnum.LINEAR.value,

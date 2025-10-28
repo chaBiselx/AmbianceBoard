@@ -105,6 +105,9 @@ Fiabilité & Confiance
 Améliorations
 - utilisation de redis pour le system de cache applicatifs
 
+Nouveautés
+- Ajout de paramètre de customisation pour les fondues d'entrée et de sortie
+
 Corrections
 - fix l'affichage du boutons pour le reglage du son des musiques partagés
 

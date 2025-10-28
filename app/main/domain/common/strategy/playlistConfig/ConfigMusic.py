@@ -8,6 +8,7 @@ class ConfigMusic(AbstractConfig):
         self.default_data = {
             "id": None, 
             "type": PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.value, 
+            "durationRemainingTriggerNextMusic": 6,
             "fadeIn": True, 
             "fadeInDuration": 5,
             "fadeInType": FadeEnum.EASE.value,

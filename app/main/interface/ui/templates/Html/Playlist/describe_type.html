@@ -16,7 +16,7 @@
             <small><i class="{{config.structure.loop.condition.get_icon_class}}" alt="{{config.structure.loop.condition.value}}"></i></small>
         </li>
         <li>
-            delay max entre deux musique :
+            délai max entre deux musique :
             {% if config.structure.delay.default is not None %}
             {{ config.structure.delay.default }}s
             {% endif %}
@@ -38,23 +38,32 @@
             {% endif %}
             <small><i class="{{config.structure.volume.condition.get_icon_class}}" alt="{{config.structure.volume.condition.value}}"></i></small>
         </li>
-        <li>
-            fade in :
-            {% if config.structure.fadeIn.default %}
-            Oui | {{ config.structure.fadeInDuration.default }}s | {{ config.structure.fadeInType.default }}
-            {% else %}
-            Non
+            <li>
+            démarage du morceau suivant quand il reste :
+            {% if config.structure.durationRemainingTriggerNextMusic.default is not None %}
+            {{ config.structure.durationRemainingTriggerNextMusic.default }}s
             {% endif %}
+            <small><i class="{{config.structure.durationRemainingTriggerNextMusic.condition.get_icon_class}}" alt="{{config.structure.durationRemainingTriggerNextMusic.condition.value}}"></i></small>
+        </li>
+        <li>
+            Fondue d'entrée (Fade In) :
+            {% if config.structure.fadeIn.default %}Oui{% else %}Non{% endif %}
             <small><i class="{{config.structure.fadeIn.condition.get_icon_class}}" alt="{{config.structure.fadeIn.condition.value}}"></i></small>
         </li>
         <li>
-            fade out :
-            {% if config.structure.fadeOut.default %}
-            Oui | {{ config.structure.fadeOutDuration.default }}s | {{ config.structure.fadeOutType.default }}
-            {% else %}
-            Non
-            {% endif %}
+            Durée fondue d'entrée (Fade In) :
+            {{ config.structure.fadeInDuration.default }}s | {{ config.structure.fadeInType.default }}
+            <small><i class="{{config.structure.fadeInDuration.condition.get_icon_class}}" alt="{{config.structure.fadeInDuration.condition.value}}"></i></small>
+        </li>
+        <li>
+            Fondue de sortie (Fade Out) :
+            {% if config.structure.fadeOut.default %}Oui{% else %}Non{% endif %}
             <small><i class="{{config.structure.fadeOut.condition.get_icon_class}}" alt="{{config.structure.fadeOut.condition.value}}"></i></small>
+        </li>
+         <li>
+            Durée fondue de sortie (Fade Out) :
+            {{ config.structure.fadeOutDuration.default }}s | {{ config.structure.fadeOutType.default }}
+            <small><i class="{{config.structure.fadeOutDuration.condition.get_icon_class}}" alt="{{config.structure.fadeOutDuration.condition.value}}"></i></small>
         </li>
 
     </ul>
