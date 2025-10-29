@@ -4,6 +4,8 @@
 {% load FrontJs %}
 {% load static %}
 
+{% block page_title %}Soundboards Publics - Ambiance Musicale pour Jeux de Rôle | AmbianceBoard{% endblock %}
+
 {% block javascript %}
 {{ block.super }}
 <script type="module" src="{% static 'PublicFavorite'|search_true_file %}"></script>
