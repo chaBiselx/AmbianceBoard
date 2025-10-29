@@ -9,6 +9,7 @@
 <head>
     <title>{% block page_title %}AmbianceBoard - Soundboard Ambiance pour Jeux de Rôle{% endblock %}</title>
     {% include 'Html/partial/structure/utils/meta.html' %}
+    {% include 'Html/partial/structure/utils/analyticsHead.html' %}
 
     <!-- Core theme CSS (includes Bootstrap)-->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -20,6 +21,8 @@
 </head>
 
 <body id="mainBody" class="{% include 'Html/partial/structure/sidebar/sidebar_class.html'%}">
+    {% include 'Html/partial/structure/utils/analyticsBody.html' %}
+
     <!-- Show base layout -->
     <button class="show-base-layout rounded fullScreen-element-inline" id="showBaseLayoutButton">
         <i class="fa-solid fa-minimize"></i>
