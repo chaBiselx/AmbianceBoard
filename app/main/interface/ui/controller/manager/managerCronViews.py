@@ -20,7 +20,7 @@ def listing_cron_views(request):
     """
     Render the manager cron views page.
     """
-    return render(request, 'Html/Manager/cron_listing.html')
+    return render(request, 'Html/Manager/cron_listing.html', {'title': 'Gestion des tâches planifiées'})
 
 @login_required
 @require_http_methods(['GET'])

@@ -24,7 +24,7 @@ def soundboard_create(request):
         return redirect('soundboardsList')
     else:
         form = SoundBoardForm()
-    return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method': 'create'})
+    return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method': 'create', 'title': 'Création d\'un nouveau Soundboard'})
 
 
 
@@ -46,7 +46,7 @@ def soundboard_update(request, soundboard_uuid):
             return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
         else:
             form = SoundBoardForm(instance=soundboard)
-    return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method': 'update'})
+    return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method': 'update', 'title': f'Édition du Soundboard : {soundboard.name}'})
 
 
 @login_required

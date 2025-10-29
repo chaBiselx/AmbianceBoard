@@ -50,6 +50,7 @@ def public_listing_soundboard(request):
     context['listTags'] = tag_repository.get_tag_with_count()
     context['listFavorite'] = UserFavoritePublicSoundboardRepository().get_list_uuids(request.user)
     context['selected_tag'] = selected_tag
+    context['title'] = "Soundboard publiques"
     return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
 
 @require_http_methods(['GET'])
@@ -61,6 +62,7 @@ def public_favorite(request):
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     context['listFavorite'] = UserFavoritePublicSoundboardRepository().get_list_uuids(request.user)
+    context['title'] = "Soundboard favorites"
     return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
 
 

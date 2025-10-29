@@ -29,7 +29,7 @@ def soundboard_list(request):
     except Exception:
         soundboards = []
     
-    return render(request, 'Html/Soundboard/soundboard_list.html', {'soundboards': soundboards})
+    return render(request, 'Html/Soundboard/soundboard_list.html', {'soundboards': soundboards, 'title': 'Mes Soundboards'})
 
 
 
@@ -50,7 +50,8 @@ def soundboard_organize(request, soundboard_uuid):
         'soundboard': soundboard, 
         'actualPlaylist': soundboard_manager.get_playlists, 
         'unassociatedPlaylists': soundboard_manager.get_unassociated_playlists,
-        'max_sections': range(1, max_sections + 1)
+        'max_sections': range(1, max_sections + 1),
+        'title': f'Organisation du Soundboard : {soundboard.name}'
     })
 
 

@@ -166,7 +166,7 @@ def moderator_listing_tags(request) -> HttpResponse:
     queryset = tag_repository.get_all_queryset()
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
-    
+    context['title'] = 'Gestion des tags'
     return render(request, 'Html/Moderator/listing_tags.html', context)
 
 @login_required

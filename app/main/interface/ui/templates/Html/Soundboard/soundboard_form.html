@@ -3,6 +3,8 @@
 {% load FrontJs %}
 {% load static %}
 
+{% block page_title %}{% if method == 'update' %}Modifier{% else %}Créer{% endif %} un Soundboard | AmbianceBoard{% endblock %}
+
 {% block javascript %}
 {{ block.super }}
 <script type="module" src="{% static 'FormSoundboard'|search_true_file %}"></script>
@@ -22,15 +24,6 @@
         </div>
         {% endif %}
         <div class="card">
-            <div class="card-header">
-                <h2>
-                    {% if method == 'update' %}
-                    Modifier le SoundBoard {{ form.instance.name }}
-                    {% else %}
-                    Créer un nouveau SoundBoard
-                    {% endif %}
-                </h2>
-            </div>
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
