@@ -114,3 +114,8 @@ Nouveautés
 
 Fiabilité & Confiance
 - Modification de la structure pour respecter le DDD
+
+
+### 0.2.0-beta.1 - 2025/11
+Nouveautés
+- Ajout d'analytics pour avoir des stats sur les utilisateurs (provenance et rétention)
