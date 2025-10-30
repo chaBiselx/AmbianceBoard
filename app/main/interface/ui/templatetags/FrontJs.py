@@ -1,6 +1,6 @@
 from django import template
 from main.domain.common.utils.settings import Settings
-from main.architecture.ui.service.StaticFilesService import StaticFilesService
+from main.domain.common.service.StaticFilesService import StaticFilesService
 import os
 
 register = template.Library()
