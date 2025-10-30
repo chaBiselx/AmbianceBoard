@@ -92,7 +92,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "main",
-    "main.architecture.ui",  # App pour les templateTags
+    "main.interface.ui",  # App pour les templateTags
     "django_crontab",
 ]
 
