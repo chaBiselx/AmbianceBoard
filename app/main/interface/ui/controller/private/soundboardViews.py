@@ -5,9 +5,9 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from main.domain.common.utils.settings import Settings
 from main.domain.private.manager.SoundBoardPlaylistManager import SoundBoardPlaylistManager
-from main.service.SoundBoardService import SoundBoardService
+from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.domain.common.service.PlaylistService import PlaylistService
-from main.service.SoundboardPlaylistService import SoundboardPlaylistService
+from main.domain.common.service.SoundboardPlaylistService import SoundboardPlaylistService
 from main.interface.ui.forms.private.SoundBoardForm import SoundBoardForm
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository

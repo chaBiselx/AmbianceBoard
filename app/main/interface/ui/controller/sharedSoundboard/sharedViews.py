@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.urls import reverse
-from main.service.SoundBoardService import SoundBoardService
+from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
@@ -14,7 +14,7 @@ from main.architecture.persistence.repository.SharedSoundboardRepository import 
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from django.contrib.sites.shortcuts import get_current_site
 from main.domain.common.utils.url import get_full_url, get_full_ws
-from main.service.RandomizeTrackService import RandomizeTrackService
+from main.domain.common.service.RandomizeTrackService import RandomizeTrackService
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.utils.settings import Settings
 from main.domain.common.utils.logger import logger
