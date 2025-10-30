@@ -1,4 +1,6 @@
-
+"""
+Django signals pour les événements du domaine
+"""
 
 from django.db.models.signals import post_migrate
 from main.architecture.persistence.postMigrate.Group import create_groups
