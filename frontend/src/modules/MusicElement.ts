@@ -333,5 +333,4 @@ class MusicElement {
 
 
 export { MusicElement };
-export type { MusicElementDTO };
 

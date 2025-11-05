@@ -85,12 +85,12 @@ describe('ListingAudioElement', () => {
             const audioDiv = document.getElementById('audio-players')!;
             
             const types = ['music', 'ambient', 'sfx', 'voice'];
-            
-            types.forEach(type => {
+
+            for (const type of types) {
                 const audio = document.createElement('audio');
                 audio.className = `audio-${type}`;
                 audioDiv.appendChild(audio);
-            });
+            }
 
             const mockMusicElement = { type: 'ambient' } as any;
             vi.mocked(MusicElementFactory.fromAudioElement).mockReturnValue(mockMusicElement);

@@ -68,13 +68,13 @@ describe('MusicElementFactory', () => {
                     fadeInDuration: 2.5,
                     fadeOut: true,
                     fadeOutType: 'logarithmic',
-                    fadeOutDuration: 3.0,
+                    fadeOutDuration: 3,
                     playlistType: 'music',
                     idPlaylist: 'playlist-456',
                     playlistLoop: true,
-                    delay: 5.0,
+                    delay: 5,
                     baseUrl: 'https://example.com/music.mp3',
-                    durationRemainingTriggerNextMusic: 10.0
+                    durationRemainingTriggerNextMusic: 10
                 })
             );
         });
@@ -182,13 +182,13 @@ describe('MusicElementFactory', () => {
                     fadeInDuration: 3.5,
                     fadeOut: true,
                     fadeOutType: 'quadratic',
-                    fadeOutDuration: 4.0,
+                    fadeOutDuration: 4,
                     playlistType: 'ambient',
                     idPlaylist: '789',
                     playlistLoop: true,
                     delay: 7.5,
                     baseUrl: 'https://example.com/ambient.mp3',
-                    durationRemainingTriggerNextMusic: 12.0
+                    durationRemainingTriggerNextMusic: 12
                 })
             );
         });
@@ -292,7 +292,7 @@ describe('MusicElementFactory', () => {
             buttonElement.dataset.playlistLoop = 'true';
 
             const playlist = new ButtonPlaylist(buttonElement);
-            const musicElement = MusicElementFactory.fromButtonPlaylist(playlist);
+            MusicElementFactory.fromButtonPlaylist(playlist);
 
             expect(Boolean.convert).toHaveBeenCalledWith('true');
             expect(Boolean.convert).toHaveBeenCalledWith('false');
@@ -302,7 +302,7 @@ describe('MusicElementFactory', () => {
             buttonElement.dataset.playlistVolume = '50';
             const playlist = new ButtonPlaylist(buttonElement);
 
-            const musicElement = MusicElementFactory.fromButtonPlaylist(playlist);
+            MusicElementFactory.fromButtonPlaylist(playlist);
 
             const calledDTO = (MusicElement as any).mock.calls[0][1] as MusicElementDTO;
             expect(calledDTO.defaultVolume).toBe(0.5); // 50 / 100
@@ -312,7 +312,7 @@ describe('MusicElementFactory', () => {
             delete buttonElement.dataset.tokenPlaylistActive;
             const playlist = new ButtonPlaylist(buttonElement);
 
-            const musicElement = MusicElementFactory.fromButtonPlaylist(playlist);
+            MusicElementFactory.fromButtonPlaylist(playlist);
 
             const audioElement = (MusicElement as any).mock.calls[0][0] as HTMLAudioElement;
             expect(audioElement.dataset.butonPlaylistToken).toBeUndefined();
@@ -329,13 +329,13 @@ describe('MusicElementFactory', () => {
                 fadeInDuration: 2.0,
                 fadeOut: true,
                 fadeOutType: 'linear',
-                fadeOutDuration: 2.0,
+                fadeOutDuration: 2,
                 playlistType: 'music',
                 idPlaylist: 'test-id',
                 playlistLoop: true,
-                delay: 1.0,
+                delay: 1,
                 baseUrl: 'http://test.com/music.mp3',
-                durationRemainingTriggerNextMusic: 5.0
+                durationRemainingTriggerNextMusic: 5
             };
 
             // Vérifier que toutes les propriétés sont définies
@@ -352,7 +352,7 @@ describe('MusicElementFactory', () => {
             audioElement.dataset.playlistdelay = '0';
             audioElement.dataset.durationremainingtriggernextmusic = '0';
 
-            const musicElement = MusicElementFactory.fromAudioElement(audioElement);
+            MusicElementFactory.fromAudioElement(audioElement);
 
             const calledDTO = (MusicElement as any).mock.calls[0][1] as MusicElementDTO;
             expect(calledDTO.defaultVolume).toBe(0);
@@ -370,7 +370,7 @@ describe('MusicElementFactory', () => {
             audioElement.dataset.playlistid = '';
             audioElement.dataset.baseurl = '';
 
-            const musicElement = MusicElementFactory.fromAudioElement(audioElement);
+            MusicElementFactory.fromAudioElement(audioElement);
 
             const calledDTO = (MusicElement as any).mock.calls[0][1] as MusicElementDTO;
             // Les types de fade utilisent 'linear' par défaut si vide (via || 'linear')
@@ -388,7 +388,7 @@ describe('MusicElementFactory', () => {
             audioElement.dataset.fadeinduration = '1000.5';
             audioElement.dataset.playlistdelay = '5000.75';
 
-            const musicElement = MusicElementFactory.fromAudioElement(audioElement);
+            MusicElementFactory.fromAudioElement(audioElement);
 
             const calledDTO = (MusicElement as any).mock.calls[0][1] as MusicElementDTO;
             expect(calledDTO.defaultVolume).toBe(999.999);
@@ -400,7 +400,7 @@ describe('MusicElementFactory', () => {
             const audioElement = document.createElement('audio');
             audioElement.dataset.baseurl = 'https://example.com/music/song%20name.mp3?param=value&other=123';
 
-            const musicElement = MusicElementFactory.fromAudioElement(audioElement);
+            MusicElementFactory.fromAudioElement(audioElement);
 
             const calledDTO = (MusicElement as any).mock.calls[0][1] as MusicElementDTO;
             expect(calledDTO.baseUrl).toBe('https://example.com/music/song%20name.mp3?param=value&other=123');
@@ -418,7 +418,7 @@ describe('MusicElementFactory', () => {
                 buttonElement.dataset.playlistUri = `https://example.com/${type}.mp3`;
                 
                 const playlist = new ButtonPlaylist(buttonElement);
-                const musicElement = MusicElementFactory.fromButtonPlaylist(playlist);
+                MusicElementFactory.fromButtonPlaylist(playlist);
 
                 const audioElement = (MusicElement as any).mock.calls[index][0] as HTMLAudioElement;
                 expect(audioElement.classList.contains(`audio-${type}`)).toBe(true);
@@ -434,7 +434,7 @@ describe('MusicElementFactory', () => {
             buttonElement.dataset.tokenPlaylistActive = Date.now().toString();
             
             const playlist = new ButtonPlaylist(buttonElement);
-            const musicElement = MusicElementFactory.fromButtonPlaylist(playlist);
+            MusicElementFactory.fromButtonPlaylist(playlist);
 
             const calledDTO = (MusicElement as any).mock.calls[0][1] as MusicElementDTO;
             expect(calledDTO.butonPlaylistToken).toBe(buttonElement.dataset.tokenPlaylistActive);
@@ -447,7 +447,7 @@ describe('MusicElementFactory', () => {
             buttonElement.dataset.playlistUri = 'https://example.com/music.mp3';
             
             const playlist = new ButtonPlaylist(buttonElement);
-            const musicElement = MusicElementFactory.fromButtonPlaylist(playlist);
+            MusicElementFactory.fromButtonPlaylist(playlist);
 
             const calledDTO = (MusicElement as any).mock.calls[0][1] as MusicElementDTO;
             expect(calledDTO.butonPlaylistToken).toBeNull();
@@ -472,7 +472,7 @@ describe('MusicElementFactory', () => {
             const playlist = new ButtonPlaylist(buttonElement);
             
             vi.mocked(SharedSoundBoardUtil.isSlavePage).mockClear();
-            const musicElement = MusicElementFactory.fromButtonPlaylist(playlist);
+            MusicElementFactory.fromButtonPlaylist(playlist);
 
             expect(SharedSoundBoardUtil.isSlavePage).toHaveBeenCalled();
         });
@@ -487,14 +487,14 @@ describe('MusicElementFactory', () => {
             
             const playlist = new ButtonPlaylist(buttonElement);
             const before = Date.now();
-            const musicElement = MusicElementFactory.fromButtonPlaylist(playlist);
+            MusicElementFactory.fromButtonPlaylist(playlist);
             const after = Date.now();
 
             const audioElement = (MusicElement as any).mock.calls[0][0] as HTMLAudioElement;
             const urlMatch = audioElement.src.match(/\?i=(\d+)$/);
             
             expect(urlMatch).not.toBeNull();
-            const timestamp = parseInt(urlMatch![1]);
+            const timestamp = Number.parseInt(urlMatch![1]);
             expect(timestamp).toBeGreaterThanOrEqual(before);
             expect(timestamp).toBeLessThanOrEqual(after);
         });
@@ -508,7 +508,7 @@ describe('MusicElementFactory', () => {
             buttonElement.dataset.playlistUri = 'https://example.com/music.mp3';
             
             const playlist = new ButtonPlaylist(buttonElement);
-            const musicElement = MusicElementFactory.fromButtonPlaylist(playlist);
+            MusicElementFactory.fromButtonPlaylist(playlist);
 
             const audioElement = (MusicElement as any).mock.calls[0][0] as HTMLAudioElement;
             expect(audioElement.src).toBe('https://example.com/music.mp3');
