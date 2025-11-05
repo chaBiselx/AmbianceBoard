@@ -56,7 +56,7 @@ describe('MusicElementFactory', () => {
         });
 
         it('should create a MusicElement from an HTMLAudioElement with all properties', () => {
-            const musicElement = MusicElementFactory.fromAudioElement(audioElement);
+            MusicElementFactory.fromAudioElement(audioElement);
 
             expect(MusicElement).toHaveBeenCalledWith(
                 audioElement,
@@ -82,7 +82,7 @@ describe('MusicElementFactory', () => {
         it('should handle missing optional properties with defaults', () => {
             const minimalAudio = document.createElement('audio');
             
-            const musicElement = MusicElementFactory.fromAudioElement(minimalAudio);
+            MusicElementFactory.fromAudioElement(minimalAudio);
 
             expect(MusicElement).toHaveBeenCalledWith(
                 minimalAudio,
@@ -110,7 +110,7 @@ describe('MusicElementFactory', () => {
             audioElement.dataset.fadeout = 'false';
             audioElement.dataset.playlistloop = 'true';
 
-            const musicElement = MusicElementFactory.fromAudioElement(audioElement);
+            MusicElementFactory.fromAudioElement(audioElement);
 
             const calledDTO = (MusicElement as any).mock.calls[0][1] as MusicElementDTO;
             expect(calledDTO.fadeIn).toBe(true);
@@ -125,7 +125,7 @@ describe('MusicElementFactory', () => {
             audioElement.dataset.playlistdelay = '8.5';
             audioElement.dataset.durationremainingtriggernextmusic = '15.5';
 
-            const musicElement = MusicElementFactory.fromAudioElement(audioElement);
+            MusicElementFactory.fromAudioElement(audioElement);
 
             const calledDTO = (MusicElement as any).mock.calls[0][1] as MusicElementDTO;
             expect(calledDTO.defaultVolume).toBe(0.65);
@@ -170,7 +170,7 @@ describe('MusicElementFactory', () => {
         });
 
         it('should create a MusicElement from a ButtonPlaylist with all properties', () => {
-            const musicElement = MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
+            MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
 
             expect(MusicElement).toHaveBeenCalledWith(
                 expect.any(HTMLAudioElement),
@@ -194,7 +194,7 @@ describe('MusicElementFactory', () => {
         });
 
         it('should create an audio element with correct properties', () => {
-            const musicElement = MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
+            MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
 
             const audioElement = (MusicElement as any).mock.calls[0][0] as HTMLAudioElement;
             expect(audioElement.tagName).toBe('AUDIO');
@@ -206,7 +206,7 @@ describe('MusicElementFactory', () => {
         it('should set audio src with timestamp when not slave', () => {
             vi.mocked(SharedSoundBoardUtil.isSlavePage).mockReturnValue(false);
             
-            const musicElement = MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
+            MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
 
             const audioElement = (MusicElement as any).mock.calls[0][0] as HTMLAudioElement;
             expect(audioElement.src).toMatch(/https:\/\/example\.com\/ambient\.mp3\?i=\d+/);
@@ -215,7 +215,7 @@ describe('MusicElementFactory', () => {
         it('should set audio src without timestamp when slave', () => {
             vi.mocked(SharedSoundBoardUtil.isSlavePage).mockReturnValue(true);
             
-            const musicElement = MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
+            MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
 
             const audioElement = (MusicElement as any).mock.calls[0][0] as HTMLAudioElement;
             expect(audioElement.src).toBe('https://example.com/ambient.mp3');
@@ -236,7 +236,7 @@ describe('MusicElementFactory', () => {
         });
 
         it('should set all data attributes on audio element', () => {
-            const musicElement = MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
+            MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
 
             const audioElement = (MusicElement as any).mock.calls[0][0] as HTMLAudioElement;
             expect(audioElement.dataset.butonPlaylistToken).toBe('active-token-456');
@@ -263,7 +263,7 @@ describe('MusicElementFactory', () => {
             
             const minimalPlaylist = new ButtonPlaylist(minimalButton);
 
-            const musicElement = MusicElementFactory.fromButtonPlaylist(minimalPlaylist);
+            MusicElementFactory.fromButtonPlaylist(minimalPlaylist);
 
             expect(MusicElement).toHaveBeenCalledWith(
                 expect.any(HTMLAudioElement),
@@ -411,7 +411,7 @@ describe('MusicElementFactory', () => {
         it('should create different audio elements for different playlist types', () => {
             const types = ['music', 'ambient', 'sfx', 'voice'];
             
-            types.forEach((type, index) => {
+            for (const [index, type] of types.entries()) {
                 const buttonElement = document.createElement('div');
                 buttonElement.dataset.playlistId = `${index}`;
                 buttonElement.dataset.playlistType = type;
@@ -422,7 +422,7 @@ describe('MusicElementFactory', () => {
 
                 const audioElement = (MusicElement as any).mock.calls[index][0] as HTMLAudioElement;
                 expect(audioElement.classList.contains(`audio-${type}`)).toBe(true);
-            });
+            }
         });
 
         it('should handle ButtonPlaylist with active token', () => {
