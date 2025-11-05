@@ -1,6 +1,6 @@
 import Cookie from '@/modules/General/Cookie';
 import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
-import { MusicElement } from '@/modules/MusicElement';
+import { MusicElementFactory } from '@/modules/MusicElementFactory';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import { MixerElement } from "@/modules/MixerManager";
@@ -206,7 +206,7 @@ class SharedSoundBoardWebSocket {
         const buttonPlaylist = ButtonPlaylistFinder.search(data.playlist_uuid);
         if (!buttonPlaylist) return;
 
-        const musicElement = new MusicElement(buttonPlaylist);
+        const musicElement = MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
         buttonPlaylist.active();
         (new UpdateVolumeElement(musicElement)).update();
         musicElement.addToDOM();
