@@ -1,7 +1,7 @@
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import { ButtonPlaylist, ListingButtonPlaylist } from '@/modules/ButtonPlaylist';
-import { ListingAudioElement } from '@/modules/MusicElement';
+import { ListingAudioElement } from '@/modules/MusicElementSearcher';
 import { MusicElementFactory } from '@/modules/MusicElementFactory';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 

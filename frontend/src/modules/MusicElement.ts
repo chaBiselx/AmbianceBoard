@@ -12,7 +12,7 @@ import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import Cookie from '@/modules/General/Cookie';
 import Time from "@/modules/Util/Time";
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
-import { MusicElementDTO, MusicElementFactory } from '@/modules/MusicElementFactory';
+import { MusicElementDTO } from '@/modules/MusicElementFactory';
 
 
 
@@ -331,41 +331,7 @@ class MusicElement {
 
 }
 
-class SearchMusicElement {
-    static searchByButton(buttonPlaylist: ButtonPlaylist): MusicElement[] {
-        const audio = document.getElementsByClassName('playlist-audio-' + buttonPlaylist.idPlaylist) as HTMLCollectionOf<HTMLAudioElement>;
-        const listMusic: MusicElement[] = [];
-        if (audio.length > 0) {
-            for (let audioDom of audio) {
-                listMusic.push(MusicElementFactory.fromAudioElement(audioDom));
-            }
-        }
-        return listMusic;
-    }
-}
 
-class ListingAudioElement {
-    static getListingAudioElement(type: string): MusicElement[] {
-        const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
-        const audio = audioElementDiv.getElementsByClassName('audio-' + type) as HTMLCollectionOf<HTMLAudioElement>;
-        const listingMusicElement: MusicElement[] = []
-        for (let audioDom of audio) {
-            listingMusicElement.push(MusicElementFactory.fromAudioElement(audioDom));
-        };
-        return listingMusicElement;
-    }
-
-    static getListAllAudio(): MusicElement[] {
-        const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
-        const audio = audioElementDiv.getElementsByTagName('audio');
-        const listingMusicElement: MusicElement[] = []
-        for (let audioDom of audio) {
-            listingMusicElement.push(MusicElementFactory.fromAudioElement(audioDom));
-        };
-        return listingMusicElement;
-    }
-}
-
-export { MusicElement, ListingAudioElement, SearchMusicElement };
+export { MusicElement };
 export type { MusicElementDTO };
 
