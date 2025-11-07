@@ -37,6 +37,9 @@ export class MusicDropzoneManager {
         const callbacks: IDropZoneCallbacks = {
             onFileAdded: (_file: File) => {
                 ModalCustom.hide();
+                setTimeout(() => {
+                    ModalCustom.wait();
+                }, 500);
             },
             onUploadSuccess: (files: DropZoneFileList, response: IUploadResponse) => {
                 this.handleUploadSuccess(files, response);
