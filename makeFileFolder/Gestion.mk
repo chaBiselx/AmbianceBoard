@@ -28,7 +28,7 @@ build-prod:
 up:
 	@# Help: Demarrer les ressources de l'application
 	@docker compose up -d
-	@docker compose logs -f back front db
+	@docker compose logs -f back front db cronjob
 
 down:
 	@# Help: Arrêter les ressources de l'application
