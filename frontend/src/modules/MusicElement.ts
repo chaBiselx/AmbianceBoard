@@ -39,6 +39,9 @@ class MusicElement {
     baseUrl: string = ''; // url of playlist to stream music
     WebSocketActive: boolean = false; // user has websocket connection to command shared soundboard
     duration: number | null = null;
+    fadeOffOnStop: boolean = false;
+    fadeOffOnStopDuration: number = 0;
+    fadeOffOnStopType: string = 'linear';
     private boundEventEnd: (() => void) | null = null;
 
 
@@ -69,6 +72,9 @@ class MusicElement {
         this.delay = dto.delay;
         this.baseUrl = dto.baseUrl;
         this.durationRemainingTriggerNextMusic = dto.durationRemainingTriggerNextMusic;
+        this.fadeOffOnStop = dto.fadeOffOnStop;
+        this.fadeOffOnStopDuration = dto.fadeOffOnStopDuration;
+        this.fadeOffOnStopType = dto.fadeOffOnStopType;
     }
 
     public setDefaultVolume(volume: number) {
@@ -88,8 +94,30 @@ class MusicElement {
     public delete() {
         const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist) as ButtonPlaylist;
         buttonPlaylist.disactive();
-        this.removeDomElement();
+        this.addFadeOutOnStop(() => {
+            this.removeDomElement();
+        });
         this.callAPIToStop();
+    }
+
+    private addFadeOutOnStop(callback: () => void) {
+        ConsoleCustom.log('addFadeOutOnStop');
+        if( !this.fadeOffOnStop ){
+            callback();
+            return;
+        }
+        
+        if (this.fadeInGoing) {
+            ConsoleCustom.log('ignore fade out if fade in not finished');
+            callback();
+            return // ignore fade out if fade in not finished
+        }
+
+        ConsoleCustom.log('start fade off on stop');
+        const typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeOffOnStopType)
+        const audioFade = new AudioFadeManager(this, typeFade, false, callback);
+        audioFade.setDuration(this.fadeOffOnStopDuration);
+        audioFade.start();
     }
 
     private removeDomElement() {

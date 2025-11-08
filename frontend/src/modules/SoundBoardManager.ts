@@ -25,8 +25,10 @@ class SoundBoardManager {
 
         } else {
             buttonPlaylist.disactive();
-            while (audioElement.length > 0) { // delete all playlist
-                MusicElementFactory.fromAudioElement(audioElement[0] as HTMLAudioElement).delete();
+            // Collect all elements before deleting (FadeOffOnStop delays removal)
+            const elements = Array.from(audioElement) as HTMLAudioElement[];
+            for (let i = 0; i < elements.length; i++) {
+                MusicElementFactory.fromAudioElement(elements[i]).delete();
             }
         }
 
@@ -34,8 +36,10 @@ class SoundBoardManager {
 
     static removePlaylist(buttonPlaylist: ButtonPlaylist) {
         const audioElement = document.getElementsByClassName(`playlist-audio-${buttonPlaylist.idPlaylist}`) as HTMLCollectionOf<HTMLAudioElement>;
-        while (audioElement.length > 0) { // delete all playlist
-            MusicElementFactory.fromAudioElement(audioElement[0]).delete();
+        // Collect all elements before deleting (FadeOffOnStop delays removal)
+        const elements = Array.from(audioElement);
+        for (let i = 0; i < elements.length; i++) {
+            MusicElementFactory.fromAudioElement(elements[i]).delete();
         }
     }
 

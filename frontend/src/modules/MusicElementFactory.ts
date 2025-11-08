@@ -22,6 +22,9 @@ export interface MusicElementDTO {
     delay: number;
     baseUrl: string;
     durationRemainingTriggerNextMusic: number;
+    fadeOffOnStop: boolean;
+    fadeOffOnStopDuration: number;
+    fadeOffOnStopType: string;
 }
 
 /**
@@ -82,6 +85,11 @@ export class MusicElementFactory {
             durationRemainingTriggerNextMusic: element.dataset.durationremainingtriggernextmusic
                 ? Number.parseFloat(element.dataset.durationremainingtriggernextmusic)
                 : 0,
+            fadeOffOnStop: element.dataset.fadeoffonstop === "true",
+            fadeOffOnStopDuration: element.dataset.fadeoffonstopduration
+                ? Number.parseFloat(element.dataset.fadeoffonstopduration)
+                : 0,
+            fadeOffOnStopType: element.dataset.fadeoffonstoptype || 'linear',
         };
     }
 
@@ -120,6 +128,13 @@ export class MusicElementFactory {
             durationRemainingTriggerNextMusic: buttonPlaylist.dataset.playlistDurationremainingtriggernextmusic
                 ? Number.parseFloat(buttonPlaylist.dataset.playlistDurationremainingtriggernextmusic)
                 : 0,
+            fadeOffOnStop: buttonPlaylist.dataset.playlistFadeoffonstop
+                ? Boolean.convert(buttonPlaylist.dataset.playlistFadeoffonstop)
+                : false,
+            fadeOffOnStopDuration: buttonPlaylist.dataset.playlistFadeoffonstopduration
+                ? Number.parseFloat(buttonPlaylist.dataset.playlistFadeoffonstopduration)
+                : 0,
+            fadeOffOnStopType: buttonPlaylist.dataset.playlistFadeoffonstoptype || 'linear',
         };
     }
 
@@ -165,6 +180,9 @@ export class MusicElementFactory {
         audioElement.dataset.playlistdelay = dto.delay.toString();
         audioElement.dataset.baseurl = dto.baseUrl;
         audioElement.dataset.durationremainingtriggernextmusic = dto.durationRemainingTriggerNextMusic.toString();
+        audioElement.dataset.fadeoffonstop = dto.fadeOffOnStop.toString();
+        audioElement.dataset.fadeoffonstopduration = dto.fadeOffOnStopDuration.toString();
+        audioElement.dataset.fadeoffonstoptype = dto.fadeOffOnStopType;
     }
 
     /**

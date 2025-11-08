@@ -119,3 +119,4 @@ Fiabilité & Confiance
 ### 0.2.0-beta.1 - 2025/11
 Nouveautés
 - Ajout d'analytics pour avoir des stats sur les utilisateurs (provenance et rétention)
+- ajout de fadeOff court lorsque l'on stoppe une musique 
