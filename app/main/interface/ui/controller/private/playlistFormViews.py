@@ -22,6 +22,7 @@ from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
+from main.architecture.persistence.repository.TrackRepository import TrackRepository
 
 
 
@@ -31,7 +32,9 @@ from main.domain.common.utils.logger import logger
 @require_http_methods(['GET'])
 def playlist_read_all(request):
     playlists = (PlaylistService(request)).get_all_playlist()
-    return render(request, 'Html/Playlist/playlist_read_all.html', {'playlists': playlists})
+    track_repository = TrackRepository()
+    number_tracks_by_playlist = track_repository.get_number_tracks_by_playlist(request.user)
+    return render(request, 'Html/Playlist/playlist_read_all.html', {'playlists': playlists, 'number_tracks_by_playlist': number_tracks_by_playlist})
 
 
 @login_required
