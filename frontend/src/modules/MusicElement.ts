@@ -22,7 +22,7 @@ class MusicElement {
     DOMElement: HTMLAudioElement
     idPlaylist: string = '';
     playlistType: string = '';
-    defaultVolume: number = 1;
+    defaultVolume: number | null = null;
     levelFade: number = 1;
     durationRemainingTriggerNextMusic: number = 0;
     fadeInOnGoing: boolean = false;

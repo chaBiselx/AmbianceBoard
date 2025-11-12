@@ -7,16 +7,13 @@ import { method, uri } from '@/type/General';
 
 class UpdateVolumePlaylist {
     buttonPlaylist: ButtonPlaylist
-    volume: number
 
-    constructor(buttonPlaylist: ButtonPlaylist, volume: number) {
+    constructor(buttonPlaylist: ButtonPlaylist) {
         this.buttonPlaylist = buttonPlaylist;
-        this.volume = volume
     }
 
-
-    updateVolume() {
-        this.buttonPlaylist.dataset.playlistVolume = this.volume.toString();
+    public updateVolume(volume: number) {
+        this.buttonPlaylist.dataset.playlistVolume = volume.toString();
         const listMusic = SearchMusicElement.searchByButton(this.buttonPlaylist);
 
         for (const musicElement of listMusic) {
@@ -27,7 +24,11 @@ class UpdateVolumePlaylist {
 
     }
 
-    updateBackend(uri: uri) {
+    public clearCache(){
+        UpdateVolumeElement.clearAllCache();
+    }
+
+    public updateBackend(uri: uri, volume: number) {
         const method = 'POST' as method;
         fetch(uri, {
             method: method,
@@ -37,7 +38,7 @@ class UpdateVolumePlaylist {
                 'X-CSRFToken': Csrf.getToken()!
             },
             body: JSON.stringify({
-                volume: this.volume
+                volume: volume
             })
         });
     }

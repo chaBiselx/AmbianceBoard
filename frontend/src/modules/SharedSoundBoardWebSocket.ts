@@ -21,9 +21,13 @@ type DataVolumePlaylist = {
     'playlist_uuid': string
     'volume': number
 }
+type DataUpdateDefaultVolumePlaylist = {
+    'list_volume': JSON,
+    'update_volume_after_reset': boolean
+}
 type WebSocketResponse = {
     'type': string
-    'data': DataMusic | DataMixer | DataVolumePlaylist
+    'data': DataMusic | DataMixer | DataVolumePlaylist | DataUpdateDefaultVolumePlaylist
 }
 type DataVolumePlayOnMaster = {
     'playlist_uuid': string
@@ -178,9 +182,14 @@ class SharedSoundBoardWebSocket {
                 ConsoleCustom.log('⏹️ Arrêt musique:', response);
                 return;
             case 'music_stop_all':
-                this.stopAll();
+                this.stopAllMusic();
                 ConsoleTesteur.log(`music_stop_all`);
                 ConsoleCustom.log('⏹️ Arrêt toutes musiques:', response);
+                return;
+            case 'reset_volume_playlist':
+                ConsoleTesteur.log(`reset_volume_playlist`);
+                ConsoleCustom.log('⏹️ reset_soundboard_player:', response);
+                this.resetVolumePlaylist(response.data as DataUpdateDefaultVolumePlaylist);
                 return;
             case 'mixer_update':
                 this.updateMixer(response.data as DataMixer);
@@ -220,8 +229,22 @@ class SharedSoundBoardWebSocket {
         SoundBoardManager.removePlaylist(buttonPlaylist);
     }
 
-    private stopAll(): void {
+    private stopAllMusic(): void {
         SoundBoardManager.deleteAllMusicPlaylist();
+    }
+
+    private resetVolumePlaylist(data: DataUpdateDefaultVolumePlaylist): void {
+        for (const [uui, object] of Object.entries(data as { [key: string]: any })) {
+            const buttonPlaylist = ButtonPlaylistFinder.search(uui);
+            if (buttonPlaylist && buttonPlaylist.getVolume() != object.volume) {
+                buttonPlaylist.setVolume(object.volume)
+                const eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist);
+                eventUpdateVolumePlaylist.clearCache();
+                if(data.update_volume_after_reset){
+                    eventUpdateVolumePlaylist.updateVolume(object.volume)
+                }
+            }
+        }
     }
 
     private updateMixer(data: DataMixer): void {
@@ -231,8 +254,8 @@ class SharedSoundBoardWebSocket {
     private updateVolumePlaylist(data: DataVolumePlaylist): void {
         const buttonPlaylist = ButtonPlaylistFinder.search(data.playlist_uuid);
         if (!buttonPlaylist) return;
-        let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist, data.volume);
-        eventUpdateVolumePlaylist.updateVolume();
+        let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist);
+        eventUpdateVolumePlaylist.updateVolume( data.volume);
     }
 
     private playerPlayOnMaster(data: DataVolumePlayOnMaster): void {

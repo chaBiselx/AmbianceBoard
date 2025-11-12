@@ -1,7 +1,7 @@
 
 import type { uri } from '@/type/General';
 import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
-import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
+import { ButtonPlaylist, ButtonPlaylistFinder, ListingButtonPlaylist } from '@/modules/ButtonPlaylist';
 
 
 import Cookie from './General/Cookie';
@@ -25,9 +25,9 @@ class MixerPlaylist {
         }
     }
 
-    private needSaveBackend (): boolean{
+    private needSaveBackend(): boolean {
         const switchInput = document.getElementById(this.idSaveBackendValue) as HTMLInputElement
-        if(switchInput?.checked){
+        if (switchInput?.checked) {
             return true;
         }
         return false;
@@ -113,10 +113,10 @@ class MixerPlaylist {
 
     private updateLocalVolume(buttonPlaylist: ButtonPlaylist, volume: number, uri: uri) {
 
-        let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist, volume);
-        eventUpdateVolumePlaylist.updateVolume();
-        if(this.needSaveBackend()){
-            eventUpdateVolumePlaylist.updateBackend(uri);
+        let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist);
+        eventUpdateVolumePlaylist.updateVolume(volume);
+        if (this.needSaveBackend()) {
+            eventUpdateVolumePlaylist.updateBackend(uri, volume);
         }
 
     }

@@ -70,7 +70,7 @@ def public_favorite(request):
 @detect_ban
 @add_reporting_btn()
 def public_soundboard_read_playlist(request, soundboard_uuid):
-    SharedSoundboardService(request, soundboard_uuid).music_stop_all()
+    SharedSoundboardService(request, soundboard_uuid).reset_soundboard_player()
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)

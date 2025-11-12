@@ -1,23 +1,4 @@
-## Format de Notes de Version (Communication)
-Chaque future version utilisera ce format simple :
 
-```
-### Version X.Y.Z
-Nouveautés
-- …
-
-Améliorations
-- …
-
-Corrections
-- …
-
-Fiabilité & Confiance
-- (stabilité, perf, sécurité visibles)
-
-Prochain Focus
-- …
-```
 
 ------------------------------
 ## Historique
@@ -123,3 +104,23 @@ Nouveautés
 - Ajout d'un badge pour indiquer le nombre de musique dans une playlist
 - Rendre accessible le volume d'une playlist depuis les soundboards publiques 
 - Pouvoir choisir en sauvegarder le volume d'une playlist ou juste la modifier pour cette partie
+- Actualisation des volumes coté joueurs en cas du rechargement de la page maître 
+
+
+
+### X.Y.Z - Date
+Chaque future version utilisera ce format simple :
+Nouveautés
+- …
+
+Améliorations
+- …
+
+Corrections
+- …
+
+Fiabilité & Confiance
+- …
+
+Prochain Focus
+- …

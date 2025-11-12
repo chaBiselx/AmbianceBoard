@@ -28,7 +28,7 @@ from main.domain.common.utils.logger import logger
 @require_http_methods(['GET'])
 def playlist_show(request, soundboard_uuid):
     """Affichage d'un soundboard spécifique"""
-    SharedSoundboardService(request, soundboard_uuid).music_stop_all()
+    SharedSoundboardService(request, soundboard_uuid).reset_soundboard_player()
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     
     if not soundboard:

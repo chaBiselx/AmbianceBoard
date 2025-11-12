@@ -46,3 +46,13 @@ class PlaylistRepository:
 
     def get_all_queryset(self) -> QuerySet:
         return Playlist.objects.all()
+    
+    def get_default_volume_by_playlist(self, soundboard_uid: int):
+        try:
+            queryset = Playlist.objects.filter(soundboards__uuid=soundboard_uid).values('uuid', 'volume')
+            result = {}
+            for entry in queryset:
+                result[str(entry['uuid'])] = {'volume':entry['volume']}
+            return result
+        except Exception:
+            return []
