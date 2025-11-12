@@ -223,14 +223,14 @@ describe('MusicElementFactory', () => {
 
         it('should set controls based on Config.DEBUG', () => {
             Config.DEBUG = true;
-            let musicElement = MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
+            MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
             let audioElement = (MusicElement as any).mock.calls[0][0] as HTMLAudioElement;
             expect(audioElement.controls).toBe(true);
 
             vi.clearAllMocks();
 
             Config.DEBUG = false;
-            musicElement = MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
+            MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
             audioElement = (MusicElement as any).mock.calls[0][0] as HTMLAudioElement;
             expect(audioElement.controls).toBe(false);
         });
@@ -326,7 +326,7 @@ describe('MusicElementFactory', () => {
                 defaultVolume: 0.9,
                 fadeIn: true,
                 fadeInType: 'linear',
-                fadeInDuration: 2.0,
+                fadeInDuration: 2,
                 fadeOut: true,
                 fadeOutType: 'linear',
                 fadeOutDuration: 2,

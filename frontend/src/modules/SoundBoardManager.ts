@@ -27,8 +27,8 @@ class SoundBoardManager {
             buttonPlaylist.disactive();
             // Collect all elements before deleting (FadeOffOnStop delays removal)
             const elements = Array.from(audioElement) as HTMLAudioElement[];
-            for (let i = 0; i < elements.length; i++) {
-                MusicElementFactory.fromAudioElement(elements[i]).delete();
+            for(const element of elements) {
+                MusicElementFactory.fromAudioElement(element).delete();
             }
         }
 

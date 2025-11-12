@@ -1,7 +1,7 @@
 
 import type { uri } from '@/type/General';
 import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
-import { ButtonPlaylist, ButtonPlaylistFinder, ListingButtonPlaylist } from '@/modules/ButtonPlaylist';
+import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 
 
 import Cookie from './General/Cookie';
@@ -12,11 +12,11 @@ import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 class MixerPlaylist {
     private readonly classEvent: string = 'mixer-playlist-update'
+    private readonly idCheckBoxToggle: string = 'inputShowMixerPlaylist'
+    private readonly idContainerPlaylistMixer: string = 'mixer-playlist-update-container'
+    private readonly idSaveBackendValue: string = 'saveVolumePlaylistMixer'
     private urlWebSocket: string | null = null;
     private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
-    private idCheckBoxToggle: string = 'inputShowMixerPlaylist'
-    private idContainerPlaylistMixer: string = 'mixer-playlist-update-container'
-    private idSaveBackendValue: string = 'saveVolumePlaylistMixer'
 
     constructor() {
         this.urlWebSocket = this.getWebSocketUrl();
