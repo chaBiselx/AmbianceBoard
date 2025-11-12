@@ -12,11 +12,11 @@ describe('PaginationManager', () => {
             </ul>
         `;
         
-        // On simule window.location pour les tests
+        // On simule globalThis.location pour les tests
         const url = new URL('http://localhost:3000');
         // @ts-ignore
-        delete window.location;
-        window.location = { ...window.location, href: url.href, replace: vi.fn() };
+        delete globalThis.location;
+        globalThis.location = { ...globalThis.location, href: url.href, replace: vi.fn() };
     });
 
     // On nettoie les mocks après chaque test
@@ -36,9 +36,9 @@ describe('PaginationManager', () => {
         page2Button.click();
 
         // On vérifie que la fonction de remplacement d'URL a été appelée
-        expect(window.location.replace).toHaveBeenCalledTimes(1);
+        expect(globalThis.location.replace).toHaveBeenCalledTimes(1);
         // On vérifie qu'elle a été appelée avec la bonne URL
-        expect(window.location.replace).toHaveBeenCalledWith('http://localhost:3000/?page=2');
+        expect(globalThis.location.replace).toHaveBeenCalledWith('http://localhost:3000/?page=2');
     });
 
     it('should not change page when a disabled button is clicked', () => {
@@ -49,7 +49,7 @@ describe('PaginationManager', () => {
         page3Button.click();
 
         // La fonction de remplacement d'URL ne doit pas avoir été appelée
-        expect(window.location.replace).not.toHaveBeenCalled();
+        expect(globalThis.location.replace).not.toHaveBeenCalled();
     });
 
     it('should not throw an error if pagination element does not exist', () => {

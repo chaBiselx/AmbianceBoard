@@ -10,14 +10,14 @@ import GeneralTheme from "@/modules/General/GeneralTheme";
 import Time from "@/modules/Util/Time";
 
 // Gestionnaire global pour les erreurs de promesses non gérées
-window.addEventListener('unhandledrejection', (event) => {
+globalThis.addEventListener('unhandledrejection', (event) => {
     console.error('Unhandled Promise Rejection', {
         reason: event.reason,
         promise: event.promise,
         message: event.reason?.message || String(event.reason),
         stack: event.reason?.stack,
         timestamp: Date.now(),
-        url: window.location.href,
+        url: globalThis.location.href,
         userAgent: navigator.userAgent
     });
     
@@ -36,7 +36,7 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 
 // Gestionnaire global pour les erreurs non capturées
-window.addEventListener('error', (event) => {
+globalThis.addEventListener('error', (event) => {
     console.error('Uncaught Error', {
         message: event.message,
         filename: event.filename,
@@ -45,7 +45,7 @@ window.addEventListener('error', (event) => {
         error: event.error,
         stack: event.error?.stack,
         timestamp: Date.now(),
-        url: window.location.href
+        url: globalThis.location.href
     });
 });
 

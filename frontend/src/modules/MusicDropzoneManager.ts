@@ -117,9 +117,9 @@ export class MusicDropzoneManager {
     }
 
     private showErrors(errors: Array<string>): void {
-        errors.forEach((error: string) => {
+        for(const error of errors) {
             Notification.createClientNotification({ message: error, type: 'danger' });
-        });
+        }
     }
 
     public destroy(): void {
