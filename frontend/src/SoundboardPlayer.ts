@@ -21,8 +21,7 @@ import { SharedSoundboardCustomVolumeFactory } from '@/modules/SharedSoundboardC
 document.addEventListener("DOMContentLoaded", () => {
     showPopupSharedPlaylist();
     addEventListenerDom()
-    addEventListenerPlaylistVolumeUpdate();
-    addEventShowHidePlayslitMixer();
+    setUpMixerPlaylist();
     updateWithMixerPlaylist();
     addEventPublishEvent();
     new MixerManager().initializeEventListeners();
@@ -38,13 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-function addEventShowHidePlayslitMixer(): void {
-    const inputShowMixerPlaylist = document.getElementById('inputShowMixerPlaylist');
-    if (inputShowMixerPlaylist) {
-        inputShowMixerPlaylist.addEventListener('change', togglePlaylistMixer);
-    }
-}
-
 function addEventListenerDom() {
     const formElements = document.querySelectorAll('.playlist-link');
     for (const element of formElements) {
@@ -57,24 +49,7 @@ function addEventListenerDom() {
     }
 }
 
-function togglePlaylistMixer() {
-    const listMixerUpdate = document.getElementsByClassName('mixer-playlist-update-container');
-    const checkBox = document.getElementById('inputShowMixerPlaylist') as HTMLInputElement
-    document.getElementById('inputShowMixerPlaylist-show')?.classList.toggle('d-none')
-    document.getElementById('inputShowMixerPlaylist-hide')?.classList.toggle('d-none')
-    const showMixer = checkBox.checked
-    if (listMixerUpdate) {
-        for (const mixerUpdate of listMixerUpdate) {
-            if (showMixer) {
-                mixerUpdate.classList.remove('hide-playlist-mixer');
-            } else {
-                mixerUpdate.classList.add('hide-playlist-mixer');
-            }
-        }
-    }
-}
-
-function addEventListenerPlaylistVolumeUpdate() {
+function setUpMixerPlaylist() {
     const mixerPlaylist = new MixerPlaylist();
     mixerPlaylist.addEventListener();
 }

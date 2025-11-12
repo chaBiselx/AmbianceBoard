@@ -121,3 +121,5 @@ Nouveautés
 - Ajout d'analytics pour avoir des stats sur les utilisateurs (provenance et rétention)
 - Ajout de fadeOff court lorsque l'on stoppe une musique 
 - Ajout d'un badge pour indiquer le nombre de musique dans une playlist
+- Rendre accessible le volume d'une playlist depuis les soundboards publiques 
+- Pouvoir choisir en sauvegarder le volume d'une playlist ou juste la modifier pour cette partie

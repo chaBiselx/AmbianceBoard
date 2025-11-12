@@ -13,7 +13,7 @@
     <div class="col-12">
         <div style="display:None;" id="players"></div>
 
-        {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum%}
+        {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum owner=False master=True %}
 
         {% include 'Html/partial/soundboard/board.html' with master=True owner=False soundboard=soundboard %}
 

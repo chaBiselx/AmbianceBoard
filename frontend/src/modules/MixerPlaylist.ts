@@ -10,17 +10,52 @@ import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 
-
 class MixerPlaylist {
     private readonly classEvent: string = 'mixer-playlist-update'
     private urlWebSocket: string | null = null;
     private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
+    private idCheckBoxToggle: string = 'inputShowMixerPlaylist'
+    private idContainerPlaylistMixer: string = 'mixer-playlist-update-container'
+    private idSaveBackendValue: string = 'saveVolumePlaylistMixer'
 
     constructor() {
         this.urlWebSocket = this.getWebSocketUrl();
         if (this.urlWebSocket) {
             this.startWebSocket();
         }
+    }
+
+    private needSaveBackend (): boolean{
+        const switchInput = document.getElementById(this.idSaveBackendValue) as HTMLInputElement
+        if(switchInput?.checked){
+            return true;
+        }
+        return false;
+    }
+
+    private togglePlaylistMixer() {
+        const listMixerUpdate = document.getElementsByClassName(this.idContainerPlaylistMixer);
+        const checkBox = document.getElementById(this.idCheckBoxToggle) as HTMLInputElement
+        document.getElementById(`${this.idCheckBoxToggle}-show`)?.classList.toggle('d-none')
+        document.getElementById(`${this.idCheckBoxToggle}-hide`)?.classList.toggle('d-none')
+        document.getElementById(`${this.idSaveBackendValue}-div`)?.classList.toggle('d-none')
+
+        const showMixer = checkBox.checked
+        if (listMixerUpdate) {
+            for (const mixerUpdate of listMixerUpdate) {
+                if (showMixer) {
+                    mixerUpdate.classList.remove('hide-playlist-mixer');
+                } else {
+                    mixerUpdate.classList.add('hide-playlist-mixer');
+                    this.resetInputSaveBackendValue();
+                }
+            }
+        }
+    }
+
+    private resetInputSaveBackendValue() {
+        const switchInput = document.getElementById(this.idSaveBackendValue) as HTMLInputElement
+        switchInput.checked = false;
     }
 
     private getWebSocketUrl(): string | null {
@@ -36,6 +71,18 @@ class MixerPlaylist {
     }
 
     public addEventListener() {
+        this.addEventUpdateVolume();
+        this.addEventToggle();
+    }
+
+    private addEventToggle() {
+        const inputShowMixerPlaylist = document.getElementById('inputShowMixerPlaylist');
+        if (inputShowMixerPlaylist) {
+            inputShowMixerPlaylist.addEventListener('change', this.togglePlaylistMixer.bind(this));
+        }
+    }
+
+    private addEventUpdateVolume() {
         const listMixerUpdate = document.getElementsByClassName(this.classEvent);
         if (listMixerUpdate) {
             for (const mixerUpdate of listMixerUpdate) {
@@ -68,7 +115,9 @@ class MixerPlaylist {
 
         let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist, volume);
         eventUpdateVolumePlaylist.updateVolume();
-        eventUpdateVolumePlaylist.updateBackend(uri);
+        if(this.needSaveBackend()){
+            eventUpdateVolumePlaylist.updateBackend(uri);
+        }
 
     }
 

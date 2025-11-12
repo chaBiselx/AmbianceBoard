@@ -26,6 +26,19 @@
                         </label>
                         <input type="range" id="mixer-general" data-type="General" class="mixer-playlist vertical-mixer" min="0" max="1" value="1" step="0.1">
                     </div>
+                    {% if master == True %}
+                    <div class="mixer-container-item">
+                        <input type="checkbox" class="btn-check" id="inputShowMixerPlaylist" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-block py-1 my-1 text-sm" for="inputShowMixerPlaylist"> <span id="inputShowMixerPlaylist-show">Afficher</span><span id="inputShowMixerPlaylist-hide" class="d-none">Masquer</span> les mixers des boutons</label>
+                        {% if owner == True %}
+                        <div id="saveVolumePlaylistMixer-div" class="form-check form-switch d-none" data-bs-toggle="tooltip" data-bs-title="Modifier le volume de manière permanente">
+                            <input class="form-check-input" type="checkbox" aria-checked="true" role="switch" id="saveVolumePlaylistMixer">
+                            <label class="form-check-label" for="saveVolumePlaylistMixer"><small>Sauvegarder</small></label>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
 
                 </div>
             </div>
