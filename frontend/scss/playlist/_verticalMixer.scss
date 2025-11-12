@@ -15,10 +15,12 @@
 }
 
 .vertical-mixer {
-    writing-mode: bt-lr; /* bottom-to-top, left-to-right */
-    -webkit-appearance: slider-vertical;
+    writing-mode: vertical-lr;
+    direction: rtl;
     display: block;
     width: 100%;
+    height: 80%;
+    margin: 0 auto;
 }
 
 

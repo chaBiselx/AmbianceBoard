@@ -65,3 +65,110 @@ python manage.py createsuperuser
 
 ## 📝 Licence  
 Ce projet est sous licence **MIT**.  
+
+## Architecture 
+
+### Backend 
+
+DDD
+```
+app/main/
+├── application/
+│   ├── auth/
+│   └── helper/
+├── domain
+│   ├── common/
+│   │   ├── decorator/
+│   │   ├── enum/
+│   │   ├── exceptions/
+│   │   ├── factory/
+│   │   ├── helper/
+│   │   ├── mixins/
+│   │   ├── service/
+│   │   ├── strategy/
+│   │   └── utils/
+│   │       ├── EmailSender, ImageResizer, AudioDurationUtils
+│   │       ├── cache/ (système de cache)
+│   │       ├── logger/ (logging)
+│   │       └── settings/ (configuration)
+│   │
+│   ├── general/
+│   │   └── service/ 
+│   ├── private/
+│   │   ├── dto/
+│   │   ├── formatter/
+│   │   ├── manager/
+│   │   └── service/
+│   ├── public/
+│   │   ├── decorator/
+│   │   └── service/
+│   ├── manager/
+│   │   ├── decorator/
+│   │   └── service/
+│   ├── moderator/
+│   │   ├── dto/
+│   │   └── service/
+│   ├── brokers/
+│   │   ├── message/
+│   │   ├── service/
+│   │   └── strategy/
+│   ├── cron/
+│   │   ├── cronFile/
+│   │   └── service/
+│   └── sharedSoundboard/
+│       └── consummers/
+│
+├── interface
+│   ├── ui/
+│   │   ├── controller/
+│   │   │   ├── general/
+│   │   │   ├── private/
+│   │   │   ├── public/
+│   │   │   ├── manager/
+│   │   │   ├── moderator/
+│   │   │   └── sharedSoundboard/
+│   │   ├── forms/
+│   │   │   ├── general/
+│   │   │   ├── private/
+│   │   │   ├── manager/
+│   │   │   └── moderator/
+│   │   ├── seo/
+│   │   ├── templates/
+│   │   └── templatetags/
+│   │
+│   └── admin/
+│
+├── architecture
+│   ├── persistence/
+│   │   ├── models/
+│   │   ├── repository/
+│   │   ├── migrations/
+│   │   └── postMigrate/
+│   │
+│   ├── messaging/
+│   │   ├── email/
+│   │   │   ├── UserMail.py
+│   │   │   └── ModeratorEmail.py
+│   │   ├── tasks/
+│   │   │   └── celery.py
+│   │   └── events/
+│   │       └── signals.py
+│   │
+│   ├── middleware/
+│   │   ├── DailySessionMiddleware.py
+│   │   ├── ErrorTrackingMiddleware.py
+│   │   └── LogRequestsMiddleware.py
+│   │
+│   └── contextProcessors/
+│       ├── general_information_processor.py
+│       ├── sidebar_processor.py
+│       └── user_preference_processor.py
+├── TNR/
+│   ├── TU/ (Tests Unitaires)
+│   ├── TI/ (Tests d'Intégration)
+│   └── Fixtures/
+│
+├── models.py
+└── apps.py
+```
+

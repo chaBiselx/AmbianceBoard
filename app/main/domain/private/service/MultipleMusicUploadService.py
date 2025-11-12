@@ -1,7 +1,7 @@
 
 from django.http import HttpRequest
 from main.architecture.persistence.models.Playlist import Playlist
-from main.service.MusicService import MusicService
+from main.domain.common.service.MusicService import MusicService
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper

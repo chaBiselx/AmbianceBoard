@@ -8,6 +8,7 @@ from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.domain.common.utils.logger import logger
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.architecture.persistence.repository.SharedSoundboardRepository import SharedSoundboardRepository
 
 class SharedSoundboardService():
@@ -18,6 +19,7 @@ class SharedSoundboardService():
         self.group_name = f"soundboard_{soundboard_uuid}_{self.token}"
         self.cache = CacheFactory.get_default_cache()
         self.soundboard_repository = SoundBoardRepository()
+        self.playlist_repository = PlaylistRepository()
 
 
     def music_start(self, playlist_uuid, music):
@@ -32,13 +34,22 @@ class SharedSoundboardService():
                 }
             )
             
-    def music_stop_all(self):
+    def reset_soundboard_player(self):
         if(self._get_shared_soundboard()):
             self._diffuser_message(
                 {
                     "type": "music_stop_all",
                     "track": None,
                     "playlist_uuid": None,
+                }
+            )
+            
+            
+            self._diffuser_message(
+                {
+                    "type": "reset_volume_playlist",
+                    "list_volume": self.playlist_repository.get_default_volume_by_playlist(self.soundboard_uuid),
+                    "update_volume_after_reset" : False
                 }
             )
 

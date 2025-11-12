@@ -1,3 +1,7 @@
+"""
+Configuration de l'interface d'administration Django
+"""
+
 from django.contrib import admin
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.Playlist import Playlist

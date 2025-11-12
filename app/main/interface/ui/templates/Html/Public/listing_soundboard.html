@@ -4,6 +4,8 @@
 {% load FrontJs %}
 {% load static %}
 
+{% block page_title %}Soundboards Publics - Ambiance JDR | AmbianceBoard{% endblock %}
+
 {% block javascript %}
 {{ block.super }}
 <script type="module" src="{% static 'PublicFavorite'|search_true_file %}"></script>
@@ -12,7 +14,6 @@
 {% endblock javascript %}
 
 {% block content %}
-<h2>Soundboards</h2>
 {% if listTags %}
 <div class="accordion" id="accordionPanelsStayOpenExample">
     <div class="accordion-item">

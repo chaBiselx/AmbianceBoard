@@ -48,6 +48,8 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
                 await self.handle_music_stop(data)
             elif message_type == 'music_stop_all':
                 await self.handle_music_stop_all(data)
+            elif message_type == 'reset_volume_playlist':
+                await self.handle_reset_volume_playlist(data)
             elif message_type == 'send_mixer_update':
                 await self.handle_mixer_update(data)
             elif message_type == 'send_playlist_update_volume':
@@ -134,6 +136,21 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
                 'sender': self.channel_name
             }
         )
+    
+    async def handle_reset_volume_playlist(self, data):
+        """remets a jour les niveaux de volume par rapport à la BDD"""
+        # Diffuser à tout le groupe
+        await self.channel_layer.group_send(
+            self.group_name,
+            {
+                'type': 'reset_volume_playlist',
+                'list_volume': data.get('list_volume'),
+                'update_volume_after_reset': data.get('update_volume_after_reset'),
+                'sender': self.channel_name
+            }
+        )
+        
+        
 
     # Handlers pour les messages du groupe
     async def music_start(self, event):
@@ -169,6 +186,18 @@ class SharedSoundboardConsummers(AsyncWebsocketConsumer):
             await self.send(text_data=json.dumps({
                 'type': 'music_stop_all'
             }))
+            
+    async def reset_volume_playlist(self, event):
+        """Reçoit les messages reset_volume_playlist du groupe"""
+        # Ne pas renvoyer le message à l'expéditeur
+        if event.get('sender') != self.channel_name:
+            await self.send(text_data=json.dumps({
+                'type': 'reset_volume_playlist',
+                'data': event.get('list_volume', []),
+                'update_volume_after_reset': event.get('update_volume_after_reset', False),
+                
+            }))
+    
             
     async def handle_mixer_update(self, data_received):
         data = data_received.get('data', {})

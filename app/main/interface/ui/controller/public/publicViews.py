@@ -5,9 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.service.SoundBoardService import SoundBoardService
-from main.service.MusicService import MusicService
-from main.service.RandomizeTrackService import RandomizeTrackService
+from main.domain.common.service.SoundBoardService import SoundBoardService
+from main.domain.common.service.MusicService import MusicService
+from main.domain.common.service.RandomizeTrackService import RandomizeTrackService
 from main.domain.public.decorator.detectBan import detect_ban
 from main.domain.public.decorator.reportingContent import add_reporting_btn
 from django.template.response import TemplateResponse
@@ -16,7 +16,7 @@ from django.views.decorators.http import require_http_methods
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.public.service.ReportContentService import ReportContentService
-from main.service.SharedSoundboardService import SharedSoundboardService
+from main.domain.common.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.common.utils.url import redirection_url
 from main.architecture.persistence.repository.UserFavoritePublicSoundboardRepository import UserFavoritePublicSoundboardRepository
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
@@ -50,6 +50,7 @@ def public_listing_soundboard(request):
     context['listTags'] = tag_repository.get_tag_with_count()
     context['listFavorite'] = UserFavoritePublicSoundboardRepository().get_list_uuids(request.user)
     context['selected_tag'] = selected_tag
+    context['title'] = "Soundboard publiques"
     return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
 
 @require_http_methods(['GET'])
@@ -61,6 +62,7 @@ def public_favorite(request):
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     context['listFavorite'] = UserFavoritePublicSoundboardRepository().get_list_uuids(request.user)
+    context['title'] = "Soundboard favorites"
     return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
 
 
@@ -68,7 +70,7 @@ def public_favorite(request):
 @detect_ban
 @add_reporting_btn()
 def public_soundboard_read_playlist(request, soundboard_uuid):
-    SharedSoundboardService(request, soundboard_uuid).music_stop_all()
+    SharedSoundboardService(request, soundboard_uuid).reset_soundboard_player()
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)

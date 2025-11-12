@@ -1,7 +1,7 @@
 from django.test import TestCase, RequestFactory, tag
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch, MagicMock
-from main.service.MusicService import MusicService
+from main.domain.common.service.MusicService import MusicService
 from main.architecture.persistence.models.Music import Music
 from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.Playlist import Playlist
@@ -55,7 +55,7 @@ class MusicServiceTest(TestCase):
         )
 
     # Tests pour save_multiple_files_item
-    @patch('main.service.MusicService.UserParametersFactory')
+    @patch('main.domain.common.service.MusicService.UserParametersFactory')
     def test_save_multiple_files_item_success(self, mock_user_params_factory):
         """Test la sauvegarde réussie d'un fichier multiple"""
         # Configuration du mock pour les paramètres utilisateur
@@ -88,7 +88,7 @@ class MusicServiceTest(TestCase):
         self.assertEqual(music.playlist, new_playlist)
         self.assertTrue(music.file.name.endswith('.mp3'))
 
-    @patch('main.service.MusicService.UserParametersFactory')
+    @patch('main.domain.common.service.MusicService.UserParametersFactory')
     def test_save_multiple_files_item_limit_playlist_exceeded(self, mock_user_params_factory):
         """Test l'erreur quand la limite de musiques par playlist est dépassée"""
         # Configuration du mock pour une limite basse
@@ -110,7 +110,7 @@ class MusicServiceTest(TestCase):
         
         self.assertIn("limite de musique par playlist", str(context.exception))
 
-    @patch('main.service.MusicService.UserParametersFactory')
+    @patch('main.domain.common.service.MusicService.UserParametersFactory')
     def test_save_multiple_files_item_file_too_large(self, mock_user_params_factory):
         """Test l'erreur quand le fichier est trop volumineux"""
         # Configuration du mock pour une limite de poids basse
@@ -139,7 +139,7 @@ class MusicServiceTest(TestCase):
         
         self.assertIn("poids du fichier est trop lourd", str(context.exception))
 
-    @patch('main.service.MusicService.UserParametersFactory')
+    @patch('main.domain.common.service.MusicService.UserParametersFactory')
     def test_save_multiple_files_item_invalid_extension(self, mock_user_params_factory):
         """Test l'erreur avec une extension de fichier non autorisée"""
         # Configuration du mock
@@ -172,7 +172,7 @@ class MusicServiceTest(TestCase):
         
         self.assertIn("fichiers audio", str(context.exception))
 
-    @patch('main.service.MusicService.UserParametersFactory')
+    @patch('main.domain.common.service.MusicService.UserParametersFactory')
     def test_save_multiple_files_item_default_alternative_name(self, mock_user_params_factory):
         """Test que le nom alternatif par défaut est correctement généré"""
         # Configuration du mock
@@ -200,7 +200,7 @@ class MusicServiceTest(TestCase):
         # Le nom alternatif devrait être le nom du fichier sans extension
         self.assertEqual(music.alternativeName, 'my_awesome_song')
 
-    @patch('main.service.MusicService.UserParametersFactory')
+    @patch('main.domain.common.service.MusicService.UserParametersFactory')
     def test_save_multiple_files_item_truncate_long_name(self, mock_user_params_factory):
         """Test que le nom de fichier long est tronqué à 63 caractères pour alternativeName"""
         # Configuration du mock
@@ -231,7 +231,7 @@ class MusicServiceTest(TestCase):
         self.assertEqual(len(music.alternativeName), 63)
         self.assertEqual(music.alternativeName, long_name[:63])
 
-    @patch('main.service.MusicService.UserParametersFactory')
+    @patch('main.domain.common.service.MusicService.UserParametersFactory')
     def test_save_multiple_files_item_various_audio_formats(self, mock_user_params_factory):
         """Test avec différents formats audio autorisés"""
         # Configuration du mock

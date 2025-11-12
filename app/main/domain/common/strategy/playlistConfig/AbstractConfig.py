@@ -16,6 +16,9 @@ class AbstractConfig():
             "fadeOutType": ConfigTypeDataEnum.STATIC,
             "loop": ConfigTypeDataEnum.STATIC,
             "singleConcurrentRead":ConfigTypeDataEnum.STATIC,
+            "fadeOffOnStop":ConfigTypeDataEnum.STATIC,
+            "fadeOffOnStopDuration":ConfigTypeDataEnum.STATIC,
+            "fadeOffOnStopType":ConfigTypeDataEnum.STATIC,
             "volume" : ConfigTypeDataEnum.PARAM_WITH_DEFAULT,
             "delay" : ConfigTypeDataEnum.PARAM_WITH_DEFAULT
         }

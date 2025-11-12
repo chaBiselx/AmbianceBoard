@@ -7,7 +7,7 @@ from django.views.decorators.http import require_http_methods
 from django.forms import formset_factory
 from main.domain.common.utils.settings import Settings
 from main.domain.common.service.PlaylistService import PlaylistService
-from main.service.SoundBoardService import SoundBoardService
+from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.interface.ui.forms.private.PlaylistColorUserForm import PlaylistColorUserForm
 from main.architecture.persistence.repository.PlaylistColorUserRepository import PlaylistColorUserRepository
 from main.architecture.persistence.repository.UserDevicePreferenceRepository import UserDevicePreferenceRepository
@@ -33,7 +33,7 @@ def settings_index(request):
     app_setting = {
         'target_bitrate': Settings.get('AUDIO_BITRATE_REDUCER_TARGET_BITRATE')
     }
-    return render(request, 'Html/Account/Settings/index.html', {'limit': limit, 'user_tiers': user_tiers, 'nb_playlist': nb_playlist, 'nb_soundboard': nb_soundboard, 'app_setting': app_setting})
+    return render(request, 'Html/Account/Settings/index.html', {'limit': limit, 'user_tiers': user_tiers, 'nb_playlist': nb_playlist, 'nb_soundboard': nb_soundboard, 'app_setting': app_setting, 'title': 'Récapitulatif de votre compte'})
 
 @login_required
 @require_http_methods(['POST', 'GET'])
@@ -63,11 +63,9 @@ def settings_update_default_style(request):
                 return redirect('defaultPlaylistType')
         except Exception as e:
             logger.error(f"settings_update_default_style error : {e}")
-            return render(request, 'Html/Account/Settings/update_default_style_playlist.html', {'formset': formset})
     else:
         formset = playlist_color_user_form_set(initial=initial_data)
-    
-    return render(request, 'Html/Account/Settings/update_default_style_playlist.html', {'formset': formset})
+    return render(request, 'Html/Account/Settings/update_default_style_playlist.html', {'formset': formset, 'title': 'Gestion des couleurs de bouton'})
 
 @require_http_methods(['UPDATE'])
 def update_theme(request):
@@ -139,7 +137,7 @@ def update_soundboard_dim(request):
 @require_http_methods(['GET', 'DELETE'])
 def delete_account(request):
     if request.method == 'GET':
-        return render(request, 'Html/Account/Settings/delete_account.html')
+        return render(request, 'Html/Account/Settings/delete_account.html', {'title': 'Suppression de compte'})
     if request.method == 'DELETE':
         try:
             user = request.user

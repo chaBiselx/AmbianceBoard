@@ -3,6 +3,8 @@
 {% load FrontJs %}
 {% load static %}
 
+{% block page_title %}{% if method == 'update' %}Modifier Bouton{% else %}Créer Bouton{% endif %} | AmbianceBoard{% endblock %}
+
 {% block javascript %}
 {{ block.super }}
 <script type="module" src="{% static "FormPlaylist"|search_true_file %}"></script>
@@ -14,13 +16,13 @@
 
 <div class="card">
     <div class="card-header">
-        <h2>
+        <h1>
             {% if method == 'update' %}
-            Modifier le bouton {{ form.instance.name }}
+            Modifier votre Bouton Ambiance - {{ form.instance.name }}
             {% else %}
-            Créer un nouveau bouton
+            Créer un nouveau Bouton pour votre Soundboard Ambiance
             {% endif %}
-        </h2>
+        </h1>
     </div>
     <div class="card-body">
         <div class="row">

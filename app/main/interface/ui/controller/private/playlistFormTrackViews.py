@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from main.domain.common.service.PlaylistService import PlaylistService
-from main.service.MusicService import MusicService
+from main.domain.common.service.MusicService import MusicService
 from main.domain.private.service.MultipleMusicUploadService import MultipleMusicUploadService
 from main.interface.ui.forms.private.MusicForm import MusicForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum

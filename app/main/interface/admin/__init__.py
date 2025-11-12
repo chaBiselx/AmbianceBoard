@@ -1,0 +1,3 @@
+"""
+Interface d'administration Django
+"""

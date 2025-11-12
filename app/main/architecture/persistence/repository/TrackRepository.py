@@ -1,3 +1,4 @@
+from django.db.models import Avg, Count
 from typing import Any, Optional, List
 from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.User import User
@@ -18,6 +19,13 @@ class TrackRepository:
 
     def get_count(self, playlist: Playlist) -> int:
         return Track.objects.filter(playlist=playlist).count()
+    
+    def get_number_tracks_by_playlist(self, user:User) -> dict[int, int]:
+        queryset = Track.objects.filter(playlist__user=user).values('playlist').annotate(count_tracks=Count('id'))
+        result = {}
+        for entry in queryset:
+            result[entry['playlist']] = entry['count_tracks']
+        return result
     
     def get_random_private(self, playlist_uuid:int, user:User) -> Track|None:
         music_filter = MusicFilter()

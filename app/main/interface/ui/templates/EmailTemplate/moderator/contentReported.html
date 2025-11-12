@@ -6,7 +6,7 @@
 <div>
     <h1>Contenu signalé</h1>
     <p>
-        <h2>Détails du contenu signalé :</h2>
+        <h3>Détails du contenu signalé :</h3>
         <strong>Element :</strong> {{ report.typeElement }}<br>
         <strong>Precision :</strong> {{ report.precisionElement }}<br>
         <strong>Description :</strong> {{ report.descriptionElement }} <br>
@@ -14,7 +14,7 @@
     </p>
     {% if report.creator %}
         <p>
-            <h2>Informations sur l'utilisateur :</h2>
+            <h3>Informations sur l'utilisateur :</h3>
             <strong>Email :</strong> {{ report.creator.email }}<br>
             <strong>Nom d'utilisateur :</strong> {{ report.creator.username }}<br>
             <strong>Date d'inscription :</strong> {{ report.creator.date_joined }}<br>

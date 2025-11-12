@@ -1,7 +1,9 @@
 from django.http import HttpRequest, HttpResponse
-from main.service.GeneralNotificationService import GeneralNotificationService
+from main.domain.common.service.GeneralNotificationService import GeneralNotificationService
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from django.urls import reverse
+from main.domain.common.utils.settings import Settings
+
 
 
 def general_information_processor(request):
@@ -16,4 +18,7 @@ def general_information_processor(request):
             server_notification.add_meta("url_dismiss", reverse("dismissGeneralNotification", args=[notification.uuid]))
 
         server_notification.send()
-    return {}
+    
+    return {
+        'APP_ENV': Settings.get('APP_ENV'),
+    }

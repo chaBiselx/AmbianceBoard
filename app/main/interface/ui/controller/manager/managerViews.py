@@ -14,7 +14,7 @@ from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def manager_dashboard(request) -> HttpResponse:
-    return render(request, 'Html/Manager/dashboard.html')
+    return render(request, 'Html/Manager/dashboard.html', {'title': 'Tableau de bord Manager'})
 
 @login_required
 @require_http_methods(['GET'])

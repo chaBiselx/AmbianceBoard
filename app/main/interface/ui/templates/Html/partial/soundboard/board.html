@@ -23,13 +23,14 @@
                         {{ playlist | applys_playlist_content}}
                     </div>
                     {% endwith %}
-                    {% if owner == True %}
                     <form class="mixer-playlist-update-container hide-playlist-mixer">
-                        <input class="mixer-playlist-update horizontal-slider-input" type="range" value="{{playlist.volume}}" min="0" max="100" id="range_volume_{{ playlist.uuid }}" data-playlistupdatevolumeuri="{% url 'update_direct_volume' playlist.uuid %}"
+                        <input class="mixer-playlist-update horizontal-slider-input" type="range" value="{{playlist.volume}}" min="0" max="100" id="range_volume_{{ playlist.uuid }}" 
+                            {% if owner == True %}
+                            data-playlistupdatevolumeuri="{% url 'update_direct_volume' playlist.uuid %}"
+                            {% endif %}
                             data-defaultvolume="{{ playlist.volume }}" data-idplaylist="{{ playlist.uuid }}" />
                         <output class="horizontal-slider-output bottom" for="range_volume_{{ playlist.uuid}}" style="--min: 0;--max: 100"></output>
                     </form>
-                    {% endif %}
                 </div>
                 {% endfor %}
             </div>

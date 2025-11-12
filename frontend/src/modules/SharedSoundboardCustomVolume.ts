@@ -1,6 +1,6 @@
 import ModalCustom from '@/modules/General/Modal';
 import Cookie from "@/modules/General/Cookie";
-import { SearchMusicElement } from "@/modules/MusicElement";
+import { SearchMusicElement } from "@/modules/MusicElementSearcher";
 import { ButtonPlaylistFinder } from "@/modules/ButtonPlaylist";
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 

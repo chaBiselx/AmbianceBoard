@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from django.views.decorators.http import require_http_methods
-from main.service.MusicService import MusicService
-from main.service.RandomizeTrackService import RandomizeTrackService
+from main.domain.common.service.MusicService import MusicService
+from main.domain.common.service.RandomizeTrackService import RandomizeTrackService
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
@@ -14,7 +14,7 @@ from main.domain.common.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from main.domain.private.formatter.TypePlaylistFormater import TypePlaylistFormater
-from main.service.SoundBoardService import SoundBoardService
+from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.architecture.persistence.repository.MusicRepository import MusicRepository
 
 
@@ -22,6 +22,7 @@ from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
+from main.architecture.persistence.repository.TrackRepository import TrackRepository
 
 
 
@@ -31,7 +32,9 @@ from main.domain.common.utils.logger import logger
 @require_http_methods(['GET'])
 def playlist_read_all(request):
     playlists = (PlaylistService(request)).get_all_playlist()
-    return render(request, 'Html/Playlist/playlist_read_all.html', {'playlists': playlists})
+    track_repository = TrackRepository()
+    number_tracks_by_playlist = track_repository.get_number_tracks_by_playlist(request.user)
+    return render(request, 'Html/Playlist/playlist_read_all.html', {'playlists': playlists, 'number_tracks_by_playlist': number_tracks_by_playlist})
 
 
 @login_required

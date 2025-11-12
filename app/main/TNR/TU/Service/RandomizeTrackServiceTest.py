@@ -2,8 +2,8 @@ from django.test import TestCase, RequestFactory, tag
 from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import patch, MagicMock, Mock
 import uuid
-from main.service.RandomizeTrackService import RandomizeTrackService
-from main.service.SoundBoardService import SoundBoardService
+from main.domain.common.service.RandomizeTrackService import RandomizeTrackService
+from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.architecture.persistence.models.Music import Music
 from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.Playlist import Playlist
@@ -59,7 +59,7 @@ class RandomizeTrackServiceTest(TestCase):
         # Assert
         self.assertIsNone(result)
 
-    @patch('main.service.RandomizeTrackService.SoundBoardService')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_public')
     def test_generate_public_success(self, mock_get_random_public, mock_soundboard_service):
         """Test génération aléatoire publique avec succès"""
@@ -81,7 +81,7 @@ class RandomizeTrackServiceTest(TestCase):
         mock_service_instance.get_public_soundboard.assert_called_once_with(self.soundboard_uuid)
         mock_get_random_public.assert_called_once_with(self.playlist_uuid)
 
-    @patch('main.service.RandomizeTrackService.SoundBoardService')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     def test_generate_public_soundboard_not_found(self, mock_soundboard_service):
         """Test génération aléatoire publique quand le soundboard n'est pas trouvé"""
         # Arrange
@@ -96,7 +96,7 @@ class RandomizeTrackServiceTest(TestCase):
         self.assertIsNone(result)
         mock_service_instance.get_public_soundboard.assert_called_once_with(self.soundboard_uuid)
 
-    @patch('main.service.RandomizeTrackService.SoundBoardService')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_public')
     def test_generate_public_playlist_not_exist(self, mock_get_random_public, mock_soundboard_service):
         """Test génération aléatoire publique quand la playlist n'existe pas"""
@@ -115,8 +115,8 @@ class RandomizeTrackServiceTest(TestCase):
         # Assert
         self.assertIsNone(result)
 
-    @patch('main.service.RandomizeTrackService.SoundBoardService')
-    @patch('main.service.RandomizeTrackService.Track.objects')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
+    @patch('main.domain.common.service.RandomizeTrackService.Track.objects')
     def test_get_shared_success(self, mock_track_objects, mock_soundboard_service):
         """Test récupération d'une track partagée avec succès"""
         # Arrange
@@ -140,7 +140,7 @@ class RandomizeTrackServiceTest(TestCase):
             pk=self.music_id, playlist__uuid=self.playlist_uuid
         )
 
-    @patch('main.service.RandomizeTrackService.SoundBoardService')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     def test_get_shared_soundboard_not_found(self, mock_soundboard_service):
         """Test récupération d'une track partagée quand le soundboard n'est pas trouvé"""
         # Arrange
@@ -157,8 +157,8 @@ class RandomizeTrackServiceTest(TestCase):
             self.soundboard_uuid, self.token
         )
 
-    @patch('main.service.RandomizeTrackService.SoundBoardService')
-    @patch('main.service.RandomizeTrackService.Track.objects')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
+    @patch('main.domain.common.service.RandomizeTrackService.Track.objects')
     def test_get_shared_track_not_exist(self, mock_track_objects, mock_soundboard_service):
         """Test récupération d'une track partagée quand la track n'existe pas"""
         # Arrange
@@ -175,8 +175,8 @@ class RandomizeTrackServiceTest(TestCase):
         # Assert
         self.assertIsNone(result)
 
-    @patch('main.service.RandomizeTrackService.SoundBoardService')
-    @patch('main.service.RandomizeTrackService.Track.objects')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
+    @patch('main.domain.common.service.RandomizeTrackService.Track.objects')
     def test_get_shared_playlist_not_exist(self, mock_track_objects, mock_soundboard_service):
         """Test récupération d'une track partagée quand la playlist n'existe pas"""
         # Arrange

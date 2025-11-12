@@ -1,7 +1,8 @@
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import { ButtonPlaylist, ListingButtonPlaylist } from '@/modules/ButtonPlaylist';
-import { MusicElement, ListingAudioElement } from '@/modules/MusicElement';
+import { ListingAudioElement } from '@/modules/MusicElementSearcher';
+import { MusicElementFactory } from '@/modules/MusicElementFactory';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 
 
@@ -9,7 +10,7 @@ class SoundBoardManager {
     static createPlaylistLink(buttonPlaylist: ButtonPlaylist) {
         ConsoleTesteur.log('createPlaylistLink', buttonPlaylist);
 
-        const musicElement = new MusicElement(buttonPlaylist);
+        const musicElement = MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
         (new UpdateVolumeElement(musicElement)).update();
         musicElement.addToDOM();
         musicElement.play();
@@ -24,8 +25,10 @@ class SoundBoardManager {
 
         } else {
             buttonPlaylist.disactive();
-            while (audioElement.length > 0) { // delete all playlist
-                (new MusicElement(audioElement[0] as HTMLAudioElement)).delete();
+            // Collect all elements before deleting (FadeOffOnStop delays removal)
+            const elements = Array.from(audioElement) as HTMLAudioElement[];
+            for(const element of elements) {
+                MusicElementFactory.fromAudioElement(element).delete();
             }
         }
 
@@ -33,8 +36,10 @@ class SoundBoardManager {
 
     static removePlaylist(buttonPlaylist: ButtonPlaylist) {
         const audioElement = document.getElementsByClassName(`playlist-audio-${buttonPlaylist.idPlaylist}`) as HTMLCollectionOf<HTMLAudioElement>;
-        while (audioElement.length > 0) { // delete all playlist
-            (new MusicElement(audioElement[0])).delete();
+        // Collect all elements before deleting (FadeOffOnStop delays removal)
+        const elements = Array.from(audioElement);
+        for(const element of elements) {
+            MusicElementFactory.fromAudioElement(element).delete();
         }
     }
 

@@ -17,6 +17,9 @@ class ConfigAmbient(AbstractConfig):
             "fadeOutType": FadeEnum.EASE_IN.value,
             "loop": True,
             "singleConcurrentRead":False,
+            "fadeOffOnStop":True,
+            "fadeOffOnStopDuration":0.5,
+            "fadeOffOnStopType":FadeEnum.LINEAR.value,
             "volume" : 75,
             "delay" : 0
         }

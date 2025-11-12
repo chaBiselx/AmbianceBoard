@@ -1,4 +1,5 @@
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
+import ConsoleTraceServeur from '@/modules/General/ConsoleTraceServeur';
 import Notification from '@/modules/General/Notifications';
 import ModalCustom from './General/Modal';
 import {
@@ -37,6 +38,9 @@ export class MusicDropzoneManager {
         const callbacks: IDropZoneCallbacks = {
             onFileAdded: (_file: File) => {
                 ModalCustom.hide();
+                setTimeout(() => {
+                    ModalCustom.wait();
+                }, 500);
             },
             onUploadSuccess: (files: DropZoneFileList, response: IUploadResponse) => {
                 this.handleUploadSuccess(files, response);
@@ -80,16 +84,42 @@ export class MusicDropzoneManager {
         }, 500);
     }
 
-    private handleUploadError(_files: DropZoneFileList, json: any): void {
-        ConsoleCustom.error('Upload error:', json);
-        const errors = json.error || (typeof json === 'string' ? [json] : ['An unknown error occurred']);
+    private handleUploadError(_files: DropZoneFileList, response: any): void {
+        ConsoleCustom.error('Upload error:', response);
+        
+        // Gestion de l'erreur 413 (fichier trop volumineux)
+        if (response.status === 413) {
+            this.showErrors(['Le fichier est trop volumineux. Veuillez réduire la taille de votre fichier.']);
+            return;
+        }
+
+        let errors: string[] = [];
+        
+        // Extraction des erreurs
+        if (response.error) {
+            errors = Array.isArray(response.error) ? response.error : [response.error];
+        } else if (typeof response === 'string') {
+            errors = [response];
+        } else {
+            errors = ['Une erreur inconnue est survenue'];
+        }
+
+        // Filtrer les réponses HTML (erreurs serveur)
+        errors = errors.map(error => {
+            if (typeof error === 'string' && (error.includes('<!DOCTYPE') || error.includes('<html'))) {
+                ConsoleTraceServeur.error(`Server error response ${response.status} : `, error);
+                return 'Erreur serveur. Veuillez contacter l\'administrateur.';
+            }
+            return error;
+        });
+
         this.showErrors(errors);
     }
 
     private showErrors(errors: Array<string>): void {
-        errors.forEach((error: string) => {
+        for(const error of errors) {
             Notification.createClientNotification({ message: error, type: 'danger' });
-        });
+        }
     }
 
     public destroy(): void {

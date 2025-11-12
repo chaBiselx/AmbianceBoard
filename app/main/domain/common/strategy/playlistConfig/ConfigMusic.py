@@ -17,6 +17,9 @@ class ConfigMusic(AbstractConfig):
             "fadeOutType": FadeEnum.EASE.value,
             "loop": True,
             "singleConcurrentRead":True,
+            "fadeOffOnStop":True,
+            "fadeOffOnStopDuration":2,
+            "fadeOffOnStopType":FadeEnum.EASE_IN.value,
             "volume" : 75,
             "delay" : 0
         }

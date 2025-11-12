@@ -1,18 +1,30 @@
 {% extends 'Html/partial/structure/base.html' %}
 {% load Playlist %}
+{% load Utils %}
 
+{% block page_title %}Mes Boutons Playlist | AmbianceBoard{% endblock %}
 
 {% block content %}
-<h2>Boutons</h2>
 
 <div class="row">
     <div class="col-12">
         <div class="flex-container">
             {% for playlist in playlists %}
+
             <a href="{% url 'playlistUpdate' playlist.uuid %}">
-                <div class="playlist-link playlist-element flex-item playlist-dim-{{ playlist_dim }} m-1" style="background-color: {{ playlist.get_color }};color: {{ playlist.get_color_text }};">
-                    {{ playlist | applys_playlist_content}}
+                <div class="position-relative">
+
+                    
+                    <div class="playlist-link playlist-element flex-item playlist-dim-{{ playlist_dim }} m-1" style="background-color: {{ playlist.get_color }};color: {{ playlist.get_color_text }};">
+                        {{ playlist | applys_playlist_content}}
+                    </div>
+                    {% with number_tracks=number_tracks_by_playlist|get_dict_item:playlist.id|default:"0" %} 
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill {% if number_tracks > 0 %}bg-primary{% else %}bg-danger{% endif %}">
+                        {{ number_tracks }}
+                    </span>
+                    {% endwith %}
                 </div>
+
             </a>
             {% endfor %}
         </div>

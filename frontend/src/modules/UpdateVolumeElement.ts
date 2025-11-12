@@ -29,16 +29,15 @@ class UpdateVolumeElement {
         const key = this.musicElement.idPlaylist
         if (!(key in UpdateVolumeElement.mixerCache)) {
             if (this.musicElement.defaultVolume) {
-                UpdateVolumeElement.mixerCache[key] = this.musicElement.defaultVolume;
+                return this.musicElement.defaultVolume
             } else {
                 let button = ButtonPlaylistFinder.search(this.musicElement.idPlaylist);
                 if (button) {
-                    UpdateVolumeElement.mixerCache[key] = button.getVolume();
+                    this.setCache(key, button.getVolume())
                 }
             }
-
         }
-        return UpdateVolumeElement.mixerCache[key];
+        return this.getCache(key);
     }
 
     private getVolumeMixerValue(type: string): number {
@@ -60,10 +59,22 @@ class UpdateVolumeElement {
         return Math.round(value * 100) / 100;
     }
 
+    public getCache(key :string): number {
+        return UpdateVolumeElement.mixerCache[key];
+    }
+
+    public setCache( key :string ,  value : number){
+        UpdateVolumeElement.mixerCache[key] = value;
+    }
+
     public clearCache( key: string) : this {
         delete UpdateVolumeElement.mixerCache[key];
         delete UpdateVolumeElement.mixerCache['general'];
         return this;
+    }
+
+    public static clearAllCache(): void {
+        UpdateVolumeElement.mixerCache = {}
     }
 }
 

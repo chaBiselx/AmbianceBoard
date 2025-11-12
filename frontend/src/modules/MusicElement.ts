@@ -10,9 +10,9 @@ import * as Model from '@/modules/FadeStartegy';
 import AudioFadeManager from '@/modules/AudioFadeManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import Cookie from '@/modules/General/Cookie';
-import Boolean from "@/modules/Util/Boolean";
 import Time from "@/modules/Util/Time";
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
+import { MusicElementDTO } from '@/modules/MusicElementFactory';
 
 
 
@@ -22,7 +22,7 @@ class MusicElement {
     DOMElement: HTMLAudioElement
     idPlaylist: string = '';
     playlistType: string = '';
-    defaultVolume: number = 1;
+    defaultVolume: number | null = null;
     levelFade: number = 1;
     durationRemainingTriggerNextMusic: number = 0;
     fadeInOnGoing: boolean = false;
@@ -39,90 +39,42 @@ class MusicElement {
     baseUrl: string = ''; // url of playlist to stream music
     WebSocketActive: boolean = false; // user has websocket connection to command shared soundboard
     duration: number | null = null;
+    fadeOffOnStop: boolean = false;
+    fadeOffOnStopDuration: number = 0;
+    fadeOffOnStopType: string = 'linear';
     private boundEventEnd: (() => void) | null = null;
 
 
-    constructor(Element: HTMLAudioElement | ButtonPlaylist) {
-        if (Element instanceof HTMLAudioElement) {
-            this.DOMElement = Element;
-            this.setDefaultValue();
-        } else {
-            this.DOMElement = document.createElement('audio');
-            this.setDefaultFromPlaylist(Element);
-        }
+    constructor(audioElement: HTMLAudioElement, dto: MusicElementDTO) {
+        this.DOMElement = audioElement;
+        this.initializeFromDTO(dto);
 
         if (Cookie.get('WebSocketToken') != null) {
             this.WebSocketActive = true;
         }
     }
 
-    private setDefaultValue() {
-        if (this.DOMElement.dataset.butonPlaylistToken) {
-            this.butonPlaylistToken = this.DOMElement.dataset.butonPlaylistToken;
-        }
-        if (this.DOMElement.dataset.defaultvolume) {
-            this.defaultVolume = Number.parseFloat(this.DOMElement.dataset.defaultvolume);
-        }
-        if (this.DOMElement.dataset.fadein) {
-            this.fadeIn = this.DOMElement.dataset.fadein == "true";
-        }
-        if (this.DOMElement.dataset.durationremainingtriggernextmusic) {
-            this.durationRemainingTriggerNextMusic = Number.parseFloat(this.DOMElement.dataset.durationremainingtriggernextmusic);
-        }
-        if (this.DOMElement.dataset.fadeintype) {
-            this.fadeInType = this.DOMElement.dataset.fadeintype;
-        }
-        if (this.DOMElement.dataset.fadeinduration) {
-            this.fadeInDuration = Number.parseFloat(this.DOMElement.dataset.fadeinduration);
-        }
-        if (this.DOMElement.dataset.fadeout) {
-            this.fadeOut = this.DOMElement.dataset.fadeout == "true";
-        }
-        if (this.DOMElement.dataset.fadeouttype) {
-            this.fadeOutType = this.DOMElement.dataset.fadeouttype;
-        }
-        if (this.DOMElement.dataset.fadeoutduration) {
-            this.fadeOutDuration = Number.parseFloat(this.DOMElement.dataset.fadeoutduration);
-        }
-        if (this.DOMElement.dataset.playlisttype) {
-            this.playlistType = this.DOMElement.dataset.playlisttype;
-        }
-        if (this.DOMElement.dataset.playlistid) {
-            this.idPlaylist = this.DOMElement.dataset.playlistid;
-        }
-        if (this.DOMElement.dataset.playlistloop) {
-            this.playlistLoop = this.DOMElement.dataset.playlistloop == "true";
-        }
-        if (this.DOMElement.dataset.playlistdelay) {
-            this.delay = Number.parseFloat(this.DOMElement.dataset.playlistdelay);
-        }
-        if (this.DOMElement.dataset.baseurl) {
-            this.baseUrl = this.DOMElement.dataset.baseurl!;
-        }
-    }
-
-    private setDefaultFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        this.setDefaultVolumeFromPlaylist(buttonPlaylist);
-        this.setDurationRemainingTriggerNextMusic(buttonPlaylist);
-        this.setFadeInFromPlaylist(buttonPlaylist);
-        this.setFadeOutFromPlaylist(buttonPlaylist);
-        this.setPlaylistTypeFromPlaylist(buttonPlaylist);
-        this.setPlaylistIdFromPlaylist(buttonPlaylist);
-        this.setPlaylistLoopFromPlaylist(buttonPlaylist);
-        this.setPlaylistDelayFromPlaylist(buttonPlaylist);
-        this.setButtonPlaylistTokenFromPlaylist(buttonPlaylist);
-        this.setBaseURlFromPlaylist(buttonPlaylist);
-
-
-        this.DOMElement.className = `playlist-audio-${buttonPlaylist.idPlaylist}`;
-
-        this.DOMElement.classList.add('audio-' + buttonPlaylist.dataset.playlistType)
-        let src = this.baseUrl
-        if (!this.isSlave()) {
-            src += "?i=" + Date.now();
-        }
-        this.DOMElement.src = src;
-        this.DOMElement.controls = Config.DEBUG;
+    /**
+     * Initialise les propriétés de MusicElement à partir du DTO
+     */
+    private initializeFromDTO(dto: MusicElementDTO): void {
+        this.butonPlaylistToken = dto.butonPlaylistToken;
+        this.defaultVolume = dto.defaultVolume;
+        this.fadeIn = dto.fadeIn;
+        this.fadeInType = dto.fadeInType;
+        this.fadeInDuration = dto.fadeInDuration;
+        this.fadeOut = dto.fadeOut;
+        this.fadeOutType = dto.fadeOutType;
+        this.fadeOutDuration = dto.fadeOutDuration;
+        this.playlistType = dto.playlistType;
+        this.idPlaylist = dto.idPlaylist;
+        this.playlistLoop = dto.playlistLoop;
+        this.delay = dto.delay;
+        this.baseUrl = dto.baseUrl;
+        this.durationRemainingTriggerNextMusic = dto.durationRemainingTriggerNextMusic;
+        this.fadeOffOnStop = dto.fadeOffOnStop;
+        this.fadeOffOnStopDuration = dto.fadeOffOnStopDuration;
+        this.fadeOffOnStopType = dto.fadeOffOnStopType;
     }
 
     public setDefaultVolume(volume: number) {
@@ -142,8 +94,30 @@ class MusicElement {
     public delete() {
         const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist) as ButtonPlaylist;
         buttonPlaylist.disactive();
-        this.removeDomElement();
+        this.addFadeOutOnStop(() => {
+            this.removeDomElement();
+        });
         this.callAPIToStop();
+    }
+
+    private addFadeOutOnStop(callback: () => void) {
+        ConsoleCustom.log('addFadeOutOnStop');
+        if( !this.fadeOffOnStop ){
+            callback();
+            return;
+        }
+        
+        if (this.fadeInGoing) {
+            ConsoleCustom.log('ignore fade out if fade in not finished');
+            callback();
+            return // ignore fade out if fade in not finished
+        }
+
+        ConsoleCustom.log('start fade off on stop');
+        const typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeOffOnStopType)
+        const audioFade = new AudioFadeManager(this, typeFade, false, callback);
+        audioFade.setDuration(this.fadeOffOnStopDuration);
+        audioFade.start();
     }
 
     private removeDomElement() {
@@ -366,92 +340,6 @@ class MusicElement {
         }
     }
 
-    private setDefaultVolumeFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        if (buttonPlaylist.dataset.playlistVolume) {
-            this.setDefaultVolume(buttonPlaylist.getVolume());
-        }
-    }
-
-    private setDurationRemainingTriggerNextMusic(buttonPlaylist: ButtonPlaylist): void {
-        if (buttonPlaylist.dataset.playlistDurationremainingtriggernextmusic) {
-            this.durationRemainingTriggerNextMusic = Number.parseFloat(buttonPlaylist.dataset.playlistDurationremainingtriggernextmusic);
-            this.DOMElement.dataset.durationremainingtriggernextmusic = this.durationRemainingTriggerNextMusic.toString();
-        }
-    }
-
-    private setFadeInFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        if (buttonPlaylist.dataset.playlistFadein) {
-            this.fadeIn = Boolean.convert(buttonPlaylist.dataset.playlistFadein);
-            this.DOMElement.dataset.fadein = this.fadeIn.toString();
-        }
-        if (buttonPlaylist.dataset.playlistFadeintype) {
-            this.fadeInType = buttonPlaylist.dataset.playlistFadeintype;
-            this.DOMElement.dataset.fadeintype = this.fadeInType;
-        }
-        if (buttonPlaylist.dataset.playlistFadeinduration) {
-            this.fadeInDuration = Number.parseFloat(buttonPlaylist.dataset.playlistFadeinduration);
-            this.DOMElement.dataset.fadeinduration = this.fadeInDuration.toString();
-        }
-    }
-
-    private setFadeOutFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        if (buttonPlaylist.dataset.playlistFadeout) {
-            this.fadeOut = Boolean.convert(buttonPlaylist.dataset.playlistFadeout);
-            this.DOMElement.dataset.fadeout = this.fadeOut.toString();
-        }
-        if (buttonPlaylist.dataset.playlistFadeouttype) {
-            this.fadeOutType = buttonPlaylist.dataset.playlistFadeouttype;
-            this.DOMElement.dataset.fadeouttype = this.fadeOutType;
-        }
-        if (buttonPlaylist.dataset.playlistFadeoutduration) {
-            this.fadeOutDuration = Number.parseFloat(buttonPlaylist.dataset.playlistFadeoutduration);
-            this.DOMElement.dataset.fadeoutduration = this.fadeOutDuration.toString();
-        }
-    }
-
-    private setPlaylistTypeFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        if (buttonPlaylist.dataset.playlistType) {
-            this.playlistType = buttonPlaylist.dataset.playlistType;
-            this.DOMElement.dataset.playlisttype = this.playlistType;
-        }
-    }
-
-    private setPlaylistIdFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        if (buttonPlaylist.idPlaylist) {
-            this.idPlaylist = buttonPlaylist.idPlaylist;
-            this.DOMElement.dataset.playlistid = this.idPlaylist;
-        }
-    }
-
-    private setPlaylistLoopFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        if (buttonPlaylist.dataset.playlistLoop) {
-            this.playlistLoop = Boolean.convert(buttonPlaylist.dataset.playlistLoop);
-            this.DOMElement.dataset.playlistloop = this.playlistLoop.toString();
-        }
-    }
-
-    private setPlaylistDelayFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        if (buttonPlaylist.dataset.playlistDelay) {
-            this.delay = Number.parseFloat(buttonPlaylist.dataset.playlistDelay);
-            this.DOMElement.dataset.playlistdelay = this.delay.toString();
-        }
-    }
-
-    private setButtonPlaylistTokenFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        const token = buttonPlaylist.getToken();
-        if (token) {
-            this.butonPlaylistToken = token;
-            this.DOMElement.dataset.butonPlaylistToken = this.butonPlaylistToken;
-        }
-    }
-
-    private setBaseURlFromPlaylist(buttonPlaylist: ButtonPlaylist): void {
-        this.baseUrl = buttonPlaylist.dataset.playlistUri!;
-        this.DOMElement.dataset.baseurl = this.baseUrl;
-    }
-
-
-
     private handleAudioError(event: Event) {
         
         if (event.target && event.target instanceof HTMLAudioElement) {
@@ -471,40 +359,6 @@ class MusicElement {
 
 }
 
-class SearchMusicElement {
-    static searchByButton(buttonPlaylist: ButtonPlaylist): MusicElement[] {
-        const audio = document.getElementsByClassName('playlist-audio-' + buttonPlaylist.idPlaylist) as HTMLCollectionOf<HTMLAudioElement>;
-        const listMusic: MusicElement[] = [];
-        if (audio.length > 0) {
-            for (let audioDom of audio) {
-                listMusic.push(new MusicElement(audioDom));
-            }
-        }
-        return listMusic;
-    }
-}
 
-class ListingAudioElement {
-    static getListingAudioElement(type: string): MusicElement[] {
-        const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
-        const audio = audioElementDiv.getElementsByClassName('audio-' + type) as HTMLCollectionOf<HTMLAudioElement>;
-        const listingMusicElement: MusicElement[] = []
-        for (let audioDom of audio) {
-            listingMusicElement.push(new MusicElement(audioDom));
-        };
-        return listingMusicElement;
-    }
-
-    static getListAllAudio(): MusicElement[] {
-        const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
-        const audio = audioElementDiv.getElementsByTagName('audio');
-        const listingMusicElement: MusicElement[] = []
-        for (let audioDom of audio) {
-            listingMusicElement.push(new MusicElement(audioDom));
-        };
-        return listingMusicElement;
-    }
-}
-
-export { MusicElement, ListingAudioElement, SearchMusicElement };
+export { MusicElement };
 

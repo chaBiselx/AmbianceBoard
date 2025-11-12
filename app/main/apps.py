@@ -8,4 +8,5 @@ class UploadConfig(AppConfig):
     migrations_module = 'main.architecture.persistence.migrations'
     
     def ready(self) -> None:
-        import main.signals  # Importer les signals
+        import main.architecture.messaging.events.signals  # Importer les signals
+        import main.interface.admin.admin  # Importer la configuration admin

@@ -1,23 +1,4 @@
-## Format de Notes de Version (Communication)
-Chaque future version utilisera ce format simple :
 
-```
-### Version X.Y.Z
-Nouveautés
-- …
-
-Améliorations
-- …
-
-Corrections
-- …
-
-Fiabilité & Confiance
-- (stabilité, perf, sécurité visibles)
-
-Prochain Focus
-- …
-```
 
 ------------------------------
 ## Historique
@@ -114,3 +95,32 @@ Nouveautés
 
 Fiabilité & Confiance
 - Modification de la structure pour respecter le DDD
+
+
+### 0.2.0-beta.1 - 2025/11
+Nouveautés
+- Ajout d'analytics pour avoir des stats sur les utilisateurs (provenance et rétention)
+- Ajout de fadeOff court lorsque l'on stoppe une musique 
+- Ajout d'un badge pour indiquer le nombre de musique dans une playlist
+- Rendre accessible le volume d'une playlist depuis les soundboards publiques 
+- Pouvoir choisir en sauvegarder le volume d'une playlist ou juste la modifier pour cette partie
+- Actualisation des volumes coté joueurs en cas du rechargement de la page maître 
+
+
+
+### X.Y.Z - Date
+Chaque future version utilisera ce format simple :
+Nouveautés
+- …
+
+Améliorations
+- …
+
+Corrections
+- …
+
+Fiabilité & Confiance
+- …
+
+Prochain Focus
+- …

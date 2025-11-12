@@ -1,4 +1,3 @@
-# app/main/service/tests/test_ConfirmationUserService.py
 
 import unittest
 from unittest.mock import Mock, patch

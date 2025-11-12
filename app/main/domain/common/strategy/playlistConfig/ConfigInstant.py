@@ -17,6 +17,9 @@ class ConfigInstant(AbstractConfig):
             "fadeOutType": FadeEnum.LINEAR.value,
             "loop": False,
             "singleConcurrentRead" : False,
+            "fadeOffOnStop":False,
+            "fadeOffOnStopDuration":0,
+            "fadeOffOnStopType":FadeEnum.LINEAR.value,
             "volume" : 75,
             "delay" :  0
         }

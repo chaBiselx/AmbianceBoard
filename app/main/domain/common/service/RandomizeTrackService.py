@@ -7,7 +7,7 @@ from main.architecture.persistence.repository.filters.MusicFilter import MusicFi
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.interface.ui.forms.private.MusicForm import MusicForm
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
-from main.service.SoundBoardService import SoundBoardService
+from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 
 

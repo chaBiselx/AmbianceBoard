@@ -1,8 +1,7 @@
 {% extends 'Html/partial/structure/base.html' %}
 {% load SoundBoard %}
 
-
-
+{% block page_title %}{{ soundboard.name }} - Soundboard Ambiance | AmbianceBoard{% endblock %}
 
 {% block content %}
 
@@ -14,7 +13,7 @@
     <div class="col">
         <div style="display:None;" id="players"></div>
 
-        {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum%}
+        {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum owner=True master=True %}
 
         {% include 'Html/partial/soundboard/board.html' with master=True owner=True soundboard=soundboard %}
 
@@ -26,8 +25,6 @@
 
             <a class="btn btn-primary btn-block py-1 my-1" href="{% url 'organizeSoundboard' soundboard.uuid %}">Organiser</a>
 
-            <input type="checkbox" class="btn-check" id="inputShowMixerPlaylist" autocomplete="off">
-            <label class="btn btn-outline-primary btn-block py-1 my-1" for="inputShowMixerPlaylist"> <span id="inputShowMixerPlaylist-show">Afficher</span><span id="inputShowMixerPlaylist-hide" class="d-none">Masquer</span> les mixers des boutons</label>
 
             <a class="btn btn-warning btn-block py-1 my-1" href="{% url 'soundboardsUpdate' soundboard.uuid %}">Modifier le general du SoundBoard</a>
 

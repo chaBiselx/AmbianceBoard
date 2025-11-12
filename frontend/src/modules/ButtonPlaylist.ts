@@ -20,6 +20,11 @@ class ButtonPlaylist {
         return this.idPlaylist;
     }
 
+    public setVolume(newVolume: number): this {
+        this.dataset.playlistVolume = newVolume.toString();
+        return this;
+    }
+
     public getVolume(): number {
         const volume = this.dataset.playlistVolume
         if (volume === undefined) return 1
@@ -53,8 +58,6 @@ class ButtonPlaylist {
         return this.idPlaylist
     }
 
-
-
 }
 
 class ButtonPlaylistFinder {
@@ -73,7 +76,6 @@ class ListingButtonPlaylist {
         const buttonPlaylistList: ButtonPlaylist[] = [];
         for (const button of buttonPlaylists) {
             buttonPlaylistList.push(new ButtonPlaylist(button));
-            
         }
         return buttonPlaylistList;
     }

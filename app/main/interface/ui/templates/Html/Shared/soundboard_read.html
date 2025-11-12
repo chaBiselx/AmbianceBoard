@@ -21,7 +21,7 @@
         <div style="display:None;" id="active-WS" data-url="{{ ws_url }}"></div>
 
         <div class="d-none">
-            {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum%}
+            {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum owner=False master=False %}
         </div>
 
         {% include 'Html/partial/soundboard/board.html' with master=False owner=False soundboard=soundboard %}

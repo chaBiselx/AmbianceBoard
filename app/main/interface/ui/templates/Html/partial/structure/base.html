@@ -7,8 +7,9 @@
 <html lang="fr" {% include 'Html/partial/structure/theme/theme.html' %} data-bs-theme="{% get_user_theme %}">
 
 <head>
-    <title>Ambiance Soundboard</title>
+    <title>{% block page_title %}AmbianceBoard - Soundboard Ambiance pour Jeux de Rôle{% endblock %}</title>
     {% include 'Html/partial/structure/utils/meta.html' %}
+    {% include 'Html/partial/structure/utils/analyticsHead.html' %}
 
     <!-- Core theme CSS (includes Bootstrap)-->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
@@ -20,6 +21,8 @@
 </head>
 
 <body id="mainBody" class="{% include 'Html/partial/structure/sidebar/sidebar_class.html'%}">
+    {% include 'Html/partial/structure/utils/analyticsBody.html' %}
+
     <!-- Show base layout -->
     <button class="show-base-layout rounded fullScreen-element-inline" id="showBaseLayoutButton">
         <i class="fa-solid fa-minimize"></i>
@@ -32,8 +35,8 @@
 
 
             <a class="navbar-brand fw-semibold" href="{% url 'home' %}">
-                <img src="{% static 'img/logo.png' %}" class="d-sm-inline" alt="img main logo" width="40" height="40">
-                <span class="main-title">{% block title %} Ambiance Soundboard {% endblock %}</span>
+                <img src="{% static 'img/logo.png' %}" class="d-sm-inline" alt="AmbianceBoard - Soundboard et Playlist Musicale" width="40" height="40">
+                <span class="main-title">{% block title %}AmbianceBoard - Soundboard Ambiance{% endblock %}</span>
 
             </a>
 

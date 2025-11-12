@@ -1,6 +1,6 @@
 
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
-import { MusicElement } from '@/modules/MusicElement';
+import { MusicElementFactory } from '@/modules/MusicElementFactory';
 import Cookie from '@/modules/General/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
 import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
@@ -101,7 +101,7 @@ class MixerManager {
         const listAudio = document.getElementsByClassName('audio-' + type);
         for (let audio of listAudio) {
 
-            const musicElement = new MusicElement(audio as HTMLAudioElement);
+            const musicElement = MusicElementFactory.fromAudioElement(audio as HTMLAudioElement);
             new UpdateVolumeElement(musicElement).clearCache(type).update();
         }
     }
