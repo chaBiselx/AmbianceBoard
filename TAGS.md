@@ -8,8 +8,8 @@ Nouveautés
 - Organisation de plusieurs playlists par soundboard (ordre défini)
 - Trois types de playlists : Ambiance continue, Effets instantanés, Musiques
 - Upload de sons & musiques (ajout direct dans une playlist)
-- Ajout de lien vers fichier en ligne
-- Ajout de lien vers streaming (radio)
+- Ajout de liens vers fichier en ligne
+- Ajout de liens vers streaming (radio)
 - Ajustement du volume global d’une playlist appliqué automatiquement aux sons
 - Tags sur les soundboards + filtrage par tag dans l’interface
 - Ajout de soundboards publics en favoris
@@ -18,80 +18,80 @@ Nouveautés
 - Signalement (report) d’un soundboard ou d’une playlist (interface guidée)
 - Partage public d’un soundboard (lien accessible)
 - Première version de session partagée en temps réel (mise à jour live précoce)
-- Base des tiers utilisateurs (sans Paiment)
+- Base des tiers utilisateurs (sans paiement)
 
 ### 0.1.0-beta.2 - 2025/09
 Corrections
-- fix script de deploiement
+- Fix du script de déploiement
 
 
 ### 0.1.0-beta.3 - 2025/10
 Nouveautés
-- Ajout des préférence selon le type de support
-- Ajout des sections pour les playlist pour l'organisation et la lecture des playlist
+- Ajout des préférences selon le type de support
+- Ajout des sections pour les playlists pour l'organisation et la lecture des playlists
 
 Améliorations
-- Amélioration de l'esthétique des page d'erreurs
-- Amélioration du logger pour beta testeur
+- Amélioration de l'esthétique des pages d'erreurs
+- Amélioration du logger pour bêta-testeur
 
 Fiabilité & Confiance
-- Refactorisation pour utiliser des Repository au lieu des models
+- Refactorisation pour utiliser des repositories au lieu des models
 
 Corrections
-- Corrige anomalie qui augmente progressivement lorsque l'utilisateur souhaite report du contenu
+- Correction de l'anomalie qui augmentait progressivement lorsque l'utilisateur souhaitait reporter du contenu
 
 ### 0.1.0-beta.4 - 2025/10
 Nouveautés
-- Pouvoir séléctionner des boutons qui peuvent être joué par les joueurs
+- Possibilité de sélectionner des boutons qui peuvent être joués par les joueurs
 
 Améliorations
 - Amélioration du visuel pour organiser les boutons d'une playlist
 - Ajout de tooltip sur les mixers
-- Ajout d'une mise ajour des date de connexion avec la variable de session
+- Ajout d'une mise à jour des dates de connexion avec la variable de session
 
 Corrections
-- Fix le script de deploiement qui ne recuperer pas le dernier tag. 
+- Fix du script de déploiement qui ne récupérait pas le dernier tag. 
 
 ### 0.1.0-beta.5 - 2025/10
 Améliorations
-- Amélioration du logger pour beta-tester
-- Affichage du nom de la soundboard
+- Amélioration du logger pour bêta-testeur
+- Affichage du nom du soundboard
 
 Nouveautés
-- Ajout de Graphana pour la gestion des logs en productions
+- Ajout de Grafana pour la gestion des logs en production
 
 ### 0.1.0-beta.6 - 2025/10
 Améliorations
-- connections des logs a loki pour graphana
+- Connexion des logs à Loki pour Grafana
 
 ### 0.1.0-beta.7 - 2025/10
 Corrections
-- corrections bugs sur les delai
+- Correction de bugs sur les délais
 
 ### 0.1.0-beta.8 - 2025/10
 Améliorations
-- Ajout de la gestion de son sur un soundboard partagé (stocké uniquement coté support via un cookie)
-- Sauvegarde des durré des musique en BDD pour gagner en performance. 
+- Ajout de la gestion du son sur un soundboard partagé (stocké uniquement côté support via un cookie)
+- Sauvegarde des durées des musiques en BDD pour gagner en performance. 
 
 Corrections
-- fix sur les images sur les contenu reportable n'apparaissait pas
-- ajout de logs pour corriger bugs de production sur les pistes de musique
+- Fix sur les images des contenus reportables qui n'apparaissaient pas
+- Ajout de logs pour corriger des bugs de production sur les pistes de musique
 - tentative de correction des fadeOut en prod
 
 Fiabilité & Confiance
-- Augmentation de la couverture des tests unitaire
-- Création de test d'integration pour les routes
+- Augmentation de la couverture des tests unitaires
+- Création de tests d'intégration pour les routes
 
 ### 0.1.0-beta.9 - 2025/10
 Corrections
-- fix l'affichage du boutons pour le reglage du son des musiques partagés
+- Fix de l'affichage du bouton pour le réglage du son des musiques partagées
 
 ### 0.1.0-beta.10 - 2025/10
 Améliorations
-- utilisation de redis pour le system de cache applicatifs
+- Utilisation de Redis pour le système de cache applicatif
 
 Nouveautés
-- Ajout de paramètre de customisation pour les fondues d'entrée et de sortie
+- Ajout de paramètres de customisation pour les fondus d'entrée et de sortie
 
 Fiabilité & Confiance
 - Modification de la structure pour respecter le DDD
@@ -100,19 +100,19 @@ Fiabilité & Confiance
 ### 0.2.0-beta.1 - 2025/11
 Nouveautés
 - Ajout d'analytics pour avoir des stats sur les utilisateurs (provenance et rétention)
-- Ajout de fadeOff court lorsque l'on stoppe une musique 
-- Ajout d'un badge pour indiquer le nombre de musique dans une playlist
-- Rendre accessible le volume d'une playlist depuis les soundboards publiques 
-- Pouvoir choisir en sauvegarder le volume d'une playlist ou juste la modifier pour cette partie
-- Actualisation des volumes coté joueurs en cas du rechargement de la page maître 
+- Ajout de fade-out court lorsque l'on stoppe une musique 
+- Ajout d'un badge pour indiquer le nombre de musiques dans une playlist
+- Rendre accessible le volume d'une playlist depuis les soundboards publics 
+- Possibilité de choisir de sauvegarder le volume d'une playlist ou juste de le modifier pour cette partie
+- Actualisation des volumes côté joueurs en cas de rechargement de la page maître 
 
 
 ### 0.2.1 - 2025/11
 Améliorations
-- reduction du boutons pour afficher/masquer les mixers d'un boutons
+- Réduction du boutons pour afficher/masquer les mixers d'un boutons
 
 Corrections
-- Bugs lors de boutons pour remarsque les mixers d'un soundboard publique
+- Bugs lors de boutons pour remarque les mixers d'un soundboard publique
 
 
 ### X.Y.Z - Date
