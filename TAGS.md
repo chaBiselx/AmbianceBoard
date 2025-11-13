@@ -107,6 +107,13 @@ Nouveautés
 - Actualisation des volumes coté joueurs en cas du rechargement de la page maître 
 
 
+### 0.2.1 - 2025/11
+Améliorations
+- reduction du boutons pour afficher/masquer les mixers d'un boutons
+
+Corrections
+- Bugs lors de boutons pour remarsque les mixers d'un soundboard publique
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
