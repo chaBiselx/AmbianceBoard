@@ -54,8 +54,10 @@ class MixerPlaylist {
     }
 
     private resetInputSaveBackendValue() {
-        const switchInput = document.getElementById(this.idSaveBackendValue) as HTMLInputElement
-        switchInput.checked = false;
+        const switchInput = document.getElementById(this.idSaveBackendValue) as HTMLInputElement|null
+        if(switchInput){
+            switchInput.checked = false;
+        }
     }
 
     private getWebSocketUrl(): string | null {
