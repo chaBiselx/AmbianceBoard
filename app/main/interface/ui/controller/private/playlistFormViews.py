@@ -31,10 +31,28 @@ from main.domain.common.utils.logger import logger
 @login_required
 @require_http_methods(['GET'])
 def playlist_read_all(request):
-    playlists = (PlaylistService(request)).get_all_playlist()
+    playlist_type_filter = request.GET.get('playlistType', None)
+    
+    filter = {}
+    if playlist_type_filter:
+        try:
+            typePlaylist = PlaylistTypeEnum.searchEnumByValue(playlist_type_filter)
+            filter['typePlaylist'] = typePlaylist._name_
+        except ValueError:
+            playlist_type_filter = None
+            
+
+    playlists = (PlaylistService(request)).get_listing_playlist(filter)
+    
     track_repository = TrackRepository()
     number_tracks_by_playlist = track_repository.get_number_tracks_by_playlist(request.user)
-    return render(request, 'Html/Playlist/playlist_read_all.html', {'playlists': playlists, 'number_tracks_by_playlist': number_tracks_by_playlist})
+    
+    return render(request, 'Html/Playlist/playlist_read_all.html', {
+        'playlists': playlists, 
+        'number_tracks_by_playlist': number_tracks_by_playlist,
+        'playlistType': PlaylistTypeEnum.convert_to_dict(),
+        'selected_type': playlist_type_filter
+    })
 
 
 @login_required

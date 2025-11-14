@@ -20,9 +20,12 @@ class PlaylistRepository:
     def count_private(self, user: User) -> int:
         return Playlist.objects.filter(user=user).count()
 
-    def get_all_private(self, user:User) -> List[Playlist]:
+    def get_listing_playlist(self, user:User, filter:dict) -> List[Playlist]:
         try:
-            return Playlist.objects.all().filter(user=user).order_by('updated_at') 
+            QuerySet = Playlist.objects.all()
+            if 'typePlaylist' in filter:
+                QuerySet = QuerySet.filter(typePlaylist=filter['typePlaylist'])
+            return QuerySet.filter(user=user).order_by('updated_at') 
         except Exception:
             return []
         

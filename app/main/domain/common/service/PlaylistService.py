@@ -22,8 +22,9 @@ class PlaylistService:
         return playlist
  
         
-    def get_all_playlist(self) -> List[Playlist]:
-        return self.playlist_repository.get_all_private(self.request.user)
+    def get_listing_playlist(self, filter:dict) -> List[Playlist]:
+        return self.playlist_repository.get_listing_playlist(self.request.user, filter)
+
 
     def save_form(self) -> Optional[Playlist]:
         user_parameters = UserParametersFactory(self.request.user)
