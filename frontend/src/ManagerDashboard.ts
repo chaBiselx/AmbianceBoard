@@ -24,7 +24,7 @@ class DashboardLineGraph {
 
     constructor(id: string) {
         this.element = document.getElementById(id);
-        this.periodeLineChart = document.getElementById('periode-line-chart') as HTMLSelectElement | null;
+        this.periodeLineChart = document.getElementById('periode-chart') as HTMLSelectElement | null;
 
     }
 
@@ -34,16 +34,6 @@ class DashboardLineGraph {
             this.chartWrapper = new ChartWrapper(this.element, 'userEvolutionChart');
             this.fetchData(url);
         }
-        this.addEventListeners();
-    }
-
-    public addEventListeners() {
-        if (this.periodeLineChart && this.element) {
-            this.periodeLineChart.addEventListener('change', () => {
-                this.fetchData(this.element!.dataset.url!);
-            });
-        }
-
     }
 
     private fetchData(url: string) {

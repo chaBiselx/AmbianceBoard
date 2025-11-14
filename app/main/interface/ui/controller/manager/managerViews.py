@@ -14,7 +14,22 @@ from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def manager_dashboard(request) -> HttpResponse:
-    return render(request, 'Html/Manager/dashboard.html', {'title': 'Tableau de bord Manager'})
+    periode_chart = request.GET.get('periode-chart', '91')
+    
+    selectPeriods = {
+        "7" : "1 semaine",
+        "14" : "2 semaines",
+        "31" : "1 mois",
+        "61" : "2 mois",
+        "91" : "3 mois",
+        "183" : "6 mois",
+        "365" : "1 an",
+    }
+    if periode_chart not in selectPeriods:
+        periode_chart = "91"
+                                
+    
+    return render(request, 'Html/Manager/dashboard.html', {'title': 'Tableau de bord Manager', 'periode_chart': periode_chart, 'selectPeriods':selectPeriods})
 
 @login_required
 @require_http_methods(['GET'])
