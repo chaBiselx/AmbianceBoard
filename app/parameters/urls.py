@@ -33,7 +33,7 @@ urlpatterns = [
 
     # Pages publiques
     path("", home, name="home"),
-    path("admin/", admin.site.urls),
+    path(Settings.get('URI_ADMIN').lstrip('/'), admin.site.urls, name="superadmin"),
     path("legal-notice", legal_notice, name="legalNotice"),
     path("pricing", pricing, name="pricing"),
 

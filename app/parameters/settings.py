@@ -65,6 +65,8 @@ APP_HOST = os.getenv('WEB_HOST')
 APP_PORT = os.getenv('WEB_PORT')
 APP_SCHEME  = 'https' if ACTIVE_SSL else 'http'
 
+URI_ADMIN = os.environ.get('URI_ADMIN', '/admin/')
+
 RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
 RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
 RABBIT_MQ_USER = os.environ.get("RABBIT_MQ_USER")
