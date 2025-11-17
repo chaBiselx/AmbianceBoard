@@ -50,6 +50,7 @@ class RedisCacheSystem(ICache, BaseCache):
             value = self.redis_client.get(key)
             return self._deserialize(value)
         except (redis.RedisError, pickle.PickleError) as e:
+            self.logger.error(f"Erreur lors de la récupération de la clé '{key}': {e}")
             # Log l'erreur si nécessaire
             return None
 
