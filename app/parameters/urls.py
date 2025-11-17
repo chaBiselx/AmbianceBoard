@@ -22,7 +22,7 @@ from main.interface.ui.controller.manager.managerCronViews import (
     listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity
     )
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, favorite_update, reporting_content, public_favorite
-from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation
+from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation, stats_moyenne_duration_session
 from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream
 from main.domain.sharedSoundboard.consummers.SharedSoundboardConsummers import SharedSoundboardConsummers
 
@@ -110,6 +110,8 @@ urlpatterns = [
     path("public/stats/soundboards", list_user_public_soundboard, name="ListPublicUserSoundboardsStats"),
     path("public/stats/soundboards/<uuid:soundboard_uuid>", stats_user_public_soundboard, name="PublicUserSoundboardsStats"),
     path("public/stats/soundboards/<uuid:soundboard_uuid>/frequentation", stats_frequentation, name="PublicUserSoundboardsFrequentationStats"),
+    path("public/stats/soundboards/<uuid:soundboard_uuid>/moyenne", stats_moyenne_duration_session, name="PublicUserSoundboardsAverageSessionDurationStats"),
+    
     
     path('shared/<uuid:soundboard_uuid>', publish_soundboard, name="publish_soundboard"),
     path('shared/<uuid:soundboard_uuid>/<str:token>', shared_soundboard_read, name="shared_soundboard"),

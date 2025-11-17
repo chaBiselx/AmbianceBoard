@@ -74,4 +74,35 @@ def stats_frequentation(request, soundboard_uuid) -> JsonResponse:
             'error': ErrorMessageEnum.DATA_RECUPERATION,
             'message': str(e)
         }, status=500)
+       
+       
+@login_required
+@can_show_statistics
+@require_http_methods(['GET']) 
+def stats_moyenne_duration_session(request, soundboard_uuid) -> JsonResponse:
+    try:
+        days = int(request.GET.get('period', 30 * 6))
+        end_date = timezone.now().date()
+        start_date = end_date - timedelta(days=days-1)
+        
+        soundboard = SoundBoardRepository().get_by_uuid_and_user(soundboard_uuid, request.user)
+        if(not soundboard):
+            raise Exception("Soundboard non trouvée")
+
+        service = UserPublicActivityStatsService()
+        response_data = service.get_moyenne_duration_session(soundboard, start_date, end_date)
+
+        json = {
+            'title' : f"Durée moyenne des sessions - {days} jours",
+            'x_label': 'Date',
+            'y_label': 'Durée Moyenne des Sessions (min)',
+            'data':response_data
+        }
+        return JsonResponse(json)
+        
+    except Exception as e:
+        return JsonResponse({
+            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'message': str(e)
+        }, status=500)
     

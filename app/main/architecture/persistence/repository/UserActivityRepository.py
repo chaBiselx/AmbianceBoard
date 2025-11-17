@@ -1,6 +1,7 @@
 from typing import Any, Optional, List
 from main.architecture.persistence.models.UserActivity import UserActivity
-from django.db.models import Count, Q, Avg, F, QuerySet
+from django.db.models import Count, Q, Avg, F, QuerySet, ExpressionWrapper, DurationField, Max
+from django.db.models.functions import Floor, Extract
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.architecture.persistence.models.User import User
 from django.utils import timezone
@@ -74,6 +75,52 @@ class UserActivityRepository:
         ).values('activity_type', 'date').annotate(
             count=Count('id')
         ).order_by('date', 'activity_type')
+        
+    def get_average_session_duration(self, soundboard, start_date, end_date, activities, duration:str = 'min'):
+        div = 1
+        if  duration == 'min' :
+            div = 60
+        if  duration == 'h' :
+            div = 3600
+        
+        return UserActivity.objects.filter( 
+            start_date__gte=start_date,
+            start_date__lte=end_date,
+            activity_type__in=activities,
+            content_type__model='soundboard',
+            object_id=soundboard.id,
+            end_date__isnull=False
+        ).extra(
+            select={'date': 'DATE(start_date)'}
+        ).annotate(
+            duration_seconds=Extract(F('end_date') - F('start_date'), 'epoch')
+        ).values('activity_type', 'date').annotate(
+            value=Floor(Avg('duration_seconds') / div)
+        ).order_by('date', 'activity_type')
+        
+    def get_max_session_duration(self, soundboard, start_date, end_date, activities, duration:str = 'min'):
+        div = 1
+        if  duration == 'min' :
+            div = 60
+        if  duration == 'h' :
+            div = 3600
+        
+        return UserActivity.objects.filter( 
+            start_date__gte=start_date,
+            start_date__lte=end_date,
+            activity_type__in=activities,
+            content_type__model='soundboard',
+            object_id=soundboard.id,
+            end_date__isnull=False
+        ).extra(
+            select={'date': 'DATE(start_date)'}
+        ).annotate(
+            duration_seconds=Extract(F('end_date') - F('start_date'), 'epoch')
+        ).values('activity_type', 'date').annotate(
+            value=Floor(Max('duration_seconds') / div)
+        ).order_by('date', 'activity_type')
+        
+    
         
 
     

@@ -3,10 +3,10 @@ import { ChartConfigs, OptionChartConfig, LineEvolutionData } from '@/modules/Ch
 import { DataProcessor } from '@/modules/Util/DataProcessor';
 
 
-class DashboardLineGraph {
+class DashboardBarGraph {
     private readonly element: HTMLElement | null;
     private chartWrapper: ChartWrapper | null = null;
-    private readonly periodeLineChart: HTMLSelectElement | null;
+    private readonly periodeBarChart: HTMLSelectElement | null;
 
     private title: string = '';
     private x_label: string = '';
@@ -14,19 +14,19 @@ class DashboardLineGraph {
 
     constructor(id: string, id_periode_chart: string) {
         this.element = document.getElementById(id);
-        this.periodeLineChart = document.getElementById(id_periode_chart) as HTMLSelectElement | null;
+        this.periodeBarChart = document.getElementById(id_periode_chart) as HTMLSelectElement | null;
     }
 
     public init() {
         if (this.element) {
             const url = this.element.dataset.url!;
-            this.chartWrapper = new ChartWrapper(this.element, 'userEvolutionChart');
+            this.chartWrapper = new ChartWrapper(this.element, 'userBarChart');
             this.fetchData(url);
         }
     }
 
     private fetchData(url: string) {
-        const selectedPeriod = this.periodeLineChart?.value || '91';
+        const selectedPeriod = this.periodeBarChart?.value || '91';
         fetch(`${url}?period=${selectedPeriod}`)
             .then(response => response.json())
             .then(response => {
@@ -52,6 +52,7 @@ class DashboardLineGraph {
         let datasets = {} as { [key: string]: any };
 
         for (const [_, element] of Object.entries(data.data as { [key: string]: any })) {
+            
             const dataDict = DataProcessor.createDataDictionary(element.data);
             datasets[element.key] = {
                 'label': element.label,
@@ -59,7 +60,7 @@ class DashboardLineGraph {
             };
         }
 
-        return ChartConfigs.processingDataForLineEvolution(dateLabels, Object.values(datasets));
+        return ChartConfigs.processingDataForBarChart(dateLabels, Object.values(datasets));
     }
 
     private renderChart(data: LineEvolutionData) {
@@ -67,7 +68,7 @@ class DashboardLineGraph {
             throw new Error('ChartWrapper n\'a pas été initialisé');
         }
 
-        const chartConfig = ChartConfigs.getLineEvolution(data,
+        const chartConfig = ChartConfigs.getBarChart(data,
             {
                 'title': this.title,
                 'x': { text: this.x_label },
@@ -77,4 +78,4 @@ class DashboardLineGraph {
     }
 }
 
-export { DashboardLineGraph };
+export { DashboardBarGraph };

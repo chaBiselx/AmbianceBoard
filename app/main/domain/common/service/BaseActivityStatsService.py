@@ -59,3 +59,47 @@ class BaseActivityStatsService:
             'end_date': end_date.strftime('%Y-%m-%d'),
             'data': result_data
         }
+        
+    def _generated_bar_graph_data(self, start_date: datetime, end_date: datetime, activity_data: List[Dict], transposition_titles: Dict|None = None) -> dict:
+        """
+        Génère des données statistiques formatées pour un graphique en barres
+        à partir des données d'activité brutes.
+        
+        Args:
+            start_date: Date de début de la période
+            end_date: Date de fin de la période
+            activity_data: Données d'activité brutes groupées par type et date
+            
+        Returns:
+            Dictionnaire contenant les données formatées par type d'activité
+        """
+        # Organisation des données par type d'activité
+        data_by_type = {}
+        for item in activity_data:
+            activity_type = item['activity_type']
+            date = item['date'].strftime('%Y-%m-%d') if item['date'] else None
+            value = item['value']
+            
+            if activity_type not in data_by_type:
+                data_by_type[activity_type] = []
+            
+            data_by_type[activity_type].append({
+                'date': date,
+                'count': value
+            })
+
+        # Conversion en format de sortie structuré
+        result_data = {}
+        for activity_type, daily_values in data_by_type.items():
+            label = transposition_titles.get(activity_type, activity_type) if transposition_titles else activity_type
+            result_data[activity_type] = {
+                'key': activity_type,
+                'label': label,
+                'data': daily_values
+            }
+
+        return {
+            'start_date': start_date.strftime('%Y-%m-%d'),
+            'end_date': end_date.strftime('%Y-%m-%d'),
+            'data': result_data
+        }
