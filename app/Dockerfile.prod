@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# install system dependencies
+# install system dependencies and create app user and group
 RUN apt-get update && apt-get --no-install-recommends install -y build-essential --purge cron \
     dos2unix \
     ffmpeg \
@@ -17,16 +17,17 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
     rsyslog\
     systemd \
     # clean cache
-    && apt-get clean 
-
-# create app user and group
-RUN groupadd --gid 1000 appuser && \
-    useradd --uid 1000 --gid appuser --shell /bin/bash --create-home appuser
+    && apt-get clean \
+    # create app user and group
+    && groupadd --gid 1000 appuser \
+    && useradd --uid 1000 --gid appuser --shell /bin/bash --create-home appuser
 
 # install dependencies
 COPY ./requirements.txt .
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+RUN pip install --upgrade pip \
+    && pip install -r requirements.txt \
+    # installer gunicorn pour la prod
+    && pip install gunicorn
 
 # copy project files explicitly (avoiding sensitive data)
 COPY manage.py ./
@@ -34,18 +35,12 @@ COPY main/ ./main/
 COPY parameters/ ./parameters/
 COPY static/ ./static/
 
-# create necessary directories
-RUN mkdir -p mediafiles/musics mediafiles/playlistIcon mediafiles/soundBoardIcon logs
-
-# installer gunicorn pour la prod
-RUN pip install gunicorn
-
-# copy entrypoint.prod.sh
+# create necessary directories, prepare entrypoint, and set ownership
 COPY ./entrypoint.prod.sh ./entrypoint.prod.sh
-RUN dos2unix ./entrypoint.prod.sh && chmod +x ./entrypoint.prod.sh
-
-# change ownership of the app directory to appuser
-RUN chown -R appuser:appuser /usr/src/app
+RUN mkdir -p mediafiles/musics mediafiles/playlistIcon mediafiles/soundBoardIcon logs \
+    && dos2unix ./entrypoint.prod.sh \
+    && chmod +x ./entrypoint.prod.sh \
+    && chown -R appuser:appuser /usr/src/app
 
 
 # Note: We start as root to allow cron functionality when needed
