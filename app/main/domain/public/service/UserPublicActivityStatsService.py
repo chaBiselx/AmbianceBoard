@@ -18,19 +18,14 @@ from main.domain.common.service.BaseActivityStatsService import BaseActivityStat
 User = get_user_model()
 
 
-class UserActivityStatsService(BaseActivityStatsService):
+class UserPublicActivityStatsService(BaseActivityStatsService):
     """
     Service pour analyser les statistiques d'activité utilisateur.
     
     Fournit des méthodes pour générer divers rapports et analyses
     basés sur les données de traçage d'activité.
     """
-    def get_user_nb_activity_data(self, start_date: datetime, end_date: datetime) -> dict:
-        activities =  list(UserActivityTypeEnum.listing_reporting_activities())
-        activity_data = UserActivityRepository().get_activity_counts_by_date_and_type(start_date, end_date, activities)
-        return self._generated_line_graph_data(start_date, end_date, activity_data)
-        
-    def get_error_activity_data(self, start_date: datetime, end_date: datetime) -> dict:
-        activities =  list(UserActivityTypeEnum.listing_reporting_errors())
-        activity_data = UserActivityRepository().get_activity_counts_by_date_and_type(start_date, end_date, activities)
-        return self._generated_line_graph_data(start_date, end_date, activity_data)
+    def get_frequentation(self, soundboard, start_date: datetime, end_date: datetime) -> dict:
+        activities =  [UserActivityTypeEnum.SOUNDBOARD_VIEW]
+        activity_data = UserActivityRepository().get_frequentation(soundboard, start_date, end_date, activities)
+        return self._generated_line_graph_data(start_date, end_date, activity_data, transposition_titles={UserActivityTypeEnum.SOUNDBOARD_VIEW.value: "Vues"})

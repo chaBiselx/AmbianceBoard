@@ -1,0 +1,60 @@
+{% extends 'Html/partial/structure/base.html' %}
+{% load SoundBoard %}
+{% load PaginationLinks %}
+{% load FrontJs %}
+{% load static %}
+
+{% block page_title %}Soundboards Publics - Ambiance JDR | AmbianceBoard{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+{% endblock javascript %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        {% if page_objects %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Visuel</th>
+                        <th>Nom</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for soundboard in page_objects %}
+                    <tr>
+                        <td>
+                            <div class="soundboard-element reportable flex-item soundboard-dim-50 m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};" data-id="{{ soundboard.uuid }}" data-bs-toggle="tooltip">
+                                {{ soundboard | applys_soundboard_content}}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="text-bold">
+                                {{ soundboard.name }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% url 'PublicUserSoundboardsStats' soundboard.uuid %}" class="btn btn-primary"  data-bs-toggle="tooltip" data-bs-title="Voir les stats">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% applys_pagination paginator %}
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> Aucune playliste trouvée.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

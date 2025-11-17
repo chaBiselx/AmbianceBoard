@@ -118,6 +118,7 @@ Corrections
 Nouveautés
 - Ajout d'un filtre pour lister les boutons pour améliorer la recherche des boutons
 - Amélioration de l'UX du dashboard Manager
+- Ajout de statistique sur les soundboard publique pour les utilisateurs premium 
 
 Améliorations
 - Amélioration du SEO avec SERP

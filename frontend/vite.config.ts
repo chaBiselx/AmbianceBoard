@@ -26,6 +26,7 @@ export default defineConfig(({ mode }) => {
                     SounboardOrganizer: resolve(__dirname, 'src/SounboardOrganizer.ts'),
                     ListPlaylistsForSpecificAction: resolve(__dirname, 'src/ListPlaylistsForSpecificAction.ts'),
                     PublicFavorite: resolve(__dirname, 'src/PublicFavorite.ts'),
+                    PublicStats: resolve(__dirname, 'src/PublicStats.ts'),
                     General: resolve(__dirname, 'src/General.ts'),
                     UpdateDimension: resolve(__dirname, 'src/UpdateDimension.ts'),
                     Manager_General: resolve(__dirname, 'src/ManagerGeneral.ts'),

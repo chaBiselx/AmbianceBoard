@@ -117,6 +117,13 @@
                                 Interactions <strong> des joueurs possibles</strong> sur les soundboards partagées
                             </li>
                         {% endif %}
+                        {% if tier_data.limits.get_statistics_from_public %}
+                            <li class="mb-1">
+                                <i class="fa-solid fa-chart-line text-primary me-2"></i>
+                                statistiques sur les soundboards publiques
+                            </li>
+                        {% endif %}
+                        
 
                     </ul>
                 </div>

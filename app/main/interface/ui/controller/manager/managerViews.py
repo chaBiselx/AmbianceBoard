@@ -8,25 +8,18 @@ from main.domain.manager.service.UserStatsService import UserStatsService
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.manager.service.UserActivityStatsService import UserActivityStatsService
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.common.enum.ChartPeriodEnum import ChartPeriodEnum
 
 
 @login_required
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def manager_dashboard(request) -> HttpResponse:
-    periode_chart = request.GET.get('periode-chart', '91')
+    periode_chart = request.GET.get('periode-chart', "0")
     
-    select_periods = {
-        "7" : "1 semaine",
-        "14" : "2 semaines",
-        "31" : "1 mois",
-        "61" : "2 mois",
-        "91" : "3 mois",
-        "183" : "6 mois",
-        "365" : "1 an",
-    }
-    if periode_chart not in select_periods:
-        periode_chart = "91"
+    select_periods = ChartPeriodEnum.get_days_mapping()
+    if not ChartPeriodEnum.is_valid_period(periode_chart):
+        periode_chart = ChartPeriodEnum.get_default_period()
                                 
     
     return render(request, 'Html/Manager/dashboard.html', {'title': 'Tableau de bord Manager', 'periode_chart': periode_chart, 'selectPeriods':select_periods})

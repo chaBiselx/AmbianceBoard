@@ -62,6 +62,19 @@ class UserActivityRepository:
             count=Count('id')
         ).order_by('date', 'activity_type')
         
+    def get_frequentation(self, soundboard, start_date, end_date, activities):
+        return UserActivity.objects.filter( 
+            start_date__gte=start_date,
+            start_date__lte=end_date,
+            activity_type__in=activities,
+            content_type__model='soundboard',
+            object_id=soundboard.id
+        ).extra(
+            select={'date': 'DATE(start_date)'}
+        ).values('activity_type', 'date').annotate(
+            count=Count('id')
+        ).order_by('date', 'activity_type')
+        
 
     
     

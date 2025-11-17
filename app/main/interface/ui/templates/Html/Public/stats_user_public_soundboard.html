@@ -1,0 +1,52 @@
+{% extends 'Html/partial/structure/base_manager.html' %}
+
+
+
+{% load static %}
+{% load FrontJs %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "PublicStats"|search_true_file %}"></script>
+{% endblock javascript %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <!-- Outils d'administration -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3>Paramètre</h3>
+                <div class="row">
+                    <div class="col-12 col-md-4 col-xl-2 form-group">
+                        <form method="GET" action="{% url 'PublicUserSoundboardsStats' soundboard.uuid %}">
+                            <label for="periode-chart">Période</label>
+                            <select name="periode-chart" id="periode-chart" class="form-select" onchange="this.form.submit()">
+                                {% for value, label in selectPeriods.items %}
+                                <option value="{{ value }}" {% if value == periode_chart %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Fréquentations</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="user-frequentation" data-url="{% url 'PublicUserSoundboardsFrequentationStats' soundboard.uuid %}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}
