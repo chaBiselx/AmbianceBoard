@@ -111,11 +111,18 @@ export class ChartConfigs {
     }
 
     /**
-     * Configuration pour le graphique d'évolution des utilisateurs
+     * Configuration de base pour les graphiques
+     * @param chartType - Type de graphique ('line' ou 'bar')
+     * @param data - Données du graphique
+     * @param option - Options de configuration
      */
-    static getLineEvolution(data: LineEvolutionData, option: OptionChartConfig): ChartConfig {
-        let base = {
-            type: 'line',
+    private static getBaseChartConfig(
+        chartType: 'line' | 'bar',
+        data: LineEvolutionData,
+        option: OptionChartConfig
+    ): ChartConfig {
+        const base = {
+            type: chartType,
             data: data,
             options: {
                 responsive: true,
@@ -166,58 +173,17 @@ export class ChartConfigs {
     }
 
     /**
+     * Configuration pour le graphique d'évolution en ligne
+     */
+    static getLineEvolution(data: LineEvolutionData, option: OptionChartConfig): ChartConfig {
+        return this.getBaseChartConfig('line', data, option);
+    }
+
+    /**
      * Configuration pour le diagramme en barres verticales
      */
     static getBarChart(data: LineEvolutionData, option: OptionChartConfig): ChartConfig {
-        let base = {
-            type: 'bar',
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: false,
-                        text: ''
-                    },
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: false,
-                            text: ''
-                        }
-                    },
-                    x: {
-                        title: {
-                            display: false,
-                            text: ''
-                        }
-                    }
-                },
-                interaction: {
-                    intersect: false,
-                    mode: 'index'
-                }
-            }
-        } as ChartConfig;
-        if (option.title) {
-            base.options.plugins.title.text = option.title;
-            base.options.plugins.title.display = true;
-        }
-        if (option.x) {
-            base.options.scales.x.title.text = option.x.text;
-            base.options.scales.x.title.display = true;
-        }
-        if (option.y) {
-            base.options.scales.y.title.text = option.y.text;
-            base.options.scales.y.title.display = true;
-        }
-        return base;
+        return this.getBaseChartConfig('bar', data, option);
     }
 
 
