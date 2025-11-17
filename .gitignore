@@ -19,6 +19,8 @@ db-data/*
 tmp/*
 
 
+# traductions
+app/locale/*/LC_MESSAGES/*.mo
 
 #prod
 app/static/*

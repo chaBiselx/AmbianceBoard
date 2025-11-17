@@ -13,11 +13,12 @@ from django.contrib.auth import get_user_model
 from main.architecture.persistence.models.UserActivity import UserActivity
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.architecture.persistence.repository.UserActivityRepository import UserActivityRepository
+from main.domain.common.service.BaseActivityStatsService import BaseActivityStatsService
 
 User = get_user_model()
 
 
-class UserActivityStatsService:
+class UserActivityStatsService(BaseActivityStatsService):
     """
     Service pour analyser les statistiques d'activité utilisateur.
     
@@ -26,47 +27,10 @@ class UserActivityStatsService:
     """
     def get_user_nb_activity_data(self, start_date: datetime, end_date: datetime) -> dict:
         activities =  list(UserActivityTypeEnum.listing_reporting_activities())
-        return self._generated_data(start_date, end_date, activities)
+        activity_data = UserActivityRepository().get_activity_counts_by_date_and_type(start_date, end_date, activities)
+        return self._generated_line_graph_data(start_date, end_date, activity_data)
         
     def get_error_activity_data(self, start_date: datetime, end_date: datetime) -> dict:
         activities =  list(UserActivityTypeEnum.listing_reporting_errors())
-        return self._generated_data(start_date, end_date, activities)
-
-    def _generated_data(self, start_date: datetime, end_date: datetime, activities: List[str]) -> dict:
-        # Récupération des données groupées par type d'activité et par date
         activity_data = UserActivityRepository().get_activity_counts_by_date_and_type(start_date, end_date, activities)
-        
-        # Organisation des données par type d'activité
-        data_by_type = {}
-        for item in activity_data:
-            activity_type = item['activity_type']
-            date = item['date'].strftime('%Y-%m-%d') if item['date'] else None
-            count = item['count']
-            
-            if activity_type not in data_by_type:
-                data_by_type[activity_type] = []
-            
-            data_by_type[activity_type].append({
-                'date': date,
-                'count': count
-            })
-
-        # Conversion en format de sortie structuré
-        result_data = {}
-        for activity_type, daily_counts in data_by_type.items():
-            result_data[activity_type] = {
-                'key': activity_type,
-                'label': activity_type,
-                'data': daily_counts
-            }
-
-
-        return {
-            'start_date': start_date.strftime('%Y-%m-%d'),
-            'end_date': end_date.strftime('%Y-%m-%d'),
-            'data': result_data
-        }
-        
-    
-        
-  
+        return self._generated_line_graph_data(start_date, end_date, activity_data)

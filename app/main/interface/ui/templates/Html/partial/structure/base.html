@@ -44,7 +44,7 @@
 
             <div class="ms-auto d-flex align-items-center gap-1 gap-lg-2 gap-lg-3">
 
-                <button class="btn btn-link url_link p-1" id="darkModeToggle" data-backend-saved="{% is_backend_saved %}" aria-label="Toggle dark mode" data-url="{% url 'updateTheme' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Changer le thème">
+                <button class="btn btn-link url_link p-1" id="darkModeToggle" data-backend-saved="{% is_backend_saved %}" aria-label="Changer le thème" data-url="{% url 'updateTheme' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Changer le thème">
                     {% include 'Html/partial/structure/theme/theme_icon.html' %}
                 </button>
                 {% block navbar %}

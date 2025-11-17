@@ -69,7 +69,7 @@ class UserTierManager:
     def can_boolean(user, param: str) -> bool:
         """Vérifie si l'utilisateur peut effectuer une action"""
         limits = UserTierManager.get_user_limits(user)
-        return limits.get('share_soundboard', False)
+        return limits.get(param, False)
         
     
     @staticmethod

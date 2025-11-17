@@ -345,7 +345,7 @@ class MusicElement {
         if (event.target && event.target instanceof HTMLAudioElement) {
             const audioElement = event.target;
             
-            if (audioElement.error && audioElement.error.code === 4) { // => ERROR 404
+            if (audioElement.error?.code === 4) { // => ERROR 404
                 // Log toutes les informations disponibles
                 ConsoleTraceServeur.error('handleAudioError', audioElement.error.code, audioElement.error.message, this.idPlaylist, this.baseUrl, audioElement.src);
 

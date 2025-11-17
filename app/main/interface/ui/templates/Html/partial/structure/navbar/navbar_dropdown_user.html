@@ -23,5 +23,11 @@
         </li>
         <li><a class="dropdown-item" href="{% url 'managerDashboard' %}">Manager</a></li>
         {% endif %}
+        {% if request.user.is_superuser %}
+        <li>
+            <hr class="dropdown-divider">    
+        </li>
+        <li><a class="dropdown-item" href="{% url 'admin:index' %}">Superadmin</a></li>
+        {% endif %}
     </ul>
 </div>

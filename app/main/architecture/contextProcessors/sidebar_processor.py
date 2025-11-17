@@ -1,4 +1,6 @@
 from django.urls import reverse
+from main.domain.common.utils.UserTierManager import UserTierManager
+
 
 def sidebar_processor(request):
     # Liste des URLs où la sidebar doit apparaître
@@ -48,12 +50,17 @@ def sidebar_processor(request):
         
         
         if request.path in sidebar_urls_settings_public or any(request.path.startswith(url) for url in sidebar_urls_settings_public):
+            sidebar_items = [
+                {'title': 'Soundboard', 'url': reverse("publicListingSoundboard"), 'classIcon':"fa-solid fa-bars"},
+                {'title': 'Favoris', 'url': reverse("publicFavorite"), 'classIcon':"fa-regular fa-star"},
+            ]
+            can_show_statistics = UserTierManager.can_boolean(request.user, 'get_statistics_from_public')
+            if(can_show_statistics):
+                sidebar_items.append({'title': 'Statistiques', 'url': reverse("ListPublicUserSoundboardsStats"), 'classIcon':"fa-solid fa-chart-line"})
+            
             return {
                 'show_sidebar': True,
-                'sidebar_items': [
-                    {'title': 'Soundboard', 'url': reverse("publicListingSoundboard"), 'classIcon':"fa-solid fa-bars"},
-                    {'title': 'Favoris', 'url': reverse("publicFavorite"), 'classIcon':"fa-regular fa-star"},
-                ]
+                'sidebar_items': sidebar_items
             }
     return {'show_sidebar': False}
 

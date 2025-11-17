@@ -20,17 +20,25 @@ class SoundBoardRepository:
         except SoundBoard.DoesNotExist:
             return None
         
+    def get_by_uuid_and_user(self, soundboard_uuid: str, user: User) -> Optional[SoundBoard]:
+        try:
+            return SoundBoard.objects.get(uuid=soundboard_uuid, user=user)
+        except SoundBoard.DoesNotExist:
+            return None
+        
     def count_private(self, user: User) -> int:
         return SoundBoard.objects.filter(user=user).count()
     
     def get_count_with_user(self, user: User) -> int:
         return SoundBoard.objects.filter(user=user).count()
+        
+    def get_list_public_queryset(self, user: User) -> QuerySet[SoundBoard]:
+        return SoundBoard.objects.filter(is_public=True, user=user).order_by('updated_at')
 
     def get_search_public_queryset(self, selected_tag: Optional[str] = None) -> QuerySet[SoundBoard]:
         queryset = SoundBoard.objects.filter(is_public=True, user__isBan=False)
         if selected_tag:
             queryset = queryset.filter(tags__name=selected_tag)
-        
         return queryset.order_by('uuid')
     
     def get_favorite_public_queryset(self, user: User) -> QuerySet[SoundBoard]:

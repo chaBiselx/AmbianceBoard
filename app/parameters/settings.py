@@ -65,6 +65,8 @@ APP_HOST = os.getenv('WEB_HOST')
 APP_PORT = os.getenv('WEB_PORT')
 APP_SCHEME  = 'https' if ACTIVE_SSL else 'http'
 
+URI_ADMIN = os.environ.get('URI_ADMIN', '/admin/')
+
 RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
 RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
 RABBIT_MQ_USER = os.environ.get("RABBIT_MQ_USER")
@@ -245,6 +247,7 @@ LOGGING = {
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -341,7 +344,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "fr"
+
+LANGUAGES = [
+    ('fr', 'Français'),
+    ('en', 'English'),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
 
 TIME_ZONE = "UTC"
 
@@ -495,7 +507,8 @@ USER_TIERS = {
             'weight_music_mb': 10,
             'share_soundboard': True,
             'advertising' : AdvertisingEnum.FULL,
-            'shared_playlist_playable_by_shared_user' : False
+            'shared_playlist_playable_by_shared_user' : False,
+            'get_statistics_from_public' : False
         },
         'group_enum': 'USER_STANDARD'
     },
@@ -514,7 +527,8 @@ USER_TIERS = {
             'weight_music_mb': 20,
             'share_soundboard': True,
             'advertising' : AdvertisingEnum.PARTIAL,
-            'shared_playlist_playable_by_shared_user' : True
+            'shared_playlist_playable_by_shared_user' : True,
+            'get_statistics_from_public' : True
         },
         'group_enum': 'USER_PREMIUM_BASIC'
     },
@@ -534,7 +548,8 @@ USER_TIERS = {
             'weight_music_mb': 25,
             'share_soundboard': True,
             'advertising' : AdvertisingEnum.NONE,
-            'shared_playlist_playable_by_shared_user' : True
+            'shared_playlist_playable_by_shared_user' : True,
+            'get_statistics_from_public' : True
         },
         'group_enum': 'USER_PREMIUM_ADVANCED'  # À ajouter dans GroupEnum
     },
@@ -553,7 +568,8 @@ USER_TIERS = {
             'weight_music_mb': 30,
             'share_soundboard': True,
             'advertising' : AdvertisingEnum.NONE,
-            'shared_playlist_playable_by_shared_user' : True
+            'shared_playlist_playable_by_shared_user' : True,
+            'get_statistics_from_public' : True
         },
         'group_enum': 'USER_PREMIUM_PRO'  # À ajouter dans GroupEnum
     }

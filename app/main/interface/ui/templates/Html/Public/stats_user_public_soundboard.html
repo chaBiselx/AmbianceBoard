@@ -1,5 +1,4 @@
 {% extends 'Html/partial/structure/base_manager.html' %}
-{% load i18n %}
 
 
 
@@ -8,28 +7,11 @@
 
 {% block javascript %}
 {{ block.super }}
-<script type="module" src="{% static "ManagerDashboard"|search_true_file %}"></script>
+<script type="module" src="{% static "PublicStats"|search_true_file %}"></script>
 {% endblock javascript %}
 
 
 {% block content %}
- 
-test ----------------- <br/>
-
-    {% trans "Text to translate" %}
-    <br/>
-    {% blocktrans %}Text with {{ variable }}{% endblocktrans %}
-
-    <form action="{% url 'set_language' %}" method="post">
-        {% csrf_token %}
-        {% get_current_language as CURRENT_LANGUAGE %}
-        <select name="language" onchange="this.form.submit()">
-            <option value="fr" {% if CURRENT_LANGUAGE == 'fr' %}selected{% endif %}>Français</option>
-            <option value="en" {% if CURRENT_LANGUAGE == 'en' %}selected{% endif %}>English</option>
-        </select>
-    </form>
-
-fin test --------------------------- <br/>
 
 <div class="row">
     <div class="col-12">
@@ -39,7 +21,7 @@ fin test --------------------------- <br/>
                 <h3>Paramètre</h3>
                 <div class="row">
                     <div class="col-12 col-md-4 col-xl-2 form-group">
-                        <form method="GET" action="{% url 'managerDashboard' %}">
+                        <form method="GET" action="{% url 'PublicUserSoundboardsStats' soundboard.uuid %}">
                             <label for="periode-chart">Période</label>
                             <select name="periode-chart" id="periode-chart" class="form-select" onchange="this.form.submit()">
                                 {% for value, label in selectPeriods.items %}
@@ -54,31 +36,20 @@ fin test --------------------------- <br/>
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Evolutions utilisateurs</h5>
+                        <h5>Fréquentations</h5>
                     </div>
                     <div class="card-body">
-                        <div id="evolution-user" data-url="{% url 'managerUserAccountDashboard' %}"></div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-12 col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Activités utilisateurs</h5>
-                    </div>
-                    <div class="card-body">
-                        <div id="activity-user" data-url="{% url 'managerUsersActivityDashboard' %}"></div>
+                        <div id="user-frequentation" data-url="{% url 'PublicUserSoundboardsFrequentationStats' soundboard.uuid %}"></div>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Activités Erreurs</h5>
+                        <h5>Moyenne durée des sessions</h5>
                     </div>
                     <div class="card-body">
-                        <div id="activity-errors" data-url="{% url 'managerErrorActivityDashboard' %}"></div>
+                        <div id="user-average-session-duration" data-url="{% url 'PublicUserSoundboardsAverageSessionDurationStats' soundboard.uuid %}"></div>
                     </div>
                 </div>
             </div>

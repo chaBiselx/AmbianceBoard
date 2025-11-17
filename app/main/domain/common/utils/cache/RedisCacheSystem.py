@@ -4,6 +4,7 @@ from typing import Optional, Any
 from main.domain.common.utils.settings import Settings
 from .ICache import ICache
 from .BaseCache import BaseCache
+from main.domain.common.utils.logger import LoggerFactory
 
 
 class RedisCacheSystem(ICache, BaseCache):
@@ -15,6 +16,7 @@ class RedisCacheSystem(ICache, BaseCache):
     def __init__(self):
         super().__init__()
         self._redis_client = None
+        self.logger = LoggerFactory.get_default_logger()
 
     @property
     def redis_client(self) -> redis.Redis:
@@ -48,8 +50,8 @@ class RedisCacheSystem(ICache, BaseCache):
             value = self.redis_client.get(key)
             return self._deserialize(value)
         except (redis.RedisError, pickle.PickleError) as e:
+            self.logger.error(f"Erreur lors de la récupération de la clé '{key}': {e}")
             # Log l'erreur si nécessaire
-            print(f"Erreur lors de la récupération de la clé '{key}': {e}")
             return None
 
     def set(self, key: str, value: Any, timeout: Optional[int] = None) -> None:
@@ -64,7 +66,7 @@ class RedisCacheSystem(ICache, BaseCache):
                 self.redis_client.set(key, serialized_value)
         except (redis.RedisError, pickle.PickleError) as e:
             # Log l'erreur si nécessaire
-            print(f"Erreur lors du stockage de la clé '{key}': {e}")
+            self.logger.error(f"Erreur lors du stockage de la clé'{key}': {e}")
 
     def delete(self, key: str) -> None:
         """Supprime une valeur du cache Redis"""
@@ -72,14 +74,14 @@ class RedisCacheSystem(ICache, BaseCache):
             self.redis_client.delete(key)
         except redis.RedisError as e:
             # Log l'erreur si nécessaire
-            print(f"Erreur lors de la suppression de la clé '{key}': {e}")
+            self.logger.error(f"Erreur lors de la suppression de la clé '{key}': {e}")
 
     def exists(self, key: str) -> bool:
         """Vérifie si une clé existe dans Redis"""
         try:
             return bool(self.redis_client.exists(key))
         except redis.RedisError as e:
-            print(f"Erreur lors de la vérification de la clé '{key}': {e}")
+            self.logger.error(f"Erreur lors de la vérification de la clé '{key}': {e}")
             return False
 
     def clear(self) -> None:
@@ -87,7 +89,7 @@ class RedisCacheSystem(ICache, BaseCache):
         try:
             self.redis_client.flushdb()
         except redis.RedisError as e:
-            print(f"Erreur lors du vidage du cache: {e}")
+            self.logger.error(f"Erreur lors du vidage du cache: {e}")
 
     def get_ttl(self, key: str) -> Optional[int]:
         """Récupère le TTL (Time To Live) d'une clé en secondes"""
@@ -95,7 +97,7 @@ class RedisCacheSystem(ICache, BaseCache):
             ttl = self.redis_client.ttl(key)
             return ttl if ttl >= 0 else None
         except redis.RedisError as e:
-            print(f"Erreur lors de la récupération du TTL de la clé '{key}': {e}")
+            self.logger.error(f"Erreur lors de la récupération du TTL de la clé '{key}': {e}")
             return None
 
     def close(self) -> None:
@@ -105,4 +107,4 @@ class RedisCacheSystem(ICache, BaseCache):
                 self._redis_client.close()
                 self._redis_client = None
             except redis.RedisError as e:
-                print(f"Erreur lors de la fermeture de la connexion Redis: {e}")
+                self.logger.error(f"Erreur lors de la fermeture de la connexion Redis: {e}")

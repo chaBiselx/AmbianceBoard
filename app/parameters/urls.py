@@ -3,6 +3,7 @@ from django.urls import path
 from main.domain.common.utils.settings import Settings
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
+from django.views.i18n import set_language as django_set_language
 
 from main.interface.ui.controller.general.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification, dismiss_trace_user_activity
 from main.interface.ui.controller.general.confirmViews import confirm_account
@@ -22,6 +23,7 @@ from main.interface.ui.controller.manager.managerCronViews import (
     listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity
     )
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, favorite_update, reporting_content, public_favorite
+from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation, stats_moyenne_duration_session
 from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream
 from main.domain.sharedSoundboard.consummers.SharedSoundboardConsummers import SharedSoundboardConsummers
 
@@ -33,9 +35,10 @@ urlpatterns = [
 
     # Pages publiques
     path("", home, name="home"),
-    path("admin/", admin.site.urls),
+    path(Settings.get('URI_ADMIN').lstrip('/'), admin.site.urls, name="superadmin"),
     path("legal-notice", legal_notice, name="legalNotice"),
     path("pricing", pricing, name="pricing"),
+    path("set-language/", django_set_language, name="set_language"),
 
     #technique
     path("trace-front", trace_front, name="traceFront"),
@@ -97,12 +100,20 @@ urlpatterns = [
     
     path("playlist/other-colors", playlist_listing_colors, name="getListingOtherColors"),
     
+    #public views
     path("public/", public_index, name="publicIndex"),
     path("public/soundboards", public_listing_soundboard, name="publicListingSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>", public_soundboard_read_playlist, name="publicReadSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreamMusic"),
     path("public/report", reporting_content, name="publicReportingContent"),
     path("public/favorite", public_favorite, name="publicFavorite"),
+    
+    # publics statistics
+    path("public/stats/soundboards", list_user_public_soundboard, name="ListPublicUserSoundboardsStats"),
+    path("public/stats/soundboards/<uuid:soundboard_uuid>", stats_user_public_soundboard, name="PublicUserSoundboardsStats"),
+    path("public/stats/soundboards/<uuid:soundboard_uuid>/frequentation", stats_frequentation, name="PublicUserSoundboardsFrequentationStats"),
+    path("public/stats/soundboards/<uuid:soundboard_uuid>/moyenne", stats_moyenne_duration_session, name="PublicUserSoundboardsAverageSessionDurationStats"),
+    
     
     path('shared/<uuid:soundboard_uuid>', publish_soundboard, name="publish_soundboard"),
     path('shared/<uuid:soundboard_uuid>/<str:token>', shared_soundboard_read, name="shared_soundboard"),
