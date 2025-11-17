@@ -114,7 +114,7 @@ Améliorations
 Corrections
 - Bugs lors de boutons pour remarque les mixers d'un soundboard publique
 
-### 0.3.0 - 2025/12
+### 0.2.2 - 2025/11
 Nouveautés
 - Ajout d'un filtre pour lister les boutons pour améliorer la recherche des boutons
 - Amélioration de l'UX du dashboard Manager
