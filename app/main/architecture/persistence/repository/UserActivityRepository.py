@@ -7,6 +7,8 @@ from main.architecture.persistence.models.User import User
 from django.utils import timezone
 
 class UserActivityRepository:
+    __static_start_date = 'DATE(start_date)'
+    
     
     def get(self, activity_uuid: str, activity_type: str) -> Optional[UserActivity]:
         try:
@@ -58,7 +60,7 @@ class UserActivityRepository:
             start_date__lte=end_date,
             activity_type__in=activities
         ).extra(
-            select={'date': 'DATE(start_date)'}
+            select={'date': self.__static_start_date}
         ).values('activity_type', 'date').annotate(
             count=Count('id')
         ).order_by('date', 'activity_type')
@@ -71,7 +73,7 @@ class UserActivityRepository:
             content_type__model='soundboard',
             object_id=soundboard.id
         ).extra(
-            select={'date': 'DATE(start_date)'}
+            select={'date': self.__static_start_date}
         ).values('activity_type', 'date').annotate(
             count=Count('id')
         ).order_by('date', 'activity_type')
@@ -91,7 +93,7 @@ class UserActivityRepository:
             object_id=soundboard.id,
             end_date__isnull=False
         ).extra(
-            select={'date': 'DATE(start_date)'}
+            select={'date': self.__static_start_date}
         ).annotate(
             duration_seconds=Extract(F('end_date') - F('start_date'), 'epoch')
         ).values('activity_type', 'date').annotate(
@@ -113,7 +115,7 @@ class UserActivityRepository:
             object_id=soundboard.id,
             end_date__isnull=False
         ).extra(
-            select={'date': 'DATE(start_date)'}
+            select={'date': self.__static_start_date}
         ).annotate(
             duration_seconds=Extract(F('end_date') - F('start_date'), 'epoch')
         ).values('activity_type', 'date').annotate(
