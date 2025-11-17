@@ -2,6 +2,12 @@
 
 env >> /etc/environment # give environment variables to cron
 
+#translation
+if [ "$TRANSLATION" = "1"  ]; then
+        echo "Compiling translation messages..."
+        exec python manage.py compilemessages
+fi
+
 if [ "$DATABASE" = "postgres" ]
 then
     echo "Waiting for postgres..."

@@ -10,6 +10,8 @@ services:
       - ./.env
     environment:
       - RUNCRON=1
+      - DAPHNE=0
+      - TRANSLATION=0
     depends_on:
       - db
 
@@ -27,6 +29,8 @@ services:
       - ./.env
     environment:
       - RUNCRON=0
+      - DAPHNE=0
+      - TRANSLATION=1
     depends_on:
       - db
       - redis
@@ -45,6 +49,8 @@ services:
       - ./.env
     environment:
       - RUNCRON=0
+      - DAPHNE=1
+      - TRANSLATION=0
     depends_on:
       - db
       - redis

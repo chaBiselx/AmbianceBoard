@@ -3,6 +3,7 @@ from django.urls import path
 from main.domain.common.utils.settings import Settings
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
+from django.views.i18n import set_language as django_set_language
 
 from main.interface.ui.controller.general.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification, dismiss_trace_user_activity
 from main.interface.ui.controller.general.confirmViews import confirm_account
@@ -37,6 +38,7 @@ urlpatterns = [
     path(Settings.get('URI_ADMIN').lstrip('/'), admin.site.urls, name="superadmin"),
     path("legal-notice", legal_notice, name="legalNotice"),
     path("pricing", pricing, name="pricing"),
+    path("set-language/", django_set_language, name="set_language"),
 
     #technique
     path("trace-front", trace_front, name="traceFront"),

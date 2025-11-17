@@ -1,5 +1,11 @@
 #!/bin/sh
 
+#translation
+if [ "$TRANSLATION" = "1"  ]; then
+        echo "Compiling translation messages..."
+        exec python manage.py compilemessages
+fi
+
 # For development: simplified approach
 # In production, you should implement proper user switching
 if [ "$RUNCRON" = "1" ]; then

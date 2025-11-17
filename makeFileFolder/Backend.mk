@@ -46,3 +46,25 @@ update-db:
 	@echo "$(GREEN)Migrate de la base de données...$(NC)"
 	$(CONTAINER_BACKEND) python manage.py migrate
 	@echo "$(GREEN)Migrations terminées.$(NC)"
+
+# Traductions
+makemessages:
+	@# Help: Génère les fichiers de traduction (.po) pour toutes les langues
+	@echo "$(GREEN)Génération des fichiers de traduction...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py makemessages -l fr
+	$(CONTAINER_BACKEND) python manage.py makemessages -l en
+	@echo "$(GREEN)Fichiers .po générés dans app/locale/$(NC)"
+
+
+compilemessages:
+	@# Help: Compile les fichiers de traduction (.po en .mo)
+	@echo "$(GREEN)Compilation des fichiers de traduction...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py compilemessages
+	@echo "$(GREEN)Fichiers .mo compilés et prêts à l'emploi$(NC)"
+
+update-translations:
+	@# Help: Met à jour et compile toutes les traductions (makemessages + compilemessages)
+	@echo "$(GREEN)Mise à jour complète des traductions...$(NC)"
+	$(MAKE) makemessages
+	$(MAKE) compilemessages
+	@echo "$(GREEN)Traductions mises à jour et compilées$(NC)"
