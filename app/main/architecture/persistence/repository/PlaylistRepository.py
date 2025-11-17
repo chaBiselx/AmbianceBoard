@@ -22,10 +22,10 @@ class PlaylistRepository:
 
     def get_listing_playlist(self, user:User, filter:dict) -> List[Playlist]:
         try:
-            QuerySet = Playlist.objects.all()
+            query_set = Playlist.objects.all()
             if 'typePlaylist' in filter:
-                QuerySet = QuerySet.filter(typePlaylist=filter['typePlaylist'])
-            return QuerySet.filter(user=user).order_by('updated_at') 
+                query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
+            return query_set.filter(user=user).order_by('updated_at') 
         except Exception:
             return []
         

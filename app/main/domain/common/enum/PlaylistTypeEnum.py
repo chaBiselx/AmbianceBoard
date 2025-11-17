@@ -53,12 +53,12 @@ class PlaylistTypeEnum(BaseEnum):
         return default_class.get(self.name, "fa-solid fa-sliders")
     
     @classmethod
-    def searchEnumByValue(cls, searchStr: str) -> 'PlaylistTypeEnum':
+    def searchEnumByValue(cls, search_str: str) -> 'PlaylistTypeEnum':
         """
         Recherche un élément de l'énumération par son nom.
         
         Args:
-            searchStr (str): Le nom de l'élément à rechercher
+            search_str (str): Le nom de l'élément à rechercher
             
         Returns:
             PlaylistTypeEnum: L'élément trouvé
@@ -67,7 +67,7 @@ class PlaylistTypeEnum(BaseEnum):
             ValueError: Si aucun élément ne correspond au nom donné
         """
         for member in cls:
-            if member.value == searchStr:
+            if member.value == search_str:
                 return member
         raise ValueError(f"No enum member found with name: {name}")
         

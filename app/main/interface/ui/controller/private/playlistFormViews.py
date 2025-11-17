@@ -33,16 +33,16 @@ from main.domain.common.utils.logger import logger
 def playlist_read_all(request):
     playlist_type_filter = request.GET.get('playlistType', None)
     
-    filter = {}
+    filter_search = {}
     if playlist_type_filter:
         try:
-            typePlaylist = PlaylistTypeEnum.searchEnumByValue(playlist_type_filter)
-            filter['typePlaylist'] = typePlaylist._name_
+            type_playlist = PlaylistTypeEnum.searchEnumByValue(playlist_type_filter)
+            filter_search['typePlaylist'] = type_playlist._name_
         except ValueError:
             playlist_type_filter = None
             
 
-    playlists = (PlaylistService(request)).get_listing_playlist(filter)
+    playlists = (PlaylistService(request)).get_listing_playlist(filter_search)
     
     track_repository = TrackRepository()
     number_tracks_by_playlist = track_repository.get_number_tracks_by_playlist(request.user)

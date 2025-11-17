@@ -25,7 +25,7 @@ class TiersManager {
         this.submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
         this.templateModalDownGradeBody = document.getElementById('downgradeModalBody')!;
         this.templateModalDownGradeFooter = document.getElementById('downgradeModalFooter')!;
-        this.tierChoices = JSON.parse(document.getElementById('tier-choices-data')!.textContent!);
+        this.tierChoices = JSON.parse(document.getElementById('tier-choices-data')!.textContent || '{}');
 
     }
 
