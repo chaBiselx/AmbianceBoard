@@ -29,7 +29,33 @@ export class ChartConfigs {
     /**
      * Couleurs prédéfinies pour les datasets
      */
-    private static readonly CHART_COLORS = [
+    private static readonly CHART_COLORS_LINE = [
+        {
+            border: 'rgb(75, 192, 192)',
+            background: 'rgba(75, 192, 192, 0.2)'
+        },
+        {
+            border: 'rgb(255, 99, 132)',
+            background: 'rgba(255, 99, 132, 0.2)'
+        },
+        {
+            border: 'rgb(54, 162, 235)',
+            background: 'rgba(54, 162, 235, 0.2)'
+        },
+        {
+            border: 'rgb(255, 205, 86)',
+            background: 'rgba(255, 205, 86, 0.2)'
+        },
+        {
+            border: 'rgb(153, 102, 255)',
+            background: 'rgba(153, 102, 255, 0.2)'
+        },
+        {
+            border: 'rgb(255, 159, 64)',
+            background: 'rgba(255, 159, 64, 0.2)'
+        }
+    ];
+        private static readonly CHART_COLORS_BAR = [
         {
             border: 'rgb(75, 192, 192)',
             background: 'rgba(75, 192, 192, 0.7)'
@@ -68,7 +94,7 @@ export class ChartConfigs {
     ): LineEvolutionData {
         const formattedDatasets: DatasetConfig[] = datasets.map((dataset, index) => {
             // Utiliser les couleurs personnalisées ou les couleurs par défaut
-            const colors = dataset.customColors || this.CHART_COLORS[index % this.CHART_COLORS.length];
+            const colors = dataset.customColors || this.CHART_COLORS_LINE[index % this.CHART_COLORS_LINE.length];
 
             return {
                 label: dataset.label,
@@ -98,7 +124,7 @@ export class ChartConfigs {
     ): LineEvolutionData {
         const formattedDatasets: DatasetConfig[] = datasets.map((dataset, index) => {
             // Utiliser les couleurs personnalisées ou les couleurs par défaut
-            const colors = dataset.customColors || this.CHART_COLORS[index % this.CHART_COLORS.length];
+            const colors = dataset.customColors || this.CHART_COLORS_BAR[index % this.CHART_COLORS_BAR.length];
 
             return {
                 label: dataset.label,
