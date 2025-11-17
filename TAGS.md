@@ -122,6 +122,7 @@ Nouveautés
 Améliorations
 - Amélioration du SEO avec SERP
 - Changement URL admistrateur pour la sécurité
+- Amélioration de la vitesse de génération de l'image docker de prod
 
 
 ### X.Y.Z - Date
