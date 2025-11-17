@@ -40,7 +40,6 @@ def can_show_statistics(func: Callable[..., HttpResponse]) -> Callable[..., Http
             HttpResponse: Page d'erreur 403 si non autorisé, sinon résultat de la vue originale
         """
         has_access = UserTierManager.can_boolean(request.user, 'get_statistics_from_public')
-        test = UserTierManager.get_user_limits(request.user)
         if not has_access:
             return render(request, HtmlDefaultPageEnum.ERROR_403.value, status=403)
         return func(request, *args, **kwargs)

@@ -56,7 +56,7 @@ def stats_frequentation(request, soundboard_uuid) -> JsonResponse:
         
         soundboard = SoundBoardRepository().get_by_uuid_and_user(soundboard_uuid, request.user)
         if(not soundboard):
-            raise Exception("Soundboard non trouvée")
+            raise ValueError("Soundboard non trouvée")
 
         service = UserPublicActivityStatsService()
         response_data = service.get_frequentation(soundboard, start_date, end_date)
@@ -87,7 +87,7 @@ def stats_moyenne_duration_session(request, soundboard_uuid) -> JsonResponse:
         
         soundboard = SoundBoardRepository().get_by_uuid_and_user(soundboard_uuid, request.user)
         if(not soundboard):
-            raise Exception("Soundboard non trouvée")
+            raise ValueError("Soundboard non trouvée")
 
         service = UserPublicActivityStatsService()
         response_data = service.get_moyenne_duration_session(soundboard, start_date, end_date)
