@@ -171,3 +171,7 @@ main {
 button i{
     pointer-events: none;
 }
+
+.dropdown-without-arrow::after {
+        display: none;
+}

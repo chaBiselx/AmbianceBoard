@@ -1,6 +1,4 @@
 {% extends 'Html/partial/structure/base_manager.html' %}
-{% load i18n %}
-
 
 
 {% load static %}
@@ -14,22 +12,7 @@
 
 {% block content %}
  
-test ----------------- <br/>
 
-    {% trans "Text to translate" %}
-    <br/>
-    {% blocktrans %}Text with {{ variable }}{% endblocktrans %}
-
-    <form action="{% url 'set_language' %}" method="post">
-        {% csrf_token %}
-        {% get_current_language as CURRENT_LANGUAGE %}
-        <select name="language" onchange="this.form.submit()">
-            <option value="fr" {% if CURRENT_LANGUAGE == 'fr' %}selected{% endif %}>Français</option>
-            <option value="en" {% if CURRENT_LANGUAGE == 'en' %}selected{% endif %}>English</option>
-        </select>
-    </form>
-
-fin test --------------------------- <br/>
 
 <div class="row">
     <div class="col-12">
