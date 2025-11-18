@@ -137,6 +137,10 @@ Améliorations
 Corrections
 - Fix l'erreur de page pour l'organisation des soundboard. 
 
+### 0.2.4 - 2025/11
+Corrections
+- Correction d'un bugs sur l'oganisation des soundboards 
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
