@@ -328,9 +328,10 @@ class SendBackendAction {
         }, section)
     }
 
-    public removeMusic(btnPlaylist: OrganizerButtonPlaylist) {
+    public removeMusic(btnPlaylist: OrganizerButtonPlaylist, section: number) {
         this.fetch('DELETE', {
             idPlaylist: btnPlaylist.playlist.id,
+            section: section
         })
     }
 
@@ -527,7 +528,7 @@ class DragAndDropEventManager {
         }
         checkEmptyPlaylist();
         const sendbackend = new SendBackendAction()
-        sendbackend.removeMusic(btnPlaylist)
+        sendbackend.removeMusic(btnPlaylist, Number.parseInt(playlist.dataset.section!))
 
         const cleanorder = new CleanOrderHandler()
         cleanorder.trueReorder().resetBadge()

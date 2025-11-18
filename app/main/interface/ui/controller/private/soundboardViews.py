@@ -84,7 +84,7 @@ def soundboard_organize_update(request, soundboard_uuid):
             soundboard_playlist_service.update(playlist, new_order, section)
             return JsonResponse({'success': 'playslist added', 'order': playlist.get_order()}, status=200)
         if request.method == 'DELETE':
-            soundboard_playlist_service.remove(playlist)
+            soundboard_playlist_service.remove(playlist, section)
             return JsonResponse({'success': 'playslist deleted'}, status=200)
     except Exception as e:
         logger.error(f"soundboard_organize_update : {e}")

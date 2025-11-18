@@ -42,9 +42,9 @@ class SoundboardPlaylistService:
             order = self._new_order()
         return order
     
-    def remove(self, playlist:Playlist):
+    def remove(self, playlist:Playlist, section:int = 1):
         self.soundboard_playlist_repository.delete(self.soundboard, playlist)
-        self.reorder()
+        self.reorder_section(section)
         return self
             
     def _new_order(self):
@@ -53,16 +53,6 @@ class SoundboardPlaylistService:
         else:
             return self.soundboard_playlist_repository.get_first(self.soundboard).order + 1
             
-    def reorder(self):
-        soundboard_playlists = self.soundboard_playlist_repository.get_all(self.soundboard)
-        new_order = 1
-        for soundboard_playlist in soundboard_playlists:
-            soundboard_playlist.order = new_order
-            soundboard_playlist.save()
-            new_order += 1
-            
-        return self
-    
     def reorder_section(self, section=1):
         soundboard_playlists = self.soundboard_playlist_repository.get_all_by_section(self.soundboard, section)
         new_order = 1
