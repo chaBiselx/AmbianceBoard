@@ -22,7 +22,7 @@ class PlaylistService:
         return playlist
  
         
-    def get_listing_playlist(self, filter:dict) -> List[Playlist]:
+    def get_listing_playlist(self, filter:dict = {}) -> List[Playlist]:
         return self.playlist_repository.get_listing_playlist(self.request.user, filter)
 
 

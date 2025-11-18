@@ -57,6 +57,6 @@ class SoundBoardPlaylistManager:
         Returns:
             List[Playlist]: Liste des playlists disponibles pour l'association
         """
-        all_playlists = list((PlaylistService(self.request)).get_all_playlist())
+        all_playlists = list((PlaylistService(self.request)).get_listing_playlist())
         associated_playlists = list(self.soundboard.playlists.all())
         return [playlist for playlist in all_playlists if playlist not in associated_playlists]

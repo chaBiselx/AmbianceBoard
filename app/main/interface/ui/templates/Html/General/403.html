@@ -1,10 +1,11 @@
 {% extends 'Html/partial/structure/base.html' %}
+{% load i18n %}
 
 {% block content %}
 
 <div class="wrap-error text-center py-5">
   <div class="code-error text-primary-emphasis">403</div>
-  <p class="h4 fw-semibold mb-3">Accès refusé</p>
-  <p class="msg-error text-body-secondary mb-0">Vous n'avez pas la permission d'accéder à cette page.</p>
+  <p class="h4 fw-semibold mb-3">{% trans "template.403.title" %}</p>
+  <p class="msg-error text-body-secondary mb-0">{% trans "template.403.message" %}</p>
 </div>
 {% endblock %}

@@ -501,7 +501,7 @@ USER_TIERS = {
         'display_name': 'Utilisateur Standard',
         'display_name_short': 'Standard',
         'limits': {
-            'soundboard': 2,
+            'soundboard': 5,
             'playlist': 50,
             'music_per_playlist': 5,
             'weight_music_mb': 10,
@@ -515,8 +515,8 @@ USER_TIERS = {
     'PREMIUM_BASIC': {
         'name': 'Premium Basic',
         'pricing' : {
-            'monthly': 3.33,
-            'yearly': 33.33,
+            'monthly': 1.67,
+            'yearly': 16.67,
         },
         'display_name': 'Premium Basique',
         'display_name_short': 'Basique',

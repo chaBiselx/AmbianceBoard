@@ -1,0 +1,34 @@
+{% load Register %}
+{% load i18n %}
+{% load static %}
+
+{% if request.user.isBetaTester %}
+<div class="dropdown">
+    {% get_current_language as CURRENT_LANGUAGE %}
+    <button class="btn btn-link url_link dropdown-toggle d-flex align-items-center text-decoration-none dropdown-without-arrow" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="{% static 'img/lang/' %}{{ CURRENT_LANGUAGE }}.svg" class="d-sm-inline" alt="AmbianceBoard - Soundboard et Playlist Musicale" width="17" height="17">
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+        <li>
+            <form action="{% url 'set_language' %}" method="post" class="dropdown-item">
+                {% csrf_token %}
+                <input type="hidden" name="language" value="fr">
+                <button type="submit" class="btn btn-link text-decoration-none p-0 text-start w-100" style="color: inherit;">
+                    <img src="{% static 'img/lang/fr.svg' %}" class="d-sm-inline me-2" alt="Français" width="17" height="17">
+                    Francais
+                </button>
+            </form>
+        </li>
+        <li>
+            <form action="{% url 'set_language' %}" method="post" class="dropdown-item">
+                {% csrf_token %}
+                <input type="hidden" name="language" value="en">
+                <button type="submit" class="btn btn-link text-decoration-none p-0 text-start w-100" style="color: inherit;">
+                    <img src="{% static 'img/lang/en.svg' %}" class="d-sm-inline me-2" alt="English" width="17" height="17">
+                    English
+                </button>
+            </form>
+        </li>
+    </ul>
+</div>
+{% endif %}

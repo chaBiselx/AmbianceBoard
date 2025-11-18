@@ -114,7 +114,7 @@ Améliorations
 Corrections
 - Bugs lors de boutons pour remarque les mixers d'un soundboard publique
 
-### 0.3.0 - 2025/12
+### 0.2.2 - 2025/11
 Nouveautés
 - Ajout d'un filtre pour lister les boutons pour améliorer la recherche des boutons
 - Amélioration de l'UX du dashboard Manager
@@ -125,6 +125,17 @@ Améliorations
 - Amélioration du SEO avec SERP
 - Changement URL admistrateur pour la sécurité
 - Amélioration de la vitesse de génération de l'image docker de prod
+
+### 0.2.3 - 2025/11
+Nouveautés
+- Ajout du systeme de traduction pour les beta-testeurs
+
+Améliorations
+- Ajout d'un text pour informer la notions de temporaire pour la tarification
+- Modification tarif pour le niveau de base
+
+Corrections
+- Fix l'erreur de page pour l'organisation des soundboard. 
 
 
 ### X.Y.Z - Date

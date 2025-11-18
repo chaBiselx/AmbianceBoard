@@ -2,8 +2,10 @@
 
 #translation
 if [ "$TRANSLATION" = "1"  ]; then
-        echo "Compiling translation messages..."
-        exec python manage.py compilemessages
+    echo "Delete old translation messages..."
+    find locale -name '*.mo' -delete
+    echo "Compiling translation messages..."
+    python manage.py compilemessages
 fi
 
 # For development: simplified approach

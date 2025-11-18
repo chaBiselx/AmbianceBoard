@@ -1,4 +1,5 @@
 {% extends 'Html/partial/structure/base.html' %}
+{% load i18n %}
 {% load Pricing %}
 
 {% block content %}
@@ -8,6 +9,15 @@
             <div class="text-center mb-3">
                 <h2 class="display-5 fw-bold text-primary">Nos Formules</h2>
                 <p class="lead text-muted">Choisissez l'offre qui correspond le mieux à vos besoins</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-warning">
+                Ces tarifications ne sont pas encore en place. 
+                Elles sont présentées à titre indicatif et peuvent évoluer en fonction de vos retours.
             </div>
         </div>
     </div>
@@ -101,9 +111,10 @@
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-rectangle-ad text-primary me-2"></i>
-                            Publicité <i>(A venir)</i> : <strong>
+                            Publicité (<strong>0 pub sonores</strong>) <i>(A venir)</i> : <strong>
                                 {{ tier_data.limits.advertising.get_text_pricing }}
                             </strong>
+                            {% if tier_data.limits.advertising == 'partial' %} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Sur les pages général (hors soundboard)">ⓘ</span>{% endif %}
                         </li>
                         {% if tier_data.limits.share_soundboard %}
                             <li class="mb-1">

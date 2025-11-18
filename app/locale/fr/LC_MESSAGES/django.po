@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-17 16:16+0000\n"
+"POT-Creation-Date: 2025-11-18 09:24+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -17,11 +17,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: main/interface/ui/templates/Html/Manager/dashboard.html:19
-msgid "Text to translate"
-msgstr "Texte à traduire en français"
+#: main/interface/ui/templates/Html/Account/send_reset_password.html:11
+msgid "template.sendResetPassword.card.title"
+msgstr "Sending password reset"
 
-#: main/interface/ui/templates/Html/Manager/dashboard.html:21
-#, python-format
-msgid "Text with %(variable)s"
-msgstr "Texte avec %(variable)s"
+#: main/interface/ui/templates/Html/Account/send_reset_password.html:20
+msgid "template.sendResetPassword.form.submit"
+msgstr "Reset password"
+
+#: main/interface/ui/templates/Html/General/403.html:8
+msgid "template.403.title"
+msgstr "Accès refusé"
+
+#: main/interface/ui/templates/Html/General/403.html:9
+msgid "template.403.message"
+msgstr "Vous n'avez pas la permission d'accéder à cette page."
+
+#: main/interface/ui/templates/Html/Music/add_link_music.html:7
+msgid "template.addLinkMusic.form.submit"
+msgstr "Ajouter le lien"

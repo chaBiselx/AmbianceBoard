@@ -1,6 +1,8 @@
 <!-- Mode création : formulaire classique -->
+{% load i18n %}
+
 <form method="post" action="{% url 'addLink' playlist.uuid %}">
     {% csrf_token %}
     {{ form.as_p }}
-    <button class="btn btn-primary btn-block mt-2" type="submit">Ajouter le lien</button>
+    <button class="btn btn-primary btn-block mt-2" type="submit">{% trans "template.addLinkMusic.form.submit" %}</button>
 </form>

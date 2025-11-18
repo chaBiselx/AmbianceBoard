@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <!-- Mode édition : formulaire classique -->
 <form method="post" action="{% url 'editLink' playlist.uuid link.id %}">
     {% csrf_token %}
