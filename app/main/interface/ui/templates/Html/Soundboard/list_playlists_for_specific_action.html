@@ -1,4 +1,6 @@
 {% extends 'Html/partial/structure/base.html' %}
+{% load i18n %}
+
 {% load Utils %}
 {% load Playlist %}
 {% load static %}
@@ -17,7 +19,13 @@
         <tr>
             <th scope="col">Boutons</th>
             <th scope="col">Nom</th>
-            <th scope="col">Actionnable par les joueurs</th>
+            <th scope="col">
+                Actionnable par les joueurs
+                {% if not can_shared_playlist_playable_by_shared_user %}
+                <span class="text-danger" data-bs-toggle="tooltip" data-bs-title="{% trans "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip" %}"><i class="fa-solid fa-circle-info"></i></span>
+                {% endif %}
+            </th>
+            <th scope="col">{% trans "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label" %}</th>
         </tr>
     </thead>
     <tbody id="playlists-table-body" data-update-url="{% url 'updateActionablePlaylistsForPlayers' %}">
@@ -40,7 +48,16 @@
             <td>
                 <div class="form-switch">
                     <input type="checkbox" class="form-check-input update-action" data-bs-toggle="tooltip" data-bs-title="Afficher/Masquer les boutons aux joueurs" data-playlist-uuid="{{playlist.uuid}}" data-soundboard-uuid="{{soundboard.uuid}}"
-                        data-soundboard-playlist-id="{{soundboardPlaylist.pk}}" data-label="playable_by_players" {% if soundboardPlaylist.activable_by_player %}checked{% endif %}> 
+                        data-soundboard-playlist-id="{{soundboardPlaylist.pk}}" data-label="playable_by_players" {% if soundboardPlaylist.activable_by_player %}checked{% endif %} {% if can_shared_playlist_playable_by_shared_user %}{% else %}disabled{% endif %}>
+                </div>
+            </td>
+            <td>
+                <div class="keyboard-shortcut keyboard-shortcut-event border rounded p-1 text-center" data-playlist-uuid="{{playlist.uuid}}" data-soundboard-uuid="{{soundboard.uuid}}">
+                    {% if soundboardPlaylist.keyboard_shortcut %}
+                    <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-title="{% trans "template.listePlaylistForSpecificAction.table.row.keyboard_shortcut.defined.tooltip" %}">{{ soundboardPlaylist.keyboard_shortcut }}</span>
+                    {% else %}
+                    <span class="text-muted" data-bs-toggle="tooltip" data-bs-title="{% trans "template.listePlaylistForSpecificAction.table.row.keyboard_shortcut.undefined.tooltip" %}">-</span>
+                    {% endif %}
                 </div>
             </td>
         </tr>

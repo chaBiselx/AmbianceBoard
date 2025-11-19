@@ -1,10 +1,12 @@
 import PageFocusReloader from "@/modules/General/PageFocusReloader";
 import Csrf from '@/modules/General/Csrf';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
+import ShorcutKeyBoardDetector from "@/modules/Control/ShorcutKeyBoardDetector";
 
 document.addEventListener("DOMContentLoaded", () => {
     new PageFocusReloader().setupFocusListener();
     new UpdatePlaylistActionableByPlayers().initEventListeners();
+    new UpdatePlaylistShortcutKeyboard().initEventListeners();
 });
 
 type valueType = string | boolean | number;
@@ -26,7 +28,6 @@ class UpdatePlaylistActionableByPlayers {
     }
 
     public initEventListeners(): void {
-        this.playlistsTableBody.getElementsByClassName('update-action')
         for (const input of this.playlistsTableBody.getElementsByClassName('update-action')) {
             input.addEventListener('change', (event) => this.updateInput(event));
         }
@@ -83,3 +84,61 @@ class UpdatePlaylistActionableByPlayers {
     }
 
 }
+
+class UpdatePlaylistShortcutKeyboard {
+    private readonly playlistsTableBody: HTMLElement;
+    // private readonly url: string;
+    private shortcutDetector: ShorcutKeyBoardDetector;
+
+    constructor() {
+        this.playlistsTableBody = document.getElementById('playlists-table-body') as HTMLElement;
+        this.shortcutDetector = new ShorcutKeyBoardDetector();
+    }
+
+    public initEventListeners(): void {
+        for (const input of this.playlistsTableBody.getElementsByClassName('keyboard-shortcut-event')) {
+            input.addEventListener('click', (event) => { this.activeDetectionForPlaylist(event); });
+        }
+    }
+
+    private activeDetectionForPlaylist(event: Event): void {
+        const target = event.target as HTMLElement;
+
+        if (target) {
+            // Sauvegarder le texte original
+            const originalText = target.textContent || target.innerText;
+
+            // Changer le texte pour indiquer l'attente du raccourci
+            target.textContent = "Réaliser votre raccourci clavier";
+
+            try {
+                this.shortcutDetector.startListening(
+                    (shortcut) => {
+                        console.log('Listening for shortcuts:', shortcut);
+
+                        this.applyShortcutToPlaylist(target, shortcut);
+
+
+
+                        this.shortcutDetector.stopListening();
+                    },
+                    () => {
+                        // Restaurer le texte original si l'écoute est arrêtée
+                        target.textContent = originalText;
+                    });
+            } catch (error) {
+                target.textContent = originalText;
+                console.error('Erreur lors de la détection du raccourci clavier:', error);
+            }
+
+        }
+    }
+
+    private applyShortcutToPlaylist(HTMLElement: HTMLElement, shortcut: string[]) {
+        HTMLElement.textContent = shortcut.join(' + ');
+        console.log('TODO SAVE '); // TODO sauvegarder la commande coté backend
+        
+
+    }
+}
+

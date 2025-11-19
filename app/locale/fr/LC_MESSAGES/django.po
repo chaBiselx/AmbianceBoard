@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-19 07:51+0000\n"
+"POT-Creation-Date: 2025-11-19 19:19+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -33,7 +33,7 @@ msgstr "Accès refusé"
 msgid "template.403.message"
 msgstr "Vous n'avez pas la permission d'accéder à cette page."
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:129
+#: main/interface/ui/templates/Html/General/general_pricing.html:123
 msgid "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip"
 msgstr "Pouvoir partager l'écoute de la soundboard avec vos joueurs en ligne."
 
@@ -41,9 +41,32 @@ msgstr "Pouvoir partager l'écoute de la soundboard avec vos joueurs en ligne."
 msgid "template.addLinkMusic.form.submit"
 msgstr "Ajouter le lien"
 
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:25
+msgid ""
+"template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
+msgstr "Ce compte ne peux pas avoir accès a cette fonctionnalité :"
+
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:28
+msgid ""
+"template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
+msgstr "Raccourci clavier"
+
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:58
+msgid ""
+"template.listePlaylistForSpecificAction.table.row.keyboard_shortcut.defined."
+"tooltip"
+msgstr "Raccourci défini :"
+
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:60
+msgid ""
+"template.listePlaylistForSpecificAction.table.row.keyboard_shortcut."
+"undefined.tooltip"
+msgstr "Aucun raccourci défini"
+
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:7
 msgid "template.shareSoundboard.button.tooltip"
-msgstr "Envoyer le lien généré afin de partager l'ecoute avec vos joueurs en ligne."
+msgstr ""
+"Envoyer le lien généré afin de partager l'ecoute avec vos joueurs en ligne."
 
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:8
 msgid "template.shareSoundboard.button.label"
