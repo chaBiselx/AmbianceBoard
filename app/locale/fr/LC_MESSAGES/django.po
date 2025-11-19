@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-18 09:24+0000\n"
+"POT-Creation-Date: 2025-11-19 07:51+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -33,6 +33,18 @@ msgstr "Accès refusé"
 msgid "template.403.message"
 msgstr "Vous n'avez pas la permission d'accéder à cette page."
 
+#: main/interface/ui/templates/Html/General/general_pricing.html:129
+msgid "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip"
+msgstr "Pouvoir partager l'écoute de la soundboard avec vos joueurs en ligne."
+
 #: main/interface/ui/templates/Html/Music/add_link_music.html:7
 msgid "template.addLinkMusic.form.submit"
 msgstr "Ajouter le lien"
+
+#: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:7
+msgid "template.shareSoundboard.button.tooltip"
+msgstr "Envoyer le lien généré afin de partager l'ecoute avec vos joueurs en ligne."
+
+#: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:8
+msgid "template.shareSoundboard.button.label"
+msgstr "Partager l'écoute"
