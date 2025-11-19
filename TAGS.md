@@ -162,6 +162,3 @@ Corrections
 
 Fiabilité & Confiance
 - …
-
-Prochain Focus
-- …
