@@ -141,6 +141,10 @@ Corrections
 Corrections
 - Correction d'un bugs sur l'oganisation des soundboards 
 
+### 0.2.4 - 2025/11
+Corrections
+- Bugs affichage sur les soundboards partagés 
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

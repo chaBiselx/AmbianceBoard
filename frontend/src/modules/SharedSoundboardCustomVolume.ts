@@ -80,7 +80,7 @@ class SharedSoundboardCustomVolume {
             const html = `<form class="mixer-playlist-update-container">
             <input class="mixer-playlist-custom-shared-update horizontal-slider-input" type="range" value="${value}" min="${this.minValue}" max="100" id="range__custom_volume_${clonedElement.dataset.playlistId}" 
             data-idplaylist="${clonedElement.dataset.playlistId}" style="width: 75px;" />
-            <output class="horizontal-slider-output bottom" for="range__custom_volume_${clonedElement.dataset.playlistId}" style="--min: ${value};--max: 100"></output>
+            <output class="horizontal-slider-output bottom" for="range__custom_volume_${clonedElement.dataset.playlistId}" style="--min: ${this.minValue};--max: 100"></output>
             </form>`;
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
