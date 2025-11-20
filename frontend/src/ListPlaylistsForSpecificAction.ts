@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new PageFocusReloader().setupFocusListener();
     new UpdatePlaylistActionableByPlayers().initEventListeners();
     new UpdatePlaylistShortcutKeyboard().initEventListeners();
+    new KeyboardColumnVisibility().toggleColumnVisibility();
 });
 
 type valueType = string | boolean | number;
@@ -85,6 +86,40 @@ class UpdatePlaylistActionableByPlayers {
 
 }
 
+class KeyboardColumnVisibility {
+    public toggleColumnVisibility(): void {
+        // Détecter si un clavier physique est disponible
+        const hasKeyboard = this.detectKeyboard();
+
+        if (!hasKeyboard) {
+            // Masquer toutes les cellules de la colonne raccourci clavier
+            const keyboardCells = document.querySelectorAll('.keyboard-shortcut-column');
+            keyboardCells.forEach(cell => {
+                (cell as HTMLElement).style.display = 'none';
+            });
+        }
+    }
+
+    private detectKeyboard(): boolean {
+        // Vérifier si l'appareil a un clavier physique
+        // Les appareils tactiles purs n'ont généralement pas de clavier physique
+
+        // Vérifier si c'est un appareil tactile
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+        // Vérifier le type de pointeur principal
+        const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+
+        // Si c'est un appareil tactile avec pointeur grossier, probablement sans clavier
+        if (isTouchDevice && hasCoarsePointer) {
+            return false;
+        }
+
+        // Par défaut, on considère qu'un clavier est disponible
+        return true;
+    }
+}
+
 class UpdatePlaylistShortcutKeyboard {
     private readonly playlistsTableBody: HTMLElement;
     // private readonly url: string;
@@ -137,7 +172,7 @@ class UpdatePlaylistShortcutKeyboard {
     private applyShortcutToPlaylist(HTMLElement: HTMLElement, shortcut: string[]) {
         HTMLElement.textContent = shortcut.join(' + ');
         console.log('TODO SAVE '); // TODO sauvegarder la commande coté backend
-        
+
 
     }
 }

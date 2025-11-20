@@ -25,7 +25,7 @@
                 <span class="text-danger" data-bs-toggle="tooltip" data-bs-title="{% trans "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip" %}"><i class="fa-solid fa-circle-info"></i></span>
                 {% endif %}
             </th>
-            <th scope="col">{% trans "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label" %}</th>
+            <th scope="col" class="keyboard-shortcut-column" style="max-width: 100px;">{% trans "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label" %}</th>
         </tr>
     </thead>
     <tbody id="playlists-table-body" data-update-url="{% url 'updateActionablePlaylistsForPlayers' %}">
@@ -51,7 +51,7 @@
                         data-soundboard-playlist-id="{{soundboardPlaylist.pk}}" data-label="playable_by_players" {% if soundboardPlaylist.activable_by_player %}checked{% endif %} {% if can_shared_playlist_playable_by_shared_user %}{% else %}disabled{% endif %}>
                 </div>
             </td>
-            <td>
+            <td class="keyboard-shortcut-column" style="max-width: 100px;">
                 <div class="keyboard-shortcut keyboard-shortcut-event border rounded p-1 text-center" data-playlist-uuid="{{playlist.uuid}}" data-soundboard-uuid="{{soundboard.uuid}}">
                     {% if soundboardPlaylist.keyboard_shortcut %}
                     <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-title="{% trans "template.listePlaylistForSpecificAction.table.row.keyboard_shortcut.defined.tooltip" %}">{{ soundboardPlaylist.keyboard_shortcut }}</span>
