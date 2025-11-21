@@ -45,10 +45,6 @@ class ShorcutKeyBoardDetector {
      * Handle keydown event
      */
     private handleKeyDown(event: KeyboardEvent): void {
-        // Prevent ALL default browser behavior immediately when listening
-        event.preventDefault();
-        event.stopPropagation();
-        
         // Add the key to the set of pressed keys
         const key = this.normalizeKey(event.key);
 
@@ -61,10 +57,18 @@ class ShorcutKeyBoardDetector {
         }
 
         // Avoid repeating keys when held down
-        if (this.pressedKeys.has(key) || this.ignoreList.includes(key)) {
-
+        if (this.pressedKeys.has(key)) {
             return;
         }
+
+        // Allow default behavior for ignored keys
+        if(this.ignoreList.includes(key)){
+            return;
+        }
+
+        // Prevent default browser behavior for captured shortcuts
+        event.preventDefault();
+        event.stopPropagation();
 
         this.pressedKeys.add(key);
 
