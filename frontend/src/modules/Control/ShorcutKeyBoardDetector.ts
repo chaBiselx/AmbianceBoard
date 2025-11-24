@@ -4,8 +4,8 @@ class ShorcutKeyBoardDetector {
     private pressedKeys: Set<string>;
     private isListening: boolean;
     private callbackContinue: ((shortcut: string[]) => void) | null = null;
-    private callbackStop: (() => void) | null = null;
-    private ignoreList: string[] = ['F12'];
+    private callbackStop: ((cancel: boolean) => void) | null = null;
+    private ignoreList: string[] = ['F12', 'F5'];
 
     constructor() {
         this.pressedKeys = new Set();
@@ -15,7 +15,7 @@ class ShorcutKeyBoardDetector {
     /**
      * Start listening for keyboard shortcuts
      */
-    public startListening(callbackContinue: (shortcut: string[]) => void = () => {}, callbackStop: () => void = () => {}): void {
+    public startListening(callbackContinue: (shortcut: string[]) => void = () => {}, callbackStop: (cancel: boolean) => void = () => {}): void {
         if (this.isListening) {
             return;
         }
@@ -51,7 +51,15 @@ class ShorcutKeyBoardDetector {
         if (key === 'Escape') {
             this.stopListening();
             if (this.callbackStop) {
-                this.callbackStop();
+                this.callbackStop(true);
+            }
+            return;
+        }
+
+        if (key === 'Delete') {
+            this.stopListening();
+            if (this.callbackStop) {
+                this.callbackStop(false);
             }
             return;
         }

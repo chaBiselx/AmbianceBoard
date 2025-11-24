@@ -8,6 +8,7 @@ from main.domain.common.utils.UserTierManager import UserTierManager
 from main.domain.common.utils.logger import logger
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.private.dto.UpdateSoundPlaylistDto import UpdateSoundPlaylistDto
+from main.domain.private.dto.ShortcutKeyboardPlaylistDto import ShortcutKeyboardPlaylistDto
 from main.domain.private.service.SoundboardPlaylistOptionService import SoundboardPlaylistOptionService
 
 from main.domain.common.service.SoundBoardService import SoundBoardService
@@ -46,3 +47,19 @@ def update_specific_actionable_playlists(request):
     except Exception as e:
         logger.error(f"Erreur lors de la mise à jour des playlists actionnables: {e}")
         return JsonResponse({'error': 'Erreur interne du serveur'}, status=500)
+    
+@login_required
+@require_http_methods(['UPDATE'])
+def update_specific_shortcut_playlists(request):
+    """Met a jour les playlists actionnables par les joueurs"""
+    
+    try:
+        update_dto = ShortcutKeyboardPlaylistDto.from_request(request)
+        update_service = SoundboardPlaylistOptionService([update_dto])
+        update_service.update_playlists()
+        if not update_service.is_valid:
+            return JsonResponse({'error': 'Données invalides'}, status=400)
+        return JsonResponse({'message': 'Mise à jour réussie'})
+    except Exception as e:
+        logger.error(f"Erreur lors de la mise à jour des playlists actionnables: {e}")
+        return JsonResponse({'error': 'Erreur interne du serveur', 'msg': str(e)}, status=500)

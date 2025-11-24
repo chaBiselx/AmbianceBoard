@@ -2,6 +2,8 @@ import PageFocusReloader from "@/modules/General/PageFocusReloader";
 import Csrf from '@/modules/General/Csrf';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
 import ShorcutKeyBoardDetector from "@/modules/Control/ShorcutKeyBoardDetector";
+import UserConfig from "@/modules/Util/UserConfig";
+import Notification from '@/modules/General/Notifications';
 
 document.addEventListener("DOMContentLoaded", () => {
     new PageFocusReloader().setupFocusListener();
@@ -12,12 +14,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 type valueType = string | boolean | number;
 
-type UpdatePlaylistConfig = {
+type ActionnableByUserDTO = {
     soundboard_uuid: string;
     playlist_uuid: string;
     soundboard_playlist_id: string;
     label: string;
     value: valueType;
+}
+type ShortcutKeyboardDTO = {
+    soundboard_uuid: string;
+    playlist_uuid: string;
+    soundboard_playlist_id: string;
+    shortcuts: string[] | null;
 }
 
 class UpdatePlaylistActionableByPlayers {
@@ -25,7 +33,7 @@ class UpdatePlaylistActionableByPlayers {
     private readonly url: string;
     constructor() {
         this.playlistsTableBody = document.getElementById('playlists-table-body') as HTMLElement;
-        this.url = this.playlistsTableBody.dataset.updateUrl as string;
+        this.url = document.getElementById('col-actionnable-by-players')!.dataset.actionnableByPlayersUrl as string;
     }
 
     public initEventListeners(): void {
@@ -43,7 +51,7 @@ class UpdatePlaylistActionableByPlayers {
             const label = target.dataset.label;
             if (playlistUuid && soundboardPlaylistId && soundboard_uuid && label) {
                 const value = this.valueFromInput(target);
-                const param: UpdatePlaylistConfig = {
+                const param: ActionnableByUserDTO = {
                     soundboard_uuid: soundboard_uuid,
                     playlist_uuid: playlistUuid,
                     soundboard_playlist_id: soundboardPlaylistId,
@@ -62,7 +70,7 @@ class UpdatePlaylistActionableByPlayers {
         return input.value;
     }
 
-    private updateValueAction(param: UpdatePlaylistConfig) {
+    private updateValueAction(param: ActionnableByUserDTO) {
         fetch(this.url, {
             method: 'UPDATE',
             headers: {
@@ -89,7 +97,7 @@ class UpdatePlaylistActionableByPlayers {
 class KeyboardColumnVisibility {
     public toggleColumnVisibility(): void {
         // Détecter si un clavier physique est disponible
-        const hasKeyboard = this.detectKeyboard();
+        const hasKeyboard = UserConfig.detectKeyboard();
 
         if (!hasKeyboard) {
             // Masquer toutes les cellules de la colonne raccourci clavier
@@ -99,35 +107,18 @@ class KeyboardColumnVisibility {
             });
         }
     }
-
-    private detectKeyboard(): boolean {
-        // Vérifier si l'appareil a un clavier physique
-        // Les appareils tactiles purs n'ont généralement pas de clavier physique
-
-        // Vérifier si c'est un appareil tactile
-        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-
-        // Vérifier le type de pointeur principal
-        const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
-
-        // Si c'est un appareil tactile avec pointeur grossier, probablement sans clavier
-        if (isTouchDevice && hasCoarsePointer) {
-            return false;
-        }
-
-        // Par défaut, on considère qu'un clavier est disponible
-        return true;
-    }
 }
 
 class UpdatePlaylistShortcutKeyboard {
     private readonly playlistsTableBody: HTMLElement;
     // private readonly url: string;
     private shortcutDetector: ShorcutKeyBoardDetector;
+    private readonly url: string;
 
     constructor() {
         this.playlistsTableBody = document.getElementById('playlists-table-body') as HTMLElement;
         this.shortcutDetector = new ShorcutKeyBoardDetector();
+        this.url = document.getElementById('col-keyboard-shortcut')!.dataset.shortcutUrl as string;
     }
 
     public initEventListeners(): void {
@@ -140,11 +131,8 @@ class UpdatePlaylistShortcutKeyboard {
         const target = event.target as HTMLElement;
 
         if (target) {
-            // Sauvegarder le texte original
-            const originalText = target.textContent || target.innerText;
-
             // Changer le texte pour indiquer l'attente du raccourci
-            target.textContent = "Réaliser votre raccourci clavier";
+            target.innerHTML = "<small>Réaliser votre raccourci clavier <br/> echap pour annuler - supprimer pour enlever</small>";
 
             try {
                 this.shortcutDetector.startListening(
@@ -152,17 +140,15 @@ class UpdatePlaylistShortcutKeyboard {
                         console.log('Listening for shortcuts:', shortcut);
 
                         this.applyShortcutToPlaylist(target, shortcut);
-
-
-
                         this.shortcutDetector.stopListening();
                     },
-                    () => {
+                    (cancel: boolean) => {
                         // Restaurer le texte original si l'écoute est arrêtée
-                        target.textContent = originalText;
+                        this.reinit(target, cancel);
+                        this.shortcutDetector.stopListening();
                     });
             } catch (error) {
-                target.textContent = originalText;
+                this.reinit(target, false);
                 console.error('Erreur lors de la détection du raccourci clavier:', error);
             }
 
@@ -171,9 +157,51 @@ class UpdatePlaylistShortcutKeyboard {
 
     private applyShortcutToPlaylist(HTMLElement: HTMLElement, shortcut: string[]) {
         HTMLElement.textContent = shortcut.join(' + ');
-        console.log('TODO SAVE '); // TODO sauvegarder la commande coté backend
+        HTMLElement.dataset.valueDefault = HTMLElement.textContent;
+        this.saveData(HTMLElement, shortcut);
+    }
 
+    private reinit(HTMLElement: HTMLElement, Escape: boolean) {
+        if (Escape) {
+            HTMLElement.textContent = HTMLElement.dataset.valueDefault || "-";
+        } else {
+            HTMLElement.textContent = "-";
+            this.saveData(HTMLElement, null);
+        }
+    }
 
+    private saveData(HTMLElement: HTMLElement, shortcut: string[] | null) {
+        console.log("Saving shortcut data:", shortcut);
+        
+        const playlistUuid = HTMLElement.dataset.playlistUuid;
+        const soundboard_uuid = HTMLElement.dataset.soundboardUuid;
+        const soundboardPlaylistId = HTMLElement.dataset.soundboardPlaylistId;
+        if (playlistUuid && soundboardPlaylistId && soundboard_uuid) {
+            const param: ShortcutKeyboardDTO = {
+                soundboard_uuid: soundboard_uuid,
+                playlist_uuid: playlistUuid,
+                soundboard_playlist_id: soundboardPlaylistId,
+                shortcuts: shortcut
+            };
+            this.fetchUpdateShortcut(param);
+        }
+    }
+
+    private fetchUpdateShortcut(param: ShortcutKeyboardDTO) {
+
+        fetch(this.url, {
+            method: 'UPDATE',
+            headers: {
+                'X-CSRFToken': Csrf.getToken()!,
+            },
+            body: JSON.stringify(param)
+        })
+            .then(_ => {
+
+            })
+            .catch(_ => {
+                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' })
+            });
     }
 }
 

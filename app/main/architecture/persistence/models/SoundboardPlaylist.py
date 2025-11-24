@@ -9,6 +9,7 @@ class SoundboardPlaylist(models.Model):
     order = models.IntegerField(default=0)
     section = models.IntegerField(default=1)
     activable_by_player = models.BooleanField(default=False)
+    shortcut_keyboard = models.JSONField(null=True, blank=True)
     
     def clean(self):
         """Valide que la section est dans la plage autorisée"""

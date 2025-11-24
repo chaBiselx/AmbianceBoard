@@ -19,16 +19,18 @@
         <tr>
             <th scope="col">Boutons</th>
             <th scope="col">Nom</th>
-            <th scope="col">
+            <th scope="col" id="col-actionnable-by-players" data-actionnable-by-players-url="{% url 'updateActionablePlaylistsForPlayers' %}">
                 Actionnable par les joueurs
                 {% if not can_shared_playlist_playable_by_shared_user %}
                 <span class="text-danger" data-bs-toggle="tooltip" data-bs-title="{% trans "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip" %}"><i class="fa-solid fa-circle-info"></i></span>
                 {% endif %}
             </th>
-            <th scope="col" class="keyboard-shortcut-column" style="max-width: 100px;">{% trans "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label" %}</th>
+            <th scope="col" class="keyboard-shortcut-column" style="max-width: 100px;" id="col-keyboard-shortcut" data-shortcut-url="{% url 'updateShortcutPlaylistsForPlayers' %}">
+                {% trans "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label" %}
+            </th>
         </tr>
     </thead>
-    <tbody id="playlists-table-body" data-update-url="{% url 'updateActionablePlaylistsForPlayers' %}">
+    <tbody id="playlists-table-body" >
         {% comment %} On regroupe les playlists par section {% endcomment %}
         {% for section, soundboardPlaylistList in ordered_soundboard_playlist %}
         <tr class="table-primary">
@@ -52,12 +54,8 @@
                 </div>
             </td>
             <td class="keyboard-shortcut-column" style="max-width: 100px;">
-                <div class="keyboard-shortcut keyboard-shortcut-event border rounded p-1 text-center" data-playlist-uuid="{{playlist.uuid}}" data-soundboard-uuid="{{soundboard.uuid}}">
-                    {% if soundboardPlaylist.keyboard_shortcut %}
-                    <span class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-title="{% trans "template.listePlaylistForSpecificAction.table.row.keyboard_shortcut.defined.tooltip" %}">{{ soundboardPlaylist.keyboard_shortcut }}</span>
-                    {% else %}
-                    <span class="text-muted" data-bs-toggle="tooltip" data-bs-title="{% trans "template.listePlaylistForSpecificAction.table.row.keyboard_shortcut.undefined.tooltip" %}">-</span>
-                    {% endif %}
+                <div class="keyboard-shortcut keyboard-shortcut-event border rounded p-1 text-center" data-playlist-uuid="{{playlist.uuid}}" data-soundboard-uuid="{{soundboard.uuid}}" data-soundboard-playlist-id="{{soundboardPlaylist.pk}}" data-value-default=" {{ soundboardPlaylist.shortcut_keyboard|join:' + '|default:'-' }}">
+                    {{ soundboardPlaylist.shortcut_keyboard|join:" + "|default:"-"}}
                 </div>
             </td>
         </tr>
