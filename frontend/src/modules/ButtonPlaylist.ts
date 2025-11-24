@@ -20,6 +20,10 @@ class ButtonPlaylist {
         return this.idPlaylist;
     }
 
+    public simulateClick(): void {
+        this.buttonElement.click();
+    }
+
     public setVolume(newVolume: number): this {
         this.dataset.playlistVolume = newVolume.toString();
         return this;

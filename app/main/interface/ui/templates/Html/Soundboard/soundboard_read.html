@@ -13,10 +13,9 @@
     <div class="col">
         <div style="display:None;" id="players"></div>
 
+        {% include 'Html/partial/soundboard/shortcutSoundboard.html' with list_shortcut_keyboard=list_shortcut_keyboard %}
         {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum owner=True master=True %}
-
         {% include 'Html/partial/soundboard/board.html' with master=True owner=True soundboard=soundboard %}
-
 
     </div>
     <div class="col-12 col-xl-2 fullScreen-element" id="soundboard-menu">

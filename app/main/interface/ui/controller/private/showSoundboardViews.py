@@ -19,6 +19,7 @@ from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 
 
 from main.domain.common.utils.logger import logger
@@ -38,7 +39,8 @@ def playlist_show(request, soundboard_uuid):
         return render(request, 'Html/Soundboard/soundboard_read.html', {
             'soundboard': soundboard, 
             'PlaylistTypeEnum': list(PlaylistTypeEnum),
-            'trace_user_activity': activity
+            'trace_user_activity': activity,
+            'list_shortcut_keyboard': SoundboardPlaylistRepository().get_list_shortcut_keyboard(soundboard),
         })
 
 @login_required

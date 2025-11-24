@@ -99,3 +99,6 @@ class SoundboardPlaylistRepository:
     def count(self, soundboard: "SoundBoard") -> int:
         return SoundboardPlaylist.objects.filter(SoundBoard=soundboard).count()
     
+    def get_list_shortcut_keyboard(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
+        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard).exclude(shortcut_keyboard__isnull=True).exclude(shortcut_keyboard__exact='').order_by('section', 'order')
+    

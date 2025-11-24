@@ -79,7 +79,8 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
         return TemplateResponse(request, 'Html/Public/soundboard_read.html', {
             'soundboard': soundboard, 
             'PlaylistTypeEnum' : list(PlaylistTypeEnum),
-            'trace_user_activity': activity 
+            'trace_user_activity': activity,
+            'list_shortcut_keyboard': []
         })
     
 @require_http_methods(['GET'])
