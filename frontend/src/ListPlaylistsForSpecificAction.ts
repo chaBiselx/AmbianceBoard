@@ -114,6 +114,7 @@ class UpdatePlaylistShortcutKeyboard {
     // private readonly url: string;
     private shortcutDetector: ShorcutKeyBoardDetector;
     private readonly url: string;
+    private readonly classInput: string = 'keyboard-shortcut-event';
 
     constructor() {
         this.playlistsTableBody = document.getElementById('playlists-table-body') as HTMLElement;
@@ -122,7 +123,7 @@ class UpdatePlaylistShortcutKeyboard {
     }
 
     public initEventListeners(): void {
-        for (const input of this.playlistsTableBody.getElementsByClassName('keyboard-shortcut-event')) {
+        for (const input of this.playlistsTableBody.getElementsByClassName(this.classInput)) {
             input.addEventListener('click', (event) => { this.activeDetectionForPlaylist(event); });
         }
     }
@@ -137,9 +138,22 @@ class UpdatePlaylistShortcutKeyboard {
             try {
                 this.shortcutDetector.startListening(
                     (shortcut) => {
-                        console.log('Listening for shortcuts:', shortcut);
-
-                        this.applyShortcutToPlaylist(target, shortcut);
+                        const shortcutString = shortcut.join(' + ');
+                        const listInput = this.playlistsTableBody.getElementsByClassName(this.classInput) as HTMLCollectionOf<HTMLElement>;
+                        let uniqueInput = false;
+                        for (const input of listInput) {
+                            if (input) {
+                                if (input.dataset.valueDefault == shortcutString) {
+                                    Notification.createClientNotification({ message: `Le raccourci clavier ${shortcutString} existe déjà : ${input.dataset.name}`, type: 'info' });
+                                    this.reinit(target, true);
+                                    uniqueInput = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!uniqueInput) {
+                            this.applyShortcutToPlaylist(target, shortcut);
+                        }
                         this.shortcutDetector.stopListening();
                     },
                     (cancel: boolean) => {
@@ -172,7 +186,7 @@ class UpdatePlaylistShortcutKeyboard {
 
     private saveData(HTMLElement: HTMLElement, shortcut: string[] | null) {
         console.log("Saving shortcut data:", shortcut);
-        
+
         const playlistUuid = HTMLElement.dataset.playlistUuid;
         const soundboard_uuid = HTMLElement.dataset.soundboardUuid;
         const soundboardPlaylistId = HTMLElement.dataset.soundboardPlaylistId;

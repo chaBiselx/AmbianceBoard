@@ -54,7 +54,7 @@
                 </div>
             </td>
             <td class="keyboard-shortcut-column" style="max-width: 100px;">
-                <div class="keyboard-shortcut keyboard-shortcut-event border rounded p-1 text-center" data-playlist-uuid="{{playlist.uuid}}" data-soundboard-uuid="{{soundboard.uuid}}" data-soundboard-playlist-id="{{soundboardPlaylist.pk}}" data-value-default=" {{ soundboardPlaylist.shortcut_keyboard|join:' + '|default:'-' }}">
+                <div class="keyboard-shortcut keyboard-shortcut-event border rounded p-1 text-center" data-playlist-uuid="{{playlist.uuid}}" data-soundboard-uuid="{{soundboard.uuid}}" data-soundboard-playlist-id="{{soundboardPlaylist.pk}}" data-name="{{playlist.name}}" data-value-default="{{ soundboardPlaylist.shortcut_keyboard|join:' + '|default:'-' }}">
                     {{ soundboardPlaylist.shortcut_keyboard|join:" + "|default:"-"}}
                 </div>
             </td>

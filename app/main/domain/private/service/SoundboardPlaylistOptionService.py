@@ -42,7 +42,7 @@ class SoundboardPlaylistOptionService:
         except ValueError:
             return self
         
-        if dto.shortcuts:
+        if dto.shortcuts is None or isinstance(dto.shortcuts, list):
             soundboard_playlist.shortcut_keyboard = dto.shortcuts
     
         soundboard_playlist.save()
