@@ -1,4 +1,4 @@
-from main.domain.common.strategy.formManager.InputManager import InputManager, PasswordInput, TextInputManager, FileInputManager, NumberInputManager, CheckboxInputManager, SelectInputManager
+from main.domain.common.strategy.formManager.InputManager import InputManager, PasswordInput, TextInputManager, FileInputManager, NumberInputManager, CheckboxInputManager, SelectInputManager, DateTimeInputManager
 
 class FormStategy:
     def get_input_manager(self, field) -> InputManager:
@@ -19,5 +19,9 @@ class FormStategy:
             manager = CheckboxInputManager(field)
         if field.widget.__class__.__name__ == 'Select':
             manager = SelectInputManager(field)
+        if field.widget.__class__.__name__ == 'DateInput':
+            manager = DateTimeInputManager(field)
+        if field.widget.__class__.__name__ == 'DateTimeInput':
+            manager = DateTimeInputManager(field)
         return manager
 

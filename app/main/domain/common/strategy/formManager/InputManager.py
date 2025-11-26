@@ -60,3 +60,10 @@ class SelectInputManager(InputManager):
     def apply_classes(self):
         self.added_classes = self.default_classes
         super().apply_classes()
+        
+class DateTimeInputManager(InputManager): 
+    default_classes = "form-control"
+    
+    def apply_classes(self):
+        self.added_classes = self.default_classes
+        super().apply_classes()

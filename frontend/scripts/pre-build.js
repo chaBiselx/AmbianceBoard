@@ -41,6 +41,11 @@ async function moveFiles() {
         await fs.copy(`node_modules/@fortawesome/fontawesome-free/css/all.min.css`, `${targetDir}/css/font-awesome.min.css`);
         await fs.copy(`node_modules/@fortawesome/fontawesome-free/webfonts/`, `${targetDir}/webfonts/`);
         console.log('✔️ FontAwesome déplacé !');
+        
+        // Quill
+        await fs.copy(`node_modules/quill/dist/quill.snow.css`, `${targetDir}/css/quill/quill.snow.css`);
+        console.log('✔️ Quill CSS déplacé !');
+
     } catch (error) {
         console.error('❌ Erreur lors du déplacement des fichiers :', error);
     }

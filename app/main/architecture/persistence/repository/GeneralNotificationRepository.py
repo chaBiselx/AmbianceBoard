@@ -5,6 +5,9 @@ from main.architecture.persistence.repository.filters.GeneralNotificationFilter 
 
 class GeneralNotificationRepository:
     
+    def get_all_notifications(self) -> List[GeneralNotification]:
+        return GeneralNotification.objects.all().order_by('-start_date')
+    
     def get_list_notifications_actives(self, user: User|None) -> List[GeneralNotification]:
         general_notification_filter = GeneralNotificationFilter()
         general_notification_filter.filter_by_active(True)

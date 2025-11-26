@@ -22,6 +22,7 @@ from main.interface.ui.controller.manager.managerViews import manager_dashboard,
 from main.interface.ui.controller.manager.managerCronViews import (
     listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity
     )
+from main.interface.ui.controller.manager.managerNotificationsViews import listing_notifications, manage_notification
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, favorite_update, reporting_content, public_favorite
 from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation, stats_moyenne_duration_session
 from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream
@@ -151,6 +152,13 @@ urlpatterns = [
     path("manager/dashboard/user-account/", user_account_dashboard, name="managerUserAccountDashboard"),
     path("manager/dashboard/users-activity/", user_activity_dashboard, name="managerUsersActivityDashboard"),
     path("manager/dashboard/error-activity/", error_activity_dashboard, name="managerErrorActivityDashboard"),
+    
+    
+    path("manager/notifications/", listing_notifications, name="managerNotifications"),
+    path("manager/notifications/create/", manage_notification, name="manager_notifications_create"),
+    path("manager/notifications/<uuid:uuid>/edit/", manage_notification, name="manager_notifications_update"),
+    
+    
 
 
     # Administration des tiers d'utilisateurs

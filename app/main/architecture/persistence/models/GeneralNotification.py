@@ -19,10 +19,12 @@ class GeneralNotification(models.Model):
         help_text="Identifiant unique de la notification"
     )
     message = models.TextField(
+        verbose_name="Message (HTML)",
         help_text="Message de la notification en HTML"
     )
     class_name = models.CharField(
         max_length=64,
+        verbose_name="Type de notification",
         help_text="Classe CSS pour le style de la notification",
         default='info',
         choices=[ # applys_boostrap_class
@@ -33,21 +35,25 @@ class GeneralNotification(models.Model):
         ]
     )
     start_date = models.DateTimeField(
+        verbose_name="Date de début",
         help_text="Date et heure de début d'affichage de la notification",
         default=timezone.now
     )
     
     end_date = models.DateTimeField(
+        verbose_name="Date de fin",
         help_text="Date et heure de fin d'affichage de la notification"
     )
     
     for_authenticated_users = models.BooleanField(
         default=True,
+        verbose_name="Réservé aux utilisateurs connectés",
         help_text="Si True, la notification est réservée aux utilisateurs connectés. Si False, pour tous les utilisateurs."
     )
     
     is_active = models.BooleanField(
         default=True,
+        verbose_name="Notification active",
         help_text="Permet de désactiver temporairement la notification sans la supprimer"
     )
     
