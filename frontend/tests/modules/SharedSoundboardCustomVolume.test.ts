@@ -19,16 +19,19 @@ class TestHelpers {
         buttonId?: string;
         soundboardId?: string;
         playlistCount?: number;
+        withLastActivation?: boolean;
     } = {}) {
         const {
             templateId = 'template-shared',
             buttonId = 'button-shared',
             soundboardId = 'soundboard-789',
-            playlistCount = 2
+            playlistCount = 2,
+            withLastActivation = true
         } = options;
 
+        const now = Date.now();
         const playlists = Array.from({ length: playlistCount }, (_, i) => `
-            <a class="playlist-link" data-playlist-id="playlist-${i + 1}">
+            <a class="playlist-link" data-playlist-id="playlist-${i + 1}" ${withLastActivation ? `data-last-activation="${now}"` : ''}>
                 <img src="icon${i + 1}.png" alt="Playlist ${i + 1}">
                 <span>Playlist ${i + 1}</span>
             </a>
@@ -450,7 +453,8 @@ describe('SharedSoundboardCustomVolume', () => {
                 templateId: 'template-empty', 
                 buttonId: 'button-empty',
                 soundboardId: 'soundboard-empty',
-                playlistCount: 0 
+                playlistCount: 0,
+                withLastActivation: true
             });
             TestHelpers.mockCookie();
             
