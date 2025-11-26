@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 type valueType = string | boolean | number;
+type EscapeShortcutKeyboard = "Escape"|"Delete";
 
 type ActionnableByUserDTO = {
     soundboard_uuid: string;
@@ -145,7 +146,7 @@ class UpdatePlaylistShortcutKeyboard {
                             if (input) {
                                 if (input.dataset.valueDefault == shortcutString) {
                                     Notification.createClientNotification({ message: `Le raccourci clavier ${shortcutString} existe déjà : ${input.dataset.name}`, type: 'info' });
-                                    this.reinit(target, true);
+                                    this.reinit(target, "Escape");
                                     uniqueInput = true;
                                     break;
                                 }
@@ -158,11 +159,11 @@ class UpdatePlaylistShortcutKeyboard {
                     },
                     (cancel: boolean) => {
                         // Restaurer le texte original si l'écoute est arrêtée
-                        this.reinit(target, cancel);
+                        this.reinit(target, cancel ? "Escape" : "Delete");
                         this.shortcutDetector.stopListening();
                     });
             } catch (error) {
-                this.reinit(target, false);
+                this.reinit(target, "Escape");
                 console.error('Erreur lors de la détection du raccourci clavier:', error);
             }
 
@@ -175,8 +176,8 @@ class UpdatePlaylistShortcutKeyboard {
         this.saveData(HTMLElement, shortcut);
     }
 
-    private reinit(HTMLElement: HTMLElement, Escape: boolean) {
-        if (Escape) {
+    private reinit(HTMLElement: HTMLElement, Escape: EscapeShortcutKeyboard) {
+        if (Escape === "Escape") {
             HTMLElement.textContent = HTMLElement.dataset.valueDefault || "-";
         } else {
             HTMLElement.textContent = "-";
