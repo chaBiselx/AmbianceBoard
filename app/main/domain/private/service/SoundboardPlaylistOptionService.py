@@ -33,7 +33,6 @@ class SoundboardPlaylistOptionService:
             soundboard_playlist.activable_by_player = dto.value
 
         soundboard_playlist.save()
-        return
     
     def update_playlist_shortcut(self, dto: ShortcutKeyboardPlaylistDto):
         # Logique de mise à jour d'une seule playlist sonore
@@ -46,7 +45,6 @@ class SoundboardPlaylistOptionService:
             soundboard_playlist.shortcut_keyboard = dto.shortcuts
     
         soundboard_playlist.save()
-        return
     
     def __validate_dto(self, dto) -> 'SoundboardPlaylist':
         soundboard_playlist = self.soundboard_playlist_repository.get_id(dto.soundboard_playlist_id)

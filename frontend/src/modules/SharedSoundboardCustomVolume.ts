@@ -68,9 +68,12 @@ class SharedSoundboardCustomVolume {
         const now = Date.now()
 
 
-        const reportableElements = this.DOMTemplate.querySelectorAll('.playlist-link') as NodeListOf<HTMLElement>;
+        const reportableElements = this.DOMTemplate.querySelectorAll('.playlist-link');
         let mixerAdded = false; 
         for (const element of reportableElements) {
+            if(element instanceof HTMLElement===false){
+                continue;
+            }
             if(element.dataset.lastActivation===undefined || element.dataset.lastActivation==="0" ){
                 continue;
             }
