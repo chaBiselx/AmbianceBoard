@@ -154,6 +154,7 @@ Nouveautés
 
 Améliorations
 - Afficher les mélangeurs des boutons de playlist partagé seulement si recement activé afin de conserver l'effet de surprise 
+- Ajout d'une bordure de couleur pour differencier les soundborad privé et publique
 
 
 ### X.Y.Z - Date

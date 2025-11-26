@@ -12,7 +12,7 @@
 {% block content %}
 <div class="responsive-sections-container {% if master == False %} d-none {% endif %}">
     {% for section, list_playlist in soundboard.get_list_playlist_ordered %}
-    <section class="section-{{ section }}">
+    <section class="section-{{ section }} border rounded {% if owner == False %}border-success{%else%}border-primary{% endif %}">
         <div class="section-content">
             <div class="flex-container" {% if master == False %} id="template-shared-volume" data-shared-volume-soundboard-id="{{ soundboard.uuid }}"{% endif %}>
                 {% for playlist in list_playlist %}
