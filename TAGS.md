@@ -150,11 +150,11 @@ Corrections
 
 ### 0.2.5 - 2025/11
 Nouveautés
-- Ajout d'un systeme de raccourci clavier pour activer/desactiver les boutons de la playlist
+- Ajout d'un système de raccourci clavier pour activer/désactiver les boutons de la playlist
 
 Améliorations
-- Afficher les mélangeurs des boutons de playlist partagé seulement si recement activé afin de conserver l'effet de surprise 
-- Ajout d'une bordure de couleur pour differencier les soundborad privé et publique
+- Afficher les mélangeurs des boutons de playlist partagé seulement si récemment activé afin de conserver l'effet de surprise 
+- Ajout d'une bordure de couleur pour différencier les soundboard privé et publique
 
 
 ### X.Y.Z - Date
