@@ -274,7 +274,7 @@ describe('SharedSoundboardCustomVolume', () => {
             expect(ModalCustom.show).toHaveBeenCalledTimes(1);
             expect(ModalCustom.show).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    title: 'Reporting content',
+                    title: 'Modifier volume',
                     width: 'xl',
                     footer: '',
                     callback: expect.any(Function)
@@ -408,7 +408,7 @@ describe('SharedSoundboardCustomVolume', () => {
 
             expect(ModalCustom.show).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    title: 'Reporting content',
+                    title: 'Modifier volume',
                     width: 'xl',
                     footer: ''
                 })
