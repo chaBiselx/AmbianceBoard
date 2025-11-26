@@ -159,6 +159,7 @@ Améliorations
 ### 0.3.0 - 2025/11
 Nouveautés
 - Ajout d'un interface pour créer des notifications pour le manager
+- Ajout la possiblité de rendre copiable un boutons par les autres utilisateurs
 
 
 ### X.Y.Z - Date
