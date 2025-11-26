@@ -124,7 +124,7 @@ $tooltipRadius: round(.8em, 1px);
     @at-root {
         html:not([data-bs-theme="dark"]) {
             --colorStart: #{$mixer-color-upper-light};
-            --colorEnd: #{$mixer-color-upper-dark};
+            --colorEnd: #{$mixer-color-lower-light};
         }
 
         html[data-bs-theme="dark"] {

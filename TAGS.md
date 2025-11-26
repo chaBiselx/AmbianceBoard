@@ -141,6 +141,21 @@ Corrections
 Corrections
 - Correction d'un bugs sur l'oganisation des soundboards 
 
+### 0.2.4 - 2025/11
+Améliorations
+- Ajout de traductions 
+
+Corrections
+- Bugs affichage sur les soundboards partagés 
+
+### 0.2.5 - 2025/11
+Nouveautés
+- Ajout d'un système de raccourci clavier pour activer/désactiver les boutons de la playlist
+
+Améliorations
+- Afficher les mélangeurs des boutons de playlist partagé seulement si récemment activé afin de conserver l'effet de surprise 
+- Ajout d'une bordure de couleur pour différencier les soundboard privé et publique
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
@@ -154,7 +169,4 @@ Corrections
 - …
 
 Fiabilité & Confiance
-- …
-
-Prochain Focus
 - …

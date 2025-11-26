@@ -3,7 +3,7 @@ import Config from '@/modules/General/Config';
 import Csrf from "@/modules/General/Csrf";
 import Cookie from '@/modules/General/Cookie';
 
-import { ButtonPlaylist } from '@/modules/ButtonPlaylist';
+import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MixerManager } from '@/modules/MixerManager';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import WakeLock from '@/modules/General/WakeLock';
@@ -16,6 +16,8 @@ import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import SharedSoundboardSendCmdMaster from '@/modules/SharedSoundboardSendCmdMaster';
 import Time from '@/modules/Util/Time';
 import { SharedSoundboardCustomVolumeFactory } from '@/modules/SharedSoundboardCustomVolume';
+import ShorcutKeyBoardDetector from "@/modules/Control/ShorcutKeyBoardDetector";
+import ConsoleCustom from "./modules/General/ConsoleCustom";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -35,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sh) {
         sh.addEvent();
     }
+    new ShortcutKeyboardSoundboard().addEvent();
 });
 
 function addEventListenerDom() {
@@ -165,6 +168,49 @@ function activeWebSocket() {
 
     }
 
+}
+
+class ShortcutKeyboardSoundboard {
+    shortcutElementsSection: HTMLElement | null;
+    ShorcutKeyBoardDetector: ShorcutKeyBoardDetector;
+    recoardedShortcuts: Map<string, string> = new Map();
+    constructor() {
+        this.shortcutElementsSection = document.getElementById('list-shortcut-keyboard');
+        this.ShorcutKeyBoardDetector = new ShorcutKeyBoardDetector();
+    }
+
+    public addEvent() {
+        if (this.shortcutElementsSection) {
+            const shortcutElements = this.shortcutElementsSection.getElementsByClassName('shortcut-element');
+            for (const element of shortcutElements) {
+                if(! (element instanceof HTMLElement)) continue;
+                const shortCut = element.dataset.shortcut;
+                const uuidPlaylist = element.dataset.playlistUuid;
+                if (shortCut && uuidPlaylist) {
+                    this.registerShortcut(shortCut, uuidPlaylist);
+                }
+                
+            }
+        }
+
+        this.ShorcutKeyBoardDetector.startListening(
+            (shortcut: string[]) => {
+            const shortcutString = shortcut.join('##');
+            const uuidPlaylist = this.recoardedShortcuts.get(shortcutString);
+            if (uuidPlaylist) {
+                ConsoleCustom.log("Shortcut detected:", shortcutString, "-> Playlist UUID:", uuidPlaylist);
+                const button = ButtonPlaylistFinder.search(uuidPlaylist);
+                button?.simulateClick();
+            }
+        }
+    );
+
+
+    }
+
+    public registerShortcut(shortcut: string, uuidPlaylist: string) {
+        this.recoardedShortcuts.set(shortcut, uuidPlaylist);
+    }
 }
 
 

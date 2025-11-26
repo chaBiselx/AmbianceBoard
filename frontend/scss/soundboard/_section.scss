@@ -14,12 +14,10 @@
 
 .responsive-sections-container section {
 
-    border-radius: 0.375rem;
     padding: 0.2rem;
     display: flex;
     flex-direction: column;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid transparent;
     flex: 1 1 300px; /* flex-grow, flex-shrink, flex-basis */
     min-width: 300px;
     max-width: 100%;

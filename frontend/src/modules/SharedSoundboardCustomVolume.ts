@@ -3,6 +3,7 @@ import Cookie from "@/modules/General/Cookie";
 import { SearchMusicElement } from "@/modules/MusicElementSearcher";
 import { ButtonPlaylistFinder } from "@/modules/ButtonPlaylist";
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
+import Time from '@/modules/Util/Time';
 
 class SharedSoundboardCustomVolumeFactory {
     static create(idButton: string, idElement: string): SharedSoundboardCustomVolume | null {
@@ -28,6 +29,7 @@ class SharedSoundboardCustomVolume {
     cookieName: string;
     jsonValue: Record<string, number>;
     minValue: number = 10;
+    readonly maxPreservationTime: number = Time.get_minutes(5);
 
     constructor(DOMTemplate: HTMLElement, DOMButton: HTMLButtonElement) {
         this.DOMTemplate = DOMTemplate;
@@ -44,7 +46,7 @@ class SharedSoundboardCustomVolume {
 
     private getElementsToUpdateVolume() {
         const body = this.processCopyPastReportable();
-        this.showModal("Reporting content", body)
+        this.showModal("Modifier volume", body)
     }
 
     private processCopyPastReportable(): string {
@@ -63,10 +65,25 @@ class SharedSoundboardCustomVolume {
     private generateSelector(): HTMLElement {
         let selectElement = document.createElement('div');
         selectElement.classList.add('flex-container');
+        const now = Date.now()
 
 
-        const reportableElements = this.DOMTemplate.querySelectorAll('.playlist-link')
+        const reportableElements = this.DOMTemplate.querySelectorAll('.playlist-link');
+        let mixerAdded = false; 
         for (const element of reportableElements) {
+            if(element instanceof HTMLElement===false){
+                continue;
+            }
+            if(element.dataset.lastActivation===undefined || element.dataset.lastActivation==="0" ){
+                continue;
+            }
+            const date = new Date(Number.parseInt(element.dataset.lastActivation));
+            if(date.getTime() + this.maxPreservationTime < now){
+                continue;
+            }
+            
+            console.log(element.dataset.lastActivation);
+            
             let flexItem = document.createElement('div');
             flexItem.classList.add('flex-item');
             let clonedElement = element.cloneNode(true) as HTMLElement;
@@ -80,14 +97,20 @@ class SharedSoundboardCustomVolume {
             const html = `<form class="mixer-playlist-update-container">
             <input class="mixer-playlist-custom-shared-update horizontal-slider-input" type="range" value="${value}" min="${this.minValue}" max="100" id="range__custom_volume_${clonedElement.dataset.playlistId}" 
             data-idplaylist="${clonedElement.dataset.playlistId}" style="width: 75px;" />
-            <output class="horizontal-slider-output bottom" for="range__custom_volume_${clonedElement.dataset.playlistId}" style="--min: ${value};--max: 100"></output>
+            <output class="horizontal-slider-output bottom" for="range__custom_volume_${clonedElement.dataset.playlistId}" style="--min: ${this.minValue};--max: 100"></output>
             </form>`;
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
             flexItem.appendChild(clonedElement);
             flexItem.appendChild(tempDiv.firstElementChild as Node);
             selectElement.appendChild(flexItem);
+            mixerAdded = true;
         };
+        if(!mixerAdded){
+            let infoNoMixer = document.createElement('div');
+            infoNoMixer.textContent = "Aucun son partagé récemment activé.";
+            selectElement.appendChild(infoNoMixer);
+        }
         return selectElement
 
     }

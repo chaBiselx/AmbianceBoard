@@ -9,7 +9,7 @@ from main.interface.ui.controller.general.generalViews import home, pricing,  cr
 from main.interface.ui.controller.general.confirmViews import confirm_account
 from main.interface.ui.controller.general.traceFrontViews import trace_front
 from main.interface.ui.controller.private.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
-from main.interface.ui.controller.private.soundboardSpecifiqueViews import list_playlists_for_specific_action, update_specific_actionable_playlists
+from main.interface.ui.controller.private.soundboardSpecifiqueViews import list_playlists_for_specific_action, update_specific_actionable_playlists, update_specific_shortcut_playlists
 from main.interface.ui.controller.private.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
 from main.interface.ui.controller.private.showSoundboardViews import playlist_show, music_stream, update_direct_volume
 from main.interface.ui.controller.private.playlistFormViews import playlist_read_all, playlist_create, playlist_create_with_soundboard, playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete
@@ -66,7 +66,8 @@ urlpatterns = [
     path("soundBoards/<uuid:soundboard_uuid>/organize/update", soundboard_organize_update, name="organizeSoundboardUpdate"),
     path("soundBoards/<uuid:soundboard_uuid>/user/favorite", favorite_update, name="publicFavoriteSoundboard"),
     path("soundBoards/<uuid:soundboard_uuid>/specific", list_playlists_for_specific_action, name="listSoundboardPlaylistsSpecific"),
-    path("soundBoards/specific/update", update_specific_actionable_playlists, name="updateActionablePlaylistsForPlayers"),
+    path("soundBoards/specific/actionnable/update", update_specific_actionable_playlists, name="updateActionablePlaylistsForPlayers"),
+    path("soundBoards/specific/shortcut/update", update_specific_shortcut_playlists, name="updateShortcutPlaylistsForPlayers"),
     
     
     path('account/settings/',settings_index, name="settingsIndex"),

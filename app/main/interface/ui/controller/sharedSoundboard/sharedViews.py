@@ -73,7 +73,7 @@ def shared_soundboard_read(request, soundboard_uuid, token):
             'token': token,
         })
         ws_url = get_full_ws(f'{request.get_host()}{ws_path}')
-        return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url})
+        return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url, 'list_shortcut_keyboard': []})
 
 
 @require_http_methods(['GET'])

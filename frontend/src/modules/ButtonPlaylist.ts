@@ -20,6 +20,10 @@ class ButtonPlaylist {
         return this.idPlaylist;
     }
 
+    public simulateClick(): void {
+        this.buttonElement.click();
+    }
+
     public setVolume(newVolume: number): this {
         this.dataset.playlistVolume = newVolume.toString();
         return this;
@@ -41,7 +45,7 @@ class ButtonPlaylist {
     }
 
     public active() {
-        this.dataset.tokenPlaylistActive = Date.now().toString();
+        this.dataset.tokenPlaylistActive = this.dataset.lastActivation = Date.now().toString();
         this.buttonElement.classList.add("active-playlist")
     }
 
