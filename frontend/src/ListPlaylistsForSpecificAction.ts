@@ -112,7 +112,7 @@ class KeyboardColumnVisibility {
 class UpdatePlaylistShortcutKeyboard {
     private readonly playlistsTableBody: HTMLElement;
     // private readonly url: string;
-    private shortcutDetector: ShorcutKeyBoardDetector;
+    private readonly shortcutDetector: ShorcutKeyBoardDetector;
     private readonly url: string;
     private readonly classInput: string = 'keyboard-shortcut-event';
 

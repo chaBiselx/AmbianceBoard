@@ -1,11 +1,11 @@
 
 
 class ShorcutKeyBoardDetector {
-    private pressedKeys: Set<string>;
+    private readonly pressedKeys: Set<string>;
     private isListening: boolean;
     private callbackContinue: ((shortcut: string[]) => void) | null = null;
     private callbackStop: ((cancel: boolean) => void) | null = null;
-    private ignoreList: string[] = ['F12', 'F5'];
+    private readonly ignoreList: string[] = ['F12', 'F5'];
 
     constructor() {
         this.pressedKeys = new Set();

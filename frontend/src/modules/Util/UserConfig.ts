@@ -6,10 +6,10 @@ class UserConfig {
         // Les appareils tactiles purs n'ont généralement pas de clavier physique
 
         // Vérifier si c'est un appareil tactile
-        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        const isTouchDevice = ('ontouchstart' in globalThis) || (navigator.maxTouchPoints > 0);
 
         // Vérifier le type de pointeur principal
-        const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+        const hasCoarsePointer = globalThis.matchMedia('(pointer: coarse)').matches;
 
         // Si c'est un appareil tactile avec pointeur grossier, probablement sans clavier
         if (isTouchDevice && hasCoarsePointer) {
