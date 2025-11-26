@@ -148,6 +148,13 @@ Améliorations
 Corrections
 - Bugs affichage sur les soundboards partagés 
 
+### 0.2.5 - 2025/11
+Nouveautés
+- Ajout d'un systeme de raccourci clavier pour activer/desactiver les boutons de la playlist
+
+Améliorations
+- Afficher les mélangeurs des boutons de playlist partagé seulement si recement activé afin de conserver l'effet de surprise 
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
