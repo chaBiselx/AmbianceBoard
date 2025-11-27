@@ -10,15 +10,10 @@
 <div class="row mb-3">
     <div class="col-12">
         <form method="GET" action="{% url 'playlistsAllList' %}">
-            <div class="d-flex align-items-center gap-2">
-                <label for="playlistType" class="form-label mb-0">{% trans "generic.filter_by_type" %} :</label>
-                <select name="playlistType" id="playlistType" class="form-select" style="width: auto;" onchange="this.form.submit()">
-                    <option value="">{% trans "generic.filter_by_type.value.all" %}</option>
-                    {% for type_key, type_value in playlistType.items %}
-                    <option value="{{ type_value }}" {% if selected_type == type_value %}selected{% endif %}>{{ type_value }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+            {% trans "generic.filter_by_type" as filter_label %}
+            {% trans "generic.filter_by_type.value.all" as all_label %}
+            {% include 'Html/partial/filter/select_filter.html' with label=filter_label field_name="playlistType" field_id="playlistType" options=playlistType selected_value=selected_type all_option_label=all_label %}
+            
         </form>
     </div>
 </div>
