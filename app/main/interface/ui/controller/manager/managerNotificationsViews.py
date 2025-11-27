@@ -30,7 +30,6 @@ def listing_notifications(request):
     context = extract_context_to_paginator(paginator, page_number)
     context.update({'title': 'Liste des notifications'})
   
-    notifications = GeneralNotificationRepository().get_all_notifications()
     return render(request, 'Html/Manager/notification_listing.html', context)
 
 

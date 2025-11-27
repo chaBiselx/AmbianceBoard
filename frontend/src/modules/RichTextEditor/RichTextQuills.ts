@@ -2,7 +2,7 @@ import Quill from 'quill';
 import RicheTextInterface from './RicheTextInterface';
 
 class RichTextQuills implements RicheTextInterface {
-    private textArea: HTMLTextAreaElement;
+    private readonly textArea: HTMLTextAreaElement;
     private quill: Quill|null = null;
 
     constructor(textArea: HTMLTextAreaElement) {
@@ -17,7 +17,6 @@ class RichTextQuills implements RicheTextInterface {
         quillContainer.innerHTML = this.textArea.value;
         this.textArea.parentNode!.insertBefore(quillContainer, this.textArea.nextSibling);
         this.textArea.classList.add('d-none'); // Masquer le textarea d'origine
-        quillContainer as HTMLElement;
 
 
         this.quill = new Quill(quillContainer, {

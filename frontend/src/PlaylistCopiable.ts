@@ -70,7 +70,7 @@ class PlaylistCopiable {
                     // Optionnel : rediriger vers la nouvelle playlist
                     if (data.new_playlist_uuid) {
                         setTimeout(() => {
-                            window.location.href = `/playlist/${data.new_playlist_uuid}`;
+                            globalThis.location.href = `/playlist/${data.new_playlist_uuid}`;
                         }, 1500);
                     }
                 } else if (data.error) {

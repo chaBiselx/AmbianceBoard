@@ -24,6 +24,8 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
 from main.domain.common.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
 
+local_format_audio1 = "audio/mpeg"
+
 
 @tag('unitaire')
 class PlaylistDuplicationServiceTest(TestCase):
@@ -134,7 +136,7 @@ class PlaylistDuplicationServiceTest(TestCase):
         """Test qu'une exception est levée si l'utilisateur a déjà dupliqué cette playlist"""
         # Première duplication
         service = PlaylistDuplicationService(self.source_playlist, self.target_user)
-        first_duplicate = service.duplicate()
+        service.duplicate()
         
         # Tenter une seconde duplication
         service2 = PlaylistDuplicationService(self.source_playlist, self.target_user)
@@ -170,9 +172,9 @@ class PlaylistDuplicationServiceTest(TestCase):
         """Test que les fichiers Music sont copiés avec de nouveaux UUID"""
         # Créer un fichier Music
         audio_content = b'fake audio content'
-        audio_file = SimpleUploadedFile("test.mp3", audio_content, content_type="audio/mpeg")
+        audio_file = SimpleUploadedFile("test.mp3", audio_content, content_type=local_format_audio1)
         
-        music = Music.objects.create(
+        Music.objects.create(
             playlist=self.source_playlist,
             fileName="test.mp3",
             file=audio_file,
@@ -232,22 +234,22 @@ class PlaylistDuplicationServiceTest(TestCase):
     def test_duplicate_copies_multiple_tracks_in_order(self):
         """Test que plusieurs tracks sont copiés dans le bon ordre"""
         # Créer plusieurs tracks
-        music1 = Music.objects.create(
+        Music.objects.create(
             playlist=self.source_playlist,
             fileName="track1.mp3",
-            file=SimpleUploadedFile("track1.mp3", b'content1', content_type="audio/mpeg"),
+            file=SimpleUploadedFile("track1.mp3", b'content1', content_type=local_format_audio1),
             alternativeName=""
         )
-        link1 = LinkMusic.objects.create(
+        LinkMusic.objects.create(
             playlist=self.source_playlist,
             url="https://example.com/track2.mp3",
             urlType=LinkMusicTypeEnum.FILE.name,
             alternativeName=""
         )
-        music2 = Music.objects.create(
+        Music.objects.create(
             playlist=self.source_playlist,
             fileName="track3.mp3",
-            file=SimpleUploadedFile("track3.mp3", b'content3', content_type="audio/mpeg"),
+            file=SimpleUploadedFile("track3.mp3", b'content3', content_type=local_format_audio1),
             alternativeName=""
         )
         
@@ -295,10 +297,10 @@ class PlaylistDuplicationServiceTest(TestCase):
     def test_duplicate_is_atomic(self):
         """Test que la duplication est atomique (tout ou rien)"""
         # Créer un Music avec un fichier
-        music = Music.objects.create(
+        Music.objects.create(
             playlist=self.source_playlist,
             fileName="test.mp3",
-            file=SimpleUploadedFile("test.mp3", b'content', content_type="audio/mpeg"),
+            file=SimpleUploadedFile("test.mp3", b'content', content_type=local_format_audio1),
             alternativeName=""
         )
         
@@ -308,7 +310,7 @@ class PlaylistDuplicationServiceTest(TestCase):
         
         # Dupliquer normalement
         service = PlaylistDuplicationService(self.source_playlist, self.target_user)
-        duplicated = service.duplicate()
+        service.duplicate()
         
         # Vérifier que tout a été créé
         self.assertEqual(Playlist.objects.count(), initial_playlist_count + 1)

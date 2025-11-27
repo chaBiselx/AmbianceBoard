@@ -1,5 +1,6 @@
 {% extends 'Html/partial/structure/base_manager.html' %}
 {% load PaginationLinks %}
+{% load SafeHtml %}
 
 
 
@@ -51,7 +52,7 @@
                                     {{ notification.class_name }}
                                 </td>
                                 <td>
-                                    {{ notification.message|truncatewords:10|safe }}
+                                    {{ notification.message|truncatewords:10|safe_html }}
                                 </td>
                                 <td>
                                     {% if notification.is_active %}
