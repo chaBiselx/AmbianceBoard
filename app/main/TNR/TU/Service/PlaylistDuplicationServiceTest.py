@@ -172,11 +172,11 @@ class PlaylistDuplicationServiceTest(TestCase):
         """Test que les fichiers Music sont copiés avec de nouveaux UUID"""
         # Créer un fichier Music
         audio_content = b'fake audio content'
-        audio_file = SimpleUploadedFile("test.mp3", audio_content, content_type=local_format_audio1)
+        audio_file = SimpleUploadedFile("test2.mp3", audio_content, content_type=local_format_audio1)
         
         Music.objects.create(
             playlist=self.source_playlist,
-            fileName="test.mp3",
+            fileName="test2.mp3",
             file=audio_file,
             alternativeName="Test Music",
             duration=180.5
@@ -299,8 +299,8 @@ class PlaylistDuplicationServiceTest(TestCase):
         # Créer un Music avec un fichier
         Music.objects.create(
             playlist=self.source_playlist,
-            fileName="test.mp3",
-            file=SimpleUploadedFile("test.mp3", b'content', content_type=local_format_audio1),
+            fileName="test1.mp3",
+            file=SimpleUploadedFile("test1.mp3", b'content', content_type=local_format_audio1),
             alternativeName=""
         )
         
