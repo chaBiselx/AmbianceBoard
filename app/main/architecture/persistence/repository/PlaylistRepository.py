@@ -59,3 +59,22 @@ class PlaylistRepository:
             return result
         except Exception:
             return []
+    
+    def get_copiable_playlists_excluding_user(self, user: User, filter:dict) -> List[Playlist]:
+        """
+        Récupère toutes les playlists copiables qui n'appartiennent pas à l'utilisateur.
+        
+        Args:
+            user: L'utilisateur à exclure
+            
+        Returns:
+            List[Playlist]: Liste des playlists copiables des autres utilisateurs
+        """
+        query_set = Playlist.objects.filter(
+            is_copiable=True
+        ).exclude(
+            user=user
+        ).select_related('user').order_by('-updated_at')
+        if 'typePlaylist' in filter:
+            query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
+        return query_set

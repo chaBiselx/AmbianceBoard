@@ -160,6 +160,7 @@ Améliorations
 Nouveautés
 - Ajout d'un interface pour créer des notifications pour le manager
 - Ajout la possiblité de rendre copiable un boutons par les autres utilisateurs
+- Ajout d'une interface pour copier les boutons
 
 
 ### X.Y.Z - Date

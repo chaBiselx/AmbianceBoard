@@ -12,9 +12,10 @@ from main.interface.ui.controller.private.soundboardViews import soundboard_list
 from main.interface.ui.controller.private.soundboardSpecifiqueViews import list_playlists_for_specific_action, update_specific_actionable_playlists, update_specific_shortcut_playlists
 from main.interface.ui.controller.private.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
 from main.interface.ui.controller.private.showSoundboardViews import playlist_show, music_stream, update_direct_volume
-from main.interface.ui.controller.private.playlistFormViews import playlist_read_all, playlist_create, playlist_create_with_soundboard, playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete
-from main.interface.ui.controller.private.playlistFormTrackViews import music_create, music_update, music_delete, upload_multiple_music
-from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_update, link_delete
+from main.interface.ui.controller.private.playlistFormViews import (
+    playlist_read_all, playlist_create, playlist_create_with_soundboard, playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete)
+from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
+from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
 from main.interface.ui.controller.moderator.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
 from main.interface.ui.controller.manager.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
@@ -82,6 +83,9 @@ urlpatterns = [
     path("soundBoards/<uuid:soundboard_uuid>/music/create", playlist_create_with_soundboard, name="addPlaylistWithSoundboard"),
     path("playlist/create", playlist_create, name="addPlaylist"),
     path("playlist/all", playlist_read_all, name="playlistsAllList"),
+    path("playlist/public/copiable/all", playlist_read_copiable, name="playlistsAllCopiableList"),
+    path("playlist/public/copiable", playlist_copiable_preview, name="playlistPreview"),
+    path("playlist/public/copiable/<uuid:playlist_uuid>/duplicate", playlist_copiable_duplicate, name="playlistDuplicate"),
     path("playlist/<uuid:playlist_uuid>/update", playlist_update, name="playlistUpdate"),
     path("playlist/<uuid:playlist_uuid>/delete", playlist_delete, name="playlistDelete"),
     path("playlist/<uuid:playlist_uuid>/<int:music_id>", playlist_create_track_stream, name="playlistCreateTrackStream"),
