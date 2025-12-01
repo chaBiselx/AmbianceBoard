@@ -27,7 +27,7 @@ class DefaultColorPlaylistService():
     
     def get_list_playlist_enum_with_color(self):
         list_playlist_type_with_color = []
-        for playlist_type in list(PlaylistTypeEnum):
+        for playlist_type in PlaylistTypeEnum:
             list_playlist_type_with_color.append({
                 "typePlaylist": playlist_type,
                 "color": self.get_default_color(playlist_type.name),
