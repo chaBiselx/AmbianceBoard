@@ -9,6 +9,14 @@ class SoundboardPlaylistService:
     def __init__(self, soundboard:SoundBoard):
         self.soundboard = soundboard
         self.soundboard_playlist_repository = SoundboardPlaylistRepository()
+    
+    def add_default(self, playlist:Playlist):
+        section = 1
+        last_index_bdd = self.soundboard_playlist_repository.get_last_index_by_section(self.soundboard, playlist, section)
+        last_index = last_index_bdd + 1 if last_index_bdd is not None else 1 
+        order = self.__check_order(last_index)
+        self.soundboard_playlist_repository.create(self.soundboard, playlist, order, section)
+        return self
         
     def add(self, playlist:Playlist, order:int|None = None, section:int = 1):
         order = self.__check_order(order)

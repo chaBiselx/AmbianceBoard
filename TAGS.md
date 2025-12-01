@@ -161,6 +161,10 @@ Nouveautés
 - Ajout d'un interface pour créer des notifications pour le manager
 - Ajout la possiblité de rendre copiable un boutons par les autres utilisateurs
 - Ajout d'une interface pour copier les boutons
+- Ajout d'une interface pour la modération de blacklisté les playlists
+
+Corrections
+- Lors de l'ajout de bouton via la playlist, ajout a la dernière positions 
 
 
 ### X.Y.Z - Date
