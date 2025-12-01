@@ -25,6 +25,16 @@ class DefaultColorPlaylistService():
             })
         return initial_data
     
+    def get_list_playlist_enum_with_color(self):
+        list_playlist_type_with_color = []
+        for playlist_type in list(PlaylistTypeEnum):
+            list_playlist_type_with_color.append({
+                "typePlaylist": playlist_type,
+                "color": self.get_default_color(playlist_type.name),
+                "colorText": self.get_default_color_text(playlist_type.name),
+            })
+        return list_playlist_type_with_color
+    
     
     def get_list_default_color_ajax(self):
         existing_data = {pcu.typePlaylist: pcu for pcu in  self.PlaylistColorUserRepository.get_list_with_user(self.user)}

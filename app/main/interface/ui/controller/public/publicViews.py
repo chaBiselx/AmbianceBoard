@@ -24,6 +24,8 @@ from main.domain.common.utils.logger import logger
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
+from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
+
 
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
@@ -78,7 +80,7 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
         activity = ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW, user=request.user, content_object=soundboard)
         return TemplateResponse(request, 'Html/Public/soundboard_read.html', {
             'soundboard': soundboard, 
-            'PlaylistTypeEnum' : list(PlaylistTypeEnum),
+            'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(),
             'trace_user_activity': activity,
             'list_shortcut_keyboard': []
         })

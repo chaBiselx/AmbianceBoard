@@ -162,6 +162,7 @@ Nouveautés
 - Ajout la possiblité de rendre copiable un boutons par les autres utilisateurs
 - Ajout d'une interface pour copier les boutons
 - Ajout d'une interface pour la modération de blacklisté les playlists
+- Ajout de la couleurs des icons des mixers en fonction de la couleurs de playlists 
 
 Corrections
 - Lors de l'ajout de bouton via la playlist, ajout a la dernière positions 
