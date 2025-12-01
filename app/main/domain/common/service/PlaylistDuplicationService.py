@@ -60,6 +60,12 @@ class PlaylistDuplicationService:
                 self.source_playlist.name
             )
         
+        if self.source_playlist.moderator_ban_copie:
+            raise PlaylistNotCopiableException(
+                str(self.source_playlist.uuid),
+                self.source_playlist.name
+            )
+        
         # Vérification 2: L'utilisateur ne doit pas avoir déjà dupliqué cette playlist
         self._check_already_duplicated()
         

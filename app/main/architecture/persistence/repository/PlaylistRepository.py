@@ -11,7 +11,7 @@ from main.architecture.persistence.repository.filters.PlaylistFilter import Play
 
 class PlaylistRepository:
 
-    def get(self, playlist_uuid: int) -> Optional[Playlist]:
+    def get(self, playlist_uuid) -> Optional[Playlist]:
         try:
             return Playlist.objects.get(uuid=playlist_uuid)
         except Playlist.DoesNotExist:

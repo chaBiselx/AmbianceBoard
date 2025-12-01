@@ -10,10 +10,21 @@
 
         <div class="flex-container">
             {% for playlist in page_objects %}
-            <button class="playlist-link playlist-element flex-item playlist-dim-{{ playlist_dim }} m-1 popup-data-playlist" data-title="{{playlist.name}}" data-url="{% url 'moderatorGetDataPlaylist' playlist.uuid %}" id="playlist-{{ playlist.uuid }}"
-                style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};" >
-                {{ playlist | applys_soundboard_content}}
-            </button>
+            <div class="position-relative">
+                <button class="playlist-link playlist-element flex-item playlist-dim-{{ playlist_dim }} m-1 popup-data-playlist" data-title="{{playlist.name}}" data-url="{% url 'moderatorGetDataPlaylist' playlist.uuid %}" id="playlist-{{ playlist.uuid }}"
+                    style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
+                    {{ playlist | applys_soundboard_content}}
+                </button>
+                {% if playlist.moderator_ban_copie %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" title="Copiable">
+                    <i class="fa-solid fa-ban"></i>
+                </span>
+                {% elif playlist.is_copiable %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" title="Copie bloquée">
+                    <i class="fa-regular fa-copy"></i>
+                </span>
+                {% endif %}
+            </div>
             {% endfor %}
         </div>
 

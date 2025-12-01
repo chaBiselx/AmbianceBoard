@@ -24,6 +24,10 @@ class TreatmentReportDto:
     action_ban_duration: str = '12'
     action_ban_reason: Optional[str] = None
     
+    # Playlist Ban Copie Action
+    action_ban_playlist_copie: Optional[str] = None
+    action_ban_playlist_uuid : Optional[str] = None
+    
     @classmethod
     def from_request(cls, request: HttpRequest) -> 'TreatmentReportDto':
         """Créer un DTO à partir d'une requête HTTP POST"""
@@ -37,5 +41,8 @@ class TreatmentReportDto:
             moderator_log_model=request.POST.get('moderator_log_model', ModerationModelEnum.UNKNOWN.name),
             action_ban_user=request.POST.get('action_ban_user'),
             action_ban_duration=request.POST.get('action_ban_duration', '12'),
-            action_ban_reason=request.POST.get('action_ban_reason')
+            action_ban_reason=request.POST.get('action_ban_reason'),
+            action_ban_playlist_copie=request.POST.get('action_ban_playlist_copie', None),
+            action_ban_playlist_uuid=request.POST.get('action_ban_playlist_uuid', None)
+            
         )

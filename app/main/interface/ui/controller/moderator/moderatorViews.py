@@ -153,6 +153,7 @@ def reporting_add_log(request) -> HttpResponse:
         treatment_report_service.update_content_report()
         treatment_report_service.create_log_moderation()
         treatment_report_service.action_ban()
+        treatment_report_service.action_ban_playlist_copie()
 
     return redirect(redirection_url(request.POST.get('redirect_uri', 'moderatorDashboard')))
 
