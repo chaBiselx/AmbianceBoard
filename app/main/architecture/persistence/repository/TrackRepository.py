@@ -27,6 +27,26 @@ class TrackRepository:
             result[entry['playlist']] = entry['count_tracks']
         return result
     
+    def get_number_tracks_by_playlist_queryset(self, playlist_queryset) -> dict[int, int]:
+        """
+        Compte le nombre de tracks par playlist pour un queryset de playlists donné.
+        
+        Args:
+            playlist_queryset: QuerySet de playlists
+            
+        Returns:
+            dict[int, int]: Dictionnaire {playlist_id: nombre_de_tracks}
+        """
+        playlist_ids = playlist_queryset.values_list('id', flat=True)
+        queryset = Track.objects.filter(playlist_id__in=playlist_ids).values('playlist').annotate(count_tracks=Count('id'))
+        result = {}
+        for entry in queryset:
+            result[entry['playlist']] = entry['count_tracks']
+        return result
+    
+    def get_tracks_by_playlist(self, playlist: Playlist) -> List[Track]:
+        return Track.objects.filter(playlist=playlist).order_by('created_at')
+    
     def get_random_private(self, playlist_uuid:int, user:User) -> Track|None:
         music_filter = MusicFilter()
         music_filter.filter_by_user(user)

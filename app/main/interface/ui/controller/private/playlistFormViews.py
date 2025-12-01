@@ -15,6 +15,7 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.ConfigTypeDataEnum import ConfigTypeDataEnum
 from main.domain.private.formatter.TypePlaylistFormater import TypePlaylistFormater
 from main.domain.common.service.SoundBoardService import SoundBoardService
+from main.domain.common.service.SoundboardPlaylistService import SoundboardPlaylistService
 from main.architecture.persistence.repository.MusicRepository import MusicRepository
 
 
@@ -78,9 +79,10 @@ def playlist_create_with_soundboard(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if(soundboard) : 
         if request.method == 'POST':
+            soundboard_playlist_service = SoundboardPlaylistService(soundboard)
             playlist = (PlaylistService(request)).save_form()
             if(playlist):
-                soundboard.playlists.add(playlist)
+                soundboard_playlist_service.add_default(playlist)
                 ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_CREATE, user=request.user, content_object=playlist)
             return redirect('soundboardsRead', soundboard_uuid=soundboard.uuid)
         else:

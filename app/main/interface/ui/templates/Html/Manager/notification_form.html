@@ -1,0 +1,182 @@
+{% extends 'Html/partial/structure/base_manager.html' %}
+{% load i18n %}
+{% load FrontJs %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "FormTextArea"|search_true_file %}"></script>
+{% endblock javascript %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static '/css/quill/quill.snow.css' %}">
+
+<div class="container-fluid">
+    <a href="{% url 'managerNotifications' %}" class="btn btn-secondary float-end">
+        <i class="fas fa-arrow-left"></i> Retour à la liste
+    </a>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        {% if action == 'create' %}
+                        <i class="fas fa-plus"></i> Nouvelle notification
+                        {% else %}
+                        <i class="fas fa-edit"></i> Modification de la notification
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            <label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+                            {{ form.message }}
+                            {% if form.message.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.message.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="form-text text-muted">
+                                Vous pouvez utiliser du HTML pour formater le message (gras, liens, etc.)
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.class_name.id_for_label }}">{{ form.class_name.label }}</label>
+                            {{ form.class_name }}
+                            {% if form.class_name.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.class_name.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="form-text text-muted">
+                                Définit le style visuel de la notification (info, avertissement, erreur, succès)
+                            </small>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.start_date.id_for_label }}">{{ form.start_date.label }}</label>
+                                    {{ form.start_date }}
+                                    {% if form.start_date.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.start_date.errors }}
+                                    </div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">
+                                        Date et heure de début d'affichage
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="{{ form.end_date.id_for_label }}">{{ form.end_date.label }}</label>
+                                    {{ form.end_date }}
+                                    {% if form.end_date.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.end_date.errors }}
+                                    </div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">
+                                        Date et heure de fin d'affichage
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                {{ form.for_authenticated_users }}
+                                <label class="form-check-label" for="{{ form.for_authenticated_users.id_for_label }}">
+                                    {{ form.for_authenticated_users.label }}
+                                </label>
+                                {% if form.for_authenticated_users.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.for_authenticated_users.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <small class="form-text text-muted">
+                                Si coché, seuls les utilisateurs connectés verront cette notification
+                            </small>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                {{ form.is_active }}
+                                <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+                                    {{ form.is_active.label }}
+                                </label>
+                                {% if form.is_active.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.is_active.errors }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <small class="form-text text-muted">
+                                Permet de désactiver temporairement la notification sans la supprimer
+                            </small>
+                        </div>
+
+                        <div class="form-group mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                {% if action == 'create' %}
+                                Créer la notification
+                                {% else %}
+                                Enregistrer les modifications
+                                {% endif %}
+                            </button>
+                            <a href="{% url 'managerNotifications' %}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if action == 'update' and notification %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5><i class="fas fa-info-circle"></i> Informations complémentaires</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">UUID:</dt>
+                        <dd class="col-sm-9"><code>{{ notification.uuid }}</code></dd>
+
+                        <dt class="col-sm-3">Créée le:</dt>
+                        <dd class="col-sm-9">{{ notification.created_at|date:"d/m/Y H:i:s" }}</dd>
+
+                        <dt class="col-sm-3">Modifiée le:</dt>
+                        <dd class="col-sm-9">{{ notification.updated_at|date:"d/m/Y H:i:s" }}</dd>
+
+                        <dt class="col-sm-3">Affichage actuel:</dt>
+                        <dd class="col-sm-9">
+                            {% if notification.is_currently_active %}
+                            Active
+                            {% else %}
+                            Inactive
+                            {% endif %}
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -109,6 +109,10 @@
                                 <dd>{{playlist.volume}}</dd>
                                 <dt>Nombre de musique</dt>
                                 <dd>{{playlist.tracks.count}}</dd>
+                                <dt>Copiable</dt>
+                                <dd>{{playlist.is_copiable}}</dd>
+                                <dt>Interdiction de copie par la moderation</dt>
+                                <dd>{{playlist.moderator_ban_copie}}</dd>
                             </dl>
                         </div>
                         <div class="col-sm-12 col-md-6">
@@ -121,7 +125,7 @@
                         <hr>
                         <div class="col-12">
                             {% for track in playlist.tracks.all %}
-                                <audio src="{{ track.get_stream_url }}" controls></audio>
+                            <audio src="{{ track.get_stream_url }}" controls></audio>
                             {% endfor %}
                         </div>
                     </div>
@@ -280,7 +284,7 @@
                         <div class="col-md-6 col-12 ">
                             <textarea name="action_ban_reason" class="form-control" id="action_ban_reason" maxlength="255"></textarea>
                         </div>
-                                  <div class="col-md-6 col-12">
+                        <div class="col-md-6 col-12">
                             <label class="form-check-label" for="action_ban_duration">Durée ban <small>(mois)</small></label>
                         </div>
                         <div class="col-md-6 col-12 ">
@@ -288,6 +292,25 @@
                         </div>
                     </div>
                 </div>
+                {% if playlist is not None %}
+                <hr>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="text-secondary">Bloquer la copie de cette playlist empêche les autres utilisateurs de la dupliquer</p>
+                        </div>
+                        <div class="col-md-6 col-12">
+                            <label class="form-check-label" for="action_ban_playlist_copie">Bloquer copie playlist</label>
+                        </div>
+                        <div class="col-md-6 col-12 ">
+                            <div class="form-switch">
+                                <input class="form-check-input form-control" name="action_ban_playlist_copie" type="checkbox" id="action_ban_playlist_copie" {% if playlist.moderator_ban_copie %}checked{% endif %}>
+                                <input class="form-control d-none" type="text" name="action_ban_playlist_uuid" id="action_ban_playlist_uuid" maxlength="255" value="{{ playlist.uuid }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
                 <div>
                     <button class="btn btn-success float-end" type="submit">Envoyer</button>
                 </div>

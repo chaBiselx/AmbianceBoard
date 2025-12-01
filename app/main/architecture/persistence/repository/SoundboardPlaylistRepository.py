@@ -37,6 +37,12 @@ class SoundboardPlaylistRepository:
         except SoundboardPlaylist.DoesNotExist:
             return None
         
+    def get_last_index_by_section(self, soundboard: "SoundBoard", section: int) -> Optional[int]:
+        last_entry = SoundboardPlaylist.objects.filter(SoundBoard=soundboard, section=section).order_by('-order').first()
+        if last_entry:
+            return last_entry.order
+        return None
+        
     def get_all(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
         return SoundboardPlaylist.objects.filter(SoundBoard=soundboard).order_by('section', 'order')
     

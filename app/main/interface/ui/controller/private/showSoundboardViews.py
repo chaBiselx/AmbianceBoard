@@ -38,7 +38,7 @@ def playlist_show(request, soundboard_uuid):
         activity = ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW, user=request.user, content_object=soundboard)
         return render(request, 'Html/Soundboard/soundboard_read.html', {
             'soundboard': soundboard, 
-            'PlaylistTypeEnum': list(PlaylistTypeEnum),
+            'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(),
             'trace_user_activity': activity,
             'list_shortcut_keyboard': SoundboardPlaylistRepository().get_list_shortcut_keyboard(soundboard),
         })

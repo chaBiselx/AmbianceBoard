@@ -1,0 +1,66 @@
+{% extends 'Html/partial/structure/base.html' %}
+{% load i18n %}
+{% load Playlist %}
+{% load Utils %}
+{% load PaginationLinks %}
+{% load static %}
+{% load FrontJs %}
+
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "PlaylistCopiable"|search_true_file %}"></script>
+
+{% endblock javascript %}
+
+
+{% block page_title %}Mes Boutons Playlist | AmbianceBoard{% endblock %}
+
+{% block content %}
+
+<div>
+    <a class="btn btn-primary float-end" href="{% url 'playlistsAllList' %}">{% trans "generic.back" %}</a>
+</div>
+
+<div class="row mb-3">
+    <div class="col-12">
+        <form method="GET" action="{% url 'playlistsAllCopiableList' %}">
+            {% trans "generic.filter_by_type" as filter_label %}
+            {% trans "generic.filter_by_type.value.all" as all_label %}
+            {% include 'Html/partial/filter/select_filter.html' with label=filter_label field_name="playlistType" field_id="playlistType" options=playlistType selected_value=selected_type all_option_label=all_label %}
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-xl-7 col-md-8">
+        {% if page_objects %}
+        <div class="flex-container" id="preview-playlist-div" data-url-preview="{% url 'playlistPreview' %}">
+            {% for playlist in page_objects %}
+
+            <div class="position-relative">
+                <div class="playlist-copiable playlist-link playlist-element flex-item playlist-dim-{{ playlist_dim }} m-1" data-playlist-uuid="{{ playlist.uuid }}" style="background-color: {{ playlist.get_color }};color: {{ playlist.get_color_text }};">
+                    {{ playlist | applys_playlist_content}}
+                </div>
+                {% with number_tracks=number_tracks_by_playlist|get_dict_item:playlist.id|default:"0" %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill {% if number_tracks > 0 %}bg-primary{% else %}bg-danger{% endif %}">
+                    {{ number_tracks }}
+                </span>
+                {% endwith %}
+            </div>
+
+            {% endfor %}
+        </div>
+        {% applys_pagination paginator %}
+        {% endif %}
+    </div>
+    <div class="col-12 col-xl-5 col-md-4">
+        <div id="previewPlaylist" class="border rounded p-2" style="min-height: 50vh;">
+            <div class="alert alert-info">
+                {% trans "template.playlist_copiable.preview.instruction" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

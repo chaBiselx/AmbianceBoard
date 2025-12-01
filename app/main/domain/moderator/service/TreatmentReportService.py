@@ -2,6 +2,7 @@ from typing import Optional
 
 from main.architecture.persistence.repository.ReportContentRepository import ReportContentRepository
 from main.architecture.persistence.repository.UserModerationLogRepository import UserModerationLogRepository
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
 from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
 
@@ -17,6 +18,7 @@ class TreatmentReportService:
         self.user = user
         self.moderator = moderator
         self.dto = dto
+        self.playlist_repository = PlaylistRepository()
         self.report_repository = ReportContentRepository()
         self.user_moderation_log_repository = UserModerationLogRepository()
 
@@ -55,4 +57,17 @@ class TreatmentReportService:
             # Store a timezone-aware expiration date
             self.user.banExpiration = timezone.now() + timedelta(days=duration_ban * 31)
             self.user.save()
+    
+    def action_ban_playlist_copie(self):
+        """Bloque ou débloque la copie d'une playlist"""
+        if( self.dto.action_ban_playlist_uuid is None):
+            return
+        playlist = self.playlist_repository.get(self.dto.action_ban_playlist_uuid)
+        if playlist is not None:
+            # La checkbox est présente seulement si cochée (comportement HTML standard)
+            # Si action_ban_playlist_copie est 'on', on bloque la copie
+            # Si None/absent, on débloque
+            playlist.moderator_ban_copie = bool(self.dto.action_ban_playlist_copie)
+            playlist.save()
+
 

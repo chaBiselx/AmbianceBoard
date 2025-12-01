@@ -34,6 +34,8 @@ export default defineConfig(({ mode }) => {
                     ManagerListTier: resolve(__dirname, 'src/ManagerListTier.ts'),
                     ManagerDashboard: resolve(__dirname, 'src/ManagerDashboard.ts'),
                     Moderator_General: resolve(__dirname, 'src/ModeratorGeneral.ts'),
+                    FormTextArea: resolve(__dirname, 'src/FormTextArea.ts'),
+                    PlaylistCopiable: resolve(__dirname, 'src/PlaylistCopiable.ts'),
                 },
                 output: {
                     format: 'es',

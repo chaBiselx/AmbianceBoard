@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<div class="d-flex align-items-center gap-2">
+    <label for="{{ field_id }}" class="form-label mb-0">{{ label }} :</label>
+    <select name="{{ field_name }}" id="{{ field_id }}" class="form-select" style="width: auto;" onchange="this.form.submit()">
+        <option value="">{{ all_option_label }}</option>
+        {% for key, value in options.items %}
+        <option value="{{ value }}" {% if selected_value == value %}selected{% endif %}>{{ value }}</option>
+        {% endfor %}
+    </select>
+</div>

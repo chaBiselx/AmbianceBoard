@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-19 19:19+0000\n"
+"POT-Creation-Date: 2025-11-27 15:41+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -41,27 +41,49 @@ msgstr "Pouvoir partager l'écoute de la soundboard avec vos joueurs en ligne."
 msgid "template.addLinkMusic.form.submit"
 msgstr "Ajouter le lien"
 
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:22
+msgid "generic.back"
+msgstr "Retour"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:29
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:14
+msgid "generic.filter_by_type"
+msgstr "Filtre par type"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:31
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:16
+msgid "generic.filter_by_type.value.all"
+msgstr "Tous les types"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:66
+msgid "template.playlist_copiable.preview.instruction"
+msgstr "Cliquer sur un boutons pour présualiser la playlist."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:49
+msgid "template.playlist_copiable_preview.duplicate_playlist"
+msgstr "Dupliquer le bouton"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:51
+msgid "template.playlist_copiable_preview.already_duplicated"
+msgstr "Le bouton a déjà été dupliqué."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:52
+msgid "template.playlist_read_all.button.add"
+msgstr "Ajouter un bouton"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:53
+msgid "template.playlist_read_all.button.listPublic"
+msgstr "Liste des boutons copiable"
+
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:25
 msgid ""
 "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
 msgstr "Ce compte ne peux pas avoir accès a cette fonctionnalité :"
 
-#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:28
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:29
 msgid ""
 "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
 msgstr "Raccourci clavier"
-
-#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:58
-msgid ""
-"template.listePlaylistForSpecificAction.table.row.keyboard_shortcut.defined."
-"tooltip"
-msgstr "Raccourci défini :"
-
-#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:60
-msgid ""
-"template.listePlaylistForSpecificAction.table.row.keyboard_shortcut."
-"undefined.tooltip"
-msgstr "Aucun raccourci défini"
 
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:7
 msgid "template.shareSoundboard.button.tooltip"

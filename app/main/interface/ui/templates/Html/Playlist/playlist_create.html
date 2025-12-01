@@ -36,7 +36,7 @@
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 col-md-6 col-lg-7">
                                 {{ form.name.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Nom qui sera affiché sur le bouton de la playlist">ⓘ</span><br /> {{ form.name }}
                                 {% if form.name.errors %}
                                 <ul>
@@ -45,6 +45,9 @@
                                     {% endfor %}
                                 </ul>
                                 {% endif %}
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-5">
+                                {{ form.is_copiable.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Peut être copié par les autres utilisateurs et pouvant être modifé de leurs coté">ⓘ</span><br /> {{ form.is_copiable }}
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 {{ form.typePlaylist.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Type de contenu : Musique (lecture aléatoire continue), Ambiant (sons d'ambiance en boucle), Instantané (sons courts déclenchés manuellement)">ⓘ</span><br />

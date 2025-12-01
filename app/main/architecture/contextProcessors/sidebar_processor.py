@@ -12,7 +12,7 @@ def sidebar_processor(request):
             'show_sidebar': True,
             'sidebar_items': [
                 {'title': 'Index', 'url': reverse("settingsIndex"), 'classIcon':None},
-                {'title': 'Playlist type', 'url': reverse("defaultPlaylistType"), 'classIcon':None},
+                {'title': 'Couleurs des boutons', 'url': reverse("defaultPlaylistType"), 'classIcon':None},
                 {'title': 'Dimensions boutons', 'url': reverse("updateDimensions"), 'classIcon':None},
                 {'title': 'Suppression de compte', 'url': reverse("deleteAccount"), 'classIcon':None},
             ]
@@ -42,6 +42,8 @@ def sidebar_processor(request):
                 {'title': 'Dashboard', 'url': reverse("managerDashboard"), 'classIcon':"fa-solid fa-chart-line"},
                 {'title': 'Cron', 'url': reverse("managerCronViews"), 'classIcon':"fa-solid fa-clock"},
                 {'title': 'User Tiers', 'url': reverse("adminUserTiersDashboard"), 'classIcon':"fas fa-user-graduate"},
+                {'title': 'Notifications', 'url': reverse("managerNotifications"), 'classIcon':"fa-solid fa-bell"},
+                
             ]
         }
         
