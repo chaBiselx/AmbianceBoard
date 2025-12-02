@@ -66,7 +66,7 @@ def moderator_listing_images_soundboard(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
 
     queryset = SoundBoardRepository().get_all_queryset()
-    paginator = Paginator(queryset, 50)  
+    paginator = Paginator(queryset, 200)  
     context = extract_context_to_paginator(paginator, page_number)
     
     return render(request, 'Html/Moderator/listing_soundboard_img.html', context)
@@ -93,7 +93,7 @@ def moderator_listing_log_moderation(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
 
     queryset = UserModerationLogRepository().get_all_queryset()
-    paginator = Paginator(queryset, 100)
+    paginator = Paginator(queryset, 200)
     context = extract_context_to_paginator(paginator, page_number)
     
     return render(request, 'Html/Moderator/listing_log.html', context)

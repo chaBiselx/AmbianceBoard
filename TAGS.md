@@ -156,7 +156,7 @@ Améliorations
 - Afficher les mélangeurs des boutons de playlist partagé seulement si récemment activé afin de conserver l'effet de surprise 
 - Ajout d'une bordure de couleur pour différencier les soundboard privé et publique
 
-### 0.3.0 - 2025/11
+### 0.3.0 - 2025/12
 Nouveautés
 - Ajout d'un interface pour créer des notifications pour le manager
 - Ajout la possiblité de rendre copiable un boutons par les autres utilisateurs
@@ -166,6 +166,10 @@ Nouveautés
 
 Corrections
 - Lors de l'ajout de bouton via la playlist, ajout a la dernière positions 
+
+### 0.3.1 - 2025/12
+Corrections
+- Erreur 500 sur les playlist public
 
 
 ### X.Y.Z - Date
