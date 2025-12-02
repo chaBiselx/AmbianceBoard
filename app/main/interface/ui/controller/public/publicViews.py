@@ -76,11 +76,19 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
-    else:   
+    else:  
+        #TODO : transformer ça en service
+        listColor = []
+        for playlist_type in PlaylistTypeEnum:
+            listColor.append({
+                "typePlaylist": playlist_type,
+                "color": "black",
+                "colorText": "white",
+            })
         activity = ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW, user=request.user, content_object=soundboard)
         return TemplateResponse(request, 'Html/Public/soundboard_read.html', {
             'soundboard': soundboard, 
-            'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(),
+            'PlaylistTypeMixer': listColor,
             'trace_user_activity': activity,
             'list_shortcut_keyboard': []
         })
