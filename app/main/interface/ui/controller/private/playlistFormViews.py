@@ -147,7 +147,7 @@ def playlist_describe_type(request)-> HttpResponse:
         }
     }
     
-    return render(request, 'Html/Playlist/describe_type.html', {'dataFacade': data, "listParam":list_param})
+    return render(request, 'Html/Playlist/modal/describe_type.html', {'dataFacade': data, "listParam":list_param})
     
 @login_required
 @require_http_methods(['GET'])
