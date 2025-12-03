@@ -24,6 +24,12 @@ class SoundboardPlaylistRepository:
             return SoundboardPlaylist.objects.get(SoundBoard=soundboard, Playlist=playlist)
         except SoundboardPlaylist.DoesNotExist:
             return None 
+    
+    def get_playlist_in_soundboard_by_uuid(self, soundboard: "SoundBoard", playlist_uuid: str) -> SoundboardPlaylist|None:
+        try:
+            return SoundboardPlaylist.objects.get(SoundBoard=soundboard, Playlist__uuid=playlist_uuid)
+        except SoundboardPlaylist.DoesNotExist:
+            return None
         
     def get_id(self, id) -> SoundboardPlaylist|None:
         try:

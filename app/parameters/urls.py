@@ -13,9 +13,9 @@ from main.interface.ui.controller.private.soundboardSpecifiqueViews import list_
 from main.interface.ui.controller.private.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
 from main.interface.ui.controller.private.showSoundboardViews import playlist_show, music_stream, update_direct_volume
 from main.interface.ui.controller.private.playlistFormViews import (
-    playlist_read_all, playlist_create, playlist_create_with_soundboard, playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete)
+    playlist_read_all, playlist_create, playlist_create_with_soundboard, playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
-from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
+from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
 from main.interface.ui.controller.moderator.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
 from main.interface.ui.controller.manager.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
@@ -71,6 +71,10 @@ urlpatterns = [
     path("soundBoards/specific/actionnable/update", update_specific_actionable_playlists, name="updateActionablePlaylistsForPlayers"),
     path("soundBoards/specific/shortcut/update", update_specific_shortcut_playlists, name="updateShortcutPlaylistsForPlayers"),
     
+    path("soundBoards/add-music/<uuid:playlist_uuid>", add_music_from_soundboard, name="add_music_from_soundboard"),
+    
+    
+    
     
     path('account/settings/',settings_index, name="settingsIndex"),
     path('account/settings/theme',update_theme, name="updateTheme"),
@@ -97,6 +101,7 @@ urlpatterns = [
     path("playlist/<uuid:playlist_uuid>/music/delete/<int:music_id>", music_delete, name="deleteMusic"),
     
     path("playlist/<uuid:playlist_uuid>/link/create", link_create, name="addLink"),
+    path("playlist/<uuid:playlist_uuid>/link/create-ajax", link_create_ajax, name="addLinkAjax"),
     path("playlist/<uuid:playlist_uuid>/link/edit/<int:link_id>", link_update, name="editLink"),
     path("playlist/<uuid:playlist_uuid>/link/delete/<int:link_id>", link_delete, name="deleteLink"),
 

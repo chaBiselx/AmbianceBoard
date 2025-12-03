@@ -171,6 +171,9 @@ Corrections
 Corrections
 - Erreur 500 sur les playlist public
 
+### 0.3.2 - 2025/12
+Améliorations
+- Ajout d'une popup lors de de la création d'une playlist via un  soundboard
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

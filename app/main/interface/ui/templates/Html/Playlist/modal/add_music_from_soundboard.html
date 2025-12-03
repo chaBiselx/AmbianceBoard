@@ -1,0 +1,23 @@
+{% load i18n %}
+
+{% block content %}
+<section id="selection-type-ajout">
+    <div class="row">
+
+        <div class="col-12 col-sm-6">
+            <button class="btn btn-primary btn-block" id="btn-add-music-from-soundboard" data-bs-toggle="tooltip" data-bs-title="Ajouter un fichier audio local (MP3, WAV, etc.) à la playlist" data-url="{% url 'addMusic' playlist.uuid %}">Ajouter fichier</button>
+        </div>
+        {% if LinkMusicAllowedEnum|length > 0 %}
+        <div class="col-12 col-sm-6">
+            <button class="btn btn-primary btn-block" id="btn-add-link-from-soundboard" data-bs-toggle="tooltip" data-bs-title="Ajouter un lien vers une source audio externe (Fichier, Flux Audio, etc.)" data-url="{% url 'addLink' playlist.uuid %}">Ajouter lien</button>
+        </div>
+        {% endif %}
+    </div>
+</section>
+<section id="form-add-music-from-soundboard" class="d-none mt-3">
+    {% include 'Html/Music/add_music.html' with playlist=playlist LinkMusicAllowedEnum=LinkMusicAllowedEnum %}
+</section>
+<section id="form-add-link-from-soundboard" class="d-none mt-3">
+    {% include 'Html/Music/add_link_music_ajax.html' with playlist=playlist form=formLink %}
+</section>
+{% endblock %}

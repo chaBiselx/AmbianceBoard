@@ -1,0 +1,10 @@
+<!-- Mode création : formulaire AJAX sans rechargement de page -->
+{% load i18n %}
+
+<form method="post" action="{% url 'addLinkAjax' playlist.uuid %}" id="form-add-link-music-ajax">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary btn-block mt-2" id="submit-add-link-ajax">{% trans "template.addLinkMusic.form.submit" %}</button>
+</form>
+
+

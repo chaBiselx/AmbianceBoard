@@ -178,6 +178,30 @@ def link_update(request, playlist_uuid, link_id):
 
 
 @login_required
+@require_http_methods(['POST'])
+def link_create_ajax(request, playlist_uuid) -> JsonResponse:
+    """Création d'un nouveau lien musical via AJAX sans redirection"""
+    if request.method == 'POST':
+        playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
+        if not playlist:
+            return JsonResponse({"success": False, "message": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        try:
+            link = (LinkService(request)).save_form(playlist)
+            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LINK_UPLOAD, user=request.user, content_object=link)
+            return JsonResponse({
+                'success': True,
+                'message': 'Lien musical ajouté avec succès!',
+            }, status=200)
+        except ValueError as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e)
+            }, status=400)
+            
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+
+
+@login_required
 @require_http_methods(['DELETE'])
 def link_delete(request, playlist_uuid, link_id) -> JsonResponse:
     """Suppression d'un lien musical"""

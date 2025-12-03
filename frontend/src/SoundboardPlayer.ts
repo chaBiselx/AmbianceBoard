@@ -18,6 +18,10 @@ import Time from '@/modules/Util/Time';
 import { SharedSoundboardCustomVolumeFactory } from '@/modules/SharedSoundboardCustomVolume';
 import ShorcutKeyBoardDetector from "@/modules/Control/ShorcutKeyBoardDetector";
 import ConsoleCustom from "./modules/General/ConsoleCustom";
+import { MusicDropzoneConfig, MusicDropzoneManager } from '@/modules/MusicDropzoneManager';
+import Notification from '@/modules/General/Notifications';
+
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -38,7 +42,129 @@ document.addEventListener("DOMContentLoaded", () => {
         sh.addEvent();
     }
     new ShortcutKeyboardSoundboard().addEvent();
+    new PopupAddMusicToSoundboard().showIfValue();
 });
+
+class PopupAddMusicToSoundboard {
+
+    shortcutElementsInput: HTMLInputElement | null;
+
+    constructor() {
+        this.shortcutElementsInput = document.getElementById('new-playlist-uuid-popup') as HTMLInputElement | null;
+    }
+
+    public showIfValue() {
+        if (this.shortcutElementsInput) {
+            const uuidPlaylist = this.shortcutElementsInput.value;
+            const url = this.shortcutElementsInput.dataset.url;
+
+            if (uuidPlaylist && url) {
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-CSRFToken': Csrf.getToken()!
+                    }
+                }).then(response => response.text()).then((body) => {
+                    ModalCustom.show({
+                        title: "Playlist ajoutée",
+                        body: body,
+                        footer: "",
+                        width: "md",
+                        callback: () => {
+                            // TODO créer un class pour gérer cela 
+                            const dropZone = document.getElementById('music-dropzone');
+                            if (dropZone) {
+                                const uploadUrl = dropZone.dataset.uploadUrl;
+                                const csrf = Csrf.getToken();
+
+
+                                if (!uploadUrl) {
+                                    ConsoleCustom.error('Missing required configuration for MusicDropzoneManager');
+                                    return;
+                                }
+
+                                try {
+                                    (globalThis as typeof globalThis & { musicDropzoneManager?: MusicDropzoneManager }).musicDropzoneManager = new MusicDropzoneManager(
+                                        {
+                                            containerSelector: '#music-dropzone',
+                                            uploadUrl: uploadUrl,
+                                            csrf: csrf,
+                                            fileFormat: dropZone.dataset.format,
+                                            nbfile: Number.parseInt(dropZone.dataset.musicremaining!),
+                                            refreshAfterUpload: false,
+                                        } as MusicDropzoneConfig);
+                                } catch (error) {
+                                    ConsoleCustom.error('Error initializing MusicDropzoneManager:', error);
+                                }
+                            }
+
+                            const sectionAction = document.getElementById('selection-type-ajout');
+                            const sectionAddFile = document.getElementById('form-add-music-from-soundboard');
+                            const sectionAddLink = document.getElementById('form-add-link-from-soundboard');
+                            if (sectionAction && sectionAddFile && sectionAddLink) {
+                                const addMusicFile = document.getElementById('btn-add-music-from-soundboard');
+                                if (addMusicFile) {
+                                    addMusicFile.addEventListener('click', () => {
+                                        sectionAction.classList.add('d-none');
+                                        sectionAddFile.classList.remove('d-none');
+                                    });
+                                }
+                                const addMusicLink = document.getElementById('btn-add-link-from-soundboard');
+                                if (addMusicLink) {
+                                    addMusicLink.addEventListener('click', () => {
+                                        sectionAction.classList.add('d-none');
+                                        sectionAddLink.classList.remove('d-none');
+                                    });
+                                }
+
+                                const form = document.getElementById('form-add-link-music-ajax');
+                                const submitBtn = document.getElementById('submit-add-link-ajax') as HTMLButtonElement | null;
+                                if (submitBtn && form instanceof HTMLFormElement) {
+                                    submitBtn.addEventListener('click', function (e) {
+                                        e.preventDefault();
+
+
+                                        const formData = new FormData(form);
+                                        const url = form.action;
+                                        const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+                                        // Désactiver le bouton pendant l'envoi
+                                        if (submitBtn) {
+                                            submitBtn.disabled = true;
+                                            submitBtn.textContent = 'Envoi en cours...';
+                                        }
+
+                                        fetch(url, {
+                                            method: 'POST',
+                                            body: formData,
+                                            headers: {
+                                                'X-Requested-With': 'XMLHttpRequest'
+                                            }
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                if (data.success) {
+                                                    Notification.createClientNotification({ message: data.message, type: 'success' });
+                                                    const bsModal = ModalCustom.getInstance();
+                                                    if (bsModal) bsModal.hide();
+                                                } else {
+                                                    Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                                                }
+                                            })
+                                            .catch(_ => {
+                                                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                                            });
+                                    });
+                                }
+
+                            }
+                        }
+                    });
+                });
+            }
+        }
+    }
+}
 
 function addEventListenerDom() {
     const formElements = document.querySelectorAll('.playlist-link');
@@ -183,27 +309,27 @@ class ShortcutKeyboardSoundboard {
         if (this.shortcutElementsSection) {
             const shortcutElements = this.shortcutElementsSection.getElementsByClassName('shortcut-element');
             for (const element of shortcutElements) {
-                if(! (element instanceof HTMLElement)) continue;
+                if (!(element instanceof HTMLElement)) continue;
                 const shortCut = element.dataset.shortcut;
                 const uuidPlaylist = element.dataset.playlistUuid;
                 if (shortCut && uuidPlaylist) {
                     this.registerShortcut(shortCut, uuidPlaylist);
                 }
-                
+
             }
         }
 
         this.ShorcutKeyBoardDetector.startListening(
             (shortcut: string[]) => {
-            const shortcutString = shortcut.join('##');
-            const uuidPlaylist = this.recoardedShortcuts.get(shortcutString);
-            if (uuidPlaylist) {
-                ConsoleCustom.log("Shortcut detected:", shortcutString, "-> Playlist UUID:", uuidPlaylist);
-                const button = ButtonPlaylistFinder.search(uuidPlaylist);
-                button?.simulateClick();
+                const shortcutString = shortcut.join('##');
+                const uuidPlaylist = this.recoardedShortcuts.get(shortcutString);
+                if (uuidPlaylist) {
+                    ConsoleCustom.log("Shortcut detected:", shortcutString, "-> Playlist UUID:", uuidPlaylist);
+                    const button = ButtonPlaylistFinder.search(uuidPlaylist);
+                    button?.simulateClick();
+                }
             }
-        }
-    );
+        );
 
 
     }
