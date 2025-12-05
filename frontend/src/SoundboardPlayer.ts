@@ -118,10 +118,10 @@ class AddMusicModalHandler {
     private handleLinkSubmit(form: HTMLFormElement): void {
         const formData = new FormData(form);
         const url = form.action;
-        const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+        const submitBtn = form.querySelector('button[type="submit"]');
 
         // Désactiver le bouton pendant l'envoi
-        if (submitBtn) {
+        if (submitBtn instanceof HTMLButtonElement) {
             submitBtn.disabled = true;
             submitBtn.textContent = 'Envoi en cours...';
         }
