@@ -33,7 +33,7 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
         
         
     name = forms.CharField(
-        label='Nom de la playlist', 
+        label='Nom du bouton', 
         max_length=255, 
         required=True
     )
