@@ -43,6 +43,123 @@ document.addEventListener("DOMContentLoaded", () => {
     new PopupAddMusicToSoundboard().showIfValue();
 });
 
+class AddMusicModalHandler {
+    private initializeDropzone(): void {
+        const dropZone = document.getElementById('music-dropzone');
+        if (!dropZone) return;
+
+        const uploadUrl = dropZone.dataset.uploadUrl;
+        const csrf = Csrf.getToken();
+
+        if (!uploadUrl) {
+            ConsoleCustom.error('Missing required configuration for MusicDropzoneManager');
+            return;
+        }
+
+        try {
+            (globalThis as typeof globalThis & { musicDropzoneManager?: MusicDropzoneManager }).musicDropzoneManager = new MusicDropzoneManager(
+                {
+                    containerSelector: '#music-dropzone',
+                    uploadUrl: uploadUrl,
+                    csrf: csrf,
+                    fileFormat: dropZone.dataset.format,
+                    nbfile: Number.parseInt(dropZone.dataset.musicremaining!),
+                    refreshAfterUpload: false,
+                } as MusicDropzoneConfig);
+        } catch (error) {
+            ConsoleCustom.error('Error initializing MusicDropzoneManager:', error);
+        }
+    }
+
+    private setupSectionNavigation(): void {
+        const sectionAction = document.getElementById('selection-type-ajout');
+        const sectionAddFile = document.getElementById('form-add-music-from-soundboard');
+        const sectionAddLink = document.getElementById('form-add-link-from-soundboard');
+        
+        if (!sectionAction || !sectionAddFile || !sectionAddLink) return;
+
+        this.setupAddMusicFileButton(sectionAction, sectionAddFile);
+        this.setupAddMusicLinkButton(sectionAction, sectionAddLink);
+        this.setupLinkSubmitForm();
+    }
+
+    private setupAddMusicFileButton(sectionAction: HTMLElement, sectionAddFile: HTMLElement): void {
+        const addMusicFile = document.getElementById('btn-add-music-from-soundboard');
+        if (addMusicFile) {
+            addMusicFile.addEventListener('click', () => {
+                sectionAction.classList.add('d-none');
+                sectionAddFile.classList.remove('d-none');
+            });
+        }
+    }
+
+    private setupAddMusicLinkButton(sectionAction: HTMLElement, sectionAddLink: HTMLElement): void {
+        const addMusicLink = document.getElementById('btn-add-link-from-soundboard');
+        if (addMusicLink) {
+            addMusicLink.addEventListener('click', () => {
+                sectionAction.classList.add('d-none');
+                sectionAddLink.classList.remove('d-none');
+            });
+        }
+    }
+
+    private setupLinkSubmitForm(): void {
+        const form = document.getElementById('form-add-link-music-ajax');
+        const submitBtn = document.getElementById('submit-add-link-ajax') as HTMLButtonElement | null;
+        
+        if (!submitBtn || !(form instanceof HTMLFormElement)) return;
+
+        submitBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.handleLinkSubmit(form);
+        });
+    }
+
+    private handleLinkSubmit(form: HTMLFormElement): void {
+        const formData = new FormData(form);
+        const url = form.action;
+        const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+        // Désactiver le bouton pendant l'envoi
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Envoi en cours...';
+        }
+
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Notification.createClientNotification({ message: data.message, type: 'success' });
+                    const bsModal = ModalCustom.getInstance();
+                    if (bsModal) bsModal.hide();
+                } else {
+                    Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                }
+            })
+            .catch(_ => {
+                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+            })
+            .finally(() => {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Envoyer';
+                }
+            });
+    }
+
+    public initialize(): void {
+        this.initializeDropzone();
+        this.setupSectionNavigation();
+    }
+}
+
 class PopupAddMusicToSoundboard {
 
     shortcutElementsInput: HTMLInputElement | null;
@@ -69,93 +186,8 @@ class PopupAddMusicToSoundboard {
                         footer: "",
                         width: "md",
                         callback: () => {
-                            // TODO créer un class pour gérer cela 
-                            const dropZone = document.getElementById('music-dropzone');
-                            if (dropZone) {
-                                const uploadUrl = dropZone.dataset.uploadUrl;
-                                const csrf = Csrf.getToken();
-
-
-                                if (!uploadUrl) {
-                                    ConsoleCustom.error('Missing required configuration for MusicDropzoneManager');
-                                    return;
-                                }
-
-                                try {
-                                    (globalThis as typeof globalThis & { musicDropzoneManager?: MusicDropzoneManager }).musicDropzoneManager = new MusicDropzoneManager(
-                                        {
-                                            containerSelector: '#music-dropzone',
-                                            uploadUrl: uploadUrl,
-                                            csrf: csrf,
-                                            fileFormat: dropZone.dataset.format,
-                                            nbfile: Number.parseInt(dropZone.dataset.musicremaining!),
-                                            refreshAfterUpload: false,
-                                        } as MusicDropzoneConfig);
-                                } catch (error) {
-                                    ConsoleCustom.error('Error initializing MusicDropzoneManager:', error);
-                                }
-                            }
-
-                            const sectionAction = document.getElementById('selection-type-ajout');
-                            const sectionAddFile = document.getElementById('form-add-music-from-soundboard');
-                            const sectionAddLink = document.getElementById('form-add-link-from-soundboard');
-                            if (sectionAction && sectionAddFile && sectionAddLink) {
-                                const addMusicFile = document.getElementById('btn-add-music-from-soundboard');
-                                if (addMusicFile) {
-                                    addMusicFile.addEventListener('click', () => {
-                                        sectionAction.classList.add('d-none');
-                                        sectionAddFile.classList.remove('d-none');
-                                    });
-                                }
-                                const addMusicLink = document.getElementById('btn-add-link-from-soundboard');
-                                if (addMusicLink) {
-                                    addMusicLink.addEventListener('click', () => {
-                                        sectionAction.classList.add('d-none');
-                                        sectionAddLink.classList.remove('d-none');
-                                    });
-                                }
-
-                                const form = document.getElementById('form-add-link-music-ajax');
-                                const submitBtn = document.getElementById('submit-add-link-ajax') as HTMLButtonElement | null;
-                                if (submitBtn && form instanceof HTMLFormElement) {
-                                    submitBtn.addEventListener('click', function (e) {
-                                        e.preventDefault();
-
-
-                                        const formData = new FormData(form);
-                                        const url = form.action;
-                                        const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
-
-                                        // Désactiver le bouton pendant l'envoi
-                                        if (submitBtn) {
-                                            submitBtn.disabled = true;
-                                            submitBtn.textContent = 'Envoi en cours...';
-                                        }
-
-                                        fetch(url, {
-                                            method: 'POST',
-                                            body: formData,
-                                            headers: {
-                                                'X-Requested-With': 'XMLHttpRequest'
-                                            }
-                                        })
-                                            .then(response => response.json())
-                                            .then(data => {
-                                                if (data.success) {
-                                                    Notification.createClientNotification({ message: data.message, type: 'success' });
-                                                    const bsModal = ModalCustom.getInstance();
-                                                    if (bsModal) bsModal.hide();
-                                                } else {
-                                                    Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
-                                                }
-                                            })
-                                            .catch(_ => {
-                                                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
-                                            });
-                                    });
-                                }
-
-                            }
+                            const handler = new AddMusicModalHandler();
+                            handler.initialize();
                         }
                     });
                 });
