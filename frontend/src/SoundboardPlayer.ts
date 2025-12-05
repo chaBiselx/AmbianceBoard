@@ -327,6 +327,10 @@ class ShortcutKeyboardSoundboard {
                     ConsoleCustom.log("Shortcut detected:", shortcutString, "-> Playlist UUID:", uuidPlaylist);
                     const button = ButtonPlaylistFinder.search(uuidPlaylist);
                     button?.simulateClick();
+                    return false;
+                }else {
+                    ConsoleCustom.log("Shortcut detected but no playlist registered:", shortcutString);
+                    return true;
                 }
             }
         );
