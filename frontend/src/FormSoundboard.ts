@@ -34,7 +34,7 @@ class TagSelector {
         
         const checkbox = document.getElementById('tag_' + tagId) as HTMLInputElement;
         
-        if (!checkbox || checkbox.type !== "checkbox") {
+        if (!checkbox || checkbox?.type !== "checkbox") {
             ConsoleCustom.warn('Checkbox not found or not a valid input element:', checkbox);
             return;
         }
