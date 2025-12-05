@@ -35,6 +35,11 @@
                         {{ number_tracks }}
                     </span>
                     {% endwith %}
+                    {% if playlist.is_copiable %}
+                    <span class="position-absolute bottom-0 start-100 translate-middle badge rounded-pill bg-success" title="Copiable">
+                        <i class="fa-regular fa-copy"></i>
+                    </span>
+                    {% endif %}
                 </div>
 
             </a>
