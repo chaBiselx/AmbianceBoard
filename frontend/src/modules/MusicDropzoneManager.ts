@@ -44,7 +44,6 @@ export class MusicDropzoneManager {
                         ModalCustom.wait(() => {
                             if(this.fileAdded){
                                 ModalCustom.hide();
-                                return;
                             }
                         });
                     }

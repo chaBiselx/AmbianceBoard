@@ -252,7 +252,7 @@ class SharedSoundBoardWebSocket {
     private resetBoardHiddenPlaylist(): void {
         const html = document.getElementById('shared-board-refresh');
         if (html?.dataset?.urlRefreshBoard) {
-            fetch(html.dataset.urlRefreshBoard!, {
+            fetch(html.dataset.urlRefreshBoard, {
                 method: 'GET',
             })
                 .then(response => response.text())
