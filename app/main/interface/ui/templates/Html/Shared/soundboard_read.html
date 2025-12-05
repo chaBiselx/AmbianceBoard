@@ -24,7 +24,11 @@
             {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum owner=False master=False %}
         </div>
 
+        <div class="d-none" id="shared-board-refresh" data-url-refresh-board="{% url 'shared_soundboard_refresh' soundboard.uuid token %}"></div>
         {% include 'Html/partial/soundboard/board.html' with master=False owner=False soundboard=soundboard %}
+
+        </div>
+
 
         <div class="alert alert-info mt-3 text-sm" role="alert">
             L'application est synchonisé avec le soundboard du maitre du jeu. <br />

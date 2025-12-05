@@ -3,9 +3,8 @@ import Config from '@/modules/General/Config';
 import Csrf from "@/modules/General/Csrf";
 import Cookie from '@/modules/General/Cookie';
 
-import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
+import {  ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MixerManager } from '@/modules/MixerManager';
-import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import WakeLock from '@/modules/General/WakeLock';
 import ModalCustom from '@/modules/General/Modal';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
@@ -13,20 +12,19 @@ import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil';
 import { MixerPlaylist } from "@/modules/MixerPlaylist";
 import ShareLinkManager from '@/modules/Event/ShareLinkManager';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
-import SharedSoundboardSendCmdMaster from '@/modules/SharedSoundboardSendCmdMaster';
-import Time from '@/modules/Util/Time';
 import { SharedSoundboardCustomVolumeFactory } from '@/modules/SharedSoundboardCustomVolume';
 import ShorcutKeyBoardDetector from "@/modules/Control/ShorcutKeyBoardDetector";
-import ConsoleCustom from "./modules/General/ConsoleCustom";
+import ConsoleCustom from "@/modules/General/ConsoleCustom";
 import { MusicDropzoneConfig, MusicDropzoneManager } from '@/modules/MusicDropzoneManager';
 import Notification from '@/modules/General/Notifications';
+import SoundBoardEventListener from '@/modules/SoundBoardEventListener';
 
 
 
 
 document.addEventListener("DOMContentLoaded", () => {
     showPopupSharedPlaylist();
-    addEventListenerDom()
+    new SoundBoardEventListener().addEventListenerDom();
     setUpMixerPlaylist();
     updateWithMixerPlaylist();
     addEventPublishEvent();
@@ -166,50 +164,9 @@ class PopupAddMusicToSoundboard {
     }
 }
 
-function addEventListenerDom() {
-    const formElements = document.querySelectorAll('.playlist-link');
-    for (const element of formElements) {
-        if (element.classList.contains('disabled')) continue
-        if (element.classList.contains('playlist-user-playable')) {
-            element.addEventListener('click', eventPlayInMasterSoundboard);
-        } else {
-            element.addEventListener('click', eventTogglePlaylist);
-        }
-    }
-}
-
 function setUpMixerPlaylist() {
     const mixerPlaylist = new MixerPlaylist();
     mixerPlaylist.addEventListener();
-}
-
-
-
-function eventTogglePlaylist(event: Event) {
-    if (event.target instanceof HTMLElement) {
-        const buttonPlaylist = new ButtonPlaylist(event.target)
-        if (buttonPlaylist.isActive()) {
-            buttonPlaylist.disactive();
-            SoundBoardManager.removePlaylist(buttonPlaylist);
-        } else {
-            buttonPlaylist.active();
-            SoundBoardManager.addPlaylist(buttonPlaylist);
-        }
-    }
-}
-
-function eventPlayInMasterSoundboard(event: Event) {
-    if (event.target instanceof HTMLElement) {
-        const buttonPlaylist = new ButtonPlaylist(event.target)
-        if (!buttonPlaylist.isActive()) {
-            new SharedSoundboardSendCmdMaster().sendPlayPlaylistOnMaster(buttonPlaylist.getUuid());
-            buttonPlaylist.active();
-            setTimeout(() => {
-                buttonPlaylist.disactive();
-            }, Time.get_seconds(1));
-
-        }
-    }
 }
 
 function updateWithMixerPlaylist() {
@@ -328,7 +285,7 @@ class ShortcutKeyboardSoundboard {
                     const button = ButtonPlaylistFinder.search(uuidPlaylist);
                     button?.simulateClick();
                     return false;
-                }else {
+                } else {
                     ConsoleCustom.log("Shortcut detected but no playlist registered:", shortcutString);
                     return true;
                 }

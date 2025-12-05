@@ -73,7 +73,15 @@ def shared_soundboard_read(request, soundboard_uuid, token):
             'token': token,
         })
         ws_url = get_full_ws(f'{request.get_host()}{ws_path}')
-        return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url, 'list_shortcut_keyboard': []})
+        return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'token' : token, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url, 'list_shortcut_keyboard': []})
+    
+@require_http_methods(['GET'])
+def shared_soundboard_refresh(request, soundboard_uuid, token):
+    soundboard = (SoundBoardService(request)).get_soundboard_from_shared_soundboard(soundboard_uuid, token)
+    if not soundboard :
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+    else:   
+        return render(request, 'Html/partial/soundboard/board.html', {'soundboard': soundboard,  'master': False, 'owner': False})
 
 
 @require_http_methods(['GET'])

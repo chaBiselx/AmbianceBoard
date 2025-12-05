@@ -174,6 +174,10 @@ Corrections
 ### 0.3.2 - 2025/12
 Améliorations
 - Ajout d'une popup lors de de la création d'une playlist via un  soundboard
+- Actualisation automatique du soundboard principal pour les playlist partagé
+
+Corrections
+- Corrections de message de doublons sur la page des raccourci clavier
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
