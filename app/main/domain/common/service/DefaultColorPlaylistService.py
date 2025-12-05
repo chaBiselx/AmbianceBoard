@@ -54,11 +54,13 @@ class DefaultColorPlaylistService():
         color_found = self.cache.get(cache_key)
         if color_found:
             return color_found
-
-        existing_data = {pcu.typePlaylist: pcu for pcu in self.playlist_color_user_repository.get_list_with_user_and_type(user=self.user, playlist_type=playlist_type)}
-        if existing_data.get(playlist_type):
-            color_found = existing_data[playlist_type].color
-        else : 
+        
+        if self.user.is_authenticated:
+            existing_data = {pcu.typePlaylist: pcu for pcu in self.playlist_color_user_repository.get_list_with_user_and_type(user=self.user, playlist_type=playlist_type)}
+            if existing_data.get(playlist_type):
+                color_found = existing_data[playlist_type].color
+        
+        if not color_found:
             color_found = PlaylistTypeEnum[playlist_type].get_default_color()['color']
         
         self.cache.set(cache_key, color_found)
@@ -70,10 +72,11 @@ class DefaultColorPlaylistService():
         if color_text_found:
             return color_text_found
 
-        existing_data = {pcu.typePlaylist: pcu for pcu in self.playlist_color_user_repository.get_list_with_user(self.user)}
-        if existing_data.get(playlist_type):
-            color_text_found = existing_data[playlist_type].colorText
-        else :
+        if self.user.is_authenticated:
+            existing_data = {pcu.typePlaylist: pcu for pcu in self.playlist_color_user_repository.get_list_with_user(self.user)}
+            if existing_data.get(playlist_type):
+                color_text_found = existing_data[playlist_type].colorText
+        if not color_text_found:
             color_text_found = PlaylistTypeEnum[playlist_type].get_default_color()['colorText']
         self.cache.set(cache_key, color_text_found)
         return color_text_found
