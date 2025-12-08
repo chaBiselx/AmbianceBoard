@@ -175,6 +175,7 @@ Corrections
 Améliorations
 - Ajout d'une popup lors de de la création d'une playlist via un  soundboard
 - Actualisation automatique du soundboard principal pour les playlist partagé
+- Amélioration du visuel des messages de notifications generaux
 
 Corrections
 - Corrections de message de doublons sur la page des raccourci clavier
