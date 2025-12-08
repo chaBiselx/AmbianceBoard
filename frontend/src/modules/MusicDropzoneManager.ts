@@ -10,7 +10,7 @@ import {
 } from '@/modules/DragDrop/DragAndDropInterface';
 import DropZoneAdapter from '@/modules/DragDrop/DropZoneAdapter'
 
-type DropZoneFileList = File | File[] | FileList 
+type DropZoneFileList = File | File[] | FileList
 
 /**
  * Gestionnaire pour l'upload multiple de fichiers musicaux avec Dropzone
@@ -19,6 +19,7 @@ type DropZoneFileList = File | File[] | FileList
 export class MusicDropzoneManager {
     private dropzoneAdapter: IDropZoneAdapter | null = null;
     private readonly config: MusicDropzoneConfig;
+    private fileAdded = false;
 
     constructor(config: MusicDropzoneConfig) {
         this.config = config;
@@ -39,7 +40,13 @@ export class MusicDropzoneManager {
             onFileAdded: (_file: File) => {
                 ModalCustom.hide();
                 setTimeout(() => {
-                    ModalCustom.wait();
+                    if (!this.fileAdded){
+                        ModalCustom.wait(() => {
+                            if(this.fileAdded){
+                                ModalCustom.hide();
+                            }
+                        });
+                    }
                 }, 500);
             },
             onUploadSuccess: (files: DropZoneFileList, response: IUploadResponse) => {
@@ -78,15 +85,25 @@ export class MusicDropzoneManager {
             ConsoleCustom.warn('Upload errors:', response.errors);
         }
         this.showErrors(response.errors || []);
+        this.fileAdded = true;
+
 
         setTimeout(() => {
-            globalThis.location.reload();
+            if (this.config.refreshAfterUpload) {
+                globalThis.location.reload();
+            } else {
+                const instanceModal = ModalCustom.getInstance();
+                if(instanceModal){
+                    ModalCustom.hide();
+                }
+            }
         }, 500);
+
     }
 
     private handleUploadError(_files: DropZoneFileList, response: any): void {
         ConsoleCustom.error('Upload error:', response);
-        
+
         // Gestion de l'erreur 413 (fichier trop volumineux)
         if (response.status === 413) {
             this.showErrors(['Le fichier est trop volumineux. Veuillez réduire la taille de votre fichier.']);
@@ -94,7 +111,7 @@ export class MusicDropzoneManager {
         }
 
         let errors: string[] = [];
-        
+
         // Extraction des erreurs
         if (response.error) {
             errors = Array.isArray(response.error) ? response.error : [response.error];
@@ -117,7 +134,7 @@ export class MusicDropzoneManager {
     }
 
     private showErrors(errors: Array<string>): void {
-        for(const error of errors) {
+        for (const error of errors) {
             Notification.createClientNotification({ message: error, type: 'danger' });
         }
     }
@@ -133,9 +150,10 @@ export class MusicDropzoneManager {
 export interface MusicDropzoneConfig {
     containerSelector: string;
     uploadUrl: string;
-    csrf : string;
+    csrf: string;
     fileFormat: string;
-    nbfile:number;
+    nbfile: number;
+    refreshAfterUpload: boolean;
 }
 
 /**

@@ -13,7 +13,7 @@ class ModalCustom {
         return document.getElementById('mainModal')! as HTMLDivElement
     }
 
-    public static wait() {
+    public static wait(callback?: () => void) {
         // Récupérer le template modal-template-wait
         const template = document.getElementById('modal-template-wait') as HTMLTemplateElement;
         if (!template) {
@@ -26,7 +26,13 @@ class ModalCustom {
             body: template.innerHTML,
             footer: "",
             width: "sm",
+            callback: callback
         });
+    }
+
+    public static getInstance(): Modal | null {
+        const mainModalElement = ModalCustom.getMainHTMLElement();
+        return Modal.getInstance(mainModalElement);
     }
 
 

@@ -44,10 +44,9 @@ class SharedSoundboardService():
                 }
             )
             
-            
             self._diffuser_message(
                 {
-                    "type": "reset_volume_playlist",
+                    "type": "reset_volume_and_hidden_board_playlist",
                     "list_volume": self.playlist_repository.get_default_volume_by_playlist(self.soundboard_uuid),
                     "update_volume_after_reset" : False
                 }

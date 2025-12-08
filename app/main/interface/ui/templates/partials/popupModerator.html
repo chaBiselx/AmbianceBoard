@@ -125,7 +125,8 @@
                         <hr>
                         <div class="col-12">
                             {% for track in playlist.tracks.all %}
-                            <audio src="{{ track.get_stream_url }}" controls></audio>
+                            <small><i>{{ track.get_source }}</i></small>
+                            <audio src="{{ track.get_stream_url }}" controls></audio><br/>
                             {% endfor %}
                         </div>
                     </div>

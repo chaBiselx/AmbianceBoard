@@ -1,0 +1,11 @@
+@import "../variables";
+
+
+.alert-dismissible a {
+    color: inherit;
+    text-decoration: underline !important;
+} 
+
+.alert-dismissible p {
+    margin-bottom: 0.225rem;
+}

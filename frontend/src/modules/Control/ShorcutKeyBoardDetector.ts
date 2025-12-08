@@ -3,9 +3,11 @@
 class ShorcutKeyBoardDetector {
     private readonly pressedKeys: Set<string>;
     private isListening: boolean;
-    private callbackContinue: ((shortcut: string[]) => void) | null = null;
+    private callbackContinue: ((shortcut: string[]) => boolean) | null = null;
     private callbackStop: ((cancel: boolean) => void) | null = null;
     private readonly ignoreList: string[] = ['F12', 'F5'];
+    private boundHandleKeyDown: ((event: KeyboardEvent) => void) | null = null;
+    private boundHandleKeyUp: ((event: KeyboardEvent) => void) | null = null;
 
     constructor() {
         this.pressedKeys = new Set();
@@ -15,7 +17,7 @@ class ShorcutKeyBoardDetector {
     /**
      * Start listening for keyboard shortcuts
      */
-    public startListening(callbackContinue: (shortcut: string[]) => void = () => {}, callbackStop: (cancel: boolean) => void = () => {}): void {
+    public startListening(callbackContinue: (shortcut: string[]) => boolean = () => {return false}, callbackStop: (cancel: boolean) => void = () => {}): void {
         if (this.isListening) {
             return;
         }
@@ -23,8 +25,13 @@ class ShorcutKeyBoardDetector {
         this.callbackStop = callbackStop;
 
         this.isListening = true;
-        document.addEventListener('keydown', this.handleKeyDown.bind(this));
-        document.addEventListener('keyup', this.handleKeyUp.bind(this));
+        
+        // Stocker les références des fonctions bound pour pouvoir les supprimer plus tard
+        this.boundHandleKeyDown = this.handleKeyDown.bind(this);
+        this.boundHandleKeyUp = this.handleKeyUp.bind(this);
+        
+        document.addEventListener('keydown', this.boundHandleKeyDown);
+        document.addEventListener('keyup', this.boundHandleKeyUp);
     }
 
     /**
@@ -36,8 +43,17 @@ class ShorcutKeyBoardDetector {
         }
 
         this.isListening = false;
-        document.removeEventListener('keydown', this.handleKeyDown.bind(this));
-        document.removeEventListener('keyup', this.handleKeyUp.bind(this));
+        
+        // Utiliser les références stockées pour supprimer les listeners
+        if (this.boundHandleKeyDown) {
+            document.removeEventListener('keydown', this.boundHandleKeyDown);
+            this.boundHandleKeyDown = null;
+        }
+        if (this.boundHandleKeyUp) {
+            document.removeEventListener('keyup', this.boundHandleKeyUp);
+            this.boundHandleKeyUp = null;
+        }
+        
         this.pressedKeys.clear();
     }
 
@@ -74,8 +90,6 @@ class ShorcutKeyBoardDetector {
             return;
         }
 
-        // Prevent default browser behavior for captured shortcuts
-        event.preventDefault();
         event.stopPropagation();
 
         this.pressedKeys.add(key);
@@ -84,7 +98,10 @@ class ShorcutKeyBoardDetector {
         if (this.isValidShortcut(event)) {
             const shortcut = this.buildShortcut(event);
             if (this.callbackContinue && shortcut) {
-                this.callbackContinue(shortcut);
+                const action = this.callbackContinue(shortcut);
+                if (action === false) {
+                    event.preventDefault();
+                }
             }
         }
     }

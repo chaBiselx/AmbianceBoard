@@ -132,6 +132,44 @@ class PlaylistDuplicationServiceTest(TestCase):
         self.assertIn(str(self.source_playlist.uuid), str(context.exception))
         self.assertIn(self.source_playlist.name, str(context.exception))
 
+    def test_duplicate_raises_exception_if_moderator_ban_copie(self):
+        """Test qu'une exception est levée si le modérateur a banni la copie"""
+        self.source_playlist.moderator_ban_copie = True
+        self.source_playlist.save()
+        
+        service = PlaylistDuplicationService(self.source_playlist, self.target_user)
+        
+        with self.assertRaises(PlaylistNotCopiableException) as context:
+            service.duplicate()
+        
+        self.assertIn(str(self.source_playlist.uuid), str(context.exception))
+        self.assertIn(self.source_playlist.name, str(context.exception))
+
+    def test_duplicate_raises_exception_if_both_not_copiable_and_moderator_ban(self):
+        """Test qu'une exception est levée si les deux conditions sont remplies"""
+        self.source_playlist.is_copiable = False
+        self.source_playlist.moderator_ban_copie = True
+        self.source_playlist.save()
+        
+        service = PlaylistDuplicationService(self.source_playlist, self.target_user)
+        
+        with self.assertRaises(PlaylistNotCopiableException) as context:
+            service.duplicate()
+        
+        self.assertIn(str(self.source_playlist.uuid), str(context.exception))
+        self.assertIn(self.source_playlist.name, str(context.exception))
+
+    def test_duplicate_succeeds_when_moderator_ban_is_false(self):
+        """Test que la duplication réussit quand moderator_ban_copie est False"""
+        self.source_playlist.moderator_ban_copie = False
+        self.source_playlist.save()
+        
+        service = PlaylistDuplicationService(self.source_playlist, self.target_user)
+        duplicated = service.duplicate()
+        
+        self.assertIsNotNone(duplicated)
+        self.assertEqual(duplicated.user, self.target_user)
+
     def test_duplicate_raises_exception_if_already_duplicated(self):
         """Test qu'une exception est levée si l'utilisateur a déjà dupliqué cette playlist"""
         # Première duplication
@@ -174,7 +212,7 @@ class PlaylistDuplicationServiceTest(TestCase):
         audio_content = b'fake audio content'
         audio_file = SimpleUploadedFile("test2.mp3", audio_content, content_type=local_format_audio1)
         
-        Music.objects.create(
+        music = Music.objects.create(
             playlist=self.source_playlist,
             fileName="test2.mp3",
             file=audio_file,

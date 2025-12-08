@@ -16,11 +16,11 @@
                     {{ playlist | applys_soundboard_content}}
                 </button>
                 {% if playlist.moderator_ban_copie %}
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" title="Copiable">
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" title="Copie bloquée Copiable">
                     <i class="fa-solid fa-ban"></i>
                 </span>
                 {% elif playlist.is_copiable %}
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" title="Copie bloquée">
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" title="Copiable">
                     <i class="fa-regular fa-copy"></i>
                 </span>
                 {% endif %}

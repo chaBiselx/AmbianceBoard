@@ -39,7 +39,18 @@ class Track(models.Model):
             return self.linkmusic.url
         # Fallback pour les instances de Track qui ne seraient ni l'un ni l'autre
         return "unknown"
-
+    
+    def get_source(self):
+        """
+        Retourne la source de la musique ou du lien.
+        """
+        if self.is_music():
+            return self.music.file
+        if self.is_link_music():
+            return self.linkmusic.url
+        # Fallback pour les instances de Track qui ne seraient ni l'un ni l'autre
+        return "unknown"
+    
     def get_name(self):
         if self.is_music():
             return self.music.get_name()

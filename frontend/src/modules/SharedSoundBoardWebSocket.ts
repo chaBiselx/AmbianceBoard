@@ -7,6 +7,7 @@ import { MixerElement } from "@/modules/MixerManager";
 import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
+import SoundBoardEventListener from '@/modules/SoundBoardEventListener';
 
 type DataMusic = {
     'track': number | null
@@ -186,10 +187,11 @@ class SharedSoundBoardWebSocket {
                 ConsoleTesteur.log(`music_stop_all`);
                 ConsoleCustom.log('⏹️ Arrêt toutes musiques:', response);
                 return;
-            case 'reset_volume_playlist':
-                ConsoleTesteur.log(`reset_volume_playlist`);
+            case 'reset_volume_and_hidden_board_playlist':
+                ConsoleTesteur.log(`reset_volume_and_hidden_board_playlist`);
                 ConsoleCustom.log('⏹️ reset_soundboard_player:', response);
                 this.resetVolumePlaylist(response.data as DataUpdateDefaultVolumePlaylist);
+                this.resetBoardHiddenPlaylist();
                 return;
             case 'mixer_update':
                 this.updateMixer(response.data as DataMixer);
@@ -240,10 +242,27 @@ class SharedSoundBoardWebSocket {
                 buttonPlaylist.setVolume(object.volume)
                 const eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist);
                 eventUpdateVolumePlaylist.clearCache();
-                if(data.update_volume_after_reset){
+                if (data.update_volume_after_reset) {
                     eventUpdateVolumePlaylist.updateVolume(object.volume)
                 }
             }
+        }
+    }
+
+    private resetBoardHiddenPlaylist(): void {
+        const html = document.getElementById('shared-board-refresh');
+        if (html?.dataset?.urlRefreshBoard) {
+            fetch(html.dataset.urlRefreshBoard, {
+                method: 'GET',
+            })
+                .then(response => response.text())
+                .then((body) => {
+                    html.innerHTML = body;
+                    new SoundBoardEventListener().addEventListenerDom();
+                })
+                .catch(error => {
+                    ConsoleCustom.error('Erreur lors de la requête AJAX:', error);
+                });
         }
     }
 
@@ -255,7 +274,7 @@ class SharedSoundBoardWebSocket {
         const buttonPlaylist = ButtonPlaylistFinder.search(data.playlist_uuid);
         if (!buttonPlaylist) return;
         let eventUpdateVolumePlaylist = new UpdateVolumePlaylist(buttonPlaylist);
-        eventUpdateVolumePlaylist.updateVolume( data.volume);
+        eventUpdateVolumePlaylist.updateVolume(data.volume);
     }
 
     private playerPlayOnMaster(data: DataVolumePlayOnMaster): void {

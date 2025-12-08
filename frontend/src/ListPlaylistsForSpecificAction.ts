@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 type valueType = string | boolean | number;
-type EscapeShortcutKeyboard = "Escape"|"Delete";
+type EscapeShortcutKeyboard = "Escape" | "Delete";
 
 type ActionnableByUserDTO = {
     soundboard_uuid: string;
@@ -139,6 +139,8 @@ class UpdatePlaylistShortcutKeyboard {
             try {
                 this.shortcutDetector.startListening(
                     (shortcut) => {
+                        this.shortcutDetector.stopListening();
+
                         const shortcutString = shortcut.join(' + ');
                         const listInput = this.playlistsTableBody.getElementsByClassName(this.classInput) as HTMLCollectionOf<HTMLElement>;
                         let uniqueInput = false;
@@ -155,7 +157,7 @@ class UpdatePlaylistShortcutKeyboard {
                         if (!uniqueInput) {
                             this.applyShortcutToPlaylist(target, shortcut);
                         }
-                        this.shortcutDetector.stopListening();
+                        return false;
                     },
                     (cancel: boolean) => {
                         // Restaurer le texte original si l'écoute est arrêtée
@@ -171,8 +173,9 @@ class UpdatePlaylistShortcutKeyboard {
     }
 
     private applyShortcutToPlaylist(HTMLElement: HTMLElement, shortcut: string[]) {
-        HTMLElement.textContent = shortcut.join(' + ');
-        HTMLElement.dataset.valueDefault = HTMLElement.textContent;
+        const shortcutString = shortcut.join(' + ');
+        HTMLElement.textContent = shortcutString;
+        HTMLElement.dataset.valueDefault = shortcutString;
         this.saveData(HTMLElement, shortcut);
     }
 
@@ -186,8 +189,6 @@ class UpdatePlaylistShortcutKeyboard {
     }
 
     private saveData(HTMLElement: HTMLElement, shortcut: string[] | null) {
-        console.log("Saving shortcut data:", shortcut);
-
         const playlistUuid = HTMLElement.dataset.playlistUuid;
         const soundboard_uuid = HTMLElement.dataset.soundboardUuid;
         const soundboardPlaylistId = HTMLElement.dataset.soundboardPlaylistId;

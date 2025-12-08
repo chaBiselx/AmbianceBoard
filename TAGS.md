@@ -171,6 +171,15 @@ Corrections
 Corrections
 - Erreur 500 sur les playlist public
 
+### 0.3.2 - 2025/12
+Améliorations
+- Ajout d'une popup lors de de la création d'une playlist via un  soundboard
+- Actualisation automatique du soundboard principal pour les playlist partagé
+- Amélioration du visuel des messages de notifications generaux
+
+Corrections
+- Corrections de message de doublons sur la page des raccourci clavier
+- Correction de l'affichage des favoris lorsque la sidebar est ouverte
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

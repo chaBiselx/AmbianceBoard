@@ -17,6 +17,10 @@ from main.domain.private.formatter.TypePlaylistFormater import TypePlaylistForma
 from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.domain.common.service.SoundboardPlaylistService import SoundboardPlaylistService
 from main.architecture.persistence.repository.MusicRepository import MusicRepository
+from main.domain.common.utils.UserTierManager import UserTierManager
+from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
+from main.interface.ui.forms.private.LinkMusicForm import LinkMusicForm
+
 
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
@@ -84,6 +88,7 @@ def playlist_create_with_soundboard(request, soundboard_uuid):
             if(playlist):
                 soundboard_playlist_service.add_default(playlist)
                 ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_CREATE, user=request.user, content_object=playlist)
+            request.session['new_playlist_uuid'] = str(playlist.uuid) # store in session to show popup after redirect add_music_from_soundboard
             return redirect('soundboardsRead', soundboard_uuid=soundboard.uuid)
         else:
             form = PlaylistForm()
@@ -95,6 +100,32 @@ def playlist_create_with_soundboard(request, soundboard_uuid):
             {'form': form, 'method': 'create', 'listMusic': None, 'list_default_color': list_default_color, 'LinkMusicAllowedEnum': link_music_allowed_values}
         )
     return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
+
+@login_required
+@require_http_methods(['GET'])    
+def add_music_from_soundboard(request, playlist_uuid)-> JsonResponse:
+    playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
+    if 'new_playlist_uuid' in request.session:
+        del request.session['new_playlist_uuid']
+    if not playlist:
+        return render(request, HtmlDefaultPageEnum.ERROR_404_MODAL.value, status=404, modal=True) 
+    
+    limit = UserTierManager.get_user_limits(request.user)
+    nb_music_remaining = limit['music_per_playlist'] - playlist.tracks.count()
+    if nb_music_remaining < 0:
+        nb_music_remaining = 0
+    file_size_mb = limit['weight_music_mb']
+    
+    # TODO améliorer la partie link music car redirection après ajout
+    
+    return render(request, 'Html/Playlist/modal/add_music_from_soundboard.html', {
+        'playlist': playlist, 
+        'LinkMusicAllowedEnum': LinkMusicAllowedEnum.convert_to_dict(),
+        'nbMusicRemaining': nb_music_remaining, 
+        'file_size_mb': file_size_mb, 
+        'MusicFormatEnum': MusicFormatEnum.values(),
+        'formLink' : LinkMusicForm()
+    }) 
 
 @login_required
 @require_http_methods(['GET', 'POST'])
@@ -147,7 +178,7 @@ def playlist_describe_type(request)-> HttpResponse:
         }
     }
     
-    return render(request, 'Html/Playlist/describe_type.html', {'dataFacade': data, "listParam":list_param})
+    return render(request, 'Html/Playlist/modal/describe_type.html', {'dataFacade': data, "listParam":list_param})
     
 @login_required
 @require_http_methods(['GET'])
@@ -195,4 +226,3 @@ def playlist_delete(request, playlist_uuid) -> JsonResponse:
 
             return JsonResponse({'success': 'Suppression playlist réussie'}, status=200)
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
-   

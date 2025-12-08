@@ -82,7 +82,6 @@ class SharedSoundboardCustomVolume {
                 continue;
             }
             
-            console.log(element.dataset.lastActivation);
             
             let flexItem = document.createElement('div');
             flexItem.classList.add('flex-item');
