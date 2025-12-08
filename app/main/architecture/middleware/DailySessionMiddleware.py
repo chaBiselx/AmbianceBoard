@@ -82,7 +82,7 @@ class DailySessionMiddleware:
         
         # Si c'est une nouvelle session ou une session d'un jour différent
         if session_date != current_date:
-            self._update_user_last_login(request.user, session_date)
+            self._update_user_last_login(request.user, current_date)
             
             # Mettre à jour la session avec la nouvelle date
             request.session[self.SESSION_DATE_KEY] = current_date.strftime('%Y-%m-%d')
