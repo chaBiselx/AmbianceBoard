@@ -178,6 +178,7 @@ Améliorations
 
 Corrections
 - Corrections de message de doublons sur la page des raccourci clavier
+- Correction de l'affichage des favoris lorsque la sidebar est ouverte
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
