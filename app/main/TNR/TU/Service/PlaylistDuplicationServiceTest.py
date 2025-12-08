@@ -174,7 +174,7 @@ class PlaylistDuplicationServiceTest(TestCase):
         audio_content = b'fake audio content'
         audio_file = SimpleUploadedFile("test2.mp3", audio_content, content_type=local_format_audio1)
         
-        Music.objects.create(
+        music = Music.objects.create(
             playlist=self.source_playlist,
             fileName="test2.mp3",
             file=audio_file,
