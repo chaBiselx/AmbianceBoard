@@ -18,6 +18,8 @@ from main.domain.common.service.RandomizeTrackService import RandomizeTrackServi
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.utils.settings import Settings
 from main.domain.common.utils.logger import logger
+from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
+
 
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
@@ -73,7 +75,7 @@ def shared_soundboard_read(request, soundboard_uuid, token):
             'token': token,
         })
         ws_url = get_full_ws(f'{request.get_host()}{ws_path}')
-        return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'token' : token, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url, 'list_shortcut_keyboard': []})
+        return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'token' : token, 'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(), 'ws_url' : ws_url, 'list_shortcut_keyboard': []})
     
 @require_http_methods(['GET'])
 def shared_soundboard_refresh(request, soundboard_uuid, token):
