@@ -184,6 +184,7 @@ Corrections
 ### 0.3.3 - 2026/01
 Corrections
 - l'evolution du son n'était pas pris en comptes sur les soundboards partagées
+- Corrections de l'affichage des derniers son joué si le soundboard master est rechagé
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

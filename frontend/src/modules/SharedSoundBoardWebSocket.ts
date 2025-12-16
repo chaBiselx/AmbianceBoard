@@ -257,8 +257,15 @@ class SharedSoundBoardWebSocket {
             })
                 .then(response => response.text())
                 .then((body) => {
+                    const list = SharedSoundBoardWebSocket.getLastActivationList();
                     html.innerHTML = body;
                     new SoundBoardEventListener().addEventListenerDom();
+                    for (const [id, lastActivation] of Object.entries(list)) {
+                        const buttonPlaylist = ButtonPlaylistFinder.search(id);
+                        if (buttonPlaylist) {
+                            buttonPlaylist.dataset.lastActivation = lastActivation;
+                        }
+                    }
                 })
                 .catch(error => {
                     ConsoleCustom.error('Erreur lors de la requête AJAX:', error);
@@ -285,6 +292,24 @@ class SharedSoundBoardWebSocket {
         buttonPlaylist.active();
         SoundBoardManager.addPlaylist(buttonPlaylist);
         console.groupEnd();
+    }
+
+    public static getLastActivationList(): Record<string, string> {
+        const result: Record<string, string> = {};
+        const elements = document.querySelectorAll('[data-last-activation]');
+        
+        for(const element of elements) {
+            if (element instanceof HTMLElement) {
+                const lastActivation = element.dataset.lastActivation;
+                const id = element.dataset.id;
+                
+                if (lastActivation && lastActivation !== '0' && id) {
+                    result[id] = lastActivation;
+                }
+            }
+        }
+        
+        return result;
     }
 }
 
