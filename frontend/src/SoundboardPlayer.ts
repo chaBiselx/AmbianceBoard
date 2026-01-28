@@ -43,7 +43,14 @@ document.addEventListener("DOMContentLoaded", () => {
     new PopupAddMusicToSoundboard().showIfValue();
 });
 
+/**
+ * Handles modal interactions for adding music to the soundboard.
+ */
 class AddMusicModalHandler {
+    /**
+     * Sets up the music dropzone for file uploads.
+     * @returns {void}
+     */
     private initializeDropzone(): void {
         const dropZone = document.getElementById('music-dropzone');
         if (!dropZone) return;
@@ -71,6 +78,10 @@ class AddMusicModalHandler {
         }
     }
 
+    /**
+     * Configures navigation between different sections of the add music modal.
+     * @returns {void}
+     */
     private setupSectionNavigation(): void {
         const sectionAction = document.getElementById('selection-type-ajout');
         const sectionAddFile = document.getElementById('form-add-music-from-soundboard');
@@ -83,6 +94,12 @@ class AddMusicModalHandler {
         this.setupLinkSubmitForm();
     }
 
+    /**
+     * Configures the button that allows users to add music from a file.
+     * @param {HTMLElement} sectionAction - The action selection section element
+     * @param {HTMLElement} sectionAddFile - The file upload section element
+     * @returns {void}
+     */
     private setupAddMusicFileButton(sectionAction: HTMLElement, sectionAddFile: HTMLElement): void {
         const addMusicFile = document.getElementById('btn-add-music-from-soundboard');
         if (addMusicFile) {
@@ -93,6 +110,12 @@ class AddMusicModalHandler {
         }
     }
 
+    /**
+     * Configures the button that allows users to add music from a link.
+     * @param {HTMLElement} sectionAction - The action selection section element
+     * @param {HTMLElement} sectionAddLink - The link input section element
+     * @returns {void}
+     */
     private setupAddMusicLinkButton(sectionAction: HTMLElement, sectionAddLink: HTMLElement): void {
         const addMusicLink = document.getElementById('btn-add-link-from-soundboard');
         if (addMusicLink) {
@@ -103,6 +126,10 @@ class AddMusicModalHandler {
         }
     }
 
+    /**
+     * Configures the form submission behavior for adding music via link.
+     * @returns {void}
+     */
     private setupLinkSubmitForm(): void {
         const form = document.getElementById('form-add-link-music-ajax');
         const submitBtn = document.getElementById('submit-add-link-ajax') as HTMLButtonElement | null;
@@ -115,6 +142,11 @@ class AddMusicModalHandler {
         });
     }
 
+    /**
+     * Processes the link submission request and displays the result to the user.
+     * @param {HTMLFormElement} form - The form element containing the music link
+     * @returns {void}
+     */
     private handleLinkSubmit(form: HTMLFormElement): void {
         const formData = new FormData(form);
         const url = form.action;
@@ -154,20 +186,34 @@ class AddMusicModalHandler {
             });
     }
 
+    /**
+     * Initializes all components of the add music modal.
+     * @returns {void}
+     */
     public initialize(): void {
         this.initializeDropzone();
         this.setupSectionNavigation();
     }
 }
 
+/**
+ * Manages the display of the popup for adding music to a soundboard.
+ */
 class PopupAddMusicToSoundboard {
 
     shortcutElementsInput: HTMLInputElement | null;
 
+    /**
+     * Creates a new popup manager instance.
+     */
     constructor() {
         this.shortcutElementsInput = document.getElementById('new-playlist-uuid-popup') as HTMLInputElement | null;
     }
 
+    /**
+     * Displays the add music popup if a playlist UUID value is present.
+     * @returns {void}
+     */
     public showIfValue() {
         if (this.shortcutElementsInput) {
             const uuidPlaylist = this.shortcutElementsInput.value;
@@ -196,11 +242,19 @@ class PopupAddMusicToSoundboard {
     }
 }
 
+/**
+ * Initializes the mixer playlist and attaches necessary event listeners.
+ * @returns {void}
+ */
 function setUpMixerPlaylist() {
     const mixerPlaylist = new MixerPlaylist();
     mixerPlaylist.addEventListener();
 }
 
+/**
+ * Updates the volume control width to match the playlist elements.
+ * @returns {void}
+ */
 function updateWithMixerPlaylist() {
     const formElements = document.getElementsByClassName(`playlist-link`) as HTMLCollectionOf<HTMLAudioElement>;
     for (const element of formElements) {
@@ -211,6 +265,10 @@ function updateWithMixerPlaylist() {
     }
 }
 
+/**
+ * Attaches a click event listener to the publish soundboard button.
+ * @returns {void}
+ */
 function addEventPublishEvent() {
     const button = document.getElementById(`btn-publish-soundboard`);
     if (button) {
@@ -218,6 +276,11 @@ function addEventPublishEvent() {
     }
 }
 
+/**
+ * Displays the sharing link modal for the soundboard.
+ * @param {Event} event - The click event that triggered the publish action
+ * @returns {void}
+ */
 function publishSoundboard(event: Event) {
 
     const button = event.target as HTMLButtonElement;
@@ -246,6 +309,10 @@ function publishSoundboard(event: Event) {
 
 }
 
+/**
+ * Displays the shared playlist popup if the page is in slave mode.
+ * @returns {void}
+ */
 function showPopupSharedPlaylist() {
     const activeWS = SharedSoundBoardUtil.isSlavePage()
     if (activeWS) {
@@ -273,6 +340,10 @@ function showPopupSharedPlaylist() {
 }
 
 
+/**
+ * Activates the WebSocket connection for slave playlist synchronization.
+ * @returns {void}
+ */
 function activeWebSocket() {
     ModalCustom.hide();
     const url = SharedSoundBoardUtil.getSlaveUrl()
@@ -285,15 +356,25 @@ function activeWebSocket() {
 
 }
 
+/**
+ * Manages keyboard shortcuts for controlling soundboard playlists.
+ */
 class ShortcutKeyboardSoundboard {
     shortcutElementsSection: HTMLElement | null;
     ShorcutKeyBoardDetector: ShorcutKeyBoardDetector;
     recoardedShortcuts: Map<string, string> = new Map();
+    /**
+     * Creates a new keyboard shortcut manager instance.
+     */
     constructor() {
         this.shortcutElementsSection = document.getElementById('list-shortcut-keyboard');
         this.ShorcutKeyBoardDetector = new ShorcutKeyBoardDetector();
     }
 
+    /**
+     * Registers all keyboard shortcuts and starts listening for keyboard input.
+     * @returns {void}
+     */
     public addEvent() {
         if (this.shortcutElementsSection) {
             const shortcutElements = this.shortcutElementsSection.getElementsByClassName('shortcut-element');
@@ -327,6 +408,12 @@ class ShortcutKeyboardSoundboard {
 
     }
 
+    /**
+     * Registers a keyboard shortcut to trigger a specific playlist.
+     * @param {string} shortcut - The keyboard shortcut combination
+     * @param {string} uuidPlaylist - The UUID of the playlist to trigger
+     * @returns {void}
+     */
     public registerShortcut(shortcut: string, uuidPlaylist: string) {
         this.recoardedShortcuts.set(shortcut, uuidPlaylist);
     }
