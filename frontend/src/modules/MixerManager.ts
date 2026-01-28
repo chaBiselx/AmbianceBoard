@@ -39,13 +39,14 @@ class MixerElement {
     update(value: number): void {
         if (!this.DOMMixerElement) return
         this.DOMMixerElement.value = value.toString();
-        this.DOMMixerElement.dispatchEvent(new Event('change'));
+        this.DOMMixerElement.dispatchEvent(new Event(MixerManager.EventTrigger));
     }
 }
 
 class MixerManager {
     private readonly listMixer: HTMLCollectionOf<Element>;
     private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
+    static readonly EventTrigger: string = 'input';
 
 
     constructor() {
@@ -55,7 +56,7 @@ class MixerManager {
     public initializeEventListeners(): void {
         for (let mixer of this.listMixer) {
             // update volume when the user slide the mixer
-            mixer.addEventListener('input', this.eventChangeVolume.bind(this));
+            mixer.addEventListener(MixerManager.EventTrigger, this.eventChangeVolume.bind(this));
         }
     }
 
