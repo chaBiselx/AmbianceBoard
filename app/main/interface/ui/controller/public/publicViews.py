@@ -18,6 +18,7 @@ from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.public.service.ReportContentService import ReportContentService
 from main.domain.common.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.common.utils.url import redirection_url
+from main.domain.common.helper.WebSocketInitializationHelper import WebSocketInitializationHelper
 from main.architecture.persistence.repository.UserFavoritePublicSoundboardRepository import UserFavoritePublicSoundboardRepository
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
 from main.domain.common.utils.logger import logger
@@ -78,12 +79,16 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     else:  
         activity = ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW, user=request.user, content_object=soundboard)
-        return TemplateResponse(request, 'Html/Public/soundboard_read.html', {
+        
+        response = TemplateResponse(request, 'Html/Public/soundboard_read.html', {
             'soundboard': soundboard, 
             'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(),
             'trace_user_activity': activity,
             'list_shortcut_keyboard': []
         })
+        
+        # Auto-initialisation WebSocket
+        return WebSocketInitializationHelper.setup_websocket_board_cookies(response, request, soundboard_uuid)
     
 @require_http_methods(['GET'])
 @detect_ban

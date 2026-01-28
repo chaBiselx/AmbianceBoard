@@ -17,6 +17,7 @@ from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
+from main.domain.common.helper.WebSocketInitializationHelper import WebSocketInitializationHelper
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
@@ -41,7 +42,8 @@ def playlist_show(request, soundboard_uuid):
             playlist = soundboard_playlist_repository.get_playlist_in_soundboard_by_uuid(soundboard, request.session['new_playlist_uuid'])
         
         activity = ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW, user=request.user, content_object=soundboard)
-        return render(request, 'Html/Soundboard/soundboard_read.html', {
+        
+        response = render(request, 'Html/Soundboard/soundboard_read.html', {
             'soundboard': soundboard, 
             'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(),
             'trace_user_activity': activity,
@@ -49,6 +51,9 @@ def playlist_show(request, soundboard_uuid):
             'link_music_allowed': LinkMusicAllowedEnum.convert_to_dict(),
             'popup_playlist_added': playlist,
         })
+        
+        # Auto-initialisation WebSocket
+        return WebSocketInitializationHelper.setup_websocket_board_cookies(response, request, soundboard_uuid)
 
 @login_required
 @require_http_methods(['GET'])

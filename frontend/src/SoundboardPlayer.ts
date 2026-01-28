@@ -41,6 +41,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     new ShortcutKeyboardSoundboard().addEvent();
     new PopupAddMusicToSoundboard().showIfValue();
+    
+    // Initialiser automatiquement le WebSocket si on est en mode master
+    initializeWebSocketIfMaster();
 });
 
 /**
@@ -252,6 +255,24 @@ function setUpMixerPlaylist() {
 }
 
 /**
+ * Initializes WebSocket connection automatically for master pages.
+ * Checks for WebSocketUrl cookie and starts connection if present and not in slave mode.
+ * @returns {void}
+ */
+function initializeWebSocketIfMaster(): void {
+    const WebSocketUrl = Cookie.get('WebSocketUrl');
+    if (WebSocketUrl && !SharedSoundBoardUtil.isSlavePage()) {
+        try {
+            SharedSoundBoardWebSocket.setNewInstance(atob(WebSocketUrl), true);
+            ConsoleTesteur.log("WebSocket Master auto-initialized on page load");
+            SharedSoundBoardWebSocket.getMasterInstance();
+        } catch (error) {
+            ConsoleCustom.error("Error auto-initializing WebSocket:", error);
+        }
+    }
+}
+
+/**
  * Updates the volume control width to match the playlist elements.
  * @returns {void}
  */
@@ -299,12 +320,7 @@ function publishSoundboard(event: Event) {
             width: "sm"
         });
         (new ShareLinkManager()).addEvent();
-        const WebSocketUrl = Cookie.get('WebSocketUrl');
-        if (WebSocketUrl && !SharedSoundBoardUtil.isSlavePage()) {
-            SharedSoundBoardWebSocket.setNewInstance(atob(WebSocketUrl), true);
-            ConsoleTesteur.log("WebSocket Master call from publishSoundboard");
-            SharedSoundBoardWebSocket.getMasterInstance();
-        }
+        // Le WebSocket est déjà initialisé au chargement, pas besoin de le recréer
     })
 
 }

@@ -1,10 +1,8 @@
 
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { MusicElementFactory } from '@/modules/MusicElementFactory';
-import Cookie from '@/modules/General/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
 import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
-import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 type mixer = {
     id: string,
@@ -47,27 +45,11 @@ class MixerElement {
 
 class MixerManager {
     private readonly listMixer: HTMLCollectionOf<Element>;
-    private urlWebSocket: string | null = null;
     private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
 
 
     constructor() {
         this.listMixer = document.getElementsByClassName('mixer-playlist');
-
-        this.urlWebSocket = this.getWebSocketUrl();
-        this.startWebSocket();
-    }
-
-    private getWebSocketUrl(): string | null {
-        return Cookie.get('WebSocketUrl');
-    }
-
-    private startWebSocket(): void {
-        if (this.urlWebSocket && !SharedSoundBoardUtil.isSlavePage()) {
-            ConsoleTesteur.log("WebSocket Master call from MixerManager.startWebSocket");
-
-            this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
-        }
     }
 
     public initializeEventListeners(): void {
@@ -78,10 +60,9 @@ class MixerManager {
     }
 
     private eventChangeVolume(event: Event): void {
-        const actualWebSocket = this.getWebSocketUrl()
-        if (actualWebSocket != null && actualWebSocket != this.urlWebSocket) {
-            this.urlWebSocket = actualWebSocket;
-            this.startWebSocket();
+        // Récupérer l'instance WebSocket si disponible (auto-initialisée au chargement)
+        if (!SharedSoundBoardUtil.isSlavePage() && !this.sharedSoundBoardWebSocket) {
+            this.sharedSoundBoardWebSocket = SharedSoundBoardWebSocket.getMasterInstance();
         }
 
         const mixer = new MixerBuilder(event.target as HTMLInputElement).getMixer();

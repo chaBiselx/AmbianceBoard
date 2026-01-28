@@ -84,9 +84,15 @@ class SharedSoundBoardWebSocket {
 
     public start(): void {
         // Éviter de créer plusieurs connexions WebSocket
-        if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-            ConsoleCustom.log('WebSocket is already connected.');
-            return;
+        if (this.socket) {
+            if (this.socket.readyState === WebSocket.OPEN) {
+                ConsoleCustom.log('WebSocket is already connected.');
+                return;
+            }
+            if (this.socket.readyState === WebSocket.CONNECTING) {
+                ConsoleCustom.log('WebSocket is already connecting.');
+                return;
+            }
         }
 
         try {

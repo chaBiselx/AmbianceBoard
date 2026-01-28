@@ -2,12 +2,8 @@
 import type { uri } from '@/type/General';
 import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
 import { ButtonPlaylist, ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
-
-
-import Cookie from './General/Cookie';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
 import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
-import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 
 
 class MixerPlaylist {
@@ -15,14 +11,10 @@ class MixerPlaylist {
     private readonly idCheckBoxToggle: string = 'inputShowMixerPlaylist'
     private readonly idContainerPlaylistMixer: string = 'mixer-playlist-update-container'
     private readonly idSaveBackendValue: string = 'saveVolumePlaylistMixer'
-    private urlWebSocket: string | null = null;
     private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
 
     constructor() {
-        this.urlWebSocket = this.getWebSocketUrl();
-        if (this.urlWebSocket) {
-            this.startWebSocket();
-        }
+        // Le WebSocket est désormais auto-initialisé au chargement de la page
     }
 
     private needSaveBackend(): boolean {
@@ -60,18 +52,6 @@ class MixerPlaylist {
         }
     }
 
-    private getWebSocketUrl(): string | null {
-        return Cookie.get('WebSocketUrl');
-    }
-
-    private startWebSocket(): void {
-        if (this.urlWebSocket && !SharedSoundBoardUtil.isSlavePage()) {
-            ConsoleTesteur.log("WebSocket Master call from MixerPlaylist.startWebSocket");
-
-            this.sharedSoundBoardWebSocket = (SharedSoundBoardWebSocket.getMasterInstance());
-        }
-    }
-
     public addEventListener() {
         this.addEventUpdateVolume();
         this.addEventToggle();
@@ -96,11 +76,11 @@ class MixerPlaylist {
     }
 
     private eventUpdatePlaylistVolume(event: Event) {
-        const actualWebSocket = this.getWebSocketUrl()
-        if (actualWebSocket != null && actualWebSocket != this.urlWebSocket) {
-            this.urlWebSocket = actualWebSocket;
-            this.startWebSocket();
+        // Récupérer l'instance WebSocket si disponible (auto-initialisée au chargement)
+        if (!SharedSoundBoardUtil.isSlavePage() && !this.sharedSoundBoardWebSocket) {
+            this.sharedSoundBoardWebSocket = SharedSoundBoardWebSocket.getMasterInstance();
         }
+        
         if (event.target instanceof HTMLInputElement) {
             if (event.target.dataset.idplaylist) {
                 const buttonPlaylist = ButtonPlaylistFinder.search(event.target.dataset.idplaylist)
