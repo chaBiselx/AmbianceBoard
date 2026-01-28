@@ -72,7 +72,8 @@ class MixerManager {
 
     public initializeEventListeners(): void {
         for (let mixer of this.listMixer) {
-            mixer.addEventListener('change', this.eventChangeVolume.bind(this));
+            // update volume when the user slide the mixer
+            mixer.addEventListener('input', this.eventChangeVolume.bind(this));
         }
     }
 

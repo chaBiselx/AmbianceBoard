@@ -185,6 +185,7 @@ Corrections
 Corrections
 - l'evolution du son n'était pas pris en comptes sur les soundboards partagées
 - Corrections de l'affichage des derniers son joué si le soundboard master est rechagé
+- Mets faire evoluer le volume du son en direct lors du deplacement des mixers 
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
