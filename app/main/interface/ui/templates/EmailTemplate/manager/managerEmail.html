@@ -1,0 +1,11 @@
+{% extends "Email/base.html" %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+
+<div>
+    {{ message|safe }}
+</div>
+
+{% endblock content %}
