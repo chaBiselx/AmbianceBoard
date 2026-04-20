@@ -185,7 +185,11 @@ Corrections
 Corrections
 - l'evolution du son n'était pas pris en comptes sur les soundboards partagées
 - Corrections de l'affichage des derniers son joué si le soundboard master est rechargé
+
+Améliorations
 - Permet de faire évoluer le volume du son en direct lors du déplacement des mixers
+
+Nouveautés
 - Ajout d'un système de mailing pour la communication à disposition des managers
 - Ajout d'un onglet pour le manager pour voir l'espace de stockage
 
