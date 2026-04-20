@@ -137,7 +137,7 @@ class SharedSoundBoardWebSocket {
     }
 
     public sendMessage(data: object): boolean {
-        if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+        if (!this.socket || !this.isConnected()) {
             ConsoleCustom.error('WebSocket is not connected. Cannot send message.');
             return false;
         }
@@ -151,6 +151,10 @@ class SharedSoundBoardWebSocket {
             ConsoleCustom.error('Erreur lors de l\'envoi du message:', error);
             return false;
         }
+    }
+
+    private isConnected(): boolean {
+        return this.socket?.readyState === WebSocket.OPEN;
     }
 
 

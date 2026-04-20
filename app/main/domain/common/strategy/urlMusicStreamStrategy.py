@@ -14,7 +14,7 @@ class UrlMusicStreamStrategy:
         LinkMusicAllowedEnum.CUSTOM: FileStreamExtract,
     }
     
-    def get_strategy(self, link_music) -> dict:
+    def get_strategy(self, link_music) -> classmethod:
         """Retourne la stratégie appropriée en fonction du domaine du lien."""
         specific = self._strategies.get(link_music.domained_name, None)
         if specific is not None:

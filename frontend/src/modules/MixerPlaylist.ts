@@ -13,10 +13,6 @@ class MixerPlaylist {
     private readonly idSaveBackendValue: string = 'saveVolumePlaylistMixer'
     private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
 
-    constructor() {
-        // Le WebSocket est désormais auto-initialisé au chargement de la page
-    }
-
     private needSaveBackend(): boolean {
         const switchInput = document.getElementById(this.idSaveBackendValue) as HTMLInputElement
         if (switchInput?.checked) {
