@@ -71,7 +71,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     is_public = forms.BooleanField(
         required=False, 
         label='Partager le soundboard', 
-        initial=False
+        initial=True
     )
     icon = forms.FileField(
         label='Icone de la playlist', 
