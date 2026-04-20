@@ -1,11 +1,12 @@
 {% extends "Email/base.html" %}
+{% load SafeHtml %}
 
 {% block content %}
 
 <h1>{{ title }}</h1>
 
 <div>
-    {{ message|safe }}
+    {{ message|safe_html }}
 </div>
 
 {% endblock content %}
