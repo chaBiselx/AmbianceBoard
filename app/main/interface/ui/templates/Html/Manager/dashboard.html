@@ -65,6 +65,52 @@
                     </div>
                 </div>
             </div>
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fa-solid fa-hard-drive me-2"></i>Espace de stockage</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6>Espace disque serveur</h6>
+                            <div class="progress mb-2" style="height: 20px;">
+                                <div class="progress-bar {% if storage.disk_used_percent > 90 %}bg-danger{% elif storage.disk_used_percent > 70 %}bg-warning{% else %}bg-success{% endif %}" role="progressbar" style="width: {{ storage.disk_used_percent }}%" aria-valuenow="{{ storage.disk_used_percent }}" aria-valuemin="0" aria-valuemax="100">
+                                    {{ storage.disk_used_percent }}%
+                                </div>
+                            </div>
+                            <small class="text-muted">
+                                Utilisé : {{ storage.disk_used_formatted }} / {{ storage.disk_total_formatted }} — Libre : {{ storage.disk_free_formatted }}
+                            </small>
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <h6>Fichiers média : <strong>{{ storage.total_size_formatted }}</strong></h6>
+                        </div>
+                        <table class="table table-sm table-striped mb-3">
+                            <thead>
+                                <tr>
+                                    <th>Dossier</th>
+                                    <th class="text-end">Fichiers</th>
+                                    <th class="text-end">Taille</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detail in storage.details %}
+                                <tr>
+                                    <td>{{ detail.name }}</td>
+                                    <td class="text-end">{{ detail.file_count }}</td>
+                                    <td class="text-end">{{ detail.size_formatted }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <hr>
+                        <div>
+                            <h6>Projet (hors média) : <strong>{{ storage.project_size_formatted }}</strong> <small class="text-muted">({{ storage.project_file_count }} fichiers)</small></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

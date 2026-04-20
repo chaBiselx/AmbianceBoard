@@ -184,9 +184,10 @@ Corrections
 ### 0.3.3 - 2026/01
 Corrections
 - l'evolution du son n'était pas pris en comptes sur les soundboards partagées
-- Corrections de l'affichage des derniers son joué si le soundboard master est rechagé
-- Mets faire evoluer le volume du son en direct lors du deplacement des mixers 
+- Corrections de l'affichage des derniers son joué si le soundboard master est rechargé
+- Permet de faire évoluer le volume du son en direct lors du déplacement des mixers
 - Ajout d'un système de mailing pour la communication à disposition des managers
+- Ajout d'un onglet pour le manager pour voir l'espace de stockage
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
