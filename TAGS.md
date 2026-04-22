@@ -181,7 +181,7 @@ Corrections
 - Corrections de message de doublons sur la page des raccourci clavier
 - Correction de l'affichage des favoris lorsque la sidebar est ouverte
 
-### 0.3.3 - 2026/01
+### 0.3.3 - 2026/04
 Corrections
 - l'evolution du son n'était pas pris en comptes sur les soundboards partagées
 - Corrections de l'affichage des derniers son joué si le soundboard master est rechargé
@@ -194,6 +194,7 @@ Nouveautés
 - Ajout d'un onglet pour le manager pour voir l'espace de stockage
 - Toutes les playlists sont copiable par defaut
 - Tous les Soundboard sont publique par defaut
+- Authentification par Oauth2 de Google
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
