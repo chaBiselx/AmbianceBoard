@@ -42,6 +42,16 @@
                             <label class="form-check-label" for="saveVolumePlaylistMixer"><small>Sauvegarder</small></label>
                         </div>
                         {% endif %}
+
+                        <input type="checkbox" class="btn-check" id="inputShowSpecificMusic" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-block px-0 py-1 my-1 text-sm" for="inputShowSpecificMusic" data-bs-toggle="tooltip" data-bs-title="Afficher/masquer piste audios spécifiques">
+                            <small class="lh-1">
+                                <span id="inputShowSpecificMusic-show"><i class="fa-solid fa-eye"></i></span>
+                                <span id="inputShowSpecificMusic-hide" class="d-none"><i class="fa-solid fa-eye-slash"></i></span>
+                                <i class="fa-brands fa-itunes-note"></i> Musique
+                            </small>
+                        </label>
+                      
                     </div>
                     {% endif %}
 

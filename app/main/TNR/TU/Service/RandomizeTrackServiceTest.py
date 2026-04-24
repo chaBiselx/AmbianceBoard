@@ -10,6 +10,7 @@ from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.repository.filters.MusicFilter import MusicFilter
+from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 
 @tag('unitaire')
 class RandomizeTrackServiceTest(TestCase):
@@ -32,36 +33,86 @@ class RandomizeTrackServiceTest(TestCase):
         service = RandomizeTrackService(self.request)
         self.assertEqual(service.request, self.request)
 
+    @patch('main.domain.common.service.RandomizeTrackService.SoundboardPlaylistRepository')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_private')
-    def test_generate_private_success(self, mock_get_random_private):
+    def test_generate_private_success(self, mock_get_random_private, mock_soundboard_service, mock_sp_repo):
         """Test génération aléatoire privée avec succès"""
         # Arrange
+        mock_soundboard = Mock(spec=SoundBoard)
         mock_music = Mock(spec=Music)
+        mock_service_instance = Mock()
+
+        mock_soundboard_service.return_value = mock_service_instance
+        mock_service_instance.get_soundboard.return_value = mock_soundboard
+        mock_sp_repo.return_value.get_playlist_in_soundboard_by_uuid.return_value = Mock(spec=SoundboardPlaylist)
         mock_get_random_private.return_value = mock_music
         
         # Act
-        result = self.service.generate_private(self.playlist_uuid)
+        result = self.service.generate_private(self.soundboard_uuid, self.playlist_uuid)
         
         # Assert
         self.assertEqual(result, mock_music)
+        mock_soundboard_service.assert_called_once_with(self.request)
+        mock_service_instance.get_soundboard.assert_called_once_with(self.soundboard_uuid)
         mock_get_random_private.assert_called_once_with(self.playlist_uuid, self.user)
 
-    @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_private')
-    def test_generate_private_playlist_not_exist(self, mock_get_random_private):
-        """Test génération aléatoire privée quand la playlist n'existe pas"""
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
+    def test_generate_private_soundboard_not_found(self, mock_soundboard_service):
+        """Test génération aléatoire privée quand le soundboard n'est pas trouvé"""
         # Arrange
-        # repository now handles Playlist.DoesNotExist and returns None
-        mock_get_random_private.return_value = None
+        mock_service_instance = Mock()
+        mock_soundboard_service.return_value = mock_service_instance
+        mock_service_instance.get_soundboard.return_value = None
         
         # Act
-        result = self.service.generate_private(self.playlist_uuid)
+        result = self.service.generate_private(self.soundboard_uuid, self.playlist_uuid)
+        
+        # Assert
+        self.assertIsNone(result)
+        mock_service_instance.get_soundboard.assert_called_once_with(self.soundboard_uuid)
+
+    @patch('main.domain.common.service.RandomizeTrackService.SoundboardPlaylistRepository')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
+    def test_generate_private_playlist_not_in_soundboard(self, mock_soundboard_service, mock_sp_repo):
+        """Test génération aléatoire privée quand la playlist n'appartient pas au soundboard"""
+        # Arrange
+        mock_soundboard = Mock(spec=SoundBoard)
+        mock_service_instance = Mock()
+        mock_soundboard_service.return_value = mock_service_instance
+        mock_service_instance.get_soundboard.return_value = mock_soundboard
+        mock_sp_repo.return_value.get_playlist_in_soundboard_by_uuid.return_value = None
+        
+        # Act
+        result = self.service.generate_private(self.soundboard_uuid, self.playlist_uuid)
         
         # Assert
         self.assertIsNone(result)
 
+    @patch('main.domain.common.service.RandomizeTrackService.SoundboardPlaylistRepository')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
+    @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_private')
+    def test_generate_private_playlist_not_exist(self, mock_get_random_private, mock_soundboard_service, mock_sp_repo):
+        """Test génération aléatoire privée quand la playlist n'existe pas"""
+        # Arrange
+        mock_soundboard = Mock(spec=SoundBoard)
+        mock_service_instance = Mock()
+
+        mock_soundboard_service.return_value = mock_service_instance
+        mock_service_instance.get_soundboard.return_value = mock_soundboard
+        mock_sp_repo.return_value.get_playlist_in_soundboard_by_uuid.return_value = Mock(spec=SoundboardPlaylist)
+        mock_get_random_private.return_value = None
+        
+        # Act
+        result = self.service.generate_private(self.soundboard_uuid, self.playlist_uuid)
+        
+        # Assert
+        self.assertIsNone(result)
+
+    @patch('main.domain.common.service.RandomizeTrackService.SoundboardPlaylistRepository')
     @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_public')
-    def test_generate_public_success(self, mock_get_random_public, mock_soundboard_service):
+    def test_generate_public_success(self, mock_get_random_public, mock_soundboard_service, mock_sp_repo):
         """Test génération aléatoire publique avec succès"""
         # Arrange
         mock_soundboard = Mock(spec=SoundBoard)
@@ -70,6 +121,7 @@ class RandomizeTrackServiceTest(TestCase):
         
         mock_soundboard_service.return_value = mock_service_instance
         mock_service_instance.get_public_soundboard.return_value = mock_soundboard
+        mock_sp_repo.return_value.get_playlist_in_soundboard_by_uuid.return_value = Mock(spec=SoundboardPlaylist)
         mock_get_random_public.return_value = mock_music
         
         # Act
@@ -96,9 +148,27 @@ class RandomizeTrackServiceTest(TestCase):
         self.assertIsNone(result)
         mock_service_instance.get_public_soundboard.assert_called_once_with(self.soundboard_uuid)
 
+    @patch('main.domain.common.service.RandomizeTrackService.SoundboardPlaylistRepository')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
+    def test_generate_public_playlist_not_in_soundboard(self, mock_soundboard_service, mock_sp_repo):
+        """Test génération aléatoire publique quand la playlist n'appartient pas au soundboard"""
+        # Arrange
+        mock_soundboard = Mock(spec=SoundBoard)
+        mock_service_instance = Mock()
+        mock_soundboard_service.return_value = mock_service_instance
+        mock_service_instance.get_public_soundboard.return_value = mock_soundboard
+        mock_sp_repo.return_value.get_playlist_in_soundboard_by_uuid.return_value = None
+        
+        # Act
+        result = self.service.generate_public(self.soundboard_uuid, self.playlist_uuid)
+        
+        # Assert
+        self.assertIsNone(result)
+
+    @patch('main.domain.common.service.RandomizeTrackService.SoundboardPlaylistRepository')
     @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_public')
-    def test_generate_public_playlist_not_exist(self, mock_get_random_public, mock_soundboard_service):
+    def test_generate_public_playlist_not_exist(self, mock_get_random_public, mock_soundboard_service, mock_sp_repo):
         """Test génération aléatoire publique quand la playlist n'existe pas"""
         # Arrange
         mock_soundboard = Mock(spec=SoundBoard)
@@ -106,6 +176,7 @@ class RandomizeTrackServiceTest(TestCase):
         
         mock_soundboard_service.return_value = mock_service_instance
         mock_service_instance.get_public_soundboard.return_value = mock_soundboard
+        mock_sp_repo.return_value.get_playlist_in_soundboard_by_uuid.return_value = Mock(spec=SoundboardPlaylist)
         # repository now handles Playlist.DoesNotExist and returns None
         mock_get_random_public.return_value = None
         
@@ -115,9 +186,10 @@ class RandomizeTrackServiceTest(TestCase):
         # Assert
         self.assertIsNone(result)
 
+    @patch('main.domain.common.service.RandomizeTrackService.SoundboardPlaylistRepository')
     @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     @patch('main.domain.common.service.RandomizeTrackService.Track.objects')
-    def test_get_shared_success(self, mock_track_objects, mock_soundboard_service):
+    def test_get_shared_success(self, mock_track_objects, mock_soundboard_service, mock_sp_repo):
         """Test récupération d'une track partagée avec succès"""
         # Arrange
         mock_soundboard = Mock(spec=SoundBoard)
@@ -126,6 +198,7 @@ class RandomizeTrackServiceTest(TestCase):
         
         mock_soundboard_service.return_value = mock_service_instance
         mock_service_instance.get_soundboard_from_shared_soundboard.return_value = mock_soundboard
+        mock_sp_repo.return_value.get_playlist_in_soundboard_by_uuid.return_value = Mock(spec=SoundboardPlaylist)
         mock_track_objects.get.return_value = mock_track
         
         # Act
@@ -157,9 +230,10 @@ class RandomizeTrackServiceTest(TestCase):
             self.soundboard_uuid, self.token
         )
 
+    @patch('main.domain.common.service.RandomizeTrackService.SoundboardPlaylistRepository')
     @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     @patch('main.domain.common.service.RandomizeTrackService.Track.objects')
-    def test_get_shared_track_not_exist(self, mock_track_objects, mock_soundboard_service):
+    def test_get_shared_track_not_exist(self, mock_track_objects, mock_soundboard_service, mock_sp_repo):
         """Test récupération d'une track partagée quand la track n'existe pas"""
         # Arrange
         mock_soundboard = Mock(spec=SoundBoard)
@@ -167,6 +241,7 @@ class RandomizeTrackServiceTest(TestCase):
         
         mock_soundboard_service.return_value = mock_service_instance
         mock_service_instance.get_soundboard_from_shared_soundboard.return_value = mock_soundboard
+        mock_sp_repo.return_value.get_playlist_in_soundboard_by_uuid.return_value = Mock(spec=SoundboardPlaylist)
         mock_track_objects.get.side_effect = Track.DoesNotExist()
         
         # Act
@@ -175,9 +250,10 @@ class RandomizeTrackServiceTest(TestCase):
         # Assert
         self.assertIsNone(result)
 
+    @patch('main.domain.common.service.RandomizeTrackService.SoundboardPlaylistRepository')
     @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     @patch('main.domain.common.service.RandomizeTrackService.Track.objects')
-    def test_get_shared_playlist_not_exist(self, mock_track_objects, mock_soundboard_service):
+    def test_get_shared_playlist_not_exist(self, mock_track_objects, mock_soundboard_service, mock_sp_repo):
         """Test récupération d'une track partagée quand la playlist n'existe pas"""
         # Arrange
         mock_soundboard = Mock(spec=SoundBoard)
@@ -185,7 +261,25 @@ class RandomizeTrackServiceTest(TestCase):
         
         mock_soundboard_service.return_value = mock_service_instance
         mock_service_instance.get_soundboard_from_shared_soundboard.return_value = mock_soundboard
+        mock_sp_repo.return_value.get_playlist_in_soundboard_by_uuid.return_value = Mock(spec=SoundboardPlaylist)
         mock_track_objects.get.side_effect = Playlist.DoesNotExist()
+        
+        # Act
+        result = self.service.get_shared(self.soundboard_uuid, self.playlist_uuid, self.token, self.music_id)
+        
+        # Assert
+        self.assertIsNone(result)
+
+    @patch('main.domain.common.service.RandomizeTrackService.SoundboardPlaylistRepository')
+    @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
+    def test_get_shared_playlist_not_in_soundboard(self, mock_soundboard_service, mock_sp_repo):
+        """Test récupération d'une track partagée quand la playlist n'appartient pas au soundboard"""
+        # Arrange
+        mock_soundboard = Mock(spec=SoundBoard)
+        mock_service_instance = Mock()
+        mock_soundboard_service.return_value = mock_service_instance
+        mock_service_instance.get_soundboard_from_shared_soundboard.return_value = mock_soundboard
+        mock_sp_repo.return_value.get_playlist_in_soundboard_by_uuid.return_value = None
         
         # Act
         result = self.service.get_shared(self.soundboard_uuid, self.playlist_uuid, self.token, self.music_id)

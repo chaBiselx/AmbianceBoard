@@ -22,6 +22,7 @@ from main.domain.common.helper.WebSocketInitializationHelper import WebSocketIni
 from main.architecture.persistence.repository.UserFavoritePublicSoundboardRepository import UserFavoritePublicSoundboardRepository
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
 from main.domain.common.utils.logger import logger
+from django.urls import reverse
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
@@ -114,6 +115,58 @@ def public_music_stream(request, soundboard_uuid, playlist_uuid) ->  HttpRespons
             return ret
     except Exception as e:
         logger.error(f"Error in public_music_stream: {e}")
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+
+
+@require_http_methods(['GET'])
+@detect_ban
+def public_playlist_tracks_list(request, soundboard_uuid) -> JsonResponse:
+    """Liste des tracks de toutes les playlists d'un soundboard public en JSON"""
+    soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
+    if not soundboard:
+        return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+
+    track_repository = TrackRepository()
+    result = {}
+    for _section, playlists in soundboard.get_list_playlist_ordered():
+        for playlist in playlists:
+            tracks = track_repository.get_tracks_by_playlist(playlist)
+            result[str(playlist.uuid)] = [
+                {
+                    "id": track.id,
+                    "name": track.get_name(),
+                    "duration": track.get_duration(),
+                    "uri": reverse('publicSpecificTrackStream', args=[soundboard_uuid, playlist.uuid, track.id]),
+                }
+                for track in tracks
+            ]
+
+    return JsonResponse(result, status=200)
+
+@require_http_methods(['GET'])
+@detect_ban
+def public_specific_track_stream(request, soundboard_uuid, playlist_uuid, music_id) ->  HttpResponse|JsonResponse:
+    cache = CacheFactory.get_default_cache()
+    cache_key = f"musicStream:{request.session.session_key}:{soundboard_uuid}:{playlist_uuid}:{music_id}:{request.GET.get('i','0')}"
+    ret = None
+    try:
+        if request.headers.get('X-Metadata-Only') == 'true':
+            track_id = cache.get(cache_key)
+            if track_id :
+                track = TrackRepository().get(track_id, playlist_uuid)
+                if track:
+                    ret = JsonResponse({"duration":  track.get_duration()}, status=200)
+        else:
+            track = (RandomizeTrackService(request)).get_specific_public(soundboard_uuid, playlist_uuid, music_id)
+            if track:
+                # Utilisation du service de soundboard partagé pour gérer le stream
+                SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
+                cache.set(cache_key, track.id, timeout=60)
+                ret = track.get_reponse_content()
+        if ret:
+            return ret
+    except Exception as e:
+        logger.error(f"Error in public_specific_track_stream: {e}")
     return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
 
 

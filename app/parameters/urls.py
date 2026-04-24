@@ -11,7 +11,7 @@ from main.interface.ui.controller.general.traceFrontViews import trace_front
 from main.interface.ui.controller.private.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
 from main.interface.ui.controller.private.soundboardSpecifiqueViews import list_playlists_for_specific_action, update_specific_actionable_playlists, update_specific_shortcut_playlists
 from main.interface.ui.controller.private.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
-from main.interface.ui.controller.private.showSoundboardViews import playlist_show, music_stream, update_direct_volume
+from main.interface.ui.controller.private.showSoundboardViews import playlist_show, music_stream, update_direct_volume, playlist_tracks_list, private_specific_track_stream
 from main.interface.ui.controller.private.playlistFormViews import (
     playlist_read_all, playlist_create, playlist_create_with_soundboard, playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
@@ -25,7 +25,7 @@ from main.interface.ui.controller.manager.managerCronViews import (
     )
 from main.interface.ui.controller.manager.managerNotificationsViews import listing_notifications, manage_notification
 from main.interface.ui.controller.manager.managerSendEmailViews import manager_send_email
-from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, favorite_update, reporting_content, public_favorite
+from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_playlist_tracks_list, favorite_update, reporting_content, public_favorite, public_specific_track_stream
 from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation, stats_moyenne_duration_session
 from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream, shared_soundboard_refresh
 from main.domain.sharedSoundboard.consummers.SharedSoundboardConsummers import SharedSoundboardConsummers
@@ -112,6 +112,8 @@ urlpatterns = [
     path("playlist/<uuid:playlist_uuid>/link/delete/<int:link_id>", link_delete, name="deleteLink"),
 
     path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", music_stream, name="streamMusic"),
+    path("playlist/<uuid:soundboard_uuid>/fetch/tracks", playlist_tracks_list, name="soundboardTracksList"),
+    path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/<int:music_id>/stream", private_specific_track_stream, name="privateSpecificTrackStream"),
     
     path("playlist/<uuid:playlist_uuid>/volume/update", update_direct_volume, name="update_direct_volume"),
     
@@ -122,6 +124,10 @@ urlpatterns = [
     path("public/soundboards", public_listing_soundboard, name="publicListingSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>", public_soundboard_read_playlist, name="publicReadSoundboard"),
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreamMusic"),
+    path("public/soundboards/<uuid:soundboard_uuid>/fetch/tracks", public_playlist_tracks_list, name="publicSoundboardTracksList"),
+    path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/<int:music_id>/stream", public_specific_track_stream, name="publicSpecificTrackStream"),
+    
+    
     path("public/report", reporting_content, name="publicReportingContent"),
     path("public/favorite", public_favorite, name="publicFavorite"),
     

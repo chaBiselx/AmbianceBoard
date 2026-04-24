@@ -195,6 +195,7 @@ Nouveautés
 - Ajout d'un onglet pour le manager pour voir l'espace de stockage
 - Toutes les playlists sont copiable par defaut
 - Tous les Soundboard sont publique par defaut
+- Ajout de liste de sélection depuis le soundboard
 - Authentification par Oauth2 de Google
 
 ### X.Y.Z - Date
