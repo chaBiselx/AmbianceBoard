@@ -188,6 +188,7 @@ Corrections
 
 Améliorations
 - Permet de faire évoluer le volume du son en direct lors du déplacement des mixers
+- Demande confirmation avant de supprimer une icône
 
 Nouveautés
 - Ajout d'un système de mailing pour la communication à disposition des managers
