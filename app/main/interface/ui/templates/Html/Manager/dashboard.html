@@ -3,6 +3,7 @@
 
 {% load static %}
 {% load FrontJs %}
+{% load l10n %}
 
 {% block javascript %}
 {{ block.super }}
@@ -62,6 +63,46 @@
                     </div>
                     <div class="card-body">
                         <div id="activity-errors" data-url="{% url 'managerErrorActivityDashboard' %}"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fa-solid fa-hard-drive me-2"></i>Espace de stockage</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6>Espace disque serveur</h6>
+                            <progress class="w-100 mb-2 {% if storage.disk_used_percent > 90 %}progress-danger{% elif storage.disk_used_percent > 70 %}progress-warning{% else %}progress-success{% endif %}" value="{{ storage.disk_used_percent|unlocalize }}" max="100" style="height: 20px;">
+                                {{ storage.disk_used_percent }}%
+                            </progress>
+                            <small class="text-muted">
+                                Utilisé : {{ storage.disk_used_formatted }} / {{ storage.disk_total_formatted }} — Libre : {{ storage.disk_free_formatted }}
+                            </small>
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <h6>Fichiers média : <strong>{{ storage.total_size_formatted }}</strong></h6>
+                        </div>
+                        <table class="table table-sm table-striped mb-3">
+                            <thead>
+                                <tr>
+                                    <th>Dossier</th>
+                                    <th class="text-end">Fichiers</th>
+                                    <th class="text-end">Taille</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detail in storage.details %}
+                                <tr>
+                                    <td>{{ detail.name }}</td>
+                                    <td class="text-end">{{ detail.file_count }}</td>
+                                    <td class="text-end">{{ detail.size_formatted }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

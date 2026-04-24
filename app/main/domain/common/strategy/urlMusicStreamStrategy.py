@@ -1,4 +1,6 @@
 
+from typing import Type, Union
+
 import requests
 from main.domain.common.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from main.domain.common.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
@@ -14,7 +16,7 @@ class UrlMusicStreamStrategy:
         LinkMusicAllowedEnum.CUSTOM: FileStreamExtract,
     }
     
-    def get_strategy(self, link_music) -> dict:
+    def get_strategy(self, link_music) -> Type[Union[FileStreamExtract, InfiniteStreamExtract]]:
         """Retourne la stratégie appropriée en fonction du domaine du lien."""
         specific = self._strategies.get(link_music.domained_name, None)
         if specific is not None:

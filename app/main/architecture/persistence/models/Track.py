@@ -67,6 +67,17 @@ class Track(models.Model):
         # Fallback pour les instances de Track qui ne seraient ni l'un ni l'autre
         return None
     
+    def get_download_url(self):
+        """
+        Retourne l'URL de téléchargement pour la musique ou le lien.
+        """
+        if self.is_music():
+            return self.music.file.url
+        if self.is_link_music():
+            return self.linkmusic.url
+        # Fallback pour les instances de Track qui ne seraient ni l'un ni l'autre
+        return None
+    
     def get_stream_url(self):
         """
         Retourne l'URL de streaming pour la musique ou le lien.

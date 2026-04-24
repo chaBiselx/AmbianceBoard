@@ -18,6 +18,8 @@ from main.domain.common.service.RandomizeTrackService import RandomizeTrackServi
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.utils.settings import Settings
 from main.domain.common.utils.logger import logger
+from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
+
 
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
@@ -27,38 +29,16 @@ from main.domain.common.helper.ActivityContextHelper import ActivityContextHelpe
 
 @require_http_methods(['GET'])
 def publish_soundboard(request, soundboard_uuid):
-    """Génère une URL publique pour un soundboard donné"""
+    """Affiche l'URL publique pour un soundboard donné (réutilise la session WebSocket existante)"""
     soundboard = SoundBoardRepository().get(soundboard_uuid)
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
 
-    shared = SharedSoundboardRepository().create(soundboard=soundboard)
+    # Réutiliser la session existante au lieu d'en créer une nouvelle
+    shared = SharedSoundboardRepository().get_or_create_for_owner(soundboard=soundboard)
     
-    response = render (request, 'Html/Shared/publich_soundboard.html', {'shared_url' :  get_full_url(reverse('shared_soundboard', args=[soundboard_uuid, shared.token]))})
-    
-    ws_path = reverse('soundboard_ws', kwargs={
-        'soundboard_uuid': soundboard_uuid,
-        'token': shared.token,
-    })
-    ws_url = get_full_ws(f'{request.get_host()}{ws_path}')
-    response.set_cookie(
-                            'WebSocketToken', 
-                            shared.token, 
-                            max_age=3600*10*24,
-                            httponly=False,
-                            secure=True,    # HTTPS uniquement
-                            samesite='Strict'  # Protection contre les attaques CSRF
-                        )
-    response.set_cookie(
-                            'WebSocketUrl', 
-                            base64.urlsafe_b64encode(ws_url.encode('utf-8')).decode('utf-8'),
-                            max_age=3600*10*24,
-                            httponly=False,
-                            secure=True,    # HTTPS uniquement
-                            samesite='Strict'  # Protection contre les attaques CSRF
-                        )
     ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_SHARE, user=request.user)
-    return response
+    return render(request, 'Html/Shared/publich_soundboard.html', {'shared_url': get_full_url(reverse('shared_soundboard', args=[soundboard_uuid, shared.token]))})
 
 
 
@@ -73,7 +53,7 @@ def shared_soundboard_read(request, soundboard_uuid, token):
             'token': token,
         })
         ws_url = get_full_ws(f'{request.get_host()}{ws_path}')
-        return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'token' : token, 'PlaylistTypeEnum' : list(PlaylistTypeEnum) , 'ws_url' : ws_url, 'list_shortcut_keyboard': []})
+        return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'token' : token, 'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(), 'ws_url' : ws_url, 'list_shortcut_keyboard': []})
     
 @require_http_methods(['GET'])
 def shared_soundboard_refresh(request, soundboard_uuid, token):

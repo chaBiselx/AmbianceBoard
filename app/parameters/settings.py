@@ -96,6 +96,11 @@ INSTALLED_APPS = [
     "main",
     "main.interface.ui",  # App pour les templateTags
     "django_crontab",
+
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 ]
 
 # Emplacement personnalisé des migrations de l'app "main".
@@ -251,6 +256,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "main.architecture.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
@@ -322,6 +328,10 @@ AUTHENTICATION_BACKENDS = [
     "main.application.auth.UsernameOrEmailBackend.UsernameOrEmailBackend",   # d'abord notre backend custom
     "django.contrib.auth.backends.ModelBackend",  # fallback standard
 ]
+
+SOCIALACCOUNT_ADAPTER = "main.application.auth.SocialAccountAdapter.SocialAccountAdapter"
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

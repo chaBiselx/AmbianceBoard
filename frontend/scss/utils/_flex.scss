@@ -5,6 +5,10 @@
     display: inline-block;
 }
 
+.flex-item {
+    position: relative;
+}
+
 
 $flex_grid: 1,2,3,4,5;
 @each $column in $flex_grid {

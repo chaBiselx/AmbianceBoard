@@ -6,6 +6,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "parameters.settings")
 
 app = Celery('main')
 app.config_from_object('django.conf:settings', namespace='CELERY')
+app.autodiscover_tasks(['main.domain.brokers.message'])
 
 # Déclaration des queues avec priorité
 app.conf.task_queues = [

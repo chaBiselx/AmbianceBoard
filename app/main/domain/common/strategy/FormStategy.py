@@ -19,6 +19,8 @@ class FormStategy:
             manager = CheckboxInputManager(field)
         if field.widget.__class__.__name__ == 'Select':
             manager = SelectInputManager(field)
+        if field.widget.__class__.__name__ == 'SelectMultiple':
+            manager = SelectInputManager(field)
         if field.widget.__class__.__name__ == 'DateInput':
             manager = DateTimeInputManager(field)
         if field.widget.__class__.__name__ == 'DateTimeInput':

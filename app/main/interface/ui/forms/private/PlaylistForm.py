@@ -65,7 +65,7 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
         widget=forms.FileInput(attrs={'accept': ', '.join(ImageFormatEnum.values())}),
         required=False
     )
-    is_copiable = forms.BooleanField(required=False, label='Copiable par les autres utilisateurs', initial=False)
+    is_copiable = forms.BooleanField(required=False, label='Copiable par les autres utilisateurs', initial=True)
     clear_icon = forms.BooleanField(required=False, label='Supprimer le fichier', initial=False)
     useSpecificDelay = forms.BooleanField(required=False, label='Utiliser un delai aléatoire spécifique', initial=False)
     maxDelay = forms.IntegerField(

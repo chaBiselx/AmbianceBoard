@@ -17,14 +17,14 @@
                         <label for="mixer-{{ playlistTypeObj.typePlaylist }}" class="mixer-container-item-label text-stroke" data-bs-toggle="tooltip" data-bs-title="Volume par des {{ playlistTypeObj.typePlaylist}}" style="color:{{playlistTypeObj.color}}">
                             <i class="{{ playlistTypeObj.typePlaylist.get_icon_class }}" alt="{{ playlistTypeObj.typePlaylist}}"></i>
                         </label>
-                        <input type="range" id="mixer-{{ playlistTypeObj.typePlaylist }}" data-type="{{ playlistTypeObj.typePlaylist }}" class="mixer-playlist mixer-playlist-type vertical-mixer" min="0" max="1" value="1" step="0.1">
+                        <input type="range" id="mixer-{{ playlistTypeObj.typePlaylist }}" data-type="{{ playlistTypeObj.typePlaylist }}" class="mixer-playlist mixer-playlist-type vertical-mixer" min="0" max="1" value="0.75" step="0.05">
                     </div>
                     {% endfor %}
                     <div class="mixer-container-item">
                         <label for="" class="mixer-container-item-label text-stroke">
                             <i class="fa-solid fa-sliders" alt="general" data-bs-toggle="tooltip" data-bs-title="Volume Général"></i>
                         </label>
-                        <input type="range" id="mixer-general" data-type="General" class="mixer-playlist vertical-mixer" min="0" max="1" value="1" step="0.1">
+                        <input type="range" id="mixer-general" data-type="General" class="mixer-playlist vertical-mixer" min="0" max="1" value="0.75" step="0.05">
                     </div>
                     {% if master == True %}
                     <div class="mixer-container-item">
@@ -42,6 +42,16 @@
                             <label class="form-check-label" for="saveVolumePlaylistMixer"><small>Sauvegarder</small></label>
                         </div>
                         {% endif %}
+
+                        <input type="checkbox" class="btn-check" id="inputShowSpecificMusic" autocomplete="off">
+                        <label class="btn btn-outline-primary btn-block px-0 py-1 my-1 text-sm" for="inputShowSpecificMusic" data-bs-toggle="tooltip" data-bs-title="Afficher/masquer piste audios spécifiques">
+                            <small class="lh-1">
+                                <span id="inputShowSpecificMusic-show"><i class="fa-solid fa-eye"></i></span>
+                                <span id="inputShowSpecificMusic-hide" class="d-none"><i class="fa-solid fa-eye-slash"></i></span>
+                                <i class="fa-brands fa-itunes-note"></i> Musique
+                            </small>
+                        </label>
+                      
                     </div>
                     {% endif %}
 

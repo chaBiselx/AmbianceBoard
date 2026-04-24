@@ -1,4 +1,4 @@
-Django==5.1.6
+Django==5.1
 django-crontab==0.7
 django-ratelimit==4.1
 gunicorn==21.2.0
@@ -12,3 +12,4 @@ channels_redis
 django-encrypted-model-fields==0.6.5
 requests==2.32.4
 bleach==6.1.0
+django-allauth[socialaccount]==65.4.0
