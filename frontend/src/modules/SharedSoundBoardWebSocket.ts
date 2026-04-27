@@ -84,9 +84,15 @@ class SharedSoundBoardWebSocket {
 
     public start(): void {
         // Éviter de créer plusieurs connexions WebSocket
-        if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-            ConsoleCustom.log('WebSocket is already connected.');
-            return;
+        if (this.socket) {
+            if (this.socket.readyState === WebSocket.OPEN) {
+                ConsoleCustom.log('WebSocket is already connected.');
+                return;
+            }
+            if (this.socket.readyState === WebSocket.CONNECTING) {
+                ConsoleCustom.log('WebSocket is already connecting.');
+                return;
+            }
         }
 
         try {
@@ -131,7 +137,7 @@ class SharedSoundBoardWebSocket {
     }
 
     public sendMessage(data: object): boolean {
-        if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+        if (!this.socket || !this.isConnected()) {
             ConsoleCustom.error('WebSocket is not connected. Cannot send message.');
             return false;
         }
@@ -145,6 +151,10 @@ class SharedSoundBoardWebSocket {
             ConsoleCustom.error('Erreur lors de l\'envoi du message:', error);
             return false;
         }
+    }
+
+    private isConnected(): boolean {
+        return this.socket?.readyState === WebSocket.OPEN;
     }
 
 
@@ -257,8 +267,15 @@ class SharedSoundBoardWebSocket {
             })
                 .then(response => response.text())
                 .then((body) => {
+                    const list = SharedSoundBoardWebSocket.getLastActivationList();
                     html.innerHTML = body;
                     new SoundBoardEventListener().addEventListenerDom();
+                    for (const [id, lastActivation] of Object.entries(list)) {
+                        const buttonPlaylist = ButtonPlaylistFinder.search(id);
+                        if (buttonPlaylist) {
+                            buttonPlaylist.dataset.lastActivation = lastActivation;
+                        }
+                    }
                 })
                 .catch(error => {
                     ConsoleCustom.error('Erreur lors de la requête AJAX:', error);
@@ -285,6 +302,24 @@ class SharedSoundBoardWebSocket {
         buttonPlaylist.active();
         SoundBoardManager.addPlaylist(buttonPlaylist);
         console.groupEnd();
+    }
+
+    public static getLastActivationList(): Record<string, string> {
+        const result: Record<string, string> = {};
+        const elements = document.querySelectorAll('[data-last-activation]');
+        
+        for(const element of elements) {
+            if (element instanceof HTMLElement) {
+                const lastActivation = element.dataset.lastActivation;
+                const id = element.dataset.id;
+                
+                if (lastActivation && lastActivation !== '0' && id) {
+                    result[id] = lastActivation;
+                }
+            }
+        }
+        
+        return result;
     }
 }
 

@@ -281,3 +281,19 @@ def dismiss_trace_user_activity(request, trace_user_activity_uuid: uuid.UUID, ty
             logger.error(f"dismiss trace user activity error : {e}")
             return JsonResponse({"error": "Cannot dismiss trace user activity"}, status=500)
     return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.value}, status=406)
+
+
+@require_http_methods(['GET'])
+def callback_oauth_google(request) -> HttpResponse:
+    """
+    Vue de callback après authentification OAuth Google.
+    
+    Redirige vers la page d'accueil après une authentification réussie via Google.
+    
+    Args:
+        request (HttpRequest): Requête HTTP
+        
+    Returns:
+        HttpResponse: Redirection vers la page d'accueil
+    """
+    return redirect('home')

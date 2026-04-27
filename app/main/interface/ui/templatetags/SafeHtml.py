@@ -7,13 +7,14 @@ register = template.Library()
 # Liste des balises HTML autorisées
 ALLOWED_TAGS = [
     'p', 'br', 'strong', 'em', 'b', 'i', 'u', 
-    'a', 'ul', 'ol', 'li', 'span', 'div',
+    'a', 'img', 'ul', 'ol', 'li', 'span', 'div',
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
 ]
 
 # Attributs autorisés par balise
 ALLOWED_ATTRIBUTES = {
     'a': ['href', 'title', 'target', 'rel'],
+    'img': ['src', 'alt', 'width', 'height'],
     'span': ['class'],
     'div': ['class'],
 }

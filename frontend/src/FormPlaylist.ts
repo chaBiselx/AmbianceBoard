@@ -2,6 +2,7 @@ import ModalCustom from '@/modules/General/Modal';
 import { MusicDropzoneConfig, MusicDropzoneManager } from '@/modules/MusicDropzoneManager';
 import Csrf from './modules/General/Csrf';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
+import { addClearIconConfirmation } from '@/modules/ClearIconConfirmation';
 
 
 declare global {
@@ -45,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addDeleteMusicEvent();
     addPopupDescriptionPlaylistType();
     addListingOtherColorsEvent();
+    addClearIconConfirmation('de la playlist');
 });
 
 function simulatePlaylistColor() {

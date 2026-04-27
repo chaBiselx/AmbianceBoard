@@ -7,6 +7,7 @@ from django.views.decorators.http import require_http_methods
 from main.domain.manager.service.UserStatsService import UserStatsService
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.manager.service.UserActivityStatsService import UserActivityStatsService
+from main.domain.manager.service.StorageService import StorageService
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.enum.ChartPeriodEnum import ChartPeriodEnum
 
@@ -20,9 +21,11 @@ def manager_dashboard(request) -> HttpResponse:
     select_periods = ChartPeriodEnum.get_days_mapping()
     if not ChartPeriodEnum.is_valid_period(periode_chart):
         periode_chart = ChartPeriodEnum.get_default_period()
+    
+    storage_data = StorageService.get_storage_usage()
                                 
     
-    return render(request, 'Html/Manager/dashboard.html', {'title': 'Tableau de bord Manager', 'periode_chart': periode_chart, 'selectPeriods':select_periods})
+    return render(request, 'Html/Manager/dashboard.html', {'title': 'Tableau de bord Manager', 'periode_chart': periode_chart, 'selectPeriods':select_periods, 'storage': storage_data})
 
 @login_required
 @require_http_methods(['GET'])

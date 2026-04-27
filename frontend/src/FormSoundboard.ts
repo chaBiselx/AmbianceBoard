@@ -1,5 +1,6 @@
 import Csrf from "@/modules/General/Csrf";
-import ConsoleCustom from './modules/General/ConsoleCustom';
+import ConsoleCustom from '@/modules/General/ConsoleCustom';
+import { addClearIconConfirmation } from '@/modules/ClearIconConfirmation';
 
 type deleteConfig = { delete_url: string, redirect_url: string };
 
@@ -57,6 +58,7 @@ class TagSelector {
 }
 
 simulateSoundBoardColor();
+addClearIconConfirmation('du soundboard');
 
 const DomElementAddEventList = ['id_name', 'id_color', 'id_colorText', 'id_icon'];
 for (const DomElementAddEvent of DomElementAddEventList) {

@@ -1,0 +1,25 @@
+{% extends 'Html/partial/structure/base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="row justify-content-sm-center">
+    <div class="col-12 col-sm-6 col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">{% trans "Connexion via Google" %}</h5>
+            </div>
+            <div class="card-body">
+                <p>{% trans "Vous êtes sur le point de vous connecter en utilisant un compte tiers de Google." %}</p>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-danger w-100 mt-3">
+                        <i class="bi bi-google"></i> {% trans "Continuer" %}
+                    </button>
+                </form>
+                <hr>
+                <a class="btn btn-secondary w-100" href="{% url 'login' %}">{% trans "Retour" %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -12,7 +12,11 @@ AmbianceBoard est une soundboard conçue pour les jeux de rôle, permettant d'aj
 ✅ Déploiement via Docker  
 
 ## 📊 SonarCloud  
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=chaBiselx_AmbianceBoard&metric=alert_status)](https://sonarcloud.io/project/overview?id=chaBiselx_AmbianceBoard)  
+![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=chaBiselx_AmbianceBoard&metric=alert_status) 
+![Security](https://sonarcloud.io/api/project_badges/measure?project=chaBiselx_AmbianceBoard&metric=security_rating)
+![Reliability](https://sonarcloud.io/api/project_badges/measure?project=chaBiselx_AmbianceBoard&metric=reliability_rating) 
+![Maintainability](https://sonarcloud.io/api/project_badges/measure?project=chaBiselx_AmbianceBoard&metric=sqale_rating) 
+![Duplication](https://sonarcloud.io/api/project_badges/measure?project=chaBiselx_AmbianceBoard&metric=duplicated_lines_density)  
 👉 [Voir le rapport SonarCloud](https://sonarcloud.io/project/overview?id=chaBiselx_AmbianceBoard)  
 
 ## 🤝 Avancement 
