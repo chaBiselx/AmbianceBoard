@@ -17,9 +17,10 @@ class RandomizeTrackService:
     def __init__(self, request):
         self.request = request
         self.track_repository = TrackRepository()
+        self.soundboard_playlist_repository = SoundboardPlaylistRepository()
 
     def _is_playlist_in_soundboard(self, soundboard, playlist_uuid) -> bool:
-        return SoundboardPlaylistRepository().get_playlist_in_soundboard_by_uuid(soundboard, playlist_uuid) is not None
+        return self.soundboard_playlist_repository.get_playlist_in_soundboard_by_uuid(soundboard, playlist_uuid) is not None
         
     def get_specific_private(self, soundboard_uuid:uuid, playlist_uuid:int, music_id: int) -> Music|None :
         soundboard = (SoundBoardService(self.request)).get_soundboard(soundboard_uuid)
