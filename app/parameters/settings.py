@@ -331,6 +331,12 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIALACCOUNT_ADAPTER = "main.application.auth.SocialAccountAdapter.SocialAccountAdapter"
 SOCIALACCOUNT_LOGIN_ON_GET = True
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
