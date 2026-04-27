@@ -198,6 +198,14 @@ Nouveautés
 - Ajout de liste de sélection depuis le soundboard
 - Authentification par Oauth2 de Google
 
+### 0.3.4 - 2026/04
+Corrections
+- Recuperation de l'email via Oauth de google
+
+### 0.3.5 - 2026/04
+
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Nouveautés
