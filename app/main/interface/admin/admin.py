@@ -24,6 +24,7 @@ from main.architecture.persistence.models.GeneralNotification import GeneralNoti
 from main.architecture.persistence.models.UserNotificationDismissal import UserNotificationDismissal
 from main.architecture.persistence.models.UserActivity import UserActivity
 from main.architecture.persistence.models.UserDevicePreference import UserDevicePreference
+from main.architecture.persistence.models.TrackLabel import TrackLabel
 
 
 admin.site.register(User)
@@ -47,3 +48,4 @@ admin.site.register(GeneralNotification)
 admin.site.register(UserNotificationDismissal)
 admin.site.register(UserActivity)
 admin.site.register(UserDevicePreference)
+admin.site.register(TrackLabel)

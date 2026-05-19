@@ -43,7 +43,8 @@ def sidebar_processor(request):
                 {'title': 'Cron', 'url': reverse("managerCronViews"), 'classIcon':"fa-solid fa-clock"},
                 {'title': 'User Tiers', 'url': reverse("adminUserTiersDashboard"), 'classIcon':"fas fa-user-graduate"},
                 {'title': 'Notifications', 'url': reverse("managerNotifications"), 'classIcon':"fa-solid fa-bell"},
-                {'title': 'Email', 'url': reverse("managerSendEmail"), 'classIcon':"fa-solid fa-envelope"}
+                {'title': 'Email', 'url': reverse("managerSendEmail"), 'classIcon':"fa-solid fa-envelope"},
+                {'title': 'Label', 'url': reverse("managerMusicLabeler"), 'classIcon':"fa-solid fa-tag"},
             ]
         }
         

@@ -211,9 +211,27 @@
                             </div>
                             <div class="music-name mt-1 mb-2">
                                 <h6>{{ track.get_name }}</h6>
+                                {% if DEBUG %}
                                 <small>
                                     {{ track.get_source }}
                                 </small>
+                                {% endif %}
+                                {% if request.user.isBetaTester %}
+                                {% if track.labels.all %}
+                                <div class="track-tags">
+                                    {% for label in track.labels.all %}
+                                        {% if label.confidence >= 0.4 %}
+                                            <span class="badge bg-success">{{ label.label }}</span>
+                                        {% elif label.confidence >= 0.3 %}
+                                            <span class="badge bg-info">{{ label.label }}</span>
+                                        {% else %}
+                                            <span class="badge bg-light text-dark">{{ label.label }}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                {% endif %}
+
                             </div>
                             <div class="player-custom p-2" data-url="{% url 'playlistCreateTrackStream' form.instance.uuid track.id %}">
                                 <audio class="music-player d-none"></audio>

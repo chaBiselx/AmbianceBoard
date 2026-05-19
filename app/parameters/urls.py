@@ -21,10 +21,11 @@ from main.interface.ui.controller.moderator.moderatorViews import moderator_dash
 from main.interface.ui.controller.manager.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
 from main.interface.ui.controller.manager.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard
 from main.interface.ui.controller.manager.managerCronViews import (
-    listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity
+    listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity, music_labeler_cron_service
     )
 from main.interface.ui.controller.manager.managerNotificationsViews import listing_notifications, manage_notification
 from main.interface.ui.controller.manager.managerSendEmailViews import manager_send_email
+from main.interface.ui.controller.manager.managerMusicLabelerViews import music_labeler_index, music_labeler_analyze, music_labeler_stream
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_playlist_tracks_list, favorite_update, reporting_content, public_favorite, public_specific_track_stream
 from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation, stats_moyenne_duration_session
 from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream, shared_soundboard_refresh
@@ -170,6 +171,8 @@ urlpatterns = [
     path("manager/cron/sync-domain-blacklist", sync_domain_blacklist, name="managerSyncDomainBlacklist"),
     path("manager/cron/purge-expired-shared-soundboard", purge_expired_shared_soundboard, name="managerPurgeExpiredSharedSoundboard"),
     path("manager/cron/purge-old-user-activity", purge_old_user_activity, name="managerPurgeOldUserActivity"),
+    path("manager/cron/music-labeler", music_labeler_cron_service, name="managerMusicLabelerCronService"),
+    
 
     path("manager/dashboard/user-account/", user_account_dashboard, name="managerUserAccountDashboard"),
     path("manager/dashboard/users-activity/", user_activity_dashboard, name="managerUsersActivityDashboard"),
@@ -181,6 +184,11 @@ urlpatterns = [
     path("manager/notifications/<uuid:uuid>/edit/", manage_notification, name="manager_notifications_update"),
 
     path("manager/send-email/", manager_send_email, name="managerSendEmail"),
+
+    # Music Labeler IA
+    path("manager/music-labeler/", music_labeler_index, name="managerMusicLabeler"),
+    path("manager/music-labeler/<int:music_id>/analyze", music_labeler_analyze, name="managerMusicLabelerAnalyze"),
+    path("manager/music-labeler/<int:music_id>/stream", music_labeler_stream, name="managerMusicLabelerStream"),
     
     
 
