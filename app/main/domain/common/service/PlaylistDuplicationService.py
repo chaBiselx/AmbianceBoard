@@ -184,6 +184,14 @@ class PlaylistDuplicationService:
             )
         
         duplicated_music.save()
+        
+        # si le source_music a des labels, les copier aussi
+        source_labels = source_music.labels.all()
+        for label in source_labels:
+            label.pk = None  # Réinitialiser la PK pour créer un nouvel enregistrement
+            label.track = duplicated_music.tracks.first()  # Associer au nouveau track
+            label.save()
+            
         return duplicated_music
     
     def _duplicate_link_music(self, source_link: LinkMusic, duplicated_playlist: Playlist) -> LinkMusic:
