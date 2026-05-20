@@ -22,6 +22,7 @@ RUN pip install  \
     -r requirements.txt
 
 COPY main.py .
+COPY app/ ./app/
 
 # Pré-télécharge le modèle au build pour un démarrage rapide
 ARG CLAP_MODEL=laion/clap-htsat-unfused

@@ -1,0 +1,5 @@
+import os
+
+API_TOKEN = os.getenv("MUSIC_LABELER_TOKEN", "")
+MAX_UPLOAD_SIZE = 35 * 1024 * 1024  # 35 Mo
+SAMPLE_RATE = 48_000
