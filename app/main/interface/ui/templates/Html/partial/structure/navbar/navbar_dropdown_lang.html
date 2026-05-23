@@ -3,7 +3,7 @@
 {% load static %}
 
 {% if request.user.isBetaTester %}
-<div class="dropdown">
+<div class="dropdown beta-test">
     {% get_current_language as CURRENT_LANGUAGE %}
     <button class="btn btn-link url_link dropdown-toggle d-flex align-items-center text-decoration-none dropdown-without-arrow" type="button" data-bs-toggle="dropdown" aria-expanded="false">
         <img src="{% static 'img/lang/' %}{{ CURRENT_LANGUAGE }}.svg" class="d-sm-inline" alt="AmbianceBoard - Soundboard et Playlist Musicale" width="17" height="17">

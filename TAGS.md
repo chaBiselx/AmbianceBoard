@@ -202,7 +202,10 @@ Nouveautés
 Corrections
 - Recuperation de l'email via Oauth de google
 
-### 0.3.5 - 2026/04
+### 0.3.5 - 2026/06
+Nouveautés
+- Ajout d'une coloration accessible uniquement pour les beta-testeur en violet
+- Ajout d'une IA en local pour labelliser les pistes audios (BETA-TEST)
 
 
 
