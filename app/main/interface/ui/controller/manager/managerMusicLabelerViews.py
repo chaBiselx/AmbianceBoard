@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
+from main.architecture.persistence.repository.TrackLabelRepository import TrackLabelRepository
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.architecture.persistence.models.Music import Music
 from main.domain.common.service.MusicLabelerService import MusicLabelerService
@@ -19,8 +20,8 @@ def music_labeler_index(request) -> HttpResponse:
     musics = Music.objects.select_related('playlist').order_by('-created_at')[:100]
     music_ids = [m.id for m in musics]
 
-    service = MusicLabelerService()
-    labels_by_track = service.get_labels_grouped_by_track(music_ids)
+    repository = TrackLabelRepository()
+    labels_by_track = repository.get_labels_grouped_by_track(music_ids)
 
     music_list = []
     for m in musics:
