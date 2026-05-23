@@ -24,3 +24,15 @@ class MusicRepository:
         except Music.DoesNotExist:
             return None
 
+    def get_unlabeled_music_ids(self, limit: int = 50) -> list[int]:
+        """
+        Retourne les IDs des musiques sans labels.
+        Sélection aléatoire limitée à `limit`.
+        """
+        return list(
+            Music.objects
+            .filter(file__isnull=False, tracklabel__isnull=True)
+            .order_by('?')
+            .values_list('track_ptr_id', flat=True)[:limit]
+        )
+

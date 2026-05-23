@@ -1,4 +1,4 @@
-from main.architecture.persistence.repository.TrackLabelRepository import TrackLabelRepository
+from main.architecture.persistence.repository.MusicRepository import MusicRepository
 from main.domain.common.utils.settings import Settings
 from main.domain.common.utils.logger import LoggerFactory
 from main.domain.brokers.message.MusicLabelerMessenger import analyze_music_task
@@ -13,7 +13,7 @@ class MusicLabelerCronService:
 
     def __init__(self):
         self.logger = LoggerFactory.get_default_logger()
-        self.repository = TrackLabelRepository()
+        self.repository = MusicRepository()
         self.batch_size = Settings.get("MUSIC_LABELER_BATCH_SIZE", 50)
 
     def dispatch_unlabeled_tracks(self) -> int:

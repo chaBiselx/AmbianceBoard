@@ -2,7 +2,6 @@ from typing import Optional
 from django.db.models import QuerySet, Avg, Count
 from main.architecture.persistence.models.TrackLabel import TrackLabel
 from main.architecture.persistence.models.Track import Track
-from main.architecture.persistence.models.Music import Music
 from main.architecture.persistence.models.Playlist import Playlist
 
 
@@ -75,17 +74,3 @@ class TrackLabelRepository:
             if lbl.confidence > cat_data['category_confidence']:
                 cat_data['category_confidence'] = lbl.confidence
         return result
-
-    def get_unlabeled_music_ids(self, limit: int = 50) -> list[int]:
-        """
-        Retourne les IDs des musiques qui n'ont pas encore de labels.
-        Sélection aléatoire limitée à `limit`.
-        """
-        labeled_track_ids = TrackLabel.objects.values_list('track_id', flat=True).distinct()
-        return list(
-            Music.objects
-            .exclude(track_ptr_id__in=labeled_track_ids)
-            .filter(file__isnull=False)
-            .order_by('?')
-            .values_list('track_ptr_id', flat=True)[:limit]
-        )
