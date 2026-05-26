@@ -8,17 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 class PasswordRules {
     IdPasswordInput: string
-    
+
     constructor(el: string) {
         this.IdPasswordInput = el
     }
 
     public addEvent() {
         const passwordInput = this.getPasswordInput()
-        passwordInput.addEventListener('input', this.validatePassword.bind(this))
+        passwordInput?.addEventListener('input', this.validatePassword.bind(this))
     }
 
-    public getPasswordInput() : HTMLInputElement {
+    public getPasswordInput(): HTMLInputElement {
         return document.getElementById(this.IdPasswordInput) as HTMLInputElement
     }
 
@@ -33,12 +33,12 @@ class PasswordRules {
             hasNumber: /\d/.test(password),
             hasSpecialChar: /[!@#€£$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)
         };
-    
+
         // Vérification de toutes les règles
         const validation = {
             isValid: Object.values(rules).every(rule => rule === true),
         };
-    
+
         // Création des messages d'erreur si nécessaire
         const passwordRules = document.getElementsByClassName('password-rules');
         for (const rule of passwordRules) {
@@ -51,7 +51,7 @@ class PasswordRules {
                 rule.classList.remove('text-success');
             }
         }
-    
+
         return validation;
     }
 }
