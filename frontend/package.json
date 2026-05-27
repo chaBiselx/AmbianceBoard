@@ -22,6 +22,7 @@
         "fs-extra": "^11.3.0",
         "quill": "^2.0.3",
         "sass": "^1.85.1",
+        "shepherd.js": "^14.5.1",
         "vitest": "^3.2.4"
     },
     "devDependencies": {
