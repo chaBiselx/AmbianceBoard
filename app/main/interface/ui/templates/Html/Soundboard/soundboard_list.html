@@ -6,7 +6,7 @@
 {% block content %}
 <div class="row">
     <div class="col-12">
-        <div class="flex-container">
+        <div class="flex-container" data-shepherd="my-soundboards-grid">
             {% for soundboard in soundboards %}
             <a href="{% url 'soundboardsRead' soundboard.uuid %}">
                 <div class="soundboard-element flex-item soundboard-dim-{{ soundboard_dim }} m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};">
@@ -20,6 +20,6 @@
 
 
 <div>
-    <a class="btn btn-primary btn-block" href="{% url 'soundboardsNew' %}">Ajouter un Soundboard</a>
+    <a class="btn btn-primary btn-block" href="{% url 'soundboardsNew' %}" data-shepherd="create-soundboard-btn">Ajouter un Soundboard</a>
 </div>
 {% endblock %}

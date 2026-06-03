@@ -10,7 +10,7 @@
         <li>
             <hr class="dropdown-divider">
         </li>
-        <li><a class="dropdown-item" href="{% url 'settingsIndex' %}">Paramètres</a></li>
+        <li><a class="dropdown-item" href="{% url 'settingsIndex' %}" data-shepherd="user-settings-link">Paramètres</a></li>
         {% if request.user|has_group:"MODERATEUR" %}
         <li>
             <hr class="dropdown-divider">    

@@ -1,5 +1,7 @@
 {% extends 'Html/partial/structure/base.html' %}
 {% load i18n %}
+{% load static %}
+{% load FrontJs %}
 
 {% block page_title %}AmbianceBoard - Click here, play anywhere{% endblock %}
 
@@ -14,6 +16,11 @@
         Découvrez une expérience musicale unique avec notre application Soundboard AmbianceBoard !
         Ici, chaque bouton de notre liste de soundboards déclenche une playlist spécialement conçue, jouée de manière aléatoire. C'est simple, intuitif et parfait pour ajouter une touche sonore et créer une ambiance immersive pour vos parties de jeux de rôle.
     </p>
+    <div class="mt-3">
+        <button class="btn btn-info" id="start-onboarding-btn">
+            <i class="fa-solid fa-compass me-2"></i>Découvrir la visite guidée
+        </button>
+    </div>
 </section>
 
 <section>
@@ -152,7 +159,5 @@
     </ul>
 
 </section>
-
-
 
 {% endblock %}

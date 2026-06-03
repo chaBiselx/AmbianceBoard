@@ -5,7 +5,7 @@ from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 from django.views.i18n import set_language as django_set_language
 
-from main.interface.ui.controller.general.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification, dismiss_trace_user_activity, callback_oauth_google
+from main.interface.ui.controller.general.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification, dismiss_trace_user_activity, callback_oauth_google, onboarding_context
 from main.interface.ui.controller.general.confirmViews import confirm_account
 from main.interface.ui.controller.general.traceFrontViews import trace_front
 from main.interface.ui.controller.private.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
@@ -46,6 +46,7 @@ urlpatterns = [
 
     #technique
     path("trace-front", trace_front, name="traceFront"),
+    path("onboarding/context", onboarding_context, name="onboardingContext"),
     
     #Oauth
     path("accounts/", include("allauth.urls")),

@@ -8,6 +8,7 @@ import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
 import Csrf from "@/modules/General/Csrf";
 import GeneralTheme from "@/modules/General/GeneralTheme";
 import Time from "@/modules/Util/Time";
+import OnboardingManager from "@/modules/OnboardingManager";
 
 // Gestionnaire global pour les erreurs de promesses non gérées
 globalThis.addEventListener('unhandledrejection', (event) => {
@@ -95,6 +96,12 @@ document.addEventListener("DOMContentLoaded", () => {
     new DeleteAccount().addEvent();
     new UserActivityLog().addEvent();
     new ShowConsoleBetaTester().addEvent();
+
+    // Initialize Onboarding Shepherd
+    const onboardingManager = new OnboardingManager();
+    onboardingManager.initialize().catch((error) => {
+        ConsoleCustom.error('Failed to initialize Onboarding:', error);
+    });
 
 });
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-27 15:41+0000\n"
+"POT-Creation-Date: 2026-06-03 13:27+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -17,6 +17,130 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: main/domain/general/service/OnboardingContextService.py:38
+msgid "onboarding.labels.next"
+msgstr "Next"
+
+#: main/domain/general/service/OnboardingContextService.py:39
+msgid "onboarding.labels.prev"
+msgstr "Previous"
+
+#: main/domain/general/service/OnboardingContextService.py:40
+msgid "onboarding.labels.done"
+msgstr "Done"
+
+#: main/domain/general/service/OnboardingContextService.py:67
+msgid "onboarding.public.theme.title"
+msgstr "Light and dark mode"
+
+#: main/domain/general/service/OnboardingContextService.py:68
+msgid "onboarding.public.theme.description"
+msgstr "Switch between light and dark modes for better reading comfort. Your preference is saved automatically."
+
+#: main/domain/general/service/OnboardingContextService.py:75
+msgid "onboarding.public.fullscreen.title"
+msgstr "Fullscreen mode"
+
+#: main/domain/general/service/OnboardingContextService.py:76
+msgid "onboarding.public.fullscreen.description"
+msgstr "Expand the soundboard for better audio immersion. Ideal for your streaming sessions or creative work."
+
+#: main/domain/general/service/OnboardingContextService.py:83
+msgid "onboarding.public.soundboards.title"
+msgstr "View public soundboards"
+
+#: main/domain/general/service/OnboardingContextService.py:84
+msgid "onboarding.public.soundboards.description"
+msgstr "Discover soundboards created by the community. You can listen to them and preview them."
+
+#: main/domain/general/service/OnboardingContextService.py:91
+msgid "onboarding.public.grid.title"
+msgstr "Public soundboards"
+
+#: main/domain/general/service/OnboardingContextService.py:92
+msgid "onboarding.public.grid.description"
+msgstr "Explore soundboards created by the community. You can listen to them, preview them, and even copy their buttons into your own soundboard."
+
+#: main/domain/general/service/OnboardingContextService.py:99
+msgid "onboarding.private.tracks.title"
+msgstr "Use a soundboard's buttons"
+
+#: main/domain/general/service/OnboardingContextService.py:100
+msgid "onboarding.private.tracks.description"
+msgstr "Click to play one of the sounds linked to these buttons."
+
+#: main/domain/general/service/OnboardingContextService.py:107
+msgid "onboarding.private.mixer.title"
+msgstr "Soundboard-specific controls"
+
+#: main/domain/general/service/OnboardingContextService.py:108
+msgid "onboarding.private.mixer.description"
+msgstr "Control your ambiance: adjust volumes or play specific sounds."
+
+#: main/domain/general/service/OnboardingContextService.py:120
+msgid "onboarding.private.my_soundboards.title"
+msgstr "My private soundboards"
+
+#: main/domain/general/service/OnboardingContextService.py:121
+msgid "onboarding.private.my_soundboards.description"
+msgstr "Show your private soundboards."
+
+#: main/domain/general/service/OnboardingContextService.py:128
+msgid "onboarding.private.my_soundboards_grid.title"
+msgstr "My private soundboards"
+
+#: main/domain/general/service/OnboardingContextService.py:129
+msgid "onboarding.private.my_soundboards_grid.description"
+msgstr "These are your personal soundboards. You can edit, share, or delete them."
+
+#: main/domain/general/service/OnboardingContextService.py:136
+msgid "onboarding.private.create_soundboard.title"
+msgstr "Create a new soundboard"
+
+#: main/domain/general/service/OnboardingContextService.py:137
+msgid "onboarding.private.create_soundboard.description"
+msgstr "Create your own soundboard in 3 clicks. Give it a name, a description, and start adding sounds."
+
+#: main/domain/general/service/OnboardingContextService.py:144
+msgid "onboarding.private.playlist_button.title"
+msgstr "Your custom buttons"
+
+#: main/domain/general/service/OnboardingContextService.py:145
+msgid "onboarding.private.playlist_button.description"
+msgstr "Access your custom buttons."
+
+#: main/domain/general/service/OnboardingContextService.py:152
+msgid "onboarding.private.playlist_grid.title"
+msgstr "List of your buttons"
+
+#: main/domain/general/service/OnboardingContextService.py:153
+msgid "onboarding.private.playlist_grid.description"
+msgstr "These are your custom buttons. Click them to edit, share, or delete them."
+
+#: main/domain/general/service/OnboardingContextService.py:160
+msgid "onboarding.private.copiable_buttons.title"
+msgstr "Copiable buttons"
+
+#: main/domain/general/service/OnboardingContextService.py:161
+msgid "onboarding.private.copiable_buttons.description"
+msgstr "Browse community-created buttons that can be copied."
+
+#: main/domain/general/service/OnboardingContextService.py:168
+msgid "onboarding.private.copy_buttons_grid.title"
+msgstr "Copy buttons"
+
+#: main/domain/general/service/OnboardingContextService.py:169
+msgid "onboarding.private.copy_buttons_grid.description"
+msgstr "Copy the audio controls from this soundboard to review them and add them to your custom buttons."
+
+#: main/domain/general/service/OnboardingContextService.py:176
+msgid "onboarding.private.user_settings.title"
+msgstr "User settings"
+
+#: main/domain/general/service/OnboardingContextService.py:177
+msgid "onboarding.private.user_settings.description"
+msgstr "Manage your profile, notification preferences, favorite theme, and subscription."
+
 #: main/interface/ui/templates/Html/Account/send_reset_password.html:11
 msgid "template.sendResetPassword.card.title"
 msgstr "Envoi de réinitialisation de mot de passe"
@@ -25,11 +149,11 @@ msgstr "Envoi de réinitialisation de mot de passe"
 msgid "template.sendResetPassword.form.submit"
 msgstr "Reinitialiser le mot de passe"
 
-#: main/interface/ui/templates/Html/General/403.html:8
+#: main/interface/ui/templates/Html/General/403_modal.html:7
 msgid "template.403.title"
 msgstr "Access denied"
 
-#: main/interface/ui/templates/Html/General/403.html:9
+#: main/interface/ui/templates/Html/General/403_modal.html:8
 msgid "template.403.message"
 msgstr "You do not have permission to access this page."
 
@@ -38,6 +162,7 @@ msgid "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip"
 msgstr "Ability to share soundboard listening with your online players."
 
 #: main/interface/ui/templates/Html/Music/add_link_music.html:7
+#: main/interface/ui/templates/Html/Music/add_link_music_ajax.html:7
 msgid "template.addLinkMusic.form.submit"
 msgstr "Add link"
 
@@ -45,25 +170,25 @@ msgstr "Add link"
 msgid "generic.back"
 msgstr "Back"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:29
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:14
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:28
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:13
 msgid "generic.filter_by_type"
 msgstr "Filter by type"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:31
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:16
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:29
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:14
 msgid "generic.filter_by_type.value.all"
 msgstr "All"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:66
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:60
 msgid "template.playlist_copiable.preview.instruction"
 msgstr "Click on a button to preview the playlist."
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:49
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:55
 msgid "template.playlist_copiable_preview.duplicate_playlist"
 msgstr "Duplicate the button"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:51
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:57
 msgid "template.playlist_copiable_preview.already_duplicated"
 msgstr "The button has already been duplicated."
 
@@ -73,7 +198,7 @@ msgstr "Add a button"
 
 #: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:53
 msgid "template.playlist_read_all.button.listPublic"
-msgstr "List of copyable buttons"
+msgstr "List of copyable buttons from community "
 
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:25
 msgid ""
@@ -94,3 +219,111 @@ msgstr ""
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:8
 msgid "template.shareSoundboard.button.label"
 msgstr "Share listening"
+
+#: main/interface/ui/templates/socialaccount/login.html:9
+msgid "Connexion via Google"
+msgstr "Sign in with Google"
+
+#: main/interface/ui/templates/socialaccount/login.html:12
+msgid ""
+"Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
+"Google."
+msgstr "You are about to sign in using a third-party Google account."
+
+#: main/interface/ui/templates/socialaccount/login.html:16
+msgid "Continuer"
+msgstr "Continue"
+
+#: main/interface/ui/templates/socialaccount/login.html:20
+msgid "Retour"
+msgstr "Back"
+
+#~ msgid "Suivant"
+#~ msgstr "Next"
+
+#~ msgid "Précédent"
+#~ msgstr "Previous"
+
+#~ msgid "Terminé"
+#~ msgstr "Done"
+
+#~ msgid "Mode clair/sombre"
+#~ msgstr "Light and dark mode"
+
+#~ msgid ""
+#~ "Basculez entre les modes clair et sombre pour plus de confort de lecture. "
+#~ "Votre préférence est sauvegardée automatiquement."
+#~ msgstr ""
+#~ "Switch between light and dark modes for better reading comfort. Your "
+#~ "preference is saved automatically."
+
+#~ msgid "Mode plein écran"
+#~ msgstr "Fullscreen mode"
+
+#~ msgid ""
+#~ "Agrandissez le soundboard pour une meilleure immersion audio. Idéal pour "
+#~ "vos sessions de streaming ou de travail créatif."
+#~ msgstr ""
+#~ "Expand the soundboard for better audio immersion. Perfect for your "
+#~ "streaming sessions or creative work."
+
+#~ msgid "Soundboards publiques"
+#~ msgstr "Public soundboards"
+
+#~ msgid ""
+#~ "Explorez les soundboards créés par la communauté. Vous pouvez les "
+#~ "écouter, les prévisualiser et même copier leurs boutons pour votre propre "
+#~ "soundboard."
+#~ msgstr ""
+#~ "Explore community-created soundboards. You can listen to them, preview "
+#~ "them, and even copy their buttons into your own soundboard."
+
+#~ msgid "Mes soundboards privés"
+#~ msgstr "My private soundboards"
+
+#~ msgid ""
+#~ "Voici vos soundboards personnels. Vous pouvez les éditer, les partager ou "
+#~ "les supprimer. Chaque soundboard peut contenir jusqu'à 100 boutons audio."
+#~ msgstr ""
+#~ "These are your personal soundboards. You can edit, share, or delete them. "
+#~ "Each soundboard can contain up to 100 audio buttons."
+
+#~ msgid "Créer un nouveau soundboard"
+#~ msgstr "Create a new soundboard"
+
+#~ msgid ""
+#~ "Créez votre propre soundboard en 3 clics. Donnez-lui un nom, une "
+#~ "description et commencez à ajouter des sons."
+#~ msgstr ""
+#~ "Create your own soundboard in 3 clicks. Give it a name, a description, "
+#~ "and start adding sounds."
+
+#~ msgid "Contrôles du soundboard"
+#~ msgstr "Soundboard controls"
+
+#~ msgid ""
+#~ "Contrôlez votre ambiance : Play/Pause, Volume, Partage. Tous les sons "
+#~ "jouent dans le même contexte audio."
+#~ msgstr ""
+#~ "Control your ambience: Play/Pause, Volume, Share. All sounds play in the "
+#~ "same audio context."
+
+#~ msgid "Copier les boutons"
+#~ msgstr "Copy buttons"
+
+#~ msgid ""
+#~ "Copiez les contrôles audio de ce soundboard pour les intégrer à votre "
+#~ "site web ou application personnelle."
+#~ msgstr ""
+#~ "Copy this soundboard audio controls to integrate them into your website "
+#~ "or personal app."
+
+#~ msgid "Paramètres utilisateur"
+#~ msgstr "User settings"
+
+#~ msgid ""
+#~ "Gérez votre profil, vos préférences de notification, votre thème préféré "
+#~ "et votre abonnement."
+#~ msgstr ""
+#~ "Manage your profile, notification preferences, your preferred theme, and "
+#~ "your subscription."

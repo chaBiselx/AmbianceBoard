@@ -35,7 +35,7 @@
 <div class="row">
     <div class="col-12 col-xl-7 col-md-8">
         {% if page_objects %}
-        <div class="flex-container" id="preview-playlist-div" data-url-preview="{% url 'playlistPreview' %}">
+        <div class="flex-container" id="preview-playlist-div" data-url-preview="{% url 'playlistPreview' %}" data-shepherd="copy-buttons-grid">
             {% for playlist in page_objects %}
 
             <div class="position-relative">

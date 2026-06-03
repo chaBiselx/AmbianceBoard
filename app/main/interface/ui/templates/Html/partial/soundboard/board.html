@@ -11,7 +11,8 @@
 
 {% block content %}
 <div class="responsive-sections-container {% if master == False %} d-none {% endif %}" {% if master == True and owner == True %}data-soundboard-tracks-uri="{% url 'soundboardTracksList' soundboard.uuid %}" {% endif %}
-    {% if master == True and owner == False %}data-soundboard-tracks-uri="{% url 'publicSoundboardTracksList' soundboard.uuid %}" {% endif %}>
+    {% if master == True and owner == False %}data-soundboard-tracks-uri="{% url 'publicSoundboardTracksList' soundboard.uuid %}" {% endif %}
+    data-shepherd="soundboard-tracks">
     {% for section, list_playlist in soundboard.get_list_playlist_ordered %}
     <section class="section-{{ section }} border rounded {% if owner == False %}border-success{%else%}border-primary{% endif %}">
         <div class="section-content">

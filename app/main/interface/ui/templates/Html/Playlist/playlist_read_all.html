@@ -20,7 +20,7 @@
 
 <div class="row">
     <div class="col-12">
-        <div class="flex-container">
+        <div class="flex-container" data-shepherd="my-playlist-grid">
             {% for playlist in playlists %}
 
             <a href="{% url 'playlistUpdate' playlist.uuid %}">
@@ -50,6 +50,6 @@
 
 <div>
     <a class="btn btn-primary btn-block mt-2" href="{% url 'addPlaylist' %}">{% trans "template.playlist_read_all.button.add" %}</a>
-    <a class="btn btn-primary btn-block mt-2" href="{% url 'playlistsAllCopiableList' %}">{% trans "template.playlist_read_all.button.listPublic" %}</a>
+    <a class="btn btn-primary btn-block mt-2" href="{% url 'playlistsAllCopiableList' %}" data-shepherd="copy-buttons-btn">{% trans "template.playlist_read_all.button.listPublic" %}</a>
 </div>
 {% endblock %}
