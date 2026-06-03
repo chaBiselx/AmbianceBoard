@@ -48,8 +48,9 @@ def _verify_token(request: Request) -> None:
 
 @app.post("/label", dependencies=[Depends(_verify_token)])
 async def label_upload(
-    file: UploadFile = File(...),
-    top_k: int = Query(default=3, ge=1, le=10),
+    file: Annotated[UploadFile, Depends(File(...))],
+    top_k: Annotated[int, Query(default=3, ge=1, le=10)] = 3,
+    _: None = Depends(_verify_token),
 ):
     
     """Labelise un fichier audio uploadé. Le fichier est supprimé après analyse."""
