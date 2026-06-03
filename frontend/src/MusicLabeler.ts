@@ -23,10 +23,10 @@ interface AnalyzeResponse {
 }
 
 class MusicLabelerPage {
-    private labelAllBtn: HTMLButtonElement | null;
-    private progressCounter: HTMLElement | null;
-    private progressCurrent: HTMLElement | null;
-    private progressTotal: HTMLElement | null;
+    private readonly labelAllBtn: HTMLButtonElement | null;
+    private readonly progressCounter: HTMLElement | null;
+    private readonly progressCurrent: HTMLElement | null;
+    private readonly progressTotal: HTMLElement | null;
 
     constructor() {
         this.labelAllBtn = document.getElementById('label-all-btn') as HTMLButtonElement;
@@ -64,7 +64,7 @@ class MusicLabelerPage {
                     btn.classList.replace('btn-outline-primary', 'btn-outline-success');
                 }
             } catch (e) {
-                // Ignorer les erreurs de parsing
+                console.error('Error parsing labels:', e);
             }
         }
     }

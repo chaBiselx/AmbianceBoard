@@ -44,7 +44,6 @@ class MusicLabelerService:
 
         labels_to_save = []
         for cat_name, cat_data in data['categories'].items():
-            cat_confidence = cat_data.get('category_confidence', 0)
             for lbl in cat_data.get('labels', []):
                 if(lbl['confidence'] < self.MIN_CONFIDENCE_TO_SAVE):
                     continue  # Ignorer les labels avec une confiance pondérée trop faible  
