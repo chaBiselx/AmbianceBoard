@@ -207,6 +207,7 @@ Nouveautés
 - Ajout d'une coloration accessible uniquement pour les beta-testeur en violet
 - Ajout d'une IA en local pour labelliser les pistes audios (BETA-TEST)
 - Ajout d'une visite guidé 
+- Ajout d'un fichier llms.txt pour SEO
 
 
 

@@ -222,6 +222,7 @@ class ErrorTrackingMiddlewareTest(TestCase):
             '/.well-known/appspecific/com.chrome.devtools.json',
             '/.well-known/security.txt',
             '/favicon.ico',
+            '/llms.txt',
             '/robots.txt',
             '/sitemap.xml',
             '/apple-touch-icon-120x120.png',
@@ -299,7 +300,7 @@ class ErrorTrackingMiddlewareTest(TestCase):
             ('/wp-admin/login.php', True),
             ('/.git/config', True),
             ('/phpmyadmin/index.php', True),
-            
+            ('/llms.txt', True),
             # URLs à ne pas exclure
             ('/dashboard/', False),
             ('/api/soundboard/', False),
