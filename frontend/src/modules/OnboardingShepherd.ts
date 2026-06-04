@@ -129,7 +129,7 @@ export class OnboardingShepherd {
     public stop(): void {
         if (this.shepherd) {
             this.shepherd.cancel();
-            this.saveSessionState();
+            this.reset();
         }
     }
 
@@ -157,10 +157,8 @@ export class OnboardingShepherd {
     public reset(): void {
         this.completedSteps.clear();
         localStorage.removeItem(this.storageKeyLocal);
-        localStorage.removeItem(this.storageKeySession);
-        if (this.shepherd) {
-            this.shepherd.cancel();
-        }
+        sessionStorage.removeItem(this.storageKeySession);
+      
     }
 
     /**
@@ -192,7 +190,7 @@ export class OnboardingShepherd {
         const savedState = localStorage.getItem(this.storageKeyLocal);
 
         if (!savedState) {
-            return true; // Première visite
+            return false; // Première visite
         }
 
         try {
@@ -250,7 +248,7 @@ export class OnboardingShepherd {
                 document
                     .querySelectorAll('.onboarding-target-active')
                     .forEach((el) => el.classList.remove('onboarding-target-active'));
-                this.saveSessionState();
+                this.reset();
             });
 
             ConsoleCustom.log('Shepherd tour created successfully');
