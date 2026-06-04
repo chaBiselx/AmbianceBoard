@@ -1,221 +1,218 @@
 /* Shepherd.js Custom Theme for AmbianceBoard */
 
 .shepherd-theme-custom {
-  --shepherd-text-color: var(--bs-body-color);
-  --shepherd-bg-color: var(--bs-body-bg);
-  --shepherd-border-color: var(--bs-border-color);
-  --shepherd-highlighted-color: var(--bs-primary);
-  --shepherd-element-bg-color: var(--bs-body-bg);
-  --shepherd-font-family: var(--bs-font-sans-serif);
+    --shepherd-text-color: var(--bs-body-color);
+    --shepherd-bg-color: var(--bs-body-bg);
+    --shepherd-border-color: var(--bs-border-color);
+    --shepherd-highlighted-color: var(--bs-primary);
+    --shepherd-element-bg-color: var(--bs-body-bg);
+    --shepherd-font-family: var(--bs-font-sans-serif);
 }
 
 /* Shepherd Highlight overlay */
 .shepherd-highlight {
-  box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 /* Shepherd Tip (tooltip) */
 .shepherd-element {
-  border-radius: 8px;
-  background-color: var(--shepherd-element-bg-color);
-  border: 1px solid var(--shepherd-border-color);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-  z-index: 10000;
-  font-family: var(--shepherd-font-family);
-  color: var(--shepherd-text-color);
-  font-size: 0.93rem;
-  line-height: 1.35;
+    border-radius: 8px;
+    background-color: var(--shepherd-element-bg-color);
+    border: 1px solid var(--shepherd-border-color);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    font-family: var(--shepherd-font-family);
+    color: var(--shepherd-text-color);
+    font-size: 0.93rem;
+    line-height: 1.35;
+    animation: shepherd-pop-in 0.3s ease-out;
 }
 
 .shepherd-element.shepherd-has-title {
-  padding-top: 0;
+    padding-top: 0;
 }
 
 .shepherd-title {
-  font-weight: 600;
-  font-size: 1.02rem;
-  margin: 0;
-  padding: 0.7rem 0.85rem 0.3rem 0.85rem;
-  color: var(--bs-emphasis-color);
+    font-weight: 600;
+    font-size: 1.02rem;
+    margin: 0;
+    padding: 0.7rem 0.85rem 0.3rem 0.85rem;
+    color: var(--bs-emphasis-color);
 }
 
 .shepherd-header {
-  position: relative;
-  padding-right: 2.4rem;
+    position: relative;
+    padding-right: 2.4rem;
 }
 
 .shepherd-text {
-  padding: 0.35rem 0.85rem 0.65rem 0.85rem;
-  margin: 0;
-  color: var(--shepherd-text-color);
+    padding: 0.35rem 0.85rem 0.65rem 0.85rem;
+    margin: 0;
+    color: var(--shepherd-text-color);
 }
 
 .shepherd-arrow {
-  fill: var(--shepherd-element-bg-color);
-  stroke: var(--shepherd-border-color);
-  stroke-width: 1px;
+    fill: var(--shepherd-element-bg-color);
+    stroke: var(--shepherd-border-color);
+    stroke-width: 1px;
 }
 
 /* Shepherd Buttons */
 .shepherd-button {
-  padding: 0.42rem 0.8rem;
-  border-radius: 4px;
-  border: none;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-right: 0;
-  white-space: nowrap;
+    padding: 0.42rem 0.8rem;
+    border-radius: 4px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-right: 0;
+    white-space: nowrap;
 }
 
 .shepherd-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* Shepherd Footer (buttons container) */
 .shepherd-footer {
-  padding: 0.55rem 0.75rem 0.7rem 0.75rem;
-  display: flex;
-  gap: 0.4rem;
-  justify-content: flex-end;
-  align-items: center;
-  border-top: 1px solid var(--shepherd-border-color);
-  flex-wrap: nowrap;
+    padding: 0.55rem 0.75rem 0.7rem 0.75rem;
+    display: flex;
+    gap: 0.4rem;
+    justify-content: flex-end;
+    align-items: center;
+    border-top: 1px solid var(--shepherd-border-color);
+    flex-wrap: nowrap;
 }
 
 .shepherd-cancel-icon {
-  color: var(--bs-danger);
-  font-size: 1.1rem;
-  font-weight: 700;
-  width: 1.8rem;
-  height: 1.8rem;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 1px solid transparent;
-  background-color: transparent;
-  position: absolute;
-  top: 0.45rem;
-  right: 0.45rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    color: var(--bs-danger);
+    font-size: 1.1rem;
+    font-weight: 700;
+    width: 1.8rem;
+    height: 1.8rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    background-color: transparent;
+    position: absolute;
+    top: 0.45rem;
+    right: 0.45rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
 .shepherd-cancel-icon:hover {
-  color: #b02a37;
-  background-color: rgba(var(--bs-danger-rgb), 0.1);
-  border-color: rgba(var(--bs-danger-rgb), 0.35);
+    color: #b02a37;
+    background-color: rgba(var(--bs-danger-rgb), 0.1);
+    border-color: rgba(var(--bs-danger-rgb), 0.35);
 }
 
 .shepherd-cancel-icon:focus {
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.25);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-danger-rgb), 0.25);
 }
 
 .onboarding-target-active {
-  position: relative;
-  z-index: 20;
-  outline: 3px solid rgba(13, 110, 253, 0.9);
-  outline-offset: 2px;
-  border-radius: 6px;
-  box-shadow: 0 0 0 6px rgba(13, 110, 253, 0.2), 0 0 18px rgba(13, 110, 253, 0.45);
-  transition: box-shadow 0.2s ease, outline-color 0.2s ease;
+    position: relative;
+    z-index: 20;
+    outline: 3px solid rgba(13, 110, 253, 0.9);
+    outline-offset: 2px;
+    border-radius: 6px;
+    box-shadow: 0 0 0 6px rgba(13, 110, 253, 0.2), 0 0 18px rgba(13, 110, 253, 0.45);
+    transition: box-shadow 0.2s ease, outline-color 0.2s ease;
 }
 
 /* Modal Overlay (Shepherd SVG spotlight layer) */
 .shepherd-modal-overlay-container {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
-  pointer-events: none;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    pointer-events: none;
 }
 
 .shepherd-modal-overlay-container path {
-  fill: rgba(0, 0, 0, 0.3);
-  fill-rule: evenodd;
-  stroke: transparent;
-  stroke-width: 0;
-  shape-rendering: geometricPrecision;
+    fill: rgba(0, 0, 0, 0.3);
+    fill-rule: evenodd;
+    stroke: transparent;
+    stroke-width: 0;
+    shape-rendering: geometricPrecision;
 }
 
 /* Responsive adjustments */
 @media (max-width: 576px) {
-  .shepherd-element {
-    font-size: 0.9rem;
-  }
+    .shepherd-element {
+        font-size: 0.9rem;
+    }
 
-  .shepherd-title {
-    font-size: 1rem;
-  }
+    .shepherd-title {
+        font-size: 1rem;
+    }
 
-  .shepherd-button {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
-  }
+    .shepherd-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+        width: auto;
+        flex: 0 0 auto;
+        margin-right: 0;
+    }
 
-  .shepherd-footer {
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: 0.25rem;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-  }
-
-  .shepherd-button {
-    width: auto;
-    flex: 0 0 auto;
-    margin-right: 0;
-  }
+    .shepherd-footer {
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: 0.25rem;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
 }
 
 /* Dark theme support */
 [data-bs-theme='dark'] {
-  .shepherd-element {
-    background-color: #2a2a2a;
-    color: #f0f0f0;
-    border-color: #444;
-  }
+    .shepherd-element {
+        background-color: #2a2a2a;
+        color: #f0f0f0;
+        border-color: #444;
+    }
 
-  .shepherd-arrow {
-    fill: #2a2a2a;
-    stroke: #444;
-  }
+    .shepherd-arrow {
+        fill: #2a2a2a;
+        stroke: #444;
+    }
 
-  .shepherd-text {
-    color: #f0f0f0;
-  }
+    .shepherd-text {
+        color: #f0f0f0;
+    }
 
-  .shepherd-footer {
-    border-top-color: #444;
-  }
+    .shepherd-footer {
+        border-top-color: #444;
+    }
 }
 
 /* Animation for appearance */
 @keyframes shepherd-pop-in {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
-.shepherd-element {
-  animation: shepherd-pop-in 0.3s ease-out;
-}
+
 
 
 
 /* Progress indicator (optional) */
 .shepherd-progress {
-  font-size: 0.85rem;
-  color: var(--bs-secondary);
-  padding: 0.5rem 1rem 0 1rem;
-  text-align: right;
+    font-size: 0.85rem;
+    color: var(--bs-secondary);
+    padding: 0.5rem 1rem 0 1rem;
+    text-align: right;
 }

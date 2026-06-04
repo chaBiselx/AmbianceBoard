@@ -176,7 +176,7 @@ class MusicLabelerBuilder {
 
     private transformConfidenceToClass(confidence: number): string {
         if (confidence >= 0.4) return 'bg-success';
-        if (confidence >= 0.30) return 'bg-info';
+        if (confidence >= 0.3) return 'bg-info';
         return 'bg-light text-dark';
     }
 

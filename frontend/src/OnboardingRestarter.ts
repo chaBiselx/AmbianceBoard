@@ -1,6 +1,7 @@
 import OnboardingManager from '@/modules/OnboardingManager';
 import Notification from '@/modules/General/Notifications';
 import OnboardingShepherd from '@/modules/OnboardingShepherd';
+import ConsoleTraceServeur from '@/modules/General/ConsoleTraceServeur';
 
 /**
  * Gestionnaire pour les boutons de lancement/relance de la visite guidée
@@ -18,14 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (shepherd.getShepherdTour()) {
           shepherd.start();
         } else {
-          Notification.sendNotification({
+          Notification.createClientNotification({
             title: 'En cours de chargement',
             body: 'Veuillez attendre le chargement complet de la visite guidée...',
             type: 'info',
           });
         }
       } catch (error) {
-        Notification.sendNotification({
+        ConsoleTraceServeur.error('Error starting onboarding tour:', error);
+        Notification.createClientNotification({
           title: 'Erreur',
           body: 'Impossible de lancer la visite guidée.',
           type: 'error',
@@ -42,7 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const manager = new OnboardingManager();
         manager.restartTour();
       } catch (error) {
-        Notification.sendNotification({
+        ConsoleTraceServeur.error('Error restarting onboarding tour:', error);
+        Notification.createClientNotification({
           title: 'Erreur',
           body: 'Impossible de relancer la visite guidée. Veuillez rafraîchir la page.',
           type: 'error',
