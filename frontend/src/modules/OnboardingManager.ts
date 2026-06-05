@@ -2,8 +2,7 @@ import { OnboardingShepherd, IOnboardingConfig } from './OnboardingShepherd';
 import {
     buildStepsList,
     IOnboardingApiStep,
-    OnboardingLocale,
-} from './OnboardingSteps';
+ } from './OnboardingSteps';
 import { IOnboardingContextResponse } from './OnboardingManager.types';
 import ConsoleCustom from './General/ConsoleCustom';
 import Notification from './General/Notifications';
@@ -13,11 +12,11 @@ import Notification from './General/Notifications';
  * Point d'entrée simple pour intégration dans General.ts
  */
 export class OnboardingManager {
-    private shepherd: OnboardingShepherd;
+    private readonly shepherd: OnboardingShepherd;
+    private readonly storageKeySession = 'ambiance_shepherd_session';
     private isInitialized = false;
     private isInitializing = false;
     private listenersAttached = false;
-    private storageKeySession = 'ambiance_shepherd_session';
 
     constructor() {
         this.shepherd = OnboardingShepherd.getInstance();
@@ -49,7 +48,6 @@ export class OnboardingManager {
                 return;
             }
 
-            const locale = this.normalizeLocale(apiContext.locale) ?? this.getLocale();
             const isAuthenticated = this.isAuthenticatedFromSteps(apiContext.steps);
 
             // Créer la configuration
@@ -58,7 +56,6 @@ export class OnboardingManager {
                     steps: apiContext.steps,
                 }),
                 isAuthenticated,
-                locale,
                 labels: apiContext.labels,
             };
 
@@ -117,14 +114,6 @@ export class OnboardingManager {
             ConsoleCustom.warn(`Onboarding API unavailable, using local fallback: ${error}`);
             return null;
         }
-    }
-
-    private normalizeLocale(locale: string | undefined): OnboardingLocale | null {
-        if (!locale) {
-            return null;
-        }
-
-        return locale.startsWith('en') ? 'en' : 'fr';
     }
 
     private isAuthenticatedFromSteps(steps: IOnboardingApiStep[]): boolean {
@@ -190,7 +179,7 @@ export class OnboardingManager {
                 tour.start();
             } else {
                 ConsoleCustom.warn('Shepherd tour not initialized yet');
-                Notification.sendNotification({
+                Notification.createClientNotification({
                     title: 'En cours de chargement',
                     body: 'Veuillez attendre le chargement complet de la visite guidée...',
                     type: 'info',
@@ -198,7 +187,7 @@ export class OnboardingManager {
             }
         } catch (error) {
             ConsoleCustom.error('Error starting tour:', error);
-            Notification.sendNotification({
+            Notification.createClientNotification({
                 title: 'Erreur',
                 body: 'Impossible de lancer la visite guidée.',
                 type: 'error',
@@ -238,18 +227,6 @@ export class OnboardingManager {
      */
     private clearResumeStep(): void {
         sessionStorage.removeItem(this.storageKeySession);
-    }
-
-    /**
-     * Récupère la langue locale
-     */
-    private getLocale(): 'fr' | 'en' {
-        // Vérifier l'attribut lang de <html>
-        const lang = document.documentElement.lang;
-        if (lang && lang.startsWith('en')) {
-            return 'en';
-        }
-        return 'fr'; // Défaut
     }
 
     /**

@@ -32,8 +32,6 @@ export interface IOnboardingConfig {
     steps: IShepherdStep[];
     /** Indique si l'utilisateur est authentifié */
     isAuthenticated: boolean;
-    /** Langue (fr, en) */
-    locale: 'fr' | 'en';
     /** Labels de boutons injectés par API backend */
     labels: IOnboardingLabels;
 }
@@ -53,8 +51,8 @@ export class OnboardingShepherd {
     private shepherd: Shepherd.Tour | null = null;
     private config: IOnboardingConfig | null = null;
     private completedSteps: Set<string> = new Set();
-    private storageKeyLocal = 'ambiance_shepherd_local';
-    private storageKeySession = 'ambiance_shepherd_session';
+    private readonly storageKeyLocal = 'ambiance_shepherd_local';
+    private readonly storageKeySession = 'ambiance_shepherd_session';
 
     /**
      * Constructeur privé pour pattern singleton
@@ -75,7 +73,7 @@ export class OnboardingShepherd {
     public initialize(config: IOnboardingConfig): void {
         try {
             ConsoleCustom.log('Initializing OnboardingShepherd...');
-            ConsoleCustom.log(`Config: authenticated=${config.isAuthenticated}, locale=${config.locale}, steps=${config.steps.length}`);
+            ConsoleCustom.log(`Config: authenticated=${config.isAuthenticated}, steps=${config.steps.length}`);
 
             // Prevent orphan tours creating multiple visible popups.
             if (this.shepherd) {
@@ -165,7 +163,7 @@ export class OnboardingShepherd {
     public goToStep(stepIndex: number): void {
         if (this.shepherd && this.config) {
             const currentStep = this.config.steps[stepIndex];
-            if (currentStep && currentStep.redirectUrl) {
+            if (currentStep?.redirectUrl) {
                 // Marquer l'étape précédente comme complétée
                 if (stepIndex > 0) {
                     this.markAsCompleted(this.config.steps[stepIndex - 1].id);
@@ -217,7 +215,7 @@ export class OnboardingShepherd {
                 useModalOverlay: true,
                 defaultStepOptions: {
                     scrollTo: { behavior: 'smooth', block: 'center' },
-                    classes: `shepherd-theme-custom shepherd-${config.locale}`,
+                    classes: `shepherd-theme-custom`,
                 },
             });
 
@@ -304,7 +302,7 @@ export class OnboardingShepherd {
                             } else {
                                 // Vérifier si l'étape suivante a une redirection
                                 const nextStep = this.config?.steps[index + 1];
-                                if (nextStep && nextStep.redirectUrl) {
+                                if (nextStep?.redirectUrl) {
                                     // Sauvegarder l'état et rediriger
                                     this.saveSessionState(index + 1);
                                     globalThis.location.href = nextStep.redirectUrl;

@@ -205,7 +205,7 @@ export default class MergedFadePreviewCanvasRenderer {
         }
 
         const playlistDefaults = defaultFadesByType[playlistType];
-        const fallbackValue = fieldName === 'fadeIn' ? 'EASE' : 'EASE';
+        const fallbackValue = 'EASE';
         return playlistDefaults?.[fieldName] || fallbackValue;
     }
 
