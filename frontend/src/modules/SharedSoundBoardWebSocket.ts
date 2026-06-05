@@ -8,6 +8,7 @@ import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import SoundBoardEventListener from '@/modules/SoundBoardEventListener';
+import StreamConnectionWarmup from '@/modules/StreamConnectionWarmup';
 
 type DataMusic = {
     'track': number | null
@@ -276,6 +277,7 @@ class SharedSoundBoardWebSocket {
                             buttonPlaylist.dataset.lastActivation = lastActivation;
                         }
                     }
+                    new StreamConnectionWarmup().initialize();
                 })
                 .catch(error => {
                     ConsoleCustom.error('Erreur lors de la requête AJAX:', error);

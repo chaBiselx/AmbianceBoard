@@ -209,6 +209,9 @@ Nouveautés
 - Ajout d'une visite guidé 
 - Ajout d'un fichier llms.txt pour SEO
 
+Corrections
+- Correction de la latence lors du premier lancemement du fichier audio
+
 
 
 ### X.Y.Z - Date
