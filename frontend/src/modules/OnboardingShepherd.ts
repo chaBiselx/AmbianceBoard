@@ -205,7 +205,7 @@ export class OnboardingShepherd {
         try {
             ConsoleCustom.log(`Creating Shepherd tour with ${config.steps.length} total steps`);
 
-            const filteredSteps = this.filterSteps(config.steps, config);
+            const filteredSteps = this.filterSteps(config.steps);
 
             const shepherdSteps = filteredSteps.map((step, index) =>
                 this.createShepherdStep(step, index, filteredSteps.length),
@@ -338,7 +338,7 @@ export class OnboardingShepherd {
     /**
      * Filtre les étapes selon la condition et l'authentification
      */
-    private filterSteps(steps: IShepherdStep[], config: IOnboardingConfig): IShepherdStep[] {
+    private filterSteps(steps: IShepherdStep[]): IShepherdStep[] {
         return steps.filter((step) => {
             // Vérifier la condition personnalisée
             if (step.condition && !step.condition()) {
@@ -386,27 +386,13 @@ export class OnboardingShepherd {
      */
     private saveSessionState(nextStepIndex?: number): void {
         const sessionState = {
-            currentStep: nextStepIndex ?? this.shepherd?.steps.indexOf(this.shepherd.getCurrentStep()!) ?? 0,
+            currentStep: nextStepIndex ?? this.shepherd?.steps.indexOf(this.shepherd.getCurrentStep()) ?? 0,
             timestamp: new Date().toISOString(),
         };
         sessionStorage.setItem(this.storageKeySession, JSON.stringify(sessionState));
     }
 
-    /**
-     * Restaure l'état de session
-     */
-    private restoreSessionState(): number | null {
-        const sessionState = sessionStorage.getItem(this.storageKeySession);
-        if (sessionState) {
-            try {
-                const state = JSON.parse(sessionState);
-                return state.currentStep;
-            } catch {
-                return null;
-            }
-        }
-        return null;
-    }
+
 
     /**
      * Génère la liste des étapes finales (publiques + privées selon auth)
@@ -414,7 +400,7 @@ export class OnboardingShepherd {
     public getEnabledSteps(): IShepherdStep[] {
         if (!this.config) return [];
 
-        return this.filterSteps(this.config.steps, this.config);
+        return this.filterSteps(this.config.steps);
     }
 
     /**

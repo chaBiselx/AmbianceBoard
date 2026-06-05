@@ -105,7 +105,7 @@ export class OnboardingManager {
             const data = await response.json() as IOnboardingContextResponse;
 
             // Defensive fallback on malformed payload while preserving graceful behavior.
-            if (!data || !data.steps || !data.feature_flags) {
+            if (!data?.steps || !data?.feature_flags) {
                 throw new Error('Malformed onboarding context payload');
             }
 
