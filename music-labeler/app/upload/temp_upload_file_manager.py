@@ -1,3 +1,4 @@
+import asyncio
 import os
 import tempfile
 from pathlib import Path
@@ -14,19 +15,24 @@ class TempUploadFileManager:
     async def save(self, upload_file: UploadFile) -> str:
         """Sauvegarde l'upload en temporaire et retourne le chemin local."""
         suffix = Path(upload_file.filename or "").suffix
-        with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
-            size = 0
-            while chunk := await upload_file.read(1024 * 1024):
-                size += len(chunk)
-                if size > self.max_upload_size:
-                    tmp.close()
-                    os.unlink(tmp.name)
-                    raise HTTPException(
-                        status_code=413,
-                        detail=f"Fichier trop volumineux. Taille max : {self.max_upload_size // (1024 * 1024)} Mo",
-                    )
-                tmp.write(chunk)
-            return tmp.name
+        tmp_path = ""
+        try:
+            with tempfile.NamedTemporaryFile(mode="wb", suffix=suffix, delete=False) as tmp:
+                tmp_path = tmp.name
+                size = 0
+                while chunk := await upload_file.read(1024 * 1024):
+                    size += len(chunk)
+                    if size > self.max_upload_size:
+                        raise HTTPException(
+                            status_code=413,
+                            detail=f"Fichier trop volumineux. Taille max : {self.max_upload_size // (1024 * 1024)} Mo",
+                        )
+                    await asyncio.to_thread(tmp.write, chunk)
+                await asyncio.to_thread(tmp.flush)
+            return tmp_path
+        except Exception:
+            self.cleanup(tmp_path)
+            raise
 
     @staticmethod
     def cleanup(tmp_path: str) -> None:
