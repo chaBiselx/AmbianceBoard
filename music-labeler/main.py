@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from typing import Annotated
 
 import librosa
 from fastapi import Depends, FastAPI, File, HTTPException, Query, Request, UploadFile
@@ -46,11 +47,11 @@ def _verify_token(request: Request) -> None:
 # Routes
 # ---------------------------------------------------------------------------
 
-@app.post("/label", dependencies=[Depends(_verify_token)])
+@app.post("/label")
 async def label_upload(
-    file: Annotated[UploadFile, Depends(File(...))],
-    top_k: Annotated[int, Query(default=3, ge=1, le=10)] = 3,
-    _: None = Depends(_verify_token),
+    file: Annotated[UploadFile, File()],
+    top_k: Annotated[int, Query(ge=1, le=10)] = 3,
+    _: Annotated[None, Depends(_verify_token)] = None,
 ):
     
     """Labelise un fichier audio uploadé. Le fichier est supprimé après analyse."""

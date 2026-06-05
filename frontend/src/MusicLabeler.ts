@@ -1,4 +1,6 @@
 import Csrf from './modules/General/Csrf';
+import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
+
 
 document.addEventListener('DOMContentLoaded', () => {
     new MusicLabelerPage().init();
@@ -104,6 +106,7 @@ class MusicLabelerPage {
             btn.innerHTML = '<i class="fas fa-check text-success"></i>';
             btn.classList.replace('btn-outline-primary', 'btn-outline-success');
         } catch (e) {
+            ConsoleTesteur.error('Network error during analysis:', e);
             resultCell.innerHTML = '<span class="badge bg-danger">Erreur réseau</span>';
             btn.disabled = false;
             btn.innerHTML = '<i class="fas fa-tag"></i> Retry';

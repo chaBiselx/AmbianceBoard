@@ -16,6 +16,18 @@ type CurveColors = {
 
 type FadeStrategy = { calculateVolume(startVolume: number, endVolume: number, progress: number): number };
 
+type DrawCurveDto = {
+    strategy: FadeStrategy;
+    color: string;
+    startVolume: number;
+    endVolume: number;
+    padding: number;
+    drawWidth: number;
+    drawHeight: number;
+    canvasHeight: number;
+    lineWidth: number;
+};
+
 const FADE_ENUM_TO_STRATEGY: Record<string, string> = {
     DISABLED: 'disabled',
     LINEAR: 'linear',
@@ -82,15 +94,17 @@ export default class MergedFadePreviewCanvasRenderer {
             try {
                 this.drawCurve(
                     ctx,
-                    FadeModule.FadeSelector.selectTypeFade(normalizedFadeIn),
-                    colors.IN,
-                    0,
-                    1,
-                    padding,
-                    drawWidth,
-                    drawHeight,
-                    height,
-                    2.6,
+                    {
+                        strategy: FadeModule.FadeSelector.selectTypeFade(normalizedFadeIn),
+                        color: colors.IN,
+                        startVolume: 0,
+                        endVolume: 1,
+                        padding,
+                        drawWidth,
+                        drawHeight,
+                        canvasHeight: height,
+                        lineWidth: 2.6,
+                    },
                 );
             } catch {
                 messages.push('Fade in non reconnu ' + effectiveFadeIn);
@@ -103,15 +117,17 @@ export default class MergedFadePreviewCanvasRenderer {
             try {
                 this.drawCurve(
                     ctx,
-                    FadeModule.FadeSelector.selectTypeFade(normalizedFadeOut),
-                    colors.OUT,
-                    1,
-                    0,
-                    padding,
-                    drawWidth,
-                    drawHeight,
-                    height,
-                    2.6,
+                    {
+                        strategy: FadeModule.FadeSelector.selectTypeFade(normalizedFadeOut),
+                        color: colors.OUT,
+                        startVolume: 1,
+                        endVolume: 0,
+                        padding,
+                        drawWidth,
+                        drawHeight,
+                        canvasHeight: height,
+                        lineWidth: 2.6,
+                    },
                 );
             } catch {
                 messages.push('Fade out non reconnu ' + effectiveFadeOut);
@@ -209,16 +225,19 @@ export default class MergedFadePreviewCanvasRenderer {
 
     private drawCurve(
         ctx: CanvasRenderingContext2D,
-        strategy: FadeStrategy,
-        color: string,
-        startVolume: number,
-        endVolume: number,
-        padding: number,
-        drawWidth: number,
-        drawHeight: number,
-        canvasHeight: number,
-        lineWidth: number,
+        dto: DrawCurveDto,
     ): void {
+        const {
+            strategy,
+            color,
+            startVolume,
+            endVolume,
+            padding,
+            drawWidth,
+            drawHeight,
+            canvasHeight,
+            lineWidth,
+        } = dto;
         const STEPS = 100;
         ctx.strokeStyle = color;
         ctx.lineWidth = lineWidth;

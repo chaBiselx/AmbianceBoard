@@ -10,6 +10,7 @@ from main.architecture.persistence.repository.MusicRepository import MusicReposi
 
 @tag('unitaire')
 class MusicRepositoryTest(TestCase):
+    CONTENT_MP3 = 'audio/mp3'
 
 	def setUp(self):
 		patcher = patch('main.domain.brokers.message.ReduceBiteRateMessenger.reduce_bit_rate.apply_async')
@@ -20,8 +21,8 @@ class MusicRepositoryTest(TestCase):
 		self.playlist = Playlist.objects.create(name='Music Repo Playlist', user=self.user)
 		self.repository = MusicRepository()
 
-		self.shared_file = SimpleUploadedFile('shared.mp3', b'shared-content', content_type='audio/mp3')
-		self.unique_file = SimpleUploadedFile('unique.mp3', b'unique-content', content_type='audio/mp3')
+		self.shared_file = SimpleUploadedFile('shared.mp3', b'shared-content', content_type=self.CONTENT_MP3)
+		self.unique_file = SimpleUploadedFile('unique.mp3', b'unique-content', content_type=self.CONTENT_MP3)
 
 		self.shared_music = Music.objects.create(
 			fileName='shared',
@@ -41,7 +42,7 @@ class MusicRepositoryTest(TestCase):
 		self.unique_music = Music.objects.create(
 			fileName='unique',
 			alternativeName='Unique',
-			file=SimpleUploadedFile('unique-2.mp3', b'unique-2-content', content_type='audio/mp3'),
+			file=SimpleUploadedFile('unique-2.mp3', b'unique-2-content', content_type=self.CONTENT_MP3),
 			playlist=self.playlist,
 		)
 
