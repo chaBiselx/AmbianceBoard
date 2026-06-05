@@ -57,7 +57,7 @@ class PlaylistDuplicationServiceTest(TestCase):
             useSpecificDelay=True,
             maxDelay=10,
             fadeIn=FadeEnum.EASE_OUT.name,
-            fadeOut=FadePlaylistEnum.OFF.name
+            fadeOut=FadeEnum.DISABLED.name
         )
 
     def test_duplicate_creates_new_playlist_with_different_uuid(self):
