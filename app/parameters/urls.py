@@ -36,6 +36,7 @@ urlpatterns = [
     #SEO 
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots_txt"),
     path("sitemap.xml", TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml"), name="sitemap_xml"),
+    path("llms.txt", TemplateView.as_view(template_name="llms.txt", content_type="text/plain"), name="llms_txt"),
 
     # Pages publiques
     path("", home, name="home"),
