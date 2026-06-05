@@ -209,6 +209,9 @@ Nouveautés
 - Ajout d'une visite guidé 
 - Ajout d'un fichier llms.txt pour SEO
 
+Améliorations
+- Les Soundboards publiques n'afficherons plus les soundboard sans boutons
+
 Corrections
 - Correction de la latence lors du premier lancemement du fichier audio
 
