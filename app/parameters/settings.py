@@ -441,8 +441,8 @@ if(DEBUG_TOOLBAR):
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 #Label 
-MUSIC_LABELER_URL = os.getenv("MUSIC_LABELER_URL", "http://music-labeler:8089")
-MUSIC_LABELER_TOKEN = os.getenv("MUSIC_LABELER_TOKEN", "")
+MUSIC_LABELER_URL = os.getenv("MUSIC_LABELER_URL")
+MUSIC_LABELER_TOKEN = os.getenv("MUSIC_LABELER_TOKEN")
 
 
 # CRON JOBS
