@@ -1,4 +1,6 @@
 from django import forms
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError as DjangoValidationError
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.architecture.persistence.models.User import User
 from main.domain.common.enum.PermissionEnum import PermissionEnum
@@ -44,6 +46,16 @@ class ManagerSendEmailForm(BootstrapFormMixin, forms.Form):
         }),
     )
 
+    external_emails = forms.CharField(
+        label='Emails externes',
+        required=False,
+        widget=forms.Textarea(attrs={
+            'rows': 3,
+            'placeholder': 'exemple@domaine.fr, autre@domaine.fr',
+        }),
+        help_text='Ajoutez des emails séparés par des virgules, points-virgules, espaces ou retours à la ligne.',
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['message'].widget.attrs['class'] = self.fields['message'].widget.attrs.get('class', '') + ' editor-container'
@@ -53,10 +65,27 @@ class ManagerSendEmailForm(BootstrapFormMixin, forms.Form):
         cleaned_data = super().clean()
         group = cleaned_data.get('recipient_group')
         recipients = cleaned_data.get('recipients')
+        external_emails_raw = cleaned_data.get('external_emails')
+        external_emails = self._parse_external_emails(external_emails_raw)
 
-        if not group and not recipients:
+        if external_emails:
+            invalid_emails = []
+            for email in external_emails:
+                try:
+                    validate_email(email)
+                except DjangoValidationError:
+                    invalid_emails.append(email)
+
+            if invalid_emails:
+                raise forms.ValidationError(
+                    f"Adresse(s) email invalide(s) : {', '.join(invalid_emails)}"
+                )
+
+        cleaned_data['external_emails'] = external_emails
+
+        if not group and not recipients and not external_emails:
             raise forms.ValidationError(
-                'Veuillez sélectionner un groupe de destinataires ou choisir des utilisateurs manuellement.'
+                'Veuillez sélectionner un groupe de destinataires, choisir des utilisateurs manuellement ou renseigner des emails externes.'
             )
 
         if group:
@@ -70,7 +99,36 @@ class ManagerSendEmailForm(BootstrapFormMixin, forms.Form):
                 if not user.email:
                     raise forms.ValidationError(f"L'utilisateur {user.username} n'a pas d'adresse email.")
 
+        if cleaned_data.get('recipients') and cleaned_data.get('external_emails'):
+            existing_recipients = {user.email.lower() for user in cleaned_data['recipients'] if user.email}
+            cleaned_data['external_emails'] = [
+                email for email in cleaned_data['external_emails'] if email.lower() not in existing_recipients
+            ]
+
         return cleaned_data
+
+    @staticmethod
+    def _parse_external_emails(external_emails_raw: str) -> list[str]:
+        if not external_emails_raw:
+            return []
+
+        normalized = external_emails_raw
+        for separator in [',', ';', '\n', '\t']:
+            normalized = normalized.replace(separator, ' ')
+
+        emails: list[str] = []
+        seen: set[str] = set()
+        for candidate in normalized.split(' '):
+            email = candidate.strip()
+            if not email:
+                continue
+            lowered_email = email.lower()
+            if lowered_email in seen:
+                continue
+            seen.add(lowered_email)
+            emails.append(email)
+
+        return emails
 
     @staticmethod
     def _resolve_group(group: str):

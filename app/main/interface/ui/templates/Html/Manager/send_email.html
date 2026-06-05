@@ -59,6 +59,19 @@
                         </div>
 
                         <div class="form-group mb-3">
+                            <label for="{{ form.external_emails.id_for_label }}">{{ form.external_emails.label }}</label>
+                            {{ form.external_emails }}
+                            {% if form.external_emails.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.external_emails.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="form-text text-muted">
+                                Ajoutez ici des adresses non enregistrées en base (séparées par virgule, point-virgule, espace ou retour à la ligne).
+                            </small>
+                        </div>
+
+                        <div class="form-group mb-3">
                             <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
                             {{ form.subject }}
                             {% if form.subject.errors %}
