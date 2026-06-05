@@ -238,6 +238,33 @@ class PlaylistDuplicationServiceTest(TestCase):
         self.assertNotEqual(duplicated_music.id, music.id)
         self.assertNotEqual(duplicated_music.file.name, music.file.name)
 
+    def test_duplicate_preserves_music_file_content(self):
+        """Test que la duplication conserve le contenu du fichier audio"""
+        audio_content = b'preserved audio payload'
+        audio_file = SimpleUploadedFile("preserved.mp3", audio_content, content_type=local_format_audio1)
+
+        music = Music.objects.create(
+            playlist=self.source_playlist,
+            fileName="preserved.mp3",
+            file=audio_file,
+            alternativeName="Preserved Music",
+            duration=120.0
+        )
+
+        service = PlaylistDuplicationService(self.source_playlist, self.target_user)
+        duplicated = service.duplicate()
+
+        duplicated_music = Music.objects.get(playlist=duplicated)
+        with duplicated_music.file.open('rb') as duplicated_file:
+            duplicated_content = duplicated_file.read()
+
+        with music.file.open('rb') as source_file:
+            source_content = source_file.read()
+
+        self.assertEqual(duplicated_content, source_content)
+        self.assertTrue(duplicated_music.file.name.endswith('.mp3'))
+        self.assertNotEqual(duplicated_music.file.name, music.file.name)
+
     def test_duplicate_copies_link_music(self):
         """Test que les LinkMusic sont copiés correctement"""
         # Créer un LinkMusic

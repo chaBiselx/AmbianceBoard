@@ -172,17 +172,17 @@ class PlaylistDuplicationService:
             duration=source_music.duration,
             fileName=source_music.fileName,
         )
-        
-        # Copier le fichier avec un nouveau nom UUID
+
         if source_music.file:
-            new_uuid = uuid.uuid4()
-            file_extension = source_music.file.name.split('.')[-1]
-            duplicated_music.file.save(
-                f"{new_uuid}.{file_extension}",
-                ContentFile(source_music.file.read()),
-                save=False
-            )
-        
+            source_music.file.open('rb')
+            try:
+                duplicated_music.file = ContentFile(
+                    source_music.file.read(),
+                    name=source_music.file.name,
+                )
+            finally:
+                source_music.file.close()
+
         duplicated_music.save()
         
         # si le source_music a des labels, les copier aussi
