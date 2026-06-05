@@ -27,7 +27,7 @@ class StreamConnectionWarmup {
             if (!streamUrl) continue;
 
             try {
-                const origin = new URL(streamUrl, window.location.origin).origin;
+                const origin = new URL(streamUrl, globalThis.location.origin).origin;
                 origins.add(origin);
             } catch {
                 // URL invalide: ignoree pour garder une initialisation robuste.

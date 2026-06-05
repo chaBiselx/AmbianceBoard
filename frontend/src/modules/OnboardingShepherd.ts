@@ -65,9 +65,7 @@ export class OnboardingShepherd {
      * Récupère l'instance unique ou la crée
      */
     public static getInstance(): OnboardingShepherd {
-        if (!OnboardingShepherd.instance) {
-            OnboardingShepherd.instance = new OnboardingShepherd();
-        }
+        OnboardingShepherd.instance ??= new OnboardingShepherd();
         return OnboardingShepherd.instance;
     }
 
@@ -94,10 +92,10 @@ export class OnboardingShepherd {
 
             this.createShepherdTour(config);
 
-            if (!this.shepherd) {
-                ConsoleCustom.warn('Shepherd tour is null after creation');
-            } else {
+            if (this.shepherd) {
                 ConsoleCustom.log('OnboardingShepherd initialized successfully');
+            } else {
+                ConsoleCustom.warn('Shepherd tour is null after creation');
             }
         } catch (error) {
             ConsoleCustom.error('Error initializing OnboardingShepherd:', error);
@@ -158,7 +156,7 @@ export class OnboardingShepherd {
         this.completedSteps.clear();
         localStorage.removeItem(this.storageKeyLocal);
         sessionStorage.removeItem(this.storageKeySession);
-      
+
     }
 
     /**
@@ -174,7 +172,7 @@ export class OnboardingShepherd {
                 }
                 // Sauvegarder l'état et rediriger
                 this.saveSessionState(stepIndex);
-                window.location.href = currentStep.redirectUrl;
+                globalThis.location.href = currentStep.redirectUrl;
             } else {
                 this.shepherd.show(stepIndex);
             }
@@ -210,7 +208,6 @@ export class OnboardingShepherd {
             ConsoleCustom.log(`Creating Shepherd tour with ${config.steps.length} total steps`);
 
             const filteredSteps = this.filterSteps(config.steps, config);
-            ConsoleCustom.log(`Filtered to ${filteredSteps.length} steps for user (authenticated: ${config.isAuthenticated})`);
 
             const shepherdSteps = filteredSteps.map((step, index) =>
                 this.createShepherdStep(step, index, filteredSteps.length),
@@ -228,7 +225,6 @@ export class OnboardingShepherd {
 
             shepherdSteps.forEach((step, index) => {
                 this.shepherd!.addStep(step);
-                ConsoleCustom.log(`Added step ${index + 1}: ${step.id}`);
             });
 
             // Événement de fin de tour
@@ -311,7 +307,7 @@ export class OnboardingShepherd {
                                 if (nextStep && nextStep.redirectUrl) {
                                     // Sauvegarder l'état et rediriger
                                     this.saveSessionState(index + 1);
-                                    window.location.href = nextStep.redirectUrl;
+                                    globalThis.location.href = nextStep.redirectUrl;
                                 } else {
                                     this.shepherd.next();
                                 }

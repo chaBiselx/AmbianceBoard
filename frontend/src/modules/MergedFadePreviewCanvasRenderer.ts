@@ -34,8 +34,8 @@ export default class MergedFadePreviewCanvasRenderer {
         const fadeOutSelect = document.getElementById('id_fadeOut') as HTMLSelectElement | null;
         const typeSelect = document.getElementById('id_typePlaylist') as HTMLSelectElement | null;
         const canvas = document.getElementById('canvas-fade-merged') as HTMLCanvasElement | null;
-        const messageEl = document.getElementById('fade-merged-preview-msg') as HTMLElement | null;
-        const legendEl = document.getElementById('fade-merged-preview-legend') as HTMLElement | null;
+        const messageEl = document.getElementById('fade-merged-preview-msg');
+        const legendEl = document.getElementById('fade-merged-preview-legend');
 
         if (!fadeInSelect || !fadeOutSelect || !typeSelect || !canvas || !messageEl || !legendEl) {
             return;

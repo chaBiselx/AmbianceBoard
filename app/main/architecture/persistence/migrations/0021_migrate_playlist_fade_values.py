@@ -15,9 +15,9 @@ def _map_legacy_yes(type_playlist: str) -> str:
 
 
 def forwards_migrate_fade_values(apps, schema_editor):
-    Playlist = apps.get_model('main', 'Playlist')
+    playlist_model = apps.get_model('main', 'Playlist')
 
-    for playlist in Playlist.objects.all().only('id', 'typePlaylist', 'fadeIn', 'fadeOut'):
+    for playlist in playlist_model.objects.all().only('id', 'typePlaylist', 'fadeIn', 'fadeOut'):
         updated_fields = []
 
         if playlist.fadeIn == 'NO':
