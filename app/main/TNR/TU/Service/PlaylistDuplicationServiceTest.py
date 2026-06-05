@@ -22,6 +22,7 @@ from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
+from main.domain.common.enum.FadeEnum import FadeEnum
 from main.domain.common.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
 
 local_format_audio1 = "audio/mpeg"
@@ -55,8 +56,8 @@ class PlaylistDuplicationServiceTest(TestCase):
             colorText="#FFFFFF",
             useSpecificDelay=True,
             maxDelay=10,
-            fadeIn=FadePlaylistEnum.YES.name,
-            fadeOut=FadePlaylistEnum.NO.name
+            fadeIn=FadeEnum.EASE_OUT.name,
+            fadeOut=FadePlaylistEnum.OFF.name
         )
 
     def test_duplicate_creates_new_playlist_with_different_uuid(self):

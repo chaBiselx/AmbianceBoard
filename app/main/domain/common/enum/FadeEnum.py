@@ -12,6 +12,7 @@ class FadeEnum(BaseEnum):
     Énumération des types d'effets de fade audio.
     
     Définit les courbes de transition pour les effets audio :
+    - DISABLED : Transition désactivée
     - LINEAR : Transition linéaire uniforme
     - EASE : Transition standard avec accélération/décélération
     - EASE_IN : Transition avec accélération progressive
@@ -22,6 +23,7 @@ class FadeEnum(BaseEnum):
     - EASE_OUT_CUBIC : Transition cubique en sortie
     """
     
+    DISABLED = "disabled"
     LINEAR = "linear"
     EASE = "ease"
     EASE_IN = "ease-in"

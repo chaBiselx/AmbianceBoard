@@ -1,8 +1,11 @@
+import json
 from django import forms
 from main.architecture.persistence.models.Playlist import Playlist
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
 from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.strategy.PlaylistStrategy import PlaylistStrategy
 
 
 
@@ -26,6 +29,25 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        strategy_factory = PlaylistStrategy()
+        default_fades_by_type = {
+            PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name: {
+                "fadeIn": strategy_factory.get_strategy(PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name).default_data['fadeInType'],
+                "fadeOut": strategy_factory.get_strategy(PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name).default_data['fadeOutType'],
+            },
+            PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.name: {
+                "fadeIn": strategy_factory.get_strategy(PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.name).default_data['fadeInType'],
+                "fadeOut": strategy_factory.get_strategy(PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.name).default_data['fadeOutType'],
+            },
+            PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT.name: {
+                "fadeIn": strategy_factory.get_strategy(PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT.name).default_data['fadeInType'],
+                "fadeOut": strategy_factory.get_strategy(PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT.name).default_data['fadeOutType'],
+            },
+        }
+        self.fields['typePlaylist'].widget.attrs.update({
+            'data-default-fades': json.dumps(default_fades_by_type)
+        })
+
         # Supprime le lien si un fichier existe
         if self.instance and self.instance.icon:
             self.fields['icon'].widget.attrs.update({'placeholder': 'Choisissez un nouveau fichier'})

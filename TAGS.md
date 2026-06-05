@@ -208,9 +208,11 @@ Nouveautés
 - Ajout d'une IA en local pour labelliser les pistes audios (BETA-TEST)
 - Ajout d'une visite guidé 
 - Ajout d'un fichier llms.txt pour SEO
+- Ajout d'un visuel pour les fondues d'entrée et de sortie
 
 Améliorations
 - Les Soundboards publiques n'afficherons plus les soundboard sans boutons
+- Pouvoir choisir le type de Fade IN/OUT sur un bouton
 
 Corrections
 - Correction de la latence lors du premier lancemement du fichier audio

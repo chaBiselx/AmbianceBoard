@@ -8,6 +8,7 @@ Ce service est responsable de la récupération des données spécifiques
 from typing import Any, Dict
 from main.domain.common.strategy.PlaylistStrategy import PlaylistStrategy
 from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
+from main.domain.common.enum.FadeEnum import FadeEnum
 
 
 class PlaylistDataService:
@@ -27,8 +28,8 @@ class PlaylistDataService:
         Récupère les données de configuration de la playlist selon son type.
         
         Applique les surcharges de fadeIn/fadeOut si elles sont définies
-        sur la playlist (YES ou NO), sinon utilise les valeurs par défaut
-        de la stratégie.
+        sur la playlist (une courbe FadeEnum), sinon utilise les
+        valeurs par défaut de la stratégie.
         
         Args:
             playlist: Instance du modèle Playlist
@@ -49,7 +50,7 @@ class PlaylistDataService:
         """
         Applique la surcharge de configuration fade (fadeIn ou fadeOut).
         
-        Si la playlist a une configuration spécifique (YES ou NO), 
+        Si la playlist a une configuration spécifique (FadeEnum),
         elle remplace la valeur par défaut de la stratégie.
         DEFAULT conserve la valeur de la stratégie.
         
@@ -63,14 +64,13 @@ class PlaylistDataService:
         """
         fade_value = getattr(playlist, fade_type, FadePlaylistEnum.DEFAULT.name)
         
-        if fade_value == FadePlaylistEnum.YES.name:
-            # Active explicitement le fade
+        if fade_value in (FadePlaylistEnum.DEFAULT.name, None):
+            return data
+
+
+        if fade_value in FadeEnum.__members__:
+            # Force explicitement la courbe de fade
             data[fade_type] = True
-        elif fade_value == FadePlaylistEnum.NO.name:
-            # Désactive explicitement le fade
-            data[fade_type] = False
-            # Si désactivé, on met les durées à 0
-            data[f"{fade_type}Duration"] = 0
-        # Si DEFAULT, on garde les valeurs de la stratégie (pas de modification)
+            data[f"{fade_type}Type"] = FadeEnum[fade_value].value
         
         return data

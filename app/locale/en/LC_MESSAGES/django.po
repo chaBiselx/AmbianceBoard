@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-03 13:27+0000\n"
+"POT-Creation-Date: 2026-06-05 14:01+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -16,6 +16,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:26
+#: main/domain/common/enum/FadePlaylistEnum.py:58
+msgid "enum.fade_playlist.default"
+msgstr "Default"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:27
+msgid "enum.fade_curve.disabled"
+msgstr "Disabled"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:28
+msgid "enum.fade_curve.linear"
+msgstr "Linear"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:29
+msgid "enum.fade_curve.ease"
+msgstr "Smooth"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:30
+msgid "enum.fade_curve.ease_in"
+msgstr "Ease in"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:31
+msgid "enum.fade_curve.ease_out"
+msgstr "Ease out"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:32
+msgid "enum.fade_curve.ease_in_quad"
+msgstr "Ease in (quadratic)"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:33
+msgid "enum.fade_curve.ease_out_quad"
+msgstr "Ease out (quadratic)"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:34
+msgid "enum.fade_curve.ease_in_out_quad"
+msgstr "Ease in/out (quadratic)"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:35
+msgid "enum.fade_curve.ease_out_cubic"
+msgstr "Ease out (cubic)"
 
 #: main/domain/general/service/OnboardingContextService.py:38
 msgid "onboarding.labels.next"
@@ -35,7 +76,9 @@ msgstr "Light and dark mode"
 
 #: main/domain/general/service/OnboardingContextService.py:68
 msgid "onboarding.public.theme.description"
-msgstr "Switch between light and dark modes for better reading comfort. Your preference is saved automatically."
+msgstr ""
+"Switch between light and dark modes for better reading comfort. Your "
+"preference is saved automatically."
 
 #: main/domain/general/service/OnboardingContextService.py:75
 msgid "onboarding.public.fullscreen.title"
@@ -43,7 +86,9 @@ msgstr "Fullscreen mode"
 
 #: main/domain/general/service/OnboardingContextService.py:76
 msgid "onboarding.public.fullscreen.description"
-msgstr "Expand the soundboard for better audio immersion. Ideal for your streaming sessions or creative work."
+msgstr ""
+"Expand the soundboard for better audio immersion. Ideal for your streaming "
+"sessions or creative work."
 
 #: main/domain/general/service/OnboardingContextService.py:83
 msgid "onboarding.public.soundboards.title"
@@ -51,7 +96,9 @@ msgstr "View public soundboards"
 
 #: main/domain/general/service/OnboardingContextService.py:84
 msgid "onboarding.public.soundboards.description"
-msgstr "Discover soundboards created by the community. You can listen to them and preview them."
+msgstr ""
+"Discover soundboards created by the community. You can listen to them and "
+"preview them."
 
 #: main/domain/general/service/OnboardingContextService.py:91
 msgid "onboarding.public.grid.title"
@@ -59,7 +106,9 @@ msgstr "Public soundboards"
 
 #: main/domain/general/service/OnboardingContextService.py:92
 msgid "onboarding.public.grid.description"
-msgstr "Explore soundboards created by the community. You can listen to them, preview them, and even copy their buttons into your own soundboard."
+msgstr ""
+"Explore soundboards created by the community. You can listen to them, "
+"preview them, and even copy their buttons into your own soundboard."
 
 #: main/domain/general/service/OnboardingContextService.py:99
 msgid "onboarding.private.tracks.title"
@@ -91,7 +140,8 @@ msgstr "My private soundboards"
 
 #: main/domain/general/service/OnboardingContextService.py:129
 msgid "onboarding.private.my_soundboards_grid.description"
-msgstr "These are your personal soundboards. You can edit, share, or delete them."
+msgstr ""
+"These are your personal soundboards. You can edit, share, or delete them."
 
 #: main/domain/general/service/OnboardingContextService.py:136
 msgid "onboarding.private.create_soundboard.title"
@@ -99,7 +149,9 @@ msgstr "Create a new soundboard"
 
 #: main/domain/general/service/OnboardingContextService.py:137
 msgid "onboarding.private.create_soundboard.description"
-msgstr "Create your own soundboard in 3 clicks. Give it a name, a description, and start adding sounds."
+msgstr ""
+"Create your own soundboard in 3 clicks. Give it a name, a description, and "
+"start adding sounds."
 
 #: main/domain/general/service/OnboardingContextService.py:144
 msgid "onboarding.private.playlist_button.title"
@@ -115,7 +167,8 @@ msgstr "List of your buttons"
 
 #: main/domain/general/service/OnboardingContextService.py:153
 msgid "onboarding.private.playlist_grid.description"
-msgstr "These are your custom buttons. Click them to edit, share, or delete them."
+msgstr ""
+"These are your custom buttons. Click them to edit, share, or delete them."
 
 #: main/domain/general/service/OnboardingContextService.py:160
 msgid "onboarding.private.copiable_buttons.title"
@@ -131,7 +184,9 @@ msgstr "Copy buttons"
 
 #: main/domain/general/service/OnboardingContextService.py:169
 msgid "onboarding.private.copy_buttons_grid.description"
-msgstr "Copy the audio controls from this soundboard to review them and add them to your custom buttons."
+msgstr ""
+"Copy the audio controls from this soundboard to review them and add them to "
+"your custom buttons."
 
 #: main/domain/general/service/OnboardingContextService.py:176
 msgid "onboarding.private.user_settings.title"
@@ -139,7 +194,9 @@ msgstr "User settings"
 
 #: main/domain/general/service/OnboardingContextService.py:177
 msgid "onboarding.private.user_settings.description"
-msgstr "Manage your profile, notification preferences, favorite theme, and subscription."
+msgstr ""
+"Manage your profile, notification preferences, favorite theme, and "
+"subscription."
 
 #: main/interface/ui/templates/Html/Account/send_reset_password.html:11
 msgid "template.sendResetPassword.card.title"
@@ -237,6 +294,9 @@ msgstr "Continue"
 #: main/interface/ui/templates/socialaccount/login.html:20
 msgid "Retour"
 msgstr "Back"
+
+#~ msgid "enum.fade_playlist.off"
+#~ msgstr "Off"
 
 #~ msgid "Suivant"
 #~ msgstr "Next"

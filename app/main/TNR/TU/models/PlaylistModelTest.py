@@ -5,6 +5,8 @@ from unittest.mock import patch
 import uuid
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.User import User
+from main.domain.common.enum.FadeEnum import FadeEnum
+from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 playlist_name = "Test Playlist"
@@ -175,3 +177,36 @@ class PlaylistModelTest(TestCase):
                 storage = playlist.icon.storage
                 if storage.exists(playlist.icon.name):
                     storage.delete(playlist.icon.name)
+
+    def test_fade_choices_keep_technical_keys(self):
+        """Les clés de choices doivent rester les noms techniques stockés."""
+        choices = FadePlaylistEnum.convert_to_choices()
+        expected_keys = [
+            FadePlaylistEnum.DEFAULT.name,
+            *(fade.name for fade in FadeEnum),
+        ]
+
+        self.assertEqual([key for key, _ in choices], expected_keys)
+
+    def test_fade_choices_use_french_labels(self):
+        """Les labels affichés doivent être lisibles côté utilisateur FR."""
+        choices_by_key = dict(FadePlaylistEnum.convert_to_choices())
+
+        self.assertEqual(choices_by_key[FadePlaylistEnum.DEFAULT.name], "Par défaut")
+        self.assertEqual(choices_by_key[FadeEnum.LINEAR.name], "Linéaire")
+        self.assertEqual(
+            choices_by_key[FadeEnum.EASE_IN_OUT_QUAD.name],
+            "Accélération et décélération quadratiques",
+        )
+
+    def test_fade_choices_fallback_to_technical_value_if_missing_mapping(self):
+        """Si un label FR manque, on retombe sur la valeur technique."""
+        with patch.object(
+            FadePlaylistEnum,
+            "_get_fr_labels",
+            return_value={FadeEnum.EASE.name: "Douce"},
+        ):
+            choices_by_key = dict(FadePlaylistEnum.convert_to_choices())
+
+        self.assertEqual(choices_by_key[FadeEnum.EASE.name], "Douce")
+        self.assertEqual(choices_by_key[FadeEnum.LINEAR.name], FadeEnum.LINEAR.value)

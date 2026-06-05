@@ -26,10 +26,8 @@ class MusicElement {
     levelFade: number = 1;
     durationRemainingTriggerNextMusic: number = 0;
     fadeInOnGoing: boolean = false;
-    fadeIn: boolean = false;
     fadeInType: string = 'linear';
     fadeInDuration: number = 0;
-    fadeOut: boolean = false;
     fadeOutType: string = 'linear';
     playlistLoop: boolean = false;
     fadeOutDuration: number = 0;
@@ -39,7 +37,6 @@ class MusicElement {
     baseUrl: string = ''; // url of playlist to stream music
     WebSocketActive: boolean = false; // user has websocket connection to command shared soundboard
     duration: number | null = null;
-    fadeOffOnStop: boolean = false;
     fadeOffOnStopDuration: number = 0;
     fadeOffOnStopType: string = 'linear';
     private boundEventEnd: (() => void) | null = null;
@@ -60,10 +57,8 @@ class MusicElement {
     private initializeFromDTO(dto: MusicElementDTO): void {
         this.butonPlaylistToken = dto.butonPlaylistToken;
         this.defaultVolume = dto.defaultVolume;
-        this.fadeIn = dto.fadeIn;
         this.fadeInType = dto.fadeInType;
         this.fadeInDuration = dto.fadeInDuration;
-        this.fadeOut = dto.fadeOut;
         this.fadeOutType = dto.fadeOutType;
         this.fadeOutDuration = dto.fadeOutDuration;
         this.playlistType = dto.playlistType;
@@ -72,7 +67,6 @@ class MusicElement {
         this.delay = dto.delay;
         this.baseUrl = dto.baseUrl;
         this.durationRemainingTriggerNextMusic = dto.durationRemainingTriggerNextMusic;
-        this.fadeOffOnStop = dto.fadeOffOnStop;
         this.fadeOffOnStopDuration = dto.fadeOffOnStopDuration;
         this.fadeOffOnStopType = dto.fadeOffOnStopType;
     }
@@ -102,7 +96,7 @@ class MusicElement {
 
     private addFadeOutOnStop(callback: () => void) {
         ConsoleCustom.log('addFadeOutOnStop');
-        if( !this.fadeOffOnStop ){
+        if( this.fadeOffOnStopType !== 'disabled'){
             callback();
             return;
         }
@@ -173,7 +167,7 @@ class MusicElement {
             this.getDurationFromHeaders();
         });
 
-        if (this.fadeIn) {
+        if (this.fadeInType !== 'disabled') {
             this.addFadeIn();
         }
 
@@ -263,7 +257,7 @@ class MusicElement {
             if (this.boundEventEnd) {
                 this.DOMElement.removeEventListener('timeupdate', this.boundEventEnd);
             }
-            if( this.fadeOut ){
+            if( this.fadeOutType !== 'disabled' ){
                 this.addFadeOut();
             }
             this.startIfLooped();

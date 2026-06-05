@@ -110,6 +110,13 @@
                                                         {{ form.fadeOut.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Selectionner le fondu d'entrée pour cette playlist">ⓘ</span><br />
                                                         {{ form.fadeOut }}
                                                     </div>
+                                                    <div class="col-12 mt-2">
+                                                        <div class="fade-preview-block">
+                                                            <small id="fade-merged-preview-msg" class="fade-preview-msg text-muted"></small>
+                                                            <canvas id="canvas-fade-merged" height="90" class="fade-preview-canvas"></canvas>
+                                                            <div id="fade-merged-preview-legend" class="fade-preview-legend" aria-live="polite"></div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
