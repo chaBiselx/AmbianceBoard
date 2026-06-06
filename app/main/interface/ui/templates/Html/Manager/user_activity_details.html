@@ -1,0 +1,74 @@
+{% extends 'Html/partial/structure/base_manager.html' %}
+{% load i18n %}
+{% load PaginationLinks %}
+
+{% block title %}Historique des activités{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h3 class="mb-1">Activités de {{ target_user.username }}</h3>
+                <p class="text-muted mb-0">{{ target_user.email }}</p>
+            </div>
+            <a href="{% url 'managerDashboard' %}" class="btn btn-outline-secondary">
+                Retour au dashboard
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    {% if page_objects %}
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type d'activité</th>
+                                    <th>Authentifié</th>
+                                    <th>Session</th>
+                                    <th>Objet lié</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for activity in page_objects %}
+                                <tr>
+                                    <td>{{ activity.start_date|date:"d/m/Y H:i:s" }}</td>
+                                    <td>{{ activity.get_activity_type_display }}</td>
+                                    <td>
+                                        {% if activity.is_authenticated %}
+                                        <span>Oui</span>
+                                        {% else %}
+                                        <span>Non</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ activity.session_key|default:"-" }}</td>
+                                    <td>
+                                        {% if activity.content_type and activity.object_id %}
+                                        {{ activity.content_type.model }} #{{ activity.object_id }}
+                                        {% else %}
+                                        -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% applys_pagination paginator %}
+                    {% else %}
+                    <div class="alert alert-info mb-0">
+                        Aucune activité trouvée pour cet utilisateur.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

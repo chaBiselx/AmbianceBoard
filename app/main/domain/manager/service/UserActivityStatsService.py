@@ -34,3 +34,21 @@ class UserActivityStatsService(BaseActivityStatsService):
         activities =  list(UserActivityTypeEnum.listing_reporting_errors())
         activity_data = UserActivityRepository().get_activity_counts_by_date_and_type(start_date, end_date, activities)
         return self._generated_line_graph_data(start_date, end_date, activity_data)
+
+    def get_top_active_users(self, start_date: datetime, end_date: datetime, limit: int = 10) -> list:
+        activities = list(UserActivityTypeEnum.listing_reporting_activities())
+        top_users = UserActivityRepository().get_top_active_users(start_date, end_date, activities, limit)
+
+        return [
+            {
+                'rank': index,
+                'user_uuid': user.get('user__uuid'),
+                'username': user.get('user__username') or 'N/A',
+                'email': user.get('user__email') or '',
+                'activity_count': user.get('activity_count', 0)
+            }
+            for index, user in enumerate(top_users, start=1)
+        ]
+
+    def get_user_activities_queryset(self, user: User):
+        return UserActivityRepository().get_user_activities_queryset(user)

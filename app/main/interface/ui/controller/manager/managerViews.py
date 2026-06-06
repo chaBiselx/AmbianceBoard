@@ -1,15 +1,19 @@
 from django.utils import timezone
 from datetime import datetime, timedelta
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
+from django.core.paginator import Paginator
 from main.domain.manager.service.UserStatsService import UserStatsService
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.manager.service.UserActivityStatsService import UserActivityStatsService
 from main.domain.manager.service.StorageService import StorageService
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.enum.ChartPeriodEnum import ChartPeriodEnum
+from main.architecture.persistence.repository.UserRepository import UserRepository
+from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 
 
 @login_required
@@ -22,10 +26,24 @@ def manager_dashboard(request) -> HttpResponse:
     if not ChartPeriodEnum.is_valid_period(periode_chart):
         periode_chart = ChartPeriodEnum.get_default_period()
     
+    days = int(periode_chart)
+    end_date = timezone.now().date() + timedelta(days=1)
+    start_date = end_date - timedelta(days=days-1)
+
     storage_data = StorageService.get_storage_usage()
+    top_active_users = UserActivityStatsService().get_top_active_users(start_date, end_date, 10)
                                 
-    
-    return render(request, 'Html/Manager/dashboard.html', {'title': 'Tableau de bord Manager', 'periode_chart': periode_chart, 'selectPeriods':select_periods, 'storage': storage_data})
+    return render(
+        request,
+        'Html/Manager/dashboard.html',
+        {
+            'title': 'Tableau de bord Manager',
+            'periode_chart': periode_chart,
+            'selectPeriods': select_periods,
+            'storage': storage_data,
+            'top_active_users': top_active_users,
+        }
+    )
 
 @login_required
 @require_http_methods(['GET'])
@@ -114,3 +132,29 @@ def error_activity_dashboard(request) -> JsonResponse:
             'error': ErrorMessageEnum.DATA_RECUPERATION,
             'message': str(e)
         }, status=500)
+
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def manager_user_activity_details(request, user_uuid) -> HttpResponse:
+    user = UserRepository().get_user(user_uuid)
+    if not user:
+        return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+
+    page_number = int(request.GET.get('page', 1))
+    queryset = UserActivityStatsService().get_user_activities_queryset(user)
+    context = extract_context_to_paginator(
+        paginator=Paginator(queryset, 50),
+        page_number=page_number
+    )
+
+    return render(
+        request,
+        'Html/Manager/user_activity_details.html',
+        {
+            'title': f"Activités de {user.username}",
+            'target_user': user,
+            **context,
+        }
+    )

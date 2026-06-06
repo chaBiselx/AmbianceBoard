@@ -209,6 +209,7 @@ Nouveautés
 - Ajout d'une visite guidé 
 - Ajout d'un fichier llms.txt pour SEO
 - Ajout d'un visuel pour les fondues d'entrée et de sortie
+- Ajout de statistique pour le Manager 
 
 Améliorations
 - Les Soundboards publiques n'afficherons plus les soundboard sans boutons

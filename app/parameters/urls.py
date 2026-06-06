@@ -19,7 +19,7 @@ from main.interface.ui.controller.private.playlistFormTrackViews import link_cre
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
 from main.interface.ui.controller.moderator.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
 from main.interface.ui.controller.manager.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
-from main.interface.ui.controller.manager.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard
+from main.interface.ui.controller.manager.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard, manager_user_activity_details
 from main.interface.ui.controller.manager.managerCronViews import (
     listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity, music_labeler_cron_service
     )
@@ -179,6 +179,7 @@ urlpatterns = [
     path("manager/dashboard/user-account/", user_account_dashboard, name="managerUserAccountDashboard"),
     path("manager/dashboard/users-activity/", user_activity_dashboard, name="managerUsersActivityDashboard"),
     path("manager/dashboard/error-activity/", error_activity_dashboard, name="managerErrorActivityDashboard"),
+    path("manager/dashboard/users-activity/<uuid:user_uuid>/", manager_user_activity_details, name="managerUserActivityDetails"),
     
     
     path("manager/notifications/", listing_notifications, name="managerNotifications"),

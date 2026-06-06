@@ -42,3 +42,9 @@ class ManagerDashboardRouteTest(TestCase):
         response = self.client.get(reverse('managerDashboard'))
         self.assertIn(response.status_code, [302, 403, 404])
 
+    def test_manager_user_activity_details_accessible_when_authenticated(self):
+        """Test que la route de détail d'activité utilisateur est accessible pour un admin"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.get(reverse('managerUserActivityDetails', kwargs={'user_uuid': self.user.uuid}))
+        self.assertIn(response.status_code, [200, 302])
+
