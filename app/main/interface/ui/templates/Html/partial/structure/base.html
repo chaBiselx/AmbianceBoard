@@ -3,11 +3,13 @@
 {% load static %}
 {% load FrontJs %}
 {% load Theme %}
+{% load Seo %}
 
 <html lang="fr" {% include 'Html/partial/structure/theme/theme.html' %} data-bs-theme="{% get_user_theme %}">
+{% resolve_page_seo as resolved_seo %}
 
 <head>
-    <title>{% block page_title %}AmbianceBoard - Click here, play anywhere{% endblock %}</title>
+    <title>{% if resolved_seo and resolved_seo.title %}{{ resolved_seo.title }}{% elif seo and seo.title %}{{ seo.title }}{% else %}{% block page_title %}AmbianceBoard - Click here, play anywhere{% endblock %}{% endif %}</title>
     {% include 'Html/partial/structure/utils/meta.html' %}
     {% include 'Html/partial/structure/utils/analyticsHead.html' %}
 

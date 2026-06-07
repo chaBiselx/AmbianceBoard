@@ -210,10 +210,15 @@ Nouveautés
 - Ajout d'un fichier llms.txt pour SEO
 - Ajout d'un visuel pour les fondues d'entrée et de sortie
 - Ajout de statistique pour le Manager 
-
+- Ajout de champ de description pour les soundboards 
+ 
 Améliorations
 - Les Soundboards publiques n'afficherons plus les soundboard sans boutons
 - Pouvoir choisir le type de Fade IN/OUT sur un bouton
+- Amélioration du SEO pour les soundboards publique
+
+Modifications
+- Un tag est désormais obligatoire pour un soundboard
 
 Corrections
 - Correction de la latence lors du premier lancemement du fichier audio
@@ -226,6 +231,9 @@ Nouveautés
 - …
 
 Améliorations
+- …
+
+Modifications
 - …
 
 Corrections

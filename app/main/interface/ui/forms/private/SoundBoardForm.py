@@ -25,7 +25,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     
     class Meta:
         model = SoundBoard
-        fields = ('name', 'color', 'colorText', 'is_public', 'icon', 'tags')
+        fields = ('name', 'descriptionSEO', 'color', 'colorText', 'is_public', 'icon', 'tags')
         
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """
@@ -90,7 +90,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(
         queryset=TagRepository().get_list_active_tags(),
         widget=forms.CheckboxSelectMultiple,
-        required=False,
+        required=True,
         label='Tags',
         help_text='Sélectionnez si necessaires des tags pour catégoriser votre soundboard pour les recherches'
     )

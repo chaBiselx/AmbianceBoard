@@ -9,7 +9,8 @@
         <div class="flex-container" data-shepherd="my-soundboards-grid">
             {% for soundboard in soundboards %}
             <a href="{% url 'soundboardsRead' soundboard.uuid %}">
-                <div class="soundboard-element flex-item soundboard-dim-{{ soundboard_dim }} m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};">
+                <div class="soundboard-element flex-item soundboard-dim-{{ soundboard_dim }} m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};" data-bs-html="true"
+                    data-bs-title='{% if soundboard.descriptionSEO %}{{ soundboard.descriptionSEO }} <br> {% endif %}<strong>{{ soundboard.tags.all|join:", " }}</strong>' data-bs-toggle="tooltip">
                     {{ soundboard | applys_soundboard_content}}
                 </div>
             </a>

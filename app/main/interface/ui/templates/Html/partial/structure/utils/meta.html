@@ -1,51 +1,64 @@
 {% load static %}
+{% load Seo %}
+{% get_current_seo as meta_seo %}
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="description" content="Soundboard ambiance musicale gratuit pour JDR et jeux de société. Playlists aléatoires et ambiances uniques à chaque bouton. Créez l'atmosphère parfaite !" />
-<meta name="keywords" content="soundboard, ambiance soundboard, soundboard ambiance, playlist musicale, ambiance sonore, jeux de rôle, JDR, jeux de société, musique aléatoire, musique ambiance, soundboard gratuit, playlist jdr, ambiance musicale, soundboard interactif, musique jeu de rôle, ambiance board, chaque bouton" />
+<meta name="description" content="{% if meta_seo and meta_seo.description %}{{ meta_seo.description }}{% else %}Soundboard ambiance musicale gratuit pour JDR et jeux de societe. Playlists aleatoires et ambiances uniques a chaque bouton. Creez l'atmosphere parfaite !{% endif %}" />
+<meta name="keywords" content="{% if meta_seo and meta_seo.keywords %}{{ meta_seo.keywords }}{% else %}soundboard, ambiance soundboard, soundboard ambiance, playlist musicale, ambiance sonore, jeux de role, JDR, jeux de societe, musique aleatoire, musique ambiance, soundboard gratuit, playlist jdr, ambiance musicale, soundboard interactif, musique jeu de role, ambiance board, chaque bouton{% endif %}" />
 <meta name="author" content="BISELX" />
-<meta property="og:title" content="AmbianceBoard - Soundboard Ambiance pour Jeux de Rôle" />
-<meta property="og:description" content="Créez l'ambiance parfaite pour vos jeux de rôle avec notre soundboard interactif. Chaque bouton déclenche une ambiance musicale unique. Soundboard 100% gratuit !" />
-<meta property="og:type" content="website" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="AmbianceBoard - Soundboard Ambiance pour Jeux de Rôle" />
-<meta name="twitter:description" content="Créez l'ambiance parfaite pour vos jeux de rôle avec notre soundboard interactif. Chaque bouton déclenche une ambiance musicale unique. Soundboard 100% gratuit !" />
+<meta name="robots" content="{% if meta_seo and meta_seo.robots %}{{ meta_seo.robots }}{% else %}index,follow{% endif %}" />
+<meta property="og:title" content="{% if meta_seo and meta_seo.og_title %}{{ meta_seo.og_title }}{% else %}AmbianceBoard - Soundboard Ambiance pour Jeux de Role{% endif %}" />
+<meta property="og:description" content="{% if meta_seo and meta_seo.og_description %}{{ meta_seo.og_description }}{% else %}Creez l'ambiance parfaite pour vos jeux de role avec notre soundboard interactif. Chaque bouton declenche une ambiance musicale unique. Soundboard 100% gratuit !{% endif %}" />
+<meta property="og:type" content="{% if meta_seo and meta_seo.og_type %}{{ meta_seo.og_type }}{% else %}website{% endif %}" />
+<meta property="og:url" content="{% if meta_seo and meta_seo.og_url %}{{ meta_seo.og_url }}{% else %}{{ request.build_absolute_uri }}{% endif %}" />
+<meta property="og:image" content="{% if meta_seo and meta_seo.og_image %}{{ meta_seo.og_image }}{% else %}{% static 'img/logo.png' %}{% endif %}" />
+<meta name="twitter:card" content="{% if meta_seo and meta_seo.twitter_card %}{{ meta_seo.twitter_card }}{% else %}summary_large_image{% endif %}" />
+<meta name="twitter:title" content="{% if meta_seo and meta_seo.twitter_title %}{{ meta_seo.twitter_title }}{% else %}AmbianceBoard - Soundboard Ambiance pour Jeux de Role{% endif %}" />
+<meta name="twitter:description" content="{% if meta_seo and meta_seo.twitter_description %}{{ meta_seo.twitter_description }}{% else %}Creez l'ambiance parfaite pour vos jeux de role avec notre soundboard interactif. Chaque bouton declenche une ambiance musicale unique. Soundboard 100% gratuit !{% endif %}" />
+<meta name="twitter:image" content="{% if meta_seo and meta_seo.twitter_image %}{{ meta_seo.twitter_image }}{% else %}{% static 'img/logo.png' %}{% endif %}" />
+<link rel="canonical" href="{% if meta_seo and meta_seo.canonical %}{{ meta_seo.canonical }}{% else %}{{ request.build_absolute_uri }}{% endif %}" />
 <link rel="icon" type="image/x-icon" href="{% static 'img/favicon-32x32.png' %}">
 
 <!-- Schema.org structured data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "AmbianceBoard",
-  "alternateName": "Soundboard Ambiance",
-  "url": "https://ambianceboard.fr",
-  "description": "Soundboard ambiance musicale gratuit pour JDR et jeux de société. Playlists aléatoires et ambiances uniques à chaque bouton. Créez l'atmosphère parfaite !",
-  "applicationCategory": "MultimediaApplication",
-  "operatingSystem": "Web Browser",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "EUR"
-  },
-  "featureList": [
-    "Soundboard interactif",
-    "Playlists musicales aléatoires",
-    "Ambiances sonores pour jeux de rôle",
-    "Boutons personnalisables",
-    "Interface gratuite"
-  ],
-  "author": {
-    "@type": "Person",
-    "name": "BISELX"
-  },
-  "audience": {
-    "@type": "Audience",
-    "audienceType": "Joueurs de jeux de rôle et jeux de société"
-  },
-  "inLanguage": "fr-FR",
-  "browserRequirements": "Requires JavaScript. Requires HTML5.",
-  "keywords": "soundboard, ambiance soundboard, playlist musicale, ambiance sonore, jeux de rôle, JDR, jeux de société, musique ambiance, soundboard gratuit"
-}
-</script>
+{% if meta_seo and meta_seo.json_ld_json %}
+    <script type="application/ld+json">
+    {{ meta_seo.json_ld_json|safe }}
+    </script>
+{% else %}
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "AmbianceBoard",
+    "alternateName": "Soundboard Ambiance",
+    "url": "https://ambianceboard.fr",
+    "description": "Soundboard ambiance musicale gratuit pour JDR et jeux de societe. Playlists aleatoires et ambiances uniques a chaque bouton. Creez l'atmosphere parfaite !",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web Browser",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+    },
+    "featureList": [
+        "Soundboard interactif",
+        "Playlists musicales aleatoires",
+        "Ambiances sonores pour jeux de role",
+        "Boutons personnalisables",
+        "Interface gratuite"
+    ],
+    "author": {
+        "@type": "Person",
+        "name": "BISELX"
+    },
+    "audience": {
+        "@type": "Audience",
+        "audienceType": "Joueurs de jeux de role et jeux de societe"
+    },
+    "inLanguage": "fr-FR",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "keywords": "soundboard, ambiance soundboard, playlist musicale, ambiance sonore, jeux de role, JDR, jeux de societe, musique ambiance, soundboard gratuit"
+    }
+    </script>
+{% endif %}
