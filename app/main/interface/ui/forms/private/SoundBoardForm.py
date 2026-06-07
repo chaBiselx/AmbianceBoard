@@ -58,6 +58,13 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
         max_length=64, 
         required=True
     )
+    descriptionSEO = forms.CharField(
+        label='Description du soundboard',
+        widget=forms.Textarea(attrs={'typeInput': 'textarea', 'rows': 3, 'placeholder': 'D&D, '}),
+        max_length=500,
+        required=False,
+        help_text='Description du soundboard, max 500 caractères'
+    )
     color = forms.CharField(
         label='Couleur du background',
         widget=forms.TextInput(attrs={'type': 'color', 'typeInput': 'color'}),
