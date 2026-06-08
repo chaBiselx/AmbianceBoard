@@ -27,11 +27,11 @@ def manager_dashboard(request) -> HttpResponse:
         periode_chart = ChartPeriodEnum.get_default_period()
     
     days = int(periode_chart)
-    end_date = timezone.now().date() + timedelta(days=1)
-    start_date = end_date - timedelta(days=days-1)
+    end_dt = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+    start_dt = end_dt - timedelta(days=days-1)
 
     storage_data = StorageService.get_storage_usage()
-    top_active_users = UserActivityStatsService().get_top_active_users(start_date, end_date, 10)
+    top_active_users = UserActivityStatsService().get_top_active_users(start_dt, end_dt, 10)
                                 
     return render(
         request,
@@ -61,10 +61,10 @@ def user_account_dashboard(request) -> JsonResponse:
     try:
         # Définir la période (30 derniers jours par défaut)
         days = int(request.GET.get('period', 30 * 6))
-        end_date = timezone.now().date() + timedelta(days=1)
-        start_date = end_date - timedelta(days=days-1)
+        end_dt = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+        start_dt = end_dt - timedelta(days=days-1)
 
-        response_data = UserStatsService.get_user_activity_data(start_date, end_date)
+        response_data = UserStatsService.get_user_activity_data(start_dt, end_dt)
         json = {
             'title' : f"Évolution des utilisateurs - {days} jours",
             'x_label': 'Date',
@@ -86,11 +86,11 @@ def user_account_dashboard(request) -> JsonResponse:
 def user_activity_dashboard(request) -> JsonResponse:
     try:
         days = int(request.GET.get('period', 30 * 6))
-        end_date = timezone.now().date() + timedelta(days=1)
-        start_date = end_date - timedelta(days=days-1)
+        end_dt = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+        start_dt = end_dt - timedelta(days=days-1)
 
         service = UserActivityStatsService()
-        response_data = service.get_user_nb_activity_data(start_date, end_date)
+        response_data = service.get_user_nb_activity_data(start_dt, end_dt)
 
         json = {
             'title' : f"Évolution des consultations - {days} jours",
@@ -113,11 +113,11 @@ def user_activity_dashboard(request) -> JsonResponse:
 def error_activity_dashboard(request) -> JsonResponse:
     try:
         days = int(request.GET.get('period', 30 * 6))
-        end_date = timezone.now().date() + timedelta(days=1)
-        start_date = end_date - timedelta(days=days-1)
+        end_dt = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+        start_dt = end_dt - timedelta(days=days-1)
 
         service = UserActivityStatsService()
-        response_data = service.get_error_activity_data(start_date, end_date)
+        response_data = service.get_error_activity_data(start_dt, end_dt)
         
         json = {
             'title' : f"Évolution des erreurs - {days} jours",

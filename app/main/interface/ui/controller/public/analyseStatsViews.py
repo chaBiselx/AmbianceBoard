@@ -51,15 +51,15 @@ def stats_user_public_soundboard(request, soundboard_uuid):
 def stats_frequentation(request, soundboard_uuid) -> JsonResponse:
     try:
         days = int(request.GET.get('period', 30 * 6))
-        end_date = timezone.now().date()
-        start_date = end_date - timedelta(days=days-1)
+        end_dt = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        start_dt = end_dt - timedelta(days=days-1)
         
         soundboard = SoundBoardRepository().get_by_uuid_and_user(soundboard_uuid, request.user)
         if(not soundboard):
             raise ValueError("Soundboard non trouvée")
 
         service = UserPublicActivityStatsService()
-        response_data = service.get_frequentation(soundboard, start_date, end_date)
+        response_data = service.get_frequentation(soundboard, start_dt, end_dt)
 
         json = {
             'title' : f"Évolution des fréquentations - {days} jours",
@@ -82,15 +82,15 @@ def stats_frequentation(request, soundboard_uuid) -> JsonResponse:
 def stats_moyenne_duration_session(request, soundboard_uuid) -> JsonResponse:
     try:
         days = int(request.GET.get('period', 30 * 6))
-        end_date = timezone.now().date()
-        start_date = end_date - timedelta(days=days-1)
+        end_dt = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        start_dt = end_dt - timedelta(days=days-1)
         
         soundboard = SoundBoardRepository().get_by_uuid_and_user(soundboard_uuid, request.user)
         if(not soundboard):
             raise ValueError("Soundboard non trouvée")
 
         service = UserPublicActivityStatsService()
-        response_data = service.get_moyenne_duration_session(soundboard, start_date, end_date)
+        response_data = service.get_moyenne_duration_session(soundboard, start_dt, end_dt)
 
         json = {
             'title' : f"Durée moyenne des sessions - {days} jours",
