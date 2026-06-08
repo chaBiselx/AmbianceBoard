@@ -20,7 +20,7 @@ class ModeratorEmailTest(TestCase):
     def test_init_loads_settings(self, mock_settings, mock_logger):
         """Test que l'initialisation charge les settings correctement"""
         mock_settings.side_effect = lambda key: {
-            'EMAIL_NO_REPLAY': self.from_email,
+            'EMAIL_NO_REPLY': self.from_email,
             'EMAILS_LISTING_MODERATORS': self.moderator_emails
         }.get(key)
         mock_logger.return_value = MagicMock()
@@ -36,7 +36,7 @@ class ModeratorEmailTest(TestCase):
     def test_report_content_reported_success(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test envoi d'email de signalement avec succès"""
         mock_settings.side_effect = lambda key: {
-            'EMAIL_NO_REPLAY': self.from_email,
+            'EMAIL_NO_REPLY': self.from_email,
             'EMAILS_LISTING_MODERATORS': self.moderator_emails
         }.get(key)
         mock_logger.return_value = MagicMock()
@@ -61,7 +61,7 @@ class ModeratorEmailTest(TestCase):
     def test_report_content_no_moderator_email(self, mock_settings, mock_logger):
         """Test que l'envoi est ignoré si aucun email modérateur n'est configuré"""
         mock_settings.side_effect = lambda key: {
-            'EMAIL_NO_REPLAY': self.from_email,
+            'EMAIL_NO_REPLY': self.from_email,
             'EMAILS_LISTING_MODERATORS': []  # Pas de modérateurs
         }.get(key)
         mock_logger.return_value = MagicMock()
@@ -78,7 +78,7 @@ class ModeratorEmailTest(TestCase):
     def test_report_content_email_send_exception(self, mock_settings, mock_render, mock_email_sender, mock_logger):
         """Test gestion d'erreur lors de l'envoi d'email de signalement"""
         mock_settings.side_effect = lambda key: {
-            'EMAIL_NO_REPLAY': self.from_email,
+            'EMAIL_NO_REPLY': self.from_email,
             'EMAILS_LISTING_MODERATORS': self.moderator_emails
         }.get(key)
         mock_logger.return_value = MagicMock()
@@ -98,7 +98,7 @@ class ModeratorEmailTest(TestCase):
     def test_has_moderator_email_true(self, mock_settings, mock_logger):
         """Test _has_moderator_email retourne True si configuré"""
         mock_settings.side_effect = lambda key: {
-            'EMAIL_NO_REPLAY': self.from_email,
+            'EMAIL_NO_REPLY': self.from_email,
             'EMAILS_LISTING_MODERATORS': self.moderator_emails
         }.get(key)
         mock_logger.return_value = MagicMock()
@@ -111,7 +111,7 @@ class ModeratorEmailTest(TestCase):
     def test_has_moderator_email_false_empty_list(self, mock_settings, mock_logger):
         """Test _has_moderator_email retourne False si liste vide"""
         mock_settings.side_effect = lambda key: {
-            'EMAIL_NO_REPLAY': self.from_email,
+            'EMAIL_NO_REPLY': self.from_email,
             'EMAILS_LISTING_MODERATORS': []
         }.get(key)
         mock_logger.return_value = MagicMock()
@@ -124,7 +124,7 @@ class ModeratorEmailTest(TestCase):
     def test_has_moderator_email_false_no_from_email(self, mock_settings, mock_logger):
         """Test _has_moderator_email retourne False si pas de from_email"""
         mock_settings.side_effect = lambda key: {
-            'EMAIL_NO_REPLAY': None,
+            'EMAIL_NO_REPLY': None,
             'EMAILS_LISTING_MODERATORS': self.moderator_emails
         }.get(key)
         mock_logger.return_value = MagicMock()
