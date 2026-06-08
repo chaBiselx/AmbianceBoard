@@ -1,6 +1,7 @@
 import os
 import json
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
@@ -8,6 +9,7 @@ from main.architecture.persistence.repository.TrackLabelRepository import TrackL
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.architecture.persistence.models.Music import Music
 from main.domain.common.service.MusicLabelerService import MusicLabelerService
+from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 
 
 
@@ -17,7 +19,14 @@ from main.domain.common.service.MusicLabelerService import MusicLabelerService
 @permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
 def music_labeler_index(request) -> HttpResponse:
     """Page listant les musiques avec lecteur audio et labeling IA asynchrone."""
-    musics = Music.objects.select_related('playlist').order_by('-created_at')[:100]
+    page_number = int(request.GET.get('page', 1))
+    queryset = Music.objects.select_related('playlist').order_by('-created_at')
+    context = extract_context_to_paginator(
+        paginator=Paginator(queryset, 50),
+        page_number=page_number
+    )
+
+    musics = context['page_objects']
     music_ids = [m.id for m in musics]
 
     repository = TrackLabelRepository()
@@ -35,10 +44,10 @@ def music_labeler_index(request) -> HttpResponse:
             'labels_json': json.dumps({'categories': labels_by_track[m.id]}) if m.id in labels_by_track else '',
         })
 
-    return render(request, 'Html/Manager/music_labeler.html', {
-        'title': 'Music Labeler IA',
-        'musics': music_list,
-    })
+    context['title'] = 'Music Labeler IA'
+    context['musics'] = music_list
+
+    return render(request, 'Html/Manager/music_labeler.html', context)
 
 
 @login_required
