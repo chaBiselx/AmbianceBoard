@@ -50,7 +50,7 @@ EMAIL_SMTP_USE_TLS = False
 if (_email_tls_string == 'True'):
     EMAIL_SMTP_USE_TLS = True
 
-EMAIL_NO_REPLAY = os.environ.get("EMAIL_NO_REPLAY")
+EMAIL_NO_REPLY = os.environ.get("EMAIL_NO_REPLY")
 EMAILS_LISTING_MODERATORS = os.environ.get("EMAILS_LISTING_MODERATORS", default="").split(";")
 EMAIL_CONTACT=os.environ.get("EMAIL_CONTACT")
 

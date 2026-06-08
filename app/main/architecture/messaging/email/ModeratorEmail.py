@@ -9,7 +9,7 @@ from main.domain.common.utils.logger import LoggerFactory
 class ModeratorEmail():
     def __init__(self) -> None:
         self.logger: ILogger = LoggerFactory.get_default_logger()
-        self.from_email: str = Settings.get('EMAIL_NO_REPLAY')
+        self.from_email: str = Settings.get('EMAIL_NO_REPLY')
         self.to_emails: list[str] = Settings.get('EMAILS_LISTING_MODERATORS')
 
     def report_content_reported(self, report: ReportContent) -> None:

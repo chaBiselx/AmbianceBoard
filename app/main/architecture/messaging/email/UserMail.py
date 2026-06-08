@@ -9,7 +9,7 @@ from main.domain.common.utils.logger import LoggerFactory
 class UserMail:
     def __init__(self, user: User) -> None:
         self.logger: ILogger = LoggerFactory.get_default_logger()
-        self.from_email: str = Settings.get('EMAIL_NO_REPLAY')
+        self.from_email: str = Settings.get('EMAIL_NO_REPLY')
         self.user: User = user
         
     def send_welcome_email(self) -> None:
