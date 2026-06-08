@@ -31,6 +31,8 @@ services:
       - RUNCRON=0
       - DAPHNE=0
       - TRANSLATION=1
+      - MUSIC_LABELER_URL=${MUSIC_LABELER_URL}
+      - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
     depends_on:
       - db
       - redis
@@ -92,6 +94,24 @@ services:
       - RABBITMQ_DEFAULT_PASS=${RABBIT_MQ_PASSWORD}      # Mot de passe par défaut
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq # Persistance des données
+
+  music-labeler:
+    build:
+      context: ./music-labeler
+      dockerfile: Dockerfile
+    volumes:
+      - hf-cache:/home/appuser/.cache/huggingface
+    ports:
+      - "8089:8089"
+    environment:
+      - CLAP_MODEL=laion/clap-htsat-unfused
+      - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('${MUSIC_LABELER_URL}/health', timeout=3)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   smtp:
     image: mailhog/mailhog
@@ -156,3 +176,4 @@ volumes:
   grafana-data: null
   grafana-provisioning: null
   loki-data: null
+  hf-cache: null

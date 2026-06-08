@@ -45,6 +45,7 @@ from main.TNR.TU.middleware.DailySessionMiddlewareTest import *
 
 #Repository
 from main.TNR.TU.repository.TrackRepositoryTest import *
+from main.TNR.TU.forms.manager.ManagerEmailValidationUtilsTest import *
 
 # Cron services tests (P0)
 from main.TNR.TU.cron.CronServicesTest import *

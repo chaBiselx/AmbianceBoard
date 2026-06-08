@@ -24,6 +24,7 @@ from main.architecture.persistence.repository.UserRepository import UserReposito
 
 from django_ratelimit.decorators import ratelimit
 from main.domain.general.service.ResetPasswordService import ResetPasswordService
+from main.domain.general.service.OnboardingContextService import OnboardingContextService
 from main.interface.ui.forms.general.UserPasswordForm import UserPasswordForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
@@ -297,3 +298,9 @@ def callback_oauth_google(request) -> HttpResponse:
         HttpResponse: Redirection vers la page d'accueil
     """
     return redirect('home')
+
+
+@require_http_methods(['GET'])
+def onboarding_context(request: HttpRequest) -> JsonResponse:
+    payload = OnboardingContextService(request).build_payload()
+    return JsonResponse(payload, status=200)

@@ -85,7 +85,7 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
             'soundboard': soundboard, 
             'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(),
             'trace_user_activity': activity,
-            'list_shortcut_keyboard': []
+            'list_shortcut_keyboard': [],
         })
         
         # Auto-initialisation WebSocket

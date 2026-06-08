@@ -1,5 +1,5 @@
 from typing import Any, Optional, List
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Count
 
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.SoundBoard import SoundBoard
@@ -37,6 +37,7 @@ class SoundBoardRepository:
 
     def get_search_public_queryset(self, selected_tag: Optional[str] = None) -> QuerySet[SoundBoard]:
         queryset = SoundBoard.objects.filter(is_public=True, user__isBan=False)
+        queryset = queryset.annotate(button_count=Count('playlists', distinct=True)).filter(button_count__gt=0)
         if selected_tag:
             queryset = queryset.filter(tags__name=selected_tag)
         return queryset.order_by('uuid')
@@ -50,3 +51,16 @@ class SoundBoardRepository:
 
     def get_all_queryset(self) -> QuerySet[SoundBoard]:
         return SoundBoard.objects.all()
+
+    def get_public_not_banned_with_min_tracks(self, minimum_tracks: int = 5) -> Optional[SoundBoard]:
+        """
+        Retourne un soundboard public dont le propriétaire n'est pas banni
+        et qui contient au moins `minimum_tracks` sons (tracks cumulés).
+        """
+        return (
+            SoundBoard.objects.filter(is_public=True, user__isBan=False)
+            .annotate(total_tracks=Count('playlists__tracks', distinct=True))
+            .filter(total_tracks__gte=minimum_tracks)
+            .order_by('?')
+            .first()
+        )

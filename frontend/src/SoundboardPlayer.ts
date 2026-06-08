@@ -18,11 +18,15 @@ import ConsoleCustom from "@/modules/General/ConsoleCustom";
 import { MusicDropzoneConfig, MusicDropzoneManager } from '@/modules/MusicDropzoneManager';
 import Notification from '@/modules/General/Notifications';
 import SoundBoardEventListener from '@/modules/SoundBoardEventListener';
+import StreamConnectionWarmup from '@/modules/StreamConnectionWarmup';
 
 
 
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Why: reduire la latence percue du premier clic playlist.
+    // How: prechauffe DNS/TCP/TLS vers l'origine de stream via StreamConnectionWarmup.
+    new StreamConnectionWarmup().initialize();
     showPopupSharedPlaylist();
     new SoundBoardEventListener().addEventListenerDom();
     setUpMixerPlaylist();
@@ -182,7 +186,7 @@ class AddMusicModalHandler {
                 Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
             })
             .finally(() => {
-                if (submitBtn) {
+                if (submitBtn instanceof HTMLButtonElement) {
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Envoyer';
                 }

@@ -11,6 +11,7 @@ from main.domain.cron.service.UserTierExpirationService  import UserTierExpirati
 from main.domain.cron.service.DomainBlacklistCronService import DomainBlacklistCronService
 from main.domain.cron.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.cron.service.PurgeUserActivityService import PurgeUserActivityService
+from main.domain.cron.service.MusicLabelerCronService import MusicLabelerCronService
 from main.domain.common.utils.logger import logger
 
 @login_required
@@ -88,6 +89,18 @@ def purge_old_user_activity(request) -> JsonResponse:
         logger.warning("Starting PurgeOldUserActivity View")
         (PurgeUserActivityService()).purge()
         logger.warning("Ending PurgeOldUserActivity View")
+        return JsonResponse({"message": "OK"}, status=200)
+    except Exception as e:
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+    
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def music_labeler_cron_service(request) -> JsonResponse:
+    try:
+        logger.warning("Starting MusicLabelerCronService View")
+        (MusicLabelerCronService()).dispatch_unlabeled_tracks()
+        logger.warning("Ending MusicLabelerCronService View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
         return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)

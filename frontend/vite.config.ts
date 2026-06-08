@@ -36,6 +36,7 @@ export default defineConfig(({ mode }) => {
                     Moderator_General: resolve(__dirname, 'src/ModeratorGeneral.ts'),
                     FormTextArea: resolve(__dirname, 'src/FormTextArea.ts'),
                     PlaylistCopiable: resolve(__dirname, 'src/PlaylistCopiable.ts'),
+                    MusicLabeler: resolve(__dirname, 'src/MusicLabeler.ts'),
                 },
                 output: {
                     format: 'es',

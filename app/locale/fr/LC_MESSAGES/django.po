@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-27 15:41+0000\n"
+"POT-Creation-Date: 2026-06-05 14:01+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -17,6 +17,191 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: main/domain/common/enum/FadePlaylistEnum.py:26
+#: main/domain/common/enum/FadePlaylistEnum.py:58
+msgid "enum.fade_playlist.default"
+msgstr "Par défaut"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:27
+msgid "enum.fade_curve.disabled"
+msgstr "Désactivé"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:28
+msgid "enum.fade_curve.linear"
+msgstr "Linéaire"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:29
+msgid "enum.fade_curve.ease"
+msgstr "Douce"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:30
+msgid "enum.fade_curve.ease_in"
+msgstr "Entrée progressive"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:31
+msgid "enum.fade_curve.ease_out"
+msgstr "Sortie progressive"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:32
+msgid "enum.fade_curve.ease_in_quad"
+msgstr "Entrée quadratique"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:33
+msgid "enum.fade_curve.ease_out_quad"
+msgstr "Sortie quadratique"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:34
+msgid "enum.fade_curve.ease_in_out_quad"
+msgstr "Accélération et décélération quadratiques"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:35
+msgid "enum.fade_curve.ease_out_cubic"
+msgstr "Sortie cubique"
+
+#: main/domain/general/service/OnboardingContextService.py:38
+msgid "onboarding.labels.next"
+msgstr "Suivant"
+
+#: main/domain/general/service/OnboardingContextService.py:39
+msgid "onboarding.labels.prev"
+msgstr "Précédent"
+
+#: main/domain/general/service/OnboardingContextService.py:40
+msgid "onboarding.labels.done"
+msgstr "Terminé"
+
+#: main/domain/general/service/OnboardingContextService.py:67
+msgid "onboarding.public.theme.title"
+msgstr "Mode clair/sombre"
+
+#: main/domain/general/service/OnboardingContextService.py:68
+msgid "onboarding.public.theme.description"
+msgstr ""
+"Basculez entre les modes clair et sombre pour plus de confort de lecture. "
+"Votre préférence est sauvegardée automatiquement."
+
+#: main/domain/general/service/OnboardingContextService.py:75
+msgid "onboarding.public.fullscreen.title"
+msgstr "Mode plein écran"
+
+#: main/domain/general/service/OnboardingContextService.py:76
+msgid "onboarding.public.fullscreen.description"
+msgstr ""
+"Agrandissez le soundboard pour une meilleure immersion audio. Idéal pour vos "
+"sessions de streaming ou de travail créatif."
+
+#: main/domain/general/service/OnboardingContextService.py:83
+msgid "onboarding.public.soundboards.title"
+msgstr "Voir les Soundboards publics"
+
+#: main/domain/general/service/OnboardingContextService.py:84
+msgid "onboarding.public.soundboards.description"
+msgstr ""
+"Découvrez les soundboards créés par la communauté. Vous pouvez les écouter, "
+"les prévisualiser."
+
+#: main/domain/general/service/OnboardingContextService.py:91
+msgid "onboarding.public.grid.title"
+msgstr "Soundboards publiques"
+
+#: main/domain/general/service/OnboardingContextService.py:92
+msgid "onboarding.public.grid.description"
+msgstr ""
+"Explorez les soundboards créés par la communauté. Vous pouvez les écouter, "
+"les prévisualiser et même copier leurs boutons pour votre propre soundboard."
+
+#: main/domain/general/service/OnboardingContextService.py:99
+msgid "onboarding.private.tracks.title"
+msgstr "Actionner les boutons d'un soundboard"
+
+#: main/domain/general/service/OnboardingContextService.py:100
+msgid "onboarding.private.tracks.description"
+msgstr "Cliquer pour lancer un des sons associé au boutons"
+
+#: main/domain/general/service/OnboardingContextService.py:107
+msgid "onboarding.private.mixer.title"
+msgstr "Contrôles spécifiques du soundboard"
+
+#: main/domain/general/service/OnboardingContextService.py:108
+msgid "onboarding.private.mixer.description"
+msgstr ""
+"Contrôlez votre ambiance : Contrôlez les volumes. ou jouer des sons "
+"spécifiques."
+
+#: main/domain/general/service/OnboardingContextService.py:120
+msgid "onboarding.private.my_soundboards.title"
+msgstr "Mes soundboards privés"
+
+#: main/domain/general/service/OnboardingContextService.py:121
+msgid "onboarding.private.my_soundboards.description"
+msgstr "Afficher vos soundboards privés."
+
+#: main/domain/general/service/OnboardingContextService.py:128
+msgid "onboarding.private.my_soundboards_grid.title"
+msgstr "Mes soundboards privés"
+
+#: main/domain/general/service/OnboardingContextService.py:129
+msgid "onboarding.private.my_soundboards_grid.description"
+msgstr ""
+"Voici vos soundboards personnels. Vous pouvez les éditer, les partager ou "
+"les supprimer."
+
+#: main/domain/general/service/OnboardingContextService.py:136
+msgid "onboarding.private.create_soundboard.title"
+msgstr "Créer un nouveau soundboard"
+
+#: main/domain/general/service/OnboardingContextService.py:137
+msgid "onboarding.private.create_soundboard.description"
+msgstr ""
+"Créez votre propre soundboard en 3 clics. Donnez-lui un nom, une description "
+"et commencez à ajouter des sons."
+
+#: main/domain/general/service/OnboardingContextService.py:144
+msgid "onboarding.private.playlist_button.title"
+msgstr "Vos boutons personnalisés"
+
+#: main/domain/general/service/OnboardingContextService.py:145
+msgid "onboarding.private.playlist_button.description"
+msgstr "Accéder à vos boutons personnalisés."
+
+#: main/domain/general/service/OnboardingContextService.py:152
+msgid "onboarding.private.playlist_grid.title"
+msgstr "Liste de vos boutons"
+
+#: main/domain/general/service/OnboardingContextService.py:153
+msgid "onboarding.private.playlist_grid.description"
+msgstr ""
+"Voici vos boutons personnalisés. Cliquez dessus pour les éditer, les "
+"partager ou les supprimer."
+
+#: main/domain/general/service/OnboardingContextService.py:160
+msgid "onboarding.private.copiable_buttons.title"
+msgstr "Boutons copiables"
+
+#: main/domain/general/service/OnboardingContextService.py:161
+msgid "onboarding.private.copiable_buttons.description"
+msgstr "Consulter les boutons créés par la communauté qui peuvent être copiés."
+
+#: main/domain/general/service/OnboardingContextService.py:168
+msgid "onboarding.private.copy_buttons_grid.title"
+msgstr "Copier les boutons"
+
+#: main/domain/general/service/OnboardingContextService.py:169
+msgid "onboarding.private.copy_buttons_grid.description"
+msgstr ""
+"Copiez les contrôles audio de ce soundboard pour les les consulter et les "
+"intégrer à votre boutons personnalisés."
+
+#: main/domain/general/service/OnboardingContextService.py:176
+msgid "onboarding.private.user_settings.title"
+msgstr "Paramètres utilisateur"
+
+#: main/domain/general/service/OnboardingContextService.py:177
+msgid "onboarding.private.user_settings.description"
+msgstr ""
+"Gérez votre profil, vos préférences de notification, votre thème préféré et "
+"votre abonnement."
+
 #: main/interface/ui/templates/Html/Account/send_reset_password.html:11
 msgid "template.sendResetPassword.card.title"
 msgstr "Sending password reset"
@@ -25,11 +210,11 @@ msgstr "Sending password reset"
 msgid "template.sendResetPassword.form.submit"
 msgstr "Reset password"
 
-#: main/interface/ui/templates/Html/General/403.html:8
+#: main/interface/ui/templates/Html/General/403_modal.html:7
 msgid "template.403.title"
 msgstr "Accès refusé"
 
-#: main/interface/ui/templates/Html/General/403.html:9
+#: main/interface/ui/templates/Html/General/403_modal.html:8
 msgid "template.403.message"
 msgstr "Vous n'avez pas la permission d'accéder à cette page."
 
@@ -38,6 +223,7 @@ msgid "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip"
 msgstr "Pouvoir partager l'écoute de la soundboard avec vos joueurs en ligne."
 
 #: main/interface/ui/templates/Html/Music/add_link_music.html:7
+#: main/interface/ui/templates/Html/Music/add_link_music_ajax.html:7
 msgid "template.addLinkMusic.form.submit"
 msgstr "Ajouter le lien"
 
@@ -45,25 +231,25 @@ msgstr "Ajouter le lien"
 msgid "generic.back"
 msgstr "Retour"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:29
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:14
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:28
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:13
 msgid "generic.filter_by_type"
 msgstr "Filtre par type"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:31
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:16
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:29
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:14
 msgid "generic.filter_by_type.value.all"
 msgstr "Tous les types"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:66
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:60
 msgid "template.playlist_copiable.preview.instruction"
 msgstr "Cliquer sur un boutons pour présualiser la playlist."
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:49
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:55
 msgid "template.playlist_copiable_preview.duplicate_playlist"
 msgstr "Dupliquer le bouton"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:51
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:57
 msgid "template.playlist_copiable_preview.already_duplicated"
 msgstr "Le bouton a déjà été dupliqué."
 
@@ -73,7 +259,7 @@ msgstr "Ajouter un bouton"
 
 #: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:53
 msgid "template.playlist_read_all.button.listPublic"
-msgstr "Liste des boutons copiable"
+msgstr "Liste des boutons copiable de la communauté"
 
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:25
 msgid ""
@@ -93,3 +279,24 @@ msgstr ""
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:8
 msgid "template.shareSoundboard.button.label"
 msgstr "Partager l'écoute"
+
+#: main/interface/ui/templates/socialaccount/login.html:9
+msgid "Connexion via Google"
+msgstr ""
+
+#: main/interface/ui/templates/socialaccount/login.html:12
+msgid ""
+"Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
+"Google."
+msgstr ""
+
+#: main/interface/ui/templates/socialaccount/login.html:16
+msgid "Continuer"
+msgstr ""
+
+#: main/interface/ui/templates/socialaccount/login.html:20
+msgid "Retour"
+msgstr ""
+
+#~ msgid "enum.fade_playlist.off"
+#~ msgstr "Désactivé"

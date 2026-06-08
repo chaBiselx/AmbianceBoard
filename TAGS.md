@@ -198,12 +198,42 @@ Nouveautés
 - Ajout de liste de sélection depuis le soundboard
 - Authentification par Oauth2 de Google
 
+### 0.3.4 - 2026/04
+Corrections
+- Recuperation de l'email via Oauth de google
+
+### 0.3.5 - 2026/06
+Nouveautés
+- Ajout d'une coloration accessible uniquement pour les beta-testeur en violet
+- Ajout d'une IA en local pour labelliser les pistes audios (BETA-TEST)
+- Ajout d'une visite guidé 
+- Ajout d'un fichier llms.txt pour SEO
+- Ajout d'un visuel pour les fondues d'entrée et de sortie
+- Ajout de statistique pour le Manager 
+- Ajout de champ de description pour les soundboards 
+ 
+Améliorations
+- Les Soundboards publiques n'afficherons plus les soundboard sans boutons
+- Pouvoir choisir le type de Fade IN/OUT sur un bouton
+- Amélioration du SEO pour les soundboards publique
+
+Modifications
+- Un tag est désormais obligatoire pour un soundboard
+
+Corrections
+- Correction de la latence lors du premier lancemement du fichier audio
+
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Nouveautés
 - …
 
 Améliorations
+- …
+
+Modifications
 - …
 
 Corrections

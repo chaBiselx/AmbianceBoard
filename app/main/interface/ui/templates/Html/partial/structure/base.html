@@ -3,11 +3,13 @@
 {% load static %}
 {% load FrontJs %}
 {% load Theme %}
+{% load Seo %}
 
 <html lang="fr" {% include 'Html/partial/structure/theme/theme.html' %} data-bs-theme="{% get_user_theme %}">
+{% resolve_page_seo as resolved_seo %}
 
 <head>
-    <title>{% block page_title %}AmbianceBoard - Click here, play anywhere{% endblock %}</title>
+    <title>{% if resolved_seo and resolved_seo.title %}{{ resolved_seo.title }}{% elif seo and seo.title %}{{ seo.title }}{% else %}{% block page_title %}AmbianceBoard - Click here, play anywhere{% endblock %}{% endif %}</title>
     {% include 'Html/partial/structure/utils/meta.html' %}
     {% include 'Html/partial/structure/utils/analyticsHead.html' %}
 
@@ -44,7 +46,7 @@
 
             <div class="ms-auto d-flex align-items-center gap-1 gap-lg-2 gap-lg-3">
 
-                <button class="btn btn-link url_link p-1" id="darkModeToggle" data-backend-saved="{% is_backend_saved %}" aria-label="Changer le thème" data-url="{% url 'updateTheme' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Changer le thème">
+                <button class="btn btn-link url_link p-1" id="darkModeToggle" data-shepherd="theme-toggle" data-backend-saved="{% is_backend_saved %}"  data-url="{% url 'updateTheme' %}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Changer le thème">
                     {% include 'Html/partial/structure/theme/theme_icon.html' %}
                 </button>
                 {% block navbar %}

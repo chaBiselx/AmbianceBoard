@@ -4,7 +4,13 @@
 {% load FrontJs %}
 {% load static %}
 
-{% block page_title %}Soundboards Publics - Ambiance JDR | AmbianceBoard{% endblock %}
+{% block page_title %}
+    {% if seo and seo.title %}
+        {{ seo.title }}
+    {% else %}
+        Soundboards Publics - Ambiance JDR | AmbianceBoard
+    {% endif %}
+{% endblock %}
 
 {% block javascript %}
 {{ block.super }}
@@ -75,11 +81,12 @@
 
 <div class="row">
     <div class="col-12">
-        <div class="flex-container">
+        <div class="flex-container" data-shepherd="public-soundboards-grid">
             {% for soundboard in page_objects %}
             <a href="{% url 'publicReadSoundboard' soundboard.uuid %}">
                 <div class="soundboard-element reportable flex-item soundboard-dim-{{ soundboard_dim }} m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};" data-id="{{ soundboard.uuid }}" data-bs-toggle="tooltip"
-                    data-bs-title="{{ soundboard.tags.all|join:", "}}">
+                data-bs-html="true"    
+                data-bs-title='{% if soundboard.descriptionSEO %}{{ soundboard.descriptionSEO }} <br> {% endif %}<strong>{{ soundboard.tags.all|join:", " }}</strong>'>
                     {% if request.user.is_authenticated %}
                     <label class="favorite-float reportable-ignore" for="favorite_{{ soundboard.uuid }}">
                         <div class="favorite-btn">

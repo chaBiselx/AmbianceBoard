@@ -440,6 +440,11 @@ if(DEBUG_TOOLBAR):
 #Message system 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
+#Label 
+MUSIC_LABELER_URL = os.getenv("MUSIC_LABELER_URL")
+MUSIC_LABELER_TOKEN = os.getenv("MUSIC_LABELER_TOKEN")
+
+
 # CRON JOBS
 CRON_CLASSES = []
 CRONJOBS = []
@@ -449,6 +454,7 @@ if RUN_CRONS:
     CRON_CLASSES.append('main.domain.cron.cronFile.DeleteSharedSoundboardExpiredCron.run')
     CRON_CLASSES.append('main.domain.cron.cronFile.UserTierExpirationCron.run')
     CRON_CLASSES.append('main.domain.cron.cronFile.SyncDomainBlacklistCronJob.run')
+    CRON_CLASSES.append('main.domain.cron.cronFile.MusicLabelerCron.run')
 
 
     CRONJOBS.append(('0 10 * * *', 'main.domain.cron.cronFile.CleanMediaFolderCron.run'))
@@ -456,6 +462,7 @@ if RUN_CRONS:
     CRONJOBS.append(('0 18 * * *', 'main.domain.cron.cronFile.DeleteSharedSoundboardExpiredCron.run'))
     CRONJOBS.append(('0 6 * * *', 'main.domain.cron.cronFile.UserTierExpirationCron.run'))  # Tous les jours à 6h
     CRONJOBS.append(('0 12 1,7,14,21,28 * *', 'main.domain.cron.cronFile.SyncDomainBlacklistCronJob.run'))  # Tous les jours à 12h
+    CRONJOBS.append(('*/20 * * * *', 'main.domain.cron.cronFile.MusicLabelerCron.run'))  # Toutes les 20 minutes
 
 
 # message brokers 
@@ -467,6 +474,10 @@ CELERY_TASK_SERIALIZER = 'json'
 
 MEDIA_AUDIO_MESSENGER_NB_MAX_FILE = 100
 MEDIA_IMG_MESSENGER_NB_MAX_FILE = 100
+
+# Music Labeler
+MUSIC_LABELER_BATCH_SIZE = 50  # Nombre de tracks à enqueue par cron
+MUSIC_LABELER_LOAD_THRESHOLD = 2.0  # Seuil de charge normalisée (load / nb_cpus) au-delà duquel le consumer s'arrête
 
 # auth 
 from main.domain.common.enum.GroupEnum import GroupEnum

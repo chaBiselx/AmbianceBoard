@@ -14,6 +14,23 @@ class MusicRepository:
 
     def exist_from_path(self, file_path: str) -> bool:
         return Music.objects.filter(file=file_path).exists()
+
+    def is_file_used_elsewhere(self, file, music_id: int) -> bool:
+        """
+        Vérifie si un fichier musique est encore référencé par une autre entrée.
+
+        Args:
+            file: Chemin du fichier ou objet `FieldFile`.
+            music_id: Identifiant de la musique courante à exclure.
+
+        Returns:
+            bool: True si au moins une autre musique utilise ce fichier.
+        """
+        if not file:
+            return False
+
+        file_name = getattr(file, 'name', file)
+        return Music.objects.filter(file=file_name).exclude(id=music_id).exists()
     
     def get_list_music(self, playlist_uuid: int, user:User) -> Optional[List[Music]]:
         try:
@@ -23,4 +40,16 @@ class MusicRepository:
             return queryset
         except Music.DoesNotExist:
             return None
+
+    def get_unlabeled_music_ids(self, limit: int = 50) -> list[int]:
+        """
+        Retourne les IDs des musiques sans labels.
+        Sélection aléatoire limitée à `limit`.
+        """
+        return list(
+            Music.objects
+            .filter(file__isnull=False, tracklabel__isnull=True)
+            .order_by('?')
+            .values_list('track_ptr_id', flat=True)[:limit]
+        )
 

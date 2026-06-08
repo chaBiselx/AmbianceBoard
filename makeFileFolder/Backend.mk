@@ -48,7 +48,7 @@ update-db:
 	@echo "$(GREEN)Migrations terminées.$(NC)"
 
 # Traductions
-makemessages:
+trad-init:
 	@# Help: Génère les fichiers de traduction (.po) pour toutes les langues
 	@echo "$(GREEN)Génération des fichiers de traduction...$(NC)"
 	$(CONTAINER_BACKEND) python manage.py makemessages -l fr
@@ -56,7 +56,7 @@ makemessages:
 	@echo "$(GREEN)Fichiers .po générés dans app/locale/$(NC)"
 
 
-compilemessages:
+trad-update:
 	@# Help: Compile les fichiers de traduction (.po en .mo)
 	@echo "$(GREEN)Compilation des fichiers de traduction...$(NC)"
 	$(CONTAINER_BACKEND) python manage.py compilemessages
@@ -65,6 +65,6 @@ compilemessages:
 update-translations:
 	@# Help: Met à jour et compile toutes les traductions (makemessages + compilemessages)
 	@echo "$(GREEN)Mise à jour complète des traductions...$(NC)"
-	$(MAKE) makemessages
-	$(MAKE) compilemessages
+	$(MAKE) trad-init
+	$(MAKE) trad-update
 	@echo "$(GREEN)Traductions mises à jour et compilées$(NC)"

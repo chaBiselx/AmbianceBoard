@@ -1,3 +1,76 @@
 .btn-group-player button {
     width: 40px;
 }
+
+:root {
+    --fade-preview-bg: #f8f9fa;
+    --fade-preview-axis: #ced4da;
+    --fade-preview-in: #198754;
+    --fade-preview-out: #dc3545;
+    --fade-preview-off: #6c757d;
+}
+
+[data-bs-theme="dark"] {
+    --fade-preview-bg: #22272e;
+    --fade-preview-axis: #5f6b77;
+    --fade-preview-in: #55d69f;
+    --fade-preview-out: #ff8b9a;
+    --fade-preview-off: #adb5bd;
+}
+
+.fade-preview-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.fade-preview-canvas {
+    display: block;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 4px;
+    width: 100%;
+    height: 90px;
+}
+
+.fade-preview-msg {
+    min-height: 1rem;
+}
+
+.fade-preview-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    font-size: 0.72rem;
+    line-height: 1.15;
+}
+
+.fade-preview-legend__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    opacity: 1;
+    padding: 0.05rem 0.25rem;
+    border-radius: 999px;
+    transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.fade-preview-legend__item.is-active {
+    background-color: rgba(var(--bs-secondary-rgb), 0.15);
+    font-weight: 600;
+}
+
+.fade-preview-legend__item--in {
+    border: 1px solid color-mix(in srgb, var(--fade-preview-in) 45%, transparent);
+}
+
+.fade-preview-legend__item--out {
+    border: 1px solid color-mix(in srgb, var(--fade-preview-out) 45%, transparent);
+}
+
+.fade-preview-legend__swatch {
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 999px;
+    background-color: var(--fade-color);
+    display: inline-block;
+}

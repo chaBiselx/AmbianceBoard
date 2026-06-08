@@ -24,6 +24,7 @@ class SoundBoard(models.Model):
     SOUNDBOARD_FOLDER = 'soundBoardIcon/'
     id = models.BigAutoField(primary_key=True) 
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False, db_index=True)
+    descriptionSEO = models.TextField(blank=True, default="", help_text="Description du soundboard")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)

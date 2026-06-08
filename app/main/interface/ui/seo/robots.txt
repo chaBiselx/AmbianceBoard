@@ -11,5 +11,5 @@ Disallow: /shared/
 Disallow: /playlist/
 Disallow: /soundBoards/
 
-# Sitemap (update URL to your domain if served)
-Sitemap: /sitemap.xml
+# Sitemap must be an absolute URL for broad crawler compatibility
+Sitemap: https://ambianceboard.com/sitemap.xml

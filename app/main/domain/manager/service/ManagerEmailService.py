@@ -16,11 +16,19 @@ class ManagerEmailService:
     def __init__(self):
         self.logger = LoggerFactory.get_default_logger()
 
-    def dispatch(self, recipients: List[User], subject: str, body: str, sender: User) -> int:
+    def dispatch(
+        self,
+        recipients: List[User],
+        external_emails: List[str],
+        subject: str,
+        body: str,
+        sender: User,
+    ) -> int:
         """
         Enfile une tâche d'envoi d'email pour chaque destinataire via RabbitMQ/Celery.
 
         :param recipients: Liste des utilisateurs destinataires.
+        :param external_emails: Liste d'adresses email externes (non liées à des comptes).
         :param subject: Sujet du message.
         :param body: Corps du message (texte brut ou HTML).
         :param sender: Utilisateur manager à l'origine de l'envoi.
@@ -34,12 +42,27 @@ class ManagerEmailService:
         
 
         queued = 0
+        sent_emails = set()
+
         for user in recipients:
             if not user.email:
                 self.logger.warning(f"ManagerEmailService: utilisateur {user.username} sans email, ignoré.")
                 continue
+            lowered_email = user.email.lower()
+            if lowered_email in sent_emails:
+                continue
             self.logger.info(f"ManagerEmailService: envoi d'email à {user.username} — sujet: {subject}")
             send_manager_email_task.delay(user.email, subject, html_content)
+            sent_emails.add(lowered_email)
+            queued += 1
+
+        for email in external_emails:
+            lowered_email = email.lower()
+            if lowered_email in sent_emails:
+                continue
+            self.logger.info(f"ManagerEmailService: envoi d'email externe à {email} — sujet: {subject}")
+            send_manager_email_task.delay(email, subject, html_content)
+            sent_emails.add(lowered_email)
             queued += 1
 
         self.logger.info(

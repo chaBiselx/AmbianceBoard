@@ -16,11 +16,13 @@ def manager_send_email(request) -> HttpResponse:
         form = ManagerSendEmailForm(request.POST)
         if form.is_valid():
             recipient_list = form.cleaned_data['recipients']
+            external_emails = form.cleaned_data['external_emails']
             subject = form.cleaned_data['subject']
             body = form.cleaned_data['message']
             
             queued = ManagerEmailService().dispatch(
                 recipients=list(recipient_list),
+                external_emails=external_emails,
                 subject=subject,
                 body=body,
                 sender=request.user,

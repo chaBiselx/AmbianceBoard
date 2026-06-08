@@ -3,6 +3,7 @@ import { MusicDropzoneConfig, MusicDropzoneManager } from '@/modules/MusicDropzo
 import Csrf from './modules/General/Csrf';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import { addClearIconConfirmation } from '@/modules/ClearIconConfirmation';
+import MergedFadePreviewCanvasRenderer from '@/modules/MergedFadePreviewCanvasRenderer';
 
 
 declare global {
@@ -14,6 +15,8 @@ declare global {
 
 
 type playlist = { color: string, colorText: string, typePlaylist: string };
+
+const mergedFadePreviewCanvasRenderer = new MergedFadePreviewCanvasRenderer();
 
 simulatePlaylistColor();
 toggleShowColorForm();
@@ -47,6 +50,15 @@ document.addEventListener("DOMContentLoaded", () => {
     addPopupDescriptionPlaylistType();
     addListingOtherColorsEvent();
     addClearIconConfirmation('de la playlist');
+    mergedFadePreviewCanvasRenderer.renderFromDom();
+    window.addEventListener('resize', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+
+    const id_typePlaylist = document.getElementById('id_typePlaylist');
+    id_typePlaylist?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    const id_fadeIn = document.getElementById('id_fadeIn');
+    id_fadeIn?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    const id_fadeOut = document.getElementById('id_fadeOut');
+    id_fadeOut?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
 });
 
 function simulatePlaylistColor() {
@@ -373,7 +385,7 @@ function showPopupMusic(event: Event) {
                     if (dropZone) {
                         const uploadUrl = dropZone.dataset.uploadUrl;
                         const csrf = Csrf.getToken();
-                        
+
 
                         if (!uploadUrl) {
                             ConsoleCustom.error('Missing required configuration for MusicDropzoneManager');
@@ -385,7 +397,7 @@ function showPopupMusic(event: Event) {
                                 {
                                     containerSelector: '#music-dropzone',
                                     uploadUrl: uploadUrl,
-                                    csrf : csrf,
+                                    csrf: csrf,
                                     fileFormat: dropZone.dataset.format,
                                     nbfile: Number.parseInt(dropZone.dataset.musicremaining!),
                                     refreshAfterUpload: true

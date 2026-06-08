@@ -41,6 +41,16 @@
                                 {% endif %}
                             </div>
                             <div>
+                                {{ form.descriptionSEO.label_tag  }} {{ form.descriptionSEO }}
+                                {% if form.descriptionSEO.errors %}
+                                <ul>
+                                    {% for error in form.descriptionSEO.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                            <div>
                                 {{ form.color.label_tag  }} {{ form.color }}
                             </div>
                             <div>

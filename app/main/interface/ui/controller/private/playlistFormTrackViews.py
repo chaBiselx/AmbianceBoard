@@ -114,7 +114,11 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
         if not music:
             return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.MUSIC_DELETE, user=request.user, content_object=music)
-        music.file.delete()
+        
+        # Vérifier si le fichier audio est utilisé ailleurs
+        if music.file and MusicRepository().is_file_used_elsewhere(music.file, music.id):
+            music.file.delete()
+        
         music.delete()
         return JsonResponse({'success': 'Suppression musique réussie'}, status=200)
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)

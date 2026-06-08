@@ -49,6 +49,7 @@ class ErrorTrackingMiddleware:
             "/.well-known/",
             "/favicon.ico",
             "/robots.txt",
+            "/llms.txt",
             "/sitemap.xml",
             "/apple-touch-icon",
             "/browserconfig.xml",

@@ -22,6 +22,7 @@ from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
+from main.domain.common.enum.FadeEnum import FadeEnum
 from main.domain.common.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
 
 local_format_audio1 = "audio/mpeg"
@@ -55,8 +56,8 @@ class PlaylistDuplicationServiceTest(TestCase):
             colorText="#FFFFFF",
             useSpecificDelay=True,
             maxDelay=10,
-            fadeIn=FadePlaylistEnum.YES.name,
-            fadeOut=FadePlaylistEnum.NO.name
+            fadeIn=FadeEnum.EASE_OUT.name,
+            fadeOut=FadeEnum.DISABLED.name
         )
 
     def test_duplicate_creates_new_playlist_with_different_uuid(self):
@@ -236,6 +237,33 @@ class PlaylistDuplicationServiceTest(TestCase):
         
         # Vérifier que ce sont des instances différentes
         self.assertNotEqual(duplicated_music.id, music.id)
+        self.assertNotEqual(duplicated_music.file.name, music.file.name)
+
+    def test_duplicate_preserves_music_file_content(self):
+        """Test que la duplication conserve le contenu du fichier audio"""
+        audio_content = b'preserved audio payload'
+        audio_file = SimpleUploadedFile("preserved.mp3", audio_content, content_type=local_format_audio1)
+
+        music = Music.objects.create(
+            playlist=self.source_playlist,
+            fileName="preserved.mp3",
+            file=audio_file,
+            alternativeName="Preserved Music",
+            duration=120.0
+        )
+
+        service = PlaylistDuplicationService(self.source_playlist, self.target_user)
+        duplicated = service.duplicate()
+
+        duplicated_music = Music.objects.get(playlist=duplicated)
+        with duplicated_music.file.open('rb') as duplicated_file:
+            duplicated_content = duplicated_file.read()
+
+        with music.file.open('rb') as source_file:
+            source_content = source_file.read()
+
+        self.assertEqual(duplicated_content, source_content)
+        self.assertTrue(duplicated_music.file.name.endswith('.mp3'))
         self.assertNotEqual(duplicated_music.file.name, music.file.name)
 
     def test_duplicate_copies_link_music(self):

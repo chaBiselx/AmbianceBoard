@@ -5,7 +5,7 @@ from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 from django.views.i18n import set_language as django_set_language
 
-from main.interface.ui.controller.general.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification, dismiss_trace_user_activity, callback_oauth_google
+from main.interface.ui.controller.general.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification, dismiss_trace_user_activity, callback_oauth_google, onboarding_context
 from main.interface.ui.controller.general.confirmViews import confirm_account
 from main.interface.ui.controller.general.traceFrontViews import trace_front
 from main.interface.ui.controller.private.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
@@ -19,12 +19,13 @@ from main.interface.ui.controller.private.playlistFormTrackViews import link_cre
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
 from main.interface.ui.controller.moderator.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
 from main.interface.ui.controller.manager.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
-from main.interface.ui.controller.manager.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard
+from main.interface.ui.controller.manager.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard, manager_user_activity_details
 from main.interface.ui.controller.manager.managerCronViews import (
-    listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity
+    listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity, music_labeler_cron_service
     )
 from main.interface.ui.controller.manager.managerNotificationsViews import listing_notifications, manage_notification
 from main.interface.ui.controller.manager.managerSendEmailViews import manager_send_email
+from main.interface.ui.controller.manager.managerMusicLabelerViews import music_labeler_index, music_labeler_analyze, music_labeler_stream
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_playlist_tracks_list, favorite_update, reporting_content, public_favorite, public_specific_track_stream
 from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation, stats_moyenne_duration_session
 from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream, shared_soundboard_refresh
@@ -35,6 +36,7 @@ urlpatterns = [
     #SEO 
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots_txt"),
     path("sitemap.xml", TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml"), name="sitemap_xml"),
+    path("llms.txt", TemplateView.as_view(template_name="llms.txt", content_type="text/plain"), name="llms_txt"),
 
     # Pages publiques
     path("", home, name="home"),
@@ -45,6 +47,7 @@ urlpatterns = [
 
     #technique
     path("trace-front", trace_front, name="traceFront"),
+    path("onboarding/context", onboarding_context, name="onboardingContext"),
     
     #Oauth
     path("accounts/", include("allauth.urls")),
@@ -170,10 +173,13 @@ urlpatterns = [
     path("manager/cron/sync-domain-blacklist", sync_domain_blacklist, name="managerSyncDomainBlacklist"),
     path("manager/cron/purge-expired-shared-soundboard", purge_expired_shared_soundboard, name="managerPurgeExpiredSharedSoundboard"),
     path("manager/cron/purge-old-user-activity", purge_old_user_activity, name="managerPurgeOldUserActivity"),
+    path("manager/cron/music-labeler", music_labeler_cron_service, name="managerMusicLabelerCronService"),
+    
 
     path("manager/dashboard/user-account/", user_account_dashboard, name="managerUserAccountDashboard"),
     path("manager/dashboard/users-activity/", user_activity_dashboard, name="managerUsersActivityDashboard"),
     path("manager/dashboard/error-activity/", error_activity_dashboard, name="managerErrorActivityDashboard"),
+    path("manager/dashboard/users-activity/<uuid:user_uuid>/", manager_user_activity_details, name="managerUserActivityDetails"),
     
     
     path("manager/notifications/", listing_notifications, name="managerNotifications"),
@@ -181,6 +187,11 @@ urlpatterns = [
     path("manager/notifications/<uuid:uuid>/edit/", manage_notification, name="manager_notifications_update"),
 
     path("manager/send-email/", manager_send_email, name="managerSendEmail"),
+
+    # Music Labeler IA
+    path("manager/music-labeler/", music_labeler_index, name="managerMusicLabeler"),
+    path("manager/music-labeler/<int:music_id>/analyze", music_labeler_analyze, name="managerMusicLabelerAnalyze"),
+    path("manager/music-labeler/<int:music_id>/stream", music_labeler_stream, name="managerMusicLabelerStream"),
     
     
 

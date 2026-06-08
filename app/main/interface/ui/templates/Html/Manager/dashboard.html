@@ -69,6 +69,45 @@
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-header">
+                        <h5><i class="fa-solid fa-ranking-star me-2"></i>Top 10 utilisateurs les plus actifs</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if top_active_users %}
+                        <table class="table table-sm table-striped mb-0">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Utilisateur</th>
+                                    <th>Email</th>
+                                    <th class="text-end">Activités</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in top_active_users %}
+                                <tr>
+                                    <td>{{ user.rank }}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td class="text-end">{{ user.activity_count }}</td>
+                                    <td class="text-end">
+                                        <a href="{% url 'managerUserActivityDetails' user.user_uuid %}" class="btn btn-sm btn-outline-primary">
+                                            Voir les activités
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <p class="text-muted mb-0">Aucune activité utilisateur sur la période sélectionnée.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">
                         <h5><i class="fa-solid fa-hard-drive me-2"></i>Espace de stockage</h5>
                     </div>
                     <div class="card-body">

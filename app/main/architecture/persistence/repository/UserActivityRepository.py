@@ -64,6 +64,21 @@ class UserActivityRepository:
         ).values('activity_type', 'date').annotate(
             count=Count('id')
         ).order_by('date', 'activity_type')
+
+    def get_top_active_users(self, start_date, end_date, activities, limit: int = 10):
+        return UserActivity.objects.filter(
+            start_date__gte=start_date,
+            start_date__lte=end_date,
+            activity_type__in=activities,
+            user__isnull=False
+        ).values('user__uuid', 'user__username', 'user__email').annotate(
+            activity_count=Count('id')
+        ).order_by('-activity_count', 'user__username')[:limit]
+
+    def get_user_activities_queryset(self, user: User):
+        return UserActivity.objects.filter(
+            user=user
+        ).select_related('user', 'content_type').order_by('-start_date')
         
     def get_frequentation(self, soundboard, start_date, end_date, activities):
         return UserActivity.objects.filter( 
