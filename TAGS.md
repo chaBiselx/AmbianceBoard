@@ -223,10 +223,17 @@ Modifications
 Corrections
 - Correction de la latence lors du premier lancement du fichier audio
 
-### 0.3.5 - 2026/06
+### 0.3.6 - 2026/06
 Corrections
-- Correction de l'addresse email d'envoi pour le manager
+- Correction de l'adresse email d'envoi pour le manager
 
+
+### 0.3.7 - 2026/06
+Modifications
+- Modification de l'email du manager
+
+
+### 0.4.0 - 2026/07
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
