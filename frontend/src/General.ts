@@ -7,6 +7,7 @@ import ConsoleCustom from "@/modules/General/ConsoleCustom";
 import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
 import Csrf from "@/modules/General/Csrf";
 import GeneralTheme from "@/modules/General/GeneralTheme";
+import NotificationGeneral from "@/modules/General/NotificationGeneral";
 import Time from "@/modules/Util/Time";
 import OnboardingManager from "@/modules/OnboardingManager";
 
@@ -205,56 +206,6 @@ class Sidebar {
         }
     }
 
-}
-
-class NotificationGeneral {
-    sectionMessage: HTMLElement | null = null;
-    constructor() {
-        this.sectionMessage = document.getElementById('notifications-general');
-    }
-
-    public addEvent() {
-        if (this.sectionMessage) {
-            const listCloseButton = this.sectionMessage.getElementsByClassName('close-notification') as HTMLCollectionOf<HTMLButtonElement>;
-            for (const element of Array.from(listCloseButton)) {
-                element.addEventListener('click', this.dismissNotification.bind(this));
-            }
-        }
-
-    }
-
-    private dismissNotification(event: Event) {
-        const target = event.target as HTMLElement;
-        if (target.classList.contains('close-notification')) {
-            const alertElement = target.closest('.alert');
-            if (alertElement) {
-                alertElement.remove();
-            }
-
-            if (target.dataset.metaUrl_dismiss) {
-                this.dismissNotificationFromServer(target.dataset.metaUrl_dismiss);
-            }
-
-        }
-    }
-
-    private dismissNotificationFromServer(url: string) {
-        const csrfToken = Csrf.getToken();
-        if (url && csrfToken) {
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': csrfToken
-                },
-            })
-                // .then(response => response.json())
-                .then(_ => {
-
-                })
-                .catch(_ => {
-                });
-        }
-    }
 }
 
 class DeleteAccount {
