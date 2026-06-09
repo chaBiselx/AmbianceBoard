@@ -1,3 +1,5 @@
+name: ambianceboard
+
 services:
   cronjob:
     build: ./app
@@ -169,7 +171,8 @@ volumes:
   db-data: null
   rabbitmq-data: null
   redis-data: null
-  grafana-data: null
+  grafana-data:
+    name: ambianceboard_grafana_data
   grafana-provisioning: null
   loki-data: null
   hf-cache: null

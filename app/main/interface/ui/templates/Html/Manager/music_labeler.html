@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load FrontJs %}
+{% load PaginationLinks %}
 
 {% block javascript %}
 {{ block.super }}
@@ -78,6 +79,12 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        {% applys_pagination paginator %}
     </div>
 </div>
 

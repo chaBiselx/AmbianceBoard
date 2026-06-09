@@ -18,7 +18,7 @@ sudo ln -s /etc/nginx/sites-available/ambianceboard /etc/nginx/sites-enabled/
 sudo nginx -t
 
 sudo certbot --nginx -d ambianceboard.com -d www.ambianceboard.com
-sudo certbot --nginx -d graph.ambianceboard.com -d www.graph.ambianceboard.com
+sudo certbot --nginx -d graph.ambianceboard.com
 
 sudo ufw status
 sudo ufw allow 80/tcp

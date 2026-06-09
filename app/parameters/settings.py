@@ -66,6 +66,7 @@ APP_PORT = os.getenv('WEB_PORT')
 APP_SCHEME  = 'https' if ACTIVE_SSL else 'http'
 
 URI_ADMIN = os.environ.get('URI_ADMIN', '/admin/')
+GRAFANA_URL = os.environ.get('GRAFANA_URL')
 
 RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
 RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
