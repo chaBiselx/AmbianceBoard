@@ -233,7 +233,7 @@ Modifications
 - Modification de l'email du manager
 
 
-### 0.3.8 - 2026/07
+### 0.3.8 - 2026/06
 Améliorations
 - Ajout du service de pagination pour le labeler IA 
 
@@ -242,6 +242,10 @@ Corrections
 - Corrige la documentation pour deploy graphana
 - Corrige le problème de perte de données entre release
 
+
+### 0.4.0 - 2026/07
+Corrections
+- Corrige l'affichage de la notification d'un 
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
