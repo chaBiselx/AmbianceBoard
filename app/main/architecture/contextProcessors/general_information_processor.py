@@ -21,4 +21,6 @@ def general_information_processor(request):
     
     return {
         'APP_ENV': Settings.get('APP_ENV'),
+        'DEBUG': Settings.get('DEBUG', False),
+        'GRAFANA_URL': Settings.get('GRAFANA_URL', ''),
     }
