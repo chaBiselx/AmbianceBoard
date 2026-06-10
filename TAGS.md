@@ -243,9 +243,10 @@ Corrections
 - Corrige le problème de perte de données entre release
 
 
-### 0.4.0 - 2026/07
+### 0.3.9 - 2026/06
 Corrections
-- Corrige l'affichage de la notification d'un 
+- Corrige l'affichage de la notification en privé 
+- Corrige le cron qui labelise les musiques
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
