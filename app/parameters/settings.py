@@ -30,7 +30,7 @@ DEBUG_TOOLBAR = bool(int(os.environ.get("DEBUG_TOOLBAR", default=0)))
 
 APP_ENV = str(os.environ.get("APP_ENV", default='dev'))
 
-RUN_CRONS = bool(int(os.environ.get("RUN_CRONS", default=0)))
+RUN_CRONS = bool(int(os.environ.get("RUNCRON", default=0)))
 
 
 TESTING = 'test' in sys.argv
