@@ -48,7 +48,7 @@ class MusicRepository:
         """
         return list(
             Music.objects
-            .filter(file__isnull=False, tracklabel__isnull=True)
+            .filter(file__isnull=False, labels__isnull=True)
             .order_by('?')
             .values_list('track_ptr_id', flat=True)[:limit]
         )
