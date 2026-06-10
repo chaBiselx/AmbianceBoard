@@ -252,6 +252,10 @@ Corrections
 Corrections
 - Corrige fondue de sortie lorsque l'on arrete volontairement
 
+### 0.3.11 - 2026/06
+Corrections
+- Corrige le process qui lance les crons
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Nouveautés
