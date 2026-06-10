@@ -248,6 +248,10 @@ Corrections
 - Corrige l'affichage de la notification en privé 
 - Corrige le cron qui labelise les musiques
 
+### 0.3.10 - 2026/06
+Corrections
+- Corrige fondue de sortie lorsque l'on arrete volontairement
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Nouveautés

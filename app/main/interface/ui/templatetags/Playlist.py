@@ -26,4 +26,8 @@ def get_playlist_data(playlist):
         Dict: Données de configuration de la playlist
     """
     service = PlaylistDataService()
-    return service.get_playlist_data(playlist)
+    data = service.get_playlist_data(playlist)
+    return {
+        key: str(value).replace(",", ".") if isinstance(value, (float, str)) else value
+        for key, value in data.items()
+    }
