@@ -95,8 +95,9 @@ class MusicElement {
     }
 
     private addFadeOutOnStop(callback: () => void) {
-        ConsoleCustom.log('addFadeOutOnStop');
-        if( this.fadeOffOnStopType !== 'disabled'){
+        ConsoleCustom.log('addFadeOutOnStop event');
+        if( this.fadeOffOnStopType === 'disabled'){
+            console.log('fade off on stop disabled');
             callback();
             return;
         }
@@ -107,7 +108,7 @@ class MusicElement {
             return // ignore fade out if fade in not finished
         }
 
-        ConsoleCustom.log('start fade off on stop');
+        ConsoleCustom.log(`start fade off on stop ${this.fadeOffOnStopType} ${this.fadeOffOnStopDuration}`);
         const typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeOffOnStopType)
         const audioFade = new AudioFadeManager(this, typeFade, false, callback);
         audioFade.setDuration(this.fadeOffOnStopDuration);
