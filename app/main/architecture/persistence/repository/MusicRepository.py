@@ -44,12 +44,12 @@ class MusicRepository:
     def get_unlabeled_music_ids(self, limit: int = 50) -> list[int]:
         """
         Retourne les IDs des musiques sans labels.
-        Sélection aléatoire limitée à `limit`.
+        Sélection des plus anciennes limitées à `limit`.
         """
         return list(
             Music.objects
             .filter(file__isnull=False, labels__isnull=True)
-            .order_by('?')
+            .order_by('created_at')
             .values_list('track_ptr_id', flat=True)[:limit]
         )
 
