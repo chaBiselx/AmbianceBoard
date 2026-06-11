@@ -14,7 +14,7 @@ class MusicLabelerCronService:
     def __init__(self):
         self.logger = LoggerFactory.get_default_logger()
         self.repository = MusicRepository()
-        self.batch_size = Settings.get("MUSIC_LABELER_BATCH_SIZE", 50)
+        self.batch_size = Settings.get("MUSIC_LABELER_BATCH_SIZE", 1)
 
     def dispatch_unlabeled_tracks(self) -> int:
         """
