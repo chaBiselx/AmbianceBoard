@@ -9,6 +9,7 @@ def analyze_music_task(self, music_id: int):
     Dispatché par le cron, acheminé par RabbitMQ.
     """
     from main.domain.common.service.MusicLabelerService import MusicLabelerService
+    logger.info(f"MusicLabelerMessenger: start analysis for music_id={music_id}")
 
     service = MusicLabelerService()
 

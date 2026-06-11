@@ -66,10 +66,17 @@ async def label_upload(
     tmp_path = await temp_upload_file_manager.save(file)
 
     try:
+        logger.info("Chargement audio : %s", file.filename)
         audio, sr = await asyncio.to_thread(librosa.load, tmp_path, sr=SAMPLE_RATE, mono=True)
+        logger.info("Extraction features : %s", file.filename)
         features = await asyncio.to_thread(AudioFeatureExtractor.extract, audio, sr)
+        logger.info("Classification : %s", file.filename)
         classifier = MusicClassifier(audio_model, sample_rate=SAMPLE_RATE)
         classification = await asyncio.to_thread(classifier.classify, audio, top_k_per_category=top_k)
+        logger.info("Analyse réussie : %s", file.filename)
+    except Exception as e:
+        logger.error("Erreur lors de l'analyse de %s : %s", file.filename, exc_info=True)
+        raise
     finally:
         temp_upload_file_manager.cleanup(tmp_path)
 

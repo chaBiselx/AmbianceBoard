@@ -14,13 +14,7 @@ class MusicLabelerService:
     def __init__(self) -> None:
         self.repository = TrackLabelRepository()
         self.client = MusicLabelerClient()
-
-    def analyze(self, music: Music) -> dict:
-        """Analyse une musique via le client HTTP puis persiste les labels."""
-        data = self.client.analyze(music)
-        self._save_from_response(music.track_ptr, data)
-        return data
-
+        
     def analyze_by_id(self, music_id: int) -> dict:
         """
         Analyse une musique par son ID.
@@ -34,8 +28,17 @@ class MusicLabelerService:
         Raises:
             Music.DoesNotExist: Si la musique n'existe pas.
         """
-        music = Music.objects.get(id=music_id)
+        try:
+            music = Music.objects.get(id=music_id)
+        except Music.DoesNotExist:
+            raise Music.DoesNotExist(f"Music avec id={music_id} introuvable")
         return self.analyze(music)
+
+    def analyze(self, music: Music) -> dict:
+        """Analyse une musique via le client HTTP puis persiste les labels."""
+        data = self.client.analyze(music)
+        self._save_from_response(music.track_ptr, data)
+        return data
 
     def _save_from_response(self, track: Track, data: dict) -> None:
         """Extrait les labels de la réponse du microservice et les sauvegarde."""
