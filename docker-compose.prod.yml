@@ -112,7 +112,7 @@ services:
       - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('${MUSIC_LABELER_URL}/health', timeout=3)"]
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('${MUSIC_LABELER_URL}/health', timeout=3)\""]
       interval: 30s
       timeout: 10s
       retries: 3
