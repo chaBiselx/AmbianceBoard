@@ -83,7 +83,7 @@ async def label_upload(
         logger.info("Analyse réussie : %s", safe_filename)
     except Exception as e:
         safe_error = _sanitize_for_log(e)
-        logger.error("Erreur lors de l'analyse de %s : %s", safe_filename, safe_error, exc_info=True)
+        logger.exception("Erreur lors de l'analyse de %s : %s", safe_filename, safe_error, exc_info=True)
         raise
     finally:
         temp_upload_file_manager.cleanup(tmp_path)

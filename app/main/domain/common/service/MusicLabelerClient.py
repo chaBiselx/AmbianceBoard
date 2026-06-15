@@ -36,7 +36,7 @@ class MusicLabelerClient:
             response.raise_for_status()
         except requests.ConnectionError:
             self.logger.error(f"MusicLabelerClient: Service music-labeler indisponible pour music_id={music.id}")
-            raise ConnectionError(f'Service music-labeler indisponible')
+            raise ConnectionError(f'Service music-labeler indisponible pour music_id={music.id}')
         except requests.Timeout:
             self.logger.error(f"MusicLabelerClient: Timeout lors de l'analyse pour music_id={music.id}")
             raise TimeoutError("Timeout lors de l'analyse")
