@@ -161,8 +161,9 @@ class ErrorTrackingMiddleware:
                 # Récupérer la clé de session pour les utilisateurs anonymes
                 session_key = request.session.session_key if hasattr(request, 'session') else ''
                 
+                uri = request.build_absolute_uri() if request else ''
                 # Créer l'activité d'erreur
-                UserActivityRepository().create(activity_type=activity_type,user=user,session_key=session_key)
+                UserActivityRepository().create(activity_type=activity_type,user=user,session_key=session_key, uri=uri)
                 
         except Exception as e:
             # En cas d'erreur lors du traçage, ne pas faire échouer la requête
