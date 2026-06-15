@@ -480,6 +480,16 @@ MEDIA_IMG_MESSENGER_NB_MAX_FILE = 100
 MUSIC_LABELER_BATCH_SIZE = 50  # Nombre de tracks à enqueue par cron
 MUSIC_LABELER_LOAD_THRESHOLD = 2.0  # Seuil de charge normalisée (load / nb_cpus) au-delà duquel le consumer s'arrête
 
+# Concurrence du worker music_labeler : 1 par défaut (séquentiel, sans concurrence).
+# Augmenter via la variable d'environnement MUSIC_LABELER_CONCURRENCY si la charge le justifie.
+MUSIC_LABELER_CONCURRENCY = int(os.environ.get("MUSIC_LABELER_CONCURRENCY", 1))
+
+CELERY_TASK_ROUTES = {
+    'main.domain.brokers.message.MusicLabelerMessenger.analyze_music_task': {
+        'queue': 'music_labeler',
+    },
+}
+
 # auth 
 from main.domain.common.enum.GroupEnum import GroupEnum
 
