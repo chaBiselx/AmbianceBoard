@@ -78,6 +78,7 @@ class UserActivity(models.Model):
     uri = models.URLField(
         max_length=2000,
         blank=True,
+        null=True,
         default="",
         help_text="URI de la ressource ou de l'action effectuée"
     )
