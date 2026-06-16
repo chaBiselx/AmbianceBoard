@@ -5,7 +5,19 @@
 
 version: 2
 updates:
-  - package-ecosystem: "" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "pip"
+    directory: "/app"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "pip"
+    directory: "/music-labeler"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "docker"
+    directory: "/"
     schedule:
       interval: "monthly"
