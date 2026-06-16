@@ -35,13 +35,14 @@ class UserActivityRepository:
         Returns:
             UserActivity: Instance créée
         """
+        normalized_uri = uri or ''
         activity = UserActivity(
             user=user,
             is_authenticated=user is not None and user.is_authenticated,
             activity_type=activity_type.value,
             content_object=content_object,
             session_key=session_key,
-            uri=uri,
+            uri=normalized_uri,
         )
         if session_key is None:
             activity.session_key = ''
