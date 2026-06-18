@@ -367,6 +367,7 @@ class SendBackendAction {
 class DragAndDropEventManager {
     private readonly playlistNonAssociees: HTMLDivElement;
     private readonly allSections: HTMLDivElement[];
+    private static readonly BOUND_ATTR = 'data-dnd-bound';
 
     constructor() {
         this.playlistNonAssociees = OrganizerDragAndDropZone.unassociatedPlaylists();
@@ -384,9 +385,15 @@ class DragAndDropEventManager {
     private setupSectionEvents(): void {
         // Définir les événements de drag and drop pour chaque section
         for (const sectionEl of this.allSections) {
-            const sectionNumber = this.allSections.indexOf(sectionEl) + 1;
+            if (sectionEl.getAttribute(DragAndDropEventManager.BOUND_ATTR) === 'true') {
+                continue;
+            }
 
-            sectionEl.removeEventListener('dragstart', (_event: DragEvent) => { }); // clear before 
+            const sectionNumber = Number.parseInt(sectionEl.dataset.section || '0');
+            if (sectionNumber <= 0) {
+                continue;
+            }
+
             sectionEl.addEventListener('dragstart', (e: DragEvent) => { // from associées
                 const EDT = new EventDataTransfert(e)
                 const target = e.target! as HTMLDivElement;
@@ -400,10 +407,16 @@ class DragAndDropEventManager {
             sectionEl.addEventListener('drop', (elementDragged: DragEvent) => { // to associées
                 this.handleSectionDrop(elementDragged, sectionEl, sectionNumber);
             });
+
+            sectionEl.setAttribute(DragAndDropEventManager.BOUND_ATTR, 'true');
         }
     }
 
     private setupUnassociatedPlaylistEvents(): void {
+        if (this.playlistNonAssociees.getAttribute(DragAndDropEventManager.BOUND_ATTR) === 'true') {
+            return;
+        }
+
         this.playlistNonAssociees.addEventListener('dragstart', (e: DragEvent) => { // from non associées
             const EDT = new EventDataTransfert(e)
             const target = e.target! as HTMLDivElement;
@@ -417,6 +430,8 @@ class DragAndDropEventManager {
         this.playlistNonAssociees.addEventListener('drop', (e: DragEvent) => { // to non associées
             this.handleUnassociatedDrop(e);
         });
+
+        this.playlistNonAssociees.setAttribute(DragAndDropEventManager.BOUND_ATTR, 'true');
     }
 
     private handleSectionDrop(elementDragged: DragEvent, sectionEl: HTMLDivElement, sectionNumber: number): void {
@@ -594,7 +609,7 @@ class SectionAdder {
         const accordionHeader = clone.querySelector('.accordion-header') as HTMLDivElement;
         if (accordionHeader) {
             // Mettre à jour l'ID et les attributs
-            accordionHeader.id = `apanelsSection-${nextSectionNumber}`;
+            accordionHeader.id = `panelsSection-${nextSectionNumber}`;
         }
         const accordionButton = clone.querySelector('.accordion-button') as HTMLDivElement;
         if (accordionButton) {
@@ -606,7 +621,7 @@ class SectionAdder {
         if (accordionCollapse) {
             // Mettre à jour l'ID et les attributs
             accordionCollapse.id = `panelsStayOpen-${nextSectionNumber}`;
-            accordionCollapse.setAttribute('aria-labelledby', `apanelsSection-${nextSectionNumber}`);
+            accordionCollapse.setAttribute('aria-labelledby', `panelsSection-${nextSectionNumber}`);
         }
         
         // Trouver le conteneur parent pour insérer la nouvelle section
@@ -620,6 +635,7 @@ class SectionAdder {
             ConsoleTesteur.info(`Section ${nextSectionNumber} added successfully`);
 
             new DragAndDropEventManager().setupEvents();
+            checkEmptyPlaylist();
         }
     }
 
@@ -680,7 +696,7 @@ class ScrollManager {
             this.stopAutoScroll();
         });
 
-        document.addEventListener('dragdrop', (_) => {
+        document.addEventListener('drop', (_) => {
             this.stopAutoScroll();
         });
 
