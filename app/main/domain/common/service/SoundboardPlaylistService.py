@@ -1,3 +1,4 @@
+from django.db import transaction
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
@@ -19,6 +20,9 @@ class SoundboardPlaylistService:
         return self
         
     def add(self, playlist:Playlist, order:int|None = None, section:int = 1):
+        if self.soundboard_playlist_repository.get(self.soundboard, playlist) is not None:
+            return self
+
         order = self.__check_order(order)
 
         if order is not None : 
@@ -29,17 +33,23 @@ class SoundboardPlaylistService:
         return self
     
     def update(self, playlist:Playlist, order:int|None = None, section:int = 1):
+        soundboard_playlist = self.soundboard_playlist_repository.get(self.soundboard, playlist)
+        if soundboard_playlist is None:
+            return self
+
+        previous_section = soundboard_playlist.section
+
         order = self.__check_order(order)
             
         if order is not None : 
             self.reorder_from(order, section)
 
-        soundboard_playlist = self.soundboard_playlist_repository.get(self.soundboard, playlist)
-        if soundboard_playlist is not None:
-            soundboard_playlist.order = order
-            soundboard_playlist.section = section
-            soundboard_playlist.save()
+        soundboard_playlist.order = order
+        soundboard_playlist.section = section
+        soundboard_playlist.save()
         self.reorder_section(section)
+        if previous_section != section:
+            self.reorder_section(previous_section)
         
         return self
     
@@ -77,5 +87,13 @@ class SoundboardPlaylistService:
             soundboard_playlist.order = new_order
             soundboard_playlist.save()
             new_order += 1
+        return self
+
+    @transaction.atomic
+    def insert_section(self, section: int):
+        if section <= 0:
+            return self
+
+        self.soundboard_playlist_repository.shift_sections_from(self.soundboard, section)
         return self
     

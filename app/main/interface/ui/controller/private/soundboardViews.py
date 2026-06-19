@@ -61,7 +61,17 @@ def soundboard_organize_update(request, soundboard_uuid):
     """Mise à jour de l'organisation des playlists dans un soundboard"""
     try:
         soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
+        if not soundboard:
+            raise exceptions.ObjectDoesNotExist
+
         data = json.loads(request.body.decode('utf-8'))
+        soundboard_playlist_service = SoundboardPlaylistService(soundboard)
+
+        if request.method == 'UPDATE' and 'insertSection' in data.keys():
+            insert_section = int(data['insertSection'])
+            soundboard_playlist_service.insert_section(insert_section)
+            return JsonResponse({'success': 'section inserted', 'section': insert_section}, status=200)
+
         playlist = (PlaylistService(request)).get_playlist(data['idPlaylist'])
         new_order = None
         
@@ -74,9 +84,6 @@ def soundboard_organize_update(request, soundboard_uuid):
         if 'section' in data.keys():
             section = int(data['section'])
             
-        soundboard_playlist_service = SoundboardPlaylistService(soundboard)
-        if not playlist:
-            raise exceptions.ObjectDoesNotExist
         if request.method == 'POST':
             soundboard_playlist_service.add(playlist, new_order, section)
             return JsonResponse({'success': 'playlist added', 'order': playlist.get_order()}, status=200)

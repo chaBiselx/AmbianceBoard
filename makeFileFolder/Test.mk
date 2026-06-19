@@ -27,13 +27,21 @@ test-backend-ti:
 		$(CONTAINER_BACKEND) python manage.py test --tag=integration $(FILTER) --noinput; \
 	fi
 
-test-frontend: test-frontend-tu
-	@# Help: lance l'ensemble des tests frontend
+test-frontend: test-frontend-tu test-frontend-ti
+	@# Help: lance l'ensemble des tests frontend (unitaires et d'intégration)
 
 test-frontend-tu:
-	@# Help: lance les tests frontend
+	@# Help: lance les tests unitaires frontend
 	@-if [ -z "$(FILTER)" ]; then \
-		$(CONTAINER_FRONTEND) npm run test; \
+		$(CONTAINER_FRONTEND) npm run test:tu; \
 	else \
-		$(CONTAINER_FRONTEND) npm run test:$(FILTER); \
+		$(CONTAINER_FRONTEND) npm run test:tu -- --testNamePattern="$(FILTER)"; \
+	fi
+
+test-frontend-ti:
+	@# Help: lance les tests d'intégration frontend
+	@-if [ -z "$(FILTER)" ]; then \
+		$(CONTAINER_FRONTEND) npm run test:ti; \
+	else \
+		$(CONTAINER_FRONTEND) npm run test:ti -- --testNamePattern="$(FILTER)"; \
 	fi

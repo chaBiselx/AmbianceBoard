@@ -2,6 +2,7 @@ from typing import Any, Dict,  Optional, List, TYPE_CHECKING
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.Playlist import Playlist
 from django.db import models
+from django.db.models import F
 
 if TYPE_CHECKING:
     from main.architecture.persistence.models.SoundBoard import SoundBoard
@@ -104,6 +105,9 @@ class SoundboardPlaylistRepository:
     
     def get_order_greater_or_equal_by_section(self, soundboard: "SoundBoard", order: int, section: int) -> List[SoundboardPlaylist]:
         return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, order__gte=order, section=section).order_by('order')
+
+    def shift_sections_from(self, soundboard: "SoundBoard", section: int) -> int:
+        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, section__gte=section).update(section=F('section') + 1)
         
     def delete(self, soundboard: "SoundBoard", playlist: Playlist) -> bool:
         return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, Playlist=playlist).delete()

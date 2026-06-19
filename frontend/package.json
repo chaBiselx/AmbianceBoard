@@ -10,8 +10,10 @@
         "sass:watch": "sass scss/main.scss static/css/style.css --no-source-map --watch",
         "prebuild": "node scripts/pre-build.js",
         "test": "npm run test:smoke && npm run test:all",
-        "test:smoke": "vitest run tests/smoke.test.ts",
-        "test:all": "vitest run --bail=1"
+        "test:smoke": "vitest run tests/Smoke.test.ts",
+        "test:all": "vitest run --bail=1",
+        "test:tu": "vitest run --bail=1 tests/TU/**/*.test.ts",
+        "test:ti": "vitest run tests/TI/**/*.test.ts"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^6.7.2",

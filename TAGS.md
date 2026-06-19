@@ -256,6 +256,19 @@ Corrections
 Corrections
 - Corrige le process qui lance les crons
 
+### 0.3.12 - 2026/06
+Nouveautés
+- Ajout de workflow pour valider de travail
+
+Corrections
+- Eviter la concurrence pour la labellisation pour ne pas surcharger le serveur
+- Correction d'un bugs lors 
+
+Améliorations
+- Amélioration de la page d'organisation des soundboards
+- Amélioration du processus de déploiement sans modifier les droits
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Nouveautés
