@@ -47,6 +47,16 @@ update-db:
 	$(CONTAINER_BACKEND) python manage.py migrate
 	@echo "$(GREEN)Migrations terminées.$(NC)"
 
+#fixtures
+fixtures: fixture-seed-dev
+	@# Help: Lance l'ensemble des fixtures de développement 
+
+fixture-seed-dev:
+	@# Help: Crée les données de développement (utilisateur dev + 20 playlists) — DEBUG=1 requis
+	@echo "$(GREEN)Chargement des fixtures de développement...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py seed_dev
+	@echo "$(GREEN)Fixtures chargées.$(NC)"
+
 # Traductions
 trad-init:
 	@# Help: Génère les fichiers de traduction (.po) pour toutes les langues

@@ -268,6 +268,7 @@ Corrections
 Améliorations
 - Amélioration de la page d'organisation des soundboards
 - Amélioration du processus de déploiement sans modifier les droits
+- Ajout de fixture pour aider au developpement
 
 
 ### X.Y.Z - Date
