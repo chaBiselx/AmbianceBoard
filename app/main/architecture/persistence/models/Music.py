@@ -16,6 +16,7 @@ class Music(Track):
     """
     
     MUSIC_FOLDER = 'musics/'
+    REDUCE_BIT_RATE_DELAY_SECONDS = 4 * 60 * 60
     fileName = models.CharField(max_length=255)
     file = models.FileField(upload_to=MUSIC_FOLDER)
 
@@ -51,7 +52,12 @@ class Music(Track):
 
         super().save(*args, **kwargs)
         if new_file: 
-            reduce_bit_rate.apply_async(args=[self.file.path], queue='default', priority=1 )
+            reduce_bit_rate.apply_async(
+                args=[self.file.path],
+                queue='default',
+                priority=1,
+                countdown=self.REDUCE_BIT_RATE_DELAY_SECONDS,
+            )
             
     def get_name(self) -> str:
         """

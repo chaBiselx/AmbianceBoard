@@ -256,13 +256,14 @@ Corrections
 Corrections
 - Corrige le process qui lance les crons
 
-### 0.3.12 - 2026/06
+### 0.3.12 - 2026/07
 Nouveautés
 - Ajout de workflow pour valider de travail
 
 Corrections
 - Eviter la concurrence pour la labellisation pour ne pas surcharger le serveur
 - Correction d'un bugs lors 
+- Décalage d'un processus de reduction du poids des fichier audio ce qui provoqué des erreurs car en cours de réécriture
 
 Améliorations
 - Amélioration de la page d'organisation des soundboards
