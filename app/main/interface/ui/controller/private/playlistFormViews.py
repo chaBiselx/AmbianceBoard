@@ -77,29 +77,7 @@ def playlist_create(request):
         {'form': form , 'method' : 'create', 'listMusic': None, 'list_default_color': list_default_color,'LinkMusicAllowedEnum': link_music_allowed_values}
     )
 
-@login_required
-@require_http_methods(['GET', 'POST'])
-def playlist_create_with_soundboard(request, soundboard_uuid):
-    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
-    if(soundboard) : 
-        if request.method == 'POST':
-            soundboard_playlist_service = SoundboardPlaylistService(soundboard)
-            playlist = (PlaylistService(request)).save_form()
-            if(playlist):
-                soundboard_playlist_service.add_default(playlist)
-                ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_CREATE, user=request.user, content_object=playlist)
-            request.session['new_playlist_uuid'] = str(playlist.uuid) # store in session to show popup after redirect add_music_from_soundboard
-            return redirect('soundboardsRead', soundboard_uuid=soundboard.uuid)
-        else:
-            form = PlaylistForm()
-        list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
-        link_music_allowed_values = LinkMusicAllowedEnum.values()
-        return render(
-            request, 
-            'Html/Playlist/playlist_create.html', # NOSONAR
-            {'form': form, 'method': 'create', 'listMusic': None, 'list_default_color': list_default_color, 'LinkMusicAllowedEnum': link_music_allowed_values}
-        )
-    return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404) 
+
 
 @login_required
 @require_http_methods(['GET'])    

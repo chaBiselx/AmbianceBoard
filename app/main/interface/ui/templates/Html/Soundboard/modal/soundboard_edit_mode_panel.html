@@ -1,0 +1,39 @@
+{% load Playlist %}
+{% load PlaylistEnum %}
+
+<div class="mb-3">
+    <h6 class="mb-2">Créer une nouvelle playlist</h6>
+    <form id="soundboard-edit-mode-create-form" data-url-create="{% url 'soundboardEditModeCreatePlaylist' soundboard.uuid %}">
+        {% csrf_token %}
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-md-6">
+                <label class="form-label" for="soundboard-edit-create-name">Nom</label>
+                <input id="soundboard-edit-create-name" name="name" type="text" class="form-control" maxlength="255" required placeholder="Nom du bouton" />
+            </div>
+            <div class="col-12 col-md-4">
+                <label class="form-label" for="soundboard-edit-create-type">Type</label>
+                <select id="soundboard-edit-create-type" name="typePlaylist" class="form-select" required>
+                    {% for typeKey, typeValue in playlistType.items %}
+                    <option value="{{ typeKey }}">{{ typeValue }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12 col-md-2">
+                <button type="submit" class="btn btn-primary btn-block" id="soundboard-edit-mode-create-submit">Créer</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<hr>
+<div>
+    <h6 class="mb-2">Prendre une playlist existante</h6>
+    <div id="soundboard-edit-playlist-list-container" data-url-list="{% url 'soundboardEditModePlaylistList' soundboard.uuid %}">
+        <div class="d-flex justify-content-center mt-3">
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Chargement…</span>
+            </div>
+        </div>
+    </div>
+
+</div>

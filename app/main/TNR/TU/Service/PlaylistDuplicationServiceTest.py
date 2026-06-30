@@ -9,6 +9,7 @@ import uuid
 from django.test import TestCase, tag
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
+from unittest.mock import patch
 from main.domain.common.service.PlaylistDuplicationService import PlaylistDuplicationService
 from main.domain.common.exceptions.PlaylistDuplicationException import (
     PlaylistAlreadyDuplicatedException,
@@ -359,6 +360,39 @@ class PlaylistDuplicationServiceTest(TestCase):
         # Vérifier que la duplication a réussi
         self.assertIsNotNone(duplicated)
         self.assertFalse(duplicated.icon)
+
+    def test_duplicate_ignores_missing_icon_file_and_returns_warning(self):
+        """Test que la duplication continue si le fichier icone est manquant sur le storage"""
+        # Ajouter une icône logique (le read sera simulé en erreur)
+        icon_content = b'fake image content'
+        icon_file = SimpleUploadedFile("icon.png", icon_content, content_type="image/png")
+        self.source_playlist.icon = icon_file
+        self.source_playlist.save()
+
+        with patch('django.db.models.fields.files.FieldFile.read', side_effect=FileNotFoundError("missing file")):
+            service = PlaylistDuplicationService(self.source_playlist, self.target_user)
+            duplicated = service.duplicate()
+
+        self.assertIsNotNone(duplicated)
+        self.assertFalse(duplicated.icon)
+
+    def test_duplicate_ignores_missing_music_file_and_returns_warning(self):
+        """Test que la duplication continue sans dupliquer la musique si le fichier audio est manquant"""
+        music = Music.objects.create(
+            playlist=self.source_playlist,
+            fileName="missing.mp3",
+            file=SimpleUploadedFile("missing.mp3", b'audio', content_type=local_format_audio1),
+            alternativeName="Missing file",
+            duration=10.0
+        )
+
+        with patch('django.db.models.fields.files.FieldFile.open', side_effect=FileNotFoundError("missing file")):
+            service = PlaylistDuplicationService(self.source_playlist, self.target_user)
+            duplicated = service.duplicate()
+
+        self.assertIsNotNone(duplicated)
+        duplicated_musics = Music.objects.filter(playlist=duplicated)
+        self.assertEqual(duplicated_musics.count(), 0)
 
     def test_duplicate_is_atomic(self):
         """Test que la duplication est atomique (tout ou rien)"""

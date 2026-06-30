@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from django.views.decorators.http import require_http_methods
+from django.template.loader import render_to_string
 from main.domain.common.service.MusicService import MusicService
 from main.domain.common.service.RandomizeTrackService import RandomizeTrackService
 from main.domain.common.service.PlaylistService import PlaylistService
@@ -13,16 +14,31 @@ from main.interface.ui.forms.private.PlaylistForm import PlaylistForm
 from main.domain.common.service.DefaultColorPlaylistService import DefaultColorPlaylistService
 from main.domain.common.enum.LinkMusicAllowedEnum import LinkMusicAllowedEnum
 from main.domain.common.service.SoundBoardService import SoundBoardService
+from main.domain.common.service.SoundboardPlaylistService import SoundboardPlaylistService
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.domain.common.factory.UserParametersFactory import UserParametersFactory
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.repository.UserPreferenceRepository import UserPreferenceRepository
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.domain.common.helper.WebSocketInitializationHelper import WebSocketInitializationHelper
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+from main.architecture.persistence.repository.PlaylistDuplicationHistoryRepository import PlaylistDuplicationHistoryRepository
+from main.domain.common.service.PlaylistDuplicationService import PlaylistDuplicationService
+from main.domain.common.exceptions.PlaylistDuplicationException import (
+    PlaylistAlreadyDuplicatedException,
+    PlaylistNotCopiableException
+)
+from main.architecture.persistence.repository.UserDevicePreferenceRepository import UserDevicePreferenceRepository
+from main.domain.common.utils.DeviceDetector import detect_device_type
 
 
+from django.core.paginator import Paginator
+from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 from main.domain.common.utils.logger import logger
 from django.urls import reverse
 
@@ -39,8 +55,6 @@ def playlist_show(request, soundboard_uuid):
     else:
         soundboard_playlist_repository = SoundboardPlaylistRepository()
         playlist = None
-        if 'new_playlist_uuid' in request.session:
-            playlist = soundboard_playlist_repository.get_playlist_in_soundboard_by_uuid(soundboard, request.session['new_playlist_uuid'])
         
         activity = ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW, user=request.user, content_object=soundboard)
         
@@ -50,7 +64,6 @@ def playlist_show(request, soundboard_uuid):
             'trace_user_activity': activity,
             'list_shortcut_keyboard': soundboard_playlist_repository.get_list_shortcut_keyboard(soundboard),
             'link_music_allowed': LinkMusicAllowedEnum.convert_to_dict(),
-            'popup_playlist_added': playlist,
         })
         
         # Auto-initialisation WebSocket
@@ -154,4 +167,184 @@ def update_direct_volume(request, playlist_uuid) -> JsonResponse:
                 return JsonResponse({"message": "volume updated"}, status=200)
         
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+
+
+@login_required
+@require_http_methods(['GET'])
+def soundboard_edit_mode_panel(request, soundboard_uuid):
+    """Retourne la vue partielle pour le mode édition du soundboard."""
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
+    if not soundboard:
+        return render(request, HtmlDefaultPageEnum.ERROR_404_MODAL.value, status=404, modal=True)
+
+    return render(request, 'Html/Soundboard/modal/soundboard_edit_mode_panel.html', {
+        'soundboard': soundboard,
+        'playlistType': PlaylistTypeEnum.convert_to_dict(),
+    })
+
+
+@login_required
+@require_http_methods(['GET'])
+def soundboard_edit_mode_playlist_list(request, soundboard_uuid):
+    """Retourne la liste paginée des playlists copiables pour le mode édition."""
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
+    if not soundboard:
+        return HttpResponse(status=404)
+
+    playlist_type_filter = request.GET.get('playlistType', None)
+    filter_search = {}
+    if playlist_type_filter:
+        try:
+            type_playlist = PlaylistTypeEnum.searchEnumByValue(playlist_type_filter)
+            filter_search['typePlaylist'] = type_playlist._name_
+        except ValueError:
+            playlist_type_filter = None
+
+    playlists = PlaylistRepository().get_copiable_playlists_for_soundboard(request.user, filter_search)
+    try:
+        page_number = int(request.GET.get('page', 1))
+    except (ValueError, TypeError):
+        page_number = 1
+
+    paginator = Paginator(playlists, 10)
+    context = extract_context_to_paginator(paginator, page_number)
+
+    return render(request, 'Html/Soundboard/modal/soundboard_edit_mode_playlist_list.html', {
+        'soundboard': soundboard,
+        'page_objects': context['page_objects'],
+        'paginator': context['paginator'],
+    })
+
+
+@login_required
+@require_http_methods(['POST'])
+def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_uuid) -> JsonResponse:
+    """Duplique une playlist publique et l'ajoute directement au soundboard cible."""
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
+    if not soundboard:
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+
+    playlist = PlaylistRepository().get(playlist_uuid)
+    if not playlist:
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+
+    if not playlist.is_copiable or playlist.moderator_ban_copie:
+        return JsonResponse({'error': "Cette playlist n'est pas disponible à la duplication"}, status=403)
+
+    existing = PlaylistDuplicationHistoryRepository().find_existing_duplication_in_soundboard(
+        source_playlist_uuid=playlist.uuid,
+        target_user=request.user,
+        target_soundboard=soundboard
+    )
+    if existing:
+        return JsonResponse({'error': "Cette playlist est déjà présente dans ce soundboard"}, status=409)
+
+    try:
+        duplication_service = PlaylistDuplicationService(
+            source_playlist=playlist,
+            target_user=request.user
+        )
+        duplicated_playlist = duplication_service.duplicate()
+
+        SoundboardPlaylistService(soundboard).add_default(duplicated_playlist)
+
+        # Get playlist_dim from user device preferences
+        device_type = detect_device_type(request)
+        user_pref = UserPreferenceRepository().get_user_preferences(request.user)
+        device_pref = None
+        playlist_dim = 100  # default
+        if user_pref:
+            device_pref = UserDevicePreferenceRepository().get_user_preferences(user_pref, device_type)
+            if device_pref:
+                playlist_dim = device_pref.get_effective_playlist_dim()
+
+        # Render the duplicated playlist as HTML for DOM insertion
+        playlist_html = render_to_string('Html/partial/soundboard/playlist_item.html', {
+            'playlist': duplicated_playlist,
+            'soundboard': soundboard,
+            'master': True,
+            'owner': True,
+            'playlist_dim': playlist_dim,
+        })
+
+        response_payload = {
+            'success': True,
+            'message': "Playlist ajoutée en mode édition",
+            'playlist_uuid': str(duplicated_playlist.uuid),
+            'playlist_html': playlist_html,
+        }
+
+        return JsonResponse(response_payload, status=200)
+    except PlaylistNotCopiableException:
+        return JsonResponse({'error': "Cette playlist n'est pas disponible à la duplication"}, status=403)
+    except PlaylistAlreadyDuplicatedException:
+        return JsonResponse({'error': "Cette playlist est déjà présente dans ce soundboard"}, status=409)
+    except Exception as e:
+        logger.error(f"Erreur duplication mode édition pour soundboard {soundboard_uuid}: {e}")
+        return JsonResponse({'error': "Une erreur inattendue est survenue"}, status=500)
+
+
+@login_required
+@require_http_methods(['POST'])
+def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonResponse:
+    """Crée une playlist depuis la modal mode édition et l'ajoute au soundboard cible."""
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
+    if not soundboard:
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+
+    playlist_name = (request.POST.get('name') or '').strip()
+    playlist_type = request.POST.get('typePlaylist')
+
+    if not playlist_name:
+        return JsonResponse({'error': "Le nom de la playlist est obligatoire"}, status=400)
+
+    valid_playlist_types = dict(Playlist.typePlaylist.field.choices)
+    if not playlist_type or playlist_type not in valid_playlist_types:
+        return JsonResponse({'error': "Type de playlist invalide"}, status=400)
+
+    user_parameters = UserParametersFactory(request.user)
+    if PlaylistRepository().count_private(request.user) >= user_parameters.limit_playlist:
+        return JsonResponse({
+            'error': f"Vous avez atteint la limite de playlist total ({user_parameters.limit_playlist})."
+        }, status=403)
+
+    try:
+        playlist = Playlist(
+            user=request.user,
+            name=playlist_name,
+            typePlaylist=playlist_type,
+        )
+        playlist.save()
+        SoundboardPlaylistService(soundboard).add_default(playlist)
+
+        # Get playlist_dim from user device preferences
+        device_type = detect_device_type(request)
+        user_pref = UserPreferenceRepository().get_user_preferences(request.user)
+        device_pref = None
+        playlist_dim = 100  # default
+        if user_pref:
+            device_pref = UserDevicePreferenceRepository().get_user_preferences(user_pref, device_type)
+            if device_pref:
+                playlist_dim = device_pref.get_effective_playlist_dim()
+
+        # Render the created playlist as HTML for DOM insertion
+        playlist_html = render_to_string('Html/partial/soundboard/playlist_item.html', {
+            'playlist': playlist,
+            'soundboard': soundboard,
+            'master': True,
+            'owner': True,
+            'playlist_dim': playlist_dim,
+        })
+
+        return JsonResponse({
+            'success': True,
+            'message': "Playlist créée et ajoutée au soundboard",
+            'playlist_uuid': str(playlist.uuid),
+            'playlist_html': playlist_html,
+            'add_music_url': reverse('add_music_from_soundboard', args=[playlist.uuid]),
+        }, status=201)
+    except Exception as e:
+        logger.error("===================================================")
+        logger.error(f"Erreur création mode édition pour soundboard {soundboard_uuid}: {e}")
+        return JsonResponse({'error': "Une erreur inattendue est survenue"}, status=500)
 

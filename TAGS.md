@@ -258,6 +258,7 @@ Corrections
 
 ### 0.3.12 - 2026/07
 Nouveautés
+- Ajout d'un mode édition directement sur un soundboard privée, il permet d'ajouter directement les boutons copiables de la communauté ou ses boutons personnels
 - Ajout de workflow pour valider de travail
 
 Corrections

@@ -1,0 +1,35 @@
+{% load Playlist %}
+{% load PlaylistEnum %}
+{% load PaginationLinks %}
+
+{% if page_objects %}
+<div class="row g-2" id="soundboard-edit-playlist-list">
+    {% for playlist in page_objects %}
+    <div class="col-12 col-md-6">
+        <div class="border rounded m-1 h-100 row">
+            <div class="col-12">
+                <div class="fw-bold">{{ playlist.name }}</div>
+                <div class="small text-muted"> {{ playlist.typePlaylist|to_value }}</div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <div class="playlist-link playlist-element playlist-dim-75 mt-2" style="background-color: {{ playlist.get_color }};color: {{ playlist.get_color_text }};">
+                    {{ playlist | applys_playlist_content }}
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <button class="btn btn-block btn-outline-primary btn-sm mt-2 btn-edit-mode-duplicate"
+                        data-url-duplication="{% url 'soundboardEditModeDuplicatePlaylist' soundboard.uuid playlist.uuid %}">
+                    Copier
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info m-0">
+    Aucune playlist copiable disponible pour ce soundboard.
+</div>
+{% endif %}
+
+{% applys_pagination paginator %}

@@ -6,6 +6,8 @@ from django.db.models import QuerySet
 
 
 from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.repository.filters.PlaylistFilter import PlaylistFilter
 
@@ -71,10 +73,29 @@ class PlaylistRepository:
             List[Playlist]: Liste des playlists copiables des autres utilisateurs
         """
         query_set = Playlist.objects.filter(
-            is_copiable=True
+            is_copiable=True,
+            moderator_ban_copie=False
         ).exclude(
             user=user
         ).select_related('user').order_by('-updated_at')
         if 'typePlaylist' in filter:
             query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
         return query_set
+
+    def get_copiable_playlists_for_soundboard(self, user: User, filter: dict) -> List[Playlist]:
+        """
+        Récupère les playlists copiables visibles en parcours public pour un soundboard cible.
+
+        Règles appliquées:
+        - playlist publique copiable et non bannie de copie
+        - ne pas proposer les playlists du propriétaire du soundboard
+        - exclure celles que l'utilisateur a déjà dupliquées (peu importe le soundboard cible),
+          car PlaylistDuplicationService interdit la duplication multiple d'une même source
+        """
+        source_playlist_uuids_already_duplicated = PlaylistDuplicationHistory.objects.filter(
+            duplicated_playlist__user=user
+        ).values_list('source_playlist_uuid', flat=True)
+
+        return self.get_copiable_playlists_excluding_user(user, filter).exclude(
+            uuid__in=source_playlist_uuids_already_duplicated
+        )

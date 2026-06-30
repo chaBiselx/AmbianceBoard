@@ -45,6 +45,42 @@
     align-items: center;
 }
 
+.soundboard-edit-add-zone {
+    display: none;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed $border_color_light;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.45);
+    color: #1f3a56;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+
+    @at-root {
+        html[data-bs-theme="dark"] & {
+            border-color: $border_color_dark;
+            background: rgba(255, 255, 255, 0.04);
+            color: #d2e6ff;
+        }
+    }
+}
+
+.responsive-sections-container.soundboard-edit-mode-active .soundboard-edit-add-zone {
+    display: flex;
+}
+
+.soundboard-edit-add-zone:hover,
+.soundboard-edit-add-zone:focus-visible {
+    border-color: #0d6efd;
+    background: rgba(13, 110, 253, 0.09);
+}
+
+.soundboard-edit-add-zone__label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+}
+
 /* Responsive breakpoints */
 @media (max-width: 768px) {
     .responsive-sections-container {

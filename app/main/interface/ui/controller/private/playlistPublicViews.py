@@ -74,7 +74,7 @@ def playlist_copiable_preview(request):
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     
     playlist = PlaylistRepository().get(playlist_uuid)
-    if(not playlist or not playlist.is_copiable):
+    if(not playlist or not playlist.is_copiable or playlist.moderator_ban_copie):
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     
     playlist.typePlaylistStr = PlaylistTypeEnum[playlist.typePlaylist].value

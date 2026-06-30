@@ -3,7 +3,7 @@ import Config from '@/modules/General/Config';
 import Csrf from "@/modules/General/Csrf";
 import Cookie from '@/modules/General/Cookie';
 
-import {  ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
+import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MixerManager } from '@/modules/MixerManager';
 import WakeLock from '@/modules/General/WakeLock';
 import ModalCustom from '@/modules/General/Modal';
@@ -19,6 +19,7 @@ import { MusicDropzoneConfig, MusicDropzoneManager } from '@/modules/MusicDropzo
 import Notification from '@/modules/General/Notifications';
 import SoundBoardEventListener from '@/modules/SoundBoardEventListener';
 import StreamConnectionWarmup from '@/modules/StreamConnectionWarmup';
+import { PaginationManager } from '@/modules/PaginationManager';
 
 
 
@@ -44,11 +45,281 @@ document.addEventListener("DOMContentLoaded", () => {
         sh.addEvent();
     }
     new ShortcutKeyboardSoundboard().addEvent();
-    new PopupAddMusicToSoundboard().showIfValue();
-    
+    new SoundboardEditMode().addEvent();
+
     // Initialiser automatiquement le WebSocket si on est en mode master
     initializeWebSocketIfMaster();
 });
+
+class SoundboardEditMode {
+    private isEditModeActive = false;
+    private panelUrl: string | null = null;
+    private boardContainer: HTMLElement | null = null;
+
+    public addEvent(): void {
+        const button = document.getElementById('btn-soundboard-edit-mode');
+        if (!button) return;
+
+        if (!(button instanceof HTMLButtonElement)) return;
+        this.panelUrl = button.dataset.urlPanel || null;
+        this.boardContainer = document.querySelector('[data-soundboard-editable="true"]');
+
+        if (!this.boardContainer || !this.panelUrl) return;
+
+        button.setAttribute('aria-pressed', 'false');
+
+        button.addEventListener('click', () => {
+            this.toggleEditMode(button);
+        });
+
+        this.bindAddZones();
+    }
+
+    private toggleEditMode(button: HTMLButtonElement): void {
+        if (!this.boardContainer) return;
+
+        this.isEditModeActive = !this.isEditModeActive;
+        this.boardContainer.classList.toggle('soundboard-edit-mode-active', this.isEditModeActive);
+        button.setAttribute('aria-pressed', this.isEditModeActive ? 'true' : 'false');
+        button.classList.toggle('btn-outline-success', !this.isEditModeActive);
+        button.classList.toggle('btn-success', this.isEditModeActive);
+    }
+
+    private bindAddZones(): void {
+        if (!this.boardContainer) return;
+
+        const zones = this.boardContainer.querySelectorAll('[data-soundboard-edit-open-panel="true"]');
+        for (const zone of zones) {
+            if (!(zone instanceof HTMLButtonElement)) continue;
+            zone.addEventListener('click', () => {
+                if (!this.isEditModeActive) return;
+                this.openPanel();
+            });
+        }
+    }
+
+    private openPanel(): void {
+        const panelUrl = this.panelUrl;
+        if (!panelUrl) return;
+
+        fetch(panelUrl, {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': Csrf.getToken()!
+            }
+        })
+            .then(response => response.text())
+            .then((body) => {
+                ModalCustom.show({
+                    title: "Ajouter une playlist",
+                    body: body,
+                    footer: "",
+                    width: "lg",
+                    callback: () => {
+                        this.bindCreateForm();
+                        this.loadPlaylistList();
+                    }
+                });
+            })
+            .catch(() => {
+                Notification.createClientNotification({ message: 'Impossible de charger le mode édition', type: 'error' });
+            });
+    }
+
+    private bindCreateForm(): void {
+        const form = document.getElementById('soundboard-edit-mode-create-form');
+        const submitBtn = document.getElementById('soundboard-edit-mode-create-submit') as HTMLButtonElement | null;
+        if (!(form instanceof HTMLFormElement) || !submitBtn) return;
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            this.createPlaylist(form, submitBtn);
+        });
+    }
+
+    private createPlaylist(form: HTMLFormElement, submitBtn: HTMLButtonElement): void {
+        const createUrl = form.dataset.urlCreate;
+        if (!createUrl) return;
+
+        submitBtn.disabled = true;
+        const formData = new FormData(form);
+
+        fetch(createUrl, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': Csrf.getToken()!,
+            },
+        })
+            .then(async response => {
+                const data = await response.json();
+                return { response, data };
+            })
+            .then(({ response, data }) => {
+                if (response.ok && data.success) {
+                    Notification.createClientNotification({
+                        message: data.message || 'Playlist créée',
+                        type: 'success'
+                    });
+
+                    const playlistHtml = data.playlist_html as string | undefined;
+                    const addMusicUrl = data.add_music_url as string | undefined;
+
+                    const bsModal = ModalCustom.getInstance();
+                    if (bsModal) {
+                        bsModal.hide();
+                    }
+                    if (addMusicUrl) {
+
+                        setTimeout(() => {
+                            const popup = new PopupAddMusicToSoundboard(addMusicUrl);
+                            popup.showIfValue();
+                            if (playlistHtml) {
+                                this.insertPlaylistToBoard(playlistHtml);
+                            }
+                        }, 300);
+                    }
+                    return;
+                }
+
+                Notification.createClientNotification({
+                    message: data.error || 'Une erreur est survenue',
+                    type: 'error'
+                });
+                submitBtn.disabled = false;
+            })
+            .catch(() => {
+                Notification.createClientNotification({
+                    message: 'Erreur de communication avec le serveur',
+                    type: 'error'
+                });
+                submitBtn.disabled = false;
+            });
+    }
+
+    private insertPlaylistToBoard(html: string): void {
+        const flexContainer = document.querySelector('.responsive-sections-container .flex-container');
+        if (!flexContainer) return;
+
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = html;
+        const playlistItem = tempDiv.firstElementChild;
+        if (playlistItem) {
+            // Insérer avant la première zone d'ajout (soundboard-edit-add-zone) si elle existe
+            const firstAddZone = flexContainer.querySelector('.soundboard-edit-add-zone');
+            if (firstAddZone) {
+                flexContainer.insertBefore(playlistItem, firstAddZone);
+            } else {
+                flexContainer.appendChild(playlistItem);
+            }
+        }
+
+        // Rebind event listeners for the new playlist
+        new SoundBoardEventListener().addEventListenerDom();
+        new MixerManager().initializeEventListeners();
+        updateWithMixerPlaylist();
+    }
+
+    private bindDuplicateButtons(): void {
+        const buttons = document.querySelectorAll('.btn-edit-mode-duplicate');
+        for (const button of buttons) {
+            if (!(button instanceof HTMLButtonElement)) continue;
+            button.addEventListener('click', () => {
+                this.duplicatePlaylist(button);
+            });
+        }
+    }
+
+    private loadPlaylistList(page = 1): void {
+        const container = document.getElementById('soundboard-edit-playlist-list-container');
+        if (!container) return;
+
+        const url = container.dataset.urlList;
+        if (!url) return;
+
+        const fetchUrl = new URL(url, globalThis.location.origin);
+        fetchUrl.searchParams.set(PaginationManager.getParameterName(), page.toString());
+
+        fetch(fetchUrl.toString(), {
+            method: 'GET',
+            headers: { 'X-CSRFToken': Csrf.getToken()! },
+        })
+            .then(response => response.text())
+            .then(html => {
+                container.innerHTML = html;
+                this.bindDuplicateButtons();
+                this.bindPaginationInContainer(container);
+            })
+            .catch(() => {
+                Notification.createClientNotification({ message: 'Impossible de charger la liste', type: 'error' });
+            });
+    }
+
+    private bindPaginationInContainer(container: HTMLElement): void {
+        const paginationButtons = container.querySelectorAll('#pagination .page-item');
+        for (const pageItem of paginationButtons) {
+            if (pageItem.classList.contains('disabled')) continue;
+            const button = pageItem.querySelector('.page-link') as HTMLButtonElement | null;
+            if (!button) continue;
+            button.addEventListener('click', (event) => {
+                const target = event.target as HTMLElement;
+                const page = target.dataset.page;
+                if (page) {
+                    this.loadPlaylistList(Number.parseInt(page, 10));
+                }
+            });
+        }
+    }
+
+    private duplicatePlaylist(button: HTMLButtonElement): void {
+        const url = button.dataset.urlDuplication;
+        if (!url) return;
+
+        button.disabled = true;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': Csrf.getToken()!,
+            },
+        })
+            .then(async response => {
+                const data = await response.json();
+                return { response, data };
+            })
+            .then(({ response, data }) => {
+                if (response.ok && data.success) {
+                    Notification.createClientNotification({
+                        message: data.message || 'Playlist ajoutée',
+                        type: 'success'
+                    });
+
+                    const playlistHtml = data.playlist_html as string | undefined;
+                    if (playlistHtml) {
+                        this.insertPlaylistToBoard(playlistHtml);
+                    }
+
+                    const bsModal = ModalCustom.getInstance();
+                    if (bsModal) {
+                        bsModal.hide();
+                    }
+                    return;
+                }
+
+                Notification.createClientNotification({
+                    message: data.error || 'Une erreur est survenue',
+                    type: 'error'
+                });
+                button.disabled = false;
+            })
+            .catch(() => {
+                Notification.createClientNotification({
+                    message: 'Erreur de communication avec le serveur',
+                    type: 'error'
+                });
+                button.disabled = false;
+            });
+    }
+}
 
 /**
  * Handles modal interactions for adding music to the soundboard.
@@ -93,7 +364,7 @@ class AddMusicModalHandler {
         const sectionAction = document.getElementById('selection-type-ajout');
         const sectionAddFile = document.getElementById('form-add-music-from-soundboard');
         const sectionAddLink = document.getElementById('form-add-link-from-soundboard');
-        
+
         if (!sectionAction || !sectionAddFile || !sectionAddLink) return;
 
         this.setupAddMusicFileButton(sectionAction, sectionAddFile);
@@ -140,7 +411,7 @@ class AddMusicModalHandler {
     private setupLinkSubmitForm(): void {
         const form = document.getElementById('form-add-link-music-ajax');
         const submitBtn = document.getElementById('submit-add-link-ajax') as HTMLButtonElement | null;
-        
+
         if (!submitBtn || !(form instanceof HTMLFormElement)) return;
 
         submitBtn.addEventListener('click', (e) => {
@@ -208,45 +479,40 @@ class AddMusicModalHandler {
  */
 class PopupAddMusicToSoundboard {
 
-    shortcutElementsInput: HTMLInputElement | null;
+    url: string;
 
     /**
      * Creates a new popup manager instance.
+     * Can be called with or without parameters for backward compatibility.
      */
-    constructor() {
-        this.shortcutElementsInput = document.getElementById('new-playlist-uuid-popup') as HTMLInputElement | null;
+    constructor(url: string) {
+        this.url = url;
     }
 
     /**
-     * Displays the add music popup if a playlist UUID value is present.
+     * Displays the popup if the necessary values are present.
      * @returns {void}
      */
-    public showIfValue() {
-        if (this.shortcutElementsInput) {
-            const uuidPlaylist = this.shortcutElementsInput.value;
-            const url = this.shortcutElementsInput.dataset.url;
-
-            if (uuidPlaylist && url) {
-                fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'X-CSRFToken': Csrf.getToken()!
-                    }
-                }).then(response => response.text()).then((body) => {
-                    ModalCustom.show({
-                        title: "Playlist ajoutée",
-                        body: body,
-                        footer: "",
-                        width: "md",
-                        callback: () => {
-                            const handler = new AddMusicModalHandler();
-                            handler.initialize();
-                        }
-                    });
-                });
+    public showIfValue(): void {
+        fetch(this.url, {
+            method: 'GET',
+            headers: {
+                'X-CSRFToken': Csrf.getToken()!
             }
-        }
+        }).then(response => response.text()).then((body) => {
+            ModalCustom.show({
+                title: "Playlist ajoutée",
+                body: body,
+                footer: "",
+                width: "md",
+                callback: () => {
+                    const handler = new AddMusicModalHandler();
+                    handler.initialize();
+                }
+            });
+        });
     }
+
 }
 
 /**
