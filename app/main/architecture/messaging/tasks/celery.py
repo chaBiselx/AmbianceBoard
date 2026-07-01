@@ -11,4 +11,5 @@ app.autodiscover_tasks(['main.domain.brokers.message'])
 # Déclaration des queues avec priorité
 app.conf.task_queues = [
     Queue('default', Exchange('default'), routing_key='default', queue_arguments={'x-max-priority': 5}), # Queue par défaut 5: haute priorité / 1: basse priorité
+    Queue('music_labeler', Exchange('music_labeler'), routing_key='music_labeler'),  # Queue dédiée, traitée séquentiellement (concurrency=1)
 ]

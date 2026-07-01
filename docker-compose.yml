@@ -14,6 +14,8 @@ services:
       - RUNCRON=1
       - DAPHNE=0
       - TRANSLATION=0
+      - MUSIC_LABELER_URL=${MUSIC_LABELER_URL}
+      - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
     depends_on:
       - db
 
@@ -55,6 +57,8 @@ services:
       - RUNCRON=0
       - DAPHNE=1
       - TRANSLATION=0
+      - MUSIC_LABELER_URL=${MUSIC_LABELER_URL}
+      - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
     depends_on:
       - db
       - redis
@@ -110,7 +114,7 @@ services:
       - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('${MUSIC_LABELER_URL}/health', timeout=3)"]
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('${MUSIC_LABELER_URL}/health', timeout=3)\""]
       interval: 30s
       timeout: 10s
       retries: 3

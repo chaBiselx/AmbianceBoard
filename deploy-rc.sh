@@ -26,4 +26,8 @@ docker compose -f docker-compose.prod.yml build
 echo "🚀 Démarrage des conteneurs..."
 docker compose -f docker-compose.prod.yml up -d
 
+echo "🧹 Nettoyage des conteneurs et images obsolètes..."
+docker container prune -f
+docker image prune -f
+
 echo "✅ Déploiement terminé avec succès!"

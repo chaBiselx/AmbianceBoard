@@ -394,7 +394,7 @@ describe('ListingAudioElement', () => {
 
         it('should handle when audio-players div exists but is empty', () => {
             const audioDiv = document.getElementById('audio-players')!;
-            expect(audioDiv.children.length).toBe(0);
+            expect(audioDiv.children).toHaveLength(0)
 
             const result = ListingAudioElement.getListAllAudio();
             expect(result).toHaveLength(0);

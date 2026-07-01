@@ -11,9 +11,19 @@ from main.interface.ui.controller.general.traceFrontViews import trace_front
 from main.interface.ui.controller.private.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
 from main.interface.ui.controller.private.soundboardSpecifiqueViews import list_playlists_for_specific_action, update_specific_actionable_playlists, update_specific_shortcut_playlists
 from main.interface.ui.controller.private.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
-from main.interface.ui.controller.private.showSoundboardViews import playlist_show, music_stream, update_direct_volume, playlist_tracks_list, private_specific_track_stream
+from main.interface.ui.controller.private.showSoundboardViews import (
+    playlist_show,
+    music_stream,
+    update_direct_volume,
+    playlist_tracks_list,
+    private_specific_track_stream,
+    soundboard_edit_mode_panel,
+    soundboard_edit_mode_playlist_list,
+    soundboard_edit_mode_duplicate_playlist,
+    soundboard_edit_mode_create_playlist,
+)
 from main.interface.ui.controller.private.playlistFormViews import (
-    playlist_read_all, playlist_create, playlist_create_with_soundboard, playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
+    playlist_read_all, playlist_create,  playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
 from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
@@ -71,6 +81,10 @@ urlpatterns = [
     path("soundBoards/", soundboard_list, name="soundboardsList"),
     path("soundBoards/new", soundboard_create, name="soundboardsNew"),
     path("soundBoards/<uuid:soundboard_uuid>", playlist_show, name="soundboardsRead"),
+    path("soundBoards/<uuid:soundboard_uuid>/edit-mode/panel", soundboard_edit_mode_panel, name="soundboardEditModePanel"),
+    path("soundBoards/<uuid:soundboard_uuid>/edit-mode/playlist-list", soundboard_edit_mode_playlist_list, name="soundboardEditModePlaylistList"),
+    path("soundBoards/<uuid:soundboard_uuid>/edit-mode/create", soundboard_edit_mode_create_playlist, name="soundboardEditModeCreatePlaylist"),
+    path("soundBoards/<uuid:soundboard_uuid>/edit-mode/duplicate/<uuid:playlist_uuid>", soundboard_edit_mode_duplicate_playlist, name="soundboardEditModeDuplicatePlaylist"),
     path("soundBoards/<uuid:soundboard_uuid>/update", soundboard_update, name="soundboardsUpdate"),
     path("soundBoards/<uuid:soundboard_uuid>/delete", soundboard_delete, name="soundboardsDelete"),
     path("soundBoards/<uuid:soundboard_uuid>/organize", soundboard_organize, name="organizeSoundboard"),
@@ -93,7 +107,6 @@ urlpatterns = [
     path('account/settings/soundboards/dimension',update_soundboard_dim, name="updateSoundboardDim"),
     path('account/settings/delete-account',delete_account, name="deleteAccount"),
 
-    path("soundBoards/<uuid:soundboard_uuid>/music/create", playlist_create_with_soundboard, name="addPlaylistWithSoundboard"),
     path("playlist/create", playlist_create, name="addPlaylist"),
     path("playlist/all", playlist_read_all, name="playlistsAllList"),
     path("playlist/public/copiable/all", playlist_read_copiable, name="playlistsAllCopiableList"),

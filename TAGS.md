@@ -256,6 +256,23 @@ Corrections
 Corrections
 - Corrige le process qui lance les crons
 
+### 0.3.12 - 2026/07
+Nouveautés
+- Ajout d'un mode édition directement sur un soundboard privée, il permet d'ajouter directement les boutons copiables de la communauté ou ses boutons personnels
+- Ajout de workflow pour valider de travail
+
+Corrections
+- Eviter la concurrence pour la labellisation pour ne pas surcharger le serveur
+- Correction d'un bugs lors 
+- Décalage d'un processus de reduction du poids des fichier audio ce qui provoqué des erreurs car en cours de réécriture
+
+Améliorations
+- Amélioration de la page d'organisation des soundboards
+- Amélioration du processus de déploiement sans modifier les droits
+- Ajout de fixture pour aider au developpement
+- Changement d'icone pour acceder à la liste des boutons privé
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Nouveautés

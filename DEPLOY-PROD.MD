@@ -37,11 +37,11 @@ sudo nginx -s reload
 vi /srv/www/AmbianceBoard/.env
 
 ## pull la branch 
-cd /srv/www/AmbianceBoard/ && chmod +x deploy.sh && sh deploy.sh
+cd /srv/www/AmbianceBoard/ && deploy.sh && sh deploy.sh
 
 ou manuellement 
 
-cd /srv/www/AmbianceBoard/ && chmod +x app/entrypoint.sh && chmod +x app/entrypoint.prod.sh
+cd /srv/www/AmbianceBoard/ && app/entrypoint.prod.sh
 
 ## deployement du back (lors de la première fois)
 dans le container back

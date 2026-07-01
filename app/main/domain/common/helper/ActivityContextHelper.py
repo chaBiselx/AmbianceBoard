@@ -28,11 +28,13 @@ class ActivityContextHelper:
         if user and hasattr(user, 'is_authenticated') and user.is_authenticated:
             authenticated_user = user
 
+        uri = request.build_absolute_uri() if request else ''
         activity = UserActivityRepository().create(
             activity_type=activity_type,
             user=authenticated_user,
             session_key=request.session.session_key if request else '',
-            content_object=content_object
+            content_object=content_object,
+            uri=uri
         )
         return activity
     

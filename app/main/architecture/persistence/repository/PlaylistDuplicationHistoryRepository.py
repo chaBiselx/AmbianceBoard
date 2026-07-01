@@ -2,6 +2,8 @@ from typing import Optional
 from django.db.models import QuerySet
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.User import User
 
 
@@ -76,6 +78,25 @@ class PlaylistDuplicationHistoryRepository:
         return PlaylistDuplicationHistory.objects.filter(
             source_playlist_uuid=source_playlist_uuid
         ).select_related('duplicated_playlist', 'duplicated_playlist__user')
+
+    def find_existing_duplication_in_soundboard(
+        self,
+        source_playlist_uuid: str,
+        target_user: User,
+        target_soundboard: SoundBoard
+    ) -> Optional[PlaylistDuplicationHistory]:
+        """
+        Recherche une duplication existante d'une source dans un soundboard cible.
+        """
+        duplicated_playlist_ids_in_soundboard = SoundboardPlaylist.objects.filter(
+            SoundBoard=target_soundboard
+        ).values_list('Playlist_id', flat=True)
+
+        return PlaylistDuplicationHistory.objects.filter(
+            source_playlist_uuid=source_playlist_uuid,
+            duplicated_playlist__user=target_user,
+            duplicated_playlist_id__in=duplicated_playlist_ids_in_soundboard
+        ).first()
     
     def get_duplications_by_user(
         self,

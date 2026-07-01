@@ -28,7 +28,8 @@ class ActivityContextHelper:
         user: Optional[Any] = None
     ) -> UserActivity:
         """Démarre le traçage de l'activité."""
-        return UserActivityRepository().create(activity_type=activity_type,user=user,session_key=request.session.session_key if request else '')
+        uri = request.build_absolute_uri() if request else ''
+        return UserActivityRepository().create(activity_type=activity_type,user=user,session_key=request.session.session_key if request else '', uri=uri)
    
 
     @staticmethod

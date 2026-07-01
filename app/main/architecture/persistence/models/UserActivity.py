@@ -75,6 +75,13 @@ class UserActivity(models.Model):
         help_text="Clé de session pour identifier les utilisateurs non connectés",
         db_index=True
     )
+    uri = models.URLField(
+        max_length=2000,
+        blank=True,
+        null=True,
+        default="",
+        help_text="URI de la ressource ou de l'action effectuée"
+    )
     
     class Meta:
         """Métadonnées du modèle UserActivity."""

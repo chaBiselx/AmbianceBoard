@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-05 14:01+0000\n"
+"POT-Creation-Date: 2026-07-01 06:30+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -271,6 +271,26 @@ msgid ""
 "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
 msgstr "Raccourci clavier"
 
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:5
+msgid "template.soundboard_read.page_title_suffix"
+msgstr "Soundboard Ambiance | AmbianceBoard"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:12
+msgid "template.soundboard_read.badge.private"
+msgstr "Privé"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:31
+msgid "template.soundboard_read.button.edit_mode"
+msgstr "Mode édition"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:34
+msgid "template.soundboard_read.button.organize"
+msgstr "Organiser"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:36
+msgid "template.soundboard_read.button.edit_soundboard"
+msgstr "Modifier le SoundBoard"
+
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:7
 msgid "template.shareSoundboard.button.tooltip"
 msgstr ""
@@ -280,23 +300,64 @@ msgstr ""
 msgid "template.shareSoundboard.button.label"
 msgstr "Partager l'écoute"
 
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:5
+msgid "Masquer tout"
+msgstr "Masquer tout"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:10
+msgid "Soundboard publique"
+msgstr "Soundboard publique"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:12
+msgid "Public"
+msgstr "Public"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:15
+msgid "Signaler un problème"
+msgstr "Signaler un problème"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:17
+msgid "Report"
+msgstr "Signaler"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:21
+msgid "liste de vos soundboards"
+msgstr "Liste de vos soundboards"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:23
+msgid "Soundboards"
+msgstr "Soundboards"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:25
+msgid "Liste de vos boutons"
+msgstr "Liste de vos boutons"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:27
+msgid "Boutons"
+msgstr "Boutons"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:36
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:38
+msgid "Login"
+msgstr "Connexion"
+
 #: main/interface/ui/templates/socialaccount/login.html:9
 msgid "Connexion via Google"
-msgstr ""
+msgstr "Connexion via Google"
 
 #: main/interface/ui/templates/socialaccount/login.html:12
 msgid ""
 "Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
 "Google."
-msgstr ""
+msgstr "Vous êtes sur le point de vous connecter en utilisant un compte tiers de Google."
 
 #: main/interface/ui/templates/socialaccount/login.html:16
 msgid "Continuer"
-msgstr ""
+msgstr "Continuer"
 
 #: main/interface/ui/templates/socialaccount/login.html:20
 msgid "Retour"
-msgstr ""
+msgstr "Retour"
 
 #~ msgid "enum.fade_playlist.off"
 #~ msgstr "Désactivé"

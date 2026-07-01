@@ -22,11 +22,12 @@
                 <div class="card-body">
                     <form method="get" class="form-inline">
                         <div class="form-group mr-3">
-                            <label for="search" class="sr-only">Recherche</label>
+                            <label class="d-none" for="search">Recherche</label>
                             <input type="text" class="form-control" id="search" name="search" placeholder="Rechercher par nom ou email..." value="{{ search }}">
                         </div>
                         <div class="form-group mr-3">
-                            <select name="tier" class="form-control">
+                            <label class="d-none" for="tier-select">Tiers</label>
+                            <select name="tier" class="form-control" id="tier-select">
                                 <option value="">Tous les tiers</option>
                                 {% for tier_key, tier_name in tier_choices %}
                                 <option value="{{ tier_key }}" {% if tier_filter == tier_key %}selected{% endif %}>
@@ -53,11 +54,13 @@
             <form method="post" action="{% url 'managerUserTierBulkAction' %}" id="bulk-action-form">
                 {% csrf_token %}
                 <div class="d-flex align-items-center">
-                    <select name="action" class="form-control mr-2" style="max-width: 200px;">
+                    <label class="d-none" for="bulk-action-select">Actions en lot</label>
+                    <select name="action" class="form-control mr-2" style="max-width: 200px;" id="bulk-action-select">
                         <option value="">Actions en lot...</option>
                         <option value="downgrade_to_standard">Rétrograder au Standard</option>
                         <option value="extend_subscription">Étendre l'abonnement</option>
                     </select>
+                    <label class="d-none" for="extend-days-input">Jours</label>
                     <input type="number" name="extend_days" placeholder="Jours" class="form-control mr-2" style="max-width: 100px; display: none;" id="extend-days-input">
                     <button type="submit" class="btn btn-warning" disabled id="bulk-action-btn">
                         <i class="fas fa-play"></i> Exécuter
@@ -78,6 +81,7 @@
                             <thead>
                                 <tr>
                                     <th>
+                                        <label class="d-none" for="select-all">Sélectionner tous les utilisateurs</label>
                                         <input type="checkbox" id="select-all">
                                     </th>
                                     <th>Utilisateur</th>
@@ -92,7 +96,8 @@
                                 {% for user_tier in page_objects %}
                                 <tr>
                                     <td>
-                                        <input type="checkbox" name="user_ids" value="{{ user_tier.user.uuid }}" class="user-checkbox">
+                                        <label class="d-none" for="user-checkbox-{{ user_tier.user.uuid }}">Sélectionner {{ user_tier.user.username }}</label>
+                                        <input type="checkbox" name="user_ids" value="{{ user_tier.user.uuid }}" class="user-checkbox" id="user-checkbox-{{ user_tier.user.uuid }}">
                                     </td>
                                     <td>
                                         <div>

@@ -21,6 +21,7 @@ class UserActivityRepository:
         user: Optional[User] = None,
         content_object: Optional[Any] = None,
         session_key: Optional[str] = None,
+        uri: Optional[str] = None
     ) -> UserActivity:
         """
         Crée une nouvelle activité utilisateur.
@@ -30,16 +31,18 @@ class UserActivityRepository:
             user: Utilisateur (None pour utilisateur anonyme)
             content_object: Objet associé à l'activité
             session_key: Clé de session
-            
+            uri: URI de la ressource ou de l'action effectuée
         Returns:
             UserActivity: Instance créée
         """
+        normalized_uri = uri or ''
         activity = UserActivity(
             user=user,
             is_authenticated=user is not None and user.is_authenticated,
             activity_type=activity_type.value,
             content_object=content_object,
             session_key=session_key,
+            uri=normalized_uri,
         )
         if session_key is None:
             activity.session_key = ''

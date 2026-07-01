@@ -1,15 +1,13 @@
-# AmbianceBoard  
-**Soundboard pour jeux de rôle (TTRPG)**  
+# AmbianceBoard
 
-AmbianceBoard est une soundboard conçue pour les jeux de rôle, permettant d'ajouter :  
-- 🔫 **Sons instantanés** : bruits d'armes, cris, etc.  
-- 🌊 **Sons d'ambiance** : bruits de mer, feu de camp…  
-- 🎶 **Musiques** : musiques de combat, moments dramatiques…  
+AmbianceBoard est une application web de soundboard pour jeux de role sur table.
+Elle permet de preparer des ambiances sonores, d organiser des playlists et de partager des sessions de lecture pour soutenir une partie sans multiplier les outils.
 
-## 🚀 Fonctionnalités  
-✅ Soundboards privées ou publiques  
-✅ Gestion de playlists aléatoires  
-✅ Déploiement via Docker  
+## A qui sert le produit
+
+- Meneurs de jeu qui veulent piloter musiques, boucles d ambiance et effets ponctuels depuis une meme interface.
+- Groupes qui veulent partager une soundboard publiquement ou via un espace prive.
+- Equipes qui exploitent un produit web Dockerise avec backend Django, frontend TypeScript et fonctions temps reel.
 
 ## 📊 SonarCloud  
 ![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=chaBiselx_AmbianceBoard&metric=alert_status) 
@@ -23,156 +21,69 @@ AmbianceBoard est une soundboard conçue pour les jeux de rôle, permettant d'aj
 Suivi du projet
 [clickUp](https://sharing.clickup.com/9014791178/l/h/8cn5k0a-554/d11e2ded9d8d1d4)
 
-## 🏗️ Installation  
+## Demarrage rapide
 
-### 1. Créer un fichier `.env`  
-```shell  
-cp .env.dev.sample .env  
-```  
+Le projet se lance principalement avec Docker Compose.
 
-### 2. Lancer Docker  
-```shell  
+```sh
+make init
 make build
-```  
-
-sous WSL en cas d'erreur avec l'entrypoint utiliser dos2unix
-```shell
-dos2unix ./app/entrypoint.sh
-```
-
-ou 
-```shell
-find . -type f -print0 | xargs -0 dos2unix
-```
-
-### 3. Accéder au conteneur  
-```shell  
+make up
 make enter S=back
-```  
-
-### 4. Créer un super utilisateur  
-```shell  
-python manage.py createsuperuser  
-```  
-
-## 🔗 URLs utiles  
-- 🚀 **Application** : [http://localhost:9999/](http://localhost:9999/)  
-- 🐰 **RabbitMQ** : [http://localhost:15672/](http://localhost:15672/)  
-- 📬 **MailHog** : [http://localhost:8025/](http://localhost:8025/)  
-
-## 🤝 Contribuer  
-1. Fork le projet  
-2. Crée une branche (`git checkout -b feature/ma-fonctionnalite`)  
-3. Fais un commit (`git commit -m 'Ajout d'une nouvelle fonctionnalité'`)  
-4. Push la branche (`git push origin feature/ma-fonctionnalite`)  
-5. Crée une Pull Request  
-
-## 📝 Licence  
-Ce projet est sous licence **MIT**.  
-
-## Architecture 
-
-### Backend 
-
-DDD
+python manage.py createsuperuser
 ```
-app/main/
-├── application/
-│   ├── auth/
-│   └── helper/
-├── domain
-│   ├── common/
-│   │   ├── decorator/
-│   │   ├── enum/
-│   │   ├── exceptions/
-│   │   ├── factory/
-│   │   ├── helper/
-│   │   ├── mixins/
-│   │   ├── service/
-│   │   ├── strategy/
-│   │   └── utils/
-│   │       ├── EmailSender, ImageResizer, AudioDurationUtils
-│   │       ├── cache/ (système de cache)
-│   │       ├── logger/ (logging)
-│   │       └── settings/ (configuration)
-│   │
-│   ├── general/
-│   │   └── service/ 
-│   ├── private/
-│   │   ├── dto/
-│   │   ├── formatter/
-│   │   ├── manager/
-│   │   └── service/
-│   ├── public/
-│   │   ├── decorator/
-│   │   └── service/
-│   ├── manager/
-│   │   ├── decorator/
-│   │   └── service/
-│   ├── moderator/
-│   │   ├── dto/
-│   │   └── service/
-│   ├── brokers/
-│   │   ├── message/
-│   │   ├── service/
-│   │   └── strategy/
-│   ├── cron/
-│   │   ├── cronFile/
-│   │   └── service/
-│   └── sharedSoundboard/
-│       └── consummers/
-│
-├── interface
-│   ├── ui/
-│   │   ├── controller/
-│   │   │   ├── general/
-│   │   │   ├── private/
-│   │   │   ├── public/
-│   │   │   ├── manager/
-│   │   │   ├── moderator/
-│   │   │   └── sharedSoundboard/
-│   │   ├── forms/
-│   │   │   ├── general/
-│   │   │   ├── private/
-│   │   │   ├── manager/
-│   │   │   └── moderator/
-│   │   ├── seo/
-│   │   ├── templates/
-│   │   └── templatetags/
-│   │
-│   └── admin/
-│
-├── architecture
-│   ├── persistence/
-│   │   ├── models/
-│   │   ├── repository/
-│   │   ├── migrations/
-│   │   └── postMigrate/
-│   │
-│   ├── messaging/
-│   │   ├── email/
-│   │   │   ├── UserMail.py
-│   │   │   └── ModeratorEmail.py
-│   │   ├── tasks/
-│   │   │   └── celery.py
-│   │   └── events/
-│   │       └── signals.py
-│   │
-│   ├── middleware/
-│   │   ├── DailySessionMiddleware.py
-│   │   ├── ErrorTrackingMiddleware.py
-│   │   └── LogRequestsMiddleware.py
-│   │
-│   └── contextProcessors/
-│       ├── general_information_processor.py
-│       ├── sidebar_processor.py
-│       └── user_preference_processor.py
-├── TNR/
-│   ├── TU/ (Tests Unitaires)
-│   ├── TI/ (Tests d'Intégration)
-│   └── Fixtures/
-│
-├── models.py
-└── apps.py
-```
+
+URLs locales les plus visibles dans l etat actuel du depot:
+
+- Application: http://localhost:9999/
+- RabbitMQ: http://localhost:15672/
+- MailHog: http://localhost:8025/
+- Grafana: http://localhost:3000/
+
+Pour les details techniques, voir `ARCHITECTURE.md`, `TESTS.md`, `DEPLOY-PROD.MD`, `SECURITE.md` et `SECURITY.md`.
+
+## Cas d usage couverts
+
+- Construire une soundboard privee ou publique.
+- Jouer musiques, effets et ambiances pendant une session TTRPG.
+- Synchroniser une session partagee via WebSocket.
+- Moderer ou administrer du contenu depuis des espaces dedies.
+
+## Documentation Audit
+
+- Date d audit: 2026-06-10
+- Score: 58/100
+- Statut: PARTIEL
+
+### Constat
+
+| Fichier | Etat | Probleme | Impact |
+|---|---|---|---|
+| README.md | updated | L ancien contenu etait utile pour un premier lancement, mais restait incomplet sur la valeur produit, le vrai demarrage rapide et l etat global de la documentation. | Moyen |
+| ARCHITECTURE.md | updated | Le document existant couvrait une partie de l architecture mais melangeait audit, organisation cible et recommandations trop directes. | Eleve |
+| DEPLOY-PROD.MD | observe | Le guide de deploiement existe mais reste procedural, peu structure et difficile a relier aux composants reels de l architecture. | Eleve |
+| SECURITY.md / SECURITE.md | observe | Deux documents de securite coexistent avec des finalites differentes, ce qui cree une ambiguite sur la source de reference. | Moyen |
+| TESTS.md | observe | Le document apporte un audit utile, mais reste separe du parcours principal de lecture de la documentation. | Moyen |
+
+### Risques
+
+- Onboarding plus lent pour un nouveau contributeur, car la documentation est dispersee entre plusieurs fichiers heterogenes.
+- Mauvaise interpretation des commandes de demarrage si le lecteur suit un guide partiel ou ancien.
+- Comprehension incomplete des frontieres entre produit, architecture, exploitation et securite.
+- Dette documentaire croissante si les guides satellites evoluent sans point d entree unique.
+
+### Pistes d amelioration
+
+1. Stabiliser un parcours de lecture unique entre presentation produit, architecture, tests, deploiement et securite.
+2. Uniformiser le niveau de detail et le format d audit des documents majeurs du depot.
+3. Rendre explicites les prerequis d environnement et les variantes dev/prod sans surcharger le README.
+4. Clarifier quelle documentation fait foi pour la securite, le deploiement et les tests.
+5. Ajouter des vues synthetiques sur les flux critiques: lecture audio, synchro partagee, upload et traitement asynchrone.
+
+### Etat du fichier
+
+| Fichier | Statut | Resume changements |
+|---|---|---|
+| README.md | updated | Recentrage sur l objectif produit, le demarrage rapide reel et un audit synthetique de la documentation actuelle. |
+
 

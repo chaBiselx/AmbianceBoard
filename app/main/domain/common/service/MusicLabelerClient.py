@@ -2,6 +2,8 @@ import os
 
 import requests
 
+from main.domain.common.utils.logger.ILogger import ILogger
+from main.domain.common.utils.logger import LoggerFactory
 from main.architecture.persistence.models.Music import Music
 from main.domain.common.utils.settings import Settings
 
@@ -14,12 +16,14 @@ class MusicLabelerClient:
         self.timeout = 120
         token = Settings.get('MUSIC_LABELER_TOKEN', '')
         self.headers = {"Authorization": f"Bearer {token}"} if token else {}
+        self.logger: ILogger = LoggerFactory.get_default_logger()
 
     def analyze(self, music: Music) -> dict:
         """Envoie un fichier audio au microservice music-labeler."""
         if not music.file or not os.path.exists(music.file.path):
             raise FileNotFoundError(f"Fichier audio introuvable : {music.file.name}")
 
+        self.logger.info(f"MusicLabelerClient: analyse de music_id={music.id} via {self.base_url}/label")
         try:
             with open(music.file.path, 'rb') as file_handle:
                 response = requests.post(
@@ -31,10 +35,13 @@ class MusicLabelerClient:
                 )
             response.raise_for_status()
         except requests.ConnectionError:
-            raise ConnectionError('Service music-labeler indisponible')
+            self.logger.error(f"MusicLabelerClient: Service music-labeler indisponible pour music_id={music.id}")
+            raise ConnectionError(f'Service music-labeler indisponible pour music_id={music.id}')
         except requests.Timeout:
+            self.logger.error(f"MusicLabelerClient: Timeout lors de l'analyse pour music_id={music.id}")
             raise TimeoutError("Timeout lors de l'analyse")
         except requests.RequestException as error:
+            self.logger.error(f"MusicLabelerClient: Erreur lors de l'analyse pour music_id={music.id}: {error}")
             raise RuntimeError(str(error))
 
         return response.json()

@@ -1,3 +1,5 @@
+import asyncio
+import logging
 from contextlib import asynccontextmanager
 from typing import Annotated
 
@@ -15,7 +17,14 @@ from app.upload.upload_validator import UploadValidator
 # ---------------------------------------------------------------------------
 # Model holder (loaded once at startup)
 # ---------------------------------------------------------------------------
+logger = logging.getLogger("music-labeler")
 audio_model: ClapAudioModel | None = None
+
+
+def _sanitize_for_log(value: object) -> str:
+    """Convertit une valeur en texte sûr pour les logs (anti log injection CR/LF)."""
+    text = str(value)
+    return text.replace("\r", "\\r").replace("\n", "\\n")
 
 
 @asynccontextmanager
@@ -53,8 +62,10 @@ async def label_upload(
     top_k: Annotated[int, Query(ge=1, le=10)] = 3,
     _: Annotated[None, Depends(_verify_token)] = None,
 ):
-    
+
     """Labelise un fichier audio uploadé. Le fichier est supprimé après analyse."""
+    safe_filename = _sanitize_for_log(file.filename)
+    logger.info("Réception d'une demande d'analyse : fichier=%s top_k=%d", safe_filename, top_k)
     upload_validator = UploadValidator()
     temp_upload_file_manager = TempUploadFileManager(MAX_UPLOAD_SIZE)
     upload_validator.validate_extension(file.filename)
@@ -62,10 +73,18 @@ async def label_upload(
     tmp_path = await temp_upload_file_manager.save(file)
 
     try:
-        audio, sr = librosa.load(tmp_path, sr=SAMPLE_RATE, mono=True)
-        features = AudioFeatureExtractor.extract(audio, sr)
+        logger.info("Chargement audio : %s", safe_filename)
+        audio, sr = await asyncio.to_thread(librosa.load, tmp_path, sr=SAMPLE_RATE, mono=True)
+        logger.info("Extraction features : %s", safe_filename)
+        features = await asyncio.to_thread(AudioFeatureExtractor.extract, audio, sr)
+        logger.info("Classification : %s", safe_filename)
         classifier = MusicClassifier(audio_model, sample_rate=SAMPLE_RATE)
-        classification = classifier.classify(audio, top_k_per_category=top_k)
+        classification = await asyncio.to_thread(classifier.classify, audio, top_k_per_category=top_k)
+        logger.info("Analyse réussie : %s", safe_filename)
+    except Exception as e:
+        safe_error = _sanitize_for_log(e)
+        logger.exception("Erreur lors de l'analyse de %s : %s", safe_filename, safe_error, exc_info=True)
+        raise
     finally:
         temp_upload_file_manager.cleanup(tmp_path)
 

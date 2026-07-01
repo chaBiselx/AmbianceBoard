@@ -12,7 +12,7 @@
 {% block content %}
 <div class="row">
     <div class="col-12 mb-2">
-        <a type="button" href="{% url 'listSoundboardPlaylistsSpecific' soundboard.uuid %}" class="btn btn-primary float-end" >Ajouter action spécifique</a>
+        <a type="button" href="{% url 'listSoundboardPlaylistsSpecific' soundboard.uuid %}" class="btn btn-primary float-end">Ajouter action spécifique</a>
         <a type="button" href="{% url 'soundboardsRead' soundboard.uuid %}" class="btn btn-info float-end">Retour au soundboard</a>
     </div>
     <div class="col-6 px-sm-2 px-1">
@@ -34,9 +34,7 @@
 
     <div class="col-6 px-sm-2 px-1">
         <div>
-            <button class="btn btn-sm btn-info rounded-circle btn-lg float-end" id="add-section-button" data-bs-toggle="tooltip" data-bs-title="Ajouter une section">
-                <i class="fa-solid fa-plus"></i>
-            </button>
+
             <h3>Boutons associés </h3>
         </div>
         <div data-url="{% url 'organizeSoundboardUpdate' soundboard.uuid %}" id="associated-playlists-container">
@@ -48,6 +46,12 @@
                             <strong>Section <span class="num-section">{{ section_num }}</span></strong>
                         </button>
                     </h2>
+                    <div class="d-flex justify-content-end pe-2 pt-2">
+                        <button type="button" class="btn btn-sm btn-outline-info section-insert-before-button" data-insert-before="{{ section_num }}" data-bs-toggle="tooltip" data-bs-title="Insérer une section avant">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Insérer avant</span>
+                        </button>
+                    </div>
                     <div id="panelsStayOpen-{{ section_num }}" class="accordion-collapse collapse show" aria-labelledby="panelsSection-{{ section_num }}">
                         <div class="accordion-body p-0">
                             <div class="flex-container pt-3 zone-dragAndDrop section-container" id="associated-playlists-section-{{ section_num }}" data-section="{{ section_num }}">
@@ -69,6 +73,9 @@
             </div>
             {% endfor %}
         </div>
+        <button class="btn btn-sm btn-info btn-lg float-end" id="add-section-button" data-bs-toggle="tooltip" data-bs-title="Ajouter une section de fin">
+            <i class="fa-solid fa-plus"></i> Ajouter une section de fin
+        </button>
     </div>
 </div>
 
@@ -80,6 +87,12 @@
                     <strong>Section <span class="num-section">##SECTION##</span></strong>
                 </button>
             </h2>
+            <div class="d-flex justify-content-end pe-2 pt-2">
+                <button type="button" class="btn btn-sm btn-outline-info section-insert-before-button" data-insert-before="##SECTION##" data-bs-toggle="tooltip" data-bs-title="Insérer une section avant">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Insérer avant</span>
+                </button>
+            </div>
             <div id="panelsStayOpen-##SECTION##" class="accordion-collapse collapse show" aria-labelledby="panelsSection-##SECTION##">
                 <div class="accordion-body p-0">
                     <div class="flex-container pt-3 zone-dragAndDrop section-container" id="associated-playlists-section-template" data-section="0">

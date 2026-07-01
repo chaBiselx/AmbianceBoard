@@ -31,6 +31,10 @@ fi
 # Démarrer Celery en arrière-plan
 celery -A main worker --queues=default,celery --concurrency=4 --loglevel=info &
 
+# Worker dédié music_labeler : séquentiel par défaut (concurrency=1).
+# Augmenter MUSIC_LABELER_CONCURRENCY pour monter en charge.
+celery -A main worker --queues=music_labeler --concurrency="${MUSIC_LABELER_CONCURRENCY:-1}" --loglevel=info &
+
 if [ "$RUNCRON" = "1" ]; then
     echo "Adding crontab..."
     python manage.py crontab add

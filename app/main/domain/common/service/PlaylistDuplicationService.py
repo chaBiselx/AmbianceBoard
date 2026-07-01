@@ -12,6 +12,7 @@ from main.domain.common.exceptions.PlaylistDuplicationException import (
     PlaylistAlreadyDuplicatedException,
     PlaylistNotCopiableException
 )
+from main.domain.common.utils.logger import logger
 
 
 class PlaylistDuplicationService:
@@ -127,13 +128,22 @@ class PlaylistDuplicationService:
             fadeOut=self.source_playlist.fadeOut,
         )
         
-        # Copier l'icône si elle existe
+        # Copier l'icône si elle existe.
+        # Si le fichier n'est plus présent sur le storage, on continue sans bloquer la duplication.
         if self.source_playlist.icon:
-            duplicated_playlist.icon.save(
-                f"{duplicated_playlist.uuid}.{self.source_playlist.icon.name.split('.')[-1]}",
-                ContentFile(self.source_playlist.icon.read()),
-                save=False
-            )
+            try:
+                duplicated_playlist.icon.save(
+                    f"{duplicated_playlist.uuid}.{self.source_playlist.icon.name.split('.')[-1]}",
+                    ContentFile(self.source_playlist.icon.read()),
+                    save=False
+                )
+            except (OSError, ValueError) as exception:  # file not found 
+                warning_message = (
+                    "Duplication playlist: icone source introuvable sur le serveur, "
+                    f"copie sans icone (playlist source={self.source_playlist.uuid}). "
+                    f"Erreur: {exception}"
+                )
+                logger.warning(warning_message)
         
         duplicated_playlist.save()
         return duplicated_playlist
@@ -155,7 +165,7 @@ class PlaylistDuplicationService:
             elif source_track.is_link_music():
                 self._duplicate_link_music(source_track.linkmusic, duplicated_playlist)
     
-    def _duplicate_music(self, source_music: Music, duplicated_playlist: Playlist) -> Music:
+    def _duplicate_music(self, source_music: Music, duplicated_playlist: Playlist) -> Optional[Music]:
         """
         Crée une copie d'un fichier Music avec un nouvel UUID.
         
@@ -164,8 +174,19 @@ class PlaylistDuplicationService:
             duplicated_playlist: La playlist destination
             
         Returns:
-            Music: Le nouveau fichier Music créé
+            Music | None: Le nouveau fichier Music créé, ou None si le fichier source est introuvable
         """
+        if source_music.file:
+            try:
+                source_music.file.open('rb')
+            except (OSError, ValueError) as exception: # file not found 
+                logger.warning(
+                    f"Duplication musique: fichier source introuvable sur le serveur, "
+                    f"musique non dupliquee (musique source={source_music}). "
+                    f"Erreur: {exception}"
+                )
+                return None
+
         duplicated_music = Music(
             playlist=duplicated_playlist,
             alternativeName=source_music.alternativeName,
@@ -174,7 +195,6 @@ class PlaylistDuplicationService:
         )
 
         if source_music.file:
-            source_music.file.open('rb')
             try:
                 duplicated_music.file = ContentFile(
                     source_music.file.read(),

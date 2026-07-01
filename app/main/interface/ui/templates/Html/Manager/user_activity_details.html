@@ -32,6 +32,7 @@
                                     <th>Authentifié</th>
                                     <th>Session</th>
                                     <th>Objet lié</th>
+                                    <th>URI</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,6 +55,7 @@
                                         -
                                         {% endif %}
                                     </td>
+                                    <td>{{ activity.uri|default:"-" }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
