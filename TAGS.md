@@ -272,9 +272,15 @@ Améliorations
 - Ajout de fixture pour aider au developpement
 - Changement d'icone pour acceder à la liste des boutons privé
 
+### 0.4.0 - 2026/07
+Sécurité
+- Mise a jours des dépendances
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
+Sécurité
+- … 
+
 Nouveautés
 - …
 

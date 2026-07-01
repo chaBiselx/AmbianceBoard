@@ -6,6 +6,9 @@ __pycache
 .env.prod.db
 user.csv
 
+# agent IA (temp)
+.agent
+
 #test coverage
 .coverage
 
