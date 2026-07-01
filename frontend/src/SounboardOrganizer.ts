@@ -766,8 +766,8 @@ class SectionAdder {
                 insertAnchor = shiftedTargetSection?.closest('.accordion') as HTMLElement | null;
             }
 
-            if (insertAnchor && insertAnchor.parentElement === parentContainer) {
-                parentContainer.insertBefore(newSectionNode, insertAnchor);
+            if (insertAnchor?.parentElement === parentContainer) {
+                insertAnchor.before(newSectionNode);
             } else {
                 parentContainer.appendChild(newSectionNode);
             }

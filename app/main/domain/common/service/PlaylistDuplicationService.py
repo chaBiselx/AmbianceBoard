@@ -137,7 +137,7 @@ class PlaylistDuplicationService:
                     ContentFile(self.source_playlist.icon.read()),
                     save=False
                 )
-            except (FileNotFoundError, OSError, ValueError) as exception:
+            except (OSError, ValueError) as exception:  # file not found 
                 warning_message = (
                     "Duplication playlist: icone source introuvable sur le serveur, "
                     f"copie sans icone (playlist source={self.source_playlist.uuid}). "
@@ -179,7 +179,7 @@ class PlaylistDuplicationService:
         if source_music.file:
             try:
                 source_music.file.open('rb')
-            except (FileNotFoundError, OSError, ValueError) as exception:
+            except (OSError, ValueError) as exception: # file not found 
                 logger.warning(
                     f"Duplication musique: fichier source introuvable sur le serveur, "
                     f"musique non dupliquee (musique source={source_music}). "

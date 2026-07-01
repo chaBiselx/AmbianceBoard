@@ -54,7 +54,6 @@ def playlist_show(request, soundboard_uuid):
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     else:
         soundboard_playlist_repository = SoundboardPlaylistRepository()
-        playlist = None
         
         activity = ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW, user=request.user, content_object=soundboard)
         

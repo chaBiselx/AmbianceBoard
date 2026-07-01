@@ -378,7 +378,7 @@ class PlaylistDuplicationServiceTest(TestCase):
 
     def test_duplicate_ignores_missing_music_file_and_returns_warning(self):
         """Test que la duplication continue sans dupliquer la musique si le fichier audio est manquant"""
-        music = Music.objects.create(
+        Music.objects.create(
             playlist=self.source_playlist,
             fileName="missing.mp3",
             file=SimpleUploadedFile("missing.mp3", b'audio', content_type=local_format_audio1),

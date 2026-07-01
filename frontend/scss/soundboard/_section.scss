@@ -60,7 +60,7 @@
         html[data-bs-theme="dark"] & {
             border-color: $border_color_dark;
             background: rgba(255, 255, 255, 0.04);
-            color: #d2e6ff;
+            color: $text_color_dark;
         }
     }
 }

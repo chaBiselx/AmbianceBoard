@@ -208,7 +208,7 @@ class SoundboardEditMode {
             // Insérer avant la première zone d'ajout (soundboard-edit-add-zone) si elle existe
             const firstAddZone = flexContainer.querySelector('.soundboard-edit-add-zone');
             if (firstAddZone) {
-                flexContainer.insertBefore(playlistItem, firstAddZone);
+                firstAddZone.before(playlistItem);
             } else {
                 flexContainer.appendChild(playlistItem);
             }
