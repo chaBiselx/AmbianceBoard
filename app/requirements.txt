@@ -12,4 +12,4 @@ channels_redis
 django-encrypted-model-fields==0.6.5
 requests==2.32.4
 bleach==6.1.0
-django-allauth[socialaccount]==65.4.0
+django-allauth[socialaccount]==65.18.0
