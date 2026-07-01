@@ -270,6 +270,7 @@ Améliorations
 - Amélioration de la page d'organisation des soundboards
 - Amélioration du processus de déploiement sans modifier les droits
 - Ajout de fixture pour aider au developpement
+- Changement d'icone pour acceder à la liste des boutons privé
 
 
 ### X.Y.Z - Date

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-05 14:01+0000\n"
+"POT-Creation-Date: 2026-07-01 06:30+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -267,6 +267,26 @@ msgid ""
 "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
 msgstr "keyboard shortcut"
 
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:5
+msgid "template.soundboard_read.page_title_suffix"
+msgstr "Ambiance Soundboard | AmbianceBoard"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:12
+msgid "template.soundboard_read.badge.private"
+msgstr "Private"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:31
+msgid "template.soundboard_read.button.edit_mode"
+msgstr "Edit mode"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:34
+msgid "template.soundboard_read.button.organize"
+msgstr "Organize"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:36
+msgid "template.soundboard_read.button.edit_soundboard"
+msgstr "Edit SoundBoard"
+
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:7
 msgid "template.shareSoundboard.button.tooltip"
 msgstr ""
@@ -276,6 +296,47 @@ msgstr ""
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:8
 msgid "template.shareSoundboard.button.label"
 msgstr "Share listening"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:5
+msgid "Masquer tout"
+msgstr "Hide all"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:10
+msgid "Soundboard publique"
+msgstr "Public soundboard"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:12
+msgid "Public"
+msgstr "Public"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:15
+msgid "Signaler un problème"
+msgstr "Report an issue"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:17
+msgid "Report"
+msgstr "Report"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:21
+msgid "liste de vos soundboards"
+msgstr "list of your soundboards"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:23
+msgid "Soundboards"
+msgstr "Soundboards"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:25
+msgid "Liste de vos boutons"
+msgstr "List of your buttons"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:27
+msgid "Boutons"
+msgstr "Buttons"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:36
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:38
+msgid "Login"
+msgstr "Login"
 
 #: main/interface/ui/templates/socialaccount/login.html:9
 msgid "Connexion via Google"
@@ -327,9 +388,6 @@ msgstr "Back"
 #~ "Expand the soundboard for better audio immersion. Perfect for your "
 #~ "streaming sessions or creative work."
 
-#~ msgid "Soundboards publiques"
-#~ msgstr "Public soundboards"
-
 #~ msgid ""
 #~ "Explorez les soundboards créés par la communauté. Vous pouvez les "
 #~ "écouter, les prévisualiser et même copier leurs boutons pour votre propre "
@@ -358,18 +416,12 @@ msgstr "Back"
 #~ "Create your own soundboard in 3 clicks. Give it a name, a description, "
 #~ "and start adding sounds."
 
-#~ msgid "Contrôles du soundboard"
-#~ msgstr "Soundboard controls"
-
 #~ msgid ""
 #~ "Contrôlez votre ambiance : Play/Pause, Volume, Partage. Tous les sons "
 #~ "jouent dans le même contexte audio."
 #~ msgstr ""
 #~ "Control your ambience: Play/Pause, Volume, Share. All sounds play in the "
 #~ "same audio context."
-
-#~ msgid "Copier les boutons"
-#~ msgstr "Copy buttons"
 
 #~ msgid ""
 #~ "Copiez les contrôles audio de ce soundboard pour les intégrer à votre "

@@ -1,14 +1,15 @@
 {% extends 'Html/partial/structure/base.html' %}
 {% load SoundBoard %}
+{% load i18n %}
 
-{% block page_title %}{{ soundboard.name }} - Soundboard Ambiance | AmbianceBoard{% endblock %}
+{% block page_title %}{{ soundboard.name }} - {% trans "template.soundboard_read.page_title_suffix" %}{% endblock %}
 
 {% block content %}
 
 {% include 'Html/partial/soundboard/share_soundboard.html'%}
 <div class="row">
     <div class="col-12 fullScreen-element">
-        <h4 id="soundboard-name">{{ soundboard | get_name }} <span class="fs-6 text-primary fst-italic">Privé</span></h4>
+        <h4 id="soundboard-name">{{ soundboard | get_name }} <span class="fs-6 text-primary fst-italic">{% trans "template.soundboard_read.badge.private" %}</span></h4>
     </div>
     <div class="d-none">
     </div>
@@ -27,12 +28,12 @@
                 class="btn btn-success btn-block py-1 my-1"
                 id="btn-soundboard-edit-mode"
                 data-url-panel="{% url 'soundboardEditModePanel' soundboard.uuid %}">
-                Mode édition
+                {% trans "template.soundboard_read.button.edit_mode" %}
             </button>
 
-            <a class="btn btn-primary btn-block py-1 my-1" href="{% url 'organizeSoundboard' soundboard.uuid %}">Organiser</a>
+            <a class="btn btn-primary btn-block py-1 my-1" href="{% url 'organizeSoundboard' soundboard.uuid %}">{% trans "template.soundboard_read.button.organize" %}</a>
 
-            <a class="btn btn-warning btn-block py-1 my-1" href="{% url 'soundboardsUpdate' soundboard.uuid %}">Modifier le general du SoundBoard</a>
+            <a class="btn btn-warning btn-block py-1 my-1" href="{% url 'soundboardsUpdate' soundboard.uuid %}">{% trans "template.soundboard_read.button.edit_soundboard" %}</a>
 
         </div>
     </div>
