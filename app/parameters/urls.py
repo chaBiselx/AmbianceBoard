@@ -36,6 +36,7 @@ from main.interface.ui.controller.manager.managerCronViews import (
 from main.interface.ui.controller.manager.managerNotificationsViews import listing_notifications, manage_notification
 from main.interface.ui.controller.manager.managerSendEmailViews import manager_send_email
 from main.interface.ui.controller.manager.managerMusicLabelerViews import music_labeler_index, music_labeler_analyze, music_labeler_stream
+from main.interface.ui.controller.manager.managerHomeDemoViews import listing_home_demo_items, select_home_demo_soundboard, manage_home_demo_item
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_playlist_tracks_list, favorite_update, reporting_content, public_favorite, public_specific_track_stream
 from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation, stats_moyenne_duration_session
 from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream, shared_soundboard_refresh
@@ -201,6 +202,11 @@ urlpatterns = [
     path("manager/notifications/<uuid:uuid>/edit/", manage_notification, name="manager_notifications_update"),
 
     path("manager/send-email/", manager_send_email, name="managerSendEmail"),
+
+    path("manager/home-demo/", listing_home_demo_items, name="managerHomeDemoItems"),
+    path("manager/home-demo/create/", select_home_demo_soundboard, name="managerHomeDemoSelectSoundboard"),
+    path("manager/home-demo/create/<uuid:soundboard_uuid>/", manage_home_demo_item, name="managerHomeDemoCreateWithSoundboard"),
+    path("manager/home-demo/<uuid:uuid>/edit/", manage_home_demo_item, name="manager_home_demo_update"),
 
     # Music Labeler IA
     path("manager/music-labeler/", music_labeler_index, name="managerMusicLabeler"),

@@ -3,24 +3,279 @@
 {% load static %}
 {% load FrontJs %}
 
-{% block page_title %}AmbianceBoard - Click here, play anywhere{% endblock %}
+{% block page_title %}AmbianceBoard - Créez l'ambiance de vos parties de JDR{% endblock %}
 
 {% block content %}
-<h2>Soundboard Ambiance Musicale - Click here, play anywhere 🎵</h2>
 
-<section>
-    <h3>Créez l'Ambiance Parfaite avec notre Soundboard Interactif</h3>
+{# ====================================================================== #}
+{#  1. HERO — valeur immédiate (< 5 s) + CTA principal                    #}
+{# ====================================================================== #}
+<section class="home-hero mt-3">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+            <span class="badge rounded-pill text-bg-info mb-3">
+                <i class="fa-solid fa-seedling me-1"></i>Bêta ouverte - construit avec vous
+            </span>
 
+            {% if request.user.is_authenticated %}
+            <h2 class="home-hero__title">Bon retour parmi nous, MJ ! 🎲</h2>
+            <p class="home-hero__subtitle">
+                Vos ambiances vous attendent. Reprenez une partie là où vous l'aviez laissée,
+                ou explorez les nouveautés de la communauté.
+            </p>
+            <div class="d-grid d-sm-flex flex-wrap gap-2 mt-4">
+                <a href="{% url 'soundboardsList' %}" class="btn btn-info btn-lg">
+                    <i class="fa-solid fa-sliders me-2"></i>Mes soundboards
+                </a>
+                <a href="{% url 'publicListingSoundboard' %}" class="btn btn-outline-secondary btn-lg">
+                    <i class="fa-solid fa-compass me-2"></i>Explorer la communauté
+                </a>
+            </div>
+            {% else %}
+            <h2 class="home-hero__title">Donnez vie à vos parties, en superposant les ambiances.</h2>
+            <p class="home-hero__subtitle">
+                Des ambiances musicales immersives pour vos JDR et jeux de société,
+                déclenchées d'un simple clic. Gratuit, sans installation.
+            </p>
+            <div class="d-grid d-sm-flex flex-wrap gap-2 mt-4">
+                <a href="#home-demo" class="btn btn-info btn-lg">
+                    <i class="fa-solid fa-play me-2"></i>Lancer une ambiance de démo
+                </a>
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg">
+                    <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Créer mon soundboard
+                </a>
+            </div>
+            <p class="small text-muted mt-3 mb-0">
+                <i class="fa-solid fa-link me-1"></i>Un joueur avec un lien de partie ?
+                <a href="{% url 'publicListingSoundboard' %}" class="link-secondary">Rejoindre une ambiance →</a>
+            </p>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-6 d-none d-lg-block">
+            <!--
+                IMAGE SOUHAITÉE (illustration hero) :
+                Un visuel large (ratio ~4:3, min 800x600) montrant une table de jeu de rôle
+                conviviale, avec en incrustation l'interface d'un soundboard AmbianceBoard
+                (boutons colorés + mixer de volume). Ambiance chaleureuse, tons chauds.
+                Alternative idéale : une courte vidéo/GIF (10-15 s) montrant un MJ qui clique
+                sur un bouton et l'ambiance qui démarre. À placer dans assets/img/home/hero.webp
+                puis référencer via {% static 'img/home/hero.webp' %} à la place du logo ci-dessous.
+            -->
+            <img class="home-hero__illustration"
+                 src="{% static 'img/logo.png' %}"
+                 alt="Aperçu d'un soundboard AmbianceBoard en pleine partie de jeu de rôle"
+                 loading="eager">
+        </div>
+    </div>
+</section>
+
+{% if not request.user.is_authenticated %}
+{# ====================================================================== #}
+{#  2. DÉMO JOUABLE SANS COMPTE — réduction de la friction                #}
+{# ====================================================================== #}
+<section id="home-demo" class="mb-5">
     <hr>
-    <p>
-        Découvrez une expérience musicale unique avec notre application Soundboard AmbianceBoard !
-        Ici, chaque bouton de notre liste de soundboards déclenche une playlist spécialement conçue, jouée de manière aléatoire. C'est simple, intuitif et parfait pour ajouter une touche sonore et créer une ambiance immersive pour vos parties de jeux de rôle.
-    </p>
-    <div class="mt-3">
+    <div class="text-center mb-4">
+        <h3>Essayez, là, tout de suite 🎧</h3>
+        <p class="text-muted mb-0">
+            Cliquez sur une ambiance : c'est exactement ce que vivront vos joueurs.
+            <strong>Aucun compte requis pour tester.</strong>
+        </p>
+    </div>
+
+    <!--
+        AUDIOS SOUHAITÉS (démo jouable) :
+        4 extraits d'ambiance libres de droits, format .mp3 (~30-60 s, bouclables proprement,
+        volume normalisé), à déposer dans frontend/assets/demo/ :
+          - taverne.mp3  → brouhaha de taverne, luth, feu de cheminée
+          - foret.mp3    → forêt mystique, oiseaux, vent dans les feuilles
+          - combat.mp3   → musique épique de combat, percussions
+          - horreur.mp3  → nappe angoissante, souffles, craquements
+        Ils seront copiés automatiquement vers static/demo/ au build (voir pre-build.js).
+    -->
+    <div class="home-demo__grid mx-auto" style="max-width: 720px;">
+        {% for home_demo_item in home_demo_items %}
+        <a href="{% url 'publicReadSoundboard' home_demo_item.soundboard.uuid %}" type="button" class="home-demo__btn"
+                aria-label="{{ home_demo_item.get_aria_label }}">
+            <span class="home-demo__icon">{{ home_demo_item.icon }}</span>
+            <span class="home-demo__label">{{ home_demo_item.title }}</span>
+            <span class="home-demo__state">{{ home_demo_item.state_text }}</span>
+            <span class="home-demo__equalizer" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        </a>
+        {% empty %}
+        <output class="alert alert-info mb-0 d-block">
+            Aucune ambiance de démonstration n'est encore disponible.
+        </output>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-4 d-grid d-sm-block">
+        <p class="mb-2">Envie de créer le vôtre ? Un compte gratuit suffit - 30 secondes chrono.</p>
+        <a href="{% url 'login' %}" class="btn btn-info">
+            <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Créer mon premier soundboard
+        </a>
+    </div>
+</section>
+{% endif %}
+
+{# ====================================================================== #}
+{#  3. PREUVE SOCIALE / COMMUNAUTÉ                                         #}
+{# ====================================================================== #}
+{% comment %}
+<section class="mb-5">
+    <hr>
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-2">
+        <div>
+            <h3 class="mb-1">Ils créent déjà l'ambiance de leurs parties</h3>
+            <p class="text-muted mb-0">Des soundboards publics imaginés par la communauté rôliste.</p>
+        </div>
+        <a href="{% url 'publicListingSoundboard' %}" class="btn btn-outline-secondary">
+            Explorer tous les soundboards <i class="fa-solid fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+
+    <!--
+        IMAGES SOUHAITÉES (vignettes des soundboards populaires) :
+        Idéalement, remplacer ce bloc statique par une boucle sur les soundboards publics
+        les plus mis en favoris (vue publicListingSoundboard). En attendant, 4 vignettes
+        d'illustration (ratio 16:10, ~480x300) représentant : médiéval, horreur, sci-fi,
+        nature. À déposer dans assets/img/home/community/ si l'on garde des exemples fixes.
+        Les emojis servent de fallback tant qu'aucune image n'est fournie.
+    -->
+    <div class="row g-3">
+        <div class="col-6 col-lg-3">
+            <div class="card home-community__card h-100">
+                <div class="home-community__thumb">🏰</div>
+                <div class="card-body">
+                    <h4 class="h6 mb-1">Taverne du Dragon</h4>
+                    <p class="small text-muted mb-2">Médiéval · Ambiance</p>
+                    <span class="small"><i class="fa-solid fa-star text-warning me-1"></i>128 favoris</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card home-community__card h-100">
+                <div class="home-community__thumb">👻</div>
+                <div class="card-body">
+                    <h4 class="h6 mb-1">Manoir Hanté</h4>
+                    <p class="small text-muted mb-2">Horreur · Effets</p>
+                    <span class="small"><i class="fa-solid fa-star text-warning me-1"></i>94 favoris</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card home-community__card h-100">
+                <div class="home-community__thumb">🚀</div>
+                <div class="card-body">
+                    <h4 class="h6 mb-1">Station Orbitale</h4>
+                    <p class="small text-muted mb-2">Sci-Fi · Ambiance</p>
+                    <span class="small"><i class="fa-solid fa-star text-warning me-1"></i>76 favoris</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card home-community__card h-100">
+                <div class="home-community__thumb">🌲</div>
+                <div class="card-body">
+                    <h4 class="h6 mb-1">Forêt Ancestrale</h4>
+                    <p class="small text-muted mb-2">Nature · Ambiance</p>
+                    <span class="small"><i class="fa-solid fa-star text-warning me-1"></i>61 favoris</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Témoignages — à remplacer par de vrais retours de bêta-testeurs #}
+    <div class="row g-3 mt-1">
+        <div class="col-md-6">
+            <blockquote class="blockquote card h-100 p-3 mb-0">
+                <p class="mb-2">« Mes joueurs ont sursauté quand le loup a hurlé. Exactement l'effet voulu. »</p>
+                <footer class="blockquote-footer">Marc, MJ D&amp;D</footer>
+            </blockquote>
+        </div>
+        <div class="col-md-6">
+            <blockquote class="blockquote card h-100 p-3 mb-0">
+                <p class="mb-2">« Je prépare mes ambiances en 5 minutes avant la partie. Un vrai gain de temps. »</p>
+                <footer class="blockquote-footer">Léa, MJ Appel de Cthulhu</footer>
+            </blockquote>
+        </div>
+    </div>
+</section>
+
+{% endcomment %}
+{# ====================================================================== #}
+{#  4. COMMENT ÇA MARCHE — premier succès rapide                          #}
+{# ====================================================================== #}
+<section class="mb-5">
+    <hr>
+    <div class="text-center mb-4">
+        <h3>Votre première ambiance en moins de 2 minutes</h3>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card home-step p-3 text-center">
+                <div class="mx-auto mb-3"><span class="home-step__number">1</span></div>
+                <h4 class="h5">Créez un soundboard</h4>
+                <p class="text-muted mb-0">Un nom, une couleur, une icône. C'est votre tableau de bord d'ambiances.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card home-step p-3 text-center">
+                <div class="mx-auto mb-3"><span class="home-step__number">2</span></div>
+                <h4 class="h5">Ajoutez vos musiques</h4>
+                <p class="text-muted mb-0">Importez vos fichiers, un lien ou une radio. Chaque bouton devient une ambiance.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card home-step p-3 text-center">
+                <div class="mx-auto mb-3"><span class="home-step__number">3</span></div>
+                <h4 class="h5">Jouez pendant la partie</h4>
+                <p class="text-muted mb-0">Cliquez, partagez le lien à vos joueurs, et laissez la magie opérer.</p>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-4 d-grid d-sm-block">
         <button class="btn btn-info" id="start-onboarding-btn">
             <i class="fa-solid fa-compass me-2"></i>Découvrir la visite guidée
         </button>
     </div>
+</section>
+
+{# ====================================================================== #}
+{#  5. CO-CONSTRUCTION — positionnement bêta positif                      #}
+{# ====================================================================== #}
+<section class="mb-5">
+    <div class="home-beta p-4">
+        <div class="row align-items-center g-3">
+            <div class="col-md-8">
+                <h3 class="h4 mb-2"><i class="fa-solid fa-seedling text-info me-2"></i>On construit AmbianceBoard avec vous</h3>
+                <p class="mb-0 text-muted">
+                    AmbianceBoard est un projet personnel en pleine évolution. Chaque mois, de nouvelles
+                    fonctionnalités arrivent - souvent suggérées par des MJ/joueurs comme vous. Votre avis façonne
+                    directement l'outil.
+                </p>
+            </div>
+            <div class="col-md-4 text-md-end d-grid d-md-block">
+                <a href="{% url 'supportContact' %}" class="btn btn-outline-info">
+                    <i class="fa-solid fa-comment-dots me-2"></i>Proposer une idée
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ====================================================================== #}
+{#  6. CONTENU SEO — conservé, relégué plus bas                           #}
+{# ====================================================================== #}
+<section>
+    <hr>
+    <h2 class="h3">Soundboard Ambiance Musicale - Click here, play anywhere 🎵</h2>
+    <h3>Créez l'Ambiance Parfaite avec notre Soundboard Interactif</h3>
+    <p>
+        Découvrez une expérience musicale unique avec notre application Soundboard AmbianceBoard !
+        Ici, chaque bouton de notre liste de soundboards déclenche une playlist spécialement conçue, jouée de manière aléatoire. C'est simple, intuitif et parfait pour ajouter une touche sonore et créer une ambiance immersive pour vos parties de jeux de rôle.
+    </p>
 </section>
 
 <section>
@@ -49,11 +304,6 @@
 </section>
 
 <section>
-    <hr>
-    <p>
-        Si vous aimez ce que je fais et souhaitez m'encourager, pourquoi ne pas offrir l'équivalent d'un café pour soutenir le site ? Chaque don m'aide à couvrir les frais d'hébergement et à continuer d'améliorer l'expérience utilisateur.<br />
-        👉 Faire un don <a href="{{ link_donation }}" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">ici</a>
-    </p>
     <div class="alert alert-warning mt-3" role="alert">
         <strong>Compatibilité navigateur :</strong> L'application ne fonctionne pas correctement avec les navigateurs utilisant le moteur de rendu WebKit (ex: versions spécifiques de Safari / navigateurs embarqués iOS).<br />
         Pour une expérience optimale, utilisez un navigateur basé sur Chromium (Chrome, Edge, Brave) ou Firefox.
@@ -159,6 +409,31 @@
         <li>📊 <strong>Statistiques avancées</strong> : Accédez aux analytics détaillés de vos soundboards publics (provenance et rétention des utilisateurs)</li>
     </ul>
 
+</section>
+
+{# ====================================================================== #}
+{#  7. CTA FINAL + SOUTIEN                                                 #}
+{# ====================================================================== #}
+<section class="home-final-cta p-4 p-lg-5 text-center my-5">
+    <h3 class="mb-2">Prêt à immerger vos joueurs ?</h3>
+    <p class="text-muted mb-4">Rejoignez les rôlistes qui donnent vie à leurs parties avec AmbianceBoard.</p>
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'soundboardsNew' %}" class="btn btn-info btn-lg">
+        <i class="fa-solid fa-plus me-2"></i>Créer un nouveau soundboard
+    </a>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-info btn-lg">
+        <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Créer un compte gratuit
+    </a>
+    {% endif %}
+</section>
+
+<section>
+    <hr>
+    <p>
+        Si vous aimez ce que je fais et souhaitez m'encourager, pourquoi ne pas offrir l'équivalent d'un café pour soutenir le site ? Chaque don m'aide à couvrir les frais d'hébergement et à continuer d'améliorer l'expérience utilisateur.<br />
+        👉 Faire un don <a href="{{ link_donation }}" class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">ici</a>
+    </p>
 </section>
 
 {% endblock %}

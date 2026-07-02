@@ -21,6 +21,7 @@ from main.architecture.persistence.repository.UserNotificationDismissalRepositor
 from main.architecture.persistence.repository.GeneralNotificationRepository import GeneralNotificationRepository
 from main.architecture.persistence.repository.UserTiersRepository import UserTiersRepository
 from main.architecture.persistence.repository.UserRepository import UserRepository
+from main.architecture.persistence.repository.HomeDemoItemRepository import HomeDemoItemRepository
 
 from django_ratelimit.decorators import ratelimit
 from main.domain.general.service.ResetPasswordService import ResetPasswordService
@@ -54,7 +55,12 @@ def home(request: HttpRequest) -> HttpResponse:
     Returns:
         HttpResponse: Page d'accueil rendue
     """
-    return render(request, "Html/General/home.html", {"title": "Accueil", "link_donation" : Settings.get("LINK_DONATION")})
+    home_demo_items = HomeDemoItemRepository().get_active_random_items(limit=4)
+    return render(request, "Html/General/home.html", {
+        "title": "Accueil",
+        "link_donation": Settings.get("LINK_DONATION"),
+        "home_demo_items": home_demo_items,
+    })
 
 
 @require_http_methods(['GET'])

@@ -281,6 +281,7 @@ Nouveautés
 
 Améliorations
 - Modification des icones dans la barre de navigation
+- Modification de la page d'accueil
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
