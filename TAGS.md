@@ -279,6 +279,9 @@ Sécurité
 Nouveautés
 - Ajout d'une page de contact
 
+Améliorations
+- Modification des icones dans la barre de navigation
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
