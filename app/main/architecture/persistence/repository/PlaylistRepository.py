@@ -7,6 +7,7 @@ from django.db.models import QuerySet
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.repository.filters.PlaylistFilter import PlaylistFilter
@@ -99,3 +100,17 @@ class PlaylistRepository:
         return self.get_copiable_playlists_excluding_user(user, filter).exclude(
             uuid__in=source_playlist_uuids_already_duplicated
         )
+
+    def get_user_playlists_not_in_soundboard(self, user: User, soundboard: SoundBoard, filter: dict) -> List[Playlist]:
+        """Récupère les playlists de l'utilisateur non encore intégrées dans le soundboard cible."""
+        playlists_in_soundboard = SoundboardPlaylist.objects.filter(
+            SoundBoard=soundboard
+        ).values_list('Playlist_id', flat=True)
+
+        query_set = Playlist.objects.filter(
+            user=user,
+            tracks__isnull=False,
+        ).exclude(id__in=playlists_in_soundboard).distinct()
+        if 'typePlaylist' in filter:
+            query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
+        return query_set.order_by('name')

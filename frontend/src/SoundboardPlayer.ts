@@ -118,6 +118,7 @@ class SoundboardEditMode {
                     callback: () => {
                         this.bindCreateForm();
                         this.loadPlaylistList();
+                        this.loadMyPlaylistList();
                     }
                 });
             })
@@ -248,14 +249,14 @@ class SoundboardEditMode {
             .then(html => {
                 container.innerHTML = html;
                 this.bindDuplicateButtons();
-                this.bindPaginationInContainer(container);
+                this.bindPaginationInContainer(container, (page) => this.loadPlaylistList(page));
             })
             .catch(() => {
                 Notification.createClientNotification({ message: 'Impossible de charger la liste', type: 'error' });
             });
     }
 
-    private bindPaginationInContainer(container: HTMLElement): void {
+    private bindPaginationInContainer(container: HTMLElement, onPageChange: (page: number) => void): void {
         const paginationButtons = container.querySelectorAll('#pagination .page-item');
         for (const pageItem of paginationButtons) {
             if (pageItem.classList.contains('disabled')) continue;
@@ -265,10 +266,94 @@ class SoundboardEditMode {
                 const target = event.target as HTMLElement;
                 const page = target.dataset.page;
                 if (page) {
-                    this.loadPlaylistList(Number.parseInt(page, 10));
+                    onPageChange(Number.parseInt(page, 10));
                 }
             });
         }
+    }
+
+    private loadMyPlaylistList(page = 1): void {
+        const container = document.getElementById('soundboard-edit-my-playlist-list-container');
+        if (!container) return;
+
+        const url = container.dataset.urlList;
+        if (!url) return;
+
+        const fetchUrl = new URL(url, globalThis.location.origin);
+        fetchUrl.searchParams.set(PaginationManager.getParameterName(), page.toString());
+
+        fetch(fetchUrl.toString(), {
+            method: 'GET',
+            headers: { 'X-CSRFToken': Csrf.getToken()! },
+        })
+            .then(response => response.text())
+            .then(html => {
+                container.innerHTML = html;
+                this.bindAddMyPlaylistButtons();
+                this.bindPaginationInContainer(container, (p) => this.loadMyPlaylistList(p));
+            })
+            .catch(() => {
+                Notification.createClientNotification({ message: 'Impossible de charger mes playlists', type: 'error' });
+            });
+    }
+
+    private bindAddMyPlaylistButtons(): void {
+        const buttons = document.querySelectorAll('.btn-edit-mode-add-my-playlist');
+        for (const button of buttons) {
+            if (!(button instanceof HTMLButtonElement)) continue;
+            button.addEventListener('click', () => {
+                this.addMyPlaylist(button);
+            });
+        }
+    }
+
+    private addMyPlaylist(button: HTMLButtonElement): void {
+        const url = button.dataset.urlAdd;
+        if (!url) return;
+
+        button.disabled = true;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': Csrf.getToken()!,
+            },
+        })
+            .then(async response => {
+                const data = await response.json();
+                return { response, data };
+            })
+            .then(({ response, data }) => {
+                if (response.ok && data.success) {
+                    Notification.createClientNotification({
+                        message: data.message || 'Playlist ajoutée',
+                        type: 'success'
+                    });
+
+                    const playlistHtml = data.playlist_html as string | undefined;
+                    if (playlistHtml) {
+                        this.insertPlaylistToBoard(playlistHtml);
+                    }
+
+                    const bsModal = ModalCustom.getInstance();
+                    if (bsModal) {
+                        bsModal.hide();
+                    }
+                    return;
+                }
+
+                Notification.createClientNotification({
+                    message: data.error || 'Une erreur est survenue',
+                    type: 'error'
+                });
+                button.disabled = false;
+            })
+            .catch(() => {
+                Notification.createClientNotification({
+                    message: 'Erreur de communication avec le serveur',
+                    type: 'error'
+                });
+                button.disabled = false;
+            });
     }
 
     private duplicatePlaylist(button: HTMLButtonElement): void {

@@ -21,6 +21,8 @@ from main.interface.ui.controller.private.showSoundboardViews import (
     soundboard_edit_mode_playlist_list,
     soundboard_edit_mode_duplicate_playlist,
     soundboard_edit_mode_create_playlist,
+    soundboard_edit_mode_my_playlist_list,
+    soundboard_edit_mode_add_my_playlist,
 )
 from main.interface.ui.controller.private.playlistFormViews import (
     playlist_read_all, playlist_create,  playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
@@ -87,6 +89,8 @@ urlpatterns = [
     path("soundBoards/<uuid:soundboard_uuid>/edit-mode/playlist-list", soundboard_edit_mode_playlist_list, name="soundboardEditModePlaylistList"),
     path("soundBoards/<uuid:soundboard_uuid>/edit-mode/create", soundboard_edit_mode_create_playlist, name="soundboardEditModeCreatePlaylist"),
     path("soundBoards/<uuid:soundboard_uuid>/edit-mode/duplicate/<uuid:playlist_uuid>", soundboard_edit_mode_duplicate_playlist, name="soundboardEditModeDuplicatePlaylist"),
+    path("soundBoards/<uuid:soundboard_uuid>/edit-mode/my-playlist-list", soundboard_edit_mode_my_playlist_list, name="soundboardEditModeMyPlaylistList"),
+    path("soundBoards/<uuid:soundboard_uuid>/edit-mode/add-my-playlist/<uuid:playlist_uuid>", soundboard_edit_mode_add_my_playlist, name="soundboardEditModeAddMyPlaylist"),
     path("soundBoards/<uuid:soundboard_uuid>/update", soundboard_update, name="soundboardsUpdate"),
     path("soundBoards/<uuid:soundboard_uuid>/delete", soundboard_delete, name="soundboardsDelete"),
     path("soundBoards/<uuid:soundboard_uuid>/organize", soundboard_organize, name="organizeSoundboard"),

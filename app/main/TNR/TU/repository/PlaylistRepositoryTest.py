@@ -3,6 +3,7 @@ from django.test import TestCase, tag
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
@@ -54,6 +55,9 @@ class PlaylistRepositoryTest(TestCase):
             moderator_ban_copie=False,
         )
 
+        Track.objects.create(playlist=self.playlist_music, alternativeName='Track music')
+        Track.objects.create(playlist=self.playlist_ambient, alternativeName='Track ambient')
+
     def test_get_copiable_playlists_excluding_user_filters_non_copiable_banned_and_user_owned(self):
         result = self.repository.get_copiable_playlists_excluding_user(self.target_user, {})
         result_ids = {playlist.id for playlist in result}
@@ -96,3 +100,54 @@ class PlaylistRepositoryTest(TestCase):
 
         self.assertNotIn(self.playlist_music.id, result_ids)
         self.assertIn(self.playlist_ambient.id, result_ids)
+
+    def test_get_user_playlists_not_in_soundboard_returns_only_user_playlists(self):
+        result = self.repository.get_user_playlists_not_in_soundboard(self.owner, self.soundboard, {})
+        result_ids = {p.id for p in result}
+
+        self.assertIn(self.playlist_music.id, result_ids)
+        self.assertIn(self.playlist_ambient.id, result_ids)
+        self.assertNotIn(self.playlist_not_copiable.id, result_ids)
+        self.assertNotIn(self.playlist_banned.id, result_ids)
+        self.assertNotIn(self.playlist_owned_by_target.id, result_ids)
+
+    def test_get_user_playlists_not_in_soundboard_excludes_already_integrated(self):
+        from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+        SoundboardPlaylist.objects.create(SoundBoard=self.soundboard, Playlist=self.playlist_music, order=1)
+
+        result = self.repository.get_user_playlists_not_in_soundboard(self.owner, self.soundboard, {})
+        result_ids = {p.id for p in result}
+
+        self.assertNotIn(self.playlist_music.id, result_ids)
+        self.assertIn(self.playlist_ambient.id, result_ids)
+
+    def test_get_user_playlists_not_in_soundboard_applies_type_filter(self):
+        result = self.repository.get_user_playlists_not_in_soundboard(
+            self.owner,
+            self.soundboard,
+            {'typePlaylist': PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.name},
+        )
+
+        self.assertEqual(result.count(), 1)
+        self.assertEqual(result.first().id, self.playlist_ambient.id)
+
+    def test_get_user_playlists_not_in_soundboard_returns_empty_when_all_integrated(self):
+        from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+        for i, playlist in enumerate([
+            self.playlist_music,
+            self.playlist_ambient,
+        ]):
+            SoundboardPlaylist.objects.create(SoundBoard=self.soundboard, Playlist=playlist, order=i)
+
+        result = self.repository.get_user_playlists_not_in_soundboard(self.owner, self.soundboard, {})
+
+        self.assertEqual(result.count(), 0)
+
+    def test_get_user_playlists_not_in_soundboard_excludes_empty_playlists(self):
+        result = self.repository.get_user_playlists_not_in_soundboard(self.owner, self.soundboard, {})
+        result_ids = {p.id for p in result}
+
+        self.assertIn(self.playlist_music.id, result_ids)
+        self.assertIn(self.playlist_ambient.id, result_ids)
+        self.assertNotIn(self.playlist_not_copiable.id, result_ids)
+        self.assertNotIn(self.playlist_banned.id, result_ids)

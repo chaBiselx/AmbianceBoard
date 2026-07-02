@@ -347,3 +347,85 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
         logger.error(f"Erreur création mode édition pour soundboard {soundboard_uuid}: {e}")
         return JsonResponse({'error': "Une erreur inattendue est survenue"}, status=500)
 
+
+@login_required
+@require_http_methods(['GET'])
+def soundboard_edit_mode_my_playlist_list(request, soundboard_uuid):
+    """Retourne la liste paginée des playlists de l'utilisateur non encore intégrées dans le soundboard."""
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
+    if not soundboard:
+        return HttpResponse(status=404)
+
+    playlist_type_filter = request.GET.get('playlistType', None)
+    filter_search = {}
+    if playlist_type_filter:
+        try:
+            type_playlist = PlaylistTypeEnum.searchEnumByValue(playlist_type_filter)
+            filter_search['typePlaylist'] = type_playlist._name_
+        except ValueError:
+            playlist_type_filter = None
+
+    playlists = PlaylistRepository().get_user_playlists_not_in_soundboard(request.user, soundboard, filter_search)
+    try:
+        page_number = int(request.GET.get('page', 1))
+    except (ValueError, TypeError):
+        page_number = 1
+
+    paginator = Paginator(playlists, 10)
+    context = extract_context_to_paginator(paginator, page_number)
+
+    return render(request, 'Html/Soundboard/modal/soundboard_edit_mode_my_playlist_list.html', {
+        'soundboard': soundboard,
+        'page_objects': context['page_objects'],
+        'paginator': context['paginator'],
+    })
+
+
+@login_required
+@require_http_methods(['POST'])
+def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid) -> JsonResponse:
+    """Ajoute une playlist existante de l'utilisateur dans le soundboard cible."""
+    soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
+    if not soundboard:
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+
+    playlist = PlaylistRepository().get(playlist_uuid)
+    if not playlist:
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+
+    if playlist.user != request.user:
+        return JsonResponse({'error': "Vous n'êtes pas propriétaire de cette playlist"}, status=403)
+
+    existing = SoundboardPlaylistRepository().get(soundboard, playlist)
+    if existing:
+        return JsonResponse({'error': "Cette playlist est déjà présente dans ce soundboard"}, status=409)
+
+    try:
+        SoundboardPlaylistService(soundboard).add_default(playlist)
+
+        device_type = detect_device_type(request)
+        user_pref = UserPreferenceRepository().get_user_preferences(request.user)
+        playlist_dim = 100
+        if user_pref:
+            device_pref = UserDevicePreferenceRepository().get_user_preferences(user_pref, device_type)
+            if device_pref:
+                playlist_dim = device_pref.get_effective_playlist_dim()
+
+        playlist_html = render_to_string('Html/partial/soundboard/playlist_item.html', {
+            'playlist': playlist,
+            'soundboard': soundboard,
+            'master': True,
+            'owner': True,
+            'playlist_dim': playlist_dim,
+        })
+
+        return JsonResponse({
+            'success': True,
+            'message': "Playlist ajoutée au soundboard",
+            'playlist_uuid': str(playlist.uuid),
+            'playlist_html': playlist_html,
+        }, status=200)
+    except Exception as e:
+        logger.error(f"Erreur ajout playlist mode édition pour soundboard {soundboard_uuid}: {e}")
+        return JsonResponse({'error': "Une erreur inattendue est survenue"}, status=500)
+

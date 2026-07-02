@@ -1,38 +1,75 @@
 {% load Playlist %}
 {% load PlaylistEnum %}
 
-<div class="mb-3">
-    <h6 class="mb-2">Créer une nouvelle playlist</h6>
-    <form id="soundboard-edit-mode-create-form" data-url-create="{% url 'soundboardEditModeCreatePlaylist' soundboard.uuid %}">
-        {% csrf_token %}
-        <div class="row g-2 align-items-end">
-            <div class="col-12 col-md-6">
-                <label class="form-label" for="soundboard-edit-create-name">Nom</label>
-                <input id="soundboard-edit-create-name" name="name" type="text" class="form-control" maxlength="255" required placeholder="Nom du bouton" />
-            </div>
-            <div class="col-12 col-md-4">
-                <label class="form-label" for="soundboard-edit-create-type">Type</label>
-                <select id="soundboard-edit-create-type" name="typePlaylist" class="form-select" required>
-                    {% for typeKey, typeValue in playlistType.items %}
-                    <option value="{{ typeKey }}">{{ typeValue }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-12 col-md-2">
-                <button type="submit" class="btn btn-primary btn-block" id="soundboard-edit-mode-create-submit">Créer</button>
+<div class="accordion" id="soundboard-edit-mode-accordion">
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="soundboard-edit-heading-create">
+            <button class="accordion-button py-2" type="button" data-bs-toggle="collapse" data-bs-target="#soundboard-edit-collapse-create" aria-expanded="true" aria-controls="soundboard-edit-collapse-create">
+                <i class="fa-solid fa-plus"></i>&nbsp;  Créer une nouvelle playlist
+            </button>
+        </h2>
+        <div id="soundboard-edit-collapse-create" class="accordion-collapse collapse show" aria-labelledby="soundboard-edit-heading-create" data-bs-parent="#soundboard-edit-mode-accordion">
+            <div class="accordion-body">
+                <form id="soundboard-edit-mode-create-form" data-url-create="{% url 'soundboardEditModeCreatePlaylist' soundboard.uuid %}">
+                    {% csrf_token %}
+                    <div class="row g-2 align-items-end">
+                        <div class="col-12 col-md-6">
+                            <label class="form-label" for="soundboard-edit-create-name">Nom</label>
+                            <input id="soundboard-edit-create-name" name="name" type="text" class="form-control" maxlength="255" required placeholder="Nom du bouton" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label class="form-label" for="soundboard-edit-create-type">Type</label>
+                            <select id="soundboard-edit-create-type" name="typePlaylist" class="form-select" required>
+                                {% for typeKey, typeValue in playlistType.items %}
+                                <option value="{{ typeKey }}">{{ typeValue }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <button type="submit" class="btn btn-primary btn-block" id="soundboard-edit-mode-create-submit">Créer</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </form>
-</div>
+    </div>
 
-<hr>
-<div>
-    <h6 class="mb-2">Prendre une playlist existante</h6>
-    <div id="soundboard-edit-playlist-list-container" data-url-list="{% url 'soundboardEditModePlaylistList' soundboard.uuid %}">
-        <div class="d-flex justify-content-center mt-3">
-            <output class="spinner-border spinner-border-sm">
-                <span class="visually-hidden">Chargement…</span>
-            </output>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="soundboard-edit-heading-mine">
+            <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#soundboard-edit-collapse-mine" aria-expanded="false" aria-controls="soundboard-edit-collapse-mine">
+                <i class="fa-solid fa-lock"></i>&nbsp; Ajouter une de mes playlists
+            </button>
+        </h2>
+        <div id="soundboard-edit-collapse-mine" class="accordion-collapse collapse" aria-labelledby="soundboard-edit-heading-mine" data-bs-parent="#soundboard-edit-mode-accordion">
+            <div class="accordion-body">
+                <div id="soundboard-edit-my-playlist-list-container" data-url-list="{% url 'soundboardEditModeMyPlaylistList' soundboard.uuid %}">
+                    <div class="d-flex justify-content-center mt-3">
+                        <output class="spinner-border spinner-border-sm">
+                            <span class="visually-hidden">Chargement…</span>
+                        </output>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="soundboard-edit-heading-existing">
+            <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#soundboard-edit-collapse-existing" aria-expanded="false" aria-controls="soundboard-edit-collapse-existing">
+                <i class="fa-solid fa-earth-europe"></i>&nbsp; Prendre une playlist de la communauté
+            </button>
+        </h2>
+        <div id="soundboard-edit-collapse-existing" class="accordion-collapse collapse" aria-labelledby="soundboard-edit-heading-existing" data-bs-parent="#soundboard-edit-mode-accordion">
+            <div class="accordion-body">
+                <div id="soundboard-edit-playlist-list-container" data-url-list="{% url 'soundboardEditModePlaylistList' soundboard.uuid %}">
+                    <div class="d-flex justify-content-center mt-3">
+                        <output class="spinner-border spinner-border-sm">
+                            <span class="visually-hidden">Chargement…</span>
+                        </output>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
