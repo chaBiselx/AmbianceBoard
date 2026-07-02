@@ -33,6 +33,9 @@ from main.domain.common.utils.logger import logger
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
+from main.interface.ui.forms.general.SupportContactForm import SupportContactForm
+from main.domain.general.dto.SupportContactDto import SupportContactDto
+from main.domain.general.service.SupportContactService import SupportContactService
 
 
 
@@ -73,6 +76,51 @@ def legal_notice(request: HttpRequest) -> HttpResponse:
                    "legal_hebergeur_name": Settings.get('LEGAL_HEBERGEUR_NAME'), 
                    "legal_hebergeur_adress": Settings.get('LEGAL_HEBERGEUR_ADRESS'), 
                    "legal_hebergeur_contact": Settings.get('LEGAL_HEBERGEUR_CONTACT')})
+
+
+@require_http_methods(['GET', 'POST'])
+@ratelimit(key='ip', rate='5/10m', method='POST', block=True)
+def support_contact(request: HttpRequest) -> HttpResponse:
+    """
+    Page publique de contact support.
+
+    Permet d'envoyer un message à support@ambianceboard.com.
+    """
+    initial_data = {}
+    if request.user.is_authenticated:
+        initial_data = {
+            'name': request.user.username,
+            'email': request.user.email,
+        }
+
+    if request.method == 'POST':
+        form = SupportContactForm(request.POST)
+        if form.is_valid():
+            cleaned = form.cleaned_data
+            payload = SupportContactDto(
+                email=cleaned['email'],
+                subject=cleaned['subject'],
+                message=cleaned['message'],
+            )
+
+            try:
+                SupportContactService().send(payload)
+                ServerNotificationBuilder(request).set_message(
+                    "Votre message a bien ete envoye au support."
+                ).set_statut("success").send()
+                return redirect('supportContact')
+            except Exception as e:
+                logger.error(f"support contact error : {e}")
+                ServerNotificationBuilder(request).set_message(
+                    "Impossible d'envoyer votre message pour le moment. Merci de reessayer plus tard."
+                ).set_statut("error").send()
+    else:
+        form = SupportContactForm(initial=initial_data)
+
+    return render(request, 'Html/General/support_contact.html', {
+        'title': 'Contacter le support',
+        'form': form,
+    })
 
 @require_http_methods(['GET', 'POST'])
 def create_account(request: HttpRequest) -> HttpResponse:

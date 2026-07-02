@@ -276,6 +276,9 @@ Améliorations
 Sécurité
 - Mise a jours des dépendances
 
+Nouveautés
+- Ajout d'une page de contact
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

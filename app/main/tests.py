@@ -77,6 +77,7 @@ from main.TNR.TI.utils.logger.CompositeLoggerIntegrationTestCase import *
 from main.TNR.TI.routing.HomeRouteTest import *
 from main.TNR.TI.routing.PricingRouteTest import *
 from main.TNR.TI.routing.LegalNoticeRouteTest import *
+from main.TNR.TI.routing.SupportContactRouteTest import *
 from main.TNR.TI.routing.RobotsTxtRouteTest import *
 from main.TNR.TI.routing.SitemapXmlRouteTest import *
 
