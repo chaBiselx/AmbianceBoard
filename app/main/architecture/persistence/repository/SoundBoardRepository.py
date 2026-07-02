@@ -37,7 +37,7 @@ class SoundBoardRepository:
 
     def get_search_public_queryset(self, selected_tag: Optional[str] = None) -> QuerySet[SoundBoard]:
         queryset = SoundBoard.objects.filter(is_public=True, user__isBan=False)
-        queryset = queryset.annotate(button_count=Count('playlists', distinct=True)).filter(button_count__gt=0)
+        queryset = queryset.annotate(track_count=Count('playlists__tracks', distinct=True)).filter(track_count__gt=0)
         if selected_tag:
             queryset = queryset.filter(tags__name=selected_tag)
         return queryset.order_by('uuid')

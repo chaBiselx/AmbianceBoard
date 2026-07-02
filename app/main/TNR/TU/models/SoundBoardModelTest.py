@@ -190,6 +190,20 @@ class SoundBoardModelTest(TestCase):
         with self.assertRaises(SoundBoard.DoesNotExist):
             SoundBoard.objects.get(uuid=soundboard.uuid)
 
+    @patch('main.architecture.persistence.repository.SoundboardPlaylistRepository.SoundboardPlaylistRepository.get_playlist_formated')
+    def test_get_list_playlist_ordered_forward_public_flag_to_repository(self, mock_get_playlist_formated):
+        """Test que get_list_playlist_ordered transmet bien le flag public au repository."""
+        soundboard = SoundBoard.objects.create(
+            user=self.user,
+            name="Delegation SoundBoard"
+        )
+        mock_get_playlist_formated.return_value = []
+
+        result = soundboard.get_list_playlist_ordered(public=True)
+
+        self.assertEqual(result, [])
+        mock_get_playlist_formated.assert_called_once_with(soundboard, public=True)
+
     def tearDown(self):
         """Nettoyage après les tests"""
         # Supprimer les fichiers créés pendant les tests

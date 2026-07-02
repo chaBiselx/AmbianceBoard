@@ -1,6 +1,7 @@
 {% load Playlist %}
 {% load static %}
 {% load FrontJs %}
+{% load SoundBoard %}
 
 
 {% block javascript %}
@@ -13,7 +14,7 @@
 <div class="responsive-sections-container {% if master == False %} d-none {% endif %}" {% if master == True and owner == True %}data-soundboard-tracks-uri="{% url 'soundboardTracksList' soundboard.uuid %}" data-soundboard-editable="true" {% endif %}
     {% if master == True and owner == False %}data-soundboard-tracks-uri="{% url 'publicSoundboardTracksList' soundboard.uuid %}" {% endif %}
     data-shepherd="soundboard-tracks">
-    {% for section, list_playlist in soundboard.get_list_playlist_ordered %}
+    {% for section, list_playlist in soundboard|get_ordered_playlists:owner %}
     <section class="section-{{ section }} border rounded {% if owner == False %}border-success{%else%}border-primary{% endif %}">
         <div class="section-content">
             <div class="flex-container" {% if master == False %} id="template-shared-volume" data-shared-volume-soundboard-id="{{ soundboard.uuid }}" {% endif %}>

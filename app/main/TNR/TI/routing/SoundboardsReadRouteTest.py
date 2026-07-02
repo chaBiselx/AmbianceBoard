@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 import uuid
 
 User = get_user_model()
@@ -43,7 +44,8 @@ class SoundboardsReadRouteTest(TestCase):
         # Créer une playlist et l'associer au soundboard
         self.playlist = Playlist.objects.create(
             name="Test Playlist",
-            user=self.user
+            user=self.user,
+            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
         )
         
         SoundboardPlaylist.objects.create(
@@ -120,11 +122,13 @@ class SoundboardsReadRouteTest(TestCase):
         # Créer plusieurs playlists
         playlist2 = Playlist.objects.create(
             name="Test Playlist 2",
-            user=self.user
+            user=self.user,
+            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
         )
         playlist3 = Playlist.objects.create(
             name="Test Playlist 3",
-            user=self.user
+            user=self.user,
+            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
         )
         
         SoundboardPlaylist.objects.create(

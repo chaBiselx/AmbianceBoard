@@ -113,7 +113,7 @@ class SoundBoard(models.Model):
             self._icon_changed = self.icon != self._icon_original
         super().clean()
         
-    def get_list_playlist_ordered(self) -> "dict[int, List[Playlist]]":
+    def get_list_playlist_ordered(self, public: bool = False) -> "dict[int, List[Playlist]]":
         """
         Retourne la liste des playlists du soundboard ordonnées.
         
@@ -123,7 +123,7 @@ class SoundBoard(models.Model):
         """
         # Import local pour éviter l'importation circulaire
         from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
-        return SoundboardPlaylistRepository().get_playlist_formated(self)
+        return SoundboardPlaylistRepository().get_playlist_formated(self, public=public)
     
     def get_list_playlist_playable_ordered(self) -> "dict[int, List[Playlist]]":
         """

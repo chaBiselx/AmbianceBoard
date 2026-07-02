@@ -189,11 +189,12 @@ class RedisCacheSystemTest(unittest.TestCase):
         """Test fermeture de la connexion Redis"""
         # Créer une instance avec un mock de client
         cache = RedisCacheSystem()
-        cache._redis_client = MagicMock()
+        redis_client = MagicMock()
+        cache._redis_client = redis_client
         
         cache.close()
         
-        cache._redis_client.close.assert_called_once()
+        redis_client.close.assert_called_once()
         self.assertIsNone(cache._redis_client)
 
     def test_close_without_connection(self):

@@ -17,11 +17,13 @@ from main.TNR.TU.utils.ImageResizerTest import *
 from main.TNR.TU.utils.ExtractPaginatorTest import *
 from main.TNR.TU.utils.EmailSenderTest import *
 from main.TNR.TU.utils.SettingsTest import *
+from main.TNR.TU.utils.SoundBoardTemplateTagTest import *
 
 from main.TNR.TU.utils.logger.LoggerFactoryTest import *
 from main.TNR.TU.utils.logger.LokiLoggerTest import *
 from main.TNR.TU.utils.logger.CompositeLoggerTest import *
 from main.TNR.TU.utils.cache.CacheSystemTest import *
+from main.TNR.TU.utils.cache.RedisCacheSystemTest import *
 
 
 from main.TNR.TU.Service.FailedLoginAttemptServiceTest import *
@@ -32,8 +34,11 @@ from main.TNR.TU.Service.RGPDServiceNotConfirmedTest import *
 from main.TNR.TU.Service.ConfirmationUserServiceTest import *
 from main.TNR.TU.Service.ReportContentServiceTest import *
 from main.TNR.TU.Service.PlaylistDuplicationServiceTest import *
+from main.TNR.TU.Service.PlaylistDataServiceTest import *
+from main.TNR.TU.Service.SoundboardPlaylistServiceTest import *
 
 from main.TNR.TU.UserParametersFactoryTest import *
+from main.TNR.TU.UserTierManagerTest import *
 
 #Config
 from main.TNR.TU.config.PlaylistConfigTest import *
@@ -44,7 +49,14 @@ from main.TNR.TU.middleware.ErrorTrackingMiddlewareTest import *
 from main.TNR.TU.middleware.DailySessionMiddlewareTest import *
 
 #Repository
+from main.TNR.TU.repository.MusicRepositoryTest import *
+from main.TNR.TU.repository.PlaylistDuplicationHistoryRepositoryTest import *
+from main.TNR.TU.repository.PlaylistRepositoryTest import *
+from main.TNR.TU.repository.SoundBoardRepositoryTest import *
 from main.TNR.TU.repository.TrackRepositoryTest import *
+from main.TNR.TU.repository.SoundboardPlaylistRepositoryTest import * 
+from main.TNR.TU.repository.SoundboardPlaylistRepositoryTest import * 
+#form 
 from main.TNR.TU.forms.manager.ManagerEmailValidationUtilsTest import *
 
 # Cron services tests (P0)
@@ -95,6 +107,8 @@ from main.TNR.TI.routing.TraceFrontRouteTest import *
 # Routes Soundboards
 from main.TNR.TI.routing.SoundboardsListRouteTest import *
 from main.TNR.TI.routing.SoundboardsNewRouteTest import *
+from main.TNR.TI.routing.SoundboardsReadRouteTest import *
+from main.TNR.TI.routing.OrganizeSoundboardUpdateRouteTest import *
 
 # Routes Settings
 from main.TNR.TI.routing.SettingsIndexRouteTest import *
