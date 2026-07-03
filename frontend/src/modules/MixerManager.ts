@@ -3,6 +3,7 @@ import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { MusicElementFactory } from '@/modules/MusicElementFactory';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
 import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
+import { MixerPlaylist } from "@/modules/MixerPlaylist";
 
 type mixer = {
     id: string,
@@ -93,6 +94,25 @@ class MixerManager {
         let input = document.getElementById(`mixer-${type}`) as HTMLInputElement;
         if (input) return Number.parseFloat(input.value);
         return 1;
+    }
+
+    static updatePlaylistVolumeWidths(): void {
+        const formElements = document.getElementsByClassName('playlist-link') as HTMLCollectionOf<HTMLAudioElement>;
+        for (const element of formElements) {
+            const elementDest = document.getElementById(`range_volume_${element.dataset.playlistId!}`);
+            if (elementDest) {
+                elementDest.style.width = `${element.offsetWidth}px`;
+            }
+        }
+    }
+
+    /**
+     * Initializes the mixer playlist and attaches necessary event listeners.
+     * @returns {void}
+     */
+    static setUpMixerPlaylist() {
+        const mixerPlaylist = new MixerPlaylist();
+        mixerPlaylist.addEventListener();
     }
 }
 
