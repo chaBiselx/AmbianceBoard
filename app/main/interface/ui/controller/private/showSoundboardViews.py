@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
 from django.views.decorators.http import require_http_methods
-from django.template.loader import render_to_string
 from main.domain.common.service.MusicService import MusicService
 from main.domain.common.service.RandomizeTrackService import RandomizeTrackService
 from main.domain.common.service.PlaylistService import PlaylistService
@@ -17,8 +16,8 @@ from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.domain.common.service.SoundboardPlaylistService import SoundboardPlaylistService
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
+from main.domain.common.service.SoundboardPlaylistRenderService import SoundboardPlaylistRenderService
 from main.architecture.persistence.models.Playlist import Playlist
-from main.architecture.persistence.repository.UserPreferenceRepository import UserPreferenceRepository
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
@@ -33,16 +32,12 @@ from main.domain.common.exceptions.PlaylistDuplicationException import (
     PlaylistAlreadyDuplicatedException,
     PlaylistNotCopiableException
 )
-from main.architecture.persistence.repository.UserDevicePreferenceRepository import UserDevicePreferenceRepository
-from main.domain.common.utils.DeviceDetector import detect_device_type
 
 
 from django.core.paginator import Paginator
 from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 from main.domain.common.utils.logger import logger
 from django.urls import reverse
-
-PLAYLIST_ITEM_TEMPLATE = 'Html/partial/soundboard/playlist_item.html'
 
 
 @login_required
@@ -241,6 +236,7 @@ def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_u
         return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.value}, status=409)
 
     try:
+        render_service = SoundboardPlaylistRenderService(request)
         duplication_service = PlaylistDuplicationService(
             source_playlist=playlist,
             target_user=request.user
@@ -249,24 +245,7 @@ def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_u
 
         SoundboardPlaylistService(soundboard).add_default(duplicated_playlist)
 
-        # Get playlist_dim from user device preferences
-        device_type = detect_device_type(request)
-        user_pref = UserPreferenceRepository().get_user_preferences(request.user)
-        device_pref = None
-        playlist_dim = 100  # default
-        if user_pref:
-            device_pref = UserDevicePreferenceRepository().get_user_preferences(user_pref, device_type)
-            if device_pref:
-                playlist_dim = device_pref.get_effective_playlist_dim()
-
-        # Render the duplicated playlist as HTML for DOM insertion
-        playlist_html = render_to_string('Html/partial/soundboard/playlist_item.html', {
-            'playlist': duplicated_playlist,
-            'soundboard': soundboard,
-            'master': True,
-            'owner': True,
-            'playlist_dim': playlist_dim,
-        })
+        playlist_html = render_service.render_playlist_item(duplicated_playlist, soundboard)
 
         response_payload = {
             'success': True,
@@ -310,6 +289,7 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
         }, status=403)
 
     try:
+        render_service = SoundboardPlaylistRenderService(request)
         playlist = Playlist(
             user=request.user,
             name=playlist_name,
@@ -318,24 +298,7 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
         playlist.save()
         SoundboardPlaylistService(soundboard).add_default(playlist)
 
-        # Get playlist_dim from user device preferences
-        device_type = detect_device_type(request)
-        user_pref = UserPreferenceRepository().get_user_preferences(request.user)
-        device_pref = None
-        playlist_dim = 100  # default
-        if user_pref:
-            device_pref = UserDevicePreferenceRepository().get_user_preferences(user_pref, device_type)
-            if device_pref:
-                playlist_dim = device_pref.get_effective_playlist_dim()
-
-        # Render the created playlist as HTML for DOM insertion
-        playlist_html = render_to_string('Html/partial/soundboard/playlist_item.html', {
-            'playlist': playlist,
-            'soundboard': soundboard,
-            'master': True,
-            'owner': True,
-            'playlist_dim': playlist_dim,
-        })
+        playlist_html = render_service.render_playlist_item(playlist, soundboard)
 
         return JsonResponse({
             'success': True,
@@ -403,23 +366,10 @@ def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid
         return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.value}, status=409)
 
     try:
+        render_service = SoundboardPlaylistRenderService(request)
         SoundboardPlaylistService(soundboard).add_default(playlist)
 
-        device_type = detect_device_type(request)
-        user_pref = UserPreferenceRepository().get_user_preferences(request.user)
-        playlist_dim = 100
-        if user_pref:
-            device_pref = UserDevicePreferenceRepository().get_user_preferences(user_pref, device_type)
-            if device_pref:
-                playlist_dim = device_pref.get_effective_playlist_dim()
-
-        playlist_html = render_to_string('Html/partial/soundboard/playlist_item.html', {
-            'playlist': playlist,
-            'soundboard': soundboard,
-            'master': True,
-            'owner': True,
-            'playlist_dim': playlist_dim,
-        })
+        playlist_html = render_service.render_playlist_item(playlist, soundboard)
 
         return JsonResponse({
             'success': True,
