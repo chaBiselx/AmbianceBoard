@@ -23,3 +23,4 @@ class ErrorMessageEnum(BaseEnum):
     INVALID_REQUEST_METHOD = 'Invalid request method.'
     ELEMENT_NOT_FOUND = 'Element introuvable.'
     DATA_RECUPERATION = 'Erreur lors de la récupération des données'
+    PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD = 'Cette playlist est déjà présente dans ce soundboard'

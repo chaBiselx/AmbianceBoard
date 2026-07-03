@@ -42,6 +42,8 @@ from main.domain.common.utils.ExtractPaginator import extract_context_to_paginat
 from main.domain.common.utils.logger import logger
 from django.urls import reverse
 
+PLAYLIST_ITEM_TEMPLATE = 'Html/partial/soundboard/playlist_item.html'
+
 
 @login_required
 @require_http_methods(['GET'])
@@ -236,7 +238,7 @@ def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_u
         target_soundboard=soundboard
     )
     if existing:
-        return JsonResponse({'error': "Cette playlist est déjà présente dans ce soundboard"}, status=409)
+        return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.value}, status=409)
 
     try:
         duplication_service = PlaylistDuplicationService(
@@ -277,10 +279,10 @@ def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_u
     except PlaylistNotCopiableException:
         return JsonResponse({'error': "Cette playlist n'est pas disponible à la duplication"}, status=403)
     except PlaylistAlreadyDuplicatedException:
-        return JsonResponse({'error': "Cette playlist est déjà présente dans ce soundboard"}, status=409)
+        return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.value}, status=409)
     except Exception as e:
         logger.error(f"Erreur duplication mode édition pour soundboard {soundboard_uuid}: {e}")
-        return JsonResponse({'error': "Une erreur inattendue est survenue"}, status=500)
+        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
 
 
 @login_required
@@ -398,7 +400,7 @@ def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid
 
     existing = SoundboardPlaylistRepository().get(soundboard, playlist)
     if existing:
-        return JsonResponse({'error': "Cette playlist est déjà présente dans ce soundboard"}, status=409)
+        return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.value}, status=409)
 
     try:
         SoundboardPlaylistService(soundboard).add_default(playlist)
@@ -427,5 +429,5 @@ def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid
         }, status=200)
     except Exception as e:
         logger.error(f"Erreur ajout playlist mode édition pour soundboard {soundboard_uuid}: {e}")
-        return JsonResponse({'error': "Une erreur inattendue est survenue"}, status=500)
+        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
 
