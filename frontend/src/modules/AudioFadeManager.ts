@@ -69,6 +69,15 @@ class AudioFadeManager {
             }
         }, this.interval);
     }
+
+    /**
+     * Skip the fade effect and set the volume directly to the end volume, then call the onComplete callback if it exists.
+     */
+    public skip() : void {
+        this.musicElement.levelFade = this.endVolume;
+        this.updateVolumeElement.update();
+        this.onComplete?.();
+    }
     
     private detectDiffVolume(volume: number, lastVolume: number): boolean {
         return Math.abs(volume - lastVolume) >= 0.05;

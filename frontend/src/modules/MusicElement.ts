@@ -41,6 +41,8 @@ class MusicElement {
     fadeOffOnStopDuration: number = 0;
     fadeOffOnStopType: string = 'linear';
     private boundEventEnd: (() => void) | null = null;
+    private nextLoopStarted: boolean = false;
+    private fadeOutDeferredToEnded: boolean = false;
 
 
     constructor(audioElement: HTMLAudioElement, dto: MusicElementDTO) {
@@ -87,6 +89,7 @@ class MusicElement {
     }
 
     public delete() {
+        ConsoleTesteur.log(`delete_action ${this.idPlaylist}`);
         const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist) as ButtonPlaylist;
         buttonPlaylist.disactive();
         this.addFadeOutOnStop(() => {
@@ -161,6 +164,16 @@ class MusicElement {
 
     public play() {
         ConsoleTesteur.log('play_action');
+
+        const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist);
+        if (!buttonPlaylist || !buttonPlaylist.isActive()) {
+            ConsoleTesteur.log(`play_action skipped because playlist is not active ${this.idPlaylist}`);
+            this.removeDomElement();
+            return;
+        }
+
+        this.nextLoopStarted = false;
+
         this.DOMElement.addEventListener('error', (e) => {
             this.handleAudioError(e);
         });
@@ -219,6 +232,8 @@ class MusicElement {
      */
     public addFadeIn() {
         ConsoleTesteur.info('ajout event addFadeIn');
+
+
         this.levelFade = 0;
 
         this.fadeInGoing = true;
@@ -231,14 +246,22 @@ class MusicElement {
         });
         audioFade.setDuration(this.fadeInDuration);
         this.DOMElement.addEventListener('playing', () => {
-            let time = Date.now();
-            while (this.DOMElement.readyState != 2) {
-                if (time + 1 < Date.now()) {
-                    break;
+            const duration = this.getTrackDuration() || 0;
+            if (this.fadeInDuration * 2 > duration) { // fade in duration is too long for the track duration, so we skip the fade in
+                ConsoleTesteur.info('addFadeIn skipped because fade in duration is too long for the track duration');
+                this.levelFade = 1;
+                this.fadeInGoing = false;
+                audioFade.skip();
+            } else {
+                let time = Date.now();
+                while (this.DOMElement.readyState != 2) {
+                    if (time + 1 < Date.now()) {
+                        break;
+                    }
                 }
+                ConsoleTesteur.info('addFadeIn trigger start');
+                audioFade.start();
             }
-            ConsoleTesteur.info('addFadeIn trigger start');
-            audioFade.start();
         })
 
     }
@@ -272,7 +295,14 @@ class MusicElement {
             if (this.boundEventEnd) {
                 this.DOMElement.removeEventListener('timeupdate', this.boundEventEnd);
             }
-            if( this.fadeOutType !== 'disabled' ){
+
+            if (this.shouldDeferFadeOutToEnded()) {
+                this.fadeOutDeferredToEnded = true;
+                ConsoleTesteur.info('defer fade out to ended because track is shorter than trigger + fade out durations');
+                return;
+            }
+
+            if (this.fadeOutType !== 'disabled') {
                 this.addFadeOut();
             }
             this.startIfLooped();
@@ -286,11 +316,16 @@ class MusicElement {
      */
     private startIfLooped() {
         ConsoleTesteur.log('startIfLooped');
+        if (this.nextLoopStarted) {
+            return;
+        }
+
         const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist);
         if (!buttonPlaylist) {
             return;
         }
         if (this.checkLoop()) {
+            this.nextLoopStarted = true;
             ConsoleTesteur.log("loopOrStop => SoundBoardManager.createPlaylistLink");
             this.applyDelay(() => {
                 SoundBoardManager.createPlaylistLink(buttonPlaylist);
@@ -343,6 +378,37 @@ class MusicElement {
     private eventDeleteFadeOut() {
         ConsoleCustom.log('eventDeleteFadeOut');
         this.removeDomElement();
+
+        if (this.fadeOutDeferredToEnded) {
+            this.fadeOutDeferredToEnded = false;
+            this.startIfLooped();
+        }
+    }
+
+    private shouldDeferFadeOutToEnded(): boolean {
+        if (this.fadeOutType === 'disabled') {
+            return false;
+        }
+
+        const trackDuration = this.getTrackDuration();
+        if (trackDuration === null) {
+            return false;
+        }
+
+        const overlapWindow = this.durationRemainingTriggerNextMusic + this.fadeOutDuration;
+        return trackDuration <= overlapWindow;
+    }
+
+    private getTrackDuration(): number | null {
+        if (this.duration !== null && Number.isFinite(this.duration) && this.duration > 0) {
+            return this.duration;
+        }
+
+        if (Number.isFinite(this.DOMElement.duration) && this.DOMElement.duration > 0) {
+            return this.DOMElement.duration;
+        }
+
+        return null;
     }
 
     private eventDeleteNoFadeOut() {
