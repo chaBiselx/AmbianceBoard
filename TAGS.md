@@ -283,6 +283,7 @@ Améliorations
 - Modification des icones dans la barre de navigation
 - Modification de la page d'accueil
 - Masque les boutons sur les soundboard publique sinon aucun son derrière 
+- Amélioration des boucles/fade sur les petites pistes audio 
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
