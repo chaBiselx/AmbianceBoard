@@ -37,7 +37,7 @@ sudo nginx -s reload
 vi /srv/www/AmbianceBoard/.env
 
 ## pull la branch 
-cd /srv/www/AmbianceBoard/ && deploy.sh && sh deploy.sh
+cd /srv/www/AmbianceBoard/ && sh deploy.sh
 
 ou manuellement 
 
