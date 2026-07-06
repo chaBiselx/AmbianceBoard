@@ -285,6 +285,14 @@ Améliorations
 - Masque les boutons sur les soundboard publique sinon aucun son derrière 
 - Amélioration des boucles/fade sur les petites pistes audio 
 
+### 0.4.1 - 2026/07
+Corrections
+- Erreur lors du déploiement
+
+### 0.4.2 - 2026/07
+Corrections
+- Mise à jours de NodeJs pour le build des fichiers du front
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

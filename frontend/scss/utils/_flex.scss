@@ -1,4 +1,6 @@
 
+@use "sass:math";
+
 
 
 .flex-item img {
@@ -14,7 +16,7 @@ $flex_grid: 1,2,3,4,5;
 @each $column in $flex_grid {
 
     .flex-item-#{$column} {
-        width: #{100 / $column}%;
+        width: math.div(100%, $column);
     }
 
 }
