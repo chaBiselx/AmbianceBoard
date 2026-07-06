@@ -166,7 +166,7 @@ class MusicElement {
         ConsoleTesteur.log('play_action');
 
         const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist);
-        if (!buttonPlaylist || !buttonPlaylist.isActive()) {
+        if (!buttonPlaylist?.isActive()) {
             ConsoleTesteur.log(`play_action skipped because playlist is not active ${this.idPlaylist}`);
             this.removeDomElement();
             return;
@@ -193,7 +193,7 @@ class MusicElement {
             });
             this.DOMElement.addEventListener('ended', () => {
                 // Slightly defer cleanup to avoid cutting the very end on some browsers/codecs.
-                window.setTimeout(() => this.eventDeleteFadeOut(), MusicElement.ENDED_CLEANUP_DELAY_MS);
+                globalThis.setTimeout(() => this.eventDeleteFadeOut(), MusicElement.ENDED_CLEANUP_DELAY_MS);
             }, { once: true });
         } else {
             this.boundEventEnd = () => {
@@ -202,7 +202,7 @@ class MusicElement {
             };
             this.DOMElement.addEventListener('ended', () => {
                 // Slightly defer cleanup to avoid cutting the very end on some browsers/codecs.
-                window.setTimeout(() => this.boundEventEnd!(), MusicElement.ENDED_CLEANUP_DELAY_MS);
+                globalThis.setTimeout(() => this.boundEventEnd!(), MusicElement.ENDED_CLEANUP_DELAY_MS);
             }, { once: true });
         }
         ConsoleTesteur.info(`▶️ Play ${this.idPlaylist} ${this.isSlave()}`);
