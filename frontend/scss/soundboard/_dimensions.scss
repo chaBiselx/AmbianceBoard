@@ -1,10 +1,12 @@
+@use "sass:math";
+
 $base_dimension: 80;
 $playlist-dimensions: 50, 75, 100, 125, 150, 175, 200;
 
 @each $dimension in $playlist-dimensions {
     .soundboard-dim-#{$dimension} {
-        width: #{$dimension/100 * $base_dimension}px;
-        height: #{$dimension/100 * $base_dimension}px;
+        width: math.div($dimension, 100) * $base_dimension * 1px;
+        height: math.div($dimension, 100) * $base_dimension * 1px;
     }
 }
 
