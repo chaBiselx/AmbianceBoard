@@ -62,15 +62,11 @@
                 sur un bouton et l'ambiance qui démarre. À placer dans assets/img/home/hero.webp
                 puis référencer via {% static 'img/home/hero.webp' %} à la place du logo ci-dessous.
             -->
-            <img class="home-hero__illustration"
-                 src="{% static 'img/logo.png' %}"
-                 alt="Aperçu d'un soundboard AmbianceBoard en pleine partie de jeu de rôle"
-                 loading="eager">
+            <img class="home-hero__illustration" src="{% static 'img/logo.png' %}" alt="Aperçu d'un soundboard AmbianceBoard en pleine partie de jeu de rôle" loading="eager" style="max-height: 500px;width: auto;">
         </div>
     </div>
 </section>
 
-{% if not request.user.is_authenticated %}
 {# ====================================================================== #}
 {#  2. DÉMO JOUABLE SANS COMPTE — réduction de la friction                #}
 {# ====================================================================== #}
@@ -96,8 +92,7 @@
     -->
     <div class="home-demo__grid mx-auto" style="max-width: 720px;">
         {% for home_demo_item in home_demo_items %}
-        <a href="{% url 'publicReadSoundboard' home_demo_item.soundboard.uuid %}" type="button" class="home-demo__btn"
-                aria-label="{{ home_demo_item.get_aria_label }}">
+        <a href="{% url 'publicReadSoundboard' home_demo_item.soundboard.uuid %}" type="button" class="home-demo__btn" aria-label="{{ home_demo_item.get_aria_label }}">
             <span class="home-demo__icon">{{ home_demo_item.icon }}</span>
             <span class="home-demo__label">{{ home_demo_item.title }}</span>
             <span class="home-demo__state">{{ home_demo_item.state_text }}</span>
@@ -112,12 +107,11 @@
 
     <div class="text-center mt-4 d-grid d-sm-block">
         <p class="mb-2">Envie de créer le vôtre ? Un compte gratuit suffit - 30 secondes chrono.</p>
-        <a href="{% url 'login' %}" class="btn btn-info">
+        <a href="{% if not request.user.is_authenticated %}{% url 'login' %}{% else %}{% url 'soundboardsNew' %}{% endif %}" class="btn btn-info">
             <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Créer mon premier soundboard
         </a>
     </div>
 </section>
-{% endif %}
 
 {# ====================================================================== #}
 {#  3. PREUVE SOCIALE / COMMUNAUTÉ                                         #}
