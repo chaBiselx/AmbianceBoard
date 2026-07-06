@@ -23,7 +23,7 @@
         "dropzone": "^6.0.0-beta.2",
         "fs-extra": "^11.3.6",
         "quill": "^2.0.3",
-        "sass": "^1.101.0",
+        "sass": "1.69.7",
         "shepherd.js": "^14.5.1",
         "vitest": "^3.2.4"
     },
