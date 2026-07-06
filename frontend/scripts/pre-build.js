@@ -37,6 +37,15 @@ async function moveFiles() {
         await fs.copy(`${outputDir}/img`, `${targetDir}/img`);
         console.log('✔️ Images déplacées !');
 
+        // Déplacer les fichiers audio de démonstration (page d'accueil), si présents
+        const demoSource = `${outputDir}/demo`;
+        if (await fs.pathExists(demoSource)) {
+            await fs.copy(demoSource, `${targetDir}/demo`);
+            console.log('✔️ Audios de démo déplacés !');
+        } else {
+            console.log('ℹ️ Aucun dossier assets/demo (audios de démo) à déplacer.');
+        }
+
         // fontawesome
         await fs.copy(`node_modules/@fortawesome/fontawesome-free/css/all.min.css`, `${targetDir}/css/font-awesome.min.css`);
         await fs.copy(`node_modules/@fortawesome/fontawesome-free/webfonts/`, `${targetDir}/webfonts/`);

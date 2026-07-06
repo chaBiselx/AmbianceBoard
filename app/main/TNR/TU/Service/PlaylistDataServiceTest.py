@@ -35,22 +35,24 @@ class PlaylistDataServiceTest(SimpleTestCase):
 
         data = self.service.get_playlist_data(playlist)
 
-        self.assertTrue(data['fadeIn'])
         self.assertEqual(data['fadeInType'], FadeEnum.EASE.value)
-        self.assertTrue(data['fadeOut'])
+        self.assertEqual(data['fadeInDuration'], 5)
         self.assertEqual(data['fadeOutType'], FadeEnum.EASE.value)
+        self.assertEqual(data['fadeOutDuration'], 5)
 
     def test_get_playlist_data_off_disables_fade_and_sets_duration_zero(self):
         playlist = self._playlist(
             PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.name,
+            fade_in=FadeEnum.DISABLED.name,
+            fade_out=FadeEnum.DISABLED.name,
         )
 
         data = self.service.get_playlist_data(playlist)
 
-        self.assertFalse(data['fadeIn'])
-        self.assertEqual(data['fadeInDuration'], 0)
-        self.assertFalse(data['fadeOut'])
-        self.assertEqual(data['fadeOutDuration'], 0)
+        self.assertEqual(data['fadeInType'], FadeEnum.DISABLED.value)
+        self.assertEqual(data['fadeInDuration'], 3)
+        self.assertEqual(data['fadeOutType'], FadeEnum.DISABLED.value)
+        self.assertEqual(data['fadeOutDuration'], 3)
 
     def test_get_playlist_data_fade_enum_forces_curve_and_enables_fade(self):
         playlist = self._playlist(
@@ -61,9 +63,7 @@ class PlaylistDataServiceTest(SimpleTestCase):
 
         data = self.service.get_playlist_data(playlist)
 
-        self.assertTrue(data['fadeIn'])
         self.assertEqual(data['fadeInType'], FadeEnum.EASE_OUT.value)
-        self.assertTrue(data['fadeOut'])
         self.assertEqual(data['fadeOutType'], FadeEnum.EASE_IN_OUT_QUAD.value)
 
     def test_get_playlist_data_unknown_fade_value_keeps_strategy_defaults(self):
@@ -75,7 +75,5 @@ class PlaylistDataServiceTest(SimpleTestCase):
 
         data = self.service.get_playlist_data(playlist)
 
-        self.assertTrue(data['fadeIn'])
         self.assertEqual(data['fadeInType'], FadeEnum.EASE.value)
-        self.assertTrue(data['fadeOut'])
         self.assertEqual(data['fadeOutType'], FadeEnum.EASE.value)

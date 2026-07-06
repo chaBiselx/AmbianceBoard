@@ -5,7 +5,7 @@ from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
 from django.views.i18n import set_language as django_set_language
 
-from main.interface.ui.controller.general.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice,  dismiss_general_notification, dismiss_trace_user_activity, callback_oauth_google, onboarding_context
+from main.interface.ui.controller.general.generalViews import home, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice, support_contact, dismiss_general_notification, dismiss_trace_user_activity, callback_oauth_google, onboarding_context
 from main.interface.ui.controller.general.confirmViews import confirm_account
 from main.interface.ui.controller.general.traceFrontViews import trace_front
 from main.interface.ui.controller.private.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
@@ -21,6 +21,8 @@ from main.interface.ui.controller.private.showSoundboardViews import (
     soundboard_edit_mode_playlist_list,
     soundboard_edit_mode_duplicate_playlist,
     soundboard_edit_mode_create_playlist,
+    soundboard_edit_mode_my_playlist_list,
+    soundboard_edit_mode_add_my_playlist,
 )
 from main.interface.ui.controller.private.playlistFormViews import (
     playlist_read_all, playlist_create,  playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
@@ -36,6 +38,7 @@ from main.interface.ui.controller.manager.managerCronViews import (
 from main.interface.ui.controller.manager.managerNotificationsViews import listing_notifications, manage_notification
 from main.interface.ui.controller.manager.managerSendEmailViews import manager_send_email
 from main.interface.ui.controller.manager.managerMusicLabelerViews import music_labeler_index, music_labeler_analyze, music_labeler_stream
+from main.interface.ui.controller.manager.managerHomeDemoViews import listing_home_demo_items, select_home_demo_soundboard, manage_home_demo_item
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_playlist_tracks_list, favorite_update, reporting_content, public_favorite, public_specific_track_stream
 from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation, stats_moyenne_duration_session
 from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream, shared_soundboard_refresh
@@ -52,6 +55,7 @@ urlpatterns = [
     path("", home, name="home"),
     path(Settings.get('URI_ADMIN').lstrip('/'), admin.site.urls, name="superadmin"),
     path("legal-notice", legal_notice, name="legalNotice"),
+    path("support", support_contact, name="supportContact"),
     path("pricing", pricing, name="pricing"),
     path("set-language/", django_set_language, name="set_language"),
 
@@ -85,6 +89,8 @@ urlpatterns = [
     path("soundBoards/<uuid:soundboard_uuid>/edit-mode/playlist-list", soundboard_edit_mode_playlist_list, name="soundboardEditModePlaylistList"),
     path("soundBoards/<uuid:soundboard_uuid>/edit-mode/create", soundboard_edit_mode_create_playlist, name="soundboardEditModeCreatePlaylist"),
     path("soundBoards/<uuid:soundboard_uuid>/edit-mode/duplicate/<uuid:playlist_uuid>", soundboard_edit_mode_duplicate_playlist, name="soundboardEditModeDuplicatePlaylist"),
+    path("soundBoards/<uuid:soundboard_uuid>/edit-mode/my-playlist-list", soundboard_edit_mode_my_playlist_list, name="soundboardEditModeMyPlaylistList"),
+    path("soundBoards/<uuid:soundboard_uuid>/edit-mode/add-my-playlist/<uuid:playlist_uuid>", soundboard_edit_mode_add_my_playlist, name="soundboardEditModeAddMyPlaylist"),
     path("soundBoards/<uuid:soundboard_uuid>/update", soundboard_update, name="soundboardsUpdate"),
     path("soundBoards/<uuid:soundboard_uuid>/delete", soundboard_delete, name="soundboardsDelete"),
     path("soundBoards/<uuid:soundboard_uuid>/organize", soundboard_organize, name="organizeSoundboard"),
@@ -200,6 +206,11 @@ urlpatterns = [
     path("manager/notifications/<uuid:uuid>/edit/", manage_notification, name="manager_notifications_update"),
 
     path("manager/send-email/", manager_send_email, name="managerSendEmail"),
+
+    path("manager/home-demo/", listing_home_demo_items, name="managerHomeDemoItems"),
+    path("manager/home-demo/create/", select_home_demo_soundboard, name="managerHomeDemoSelectSoundboard"),
+    path("manager/home-demo/create/<uuid:soundboard_uuid>/", manage_home_demo_item, name="managerHomeDemoCreateWithSoundboard"),
+    path("manager/home-demo/<uuid:uuid>/edit/", manage_home_demo_item, name="manager_home_demo_update"),
 
     # Music Labeler IA
     path("manager/music-labeler/", music_labeler_index, name="managerMusicLabeler"),

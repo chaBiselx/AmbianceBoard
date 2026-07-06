@@ -56,8 +56,14 @@ class SoundboardPlaylistRepository:
     def get_all_playable(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
         return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, activable_by_player=True).order_by('section', 'order')
     
-    def get_playlist_formated(self, soundboard: "SoundBoard") -> Any:
-        list_playlist = self.get_all(soundboard)
+    def get_all_with_min_one_track(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
+        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, Playlist__tracks__isnull=False).distinct().order_by('section', 'order')
+    
+    def get_playlist_formated(self, soundboard: "SoundBoard", public=False) -> Any:
+        if public :
+            list_playlist = self.get_all_with_min_one_track(soundboard)
+        else:
+            list_playlist = self.get_all(soundboard)
         dict_section = {}
         max_section = self.get_max_section(soundboard)
         for section in range(1, max_section + 1):

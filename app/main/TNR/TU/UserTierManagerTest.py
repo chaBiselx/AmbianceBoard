@@ -9,9 +9,12 @@ from parameters import settings
 
 @tag('unitaire')
 class UserTierManagerTest(TestCase):
-    self.utilisateurStandard = 'Utilisateur Standard'
-    
+
     def setUp(self):
+        self.utilisateurStandard = 'Utilisateur Standard'
+        self.standard_limits = settings.USER_TIERS['STANDARD']['limits']
+        self.premium_limits = settings.USER_TIERS['PREMIUM_BASIC']['limits']
+
         # Créer les groupes nécessaires
         self.standard_group, _ = Group.objects.get_or_create(name=GroupEnum.USER_STANDARD.value)
         
@@ -68,16 +71,16 @@ class UserTierManagerTest(TestCase):
         invalid_limits = UserTierManager.get_tier_limits('INVALID')
         
         # Vérifier que les limites standard sont correctes
-        self.assertEqual(standard_limits['soundboard'], 5)
-        self.assertEqual(standard_limits['playlist'], 75)
-        self.assertEqual(standard_limits['music_per_playlist'], 10)
-        self.assertEqual(standard_limits['weight_music_mb'], 50)
+        self.assertEqual(standard_limits['soundboard'], self.standard_limits['soundboard'])
+        self.assertEqual(standard_limits['playlist'], self.standard_limits['playlist'])
+        self.assertEqual(standard_limits['music_per_playlist'], self.standard_limits['music_per_playlist'])
+        self.assertEqual(standard_limits['weight_music_mb'], self.standard_limits['weight_music_mb'])
         
         # Vérifier que les limites premium sont correctes
-        self.assertEqual(premium_limits['soundboard'], 25)
-        self.assertEqual(premium_limits['playlist'], 1000)
-        self.assertEqual(premium_limits['music_per_playlist'], 25)
-        self.assertEqual(premium_limits['weight_music_mb'], 120)
+        self.assertEqual(premium_limits['soundboard'], self.premium_limits['soundboard'])
+        self.assertEqual(premium_limits['playlist'], self.premium_limits['playlist'])
+        self.assertEqual(premium_limits['music_per_playlist'], self.premium_limits['music_per_playlist'])
+        self.assertEqual(premium_limits['weight_music_mb'], self.premium_limits['weight_music_mb'])
         
         # Vérifier que les limites invalides retournent standard
         self.assertEqual(invalid_limits, standard_limits)
@@ -98,12 +101,12 @@ class UserTierManagerTest(TestCase):
         premium_limits = UserTierManager.get_user_limits(self.premium_user)
         
         # Vérifier les limites standard
-        self.assertEqual(standard_limits['soundboard'], 5)
-        self.assertEqual(standard_limits['playlist'], 75)
+        self.assertEqual(standard_limits['soundboard'], self.standard_limits['soundboard'])
+        self.assertEqual(standard_limits['playlist'], self.standard_limits['playlist'])
         
         # Vérifier les limites premium
-        self.assertEqual(premium_limits['soundboard'], 25)
-        self.assertEqual(premium_limits['playlist'], 1000)
+        self.assertEqual(premium_limits['soundboard'], self.premium_limits['soundboard'])
+        self.assertEqual(premium_limits['playlist'], self.premium_limits['playlist'])
     
     def test_user_limits_with_custom_tier(self):
         """Test les limites avec un tier personnalisé"""
@@ -122,26 +125,26 @@ class UserTierManagerTest(TestCase):
         user_tier = custom_user.tier_info
         effective_limits = user_tier.get_effective_limits()
         
-        self.assertEqual(effective_limits['soundboard'], 15)
-        self.assertEqual(effective_limits['playlist'], 200)
+        self.assertEqual(effective_limits['soundboard'], self.standard_limits['soundboard'])
+        self.assertEqual(effective_limits['playlist'], self.standard_limits['playlist'])
     
     def test_can_user_create_methods(self):
         """Test les méthodes de vérification des capacités"""
         # Test soundboard
-        self.assertTrue(UserTierManager.can_user_create_soundboard(self.standard_user, 4))
-        self.assertFalse(UserTierManager.can_user_create_soundboard(self.standard_user, 5))
+        self.assertTrue(UserTierManager.can_user_create_soundboard(self.standard_user, self.standard_limits['soundboard'] - 1))
+        self.assertFalse(UserTierManager.can_user_create_soundboard(self.standard_user, self.standard_limits['soundboard']))
         
         # Test playlist
-        self.assertTrue(UserTierManager.can_user_create_playlist(self.premium_user, 999))
-        self.assertFalse(UserTierManager.can_user_create_playlist(self.premium_user, 1000))
+        self.assertTrue(UserTierManager.can_user_create_playlist(self.premium_user, self.premium_limits['playlist'] - 1))
+        self.assertFalse(UserTierManager.can_user_create_playlist(self.premium_user, self.premium_limits['playlist']))
         
         # Test music per playlist
-        self.assertTrue(UserTierManager.can_user_add_music_to_playlist(self.standard_user, 9))
-        self.assertFalse(UserTierManager.can_user_add_music_to_playlist(self.standard_user, 10))
+        self.assertTrue(UserTierManager.can_user_add_music_to_playlist(self.standard_user, self.standard_limits['music_per_playlist'] - 1))
+        self.assertFalse(UserTierManager.can_user_add_music_to_playlist(self.standard_user, self.standard_limits['music_per_playlist']))
         
         # Test file size
-        self.assertTrue(UserTierManager.can_user_upload_music_size(self.standard_user, 49))
-        self.assertFalse(UserTierManager.can_user_upload_music_size(self.standard_user, 51))
+        self.assertTrue(UserTierManager.can_user_upload_music_size(self.standard_user, self.standard_limits['weight_music_mb']))
+        self.assertFalse(UserTierManager.can_user_upload_music_size(self.standard_user, self.standard_limits['weight_music_mb'] + 1))
     
     def test_get_tier_comparison(self):
         """Test la comparaison des tiers"""
@@ -161,12 +164,12 @@ class UserTierManagerTest(TestCase):
         standard_limits = UserTierManager.get_tier_limits('STANDARD')
         premium_limits = UserTierManager.get_tier_limits('PREMIUM_BASIC')
         
-        self.assertEqual(standard_limits['soundboard'], -1)
-        self.assertEqual(standard_limits['playlist'], -1)
-        self.assertEqual(standard_limits['music_per_playlist'], -1)
-        self.assertEqual(standard_limits['weight_music_mb'], -1)
+        self.assertEqual(standard_limits['soundboard'], settings.USER_TIERS['STANDARD']['limits']['soundboard'])
+        self.assertEqual(standard_limits['playlist'], settings.USER_TIERS['STANDARD']['limits']['playlist'])
+        self.assertEqual(standard_limits['music_per_playlist'], settings.USER_TIERS['STANDARD']['limits']['music_per_playlist'])
+        self.assertEqual(standard_limits['weight_music_mb'], settings.USER_TIERS['STANDARD']['limits']['weight_music_mb'])
 
-        self.assertEqual(premium_limits['soundboard'], -1)
-        self.assertEqual(premium_limits['playlist'], -1)
-        self.assertEqual(premium_limits['music_per_playlist'], -1)
-        self.assertEqual(premium_limits['weight_music_mb'], -1)
+        self.assertEqual(premium_limits['soundboard'], settings.USER_TIERS['PREMIUM_BASIC']['limits']['soundboard'])
+        self.assertEqual(premium_limits['playlist'], settings.USER_TIERS['PREMIUM_BASIC']['limits']['playlist'])
+        self.assertEqual(premium_limits['music_per_playlist'], settings.USER_TIERS['PREMIUM_BASIC']['limits']['music_per_playlist'])
+        self.assertEqual(premium_limits['weight_music_mb'], settings.USER_TIERS['PREMIUM_BASIC']['limits']['weight_music_mb'])

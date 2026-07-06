@@ -1,0 +1,142 @@
+{% extends 'Html/partial/structure/base_manager.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <a href="{% url 'managerHomeDemoItems' %}" class="btn btn-secondary float-end">
+        <i class="fas fa-arrow-left"></i> Retour à la liste
+    </a>
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                        {% if action == 'create' %}
+                        <i class="fas fa-plus"></i> Nouvel élément Home Demo
+                        {% else %}
+                        <i class="fas fa-edit"></i> Modification d'un élément Home Demo
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if selected_soundboard %}
+                    <div class="alert alert-info d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div>
+                            <strong>Soundboard choisi :</strong>
+                            <a href="{% url 'publicReadSoundboard' selected_soundboard.uuid %}" target="_blank" rel="noopener noreferrer">
+                                {{ selected_soundboard.name }}
+                            </a>
+                        </div>
+                        <a href="{% url 'managerHomeDemoSelectSoundboard' %}" class="btn btn-sm btn-outline-secondary">
+                            Changer de soundboard
+                        </a>
+                    </div>
+                    {% elif item and item.soundboard %}
+                    <div class="alert alert-info d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div>
+                            <strong>Soundboard lié :</strong>
+                            <a href="{% url 'publicReadSoundboard' item.soundboard.uuid %}" target="_blank" rel="noopener noreferrer">
+                                {{ item.soundboard.name }}
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="form-group mb-3">
+                            <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                            <div class="invalid-feedback d-block">{{ form.title.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="{{ form.icon.id_for_label }}">{{ form.icon.label }}</label>
+                            {{ form.icon }}
+                            {% if form.icon.errors %}
+                            <div class="invalid-feedback d-block">{{ form.icon.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="{{ form.state_text.id_for_label }}">{{ form.state_text.label }}</label>
+                            {{ form.state_text }}
+                            {% if form.state_text.errors %}
+                            <div class="invalid-feedback d-block">{{ form.state_text.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="{{ form.aria_label.id_for_label }}">{{ form.aria_label.label }}</label>
+                            {{ form.aria_label }}
+                            {% if form.aria_label.errors %}
+                            <div class="invalid-feedback d-block">{{ form.aria_label.errors }}</div>
+                            {% endif %}
+                            <small class="form-text text-muted">
+                                Optionnel. Si vide, le label d'accessibilité sera généré automatiquement.
+                            </small>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <div class="form-check">
+                                {{ form.is_active }}
+                                <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
+                                    {{ form.is_active.label }}
+                                </label>
+                            </div>
+                            {% if form.is_active.errors %}
+                            <div class="invalid-feedback d-block">{{ form.is_active.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i>
+                                {% if action == 'create' %}
+                                Créer l'élément
+                                {% else %}
+                                Enregistrer les modifications
+                                {% endif %}
+                            </button>
+                            <a href="{% url 'managerHomeDemoItems' %}" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if action == 'update' and item %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5><i class="fas fa-info-circle"></i> Informations complémentaires</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">UUID:</dt>
+                        <dd class="col-sm-9"><code>{{ item.uuid }}</code></dd>
+
+                        <dt class="col-sm-3">Créé le:</dt>
+                        <dd class="col-sm-9">{{ item.created_at|date:"d/m/Y H:i:s" }}</dd>
+
+                        <dt class="col-sm-3">Modifié le:</dt>
+                        <dd class="col-sm-9">{{ item.updated_at|date:"d/m/Y H:i:s" }}</dd>
+                    </dl>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

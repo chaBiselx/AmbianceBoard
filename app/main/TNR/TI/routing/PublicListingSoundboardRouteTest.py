@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.Tag import Tag
 from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.Track import Track
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 User = get_user_model()
@@ -24,6 +25,10 @@ class PublicListingSoundboardRouteTest(TestCase):
             user=self.user,
             name='Playlist Public SEO',
             typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
+        )
+        Track.objects.create(
+            playlist=self.playlist,
+            alternativeName='seed-track',
         )
 
     def _create_public_soundboard(self, name='SB SEO', tags=None):
@@ -85,4 +90,19 @@ class PublicListingSoundboardRouteTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, '</script><script>window.__ab_listing_xss__=1</script>', html=False)
         self.assertContains(response, '\\u003c/script\\u003e\\u003cscript\\u003ewindow.__ab_listing_xss__=1\\u003c/script\\u003e', html=False)
+
+    def test_public_listing_soundboard_ignores_soundboards_without_tracks(self):
+        """Un soundboard public avec playlists sans track ne doit pas apparaitre dans le listing."""
+        empty_playlist = Playlist.objects.create(
+            user=self.user,
+            name='Playlist Sans Track',
+            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
+        )
+        soundboard = SoundBoard.objects.create(user=self.user, name='SB Sans Track', is_public=True)
+        soundboard.playlists.add(empty_playlist)
+
+        response = self.client.get(reverse('publicListingSoundboard'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, 'SB Sans Track')
     

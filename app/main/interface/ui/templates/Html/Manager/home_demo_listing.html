@@ -1,0 +1,73 @@
+{% extends 'Html/partial/structure/base_manager.html' %}
+{% load PaginationLinks %}
+
+{% block content %}
+
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{% url 'managerHomeDemoSelectSoundboard' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Choisir un soundboard public
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if page_objects %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Icône</th>
+                                <th>Titre</th>
+                                <th>Soundboard public</th>
+                                <th>Texte</th>
+                                <th>URL</th>
+                                <th>Actif</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in page_objects %}
+                            <tr>
+                                <td>{{ item.icon }}</td>
+                                <td>{{ item.title }}</td>
+                                <td>{{ item.soundboard.name }}</td>
+                                <td>{{ item.state_text }}</td>
+                                <td>
+                                    <a href="{% url 'publicReadSoundboard' item.soundboard.uuid %}" target="_blank" rel="noopener noreferrer">
+                                        {% url 'publicReadSoundboard' item.soundboard.uuid %}
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if item.is_active %}
+                                    Oui
+                                    {% else %}
+                                    Non
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'manager_home_demo_update' item.uuid %}" class="btn btn-sm btn-warning" title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% applys_pagination paginator %}
+{% else %}
+<div class="alert alert-info">Aucun élément Home Demo n'a encore été créé.</div>
+{% endif %}
+
+{% endblock %}

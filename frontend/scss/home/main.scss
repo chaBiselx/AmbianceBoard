@@ -1,0 +1,186 @@
+// ==========================================================================
+// Page d'accueil — refonte orientée rétention
+// ==========================================================================
+
+.home {
+
+    // --- Hero -------------------------------------------------------------
+    &-hero {
+        position: relative;
+        border-radius: 1.25rem;
+        padding: clamp(1.5rem, 4vw, 3.5rem);
+        margin-bottom: 2.5rem;
+        overflow: hidden;
+        background:
+            radial-gradient(1200px 400px at 10% -20%, rgba(var(--bs-info-rgb), 0.18), transparent 60%),
+            radial-gradient(900px 400px at 100% 0%, rgba(var(--bs-primary-rgb), 0.18), transparent 55%);
+        border: 1px solid var(--bs-border-color-translucent);
+    }
+
+    &-hero__title {
+        font-weight: 700;
+        line-height: 1.1;
+        font-size: clamp(1.9rem, 4.5vw, 3rem);
+        margin-bottom: 0.75rem;
+    }
+
+    &-hero__subtitle {
+        font-size: clamp(1.05rem, 2vw, 1.3rem);
+        max-width: 46ch;
+        opacity: 0.9;
+    }
+
+    &-hero__illustration {
+        border-radius: 1rem;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        min-height: 220px;
+    }
+
+    // --- Démo interactive -------------------------------------------------
+    &-demo {
+        &__grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 0.75rem;
+        }
+
+        &__btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 1.1rem 0.75rem;
+            border-radius: 0.9rem;
+            border: 1px solid var(--bs-border-color);
+            background: var(--bs-body-bg);
+            color: var(--bs-body-color);
+            cursor: pointer;
+            transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+                border-color: var(--bs-info);
+            }
+
+            &:focus-visible {
+                outline: 3px solid var(--bs-info);
+                outline-offset: 2px;
+            }
+
+            .home-demo__icon {
+                font-size: 1.8rem;
+                line-height: 1;
+            }
+
+            .home-demo__label {
+                font-weight: 600;
+                font-size: 0.95rem;
+            }
+
+            .home-demo__state {
+                font-size: 0.75rem;
+                opacity: 0.7;
+            }
+
+            // Barres d'égaliseur animées, cachées par défaut
+            .home-demo__equalizer {
+                display: none;
+                align-items: flex-end;
+                gap: 3px;
+                height: 14px;
+
+                span {
+                    display: block;
+                    width: 3px;
+                    height: 100%;
+                    background: currentColor;
+                    border-radius: 2px;
+                    animation: home-demo-bounce 0.9s ease-in-out infinite;
+
+                    &:nth-child(2) { animation-delay: 0.15s; }
+                    &:nth-child(3) { animation-delay: 0.3s; }
+                    &:nth-child(4) { animation-delay: 0.45s; }
+                }
+            }
+
+            &.is-playing {
+                border-color: var(--bs-info);
+                box-shadow: 0 0 0 2px rgba(var(--bs-info-rgb), 0.35) inset;
+
+                .home-demo__equalizer { display: flex; }
+                .home-demo__state { visibility: hidden; }
+            }
+        }
+    }
+
+    // --- Étapes "Comment ça marche" --------------------------------------
+    &-step {
+        height: 100%;
+        border-radius: 1rem;
+
+        &__number {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            background: rgba(var(--bs-info-rgb), 0.15);
+            color: var(--bs-info);
+        }
+    }
+
+    // --- Cartes communauté (preuve sociale) ------------------------------
+    &-community__card {
+        border-radius: 1rem;
+        overflow: hidden;
+        transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+        &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.18);
+        }
+    }
+
+    &-community__thumb {
+        aspect-ratio: 16 / 10;
+        width: 100%;
+        object-fit: cover;
+        background: linear-gradient(135deg, rgba(var(--bs-info-rgb), 0.35), rgba(var(--bs-primary-rgb), 0.35));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+    }
+
+    // --- Bandeau bêta -----------------------------------------------------
+    &-beta {
+        border-radius: 1rem;
+        border: 1px dashed var(--bs-info);
+        background: rgba(var(--bs-info-rgb), 0.06);
+    }
+
+    // --- CTA final --------------------------------------------------------
+    &-final-cta {
+        border-radius: 1.25rem;
+        background:
+            radial-gradient(800px 300px at 50% 120%, rgba(var(--bs-primary-rgb), 0.22), transparent 60%),
+            var(--bs-tertiary-bg);
+    }
+}
+
+@keyframes home-demo-bounce {
+    0%, 100% { transform: scaleY(0.3); }
+    50% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-demo__btn .home-demo__equalizer span {
+        animation: none;
+    }
+}

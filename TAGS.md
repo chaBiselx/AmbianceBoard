@@ -272,9 +272,24 @@ Améliorations
 - Ajout de fixture pour aider au developpement
 - Changement d'icone pour acceder à la liste des boutons privé
 
+### 0.4.0 - 2026/07
+Sécurité
+- Mise a jours des dépendances
+
+Nouveautés
+- Ajout d'une page de contact
+
+Améliorations
+- Modification des icones dans la barre de navigation
+- Modification de la page d'accueil
+- Masque les boutons sur les soundboard publique sinon aucun son derrière 
+- Amélioration des boucles/fade sur les petites pistes audio 
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
+Sécurité
+- … 
+
 Nouveautés
 - …
 

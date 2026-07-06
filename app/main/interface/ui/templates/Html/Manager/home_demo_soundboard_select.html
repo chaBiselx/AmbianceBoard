@@ -1,0 +1,74 @@
+{% extends 'Html/partial/structure/base_manager.html' %}
+{% load SoundBoard %}
+{% load PaginationLinks %}
+
+{% block content %}
+
+<div class="row mb-3">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <a href="{% url 'managerHomeDemoItems' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if listTags %}
+<div class="accordion mb-4" id="accordionPanelsStayOpenExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+            <button class="accordion-button {% if selected_tag %}{% else %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="{% if selected_tag %}true{% else %}false{% endif %}" aria-controls="panelsStayOpen-collapseTwo">
+                Filtrer par tag
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse {% if selected_tag %}show{% endif %}" aria-labelledby="panelsStayOpen-headingTwo">
+            <div class="accordion-body">
+                {% if selected_tag %}
+                <div class="alert alert-info d-flex align-items-center text-small">
+                    <i class="fas fa-filter me-2"></i>
+                    Filtré par le tag: <strong class="ms-1">{{ selected_tag }}</strong>
+                    <a href="{% url 'managerHomeDemoSelectSoundboard' %}" class="btn btn-sm btn-outline-secondary ms-2">
+                        <i class="fas fa-times"></i> Effacer le filtre
+                    </a>
+                </div>
+                {% endif %}
+
+                <div class="d-flex flex-wrap gap-2">
+                    {% for tag in listTags %}
+                    <a href="{% url 'managerHomeDemoSelectSoundboard' %}?tag={{ tag.name }}" class="text-decoration-none">
+                        <span class="badge {% if selected_tag == tag.name %}bg-primary{% else %}bg-secondary{% endif %}">
+                            <i class="fas fa-tag me-1"></i>{{ tag.name }}
+                            <small class="ms-1">{{ tag.soundboard_count }}</small>
+                        </span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="flex-container">
+            {% for soundboard in soundboards %}
+            <a href="{% url 'managerHomeDemoCreateWithSoundboard' soundboard.uuid %}" class="text-decoration-none">
+                <div class="soundboard-element reportable flex-item soundboard-dim-{{ soundboard_dim|default:'md' }} m-1" style="background-color: {{ soundboard.color }};color: {{ soundboard.colorText }};" data-id="{{ soundboard.uuid }}">
+                    {{ soundboard | applys_soundboard_content}}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-12 mt-3">
+        {% applys_pagination paginator %}
+    </div>
+</div>
+
+{% if not soundboards %}
+<div class="alert alert-warning">Aucun soundboard public disponible à la création. Les soundboards déjà utilisés dans la démo sont exclus.</div>
+{% endif %}
+
+{% endblock %}

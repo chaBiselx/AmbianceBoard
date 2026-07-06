@@ -5,6 +5,10 @@ __pycache
 .env.prod
 .env.prod.db
 user.csv
+.vscode
+
+# agent IA (temp)
+.agent
 
 #test coverage
 .coverage
