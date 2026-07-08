@@ -48,13 +48,19 @@ update-db:
 	@echo "$(GREEN)Migrations terminées.$(NC)"
 
 #fixtures
-fixtures: fixture-seed-dev
+fixtures: fixture-seed-dev fixture-seed-soundboard
 	@# Help: Lance l'ensemble des fixtures de développement 
 
 fixture-seed-dev:
 	@# Help: Crée les données de développement (utilisateur dev + 20 playlists) — DEBUG=1 requis
 	@echo "$(GREEN)Chargement des fixtures de développement...$(NC)"
 	$(CONTAINER_BACKEND) python manage.py seed_dev
+	@echo "$(GREEN)Fixtures chargées.$(NC)"
+
+fixture-seed-soundboard:
+	@# Help: Crée les données de développement  — DEBUG=1 requis
+	@echo "$(GREEN)Chargement des fixtures de développement...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py seed_public_soundboard
 	@echo "$(GREEN)Fixtures chargées.$(NC)"
 
 # Traductions
