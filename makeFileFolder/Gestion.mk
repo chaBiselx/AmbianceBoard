@@ -1,3 +1,4 @@
+## —— Gestion  ————————————————————————————————————————————————————————————————
 init:
 	@# Help: Initialiser les ressources de l'application
 	@if [ ! -f ".env" ]; then \
@@ -17,6 +18,7 @@ init-prod:
 		echo "[OK] Certificats SSL trouvés."; \
 	fi
 
+## —— Docker  ————————————————————————————————————————————————————————————————
 build:
 	@# Help: Construire les ressources de l'application
 	@docker compose build --no-cache
@@ -33,10 +35,6 @@ up:
 down:
 	@# Help: Arrêter les ressources de l'application
 	@docker compose down
-
-resource: 
-	@# Help: Consulter les ressources de l'application
-	@./makeFileFolder/sh/docker_resources.sh
 
 enter:
 	@# Help: Entrer dans un conteneur Docker (usage: make enter S [I=1])

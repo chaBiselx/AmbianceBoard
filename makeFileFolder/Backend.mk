@@ -5,6 +5,7 @@ MEDIA_BACKUP=$(BACKUP_DIR)/media_backup.tar.gz
 DATA_BACKUP=$(BACKUP_DIR)/data.json
 LOG_DIR=./logs
 
+## —— Dumbs/Load BDD  ————————————————————————————————————————————————————————————————
 # Dump des données et des fichiers médias
 dump: 
 	@# Help: Exporte la base de données et les fichiers médias afin de pouvoir les restaurer plus tard
@@ -33,7 +34,7 @@ clean:
 	@# Help: vide les fichiers de logs sans les supprimer
 	$(CONTAINER_BACKEND) find $(LOG_DIR) -type f -name "*.log" -exec sh -c '>'{}'; echo "Logs vidés pour {}"' \;
 
- 
+## —— Migrations  ————————————————————————————————————————————————————————————————
 # Création du dossier de sauvegarde s'il n'existe pas
 .prepare:
 	$(CONTAINER_BACKEND) mkdir -p $(BACKUP_DIR)
@@ -47,7 +48,7 @@ update-db:
 	$(CONTAINER_BACKEND) python manage.py migrate
 	@echo "$(GREEN)Migrations terminées.$(NC)"
 
-#fixtures
+## —— Fixtures  ————————————————————————————————————————————————————————————————
 fixtures: fixture-seed-dev fixture-seed-soundboard
 	@# Help: Lance l'ensemble des fixtures de développement 
 
@@ -63,7 +64,7 @@ fixture-seed-soundboard:
 	$(CONTAINER_BACKEND) python manage.py seed_public_soundboard
 	@echo "$(GREEN)Fixtures chargées.$(NC)"
 
-# Traductions
+## —— Traductions  ————————————————————————————————————————————————————————————————
 trad-init:
 	@# Help: Génère les fichiers de traduction (.po) pour toutes les langues
 	@echo "$(GREEN)Génération des fichiers de traduction...$(NC)"
