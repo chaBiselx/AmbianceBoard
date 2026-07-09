@@ -6,4 +6,4 @@ soundfile==0.14.0
 python-multipart==0.0.12
 numpy==2.4.6
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.6.0+cpu
+torch==2.13.0+cpu

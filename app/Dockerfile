@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.11.4-slim-bullseye
+FROM python:3.14.6-slim-trixie
 
 # set work directory
 WORKDIR /usr/src/app
@@ -13,10 +13,12 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
     dos2unix \
     ffmpeg \
     gettext \
-    netcat \
+    libjpeg62-turbo-dev \
+    netcat-openbsd \
     procps\
     rsyslog\
     systemd \
+    zlib1g-dev \
     # clean cache
     && apt-get clean 
 
