@@ -11,6 +11,8 @@ class SoundboardEditMode {
     private isEditModeActive = false;
     private panelUrl: string | null = null;
     private boardContainer: HTMLElement | null = null;
+    private playlistListFilters: Record<string, string> = {};
+    private myPlaylistListFilters: Record<string, string> = {};
 
     public addEvent(): void {
         const button = document.getElementById('btn-soundboard-edit-mode');
@@ -191,8 +193,13 @@ class SoundboardEditMode {
         this.loadListInContainer(
             'soundboard-edit-playlist-list-container',
             page,
+            this.playlistListFilters,
             () => this.bindDuplicateButtons(),
             (p) => this.loadPlaylistList(p),
+            (filters) => {
+                this.playlistListFilters = filters;
+                this.loadPlaylistList(1);
+            },
             'Impossible de charger la liste'
         );
     }
@@ -201,8 +208,13 @@ class SoundboardEditMode {
         this.loadListInContainer(
             'soundboard-edit-my-playlist-list-container',
             page,
+            this.myPlaylistListFilters,
             () => this.bindAddMyPlaylistButtons(),
             (p) => this.loadMyPlaylistList(p),
+            (filters) => {
+                this.myPlaylistListFilters = filters;
+                this.loadMyPlaylistList(1);
+            },
             'Impossible de charger mes playlists'
         );
     }
@@ -210,8 +222,10 @@ class SoundboardEditMode {
     private loadListInContainer(
         containerId: string,
         page: number,
+        filters: Record<string, string>,
         onLoaded: () => void,
         onPageChange: (page: number) => void,
+        onFiltersChange: (filters: Record<string, string>) => void,
         errorMessage: string
     ): void {
         const container = document.getElementById(containerId);
@@ -222,6 +236,10 @@ class SoundboardEditMode {
 
         const fetchUrl = new URL(url, globalThis.location.origin);
         fetchUrl.searchParams.set(PaginationManager.getParameterName(), page.toString());
+        for (const [key, value] of Object.entries(filters)) {
+            if (!value) continue;
+            fetchUrl.searchParams.set(key, value);
+        }
 
         fetch(fetchUrl.toString(), {
             method: 'GET',
@@ -232,10 +250,35 @@ class SoundboardEditMode {
                 container.innerHTML = html;
                 onLoaded();
                 this.bindPaginationInContainer(container, onPageChange);
+                this.bindFiltersInContainer(container, onFiltersChange);
             })
             .catch(() => {
                 Notification.createClientNotification({ message: errorMessage, type: 'error' });
             });
+    }
+
+    private bindFiltersInContainer(
+        container: HTMLElement,
+        onFiltersChange: (filters: Record<string, string>) => void
+    ): void {
+        const filterElements = container.querySelectorAll('[data-edit-mode-filter="true"]');
+        if (filterElements.length === 0) return;
+
+        for (const filterElement of filterElements) {
+            if (!(filterElement instanceof HTMLSelectElement)) continue;
+            filterElement.addEventListener('change', () => {
+                const nextFilters: Record<string, string> = {};
+                const allFilterElements = container.querySelectorAll('[data-edit-mode-filter="true"]');
+                for (const element of allFilterElements) {
+                    if (!(element instanceof HTMLSelectElement)) continue;
+                    const value = element.value.trim();
+                    if (!value) continue;
+                    nextFilters[element.name] = value;
+                }
+
+                onFiltersChange(nextFilters);
+            });
+        }
     }
 
     private bindPaginationInContainer(container: HTMLElement, onPageChange: (page: number) => void): void {

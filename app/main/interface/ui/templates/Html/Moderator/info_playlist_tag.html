@@ -1,0 +1,43 @@
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-tag"></i> Details du tag playlist "{{ playlist_tag.name }}"
+        </h3>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3 col-12">Label :</dt>
+            <dd class="col-sm-9 col-12"><code>{{ playlist_tag.label }}</code></dd>
+
+            <dt class="col-sm-3 col-12">Nom :</dt>
+            <dd class="col-sm-9 col-12">
+                {{ playlist_tag.name }}
+            </dd>
+
+            <dt class="col-sm-3 col-12">Description :</dt>
+            <dd class="col-sm-9 col-12">
+                {% if playlist_tag.description %}
+                {{ playlist_tag.description }}
+                {% else %}
+                <em class="text-muted">Aucune description</em>
+                {% endif %}
+            </dd>
+
+            <dt class="col-sm-3 col-12">Statut :</dt>
+            <dd class="col-sm-9 col-12">
+                {% if playlist_tag.is_active %}
+                <i class="fas fa-check"></i> Actif
+                {% else %}
+                <i class="fas fa-times"></i> Inactif
+                {% endif %}
+            </dd>
+
+            <dt class="col-sm-3 col-12">Date de creation :</dt>
+            <dd class="col-sm-9 col-12">{{ playlist_tag.created_at|date:"d/m/Y a H:i:s" }}</dd>
+
+            <dt class="col-sm-3 col-12">Derniere modification :</dt>
+            <dd class="col-sm-9 col-12">{{ playlist_tag.updated_at|date:"d/m/Y a H:i:s" }}</dd>
+        </dl>
+
+    </div>
+</div>

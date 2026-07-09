@@ -24,6 +24,7 @@ from main.domain.common.helper.ActivityContextHelper import ActivityContextHelpe
 from main.domain.common.helper.WebSocketInitializationHelper import WebSocketInitializationHelper
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
+from main.architecture.persistence.repository.PlaylistTagRepository import PlaylistTagRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from main.architecture.persistence.repository.PlaylistDuplicationHistoryRepository import PlaylistDuplicationHistoryRepository
@@ -188,6 +189,7 @@ def soundboard_edit_mode_playlist_list(request, soundboard_uuid):
         return HttpResponse(status=404)
 
     playlist_type_filter = request.GET.get('playlistType', None)
+    playlist_tag_filter = request.GET.get('playlistTag', None)
     filter_search = {}
     if playlist_type_filter:
         try:
@@ -195,6 +197,14 @@ def soundboard_edit_mode_playlist_list(request, soundboard_uuid):
             filter_search['typePlaylist'] = type_playlist._name_
         except ValueError:
             playlist_type_filter = None
+
+    if playlist_tag_filter:
+        normalized_label = str(playlist_tag_filter).strip().lower().replace(' ', '-')
+        if normalized_label:
+            filter_search['playlistTagLabel'] = normalized_label
+            playlist_tag_filter = normalized_label
+        else:
+            playlist_tag_filter = None
 
     playlists = PlaylistRepository().get_copiable_playlists_for_soundboard(request.user, filter_search)
     try:
@@ -209,6 +219,10 @@ def soundboard_edit_mode_playlist_list(request, soundboard_uuid):
         'soundboard': soundboard,
         'page_objects': context['page_objects'],
         'paginator': context['paginator'],
+        'playlistType': PlaylistTypeEnum.convert_to_dict(),
+        'selected_type': playlist_type_filter,
+        'list_playlist_tags': PlaylistTagRepository().get_list_active_tags(),
+        'selected_playlist_tag': playlist_tag_filter,
     })
 
 
@@ -322,6 +336,7 @@ def soundboard_edit_mode_my_playlist_list(request, soundboard_uuid):
         return HttpResponse(status=404)
 
     playlist_type_filter = request.GET.get('playlistType', None)
+    playlist_tag_filter = request.GET.get('playlistTag', None)
     filter_search = {}
     if playlist_type_filter:
         try:
@@ -329,6 +344,14 @@ def soundboard_edit_mode_my_playlist_list(request, soundboard_uuid):
             filter_search['typePlaylist'] = type_playlist._name_
         except ValueError:
             playlist_type_filter = None
+
+    if playlist_tag_filter:
+        normalized_label = str(playlist_tag_filter).strip().lower().replace(' ', '-')
+        if normalized_label:
+            filter_search['playlistTagLabel'] = normalized_label
+            playlist_tag_filter = normalized_label
+        else:
+            playlist_tag_filter = None
 
     playlists = PlaylistRepository().get_user_playlists_not_in_soundboard(request.user, soundboard, filter_search)
     try:
@@ -343,6 +366,10 @@ def soundboard_edit_mode_my_playlist_list(request, soundboard_uuid):
         'soundboard': soundboard,
         'page_objects': context['page_objects'],
         'paginator': context['paginator'],
+        'playlistType': PlaylistTypeEnum.convert_to_dict(),
+        'selected_type': playlist_type_filter,
+        'list_playlist_tags': PlaylistTagRepository().get_list_active_tags(),
+        'selected_playlist_tag': playlist_tag_filter,
     })
 
 

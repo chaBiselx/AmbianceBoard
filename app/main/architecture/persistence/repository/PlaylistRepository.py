@@ -25,10 +25,12 @@ class PlaylistRepository:
 
     def get_listing_playlist(self, user:User, filter:dict) -> List[Playlist]:
         try:
-            query_set = Playlist.objects.all()
+            query_set = Playlist.objects.filter(user=user)
             if 'typePlaylist' in filter:
                 query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
-            return query_set.filter(user=user).order_by('updated_at') 
+            if 'playlistTagLabel' in filter:
+                query_set = query_set.filter(playlist_tags__label=filter['playlistTagLabel'])
+            return query_set.distinct().order_by('updated_at')
         except Exception:
             return []
         
@@ -81,7 +83,9 @@ class PlaylistRepository:
         ).select_related('user').order_by('-updated_at')
         if 'typePlaylist' in filter:
             query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
-        return query_set
+        if 'playlistTagLabel' in filter:
+            query_set = query_set.filter(playlist_tags__label=filter['playlistTagLabel'])
+        return query_set.distinct()
 
     def get_copiable_playlists_for_soundboard(self, user: User, filter: dict) -> List[Playlist]:
         """
@@ -113,4 +117,6 @@ class PlaylistRepository:
         ).exclude(id__in=playlists_in_soundboard).distinct()
         if 'typePlaylist' in filter:
             query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
+        if 'playlistTagLabel' in filter:
+            query_set = query_set.filter(playlist_tags__label=filter['playlistTagLabel'])
         return query_set.order_by('name')

@@ -29,7 +29,8 @@ def sidebar_processor(request):
                 {'title': 'Playlists', 'url': reverse("moderatorControleImagesPlaylist"), 'classIcon':"fa-solid fa-music"},
                 {'title': 'Report', 'url': reverse("moderatorControleReport"), 'classIcon':"fa-solid fa-helmet-safety"},
                 {'title': 'Logs', 'url': reverse("moderatorControleLog"), 'classIcon':"fa-solid fa-helmet-safety"},
-                {'title': 'Tags', 'url': reverse("moderatorListingTags"), 'classIcon':"fas fa-tags"},
+                {'title': 'Tags Soundboard', 'url': reverse("moderatorListingTags"), 'classIcon':"fas fa-tags"},
+                {'title': 'Tags Playlist', 'url': reverse("moderatorListingPlaylistTags"), 'classIcon':"fas fa-tags"},
             ]
         }
         

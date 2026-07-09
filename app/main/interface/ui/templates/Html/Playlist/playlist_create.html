@@ -151,6 +151,25 @@
                                 {% endif %}
                             </div>
                             <div class="col-12">
+                                <div class="mb-3">
+                                    <div class="form-label">{{ form.playlist_tags.label }}</div>
+                                    <div class="tags-container">
+                                        <div class="d-flex flex-wrap gap-1 p-1" id="tags-selection">
+                                            {% for tag in form.fields.playlist_tags.queryset %}
+                                            <div class="form-check-custom">
+                                                <input type="checkbox" class="form-check-input d-none" name="playlist_tags" value="{{ tag.pk }}" id="tag_{{ tag.pk }}" {% if tag in form.playlist_tags.initial %}checked{% endif %}>
+                                                <label for="tag_{{ tag.pk }}" class="badge tag-badge {% if tag in form.playlist_tags.initial %}badge-selected{% else %}badge-unselected{% endif %}" data-tag-id="{{ tag.pk }}" data-bs-toggle="tooltip"
+                                                    data-bs-title="{{ tag.description|default:"Aucun description" }}">
+                                                    <small><i class="fas fa-tag me-1"></i></small>{{ tag.name }}
+                                                </label>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <small class="form-text text-muted mt-2">{{ form.playlist_tags.help_text }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
                                 <button class="btn btn-success btn-block mt-2" type="submit">
                                     {% if method == 'update' %}
                                     Modifier
@@ -227,13 +246,13 @@
                                 {% if track.labels.all %}
                                 <div class="track-tags beta-test">
                                     {% for label in track.labels.all %}
-                                        {% if label.confidence >= 0.4 %}
-                                            <span class="badge bg-success">{{ label.label }}</span>
-                                        {% elif label.confidence >= 0.3 %}
-                                            <span class="badge bg-info">{{ label.label }}</span>
-                                        {% else %}
-                                            <span class="badge bg-light text-dark">{{ label.label }}</span>
-                                        {% endif %}
+                                    {% if label.confidence >= 0.4 %}
+                                    <span class="badge bg-success">{{ label.label }}</span>
+                                    {% elif label.confidence >= 0.3 %}
+                                    <span class="badge bg-info">{{ label.label }}</span>
+                                    {% else %}
+                                    <span class="badge bg-light text-dark">{{ label.label }}</span>
+                                    {% endif %}
                                     {% endfor %}
                                 </div>
                                 {% else %}

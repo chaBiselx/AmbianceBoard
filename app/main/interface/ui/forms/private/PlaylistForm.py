@@ -6,6 +6,7 @@ from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
 from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.strategy.PlaylistStrategy import PlaylistStrategy
+from main.architecture.persistence.repository.PlaylistTagRepository import PlaylistTagRepository
 
 
 
@@ -25,6 +26,7 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
             'maxDelay',
             'fadeIn',
             'fadeOut',
+            'playlist_tags',
         )
         
     def __init__(self, *args, **kwargs):
@@ -108,6 +110,14 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
         initial=FadePlaylistEnum.DEFAULT.name,
         required=True
     )
+    playlist_tags = forms.ModelMultipleChoiceField(
+        queryset=PlaylistTagRepository().get_list_active_tags(),
+        widget=forms.CheckboxSelectMultiple,
+        required=True,
+        label='Tags',
+        help_text='Sélectionnez si necessaires des tags pour catégoriser votre playlist pour les recherches'
+    )
+    
     def clean_icon(self):
         if self.cleaned_data.get('clear_icon'):
             return None
@@ -126,6 +136,7 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
 
         if commit:
             instance.save()
+            self.save_m2m()
 
         return instance
 

@@ -293,6 +293,16 @@ Corrections
 Corrections
 - Mise à jours de NodeJs pour le build des fichiers du front
 
+### 0.4.3 - 2026/07
+Sécurité
+- Mise a jours des dépendances 
+
+Nouveautés
+- Mise en place de fixtures pour accélérer le développement
+- Ajout d'un système de tag pour acceler la recherche de playlist 
+
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

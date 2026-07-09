@@ -51,6 +51,7 @@ from main.TNR.TU.middleware.DailySessionMiddlewareTest import *
 #Repository
 from main.TNR.TU.repository.MusicRepositoryTest import *
 from main.TNR.TU.repository.PlaylistDuplicationHistoryRepositoryTest import *
+from main.TNR.TU.repository.PlaylistTagRepositoryTest import *
 from main.TNR.TU.repository.PlaylistRepositoryTest import *
 from main.TNR.TU.repository.SoundBoardRepositoryTest import *
 from main.TNR.TU.repository.TrackRepositoryTest import *
@@ -58,6 +59,7 @@ from main.TNR.TU.repository.SoundboardPlaylistRepositoryTest import *
 from main.TNR.TU.repository.SoundboardPlaylistRepositoryTest import * 
 #form 
 from main.TNR.TU.forms.manager.ManagerEmailValidationUtilsTest import *
+from main.TNR.TU.forms.private.PlaylistFormTest import *
 
 # Cron services tests (P0)
 from main.TNR.TU.cron.CronServicesTest import *
@@ -134,6 +136,7 @@ from main.TNR.TI.routing.PublicFavoriteRouteTest import *
 # Routes Modération
 from main.TNR.TI.routing.ModeratorDashboardRouteTest import *
 from main.TNR.TI.routing.ModeratorListingTagsRouteTest import *
+from main.TNR.TI.routing.ModeratorListingPlaylistTagsRouteTest import *
 
 # Routes Manager
 from main.TNR.TI.routing.ManagerDashboardRouteTest import *
