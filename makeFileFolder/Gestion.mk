@@ -27,10 +27,16 @@ build-prod:
 	@# Help: Construire les ressources de l'application en mode production
 	@cd app && ./build-prod.sh
 
-up:
+up: clear-old-containers
 	@# Help: Demarrer les ressources de l'application
 	@docker compose up -d
 	@docker compose logs -f back front db cronjob
+
+clear-old-containers:
+	@# Help: Supprimer les anciens conteneurs Docker
+	@docker container prune -f
+	@docker volume prune -f
+	@docker image prune -f
 
 down:
 	@# Help: Arrêter les ressources de l'application
