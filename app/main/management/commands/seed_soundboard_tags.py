@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.architecture.persistence.models.Tag import Tag
+from main.architecture.persistence.models.SoundboardTag import SoundboardTag
 
 
 SOUNDBOARD_TAGS = (
@@ -41,7 +41,7 @@ class Command(BaseCommand):
         created_tags = 0
         tag_by_name = {}
         for payload in SOUNDBOARD_TAGS:
-            soundboard_tag, created = Tag.objects.get_or_create(
+            soundboard_tag, created = SoundboardTag.objects.get_or_create(
                 name=payload["name"],
                 defaults={
                     "description": payload["description"],

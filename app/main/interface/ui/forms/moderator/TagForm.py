@@ -1,11 +1,11 @@
 from django import forms
-from main.architecture.persistence.models.Tag import Tag
+from main.architecture.persistence.models.SoundboardTag import SoundboardTag
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 
 class TagForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
-        model = Tag
+        model = SoundboardTag
         fields = ('name', 'description', 'is_active')
         
     def __init__(self, *args, **kwargs):

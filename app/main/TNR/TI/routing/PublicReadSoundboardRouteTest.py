@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 import uuid
 from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.architecture.persistence.models.Tag import Tag
+from main.architecture.persistence.models.SoundboardTag import SoundboardTag
 from main.architecture.persistence.models.Playlist import Playlist
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
@@ -61,8 +61,8 @@ class PublicReadSoundboardRouteTest(TestCase):
 
     def test_public_read_soundboard_seo_dynamic(self):
         """La page de lecture publique rend les balises SEO dynamiques attendues."""
-        tag_1 = Tag.objects.create(name='horror')
-        tag_2 = Tag.objects.create(name='night')
+        tag_1 = SoundboardTag.objects.create(name='horror')
+        tag_2 = SoundboardTag.objects.create(name='night')
         soundboard = self._create_public_soundboard(tags=[tag_1, tag_2])
 
         response = self.client.get(
@@ -84,7 +84,7 @@ class PublicReadSoundboardRouteTest(TestCase):
 
     def test_public_read_soundboard_seo_description_fallback_from_name_and_tags(self):
         """Sans descriptionSEO, la description est construite avec le nom et les tags."""
-        tag = Tag.objects.create(name='mystere')
+        tag = SoundboardTag.objects.create(name='mystere')
         soundboard = self._create_public_soundboard(
             name='Temple Oublie',
             description_seo='',

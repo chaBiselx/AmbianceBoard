@@ -2,7 +2,7 @@ from django.test import TestCase, tag
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.architecture.persistence.models.Tag import Tag
+from main.architecture.persistence.models.SoundboardTag import SoundboardTag
 from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
@@ -17,7 +17,7 @@ class SoundBoardRepositoryTest(TestCase):
         self.allowed_user = User.objects.create_user(username='allowed-user', password='pw')  # NOSONAR
         self.banned_user = User.objects.create_user(username='banned-user', password='pw', isBan=True)  # NOSONAR
 
-        self.tag_horror = Tag.objects.create(name='horror')
+        self.tag_horror = SoundboardTag.objects.create(name='horror')
 
         self.playlist_with_track = Playlist.objects.create(
             user=self.allowed_user,

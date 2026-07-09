@@ -16,7 +16,7 @@ from main.architecture.persistence.models.UserPreference import UserPreference
 from main.architecture.persistence.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
 from main.architecture.persistence.models.ReportContent import ReportContent
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
-from main.architecture.persistence.models.Tag import Tag
+from main.architecture.persistence.models.SoundboardTag import SoundboardTag
 from main.architecture.persistence.models.PlaylistTag import PlaylistTag
 from main.architecture.persistence.models.UserTier import UserTier
 from main.architecture.persistence.models.UserTierHistory import UserTierHistory
@@ -42,7 +42,7 @@ admin.site.register(UserPreference)
 admin.site.register(UserFavoritePublicSoundboard)
 admin.site.register(ReportContent)
 admin.site.register(SharedSoundboard)
-admin.site.register(Tag)
+admin.site.register(SoundboardTag)
 admin.site.register(PlaylistTag)
 admin.site.register(UserTier)
 admin.site.register(UserTierHistory)

@@ -6,7 +6,7 @@ from django.db.models import QuerySet
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
-from main.architecture.persistence.models.Tag import Tag
+from main.architecture.persistence.models.SoundboardTag import SoundboardTag
 from main.domain.brokers.message.ReduceSizeImgMessenger import reduce_size_img
 from main.domain.common.utils.OverwriteStorage import OverwriteStorage
 
@@ -29,7 +29,7 @@ class SoundBoard(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
     playlists = models.ManyToManyField(Playlist, through=SoundboardPlaylist, related_name='soundboards')
-    tags = models.ManyToManyField(Tag, blank=True, related_name='soundboards', help_text="Tags associés à ce soundboard")
+    tags = models.ManyToManyField(SoundboardTag, blank=True, related_name='soundboards', help_text="Tags associés à ce soundboard")
     name = models.CharField(max_length=255)
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
@@ -137,34 +137,34 @@ class SoundBoard(models.Model):
         from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
         return SoundboardPlaylistRepository().get_soundboard_playlist_for_player_formated(self)
     
-    def get_tags_list(self) -> "QuerySet[Tag]":
+    def get_tags_list(self) -> "QuerySet[SoundboardTag]":
         """
         Retourne la liste des tags associés à ce soundboard.
         
         Returns:
-            QuerySet[Tag]: QuerySet des tags actifs associés au soundboard,
+                QuerySet[SoundboardTag]: QuerySet des tags actifs associés au soundboard,
                           ordonnés par nom
         """
         return self.tags.filter(is_active=True).order_by('name')
     
-    def add_tag(self, tag: Tag) -> None:
+    def add_tag(self, tag: SoundboardTag) -> None:
         """
         Ajoute un tag à ce soundboard.
         
         Le tag n'est ajouté que s'il est actif.
         
         Args:
-            tag (Tag): Le tag à ajouter au soundboard
+                tag (SoundboardTag): Le tag à ajouter au soundboard
         """
         if tag.is_active:
             self.tags.add(tag)
     
-    def remove_tag(self, tag: Tag) -> None:
+    def remove_tag(self, tag: SoundboardTag) -> None:
         """
         Retire un tag de ce soundboard.
         
         Args:
-            tag (Tag): Le tag à retirer du soundboard
+            tag (SoundboardTag): Le tag à retirer du soundboard
         """
         self.tags.remove(tag)
         

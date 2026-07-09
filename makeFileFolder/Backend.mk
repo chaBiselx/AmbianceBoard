@@ -62,7 +62,7 @@ update-db:
 	@echo "$(GREEN)Migrations terminées.$(NC)"
 
 ## —— Fixtures  ————————————————————————————————————————————————————————————————
-fixtures: fixture-create-root fixture-seed-dev fixture-seed-soundboard fixture-tag-playlist
+fixtures: fixture-create-root fixture-seed-dev fixture-seed-soundboard fixture-tag-playlist fixture-tag-soundboard
 	@# Help: Lance l'ensemble des fixtures de développement 
 
 fixture-create-root:
