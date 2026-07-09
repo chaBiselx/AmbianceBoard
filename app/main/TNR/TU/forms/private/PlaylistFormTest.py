@@ -51,7 +51,7 @@ class PlaylistFormTest(TestCase):
         self.assertEqual(updated_playlist.playlist_tags.count(), 1)
         self.assertEqual(list(updated_playlist.playlist_tags.values_list('pk', flat=True)), [self.tag.pk])
 
-    @patch('main.domain.common.service.PlaylistService.UserTierManager.get_user_limits')
+    @patch('main.domain.common.factory.UserParametersFactory.UserTierManager.get_user_limits')
     @patch('main.domain.common.service.PlaylistService.PlaylistRepository.count_private', return_value=0)
     def test_save_form_persists_playlist_tags_on_create(self, mock_count_private, mock_get_user_limits):
         mock_get_user_limits.return_value = {
