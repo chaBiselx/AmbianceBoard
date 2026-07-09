@@ -635,3 +635,7 @@ APP_TVA = 20.0  # en pourcentage
 APP_CURRENCY = "EUR"
 
 SOUNDBOARD_LIMIT_SECTION = 100
+# Celery result backend cleanup - prevent memory accumulation
+CELERY_RESULT_EXPIRES = 3600  # Results expire after 1 hour to prevent memory leak
+CELERY_TASK_TRACK_STARTED = False  # Reduce result backend load
+CELERY_TASK_IGNORE_RESULT = True  # Don't store results unless explicitly needed

@@ -78,7 +78,7 @@ URL_BUTTON_SPECS = (
     {
         "playlist_name": "Fixture Instant - Radio Paradise URL",
         "name": "Radio Paradise (Stream)",
-        "url": "http://stream.radioparadise.com/mp3-192",
+        "url": "https://stream.radioparadise.com/mp3-192",
         "url_type": LinkMusicTypeEnum.STREAM.name,
     },
 )

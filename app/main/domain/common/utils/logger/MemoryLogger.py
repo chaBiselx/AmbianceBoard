@@ -13,15 +13,20 @@ class MemoryLogger(ILogger):
     Utile pour les tests unitaires et le debugging.
     """
     
-    def __init__(self, logger_name: str = 'memory'):
+    # Limite de logs stockés en mémoire pour éviter les fuites mémoire
+    MAX_LOGS = 10000  # Maximum 10k entries before FIFO eviction
+    
+    def __init__(self, logger_name: str = 'memory', max_logs: int = None):
         """
         Initialise le logger mémoire.
         
         Args:
             logger_name (str): Nom du logger
+            max_logs (int, optional): Nombre maximum de logs à stocker (FIFO eviction)
         """
         self._logger_name = logger_name
         self._logs: List[Dict[str, Any]] = []
+        self._max_logs = max_logs or self.MAX_LOGS
     
     def debug(self, message: str, *args, **kwargs) -> None:
         """Log un message de niveau DEBUG"""
@@ -49,7 +54,7 @@ class MemoryLogger(ILogger):
         self._add_log('ERROR', message, args, kwargs)
     
     def _add_log(self, level: str, message: str, args: tuple, kwargs: dict) -> None:
-        """Ajoute un log à la liste interne"""
+        """Ajoute un log à la liste interne avec éviction FIFO si limite dépassée"""
         import datetime
         log_entry = {
             'timestamp': datetime.datetime.now(),
@@ -60,6 +65,12 @@ class MemoryLogger(ILogger):
             'logger_name': self._logger_name
         }
         self._logs.append(log_entry)
+        
+        # Éviction FIFO : supprimer les anciens logs si on dépasse la limite
+        if len(self._logs) > self._max_logs:
+            # Garder seulement les 90% les plus récents pour éviter le thrashing
+            keep_count = int(self._max_logs * 0.9)
+            self._logs = self._logs[-keep_count:]
     
     def get_logs(self, level: str = None) -> List[Dict[str, Any]]:
         """
