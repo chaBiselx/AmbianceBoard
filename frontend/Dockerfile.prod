@@ -8,7 +8,7 @@ RUN mkdir -p /app/node_modules /app/.npm-cache /app/static/js /app/static/css /a
 COPY --chown=node:node package*.json tsconfig.json ./
 COPY --chown=node:node vite.config.ts ./
 
-USER node
+# USER node
 
 # Configurer npm localement et installer les dépendances
 RUN npm config set cache /app/.npm-cache && \

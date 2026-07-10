@@ -23,7 +23,11 @@ else
 fi
 
 
+echo "🐳 Arret des container..."
+docker compose -f docker-compose.prod.yml down
 
+echo "suppression des dossier static"
+rm -rf staticfiles/
 
 echo "🔧 Configuration des permissions..."
 chmod +x ./app/entrypoint.sh
@@ -31,9 +35,6 @@ chmod +x ./app/entrypoint.prod.sh
 
 echo "🐳 Build des conteneurs Docker..."
 docker compose -f docker-compose.prod.yml build
-
-echo "suppression des dossier static"
-rm -rf staticfiles/
 
 echo "🚀 Démarrage des conteneurs..."
 docker compose -f docker-compose.prod.yml up -d
