@@ -2,19 +2,12 @@ FROM node:26
 
 WORKDIR /app
 
-RUN mkdir -p /app/.npm-cache /app/static && \
-	chown -R node:node /app
+COPY package*.json tsconfig.json ./
+COPY vite.config.ts ./
 
-COPY --chown=node:node package*.json tsconfig.json ./
-COPY --chown=node:node vite.config.ts ./
+RUN npm install --ignore-scripts
 
-USER node
-
-RUN npm config set cache /app/.npm-cache && \
-	npm install --ignore-scripts && \
-	chmod -R u+w /app/node_modules
-
-COPY --chown=node:node ./src ./src
+COPY ./src ./src
 
 # Compiler pour produire les assets au démarrage
 CMD ["npm", "run", "watch"]
