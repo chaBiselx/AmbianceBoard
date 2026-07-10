@@ -2,7 +2,7 @@ FROM node:26
 
 WORKDIR /app
 
-RUN mkdir -p /app/.npm-cache /app/static/css /app/static/js /app/static/img /app/static/webfonts && \
+RUN mkdir -p /app/.npm-cache /app/static && \
 	chown -R node:node /app
 
 COPY --chown=node:node package*.json tsconfig.json ./

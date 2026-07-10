@@ -2,25 +2,23 @@ FROM node:26
 
 WORKDIR /app
 
-RUN mkdir -p /app/node_modules /app/.npm-cache /app/static/js /app/static/css /app/static/img /app/static/webfonts && \
+RUN mkdir -p /app/.npm-cache /app/static && \
     chown -R node:node /app
 
 COPY --chown=node:node package*.json tsconfig.json ./
 COPY --chown=node:node vite.config.ts ./
 
-# USER node
+USER node
 
 # Configurer npm localement et installer les dépendances
 RUN npm config set cache /app/.npm-cache && \
-    npm install --ignore-scripts
+    npm install --ignore-scripts && \
+    chmod -R u+w /app/node_modules
 
-# COPY --chown=nodeuser:nodeuser ./src ./src
-# COPY --chown=nodeuser:nodeuser ./scss ./scss
-# COPY --chown=nodeuser:nodeuser ./assets ./assets
-# COPY --chown=nodeuser:nodeuser ./scripts ./scripts
-
-# Créer le dossier static si il n'existe pas
-RUN mkdir -p static/js static/css static/webfonts
+COPY --chown=node:node ./src ./src
+COPY --chown=node:node ./scss ./scss
+COPY --chown=node:node ./assets ./assets
+COPY --chown=node:node ./scripts ./scripts
 
 # Compiler pour produire les assets
 CMD ["npm", "run", "build"]
