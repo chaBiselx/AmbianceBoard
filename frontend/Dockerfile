@@ -8,7 +8,7 @@ RUN mkdir -p /app/node_modules /app/.npm-cache /app/static/css /app/static/js /a
 COPY --chown=node:node package*.json tsconfig.json ./
 COPY --chown=node:node vite.config.ts ./
 
-USER node
+# USER node
 
 RUN npm config set cache /app/.npm-cache && \
 	npm install --ignore-scripts
