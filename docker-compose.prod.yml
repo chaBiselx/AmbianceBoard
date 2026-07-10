@@ -91,6 +91,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
+    user: "${FRONT_UID:-1000}:${FRONT_GID:-1000}"
     command: npm run build
     volumes:
       - ./frontend:/app

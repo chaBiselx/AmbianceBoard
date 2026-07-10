@@ -15,6 +15,7 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
     gettext \
     libjpeg62-turbo-dev \
     netcat-openbsd \
+    portaudio19-dev \
     procps\
     rsyslog\
     systemd \

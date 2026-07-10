@@ -21,7 +21,7 @@ init-prod:
 ## —— Docker  ————————————————————————————————————————————————————————————————
 build:
 	@# Help: Construire les ressources de l'application
-	@docker compose build --no-cache
+	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose build --no-cache
 
 build-prod:
 	@# Help: Construire les ressources de l'application en mode production
@@ -29,8 +29,8 @@ build-prod:
 
 up: clear-old-containers
 	@# Help: Demarrer les ressources de l'application
-	@docker compose up -d
-	@docker compose logs -f back front db cronjob
+	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose up -d
+	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose logs -f back front db cronjob
 
 clear-old-containers:
 	@# Help: Supprimer les anciens conteneurs Docker
