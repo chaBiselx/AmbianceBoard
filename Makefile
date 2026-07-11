@@ -12,6 +12,7 @@ NC = \033[0m  # No Color (reinit)
 CONTAINER_BACKEND=docker compose exec back
 CONTAINER_CRONJOB=docker compose exec cronjob
 CONTAINER_FRONTEND=docker compose exec -w /app front
+CONTAINER_MUSIC_LABELER=docker compose exec music-labeler
 
 
 help:

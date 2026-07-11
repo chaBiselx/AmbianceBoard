@@ -59,11 +59,15 @@ class ClapAudioModel(IAudioModel):
         inputs = self._processor(text=texts, return_tensors="pt", padding=True)
         with torch.no_grad():
             features = self._model.get_text_features(**inputs)
+        if not isinstance(features, torch.Tensor):
+            features = features.pooler_output
         return features / features.norm(dim=-1, keepdim=True)
 
     def encode_audio(self, audio: np.ndarray, sample_rate: int) -> torch.Tensor:
         """Encode un signal audio en vecteur normalise."""
-        inputs = self._processor(audios=[audio], return_tensors="pt", sampling_rate=sample_rate)
+        inputs = self._processor(audio=[audio], return_tensors="pt", sampling_rate=sample_rate)
         with torch.no_grad():
             features = self._model.get_audio_features(**inputs)
+        if not isinstance(features, torch.Tensor):
+            features = features.pooler_output
         return features / features.norm(dim=-1, keepdim=True)

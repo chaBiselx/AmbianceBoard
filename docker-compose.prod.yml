@@ -126,7 +126,7 @@ services:
   music-labeler:
     build:
       context: ./music-labeler
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     volumes:
       - hf-cache:/home/appuser/.cache/huggingface
     ports:

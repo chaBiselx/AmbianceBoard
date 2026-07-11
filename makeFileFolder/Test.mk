@@ -2,7 +2,7 @@ FILTER ?=
 
 
 ## —— Tests  ————————————————————————————————————————————————————————————————
-test-all: test-backend test-frontend
+test-all: test-backend test-frontend test-music-labeler
 	@# Help: lance l'ensemble des tests (backend et frontend)
 
 test-backend-coverage:
@@ -45,4 +45,15 @@ test-frontend-ti:
 		$(CONTAINER_FRONTEND) npm run test:ti; \
 	else \
 		$(CONTAINER_FRONTEND) npm run test:ti -- --testNamePattern="$(FILTER)"; \
+	fi
+
+test-music-labeler: test-music-labeler-tu
+	@# Help: lance l'ensemble des tests music labeler (unitaires et d'intégration)
+
+test-music-labeler-tu:
+	@# Help: lance les tests unitaires music labeler
+	@-if [ -z "$(FILTER)" ]; then \
+		docker compose run --rm -v "$(PWD)/music-labeler:/workspace" -w /workspace music-labeler sh -lc "python -m pip install --user pytest >/tmp/pip-pytest.log 2>&1 && python -m pytest -q tests"; \
+	else \
+		docker compose run --rm -v "$(PWD)/music-labeler:/workspace" -w /workspace music-labeler sh -lc "python -m pip install --user pytest >/tmp/pip-pytest.log 2>&1 && python -m pytest -q $(FILTER)"; \
 	fi
