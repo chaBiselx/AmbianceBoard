@@ -14,6 +14,9 @@ class PlaylistTagRepository:
 
     def get_all_queryset(self, order_by: str = "name") -> QuerySet[PlaylistTag]:
         return PlaylistTag.objects.all().order_by(order_by)
+    
+    def get_all(self, order_by: str = "name") -> List[PlaylistTag]:
+        return list(self.get_all_queryset(order_by=order_by))
 
     def get_list_active_tags(self) -> List[PlaylistTag]:
         return PlaylistTag.objects.filter(is_active=True).order_by("name")

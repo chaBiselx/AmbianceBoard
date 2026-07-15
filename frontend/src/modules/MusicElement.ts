@@ -101,7 +101,6 @@ class MusicElement {
     private addFadeOutOnStop(callback: () => void) {
         ConsoleCustom.log('addFadeOutOnStop event');
         if (this.fadeOffOnStopType === 'disabled') {
-            console.log('fade off on stop disabled');
             callback();
             return;
         }

@@ -9,6 +9,9 @@
             <button data-url="{% url 'moderatorCreatePlaylistTag' %}" class="btn btn-primary popup-add-tag">
                 <i class="fas fa-plus"></i> Nouveau Tag Playlist
             </button>
+            <a href="{% url 'moderatorGetPlaylistListForPlaylistTag' %}" class="btn btn-secondary">
+                <i class="fas fa-list"></i> Assocation playlist avec tag
+            </a>
         </div>
 
         {% if page_objects %}

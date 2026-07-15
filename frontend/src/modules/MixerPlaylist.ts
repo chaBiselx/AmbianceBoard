@@ -80,7 +80,6 @@ class MixerPlaylist {
                 container.classList.add('d-none');
             }
         }
-        console.log(marginContainers);
         
         for (const marginContainer of marginContainers) {
             if (bool) {

@@ -1,6 +1,7 @@
 import ModalCustom from '@/modules/General/Modal';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
 import { DashboardBarGraph } from '@/modules/Chart/DashboardBarGraph';
+import { PlaylistTagManager } from '@/modules/Moderator/PlaylistTagManager';
 
 document.addEventListener('DOMContentLoaded', () => {
     for (const el of document.querySelectorAll('.popup-data-playlist')) {
@@ -21,7 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const el of document.querySelectorAll('.popup-edit-tag')) {
         el.addEventListener('click', getEditTag);
     }
-
+    for (const el of document.querySelectorAll('.js-popup-playlist-tag-playlist')) {
+        el.addEventListener('click', setupPlaylistTagPopup);
+    }
 })
 
 
@@ -73,6 +76,14 @@ function getEditTag(event: Event) {
     new FetchPopupData(url, title).fetch();
 }
 
+function setupPlaylistTagPopup(event: Event) {
+    const el = event.target as HTMLButtonElement;
+    const url = el.dataset.url!;
+    const title = "Ajouter des tags : " + el.dataset.title;
+
+    new FetchPopupData(url, title).fetch();
+}
+
 class FetchPopupData {
     url: string
     title: string
@@ -102,18 +113,16 @@ class FetchPopupData {
             footer: "",
             width: "lg",
             callback: () => {
-                console.log('Callback after modal is shown');
                 this.initSoundboardListeningStatsGraph();
+                PlaylistTagManager.initFromDOM();
             }
         });
     }
 
     private initSoundboardListeningStatsGraph() {
-        console.log('Initializing soundboard listening stats graph...');
         const graphId = 'moderator-soundboard-listening-time';
         const graphElement = document.getElementById(graphId);
         if (!graphElement) {
-        console.log('Initializing soundboard listening stats graph NOT found ');
 
             return;
         }

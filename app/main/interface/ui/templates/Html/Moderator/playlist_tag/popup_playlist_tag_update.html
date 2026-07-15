@@ -1,0 +1,88 @@
+{% load Playlist %}
+{% load PlaylistEnum %}
+{% load SoundBoard %}
+{% load UserLog %}
+{% load ReportContentResultEnum %}
+{% load ModerationEnum %}
+{% load ModerationModelEnum %}
+
+<div class="popupModerator">
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+
+
+
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="accordion-playlist">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-playlist-collapse" aria-expanded="true" aria-controls="accordion-playlist-collapse">
+                    Playlist
+                </button>
+            </h3>
+            <div id="accordion-playlist-collapse" class="accordion-collapse collapse show" aria-labelledby="accordion-playlist">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <dl>
+                                <dt>Id</dt>
+                                <dd>{{playlist.uuid}}</dd>
+                                <dt>Titre</dt>
+                                <dd>{{playlist.name}}</dd>
+                                <dt>Type Playlist</dt>
+                                <dd>{{playlist.typePlaylist|to_value}}</dd>
+                                <dt>Volume</dt>
+                                <dd>{{playlist.volume}}</dd>
+                                <dt>Nombre de musique</dt>
+                                <dd>{{playlist.tracks.count}}</dd>
+                            </dl>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="flex-container">
+                                <div class="playlist-link playlist-element playlist-dim-{{ playlist_dim }} m-1" style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
+                                    {{ playlist | applys_playlist_content}}
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col-12">
+                            <div class="row">
+                                {% for track in playlist.tracks.all %}
+                                <div class="col-12 div-md-6">
+
+                                    <small>
+                                        {% if track.is_music %}
+                                        <a class="btn btn-link" href="{{ track.get_download_url }}" download><i>{{ track.get_source }}</i></a>
+                                        {% else %}
+                                        <i>{{ track.get_source }}</i>
+                                        {% endif %}
+                                    </small><br />
+                                    <audio src="{{ track.get_stream_url }}" controls></audio>
+                                </div>
+
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                        <div class="col-12">
+                                <div class="mb-3">
+                                    <div class="form-label">{{ form.playlist_tags.label }}</div>
+                                    <div class="tags-container">
+                                        <div class="d-flex flex-wrap gap-1 p-1" id="tags-selection" data-url-update="{{ url_update }}">
+                                            {% for tag in list_tag %}
+                                            <div class="form-check-custom">
+                                                <input type="checkbox" class="form-check-input d-none" name="playlist_tags" value="{{ tag.pk }}" id="tag_{{ tag.pk }}" {% if tag in playlist.playlist_tags.all %}checked{% endif %}>
+                                                <label for="tag_{{ tag.pk }}" class="badge tag-badge {% if tag in playlist.playlist_tags.all %}badge-selected{% else %}badge-unselected{% endif %}" data-tag-id="{{ tag.pk }}" data-tag-label="{{ tag.label }}" data-bs-toggle="tooltip"
+                                                    data-bs-title="{{ tag.description|default:"Aucun description" }}">
+                                                    <small><i class="fas fa-tag me-1"></i></small>{{ tag.name }}
+                                                </label>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <small class="form-text text-muted mt-2">{{ form.playlist_tags.help_text }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
