@@ -29,7 +29,7 @@ from main.interface.ui.controller.private.playlistFormViews import (
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
 from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
-from main.interface.ui.controller.moderator.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag, moderator_listing_playlist_tags, moderator_manage_playlist_tag, moderator_get_infos_playlist_tag
+from main.interface.ui.controller.moderator.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_soundboard_listening_time_stats, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag, moderator_listing_playlist_tags, moderator_manage_playlist_tag, moderator_get_infos_playlist_tag
 from main.interface.ui.controller.manager.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
 from main.interface.ui.controller.manager.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard, manager_user_activity_details
 from main.interface.ui.controller.manager.managerCronViews import (
@@ -172,6 +172,7 @@ urlpatterns = [
     path("moderator/playlist/<uuid:playlist_uuid>", moderator_get_infos_playlist, name="moderatorGetDataPlaylist"),
     path("moderator/soundboard", moderator_listing_images_soundboard, name="moderatorControleImagesSoundboard"),
     path("moderator/soundboard/<uuid:soundboard_uuid>", moderator_get_infos_soundboard, name="moderatorGetDataSoundboard"),
+    path("moderator/soundboard/<uuid:soundboard_uuid>/stats/listening-time", moderator_soundboard_listening_time_stats, name="moderatorSoundboardListeningTimeStats"),
     path("moderator/report/content", moderator_listing_report, name="moderatorControleReport"),
     path("moderator/report/content/archive", moderator_listing_report_archived, name="moderatorControleReportArchived"),
     path("moderator/report/content/<int:report_id>", moderator_get_infos_report, name="moderatorGetDataContentReport"),

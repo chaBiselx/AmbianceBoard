@@ -1,5 +1,6 @@
 import ModalCustom from '@/modules/General/Modal';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
+import { DashboardBarGraph } from '@/modules/Chart/DashboardBarGraph';
 
 document.addEventListener('DOMContentLoaded', () => {
     for (const el of document.querySelectorAll('.popup-data-playlist')) {
@@ -99,8 +100,26 @@ class FetchPopupData {
             title: this.title,
             body: body,
             footer: "",
-            width: "lg"
-        })
+            width: "lg",
+            callback: () => {
+                console.log('Callback after modal is shown');
+                this.initSoundboardListeningStatsGraph();
+            }
+        });
+    }
+
+    private initSoundboardListeningStatsGraph() {
+        console.log('Initializing soundboard listening stats graph...');
+        const graphId = 'moderator-soundboard-listening-time';
+        const graphElement = document.getElementById(graphId);
+        if (!graphElement) {
+        console.log('Initializing soundboard listening stats graph NOT found ');
+
+            return;
+        }
+
+        // The popup has no period selector; DashboardBaseGraph falls back to 91 days by default.
+        new DashboardBarGraph(graphId, 'periode-chart').init();
     }
 
     public setValue() {

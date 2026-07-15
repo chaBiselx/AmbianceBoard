@@ -14,6 +14,7 @@ from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
 from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
+from django.utils import timezone
 from main.domain.common.utils.url import redirection_url
 from main.interface.ui.forms.moderator.TagForm import TagForm
 from main.interface.ui.forms.moderator.PlaylistTagForm import PlaylistTagForm
@@ -27,6 +28,9 @@ from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
 from main.architecture.persistence.repository.TagRepository import TagRepository
 from main.architecture.persistence.repository.PlaylistTagRepository import PlaylistTagRepository
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from main.domain.common.enum.ChartPeriodEnum import ChartPeriodEnum
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.moderator.service.ModeratorSoundboardStatsService import ModeratorSoundboardStatsService
 
 
 
@@ -87,6 +91,37 @@ def moderator_get_infos_playlist(request, playlist_uuid) -> HttpResponse:
 def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
     soundboard = SoundBoardRepository().get(soundboard_uuid)
     return render(request, 'Html/Moderator/info_soundboard.html', {"soundboard":soundboard})
+
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_soundboard_listening_time_stats(request, soundboard_uuid) -> JsonResponse:
+    try:
+        period = request.GET.get('period', ChartPeriodEnum.get_default_period())
+        if not ChartPeriodEnum.is_valid_period(period):
+            period = ChartPeriodEnum.get_default_period()
+
+        days = int(period)
+        end_dt = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        start_dt = end_dt - timedelta(days=days - 1)
+
+        soundboard = SoundBoardRepository().get(soundboard_uuid)
+        if not soundboard:
+            raise ValueError("Soundboard non trouvée")
+
+        response_data = ModeratorSoundboardStatsService().get_soundboard_listening_time_data(soundboard, start_dt, end_dt)
+        return JsonResponse({
+            'title': f"Temps d'écoute soundboard - {days} jours",
+            'x_label': 'Date',
+            'y_label': 'Temps (min)',
+            'data': response_data,
+        })
+    except Exception as e:
+        return JsonResponse({
+            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'message': str(e)
+        }, status=500)
     
 @login_required
 @require_http_methods(['GET'])
