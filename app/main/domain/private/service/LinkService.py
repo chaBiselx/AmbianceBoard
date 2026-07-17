@@ -3,9 +3,10 @@ from django.http import HttpRequest
 from main.architecture.persistence.models.LinkMusic import LinkMusic
 from main.architecture.persistence.models.Playlist import Playlist
 from main.interface.ui.forms.private.LinkMusicForm import LinkMusicForm
-from main.domain.brokers.message.YoutubeAudioDownloadMessenger import download_youtube_audio
+from main.domain.brokers.message.AsyncDownloadJobMessenger import process_async_download_job
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.AsyncDownloadJobRepository import AsyncDownloadJobRepository
 from main.domain.common.exceptions.PlaylistLimitException import PlaylistLimitException
 
 
@@ -15,6 +16,7 @@ class LinkService:
         self.request = request
         self.link_type = "default"
         self.track_repository = TrackRepository()
+        self.job_repository = AsyncDownloadJobRepository()
 
     
     def save_form(self, playlist: Playlist, link: Optional[LinkMusic] = None) -> LinkMusic|None:
@@ -55,11 +57,19 @@ class LinkService:
     
     def __handle_youtube_link(self, playlist: Playlist, form: LinkMusicForm) -> None:
         """Gère le cas où le lien est un lien YouTube"""
-        download_youtube_audio.apply_async(
-            args=[str(playlist.uuid), form.cleaned_data['url'], self.request.user.id, form.cleaned_data.get('alternativeName', None)],
+        job = self.job_repository.create(
+            user=self.request.user,
+            playlist=playlist,
+            url=form.cleaned_data['url'],
+            source='youtube',
+            alternative_name=form.cleaned_data.get('alternativeName', None),
+        )
+        result = process_async_download_job.apply_async(
+            args=[str(job.uuid)],
             queue='default',
             priority=1,
         )
+        self.job_repository.set_task_id(job, result.id)
         
     def __controle_limit_user_berfore_download(self, playlist: Playlist) -> None:
         """Contrôle la limite d'ajout de liens YouTube pour l'utilisateur"""
@@ -68,6 +78,6 @@ class LinkService:
             user_parameters = UserParametersFactory(self.request.user)
             limit_music_per_playlist = user_parameters.limit_music_per_playlist
             
-            nbFinal = self.track_repository.get_count(playlist) + 0 # TODO a BDD pour compter les liens youtube en cours de téléchargement
+            nbFinal = self.track_repository.get_count(playlist) + self.job_repository.count_active(playlist)
             if nbFinal >= limit_music_per_playlist:
                 raise PlaylistLimitException(f"Vous avez atteint la limite de {limit_music_per_playlist} musiques par playlist.")

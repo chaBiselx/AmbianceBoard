@@ -19,6 +19,9 @@ init-prod:
 	fi
 
 ## —— Docker  ————————————————————————————————————————————————————————————————
+restart: down up
+	@# Help: Redémarrer les ressources de l'application
+
 build:
 	@# Help: Construire les ressources de l'application
 	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose build --no-cache
