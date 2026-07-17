@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from main.domain.common.exceptions.PlaylistLimitException import PlaylistLimitException
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from main.domain.common.service.PlaylistService import PlaylistService
@@ -137,9 +138,12 @@ def link_create(request, playlist_uuid):
     
     if request.method == 'POST':
         try:
-            link = (LinkService(request)).save_form(playlist)
+            link_service = LinkService(request)
+            link = link_service.save_form(playlist)
+            ServerNotificationBuilder(request).set_message(link_service.get_success_message()).set_statut("success").send()
             ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LINK_UPLOAD, user=request.user, content_object=link)
-            ServerNotificationBuilder(request).set_message("Lien musical ajouté avec succès!").set_statut("success").send()
+        except PlaylistLimitException as e:
+            ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
         except ValueError as e:
             ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
         return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
@@ -168,6 +172,8 @@ def link_update(request, playlist_uuid, link_id):
         try:
             (LinkService(request)).save_form(playlist, link)
             ServerNotificationBuilder(request).set_message("Lien musical modifié avec succès!").set_statut("success").send()
+        except PlaylistLimitException as e:
+            ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
         except ValueError as e:
             ServerNotificationBuilder(request).set_message(str(e)).set_statut("error").send()
         return redirect('playlistUpdate', playlist_uuid=playlist_uuid)
@@ -190,12 +196,18 @@ def link_create_ajax(request, playlist_uuid) -> JsonResponse:
         if not playlist:
             return JsonResponse({"success": False, "message": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         try:
-            link = (LinkService(request)).save_form(playlist)
+            link_service = LinkService(request)
+            link = link_service.save_form(playlist)
             ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LINK_UPLOAD, user=request.user, content_object=link)
             return JsonResponse({
                 'success': True,
-                'message': 'Lien musical ajouté avec succès!',
+                'message': link_service.get_success_message(),
             }, status=200)
+        except PlaylistLimitException as e:
+            return JsonResponse({
+                'success': False,
+                'message': str(e)
+            }, status=400)
         except ValueError as e:
             return JsonResponse({
                 'success': False,

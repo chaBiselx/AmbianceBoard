@@ -1,4 +1,5 @@
 import { Modal } from 'bootstrap';
+import BootstrapComponentInitializer from './BootstrapComponentInitializer';
 
 type ModalJson = {
     title: string;
@@ -83,6 +84,9 @@ class ModalCustom {
 
 
         mainModal.show();
+
+        new BootstrapComponentInitializer().initialize();
+
         if (typeof config.callback === 'function') {
             config.callback();
         }

@@ -300,6 +300,10 @@ Sécurité
 Nouveautés
 - Mise en place de fixtures pour accélérer le développement
 - Ajout d'un système de tag pour acceler la recherche de playlist 
+- Pourvoir télécharger une piste audio depuis youtube 
+
+Améliorations
+- Chargement des composants dynamique lors d'une modal
 
 
 
