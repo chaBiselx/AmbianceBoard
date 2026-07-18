@@ -26,6 +26,12 @@
     <i class="fa-solid fa-music"></i>
     <span class="d-none d-lg-inline">{% trans "Boutons" %}</span>
 </a>
+{% if has_recent_async_download_jobs %}
+<a class="btn btn-link url_link p-1 text-warning" href="{% url 'asyncDownloadJobsRecent' %}" aria-label="Téléchargements" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans 'Téléchargements des dernières 24h' %}">
+    <i class="fa-solid fa-cloud-arrow-down"></i>
+    <span class="d-none d-lg-inline">{% trans "Téléchargements" %}</span>
+</a>
+{% endif %}
 {% endif %}
 {% include 'Html/partial/structure/navbar/navbar_dropdown_lang.html'%}
 

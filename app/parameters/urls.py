@@ -29,6 +29,7 @@ from main.interface.ui.controller.private.playlistFormViews import (
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
 from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
+from main.interface.ui.controller.private.asyncDownloadJobViews import recent_async_download_jobs
 from main.interface.ui.controller.moderator.moderatorViews import (
     moderator_dashboard, 
     moderator_listing_images_playlist, 
@@ -139,6 +140,7 @@ urlpatterns = [
     path("playlist/create", playlist_create, name="addPlaylist"),
     path("playlist/all", playlist_read_all, name="playlistsAllList"),
     path("playlist/public/copiable/all", playlist_read_copiable, name="playlistsAllCopiableList"),
+    path("account/downloads/recent", recent_async_download_jobs, name="asyncDownloadJobsRecent"),
     path("playlist/public/copiable", playlist_copiable_preview, name="playlistPreview"),
     path("playlist/public/copiable/<uuid:playlist_uuid>/duplicate", playlist_copiable_duplicate, name="playlistDuplicate"),
     path("playlist/<uuid:playlist_uuid>/update", playlist_update, name="playlistUpdate"),

@@ -1,4 +1,8 @@
+from datetime import timedelta
 from typing import Optional
+
+from django.db.models import QuerySet
+from django.utils import timezone
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.User import User
@@ -65,3 +69,19 @@ class AsyncDownloadJobRepository:
         job.status = AsyncDownloadJobStatusEnum.FAILED.name
         job.error_message = error_message
         job.save(update_fields=["status", "error_message", "updated_at"])
+
+    def get_recent_jobs_for_user(self, user: User) -> QuerySet[AsyncDownloadJob]:
+        """Récupère les jobs de l'utilisateur mis à jour sur les dernières 24h."""
+        cutoff = timezone.now() - timedelta(hours=24)
+        return AsyncDownloadJob.objects.filter(
+            user=user,
+            updated_at__gte=cutoff,
+        ).select_related("playlist").order_by("-updated_at")
+
+    def count_recent_jobs_for_user(self, user: User) -> int:
+        """Compte les jobs de l'utilisateur mis à jour sur les dernières 24h."""
+        cutoff = timezone.now() - timedelta(hours=24)
+        return AsyncDownloadJob.objects.filter(
+            user=user,
+            updated_at__gte=cutoff,
+        ).count()

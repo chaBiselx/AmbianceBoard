@@ -1,0 +1,62 @@
+{% extends 'Html/partial/structure/base.html' %}
+{% load i18n %}
+{% load PaginationLinks %}
+
+{% block content %}
+{% if page_objects %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Statut" %}</th>
+                                <th>{% trans "URL" %}</th>
+                                <th>{% trans "Playlist" %}</th>
+                                <th>{% trans "Nom alternatif" %}</th>
+                                <th>{% trans "Erreur" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in page_objects %}
+                            <tr>
+                                <td>
+                                    
+                                    <span class="badge text-bg-{% if job.status == 'FAILED' %}danger{% elif job.status == 'SUCCESS' %}success{% else %}secondary{% endif %}">{{ job.status }}</span>
+                                </td>
+                                <td>
+                                    <a href="{{ job.url }}" target="_blank" rel="noopener noreferrer">{{ job.url|truncatechars:80 }}</a>
+                                </td>
+                                <td>{{ job.playlist.name }}</td>
+                                <td>
+                                    {% if job.alternative_name %}
+                                        {{ job.alternative_name }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if job.status == 'FAILED' and job.error_message %}
+                                        {{ job.error_message }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% applys_pagination paginator %}
+{% else %}
+<div class="alert alert-info" role="alert">
+    {% trans "Aucun téléchargement différé mis à jour sur les 24 dernières heures." %}
+</div>
+{% endif %}
+{% endblock %}

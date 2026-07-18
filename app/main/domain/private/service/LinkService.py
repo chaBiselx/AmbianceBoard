@@ -1,5 +1,6 @@
 from typing import Optional
 from django.http import HttpRequest
+from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.architecture.persistence.models.LinkMusic import LinkMusic
 from main.architecture.persistence.models.Playlist import Playlist
 from main.interface.ui.forms.private.LinkMusicForm import LinkMusicForm
@@ -12,11 +13,15 @@ from main.domain.common.exceptions.PlaylistLimitException import PlaylistLimitEx
 
 class LinkService:
     
+    PREFIX_CACHE_NAVBAR = "navbar:recent_async_download_jobs:"
+    
     def __init__(self, request: HttpRequest) -> None:
         self.request = request
         self.link_type = "default"
         self.track_repository = TrackRepository()
         self.job_repository = AsyncDownloadJobRepository()
+        self.cache = CacheFactory.get_default_cache()
+  
 
     
     def save_form(self, playlist: Playlist, link: Optional[LinkMusic] = None) -> LinkMusic|None:
@@ -64,6 +69,7 @@ class LinkService:
             source='youtube',
             alternative_name=form.cleaned_data.get('alternativeName', None),
         )
+        self.__reset_cache_navbar()
         result = process_async_download_job.apply_async(
             args=[str(job.uuid)],
             queue='default',
@@ -81,3 +87,8 @@ class LinkService:
             nbFinal = self.track_repository.get_count(playlist) + self.job_repository.count_active(playlist)
             if nbFinal >= limit_music_per_playlist:
                 raise PlaylistLimitException(f"Vous avez atteint la limite de {limit_music_per_playlist} musiques par playlist.")
+            
+    def __reset_cache_navbar(self) -> None:
+        """Réinitialise le cache pour les jobs de téléchargement récents"""
+        cache_key = f"{self.PREFIX_CACHE_NAVBAR}{self.request.user.id}"
+        self.cached_value = self.cache.delete(cache_key)
