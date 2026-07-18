@@ -1,5 +1,7 @@
 from celery import shared_task
 from main.architecture.persistence.repository.AsyncDownloadJobRepository import AsyncDownloadJobRepository
+from django.utils.translation import gettext as _
+from main.domain.common.exceptions.YoutubeDownloadException import YoutubeDownloadException
 from main.domain.common.service.AsyncDownloadStrategyFactory import AsyncDownloadStrategyFactory
 from main.domain.common.utils.logger import logger
 
@@ -53,6 +55,18 @@ def process_async_download_job(
         )
         job_repository.mark_success(async_job)
         return {"music_id": music.id}
+    except YoutubeDownloadException as exc:
+        translated_message = _(exc.translation_key)
+        logger.warning(
+            "AsyncDownloadJobMessenger: youtube validation failed job_uuid=%s playlist_uuid=%s user_id=%s err_key=%s err=%s",
+            job_uuid,
+            playlist.uuid,
+            user.id,
+            exc.translation_key,
+            translated_message,
+        )
+        job_repository.mark_failed(async_job, translated_message)
+        raise ValueError(translated_message) from exc
     except ValueError as exc:
         logger.warning(
             "AsyncDownloadJobMessenger: validation failed job_uuid=%s playlist_uuid=%s user_id=%s err=%s",

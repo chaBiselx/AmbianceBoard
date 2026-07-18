@@ -6,6 +6,11 @@ from typing import Any, Optional, Tuple
 import yt_dlp
 from yt_dlp.utils import DownloadError
 
+from main.domain.common.exceptions.YoutubeDownloadException import (
+    YoutubeAudioConvertedFileNotFoundException,
+    YoutubeAudioDownloadFailedException,
+    YoutubeAudioTooLargeException,
+)
 from main.domain.common.service.youtube.IYoutubeDownloader import IYoutubeDownloader
 from main.domain.common.utils.settings import Settings
 
@@ -52,14 +57,20 @@ class YtDlpYoutubeDownloader(IYoutubeDownloader):
         except DownloadError as exc:
             message = str(exc).lower()
             if "max-filesize" in message or "larger than" in message:
-                raise ValueError("Le poids du fichier est trop lourd.") from exc
-            raise ValueError("Impossible de telecharger l'audio depuis cette URL") from exc
+                raise YoutubeAudioTooLargeException() from exc
+            raise YoutubeAudioDownloadFailedException() from exc
 
         mp3_path = self._resolve_mp3_path(info, downloaded_path, temp_dir)
         if mp3_path is None:
-            if max_filesize_bytes is not None and self._has_oversized_partial_file(temp_dir, max_filesize_bytes):
-                raise ValueError("Le poids du fichier est trop lourd.")
-            raise ValueError("Le fichier audio converti est introuvable")
+            if (
+                max_filesize_bytes is not None
+                and (
+                    self._is_oversized_from_info(info, max_filesize_bytes)
+                    or self._has_oversized_partial_file(temp_dir, max_filesize_bytes)
+                )
+            ):
+                raise YoutubeAudioTooLargeException()
+            raise YoutubeAudioConvertedFileNotFoundException()
 
         title = (info.get("title") if isinstance(info, dict) else None) or Path(mp3_path).stem
         return title.strip(), mp3_path
@@ -103,3 +114,40 @@ class YtDlpYoutubeDownloader(IYoutubeDownloader):
                 if path.stat().st_size >= max_filesize_bytes:
                     return True
         return False
+
+    def _is_oversized_from_info(self, info: Any, max_filesize_bytes: int) -> bool:
+        if not isinstance(info, dict):
+            return False
+
+        for candidate in self._iter_possible_filesizes(info):
+            if candidate is not None and candidate >= max_filesize_bytes:
+                return True
+        return False
+
+    def _iter_possible_filesizes(self, info: dict) -> list[int]:
+        sizes = []
+
+        def append_size(value: Any) -> None:
+            if isinstance(value, (int, float)):
+                int_value = int(value)
+                if int_value > 0:
+                    sizes.append(int_value)
+
+        append_size(info.get("filesize"))
+        append_size(info.get("filesize_approx"))
+
+        requested_downloads = info.get("requested_downloads") or []
+        for item in requested_downloads:
+            if not isinstance(item, dict):
+                continue
+            append_size(item.get("filesize"))
+            append_size(item.get("filesize_approx"))
+
+        requested_formats = info.get("requested_formats") or []
+        for item in requested_formats:
+            if not isinstance(item, dict):
+                continue
+            append_size(item.get("filesize"))
+            append_size(item.get("filesize_approx"))
+
+        return sizes
