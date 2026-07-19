@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
@@ -33,6 +34,7 @@ from main.domain.common.enum.ChartPeriodEnum import ChartPeriodEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.moderator.service.ModeratorSoundboardStatsService import ModeratorSoundboardStatsService
 
+logger = logging.getLogger(__name__)
 
 
 
@@ -119,9 +121,10 @@ def moderator_soundboard_listening_time_stats(request, soundboard_uuid) -> JsonR
             'data': response_data,
         })
     except Exception as e:
+        logger.exception("Failed to retrieve soundboard listening time stats", exc_info=e)
         return JsonResponse({
             'error': ErrorMessageEnum.DATA_RECUPERATION,
-            'message': str(e)
+            'message': "Une erreur interne est survenue."
         }, status=500)
     
 @login_required
