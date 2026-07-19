@@ -1,4 +1,5 @@
 from typing import Optional
+from urllib.parse import urlparse
 from django.http import HttpRequest
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.architecture.persistence.models.LinkMusic import LinkMusic
@@ -58,7 +59,18 @@ class LinkService:
     
     def __is_youtube_link(self, url: str) -> bool:
         """Vérifie si l'URL est un lien YouTube"""
-        return "youtube.com" in url or "youtu.be" in url
+        parsed = urlparse(url)
+        hostname = (parsed.hostname or "").lower()
+
+        if not hostname:
+            return False
+
+        return (
+            hostname == "youtube.com"
+            or hostname.endswith(".youtube.com")
+            or hostname == "youtu.be"
+            or hostname.endswith(".youtu.be")
+        )
     
     def __handle_youtube_link(self, playlist: Playlist, form: LinkMusicForm) -> None:
         """Gère le cas où le lien est un lien YouTube"""
