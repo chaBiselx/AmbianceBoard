@@ -207,7 +207,7 @@ def link_create_ajax(request, playlist_uuid) -> JsonResponse:
             logger.error(f"Playlist limit reached while creating link via AJAX: {str(e)}", exc_info=e)
             return JsonResponse({
                 'success': False,
-                'message': str(e)
+                'message': "Vous avez atteint la limite de musiques par playlist."
             }, status=403)
         except ValueError as e:
             logger.error(f"Validation error while creating link via AJAX: {str(e)}", exc_info=e)
