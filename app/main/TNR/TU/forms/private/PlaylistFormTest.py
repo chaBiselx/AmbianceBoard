@@ -29,7 +29,7 @@ class PlaylistFormTest(TestCase):
 
         form = PlaylistForm(
             data={
-                'name': 'Playlist test',
+                'name': 'Playlist add test',
                 'typePlaylist': PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
                 'useSpecificColor': 'on',
                 'color': '#000000',
@@ -64,7 +64,7 @@ class PlaylistFormTest(TestCase):
         request = self.request_factory.post(
             '/playlist/create/',
             data={
-                'name': 'Playlist test',
+                'name': 'Playlist test post',
                 'typePlaylist': PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
                 'useSpecificColor': 'on',
                 'color': '#000000',
