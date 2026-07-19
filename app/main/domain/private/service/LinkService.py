@@ -96,8 +96,8 @@ class LinkService:
             user_parameters = UserParametersFactory(self.request.user)
             limit_music_per_playlist = user_parameters.limit_music_per_playlist
             
-            nbFinal = self.track_repository.get_count(playlist) + self.job_repository.count_active(playlist)
-            if nbFinal >= limit_music_per_playlist:
+            nb_final = self.track_repository.get_count(playlist) + self.job_repository.count_active(playlist)
+            if nb_final >= limit_music_per_playlist:
                 raise PlaylistLimitException(f"Vous avez atteint la limite de {limit_music_per_playlist} musiques par playlist.")
             
     def __reset_cache_navbar(self) -> None:

@@ -91,7 +91,7 @@ class YoutubeAudioService:
             return int(limit_weight_file * 1024 * 1024)
         return None
 
-    def _save_music(self, playlist: Playlist, title: str, file_path: str, name: Optional[str] = None) -> Music:
+    def _save_music(self, playlist: Playlist, title: str, file_path: str) -> Music:
         base_name = str(uuid.uuid4())
         upload_file_name = f"{base_name}.mp3"
 

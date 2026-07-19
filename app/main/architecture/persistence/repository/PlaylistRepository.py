@@ -35,8 +35,8 @@ class PlaylistRepository:
         except Exception:
             return []
     
-    def get_listing_playlist_queryset_with_tag(self, PlaylistTag: PlaylistTag, filter:dict) -> QuerySet:
-        query_set = Playlist.objects.filter(playlist_tags=PlaylistTag)
+    def get_listing_playlist_queryset_with_tag(self, playlist_tag: PlaylistTag) -> QuerySet:
+        query_set = Playlist.objects.filter(playlist_tags=playlist_tag)
         return query_set.distinct().order_by('updated_at')
     
     def count_private(self, user:User) -> int:

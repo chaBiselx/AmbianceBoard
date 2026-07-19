@@ -32,16 +32,16 @@ class AsyncDownloadJob(models.Model):
 
     url = models.URLField(max_length=500)
     source = models.CharField(max_length=50, default="youtube", db_index=True)
-    alternative_name = models.CharField(max_length=255, blank=True, null=True)
+    alternative_name = models.CharField(max_length=255, blank=True)
 
-    celery_task_id = models.CharField(max_length=255, blank=True, null=True, db_index=True)
+    celery_task_id = models.CharField(max_length=255, blank=True,  db_index=True)
     status = models.CharField(
         max_length=20,
         choices=[(e.name, e.value) for e in AsyncDownloadJobStatusEnum],
         default=AsyncDownloadJobStatusEnum.PENDING.name,
         db_index=True,
     )
-    error_message = models.TextField(blank=True, null=True)
+    error_message = models.TextField(blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

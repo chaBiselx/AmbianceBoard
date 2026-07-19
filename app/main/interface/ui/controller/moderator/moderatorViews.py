@@ -323,7 +323,7 @@ def moderator_get_playlist_list_for_playlist_tag(request) -> HttpResponse:
         playlist_tag = playlist_tag_repository.get_with_label(label=selected_tag)
         if not playlist_tag:
             return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
-        queryset = playlist_repository.get_listing_playlist_queryset_with_tag(PlaylistTag=playlist_tag, filter={})
+        queryset = playlist_repository.get_listing_playlist_queryset_with_tag(playlist_tag=playlist_tag)
     else: 
         queryset = playlist_repository.get_all_queryset() 
     
