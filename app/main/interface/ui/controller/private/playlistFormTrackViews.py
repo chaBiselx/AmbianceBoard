@@ -204,13 +204,13 @@ def link_create_ajax(request, playlist_uuid) -> JsonResponse:
                 'message': link_service.get_success_message(),
             }, status=200)
         except PlaylistLimitException as e:
-            self.logger.error(f"Playlist limit reached while creating link via AJAX: {str(e)}", exc_info=e)
+            logger.error(f"Playlist limit reached while creating link via AJAX: {str(e)}", exc_info=e)
             return JsonResponse({
                 'success': False,
                 'message': str(e)
             }, status=403)
         except ValueError as e:
-            self.logger.error(f"Validation error while creating link via AJAX: {str(e)}", exc_info=e)
+            logger.error(f"Validation error while creating link via AJAX: {str(e)}", exc_info=e)
             return JsonResponse({
                 'success': False,
                 'message': ErrorMessageEnum.INTERNAL_ERROR.value
