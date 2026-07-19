@@ -5,7 +5,7 @@ from django.test import TestCase, Client, tag
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.architecture.persistence.models.Tag import Tag
+from main.architecture.persistence.models.SoundboardTag import SoundboardTag
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.Track import Track
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
@@ -46,8 +46,8 @@ class PublicListingSoundboardRouteTest(TestCase):
 
     def test_public_listing_soundboard_seo_with_tag(self):
         """Le listing public rend des balises SEO dynamiques pour un tag sélectionné."""
-        selected_tag = Tag.objects.create(name='dragon')
-        other_tag = Tag.objects.create(name='epic')
+        selected_tag = SoundboardTag.objects.create(name='dragon')
+        other_tag = SoundboardTag.objects.create(name='epic')
         self._create_public_soundboard(tags=[selected_tag, other_tag])
 
         response = self.client.get(reverse('publicListingSoundboard'), {'tag': selected_tag.name})

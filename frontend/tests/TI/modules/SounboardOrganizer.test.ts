@@ -48,23 +48,23 @@ describe('SounboardOrganizer Integration Tests', () => {
         expect(document.getElementById('playlistAssociees-3')).toBeTruthy();
 
         // Simulate insert at position 2
+        // Get references to old sections BEFORE modifying any ids
+        const oldSection2 = document.getElementById('playlistAssociees-2')!;
+        const oldSection3 = document.getElementById('playlistAssociees-3')!;
+        const p2 = oldSection2.querySelector('.playlist') as HTMLElement;
+        const p3 = oldSection3.querySelector('.playlist') as HTMLElement;
+
         // Step 1: Create new empty section at position 2
         const newSection = document.createElement('div');
         newSection.id = 'playlistAssociees-2';
         newSection.dataset.section = '2';
 
         // Step 2: Update old section 2 -> section 3
-        const oldSection2 = document.getElementById('playlistAssociees-2')!;
-        const p2 = oldSection2.querySelector('.playlist') as HTMLElement;
-        
         oldSection2.id = 'playlistAssociees-3';
         oldSection2.dataset.section = '3';
         p2.dataset.section = '3';
 
         // Step 3: Update old section 3 -> section 4
-        const oldSection3 = document.getElementById('playlistAssociees-3')!;
-        const p3 = oldSection3.querySelector('.playlist') as HTMLElement;
-        
         oldSection3.id = 'playlistAssociees-4';
         oldSection3.dataset.section = '4';
         p3.dataset.section = '4';
@@ -152,7 +152,7 @@ describe('SounboardOrganizer Integration Tests', () => {
         expect(playlist.dataset.section).toBe('2');
         expect(playlist.dataset.order).toBe('1');
         expect(document.getElementById('playlistAssociees-2')!.contains(playlist)).toBe(true);
-        
+
         // Verify section 1 still has p2
         expect(document.getElementById('playlistAssociees-1')!.querySelector('[data-id="p2"]')).toBeTruthy();
     });
@@ -181,7 +181,7 @@ describe('SounboardOrganizer Integration Tests', () => {
         // Verify playlist is in unassociated zone
         expect(unassociatedZone.contains(playlist)).toBe(true);
         expect(unassociatedZone.querySelectorAll('.playlist')).toHaveLength(1);
-        
+
         // Verify original section is now empty
         expect(document.getElementById('playlistAssociees-1')!.querySelectorAll('.playlist')).toHaveLength(0);
     });
@@ -207,13 +207,15 @@ describe('SounboardOrganizer Integration Tests', () => {
 
         // Step 1: Insert at position 2
         // Update section 2 -> 3, section 3 -> 4
+        // Get references to BOTH sections BEFORE modifying any ids
         const oldSection2 = document.getElementById('playlistAssociees-2')!;
+        const oldSection3 = document.getElementById('playlistAssociees-3')!;
         const p3 = oldSection2.querySelector('.playlist') as HTMLElement;
+        const p4 = oldSection3.querySelector('.playlist') as HTMLElement;
+
         oldSection2.id = 'playlistAssociees-3';
         p3.dataset.section = '3';
 
-        const oldSection3 = document.getElementById('playlistAssociees-3')!;
-        const p4 = oldSection3.querySelector('.playlist') as HTMLElement;
         oldSection3.id = 'playlistAssociees-4';
         p4.dataset.section = '4';
 
@@ -238,15 +240,15 @@ describe('SounboardOrganizer Integration Tests', () => {
         // Verify final state
         expect(document.getElementById('playlistAssociees-1')!.querySelectorAll('.playlist')).toHaveLength(1);
         expect(document.getElementById('playlistAssociees-1')!.querySelector('[data-id="p2"]')).toBeTruthy();
-        
+
         expect(document.getElementById('playlistAssociees-2')!.querySelectorAll('.playlist')).toHaveLength(0);
-        
+
         expect(document.getElementById('playlistAssociees-3')!.querySelectorAll('.playlist')).toHaveLength(2);
         expect(document.getElementById('playlistAssociees-3')!.querySelector('[data-id="p1"]')).toBeTruthy();
         expect(document.getElementById('playlistAssociees-3')!.querySelector('[data-id="p3"]')).toBeTruthy();
-        
+
         expect(document.getElementById('playlistAssociees-4')!.querySelectorAll('.playlist')).toHaveLength(0);
-        
+
         expect(unassociated.querySelectorAll('.playlist')).toHaveLength(1);
         expect(unassociated.querySelector('[data-id="p4"]')).toBeTruthy();
     });
@@ -270,23 +272,25 @@ describe('SounboardOrganizer Integration Tests', () => {
         `;
 
         // Simulate insert at position 2 with DOM updates
+        // Get references to old sections BEFORE modifying any ids
+        const oldSection2 = document.getElementById('playlistAssociees-2')!;
+        const oldSection3 = document.getElementById('playlistAssociees-3')!;
+        const p2 = oldSection2.querySelector('.playlist') as HTMLElement;
+        const p3 = oldSection3.querySelector('.playlist') as HTMLElement;
+
         // Create new empty section at position 2
         const newSection = document.createElement('div');
         newSection.id = 'playlistAssociees-2';
         newSection.dataset.section = '2';
 
         // Update old section 2 -> new section 3
-        const oldSection2 = document.getElementById('playlistAssociees-2')!;
         oldSection2.id = 'playlistAssociees-3';
         oldSection2.dataset.section = '3';
-        const p2 = oldSection2.querySelector('.playlist') as HTMLElement;
         p2.dataset.section = '3';
 
         // Update old section 3 -> new section 4
-        const oldSection3 = document.getElementById('playlistAssociees-3')!;
         oldSection3.id = 'playlistAssociees-4';
         oldSection3.dataset.section = '4';
-        const p3 = oldSection3.querySelector('.playlist') as HTMLElement;
         p3.dataset.section = '4';
 
         // Insert new empty section
@@ -363,7 +367,7 @@ describe('SounboardOrganizer Integration Tests', () => {
         expect(p1.dataset.section).toBe('1');
         expect(p1.dataset.order).toBe('2');
         expect(section1.contains(p1)).toBe(true);
-        
+
         // Verify unassociated zone is now empty
         expect(document.getElementById('playlistNonAssociees')!.querySelectorAll('.playlist')).toHaveLength(0);
     });

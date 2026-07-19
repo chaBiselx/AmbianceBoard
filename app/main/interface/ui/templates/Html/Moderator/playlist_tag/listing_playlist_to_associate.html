@@ -1,0 +1,104 @@
+{% extends 'Html/partial/structure/base_moderator.html' %}
+{% load SoundBoard %}
+{% load PaginationLinks %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12 mb-3">
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                    <button class="accordion-button {% if selected_tag %}{% else %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="{% if selected_tag %}true{% else %}false{% endif %}"
+                        aria-controls="panelsStayOpen-collapseTwo">
+                        Recherche par tag
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse {% if selected_tag %}show{% endif %}" aria-labelledby="panelsStayOpen-headingTwo">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center">
+
+
+                                    {% if selected_tag %}
+                                    <div class="alert alert-info d-flex align-items-center text-small">
+                                        <i class="fas fa-filter me-2"></i>
+                                        Filtré par le tag: <strong class="ms-1">{{ selected_tag }}</strong>
+                                        <a href="{% url 'moderatorGetPlaylistListForPlaylistTag' %}" class="btn btn-sm btn-outline-secondary ms-2">
+                                            <i class="fas fa-times"></i> Effacer le filtre
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5>
+                                    <i class="fas fa-tags me-2"></i>Tags
+                                </h5>
+                                <div class="tags-container" id="tag-search">
+                                    <div class="d-flex flex-wrap gap-2" id="tags-cloud">
+                                        <a data-tag="empty" class="tag-element-redirect btn-link text-decoration-none">
+                                            <span class="badge tag-badge text-warning {% if selected_tag == 'empty' %}badge-selected{% else %}badge-unselected{% endif %} tag-cloud-item" data-bs-toggle="tooltip" data-bs-title="Aucun tags">
+                                                <i class="fas fa-tag me-1 "></i>aucun
+
+                                            </span>
+
+                                        </a>
+                                        {% for tag in list_tag %}
+                                        <a data-tag="{{ tag.label }}" class="tag-element-redirect btn-link text-decoration-none">
+                                            <span class="badge tag-badge {% if selected_tag == tag.name %}badge-selected{% else %}badge-unselected{% endif %} tag-cloud-item" data-bs-toggle="tooltip" data-bs-title="{{tag.description|default:'Aucun description'}}">
+                                                <i class="fas fa-tag me-1"></i>{{ tag.name }}
+                                            </span>
+
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-12">
+
+        <div class="flex-container">
+            {% for playlist in page_objects %}
+            <div class="position-relative">
+                <button class="playlist-link playlist-element flex-item playlist-dim-100 m-1 js-popup-playlist-tag-playlist" data-title="{{playlist.name}}" data-url="{% url 'moderatorGetPopupPlaylistTag' playlist.uuid %}" id="playlist-{{ playlist.uuid }}"
+                    style="background-color: {{playlist.get_color}}; color: {{playlist.get_color_text}};">
+                    {{ playlist | applys_soundboard_content}}
+                </button>
+                {% if playlist.moderator_ban_copie %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" title="Copie bloquée Copiable">
+                    <i class="fa-solid fa-ban"></i>
+                </span>
+                {% elif playlist.is_copiable %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" title="Copiable">
+                    <i class="fa-regular fa-copy"></i>
+                </span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        {% applys_pagination paginator %}
+
+
+    </div>
+
+
+</div>
+
+
+
+
+{% endblock %}

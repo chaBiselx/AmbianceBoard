@@ -16,7 +16,8 @@ from main.architecture.persistence.models.UserPreference import UserPreference
 from main.architecture.persistence.models.UserFavoritePublicSoundboard import UserFavoritePublicSoundboard
 from main.architecture.persistence.models.ReportContent import ReportContent
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
-from main.architecture.persistence.models.Tag import Tag
+from main.architecture.persistence.models.SoundboardTag import SoundboardTag
+from main.architecture.persistence.models.PlaylistTag import PlaylistTag
 from main.architecture.persistence.models.UserTier import UserTier
 from main.architecture.persistence.models.UserTierHistory import UserTierHistory
 from main.architecture.persistence.models.DomainBlacklist import DomainBlacklist
@@ -26,6 +27,7 @@ from main.architecture.persistence.models.UserActivity import UserActivity
 from main.architecture.persistence.models.UserDevicePreference import UserDevicePreference
 from main.architecture.persistence.models.TrackLabel import TrackLabel
 from main.architecture.persistence.models.HomeDemoItem import HomeDemoItem
+from main.architecture.persistence.models.AsyncDownloadJob import AsyncDownloadJob
 
 
 admin.site.register(User)
@@ -41,7 +43,8 @@ admin.site.register(UserPreference)
 admin.site.register(UserFavoritePublicSoundboard)
 admin.site.register(ReportContent)
 admin.site.register(SharedSoundboard)
-admin.site.register(Tag)
+admin.site.register(SoundboardTag)
+admin.site.register(PlaylistTag)
 admin.site.register(UserTier)
 admin.site.register(UserTierHistory)
 admin.site.register(DomainBlacklist)
@@ -51,3 +54,4 @@ admin.site.register(UserActivity)
 admin.site.register(UserDevicePreference)
 admin.site.register(TrackLabel)
 admin.site.register(HomeDemoItem)
+admin.site.register(AsyncDownloadJob)

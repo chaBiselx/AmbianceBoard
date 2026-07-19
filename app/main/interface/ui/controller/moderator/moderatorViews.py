@@ -1,9 +1,11 @@
+import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.models import Group, Permission
 from django.db.models import Avg, Count
 from django.db import models
+from django.urls import reverse
 from django.core.paginator import Paginator
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
@@ -14,8 +16,10 @@ from main.domain.common.enum.ModerationModelEnum import ModerationModelEnum
 from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
+from django.utils import timezone
 from main.domain.common.utils.url import redirection_url
 from main.interface.ui.forms.moderator.TagForm import TagForm
+from main.interface.ui.forms.moderator.PlaylistTagForm import PlaylistTagForm
 from main.architecture.persistence.repository.UserRepository import UserRepository
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
@@ -24,8 +28,13 @@ from main.architecture.persistence.repository.ReportContentRepository import Rep
 from main.domain.moderator.service.TreatmentReportService import TreatmentReportService
 from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
 from main.architecture.persistence.repository.TagRepository import TagRepository
+from main.architecture.persistence.repository.PlaylistTagRepository import PlaylistTagRepository
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
+from main.domain.common.enum.ChartPeriodEnum import ChartPeriodEnum
+from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
+from main.domain.moderator.service.ModeratorSoundboardStatsService import ModeratorSoundboardStatsService
 
+logger = logging.getLogger(__name__)
 
 
 
@@ -85,6 +94,38 @@ def moderator_get_infos_playlist(request, playlist_uuid) -> HttpResponse:
 def moderator_get_infos_soundboard(request, soundboard_uuid) -> HttpResponse:
     soundboard = SoundBoardRepository().get(soundboard_uuid)
     return render(request, 'Html/Moderator/info_soundboard.html', {"soundboard":soundboard})
+
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_soundboard_listening_time_stats(request, soundboard_uuid) -> JsonResponse:
+    try:
+        period = request.GET.get('period', ChartPeriodEnum.get_default_period())
+        if not ChartPeriodEnum.is_valid_period(period):
+            period = ChartPeriodEnum.get_default_period()
+
+        days = int(period)
+        end_dt = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        start_dt = end_dt - timedelta(days=days - 1)
+
+        soundboard = SoundBoardRepository().get(soundboard_uuid)
+        if not soundboard:
+            raise ValueError("Soundboard non trouvée")
+
+        response_data = ModeratorSoundboardStatsService().get_soundboard_listening_time_data(soundboard, start_dt, end_dt)
+        return JsonResponse({
+            'title': f"Temps d'écoute soundboard - {days} jours",
+            'x_label': 'Date',
+            'y_label': 'Temps (min)',
+            'data': response_data,
+        })
+    except Exception as e:
+        logger.exception("Failed to retrieve soundboard listening time stats", exc_info=e)
+        return JsonResponse({
+            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'message': "Une erreur interne est survenue."
+        }, status=500)
     
 @login_required
 @require_http_methods(['GET'])
@@ -212,3 +253,120 @@ def moderator_get_infos_tag(request, tag_uuid) -> HttpResponse:
         return render(request, 'Html/Moderator/info_tag.html', {"tag": tag})
     else : 
         return render(request,  HtmlDefaultPageEnum.ERROR_404.value, status=404)
+
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_listing_playlist_tags(request) -> HttpResponse:
+    page_number = int(request.GET.get('page', 1))
+
+    playlist_tag_repository = PlaylistTagRepository()
+    queryset = playlist_tag_repository.get_all_queryset()
+    paginator = Paginator(queryset, 50)
+    context = extract_context_to_paginator(paginator, page_number)
+    context['title'] = 'Gestion des tags playlist'
+    return render(request, 'Html/Moderator/playlist_tag/listing_playlist_tags.html', context)
+
+
+@login_required
+@require_http_methods(['GET', 'POST'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_manage_playlist_tag(request, playlist_tag_label=None) -> HttpResponse:
+    is_edit = playlist_tag_label is not None
+    playlist_tag = None
+
+    if is_edit:
+        playlist_tag = PlaylistTagRepository().get_with_label(label=playlist_tag_label)
+        if not playlist_tag:
+            return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+
+    if request.method == 'POST':
+        form = PlaylistTagForm(request.POST, instance=playlist_tag)
+        if form.is_valid():
+            form.save()
+            return redirect('moderatorListingPlaylistTags')
+    else:
+        form = PlaylistTagForm(instance=playlist_tag)
+
+    return render(
+        request,
+        'Html/Moderator/playlist_tag/create_playlist_tag.html',
+        {
+            'form': form,
+            'is_edit': is_edit,
+            'playlist_tag': playlist_tag,
+        },
+    )
+    
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_get_infos_playlist_tag(request, playlist_tag_label) -> HttpResponse:
+    playlist_tag_repository = PlaylistTagRepository()
+    playlist_tag = playlist_tag_repository.get_with_label(label=playlist_tag_label)
+    if playlist_tag:
+        return render(request, 'Html/Moderator/playlist_tag/info_playlist_tag.html', {'playlist_tag': playlist_tag})
+    return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_get_playlist_list_for_playlist_tag(request) -> HttpResponse:
+    selected_tag = request.GET.get('tag', None)
+    page_number = int(request.GET.get('page', 1))
+    playlist_repository = PlaylistRepository()
+    
+    if selected_tag == 'empty':
+        queryset = playlist_repository.get_all_without_playlist_tag_queryset()
+    elif selected_tag:
+        playlist_tag_repository = PlaylistTagRepository()
+        playlist_tag = playlist_tag_repository.get_with_label(label=selected_tag)
+        if not playlist_tag:
+            return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+        queryset = playlist_repository.get_listing_playlist_queryset_with_tag(playlist_tag=playlist_tag)
+    else: 
+        queryset = playlist_repository.get_all_queryset() 
+    
+    paginator = Paginator(queryset, 50)
+    context = extract_context_to_paginator(paginator, page_number)
+    context['title'] = 'Playlists sans tag'
+    
+    playlist_tag_repository = PlaylistTagRepository()
+    context['list_tag'] = playlist_tag_repository.get_all()   
+    context['selected_tag'] = selected_tag 
+    return render(request, 'Html/Moderator/playlist_tag/listing_playlist_to_associate.html', context)
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_get_popup_playlist_tag(request, playlist_uuid) -> HttpResponse:
+    if playlist_uuid:
+        playlist = PlaylistRepository().get(playlist_uuid)
+        if not playlist:
+            return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+    playlist_tag_repository = PlaylistTagRepository()
+    list_tag = playlist_tag_repository.get_all()   
+    url_update = reverse('moderatorPostPopupPlaylistTag', kwargs={'playlist_uuid': playlist_uuid})         
+
+    return render(request, 'Html/Moderator/playlist_tag/popup_playlist_tag_update.html', {'playlist': playlist, 'list_tag': list_tag, 'url_update': url_update})
+
+
+@login_required
+@require_http_methods(['POST'])
+@permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
+def moderator_post_popup_playlist_tag(request, playlist_uuid) -> JsonResponse:
+    playlist_tag_label = request.POST.get('playlist_tag_label')
+    action = request.POST.get('action')
+    playlist = PlaylistRepository().get(playlist_uuid)
+    playlist_tag = PlaylistTagRepository().get_with_label(label=playlist_tag_label)
+    if playlist and playlist_tag:
+        if action == 'add':
+            playlist.playlist_tags.add(playlist_tag)
+            return JsonResponse({'status': 'success', 'message': f'Tag "{playlist_tag_label}" ajouté à la playlist.'})
+        elif action == 'remove':
+            playlist.playlist_tags.remove(playlist_tag)
+            return JsonResponse({'status': 'success', 'message': f'Tag "{playlist_tag_label}" retiré de la playlist.'})
+    return JsonResponse({'status': 'error', 'message': 'Action invalide ou données manquantes.'}, status=400)

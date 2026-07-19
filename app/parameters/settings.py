@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 import sys
+import importlib.util
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,6 +28,7 @@ FIELD_ENCRYPTION_KEY = os.environ.get("FIELD_ENCRYPTION_KEY")
 DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
 ACTIVE_SSL = bool(int(os.environ.get("ACTIVE_SSL", default=1)))
 DEBUG_TOOLBAR = bool(int(os.environ.get("DEBUG_TOOLBAR", default=0)))
+DEBUG_TOOLBAR = DEBUG_TOOLBAR and importlib.util.find_spec("debug_toolbar") is not None
 
 APP_ENV = str(os.environ.get("APP_ENV", default='dev'))
 
@@ -635,3 +637,7 @@ APP_TVA = 20.0  # en pourcentage
 APP_CURRENCY = "EUR"
 
 SOUNDBOARD_LIMIT_SECTION = 100
+# Celery result backend cleanup - prevent memory accumulation
+CELERY_RESULT_EXPIRES = 3600  # Results expire after 1 hour to prevent memory leak
+CELERY_TASK_TRACK_STARTED = False  # Reduce result backend load
+CELERY_TASK_IGNORE_RESULT = True  # Don't store results unless explicitly needed

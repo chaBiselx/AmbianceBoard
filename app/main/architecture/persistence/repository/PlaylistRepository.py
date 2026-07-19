@@ -10,6 +10,7 @@ from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.architecture.persistence.models.User import User
+from main.architecture.persistence.models.PlaylistTag import PlaylistTag
 from main.architecture.persistence.repository.filters.PlaylistFilter import PlaylistFilter
 
 class PlaylistRepository:
@@ -25,13 +26,19 @@ class PlaylistRepository:
 
     def get_listing_playlist(self, user:User, filter:dict) -> List[Playlist]:
         try:
-            query_set = Playlist.objects.all()
+            query_set = Playlist.objects.filter(user=user)
             if 'typePlaylist' in filter:
                 query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
-            return query_set.filter(user=user).order_by('updated_at') 
+            if 'playlistTagLabel' in filter:
+                query_set = query_set.filter(playlist_tags__label=filter['playlistTagLabel'])
+            return query_set.distinct().order_by('updated_at')
         except Exception:
             return []
-        
+    
+    def get_listing_playlist_queryset_with_tag(self, playlist_tag: PlaylistTag) -> QuerySet:
+        query_set = Playlist.objects.filter(playlist_tags=playlist_tag)
+        return query_set.distinct().order_by('updated_at')
+    
     def count_private(self, user:User) -> int:
         return Playlist.objects.filter(user=user).count()
 
@@ -81,7 +88,9 @@ class PlaylistRepository:
         ).select_related('user').order_by('-updated_at')
         if 'typePlaylist' in filter:
             query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
-        return query_set
+        if 'playlistTagLabel' in filter:
+            query_set = query_set.filter(playlist_tags__label=filter['playlistTagLabel'])
+        return query_set.distinct()
 
     def get_copiable_playlists_for_soundboard(self, user: User, filter: dict) -> List[Playlist]:
         """
@@ -113,4 +122,9 @@ class PlaylistRepository:
         ).exclude(id__in=playlists_in_soundboard).distinct()
         if 'typePlaylist' in filter:
             query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
+        if 'playlistTagLabel' in filter:
+            query_set = query_set.filter(playlist_tags__label=filter['playlistTagLabel'])
         return query_set.order_by('name')
+    
+    def get_all_without_playlist_tag_queryset(self) -> QuerySet:
+        return Playlist.objects.filter(playlist_tags__isnull=True).distinct()

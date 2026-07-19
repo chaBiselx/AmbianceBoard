@@ -1,5 +1,37 @@
 from django import forms
+from django.utils.safestring import mark_safe
 from main.architecture.persistence.models.LinkMusic import LinkMusic
+
+REQUIRED_URL_PREFIX = 'https://'
+EXAMPLE_MUSIC_URL = 'https://example.com/music.mp3'
+EXAMPLE_STREAM_URL = 'https://hemnos.cdnstream.com/1881_128'
+EXAMPLE_YOUTUBE_URL = 'https://www.youtube.com/watch?v=HJR54LOaDbo&list=RDHJR54LOaDbo'
+
+
+def _generate_tooltip_html():
+    return mark_safe(
+        (
+            'Liste des liens compatible : '
+            '<dl>'
+            f'<dt>Exemple musique :</dt><dd><small>{EXAMPLE_MUSIC_URL}</small></dd>'
+            f'<dt>Exemple stream :</dt><dd><small>{EXAMPLE_STREAM_URL}</small></dd>'
+            f'<dt>Exemple YouTube :</dt><dd><small>{EXAMPLE_YOUTUBE_URL}</small></dd>'
+            '</dl>'
+        )
+    )
+
+
+def _url_label_with_tooltip():
+    return mark_safe(
+        'URL du lien musical '
+        '<span class="badge rounded-pill bg-primary" '
+        'data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" '
+        f'title="{_generate_tooltip_html()}">'
+        '<i class="fa-solid fa-info"></i>'
+        '</span>'
+    )
+
+
 
 class LinkMusicForm(forms.ModelForm):
     class Meta:
@@ -8,7 +40,7 @@ class LinkMusicForm(forms.ModelForm):
         widgets = {
             'url': forms.URLInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'https://example.com/music.mp3',
+                'placeholder': EXAMPLE_MUSIC_URL,
                 'required': True
             }),
             'alternativeName': forms.TextInput(attrs={
@@ -18,7 +50,7 @@ class LinkMusicForm(forms.ModelForm):
             })
         }
         labels = {
-            'url': 'URL du lien musical',
+            'url': _url_label_with_tooltip(),
             'alternativeName': 'Nom alternatif'
         }
         help_texts = {
@@ -30,7 +62,7 @@ class LinkMusicForm(forms.ModelForm):
         url = self.cleaned_data.get('url')
         if url:
             # Validation basique pour s'assurer que l'URL est valide
-            if not url.startswith('https://'):
+            if not url.startswith(REQUIRED_URL_PREFIX):
                 raise forms.ValidationError("L'URL doit commencer par https://")
         return url
 

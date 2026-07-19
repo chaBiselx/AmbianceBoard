@@ -2,6 +2,7 @@ from django.test import TestCase, tag
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
+from main.architecture.persistence.models.PlaylistTag import PlaylistTag
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.User import User
@@ -58,6 +59,11 @@ class PlaylistRepositoryTest(TestCase):
         Track.objects.create(playlist=self.playlist_music, alternativeName='Track music')
         Track.objects.create(playlist=self.playlist_ambient, alternativeName='Track ambient')
 
+        self.tag_music = PlaylistTag.objects.create(name='music_tag')
+        self.tag_ambient = PlaylistTag.objects.create(name='ambient_tag')
+        self.playlist_music.playlist_tags.add(self.tag_music)
+        self.playlist_ambient.playlist_tags.add(self.tag_ambient)
+
     def test_get_copiable_playlists_excluding_user_filters_non_copiable_banned_and_user_owned(self):
         result = self.repository.get_copiable_playlists_excluding_user(self.target_user, {})
         result_ids = {playlist.id for playlist in result}
@@ -72,6 +78,15 @@ class PlaylistRepositoryTest(TestCase):
         result = self.repository.get_copiable_playlists_excluding_user(
             self.target_user,
             {'typePlaylist': PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.name},
+        )
+
+        self.assertEqual(result.count(), 1)
+        self.assertEqual(result.first().id, self.playlist_ambient.id)
+
+    def test_get_copiable_playlists_excluding_user_applies_playlist_tag_filter(self):
+        result = self.repository.get_copiable_playlists_excluding_user(
+            self.target_user,
+            {'playlistTagLabel': self.tag_ambient.label},
         )
 
         self.assertEqual(result.count(), 1)
@@ -151,3 +166,13 @@ class PlaylistRepositoryTest(TestCase):
         self.assertIn(self.playlist_ambient.id, result_ids)
         self.assertNotIn(self.playlist_not_copiable.id, result_ids)
         self.assertNotIn(self.playlist_banned.id, result_ids)
+
+    def test_get_listing_playlist_applies_playlist_tag_filter(self):
+        result = self.repository.get_listing_playlist(
+            self.owner,
+            {'playlistTagLabel': self.tag_music.label},
+        )
+        result_ids = {playlist.id for playlist in result}
+
+        self.assertIn(self.playlist_music.id, result_ids)
+        self.assertNotIn(self.playlist_ambient.id, result_ids)

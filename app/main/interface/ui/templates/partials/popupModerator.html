@@ -66,6 +66,8 @@
                                 <dd>{{soundboard.updated_at |  date:"Y-m-d \T H:i"}}</dd>
                                 <dt>Nom</dt>
                                 <dd>{{soundboard.name}}</dd>
+                                <dt>Nombre d'éléments</dt>
+                                <dd>{{soundboard.playlists.count}}</dd>
 
                             </dl>
                         </div>
@@ -76,6 +78,13 @@
                                 </div>
                             </div>
 
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <h6>Statistiques d'écoute (3 derniers mois)</h6>
+                            <div id="moderator-soundboard-listening-time" data-url="{% url 'moderatorSoundboardListeningTimeStats' soundboard.uuid %}"></div>
                         </div>
                     </div>
                 </div>

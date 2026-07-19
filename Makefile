@@ -12,16 +12,17 @@ NC = \033[0m  # No Color (reinit)
 CONTAINER_BACKEND=docker compose exec back
 CONTAINER_CRONJOB=docker compose exec cronjob
 CONTAINER_FRONTEND=docker compose exec -w /app front
+CONTAINER_MUSIC_LABELER=docker compose exec music-labeler
 
 
 help:
 	@printf "%-20s %s\n" "Target" "Description"
 	@printf "%-20s %s\n" "------" "-----------"
-	@make -pqR : 2>/dev/null \
-        | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
-        | sort \
-        | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
-        | xargs -I _ sh -c 'printf "%-20s " _; make _ -nB | (grep -i "^# Help:" || echo "") | tail -1 | sed "s/^# Help: //g"'
+	@awk 'BEGIN{target=""} \
+		/^## ——/{print ""; print $$0; next} \
+		/^[a-z][a-z0-9-]*:/{target=$$1; gsub(/:/, "", target)} \
+		/^[[:space:]]*@# Help:/{gsub(/^[[:space:]]*@# Help: /, "", $$0); printf "%-20s %s\n", target, $$0}' \
+		makeFileFolder/*.mk
 
 
 include makeFileFolder/Backend.mk

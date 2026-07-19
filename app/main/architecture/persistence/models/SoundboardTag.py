@@ -3,7 +3,7 @@ from django.db import models
 from django.core.validators import MinLengthValidator
 
 
-class Tag(models.Model):
+class SoundboardTag(models.Model):
     """
     Modèle représentant un tag pour catégoriser les soundboards.
     
@@ -33,9 +33,10 @@ class Tag(models.Model):
     )
 
     class Meta:
+        db_table = 'main_soundboardtag'
         ordering = ['name']
-        verbose_name = "Tag"
-        verbose_name_plural = "Tags"
+        verbose_name = "soundboard Tag"
+        verbose_name_plural = "soundboard Tags"
 
     def __str__(self) -> str:
         """

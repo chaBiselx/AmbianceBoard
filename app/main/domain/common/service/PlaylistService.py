@@ -41,6 +41,7 @@ class PlaylistService:
             playlist = form.save(commit=False)
             playlist.user = self.request.user
             playlist.save()
+            form.save_m2m()
             return playlist
         else:
             for(field, errors) in form.errors.items():

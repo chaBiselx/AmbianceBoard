@@ -25,6 +25,7 @@ from main.architecture.persistence.repository.SoundBoardRepository import SoundB
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.architecture.persistence.repository.PlaylistDuplicationHistoryRepository import PlaylistDuplicationHistoryRepository
+from main.architecture.persistence.repository.PlaylistTagRepository import PlaylistTagRepository
 
 from main.domain.common.service.PlaylistDuplicationService import PlaylistDuplicationService
 from main.domain.common.exceptions.PlaylistDuplicationException import (
@@ -40,6 +41,7 @@ from main.domain.common.utils.logger import logger
 @require_http_methods(['GET'])
 def playlist_read_copiable(request):
     playlist_type_filter = request.GET.get('playlistType', None)
+    playlist_tag_filter = request.GET.get('playlistTag', None)
     page_number = int(request.GET.get('page', 1))
   
     
@@ -50,6 +52,14 @@ def playlist_read_copiable(request):
             filter_search['typePlaylist'] = type_playlist._name_
         except ValueError:
             playlist_type_filter = None
+
+    if playlist_tag_filter:
+        normalized_label = str(playlist_tag_filter).strip().lower().replace(' ', '-')
+        if normalized_label:
+            filter_search['playlistTagLabel'] = normalized_label
+            playlist_tag_filter = normalized_label
+        else:
+            playlist_tag_filter = None
             
     queryset = PlaylistRepository().get_copiable_playlists_excluding_user(request.user, filter_search)
     paginator = Paginator(queryset, 50)
@@ -61,7 +71,9 @@ def playlist_read_copiable(request):
     context.update( {
         'number_tracks_by_playlist': number_tracks_by_playlist,
         'playlistType': PlaylistTypeEnum.convert_to_dict(),
-        'selected_type': playlist_type_filter
+        'selected_type': playlist_type_filter,
+        'list_playlist_tags': PlaylistTagRepository().get_list_active_tags(),
+        'selected_playlist_tag': playlist_tag_filter,
     })
     
     return render(request, 'Html/Playlist/playlist_copiable.html', context)

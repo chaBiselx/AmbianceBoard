@@ -29,9 +29,12 @@ Le projet se lance principalement avec Docker Compose.
 make init
 make build
 make up
-make enter S=back
-python manage.py createsuperuser
+make update-db
+make fixtures
 ```
+
+l'identifiant / mot de passe pour le dev
+root/root
 
 URLs locales les plus visibles dans l etat actuel du depot:
 

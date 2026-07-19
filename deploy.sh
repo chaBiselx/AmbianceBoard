@@ -22,6 +22,7 @@ else
     git pull origin master
 fi
 
+
 echo "🐳 Arret des container..."
 docker compose -f docker-compose.prod.yml down
 

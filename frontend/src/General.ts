@@ -2,8 +2,8 @@ import Notification from '@/modules/General/Notifications';
 import ReportingContent from '@/modules/ReportingContent'
 import { PaginationManager } from '@/modules/PaginationManager';
 import { TagManager } from '@/modules/TagManager';
-import * as bootstrap from 'bootstrap';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
+import BootstrapComponentInitializer from "@/modules/General/BootstrapComponentInitializer";
 import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
 import Csrf from "@/modules/General/Csrf";
 import GeneralTheme from "@/modules/General/GeneralTheme";
@@ -54,35 +54,11 @@ globalThis.addEventListener('error', (event) => {
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
 document.addEventListener('DOMContentLoaded', async () => {
-    // Dropdown
-    for (const element of document.querySelectorAll('[data-bs-toggle="dropdown"]')) {
-        try {
-            new bootstrap.Dropdown(element);
-        } catch (error) {
-            ConsoleCustom.warn(`Bootstrap Dropdown initialization failed: ${error}`);
-        }
-    }
-
-    // Tooltip
-    for (const element of document.querySelectorAll('[data-bs-toggle="tooltip"]')) {
-        try {
-            new bootstrap.Tooltip(element);
-        } catch (error) {
-            ConsoleCustom.warn(`Bootstrap Tooltip initialization failed: ${error}`);
-        }
-    }
-
-    // Popover
-    for (const element of document.querySelectorAll('[data-bs-toggle="popover"]')) {
-        try {
-            new bootstrap.Popover(element);
-        } catch (error) {
-            ConsoleCustom.warn(`Bootstrap Popover initialization failed: ${error}`);
-        }
-    }
-
+    new BootstrapComponentInitializer().initialize();
     ConsoleTesteur.log('General Event initialised');
 });
+
+
 
 
 document.addEventListener("DOMContentLoaded", () => {

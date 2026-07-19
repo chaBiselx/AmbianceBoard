@@ -22,18 +22,18 @@
         "chart.js": "^4.5.1",
         "dropzone": "^6.0.0-beta.2",
         "fs-extra": "^11.3.6",
-        "quill": "^2.0.3",
-        "sass": "1.69.7",
+        "quill": "^2.0.2",
+        "sass": "^1.70.0",
         "shepherd.js": "^14.5.1",
         "vitest": "^3.2.4"
     },
     "devDependencies": {
         "@types/bootstrap": "^5.2.10",
-        "@types/node": "^18.0.0",
-        "concurrently": "^9.1.2",
+        "@types/node": "^26.0.0",
+        "concurrently": "^10.0.3",
         "jsdom": "^29.1.1",
-        "typescript": "^5.0.0",
-        "vite": "^6.2.1"
+        "typescript": "^5.9.0",
+        "vite": "^8.1.4"
     },
     "type": "module"
 }

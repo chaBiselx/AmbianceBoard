@@ -9,7 +9,6 @@ from typing import Any, Optional
 from django import forms
 from django.core.files.uploadedfile import UploadedFile
 from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.architecture.persistence.models.Tag import Tag
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
 from main.architecture.persistence.repository.TagRepository import TagRepository

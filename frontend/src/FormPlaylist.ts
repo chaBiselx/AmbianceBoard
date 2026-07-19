@@ -4,6 +4,8 @@ import Csrf from './modules/General/Csrf';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import { addClearIconConfirmation } from '@/modules/ClearIconConfirmation';
 import MergedFadePreviewCanvasRenderer from '@/modules/MergedFadePreviewCanvasRenderer';
+import TagSelector  from '@/modules/Form/TagSelector';
+
 
 
 declare global {
@@ -59,6 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
     id_fadeIn?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
     const id_fadeOut = document.getElementById('id_fadeOut');
     id_fadeOut?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    (new TagSelector()).init();
+
 });
 
 function simulatePlaylistColor() {

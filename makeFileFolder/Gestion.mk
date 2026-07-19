@@ -1,3 +1,4 @@
+## —— Gestion  ————————————————————————————————————————————————————————————————
 init:
 	@# Help: Initialiser les ressources de l'application
 	@if [ ! -f ".env" ]; then \
@@ -17,26 +18,32 @@ init-prod:
 		echo "[OK] Certificats SSL trouvés."; \
 	fi
 
+## —— Docker  ————————————————————————————————————————————————————————————————
+restart: down up
+	@# Help: Redémarrer les ressources de l'application
+
 build:
 	@# Help: Construire les ressources de l'application
-	@docker compose build --no-cache
+	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose build --no-cache
 
 build-prod:
 	@# Help: Construire les ressources de l'application en mode production
 	@cd app && ./build-prod.sh
 
-up:
+up: clear-old-containers
 	@# Help: Demarrer les ressources de l'application
-	@docker compose up -d
-	@docker compose logs -f back front db cronjob
+	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose up -d
+	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose logs -f back front db cronjob
+
+clear-old-containers:
+	@# Help: Supprimer les anciens conteneurs Docker
+	@docker container prune -f
+	@docker volume prune -f
+	@docker image prune -f
 
 down:
 	@# Help: Arrêter les ressources de l'application
 	@docker compose down
-
-resource: 
-	@# Help: Consulter les ressources de l'application
-	@./makeFileFolder/sh/docker_resources.sh
 
 enter:
 	@# Help: Entrer dans un conteneur Docker (usage: make enter S [I=1])

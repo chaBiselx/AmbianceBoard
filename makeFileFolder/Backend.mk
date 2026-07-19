@@ -5,6 +5,7 @@ MEDIA_BACKUP=$(BACKUP_DIR)/media_backup.tar.gz
 DATA_BACKUP=$(BACKUP_DIR)/data.json
 LOG_DIR=./logs
 
+## —— Dumbs/Load BDD  ————————————————————————————————————————————————————————————————
 # Dump des données et des fichiers médias
 dump: 
 	@# Help: Exporte la base de données et les fichiers médias afin de pouvoir les restaurer plus tard
@@ -33,7 +34,20 @@ clean:
 	@# Help: vide les fichiers de logs sans les supprimer
 	$(CONTAINER_BACKEND) find $(LOG_DIR) -type f -name "*.log" -exec sh -c '>'{}'; echo "Logs vidés pour {}"' \;
 
- 
+delete-db:
+	@# Help: purge la base de données et supprime les fichiers médias
+	@echo "$(GREEN)Suppression des fichiers médias...$(NC)"
+	$(CONTAINER_BACKEND) rm -rf $(MEDIA_FOLDER)/*
+	@echo "$(GREEN)Suppression de la base de données...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py flush --no-input
+	@echo "$(GREEN)Suppression terminée.$(NC)"
+	@echo "$(RED)docker compose exec back python manage.py shell -c \"$(NC)"
+	@echo "$(RED)from django.db import connection$(NC)"
+	@echo "$(RED)with connection.cursor() as c:$(NC)"
+	@echo "$(RED)	c.execute('DROP SCHEMA public CASCADE; CREATE SCHEMA public;')$(NC)"
+	@echo "$(RED)\"$(NC)"
+
+## —— Migrations  ————————————————————————————————————————————————————————————————
 # Création du dossier de sauvegarde s'il n'existe pas
 .prepare:
 	$(CONTAINER_BACKEND) mkdir -p $(BACKUP_DIR)
@@ -47,9 +61,15 @@ update-db:
 	$(CONTAINER_BACKEND) python manage.py migrate
 	@echo "$(GREEN)Migrations terminées.$(NC)"
 
-#fixtures
-fixtures: fixture-seed-dev
+## —— Fixtures  ————————————————————————————————————————————————————————————————
+fixtures: fixture-create-root fixture-seed-dev fixture-seed-soundboard fixture-tag-playlist fixture-tag-soundboard
 	@# Help: Lance l'ensemble des fixtures de développement 
+
+fixture-create-root:
+	@# Help: Crée l'utilisateur root — DEBUG=1 requis
+	@echo "$(GREEN)Chargement des fixtures de développement...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py create_root_user
+	@echo "$(GREEN)Fixtures chargées.$(NC)"
 
 fixture-seed-dev:
 	@# Help: Crée les données de développement (utilisateur dev + 20 playlists) — DEBUG=1 requis
@@ -57,7 +77,25 @@ fixture-seed-dev:
 	$(CONTAINER_BACKEND) python manage.py seed_dev
 	@echo "$(GREEN)Fixtures chargées.$(NC)"
 
-# Traductions
+fixture-seed-soundboard:
+	@# Help: Crée les données de développement  — DEBUG=1 requis
+	@echo "$(GREEN)Chargement des fixtures de développement...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py seed_public_soundboard
+	@echo "$(GREEN)Fixtures chargées.$(NC)"
+
+fixture-tag-playlist:
+	@# Help: Crée les tags pour les playlists existantes
+	@echo "$(GREEN)Création des tags pour les playlists existantes...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py seed_playlist_tags
+	@echo "$(GREEN)Tags créés.$(NC)"
+
+fixture-tag-soundboard:
+	@# Help: Crée les tags pour les soundboards existantes
+	@echo "$(GREEN)Création des tags pour les soundboards existantes...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py seed_soundboard_tags
+	@echo "$(GREEN)Tags créés.$(NC)"
+
+## —— Traductions  ————————————————————————————————————————————————————————————————
 trad-init:
 	@# Help: Génère les fichiers de traduction (.po) pour toutes les langues
 	@echo "$(GREEN)Génération des fichiers de traduction...$(NC)"

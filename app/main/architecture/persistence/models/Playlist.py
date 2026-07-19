@@ -35,6 +35,12 @@ class Playlist(models.Model):
         (PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.name, PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.value),
         (PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name, PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.value),
     ])
+    playlist_tags = models.ManyToManyField(
+        'PlaylistTag',
+        blank=True,
+        related_name='playlists',
+        help_text='Tags dedies aux playlists'
+    )
     useSpecificColor = models.BooleanField(default=False, )
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)

@@ -29,7 +29,31 @@ from main.interface.ui.controller.private.playlistFormViews import (
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
 from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
-from main.interface.ui.controller.moderator.moderatorViews import moderator_dashboard, moderator_listing_images_playlist, moderator_listing_images_soundboard, moderator_get_infos_playlist, moderator_get_infos_soundboard, moderator_listing_log_moderation, moderator_get_infos_user, moderator_listing_report, moderator_listing_report_archived, moderator_get_infos_report, reporting_add_log, moderator_listing_tags, moderator_create_tag, moderator_edit_tag, moderator_get_infos_tag
+from main.interface.ui.controller.private.asyncDownloadJobViews import recent_async_download_jobs
+from main.interface.ui.controller.moderator.moderatorViews import (
+    moderator_dashboard, 
+    moderator_listing_images_playlist, 
+    moderator_listing_images_soundboard, 
+    moderator_get_infos_playlist, 
+    moderator_get_infos_soundboard, 
+    moderator_soundboard_listening_time_stats, 
+    moderator_listing_log_moderation, 
+    moderator_get_infos_user, 
+    moderator_listing_report, 
+    moderator_listing_report_archived, 
+    moderator_get_infos_report, 
+    reporting_add_log, 
+    moderator_listing_tags, 
+    moderator_create_tag, 
+    moderator_edit_tag,
+    moderator_get_infos_tag, 
+    moderator_listing_playlist_tags, 
+    moderator_manage_playlist_tag, 
+    moderator_get_infos_playlist_tag,
+    moderator_get_playlist_list_for_playlist_tag,
+    moderator_get_popup_playlist_tag,
+    moderator_post_popup_playlist_tag
+)
 from main.interface.ui.controller.manager.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
 from main.interface.ui.controller.manager.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard, manager_user_activity_details
 from main.interface.ui.controller.manager.managerCronViews import (
@@ -116,6 +140,7 @@ urlpatterns = [
     path("playlist/create", playlist_create, name="addPlaylist"),
     path("playlist/all", playlist_read_all, name="playlistsAllList"),
     path("playlist/public/copiable/all", playlist_read_copiable, name="playlistsAllCopiableList"),
+    path("account/downloads/recent", recent_async_download_jobs, name="asyncDownloadJobsRecent"),
     path("playlist/public/copiable", playlist_copiable_preview, name="playlistPreview"),
     path("playlist/public/copiable/<uuid:playlist_uuid>/duplicate", playlist_copiable_duplicate, name="playlistDuplicate"),
     path("playlist/<uuid:playlist_uuid>/update", playlist_update, name="playlistUpdate"),
@@ -172,6 +197,7 @@ urlpatterns = [
     path("moderator/playlist/<uuid:playlist_uuid>", moderator_get_infos_playlist, name="moderatorGetDataPlaylist"),
     path("moderator/soundboard", moderator_listing_images_soundboard, name="moderatorControleImagesSoundboard"),
     path("moderator/soundboard/<uuid:soundboard_uuid>", moderator_get_infos_soundboard, name="moderatorGetDataSoundboard"),
+    path("moderator/soundboard/<uuid:soundboard_uuid>/stats/listening-time", moderator_soundboard_listening_time_stats, name="moderatorSoundboardListeningTimeStats"),
     path("moderator/report/content", moderator_listing_report, name="moderatorControleReport"),
     path("moderator/report/content/archive", moderator_listing_report_archived, name="moderatorControleReportArchived"),
     path("moderator/report/content/<int:report_id>", moderator_get_infos_report, name="moderatorGetDataContentReport"),
@@ -183,6 +209,13 @@ urlpatterns = [
     path("moderator/tags/create/", moderator_create_tag, name="moderatorCreateTag"),
     path("moderator/tags/<uuid:tag_uuid>/", moderator_get_infos_tag, name="moderatorGetInfosTag"),
     path("moderator/tags/<uuid:tag_uuid>/edit/", moderator_edit_tag, name="moderatorEditTag"),
+    path("moderator/playlist-tags/", moderator_listing_playlist_tags, name="moderatorListingPlaylistTags"),
+    path("moderator/playlist-tags/playlist/list", moderator_get_playlist_list_for_playlist_tag, name="moderatorGetPlaylistListForPlaylistTag"),
+    path("moderator/playlist-tags/playlist/<uuid:playlist_uuid>/", moderator_get_popup_playlist_tag, name="moderatorGetPopupPlaylistTag"),
+    path("moderator/playlist-tags/playlist/<uuid:playlist_uuid>/update", moderator_post_popup_playlist_tag, name="moderatorPostPopupPlaylistTag"),
+    path("moderator/playlist-tags/create/", moderator_manage_playlist_tag, name="moderatorCreatePlaylistTag"),
+    path("moderator/playlist-tags/<str:playlist_tag_label>/", moderator_get_infos_playlist_tag, name="moderatorGetInfosPlaylistTag"),
+    path("moderator/playlist-tags/<str:playlist_tag_label>/edit/", moderator_manage_playlist_tag, name="moderatorEditPlaylistTag"),
     
     
     path("manager/", manager_dashboard, name="managerDashboard"),

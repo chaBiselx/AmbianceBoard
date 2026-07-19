@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:26
 
 # Créer un utilisateur non-root pour des raisons de sécurité
 # RUN groupadd -r nodeuser && useradd -r -g nodeuser -m nodeuser
