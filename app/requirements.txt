@@ -3,7 +3,7 @@ django-crontab==0.7.1
 django-ratelimit==4.1
 gunicorn==26.0
 psycopg2-binary==2.9.12
-pillow==11.1.0
+pillow==12.2.0
 pydub==0.25.1
 audioop-lts==0.2.2
 PyAudio==0.2.14
@@ -12,7 +12,7 @@ kombu
 channels[daphne]
 channels_redis
 django-encrypted-model-fields==0.6.5
-requests==2.32.4
+requests==2.33.0
 bleach==6.4.0
 django-allauth[socialaccount]==65.18.0
 yt-dlp==2026.7.4
