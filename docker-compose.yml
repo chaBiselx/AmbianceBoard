@@ -122,7 +122,7 @@ services:
   smtp:
     image: mailhog/mailhog
     ports:
-      - "${EMAIL_SMTP_PORT}:${EMAIL_SMTP_PORT}"  # Port SMTP pour envoyer les emails
+      - "${EMAIL_SMTP_PORT}:1025"  # Port SMTP MailHog pour envoyer les emails en dev
       - "8025:8025"  # Interface web de MailHog pour visualiser les emails
 
   redis:
