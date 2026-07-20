@@ -306,7 +306,9 @@ Nouveautés
 Améliorations
 - Chargement des composants dynamique lors d'une modal
 
-
+### 0.4.4 - 2026/07
+Sécurité
+- Mise a jours des dépendances 
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
