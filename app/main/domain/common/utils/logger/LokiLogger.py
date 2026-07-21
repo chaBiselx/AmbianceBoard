@@ -227,7 +227,7 @@ class LokiLogger(ILogger):
         Utile avant l'arrêt de l'application.
         """
         # Attendre que la queue soit vide (avec timeout)
-        timeout = 10.0
+        timeout = 5.0
         start_time = time.time()
         
         while not self._log_queue.empty() and (time.time() - start_time) < timeout:
@@ -237,10 +237,17 @@ class LokiLogger(ILogger):
         """
         Arrête proprement le logger.
         """
-        self.flush()
+        try:
+            self.flush()
+        except Exception:
+            pass
+        
         self._shutdown.set()
-        if self._sender_thread.is_alive():
-            self._sender_thread.join(timeout=5.0)
+        if self._sender_thread and self._sender_thread.is_alive():
+            try:
+                self._sender_thread.join(timeout=2.0)
+            except Exception:
+                pass
     
     @property
     def logger_name(self) -> str:

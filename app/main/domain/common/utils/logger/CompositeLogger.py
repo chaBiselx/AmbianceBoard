@@ -117,8 +117,20 @@ class CompositeLogger(ILogger):
         """
         Arrête proprement tous les loggers.
         """
+        import threading
+        import time
+        
+        # Global timeout pour éviter les blocages pendant le GC
+        start_time = time.time()
+        max_shutdown_time = 10.0  # Maximum 10 secondes au total
+        
         for logger in self._loggers:
             try:
+                # Vérifier qu'on ne dépasse pas le timeout global
+                elapsed = time.time() - start_time
+                if elapsed >= max_shutdown_time:
+                    break
+                    
                 if hasattr(logger, 'shutdown'):
                     logger.shutdown()
             except Exception:
