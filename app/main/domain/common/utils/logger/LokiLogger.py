@@ -52,6 +52,7 @@ class LokiLogger(ILogger):
         # Indicateur d'arrêt - DOIT être défini avant de démarrer le thread
         self._shutdown = threading.Event()
         self._deadline: Optional[float] = None  # Deadline globale pour shutdown
+        self._loki_failed_count = 0  # Compteur d'erreurs consécutives Loki
         
         # Thread pour l'envoi en arrière-plan
         self._sender_thread = threading.Thread(target=self._sender_worker, daemon=True)
@@ -200,11 +201,23 @@ class LokiLogger(ILogger):
     def _send_batch(self, batch: List[Dict[str, Any]]) -> None:
         """
         Envoie un batch de logs à Loki.
+        Abandonne rapidement si Loki est down.
         
         Args:
             batch (List[Dict[str, Any]]): Liste des logs à envoyer
         """
         if not batch:
+            return
+        
+        # Si trop d'erreurs consécutives, arrêter rapidement (Loki is dead)
+        if self._loki_failed_count >= 3:
+            # Vider la queue sans envoyer
+            while not self._log_queue.empty():
+                try:
+                    self._log_queue.get_nowait()
+                except:
+                    break
+            self._shutdown.set()  # Signal au thread de s'arrêter
             return
         
         try:
@@ -242,18 +255,19 @@ class LokiLogger(ILogger):
                 self._loki_url,
                 json=payload,
                 headers=headers,
-                timeout=3.0  # Réduit de 10s à 3s pour éviter blocage lors du shutdown
+                timeout=2.0  # Réduit à 2s pour réagir plus vite
             )
             
-            # Log du statut de l'envoi (seulement en cas d'erreur pour éviter les boucles)
-            if response.status_code != 204:
-                # En cas d'erreur, on ne peut pas utiliser le logger lui-même
-                pass
+            # Réinitialiser compteur d'erreurs si succès
+            if response.status_code == 204:
+                self._loki_failed_count = 0
+            else:
+                self._loki_failed_count += 1
                 
         except Exception:
+            # En cas d'erreur, incrémenter le compteur d'erreurs
+            self._loki_failed_count += 1
             # En cas d'erreur de réseau ou autre, on ne peut pas faire grand-chose
-            # sans risquer de créer une boucle infinie de logs d'erreur
-            pass
     
     def flush(self) -> None:
         """
