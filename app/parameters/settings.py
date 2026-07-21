@@ -129,8 +129,8 @@ if TESTING:
 
 # Configuration Loki pour le logging vers Grafana
 LOKI_URL = os.environ.get('LOKI_URL')
-LOKI_BATCH_SIZE = int(os.environ.get('LOKI_BATCH_SIZE', '10'))
-LOKI_BATCH_TIMEOUT = float(os.environ.get('LOKI_BATCH_TIMEOUT', '5.0'))
+LOKI_BATCH_SIZE = int(os.environ.get('LOKI_BATCH_SIZE', '5'))  # Réduit pour flush plus rapide
+LOKI_BATCH_TIMEOUT = float(os.environ.get('LOKI_BATCH_TIMEOUT', '2.0'))  # Réduit de 5s à 2s
     
 level_log_debug = 'DEBUG' if DEBUG else 'INFO'
 timed_rotating_file_handler = 'logging.handlers.TimedRotatingFileHandler'

@@ -24,8 +24,8 @@ max_requests = 1000  # Recycle worker after N requests (prevents memory leaks)
 max_requests_jitter = 100  # Add randomness to prevent thundering herd
 
 # Worker timeout - CRITICAL for proper shutdown
-# Set to 60 seconds to allow logger shutdown operations (flush + thread join)
-timeout = int(os.environ.get('GUNICORN_TIMEOUT', 60))
+# Set to 120 seconds to allow logger shutdown operations (flush + thread join + network delays)
+timeout = int(os.environ.get('GUNICORN_TIMEOUT', 120))
 
 # Graceful shutdown
 graceful_timeout = int(os.environ.get('GUNICORN_GRACEFUL_TIMEOUT', 30))
