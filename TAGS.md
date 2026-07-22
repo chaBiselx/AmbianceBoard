@@ -310,6 +310,14 @@ Améliorations
 Sécurité
 - Mise a jours des dépendances 
 
+### 0.4.5 - 2026/07
+
+Corrections
+- Corrections de l'erreur lors de l'ajout de piste audio à un bouton lorsque la limite est atteinte
+
+Améliorations
+- Amélioration de l'observabilité du serveur
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

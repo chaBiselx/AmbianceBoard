@@ -77,8 +77,11 @@ def playlist_read_all(request):
 def playlist_create(request):
     if request.method == 'POST':
         playlist = (PlaylistService(request)).save_form()
-        ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_CREATE, user=request.user, content_object=playlist)
-        return redirect('playlistUpdate', playlist_uuid=playlist.uuid)
+        if playlist is not None:
+            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_CREATE, user=request.user, content_object=playlist)
+            return redirect('playlistUpdate', playlist_uuid=playlist.uuid)
+        # Si save_form() retourne None, on réaffiche le formulaire
+        form = PlaylistForm()
     else:
         form = PlaylistForm()
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()

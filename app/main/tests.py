@@ -36,6 +36,7 @@ from main.TNR.TU.Service.ReportContentServiceTest import *
 from main.TNR.TU.Service.PlaylistDuplicationServiceTest import *
 from main.TNR.TU.Service.PlaylistDataServiceTest import *
 from main.TNR.TU.Service.SoundboardPlaylistServiceTest import *
+from main.TNR.TU.Service.PlaylistServiceNoneReturnTest import *
 
 from main.TNR.TU.UserParametersFactoryTest import *
 from main.TNR.TU.UserTierManagerTest import *
@@ -145,3 +146,5 @@ from main.TNR.TI.routing.ManagerDashboardRouteTest import *
 from main.TNR.TI.routing.PublishSoundboardRouteTest import *
 from main.TNR.TI.routing.SharedSoundboardRouteTest import *
 from main.TNR.TI.routing.SharedStreamMusicRouteTest import *
+
+from main.TNR.TI.controller.private.PlaylistCreateNoneErrorTest import *
