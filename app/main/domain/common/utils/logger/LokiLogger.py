@@ -51,14 +51,36 @@ class LokiLogger(ILogger):
         
         # Indicateur d'arrêt - DOIT être défini avant de démarrer le thread
         self._shutdown = threading.Event()
+        self._deadline: Optional[float] = None  # Deadline globale pour shutdown
+        self._loki_failed_count = 0  # Compteur d'erreurs consécutives Loki
         
         # Thread pour l'envoi en arrière-plan
         self._sender_thread = threading.Thread(target=self._sender_worker, daemon=True)
         self._sender_thread.start()
+        
+        # Quick health check de Loki (non-bloquant, timeout 1s)
+        self._check_loki_available()
     
     def debug(self, message: str, *args, **kwargs) -> None:
         """Log un message de niveau DEBUG"""
         self._log('debug', message, *args, **kwargs)
+    
+    def _check_loki_available(self) -> bool:
+        """
+        Vérifie rapidement si Loki est accessible (non-bloquant).
+        Utile pour alerter mais ne bloque pas le démarrage.
+        """
+        try:
+            # Timeout très court (1 seconde) pour ne pas bloquer le démarrage
+            response = requests.get(
+                self._loki_url.replace('/loki/api/v1/push', '/loki/api/v1/labels'),
+                timeout=1.0
+            )
+            return response.status_code < 500
+        except Exception:
+            # Silencieusement ignorer si Loki n'est pas accessible
+            # Les logs seront quand même envoyés via les files locales
+            return False
     
     def info(self, message: str, *args, **kwargs) -> None:
         """Log un message de niveau INFO"""
@@ -141,9 +163,17 @@ class LokiLogger(ILogger):
         
         while not self._shutdown.is_set():
             try:
+                # Vérifier la deadline globale
+                if self._deadline and time.time() >= self._deadline:
+                    break
+                
                 # Attendre un log avec un timeout
                 try:
-                    log_entry = self._log_queue.get(timeout=1.0)
+                    remaining = self._deadline - time.time() if self._deadline else 1.0
+                    if remaining <= 0:
+                        break
+                    timeout = min(remaining, 0.5)  # Réduire à 0.5s pour réagir rapidement
+                    log_entry = self._log_queue.get(timeout=timeout)
                     batch.append(log_entry)
                 except Empty:
                     # Timeout atteint, vérifier s'il faut envoyer un batch partiel
@@ -171,11 +201,23 @@ class LokiLogger(ILogger):
     def _send_batch(self, batch: List[Dict[str, Any]]) -> None:
         """
         Envoie un batch de logs à Loki.
+        Abandonne rapidement si Loki est down.
         
         Args:
             batch (List[Dict[str, Any]]): Liste des logs à envoyer
         """
         if not batch:
+            return
+        
+        # Si trop d'erreurs consécutives, arrêter rapidement (Loki is dead)
+        if self._loki_failed_count >= 3:
+            # Vider la queue sans envoyer
+            while not self._log_queue.empty():
+                try:
+                    self._log_queue.get_nowait()
+                except:
+                    break
+            self._shutdown.set()  # Signal au thread de s'arrêter
             return
         
         try:
@@ -204,22 +246,28 @@ class LokiLogger(ILogger):
                 'Content-Type': 'application/json'
             }
             
+            # Réduire timeout HTTP et vérifier deadline
+            if self._deadline and time.time() >= self._deadline:
+                # Trop tard, ignorer cet envoi
+                return
+            
             response = requests.post(
                 self._loki_url,
                 json=payload,
                 headers=headers,
-                timeout=10.0
+                timeout=2.0  # Réduit à 2s pour réagir plus vite
             )
             
-            # Log du statut de l'envoi (seulement en cas d'erreur pour éviter les boucles)
-            if response.status_code != 204:
-                # En cas d'erreur, on ne peut pas utiliser le logger lui-même
-                pass
+            # Réinitialiser compteur d'erreurs si succès
+            if response.status_code == 204:
+                self._loki_failed_count = 0
+            else:
+                self._loki_failed_count += 1
                 
         except Exception:
+            # En cas d'erreur, incrémenter le compteur d'erreurs
+            self._loki_failed_count += 1
             # En cas d'erreur de réseau ou autre, on ne peut pas faire grand-chose
-            # sans risquer de créer une boucle infinie de logs d'erreur
-            pass
     
     def flush(self) -> None:
         """
@@ -235,12 +283,26 @@ class LokiLogger(ILogger):
     
     def shutdown(self) -> None:
         """
-        Arrête proprement le logger.
+        Arrête proprement le logger avec deadline globale.
+        NON-BLOQUANT : n'attend pas le thread, c'est un daemon.
         """
-        self.flush()
+        # Définir une deadline globale pour que le thread s'arrête rapidement
+        self._deadline = time.time() + 1.0  # 1 seconde pour finir les envois en cours
+        
+        # Signaler l'arrêt au thread
         self._shutdown.set()
-        if self._sender_thread.is_alive():
-            self._sender_thread.join(timeout=5.0)
+        
+        # NE PAS appeler join() - on ne peut pas se permettre de bloquer
+        # Le thread est daemon (daemon=True), il s'arrêtera tout seul quand le worker meurt
+        # Essayer d'attendre causait le timeout Gunicorn
+        
+        # Si on veut vraiment essayer de flush rapidement (max 0.1s sans blocker)
+        try:
+            start = time.time()
+            while not self._log_queue.empty() and (time.time() - start) < 0.1:
+                time.sleep(0.01)
+        except Exception:
+            pass
     
     @property
     def logger_name(self) -> str:
