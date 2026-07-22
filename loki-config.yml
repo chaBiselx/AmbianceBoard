@@ -3,7 +3,6 @@ auth_enabled: false
 server:
   http_listen_port: 3100
   grpc_listen_port: 9096
-  # Timeout d'inactivité pour éviter les connections zombies
   http_server_read_timeout: 10s
   http_server_write_timeout: 10s
 
@@ -24,8 +23,6 @@ ingester:
   chunk_idle_period: 3m
   max_chunk_age: 1h
   chunk_retain_period: 1m
-  max_streams_per_user: 10000
-  # Limiter la mémoire utilisée par l'ingester
   chunk_encoding: gzip
   
 query_range:
@@ -33,22 +30,14 @@ query_range:
     cache:
       embedded_cache:
         enabled: true
-        max_size_mb: 500  # Augmenté de 100MB à 500MB
-  # Limiter la duée des queries
-  max_cache_freshness_per_query: 10m
-  cache_results: true
+        max_size_mb: 500
 
 limits_config:
-  # Empêcher le débordement de mémoire
-  ingestion_rate_mb: 10  # Max 10MB/s par tenant
-  ingestion_burst_size_mb: 20  # Max burst de 20MB
+  ingestion_rate_mb: 10
+  ingestion_burst_size_mb: 20
   max_streams_per_user: 10000
-  max_global_streams_per_user: 0  # Illimité globalement
-  retention_period: 168h  # Garder 7 jours de logs
+  retention_period: 168h
   allow_structured_metadata: false
-  # Limiter la taille des réponses
-  max_query_length: 720h  # Max 30 jours de query
-  split_queries_by_interval: 24h
 
 schema_config:
   configs:
@@ -63,19 +52,5 @@ schema_config:
 ruler:
   alertmanager_url: http://localhost:9093
 
-# Tableau de bord des métriques
-metrics:
-  # Désactiver les métriques non essentielles
-  enabled: false
-
-# By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
-# analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
-#
-# Statistics help us better understand how Loki is used, and they show us performance
-# levels for most users. This helps us prioritize features and documentation.
-# For more information on what's sent: https://github.com/grafana/loki/blob/main/pkg/usagestats/stats.go
-# Refer to the buildReport method to see what goes into a report.
-#
-# If you would like to disable reporting, uncomment the following lines:
 analytics:
   reporting_enabled: false

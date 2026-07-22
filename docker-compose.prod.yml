@@ -30,7 +30,7 @@ services:
     build:
       context: ./app
       dockerfile: Dockerfile.prod
-    command: gunicorn parameters.wsgi:application --bind 0.0.0.0:${WEB_PORT} --workers=3 --max-requests=1000 --max-requests-jitter=100
+    command: gunicorn parameters.wsgi:application --bind 0.0.0.0:${WEB_PORT} --workers=3 --max-requests=1000 --max-requests-jitter=100 --timeout=120 --graceful-timeout=30
     volumes:
       - ./app:/usr/src/app/
       - ./staticfiles:/usr/src/app/static/
