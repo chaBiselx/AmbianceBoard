@@ -160,6 +160,15 @@ services:
       - ./loki-config.yml:/etc/loki/local-config.yaml
     command: -config.file=/etc/loki/local-config.yaml
     restart: unless-stopped
+    # Ajouter les limits de ressources
+    deploy:
+      resources:
+        limits:
+          memory: 1g  # Limiter à 1GB max
+          cpus: '1.0'  # Limiter à 1 CPU
+        reservations:
+          memory: 512m
+          cpus: '0.5'
 
   grafana:
     image: grafana/grafana:latest

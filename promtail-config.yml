@@ -7,6 +7,16 @@ positions:
 
 clients:
   - url: http://loki:3100/loki/api/v1/push
+    # Retry configuration pour éviter les pertes de logs
+    backoff_config:
+      min_backoff: 100ms
+      max_backoff: 10s
+      max_retries: 3
+    # Timeout pour les requêtes HTTP
+    timeout: 5s
+    # Batching pour réduire les requêtes
+    batch_size: 1000  # Envoyer max 1000 logs par batch
+    batch_timeout: 5s  # Envoyer au max tous les 5s
 
 scrape_configs:
   # Configuration pour les logs de votre application AmbianceBoard
