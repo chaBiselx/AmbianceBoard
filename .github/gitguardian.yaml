@@ -8,3 +8,5 @@ secret:
     - "music-labeler/tests/**"
     # fixtures and mock data are not part of the production code, so we can ignore them
     - "app/main/management/commands/**"
+    # migrations are not part of the production code, so we can ignore them
+    - "app/main/architecture/persistence/migrations/**"

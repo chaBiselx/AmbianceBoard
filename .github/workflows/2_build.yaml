@@ -1,6 +1,9 @@
 name: Build docker-compose
 run-name: ${{ github.actor }} is starting a build 🚀
-on: [push, workflow_dispatch]
+on: 
+  # - push
+  # - pull_request
+  # - workflow_dispatch
 
 jobs:
   build:
