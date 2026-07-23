@@ -1,6 +1,9 @@
 name: git-gardian
-run-name: ${{ github.actor }} is starting a build 🚀
+run-name: ${{ github.actor }} is scanning the repository for secrets 🔐
 on: [push, workflow_dispatch]
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   Git-Gardian:
     runs-on: ubuntu-latest
