@@ -315,6 +315,8 @@ Corrections
 - Corrections de l'outils qui gèrent les données l'observabilité 
 
 ### 0.4.6 - 2026/07
+Nouveautés
+- Debut de l'integration de la CI
 
 Corrections
 - Corrections de l'erreur lors de l'ajout de piste audio à un bouton lorsque la limite est atteinte
