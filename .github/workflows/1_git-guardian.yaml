@@ -1,5 +1,5 @@
 name: git-guardian
-run-name: ${{ github.actor }} git guardian 🔐
+run-name: git guardian | ${{ github.actor }}
 
 on: 
   - push

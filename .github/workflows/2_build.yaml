@@ -1,5 +1,5 @@
 name: Build docker-compose
-run-name: ${{ github.actor }} is starting a build 🚀
+run-name: Building | ${{ github.actor }}
 on: 
   # - push
   # - pull_request
