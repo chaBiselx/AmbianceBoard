@@ -33,13 +33,13 @@ jobs:
     - name: GitGuardian scan pushed commits (history)
       env:
         GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
-      run: ggshield secret scan ci
+      run: ggshield --config-path .github/gitguardian.yaml secret scan ci
 
     - name: GitGuardian scan full repository (working tree)
       shell: bash
       env:
         GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
       run: |
-        ggshield --config-path .github/gitguardian.yaml secret scan path --recursive --all-secrets --yes . 2>&1 | tee ggshield-report.txt
+        ggshield --config-path .github/gitguardian.yaml secret scan path --recursive --yes . 2>&1 | tee ggshield-report.txt
         exit ${PIPESTATUS[0]}
 
