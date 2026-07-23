@@ -63,4 +63,4 @@ async function moveFiles() {
     await logDirectoryContent(targetDir, 'après');
 }
 
-moveFiles();
+await moveFiles();

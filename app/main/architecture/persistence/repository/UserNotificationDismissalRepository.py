@@ -10,7 +10,7 @@ class UserNotificationDismissalRepository:
 
 
 
-    def dismiss_notification(self, user: User, notification_id:int ) -> UserNotificationDismissal|None:
+    def dismiss_notification(self, user: User, notification_id:int ) -> bool:
         _,_ = UserNotificationDismissal.objects.get_or_create(
             user=user,
             notification_id=notification_id

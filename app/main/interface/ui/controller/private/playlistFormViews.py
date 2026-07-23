@@ -109,8 +109,6 @@ def add_music_from_soundboard(request, playlist_uuid)-> JsonResponse:
         nb_music_remaining = 0
     file_size_mb = limit['weight_music_mb']
     
-    # TODO améliorer la partie link music car redirection après ajout
-    
     return render(request, 'Html/Playlist/modal/add_music_from_soundboard.html', {
         'playlist': playlist, 
         'LinkMusicAllowedEnum': LinkMusicAllowedEnum.convert_to_dict(),

@@ -14,6 +14,14 @@ vi.mock('@/modules/General/Cookie');
 vi.mock('@/modules/SharedSoundboardCustomVolume');
 
 describe('UpdateVolumeElement', () => {
+    type VolumeUpdateCase = {
+        name: string;
+        defaultVolume: number;
+        levelFade: number;
+        mixerGeneralVolume: number;
+        expectedVolume: number;
+    };
+
     let mockMusicElement: MusicElement;
     let mockAudioElement: HTMLAudioElement;
     let updateVolumeElement: UpdateVolumeElement;
@@ -58,38 +66,42 @@ describe('UpdateVolumeElement', () => {
             vi.mocked(Cookie.get).mockReturnValue(null);
         });
 
-        it('should update volume with default values', () => {
-            mockMusicElement.defaultVolume = 0.5;
-            mockMusicElement.levelFade = 1;
-            
-            updateVolumeElement.update();
+        const volumeUpdateCases: VolumeUpdateCase[] = [
+            {
+                name: 'should update volume with default values',
+                defaultVolume: 0.5,
+                levelFade: 1,
+                mixerGeneralVolume: 1,
+                expectedVolume: 0.5,
+            },
+            {
+                name: 'should apply fade level to volume',
+                defaultVolume: 0.8,
+                levelFade: 0.5,
+                mixerGeneralVolume: 1,
+                expectedVolume: 0.4,
+            },
+            {
+                name: 'should apply mixer general volume',
+                defaultVolume: 1,
+                levelFade: 1,
+                mixerGeneralVolume: 0.6,
+                expectedVolume: 0.6,
+            },
+        ];
 
-            // Volume attendu: 0.5 * 1.0 * 1.0 * 1.0 * 1.0 = 0.5
-            expect(mockAudioElement.volume).toBe(0.5);
-        });
+        it.each(volumeUpdateCases)('$name', ({ defaultVolume, levelFade, mixerGeneralVolume, expectedVolume }: VolumeUpdateCase) => {
+            mockMusicElement.defaultVolume = defaultVolume;
+            mockMusicElement.levelFade = levelFade;
 
-        it('should apply fade level to volume', () => {
-            mockMusicElement.defaultVolume = 0.8;
-            mockMusicElement.levelFade = 0.5;
-            
-            updateVolumeElement.update();
-
-            // Volume attendu: 0.8 * 0.5 * 1.0 * 1.0 * 1.0 = 0.4
-            expect(mockAudioElement.volume).toBe(0.4);
-        });
-
-        it('should apply mixer general volume', () => {
-            mockMusicElement.defaultVolume = 1;
-            mockMusicElement.levelFade = 1;
-            vi.spyOn(MixerManager, 'getMixerValue').mockImplementation((type: string) => {
-                if (type === 'general') return 0.6;
+            vi.mocked(MixerManager.getMixerValue).mockImplementation((type: string) => {
+                if (type === 'general') return mixerGeneralVolume;
                 return 1;
             });
-            
+
             updateVolumeElement.update();
 
-            // Volume attendu: 1.0 * 1.0 * 0.6 * 1.0 * 1.0 = 0.6
-            expect(mockAudioElement.volume).toBe(0.6);
+            expect(mockAudioElement.volume).toBe(expectedVolume);
         });
 
         it('should apply mixer type volume', () => {
