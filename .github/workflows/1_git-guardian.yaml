@@ -31,14 +31,21 @@ jobs:
       run: pip install ggshield==1.52.2
 
     - name: GitGuardian scan pushed commits (history)
-      if: github.event_name == 'push' || github.event_name == 'pull_request'
       env:
         GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
       run: ggshield secret scan ci
 
     - name: GitGuardian scan full repository (working tree)
+      shell: bash
       env:
         GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
       run: |
-        ggshield secret scan path --recursive --all-secrets --yes --json . > ggshield-report.json || true
-        cat ggshield-report.json
+        ggshield secret scan path --recursive --all-secrets --yes . 2>&1 | tee ggshield-report.txt
+        exit ${PIPESTATUS[0]}
+
+    - name: Upload ggshield report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ggshield-report
+        path: ggshield-report.txt
