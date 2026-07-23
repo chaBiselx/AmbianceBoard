@@ -2,7 +2,8 @@ name: Build docker-compose
 run-name: ${{ github.actor }} is starting a build 🚀
 on: [push, workflow_dispatch]
 
-build:
+jobs:
+  build:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Build ${{ github.ref }} started."
