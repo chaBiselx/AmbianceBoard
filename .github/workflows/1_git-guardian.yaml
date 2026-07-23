@@ -1,0 +1,39 @@
+name: git-guardian
+run-name: ${{ github.actor }} git guardian 🔐
+
+on: [push, pull_request, workflow_dispatch]
+
+concurrency:
+  group: git-guardian-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  GitGuardian:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.x"
+
+    - name: Install ggshield
+      run: pip install ggshield==1.52.2
+
+    - name: GitGuardian scan pushed commits (history)
+      if: github.event_name == 'push' || github.event_name == 'pull_request'
+      env:
+        GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+      run: ggshield secret scan ci
+
+    - name: GitGuardian scan full repository (working tree)
+      env:
+        GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+      run: ggshield secret scan path --recursive --all-secrets .
