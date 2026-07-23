@@ -7,7 +7,7 @@ import json
 import time
 import requests
 import threading
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 from datetime import datetime
 from queue import Queue, Empty
 from .ILogger import ILogger
@@ -163,28 +163,18 @@ class LokiLogger(ILogger):
         
         while not self._shutdown.is_set():
             try:
-                # Vérifier la deadline globale
-                if self._deadline and time.time() >= self._deadline:
+                if self._is_deadline_reached():
                     break
-                
-                # Attendre un log avec un timeout
-                try:
-                    remaining = self._deadline - time.time() if self._deadline else 1.0
-                    if remaining <= 0:
-                        break
-                    timeout = min(remaining, 0.5)  # Réduire à 0.5s pour réagir rapidement
-                    log_entry = self._log_queue.get(timeout=timeout)
-                    batch.append(log_entry)
-                except Empty:
-                    # Timeout atteint, vérifier s'il faut envoyer un batch partiel
-                    current_time = time.time()
-                    if batch and (current_time - last_send_time) >= self._batch_timeout:
-                        self._send_batch(batch)
-                        batch = []
-                        last_send_time = current_time
+
+                log_entry, timed_out = self._dequeue_log_entry()
+                if timed_out:
+                    batch, last_send_time = self._flush_partial_batch_if_needed(batch, last_send_time)
                     continue
-                
-                # Envoyer le batch s'il est plein
+
+                if log_entry is None:
+                    break
+
+                batch.append(log_entry)
                 if len(batch) >= self._batch_size:
                     self._send_batch(batch)
                     batch = []
@@ -197,6 +187,41 @@ class LokiLogger(ILogger):
         # Envoyer les logs restants avant de fermer
         if batch:
             self._send_batch(batch)
+
+    def _is_deadline_reached(self) -> bool:
+        """Retourne True si la deadline globale est atteinte."""
+        return bool(self._deadline and time.time() >= self._deadline)
+
+    def _dequeue_log_entry(self) -> Tuple[Optional[Dict[str, Any]], bool]:
+        """
+        Tente de lire une entrée de log depuis la queue.
+
+        Returns:
+            Tuple[Optional[Dict[str, Any]], bool]:
+                - log_entry: entrée de log lue, None si arrêt demandé
+                - timed_out: True si la lecture a expiré
+        """
+        remaining = self._deadline - time.time() if self._deadline else 1.0
+        if remaining <= 0:
+            return None, False
+
+        timeout = min(remaining, 0.5)
+        try:
+            return self._log_queue.get(timeout=timeout), False
+        except Empty:
+            return None, True
+
+    def _flush_partial_batch_if_needed(
+        self,
+        batch: List[Dict[str, Any]],
+        last_send_time: float
+    ) -> Tuple[List[Dict[str, Any]], float]:
+        """Envoie un batch partiel si le timeout de batch est dépassé."""
+        current_time = time.time()
+        if batch and (current_time - last_send_time) >= self._batch_timeout:
+            self._send_batch(batch)
+            return [], current_time
+        return batch, last_send_time
     
     def _send_batch(self, batch: List[Dict[str, Any]]) -> None:
         """
