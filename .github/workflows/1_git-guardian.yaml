@@ -1,7 +1,7 @@
 name: git-guardian
 run-name: ${{ github.actor }} git guardian 🔐
 
-on: [push, pull_request, workflow_dispatch]
+on: [push]
 
 concurrency:
   group: git-guardian-${{ github.ref }}
@@ -20,7 +20,7 @@ jobs:
         fetch-depth: 0
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: "3.x"
 
