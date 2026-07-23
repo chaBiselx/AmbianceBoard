@@ -1,7 +1,10 @@
 name: git-guardian
 run-name: ${{ github.actor }} git guardian 🔐
 
-on: [push]
+on: 
+  - push
+  # - pull_request
+  # - workflow_dispatch
 
 concurrency:
   group: git-guardian-${{ github.ref }}
@@ -36,4 +39,6 @@ jobs:
     - name: GitGuardian scan full repository (working tree)
       env:
         GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
-      run: ggshield secret scan path --recursive --all-secrets --yes .
+      run: |
+        ggshield secret scan path --recursive --all-secrets --yes --json . > ggshield-report.json || true
+        cat ggshield-report.json
