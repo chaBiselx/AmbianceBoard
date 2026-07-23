@@ -36,4 +36,4 @@ jobs:
     - name: GitGuardian scan full repository (working tree)
       env:
         GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
-      run: ggshield secret scan path --recursive --all-secrets .
+      run: ggshield secret scan path --recursive --all-secrets --yes .
