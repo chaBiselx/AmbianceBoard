@@ -1,5 +1,5 @@
 name: Build docker-compose
-run-name: Building | ${{ github.actor }}
+run-name: Building test | ${{ github.actor }}
 on:
   workflow_run:
     workflows: ["git-guardian"]
