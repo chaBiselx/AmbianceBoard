@@ -53,7 +53,7 @@ test-music-labeler: test-music-labeler-tu
 test-music-labeler-tu:
 	@# Help: lance les tests unitaires music labeler
 	@-if [ -z "$(FILTER)" ]; then \
-		docker compose run --rm -v "$(PWD)/music-labeler:/workspace" -w /workspace music-labeler sh -lc "python -m pip install --user pytest >/tmp/pip-pytest.log 2>&1 && python -m pytest -q tests"; \
+		$(CONTAINER_MUSIC_LABELER) python -m pytest -q tests; \
 	else \
-		docker compose run --rm -v "$(PWD)/music-labeler:/workspace" -w /workspace music-labeler sh -lc "python -m pip install --user pytest >/tmp/pip-pytest.log 2>&1 && python -m pytest -q $(FILTER)"; \
+		$(CONTAINER_MUSIC_LABELER) python -m pytest -q $(FILTER); \
 	fi

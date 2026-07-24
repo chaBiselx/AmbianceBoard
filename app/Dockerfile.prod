@@ -1,5 +1,5 @@
 # pull official base image
-FROM python:3.14.6-slim-trixie
+FROM python:3.14.6-slim-trixie as builder
 
 # set work directory
 WORKDIR /usr/src/app
@@ -46,6 +46,8 @@ RUN mkdir -p mediafiles/musics mediafiles/playlistIcon mediafiles/soundBoardIcon
     && chmod +x ./entrypoint.prod.sh \
     && chown -R appuser:appuser /usr/src/app
 
+
+# TODO implement 2 phase build for production to reduce image size and remove build dependencies
 
 # Note: We start as root to allow cron functionality when needed
 # The application should drop privileges when not running cron

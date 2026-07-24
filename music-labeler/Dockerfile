@@ -21,12 +21,18 @@ RUN pip install --no-cache-dir \
 
 COPY main.py .
 COPY app/ ./app/
+COPY tests/ ./tests/
 
 # Pré-télécharge le modèle au build pour un démarrage rapide
 ARG CLAP_MODEL=laion/clap-htsat-unfused
 ENV CLAP_MODEL=${CLAP_MODEL}
 
-RUN adduser --disabled-password --gecos '' appuser
+RUN adduser --disabled-password --gecos '' appuser && \
+    mkdir -p /tmp/pytest-cache && \
+    chown -R appuser:appuser /app /tmp/pytest-cache
+
+ENV PYTEST_ADDOPTS="-o cache_dir=/tmp/pytest-cache"
+
 USER appuser
 
 RUN python -c "\
