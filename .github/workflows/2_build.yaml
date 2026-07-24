@@ -1,0 +1,27 @@
+name: Build docker-compose
+run-name: Building | ${{ github.actor }}
+on:
+  workflow_run:
+    workflows: ["git-guardian"]
+    types:
+      - completed
+
+jobs:
+  build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Build ${{ github.ref }} started."
+      - name: Check out repository code
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - run: docker --version
+      - name: init .env file
+        # TODO : remove this line when the CI environment variables are moved to GitHub secrets
+        run: |
+          cp .env.CI .env 
+      - name: Build and run Docker Compose
+        run: |
+          docker compose up -d --build

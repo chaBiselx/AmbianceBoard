@@ -1,0 +1,17 @@
+version: 2
+
+secret:
+  ignored_paths:
+    - ".github/**"
+    - ".git/**"
+    # tests are not part of the production code, so we can ignore them
+    - "frontend/tests/**" 
+    - "app/main/TNR/**" 
+    - "music-labeler/tests/**"
+    # fixtures and mock data are not part of the production code, so we can ignore them
+    - "app/main/management/commands/**"
+    # migrations are not part of the production code, so we can ignore them
+    - "app/main/architecture/persistence/migrations/**"
+    # temporary files are not part of the production code, so we can ignore them
+    - .env.CI # TODO : remove this line when the CI environment variables are moved to GitHub secrets
+

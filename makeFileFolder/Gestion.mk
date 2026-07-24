@@ -56,3 +56,10 @@ enter:
 	echo "Connexion au conteneur $$CONTAINER_NAME..."; \
 	docker exec -it $$CONTAINER_NAME bash
 
+## —— DEBUG  ————————————————————————————————————————————————————————————————
+debug-fix-front-perms:
+	@# Help: Réparer les permissions du frontend (node_modules) pour l'utilisateur node
+	@echo "Réparation des permissions frontend..."
+	@docker compose exec -u root front sh -lc 'chown -R node:node /app 2>/dev/null || true'
+	@docker compose exec front sh -lc 'id && ls -ld /app /app/node_modules 2>/dev/null || true'
+

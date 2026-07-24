@@ -44,11 +44,11 @@ if [ "$RUNCRON" != "1" ]; then
 fi
 
 # Démarrer Celery en arrière-plan
-celery -A main worker --queues=default --concurrency=4 --loglevel=info &
+celery -A main worker --queues=default --concurrency=4 --loglevel=info --logfile=/usr/src/app/logs/celery_default_worker.log &
 
 # Worker dédié music_labeler : séquentiel par défaut (concurrency=1).
 # Augmenter MUSIC_LABELER_CONCURRENCY pour monter en charge.
-celery -A main worker --queues=music_labeler --concurrency="${MUSIC_LABELER_CONCURRENCY:-1}" --loglevel=info &
+celery -A main worker --queues=music_labeler --concurrency="${MUSIC_LABELER_CONCURRENCY:-1}" --loglevel=info --logfile=/usr/src/app/logs/celery_music_labeler_worker.log &
 
 if [ "$RUNCRON" = "1" ]; then
     echo "Adding crontab..."

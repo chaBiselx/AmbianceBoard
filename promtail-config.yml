@@ -47,6 +47,15 @@ scrape_configs:
           service: orm
           __path__: /app/logs/orm_logs.log*
 
+  - job_name: ambianceboard-websocket-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: ambianceboard
+          service: websocket
+          __path__: /app/logs/websocket_logs.log*
+
   - job_name: ambianceboard-request-logs
     static_configs:
       - targets:
@@ -55,6 +64,15 @@ scrape_configs:
           job: ambianceboard
           service: request
           __path__: /app/logs/request_logs.log*
+
+  - job_name: ambianceboard-celery-logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: ambianceboard
+          service: celery
+          __path__: /app/logs/celery_*_worker.log*
 
   # Configuration pour les logs des conteneurs Docker
   - job_name: docker-containers

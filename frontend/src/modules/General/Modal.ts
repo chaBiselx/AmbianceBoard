@@ -37,12 +37,7 @@ class ModalCustom {
     }
 
 
-    public static show(param: ModalJson = {
-        title: "",
-        body: "",
-        footer: "",
-        width: ""
-    }) {
+    public static show(param?: ModalJson) {
         const defaultValues = {
             title: "",
             body: "",

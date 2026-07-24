@@ -310,6 +310,21 @@ Améliorations
 Sécurité
 - Mise a jours des dépendances 
 
+### 0.4.5 - 2026/07
+Corrections
+- Corrections de l'outils qui gèrent les données l'observabilité 
+
+### 0.4.6 - 2026/07
+Nouveautés
+- Debut de l'integration de la CI
+
+Corrections
+- Corrections de l'erreur lors de l'ajout de piste audio à un bouton lorsque la limite est atteinte
+- Corrections de l'arret des sons d'ambiance lorsque un délai est court
+
+Améliorations
+- Amélioration de l'observabilité du serveur
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
