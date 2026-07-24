@@ -68,7 +68,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    user: "node"
     volumes:
       - ./frontend:/app
       - /app/node_modules
