@@ -49,6 +49,6 @@ jobs:
     permissions:
       actions: read
       contents: read
-    steps: !include steps_build.yaml
+    steps: !include:steps_build.yaml
 
       
