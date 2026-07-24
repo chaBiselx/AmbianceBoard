@@ -10,6 +10,9 @@ jobs:
   build:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
     steps:
       - run: echo "Build ${{ github.ref }} started."
       - name: Check out repository code
