@@ -65,7 +65,7 @@ jobs:
       - name: Save Front as tarball
         run: docker save ambianceboard-front:latest -o ambianceboard-front_ci.tar
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: docker-image
           path: |
@@ -82,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: docker-image
       - name: Load Back as tarball
@@ -106,7 +106,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Download artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: docker-image
       - name: Load image
