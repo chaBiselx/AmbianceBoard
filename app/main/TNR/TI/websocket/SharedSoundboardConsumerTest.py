@@ -11,7 +11,7 @@ from parameters.routing import application
 User = get_user_model()
 
 # NOSONAR
-@tag('unitaire')
+@tag('integration')
 class SharedSoundboardConsumerAsyncTest(TransactionTestCase):
     reset_sequences = True
 

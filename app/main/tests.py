@@ -64,8 +64,7 @@ from main.TNR.TU.forms.private.PlaylistFormTest import *
 # Cron services tests (P0)
 from main.TNR.TU.cron.CronServicesTest import *
 
-# Websocket consumer tests (P0)
-from main.TNR.TU.websocket.SharedSoundboardConsumerTest import *
+
 
 # Reporting & Moderation tests (P0)
 from main.TNR.TU.reporting.ReportingModerationTest import *
@@ -145,4 +144,7 @@ from main.TNR.TI.routing.ManagerDashboardRouteTest import *
 from main.TNR.TI.routing.PublishSoundboardRouteTest import *
 from main.TNR.TI.routing.SharedSoundboardRouteTest import *
 from main.TNR.TI.routing.SharedStreamMusicRouteTest import *
+
+# Websocket consumer tests (P0)
+from main.TNR.TI.websocket.SharedSoundboardConsumerTest import *
 
