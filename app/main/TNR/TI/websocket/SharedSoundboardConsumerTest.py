@@ -1,7 +1,7 @@
 import json
 import asyncio
 from channels.testing import WebsocketCommunicator
-from django.test import TransactionTestCase, tag
+from django.test import TransactionTestCase, tag, override_settings
 from asgiref.sync import sync_to_async
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
@@ -12,6 +12,11 @@ User = get_user_model()
 
 # NOSONAR
 @tag('integration')
+@override_settings(CHANNEL_LAYERS={
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+})
 class SharedSoundboardConsumerAsyncTest(TransactionTestCase):
     reset_sequences = True
 
