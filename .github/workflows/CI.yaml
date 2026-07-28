@@ -146,3 +146,15 @@ jobs:
         run: docker compose up -d
       - name: Run tests
         run: docker compose exec music-labeler python -m pytest -q tests
+
+  TestQuality:
+    needs:
+      - TestDockerBack
+      - TestDockerFront
+      - TestDockerMusicLabeler
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: ok
+        run: echo 'validate several dependabot PRs'
