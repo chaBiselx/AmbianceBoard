@@ -172,7 +172,7 @@ jobs:
           name: sonar-report
           path: .scannerwork
 
-      - name: validation
+      - name: Validation SonarQube Report
         run: |
           if [ -f .scannerwork/report-task.txt ]; then
             echo "SonarQube report generated successfully."
