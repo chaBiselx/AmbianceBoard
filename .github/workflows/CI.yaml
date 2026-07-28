@@ -156,5 +156,28 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: ok
-        run: echo 'validate several dependabot PRs'
+      - uses: actions/checkout@v6
+        with:
+          # Disabling shallow clones is recommended for improving the relevancy of reporting
+          fetch-depth: 0
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v8.2.1 # See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Upload SonarQube Report
+        uses: actions/upload-artifact@v6
+        with:
+          name: sonar-report
+          path: .scannerwork
+
+      - name: validation
+        run: |
+          if [ -f .scannerwork/report-task.txt ]; then
+            echo "SonarQube report generated successfully."
+          else
+            echo "SonarQube report not found. Failing the job."
+            exit 1
+          fi
+
+
