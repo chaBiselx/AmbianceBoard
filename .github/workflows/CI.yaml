@@ -147,7 +147,7 @@ jobs:
   #     - name: Run tests
   #       run: docker compose exec music-labeler python -m pytest -q tests
 
-  TestQuality:
+  TestQualityGate:
     needs:
       - GitGuardian
       # - TestDockerBack
