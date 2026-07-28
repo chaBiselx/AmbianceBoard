@@ -309,7 +309,7 @@ class LokiLogger(ILogger):
     def shutdown(self) -> None:
         """
         Arrête proprement le logger avec deadline globale.
-        NON-BLOQUANT : n'attend pas le thread, c'est un daemon.
+        Attend la fin du thread (join avec timeout) pour éviter les race conditions.
         """
         # Définir une deadline globale pour que le thread s'arrête rapidement
         self._deadline = time.time() + 1.0  # 1 seconde pour finir les envois en cours
@@ -317,15 +317,11 @@ class LokiLogger(ILogger):
         # Signaler l'arrêt au thread
         self._shutdown.set()
         
-        # NE PAS appeler join() - on ne peut pas se permettre de bloquer
-        # Le thread est daemon (daemon=True), il s'arrêtera tout seul quand le worker meurt
-        # Essayer d'attendre causait le timeout Gunicorn
-        
-        # Si on veut vraiment essayer de flush rapidement (max 0.1s sans blocker)
+        # Attendre que le thread se termine réellement pour éviter qu'il appelle
+        # requests.post après la fin du test (ou de la requête en cours).
+        # join(timeout=1.5) est sûr : la deadline garantit que le thread s'arrête ≤1s.
         try:
-            start = time.time()
-            while not self._log_queue.empty() and (time.time() - start) < 0.1:
-                time.sleep(0.01)
+            self._sender_thread.join(timeout=1.5)
         except Exception:
             pass
     
