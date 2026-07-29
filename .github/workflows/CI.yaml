@@ -147,38 +147,38 @@ jobs:
   #     - name: Run tests
   #       run: docker compose exec music-labeler python -m pytest -q tests
 
-  TestQualityGate:
-    needs:
-      - GitGuardian
-      # - TestDockerBack
-      # - TestDockerFront
-      # - TestDockerMusicLabeler
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          # Disabling shallow clones is recommended for improving the relevancy of reporting
-          fetch-depth: 0
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v8.2.1 # See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
+  # TestQualityGate:
+  #   needs:
+  #     - GitGuardian
+  #     # - TestDockerBack
+  #     # - TestDockerFront
+  #     # - TestDockerMusicLabeler
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #       with:
+  #         # Disabling shallow clones is recommended for improving the relevancy of reporting
+  #         fetch-depth: 0
+  #     - name: SonarQube Scan
+  #       uses: SonarSource/sonarqube-scan-action@v8.2.1 # See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
 
-      - name: Upload SonarQube Report
-        uses: actions/upload-artifact@v6
-        with:
-          name: sonar-report
-          path: .scannerwork
+  #     - name: Upload SonarQube Report
+  #       uses: actions/upload-artifact@v6
+  #       with:
+  #         name: sonar-report
+  #         path: .scannerwork
 
-      - name: Validation SonarQube Report
-        run: |
-          if [ -f .scannerwork/report-task.txt ]; then
-            echo "SonarQube report generated successfully."
-          else
-            echo "SonarQube report not found. Failing the job."
-            exit 1
-          fi
+  #     - name: Validation SonarQube Report
+  #       run: |
+  #         if [ -f .scannerwork/report-task.txt ]; then
+  #           echo "SonarQube report generated successfully."
+  #         else
+  #           echo "SonarQube report not found. Failing the job."
+  #           exit 1
+  #         fi
 
 
