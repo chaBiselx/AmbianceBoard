@@ -1,4 +1,5 @@
-FROM node:26 AS builder
+#node:26
+FROM node@sha256:e88a35be04478413b7c71c455cd9865de9b9360e1f43456be5951032d7ac1a66 AS builder
 
 # Créer un utilisateur non-root pour des raisons de sécurité
 # RUN groupadd -r nodeuser && useradd -r -g nodeuser -m nodeuser

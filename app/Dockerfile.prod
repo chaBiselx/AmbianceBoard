@@ -1,5 +1,6 @@
 # pull official base image
-FROM python:3.14.6-slim-trixie AS builder
+#3.14.6-slim-trixie
+FROM python@sha256:cea0e6040540fb2b965b6e7fb5ffa00871e632eef63719f0ea54bca189ce14a6 AS builder
 
 # set work directory
 WORKDIR /usr/src/app
