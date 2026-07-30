@@ -19,6 +19,7 @@ def send_manager_email_task(self, to_email: str, subject: str, html_content: str
     logger = LoggerFactory.get_default_logger('mail')
 
     try:
+        logger.info(f"send_manager_email_task: tentative d'envoi email à {to_email} — sujet: {subject}")
         from_email = Settings.get('EMAIL_CONTACT')
         mailer = EmailSender()
         mailer.send_email(subject, html_content, from_email, [to_email])
