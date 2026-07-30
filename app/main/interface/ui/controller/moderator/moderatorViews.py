@@ -7,6 +7,7 @@ from django.db.models import Avg, Count
 from django.db import models
 from django.urls import reverse
 from django.core.paginator import Paginator
+from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.UserModerationLog import UserModerationLog
@@ -73,10 +74,40 @@ def moderator_listing_images_playlist(request) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_images_soundboard(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
+    selected_user = (request.GET.get('user') or '').strip()
+    selected_period = (request.GET.get('period') or '').strip()
 
-    queryset = SoundBoardRepository().get_all_queryset()
+    period_choices = ChartPeriodEnum.get_days_mapping()
+
+    queryset = SoundBoardRepository().get_all_queryset().select_related('user')
+
+    if selected_user:
+        queryset = queryset.filter(user__username=selected_user)
+
+    if selected_period:
+        if selected_period in period_choices:
+            days = int(selected_period)
+            start_dt = timezone.now() - timedelta(days=days)
+            queryset = queryset.filter(created_at__gte=start_dt)
+        else:
+            selected_period = ''
+
+    queryset = queryset.order_by('-created_at')
+
+    users_with_soundboards = (
+        User.objects.filter(soundboard__isnull=False)
+        .order_by('username')
+        .distinct()
+    )
+
     paginator = Paginator(queryset, 200)  
     context = extract_context_to_paginator(paginator, page_number)
+    context.update({
+        'users_with_soundboards': users_with_soundboards,
+        'period_choices': period_choices,
+        'selected_user': selected_user,
+        'selected_period': selected_period,
+    })
     
     return render(request, 'Html/Moderator/listing_soundboard_img.html', context)
 

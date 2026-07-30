@@ -324,6 +324,7 @@ Corrections
 
 Améliorations
 - Amélioration de l'observabilité du serveur
+- Ajout de filtres coté modération
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

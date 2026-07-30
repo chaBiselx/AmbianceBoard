@@ -145,6 +145,7 @@ from main.TNR.TI.routing.PublicFavoriteRouteTest import *
 
 # Routes Modération
 from main.TNR.TI.routing.ModeratorDashboardRouteTest import *
+from main.TNR.TI.routing.ModeratorListingSoundboardRouteTest import *
 from main.TNR.TI.routing.ModeratorListingTagsRouteTest import *
 from main.TNR.TI.routing.ModeratorListingPlaylistTagsRouteTest import *
 
