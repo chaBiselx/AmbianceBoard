@@ -3,34 +3,8 @@
 {% load PaginationLinks %}
 
 <div class="row g-2 mb-2">
-    <div class="col-12 col-sm-6">
-        <label for="soundboard-edit-my-playlist-type-filter" class="form-label mb-1">Type de son :</label>
-        <select
-            id="soundboard-edit-my-playlist-type-filter"
-            name="playlistType"
-            class="form-select form-select-sm"
-            data-edit-mode-filter="true"
-        >
-            <option value="">Tous les types</option>
-            {% for typeKey, typeValue in playlistType.items %}
-            <option value="{{ typeValue }}" {% if selected_type == typeValue %}selected{% endif %}>{{ typeValue }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-12 col-sm-6">
-        <label for="soundboard-edit-my-playlist-tag-filter" class="form-label mb-1">Tag :</label>
-        <select
-            id="soundboard-edit-my-playlist-tag-filter"
-            name="playlistTag"
-            class="form-select form-select-sm"
-            data-edit-mode-filter="true"
-        >
-            <option value="">Tous les tags</option>
-            {% for playlist_tag in list_playlist_tags %}
-            <option value="{{ playlist_tag.label }}" {% if selected_playlist_tag == playlist_tag.label %}selected{% endif %}>{{ playlist_tag.name }}</option>
-            {% endfor %}
-        </select>
-    </div>
+    {% include 'Html/partial/filter/search/filter_modal_select.html' with label="Type de son" field_id="soundboard-edit-my-playlist-type-filter" field_name="playlistType" options=playlistType selected_value=selected_type all_option_label="Tous les types" %}
+    {% include 'Html/partial/filter/search/filter_modal_select.html' with label="Tag" field_id="soundboard-edit-my-playlist-tag-filter" field_name="playlistTag" options=list_playlist_tags_dict selected_value=selected_playlist_tag all_option_label="Tous les tags" use_key_as_value=True %}
 </div>
 
 {% if page_objects %}

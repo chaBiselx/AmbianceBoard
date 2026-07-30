@@ -1,0 +1,56 @@
+{# Paramètres: list_tags, selected_tag, reset_url, show_empty_option (bool), accordion_title (optionnel) #}
+<div class="accordion mb-3">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button {% if not selected_tag %}collapsed{% endif %}"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#tag-filter-body"
+                    aria-expanded="{{ selected_tag|yesno:'true,false' }}"
+                    aria-controls="tag-filter-body">
+                {% if accordion_title %}{{ accordion_title }}{% else %}Filtrer par tag{% endif %}
+            </button>
+        </h2>
+        <div id="tag-filter-body" class="accordion-collapse collapse {% if selected_tag %}show{% endif %}">
+            <div class="accordion-body">
+
+                {% if selected_tag %}
+                <div class="alert alert-info d-flex align-items-center mb-3">
+                    <i class="fas fa-filter me-2"></i>
+                    Filtré par le tag : <strong class="ms-1">{{ selected_tag }}</strong>
+                    <a href="{{ reset_url }}" class="btn btn-sm btn-outline-secondary ms-2">
+                        <i class="fas fa-times"></i> Effacer le filtre
+                    </a>
+                </div>
+                {% endif %}
+
+                <div class="tags-container" id="tag-search">
+                    <div class="d-flex flex-wrap gap-2">
+                        {% if show_empty_option %}
+                        <a data-tag="empty" class="tag-element-redirect btn-link text-decoration-none">
+                            <span class="badge tag-badge text-warning {% if selected_tag == 'empty' %}badge-selected{% else %}badge-unselected{% endif %}"
+                                  data-bs-toggle="tooltip" data-bs-title="Aucun tag">
+                                <i class="fas fa-tag me-1"></i>aucun
+                            </span>
+                        </a>
+                        {% endif %}
+
+                        {% for tag in list_tags %}
+                        {# label pour PlaylistTag (slug URL), name comme fallback pour SoundboardTag #}
+                        {% with tag_value=tag.label|default:tag.name %}
+                        <a data-tag="{{ tag_value }}" class="tag-element-redirect btn-link text-decoration-none">
+                            <span class="badge tag-badge {% if selected_tag == tag_value %}badge-selected{% else %}badge-unselected{% endif %} tag-cloud-item"
+                                  {% if tag.description %}data-bs-toggle="tooltip" data-bs-title="{{ tag.description|default:'Aucune description' }}"{% endif %}>
+                                <i class="fas fa-tag me-1"></i>{{ tag.name }}
+                                {% if tag.soundboard_count is not None %}<small class="badge bg-secondary ms-1">{{ tag.soundboard_count }}</small>{% endif %}
+                            </span>
+                        </a>
+                        {% endwith %}
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

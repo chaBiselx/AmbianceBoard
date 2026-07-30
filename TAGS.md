@@ -325,6 +325,7 @@ Corrections
 Améliorations
 - Amélioration de l'observabilité du serveur
 - Ajout de filtres coté modération
+- Uniformatisation des filtres à travers l'application
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

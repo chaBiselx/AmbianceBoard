@@ -7,31 +7,12 @@
 
 <div class="row">
     <div class="col-12">
-        <form method="GET" action="{% url 'moderatorControleImagesSoundboard' %}" class="mb-3">
+        {% url 'moderatorControleImagesSoundboard' as filter_reset_url %}
+        <form method="GET" action="{{ filter_reset_url }}" class="mb-3" data-filter-form>
             <div class="d-flex align-items-center gap-3 flex-wrap">
-                <div class="d-flex align-items-center gap-2">
-                    <label for="filter-user" class="form-label mb-0">Filtre utilisateur :</label>
-                    <select name="user" id="filter-user" class="form-select" style="width: auto;" onchange="this.form.submit()">
-                        <option value="">Tous les utilisateurs</option>
-                        {% for user in users_with_soundboards %}
-                        <option value="{{ user.username }}" {% if selected_user == user.username %}selected{% endif %}>
-                            {{ user.username }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="d-flex align-items-center gap-2">
-                    <label for="filter-period" class="form-label mb-0">Filtre date de création :</label>
-                    <select name="period" id="filter-period" class="form-select" style="width: auto;" onchange="this.form.submit()">
-                        <option value="">Toutes les dates</option>
-                        {% for days, label in period_choices.items %}
-                        <option value="{{ days }}" {% if selected_period == days %}selected{% endif %}>{{ label }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <a href="{% url 'moderatorControleImagesSoundboard' %}" class="btn btn-outline-secondary">Réinitialiser</a>
+                {% include 'Html/partial/filter/search/filter_select.html' with label="Filtre utilisateur" field_name="user" field_id="filter-user" options=users_select selected_value=selected_user all_option_label="Tous les utilisateurs" %}
+                {% include 'Html/partial/filter/search/filter_select.html' with label="Filtre date de création" field_name="period" field_id="filter-period" options=period_choices selected_value=selected_period all_option_label="Toutes les dates" use_key_as_value=True %}
+                {% include 'Html/partial/filter/search/reset_btn.html' with reset_url=filter_reset_url %}
             </div>
         </form>
 

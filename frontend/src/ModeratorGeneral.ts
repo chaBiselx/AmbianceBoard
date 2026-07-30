@@ -2,8 +2,10 @@ import ModalCustom from '@/modules/General/Modal';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
 import { DashboardBarGraph } from '@/modules/Chart/DashboardBarGraph';
 import { PlaylistTagManager } from '@/modules/Moderator/PlaylistTagManager';
+import FilterFormHtmlManager from '@/modules/Filter/FilterFormHtmlManager';
 
 document.addEventListener('DOMContentLoaded', () => {
+    new FilterFormHtmlManager().init();
     for (const el of document.querySelectorAll('.popup-data-playlist')) {
         el.addEventListener('click', getDataPlaylist);
     }

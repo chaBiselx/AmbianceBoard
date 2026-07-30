@@ -104,6 +104,7 @@ def moderator_listing_images_soundboard(request) -> HttpResponse:
     context = extract_context_to_paginator(paginator, page_number)
     context.update({
         'users_with_soundboards': users_with_soundboards,
+        'users_select': {u.username: u.username for u in users_with_soundboards},
         'period_choices': period_choices,
         'selected_user': selected_user,
         'selected_period': selected_period,

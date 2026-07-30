@@ -62,12 +62,13 @@ def playlist_read_all(request):
     track_repository = TrackRepository()
     number_tracks_by_playlist = track_repository.get_number_tracks_by_playlist(request.user)
     
+    tags = PlaylistTagRepository().get_list_active_tags()
     return render(request, 'Html/Playlist/playlist_read_all.html', {
         'playlists': playlists, 
         'number_tracks_by_playlist': number_tracks_by_playlist,
         'playlistType': PlaylistTypeEnum.convert_to_dict(),
         'selected_type': playlist_type_filter,
-        'list_playlist_tags': PlaylistTagRepository().get_list_active_tags(),
+        'list_playlist_tags_dict': {t.label: t.name for t in tags},
         'selected_playlist_tag': playlist_tag_filter,
     })
 

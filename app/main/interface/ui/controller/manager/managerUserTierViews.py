@@ -88,7 +88,7 @@ def admin_user_tiers_listing(request) -> HttpResponse:
     context.update({
         'search': search,
         'tier_filter': tier_filter,
-        'tier_choices': [(tier, info['display_name']) for tier, info in UserTierManager.get_all_tiers().items()],
+        'tier_choices': {tier: info['display_name'] for tier, info in UserTierManager.get_all_tiers().items()},
     })
     
     return render(request, 'Html/Manager/user_tiers_listing.html', context)

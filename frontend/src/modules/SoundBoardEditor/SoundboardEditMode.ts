@@ -5,6 +5,8 @@ import PopupAddMusicToSoundboard from '@/modules/SoundBoardEditor/PopupAddMusicT
 import SoundBoardEventListener from '@/modules/SoundBoardEventListener';
 import { MixerManager } from '@/modules/MixerManager';
 import { PaginationManager } from '@/modules/PaginationManager';
+import FilterFormAjaxManager from '@/modules/Filter/FilterFormAjaxManager';
+import PaginationAjaxManager from '@/modules/Filter/PaginationAjaxManager';
 
 
 class SoundboardEditMode {
@@ -261,40 +263,11 @@ class SoundboardEditMode {
         container: HTMLElement,
         onFiltersChange: (filters: Record<string, string>) => void
     ): void {
-        const filterElements = container.querySelectorAll('[data-edit-mode-filter="true"]');
-        if (filterElements.length === 0) return;
-
-        for (const filterElement of filterElements) {
-            if (!(filterElement instanceof HTMLSelectElement)) continue;
-            filterElement.addEventListener('change', () => {
-                const nextFilters: Record<string, string> = {};
-                const allFilterElements = container.querySelectorAll('[data-edit-mode-filter="true"]');
-                for (const element of allFilterElements) {
-                    if (!(element instanceof HTMLSelectElement)) continue;
-                    const value = element.value.trim();
-                    if (!value) continue;
-                    nextFilters[element.name] = value;
-                }
-
-                onFiltersChange(nextFilters);
-            });
-        }
+        new FilterFormAjaxManager(container, onFiltersChange).bind();
     }
 
     private bindPaginationInContainer(container: HTMLElement, onPageChange: (page: number) => void): void {
-        const paginationButtons = container.querySelectorAll('#pagination .page-item');
-        for (const pageItem of paginationButtons) {
-            if (pageItem.classList.contains('disabled')) continue;
-            const button = pageItem.querySelector('.page-link') as HTMLButtonElement | null;
-            if (!button) continue;
-            button.addEventListener('click', (event) => {
-                const target = event.target as HTMLElement;
-                const page = target.dataset.page;
-                if (page) {
-                    onPageChange(Number.parseInt(page, 10));
-                }
-            });
-        }
+        new PaginationAjaxManager(container, onPageChange).bind();
     }
 
     private bindAddMyPlaylistButtons(): void {

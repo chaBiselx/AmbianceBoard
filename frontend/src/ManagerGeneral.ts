@@ -1,9 +1,11 @@
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import ModalCustom from '@/modules/General/Modal';
+import FilterFormHtmlManager from '@/modules/Filter/FilterFormHtmlManager';
 
 
 document.addEventListener('DOMContentLoaded', () => {
     new CronExecuter().addEvent();
+    new FilterFormHtmlManager().init();
 })
 
 class CronExecuter {
