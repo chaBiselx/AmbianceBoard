@@ -29,7 +29,7 @@ class UserNotificationDismissalRepositoryTest(TestCase):
         UserNotificationDismissal.objects.create(user=self.user, notification=self.notification_a)
         UserNotificationDismissal.objects.create(user=self.user, notification=self.notification_b)
 
-        ids = list(self.repository.get_list_ids(self.user))
+        ids = self.repository.get_list_ids(self.user)
 
         self.assertEqual(set(ids), {self.notification_a.id, self.notification_b.id})
 
