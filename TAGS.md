@@ -327,6 +327,8 @@ Améliorations
 - Ajout de filtres coté modération
 - Uniformatisation des filtres à travers l'application
 
+### 0.4.6 - 2026/08
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
