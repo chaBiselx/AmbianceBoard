@@ -1,0 +1,19 @@
+{# Paramètres identiques à filter_select.html mais pour les filtres AJAX#}
+<div class="col-12 col-sm-6">
+    <label for="{{ field_id }}" class="form-label mb-1">{{ label }} :</label>
+    <select
+        id="{{ field_id }}"
+        name="{{ field_name }}"
+        class="form-select form-select-sm"
+        data-edit-mode-filter="true"
+    >
+        <option value="">{{ all_option_label }}</option>
+        {% for key, value in options.items %}
+        {% if use_key_as_value %}
+        <option value="{{ key }}" {% if selected_value == key %}selected{% endif %}>{{ value }}</option>
+        {% else %}
+        <option value="{{ value }}" {% if selected_value == value %}selected{% endif %}>{{ value }}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+</div>

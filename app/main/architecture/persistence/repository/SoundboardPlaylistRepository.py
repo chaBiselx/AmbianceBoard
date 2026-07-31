@@ -115,7 +115,7 @@ class SoundboardPlaylistRepository:
     def shift_sections_from(self, soundboard: "SoundBoard", section: int) -> int:
         return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, section__gte=section).update(section=F('section') + 1)
         
-    def delete(self, soundboard: "SoundBoard", playlist: Playlist) -> bool:
+    def delete(self, soundboard: "SoundBoard", playlist: Playlist) -> tuple:
         return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, Playlist=playlist).delete()
 
     def count(self, soundboard: "SoundBoard") -> int:

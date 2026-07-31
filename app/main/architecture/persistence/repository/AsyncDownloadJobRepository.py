@@ -23,7 +23,7 @@ class AsyncDownloadJobRepository:
         playlist: Playlist,
         url: str,
         source: str = "youtube",
-        alternative_name: Optional[str] = None,
+        alternative_name: Optional[str] = "",
     ) -> AsyncDownloadJob:
         """Crée un job en statut PENDING."""
         return AsyncDownloadJob.objects.create(
@@ -31,7 +31,7 @@ class AsyncDownloadJobRepository:
             playlist=playlist,
             url=url,
             source=source,
-            alternative_name=alternative_name,
+            alternative_name=alternative_name or "",
             status=AsyncDownloadJobStatusEnum.PENDING.name,
         )
         

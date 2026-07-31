@@ -62,12 +62,13 @@ def playlist_read_all(request):
     track_repository = TrackRepository()
     number_tracks_by_playlist = track_repository.get_number_tracks_by_playlist(request.user)
     
+    tags = PlaylistTagRepository().get_list_active_tags()
     return render(request, 'Html/Playlist/playlist_read_all.html', {
         'playlists': playlists, 
         'number_tracks_by_playlist': number_tracks_by_playlist,
         'playlistType': PlaylistTypeEnum.convert_to_dict(),
         'selected_type': playlist_type_filter,
-        'list_playlist_tags': PlaylistTagRepository().get_list_active_tags(),
+        'list_playlist_tags_dict': {t.label: t.name for t in tags},
         'selected_playlist_tag': playlist_tag_filter,
     })
 
@@ -77,8 +78,11 @@ def playlist_read_all(request):
 def playlist_create(request):
     if request.method == 'POST':
         playlist = (PlaylistService(request)).save_form()
-        ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_CREATE, user=request.user, content_object=playlist)
-        return redirect('playlistUpdate', playlist_uuid=playlist.uuid)
+        if playlist is not None:
+            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_CREATE, user=request.user, content_object=playlist)
+            return redirect('playlistUpdate', playlist_uuid=playlist.uuid)
+        # Si save_form() retourne None, on réaffiche le formulaire
+        form = PlaylistForm()
     else:
         form = PlaylistForm()
     list_default_color = DefaultColorPlaylistService(request.user).get_list_default_color()
@@ -105,8 +109,6 @@ def add_music_from_soundboard(request, playlist_uuid)-> JsonResponse:
     if nb_music_remaining < 0:
         nb_music_remaining = 0
     file_size_mb = limit['weight_music_mb']
-    
-    # TODO améliorer la partie link music car redirection après ajout
     
     return render(request, 'Html/Playlist/modal/add_music_from_soundboard.html', {
         'playlist': playlist, 

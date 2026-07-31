@@ -1,0 +1,182 @@
+name: CI
+run-name: CI | ${{ github.ref }} | ${{ github.actor }}
+on:
+  - push
+  # - pull_request
+  # - workflow_dispatch
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  GitGuardian:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.x"
+
+    - name: Install ggshield
+      run: 'pip install --only-binary :all: ggshield==1.52.2'
+
+    - name: GitGuardian scan pushed commits (history)
+      env:
+        GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+      run: ggshield --config-path .github/gitguardian.yaml secret scan ci
+
+    - name: GitGuardian scan full repository (working tree)
+      shell: bash
+      env:
+        GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+      run: |
+        ggshield --config-path .github/gitguardian.yaml secret scan path --recursive --yes . 2>&1 | tee ggshield-report.txt
+        exit ${PIPESTATUS[0]}
+
+  BuildDockerCompose:
+    needs: GitGuardian
+    # if: ${{ github.event.workflow_run.conclusion == 'success' && github.event_name == 'workflow_run' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - run: echo "Build ${{ github.ref }} started."
+      - name: Check out repository code
+        uses: actions/checkout@v6
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - run: docker --version
+      - name: init .env file
+        # TODO : remove this line when the CI environment variables are moved to GitHub secrets
+        run: cp .env.CI .env
+      - name: Build and run Docker Compose
+        run: docker compose up -d --build
+      - name: Save Back as tarball
+        run: docker save ambianceboard-back:latest -o ambianceboard-back_ci.tar
+      - name: Save Front as tarball
+        run: docker save ambianceboard-front:latest -o ambianceboard-front_ci.tar
+      - name: Save Music-labeler as tarball
+        run: docker save ambianceboard-music-labeler:latest -o ambianceboard-music-labeler_ci.tar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: docker-image
+          path: |
+            ambianceboard-back_ci.tar
+            ambianceboard-front_ci.tar
+            ambianceboard-music-labeler_ci.tar
+
+  TestDockerBack:
+    needs: BuildDockerCompose
+    # if: ${{ github.event.workflow_run.conclusion == 'success' && github.event_name == 'workflow_run' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - name: Download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: docker-image
+      - name: Load Back as tarball
+        run: docker load -i ambianceboard-back_ci.tar
+
+      - name: init .env file
+        # TODO : remove this line when the CI environment variables are moved to GitHub secrets ans sync with other jobs
+        run: cp .env.CI .env
+      - name: Start services
+        run: docker compose up -d
+      - name: Compile messages
+        run: docker compose exec back sh -c "python manage.py compilemessages"
+      - name: Run tests
+        run: docker compose exec back sh -c "coverage run --source='.' manage.py test && coverage report"
+
+  TestDockerFront:
+    needs: BuildDockerCompose
+    # if: ${{ github.event.workflow_run.conclusion == 'success' && github.event_name == 'workflow_run' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - name: Download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: docker-image
+      - name: Load image
+        run: docker load -i ambianceboard-front_ci.tar
+      - name: init .env file
+        # TODO : remove this line when the CI environment variables are moved to GitHub secrets ans sync with other jobs
+        run: cp .env.CI .env
+      - name: Start services
+        run: docker compose up -d
+      - name: Run tests
+        run: docker compose exec -w /app front npm run test
+
+  TestDockerMusicLabeler:
+    needs: BuildDockerCompose
+    # if: ${{ github.event.workflow_run.conclusion == 'success' && github.event_name == 'workflow_run' }}
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - name: Download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: docker-image
+      - name: Load image
+        run: docker load -i ambianceboard-music-labeler_ci.tar
+      - name: init .env file
+        # TODO : remove this line when the CI environment variables are moved to GitHub secrets ans sync with other jobs
+        run: cp .env.CI .env
+      - name: Start services
+        run: docker compose up -d
+      - name: Run tests
+        run: docker compose exec music-labeler python -m pytest -q tests
+
+  # TODO retry car les issues ne sont pas actualisé dans SonarQube, donc le job échoue même si les issues sont corrigées 
+  # TestQualityGate:
+  #   needs:
+  #     - GitGuardian
+  #   name: SonarQube
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #       with:
+  #         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+  #     - name: SonarQube Scan
+  #       uses: SonarSource/sonarqube-scan-action@7006c4492b2e0ee0f816d36501671557c97f5995
+  #       env:
+  #         SONAR_TOKEN: ${{ secrets.SONAR_CLOUD_TOKEN }}
+
+  #     - name: Upload SonarQube Report
+  #       uses: actions/upload-artifact@v6
+  #       with:
+  #         name: sonar-report
+  #         path: .scannerwork
+
+  #     - name: Validation SonarQube Report
+  #       run: |
+  #         if [ -f .scannerwork/report-task.txt ]; then
+  #           echo "SonarQube report generated successfully."
+  #         else
+  #           echo "SonarQube report not found. Failing the job."
+  #           exit 1
+  #         fi
+
+

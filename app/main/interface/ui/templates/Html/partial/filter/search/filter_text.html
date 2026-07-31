@@ -1,0 +1,12 @@
+{% load i18n %}
+
+<div class="d-flex align-items-center gap-2">
+    <label for="{{ field_id }}" class="form-label mb-0 visually-hidden">{{ label }}</label>
+    <input type="text"
+           class="form-control"
+           id="{{ field_id }}"
+           name="{{ field_name }}"
+           placeholder="{{ placeholder }}"
+           value="{{ value|default:'' }}"
+           style="width: auto;">
+</div>

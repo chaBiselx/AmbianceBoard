@@ -215,13 +215,14 @@ def soundboard_edit_mode_playlist_list(request, soundboard_uuid):
     paginator = Paginator(playlists, 10)
     context = extract_context_to_paginator(paginator, page_number)
 
+    tags = PlaylistTagRepository().get_list_active_tags()
     return render(request, 'Html/Soundboard/modal/soundboard_edit_mode_playlist_list.html', {
         'soundboard': soundboard,
         'page_objects': context['page_objects'],
         'paginator': context['paginator'],
         'playlistType': PlaylistTypeEnum.convert_to_dict(),
         'selected_type': playlist_type_filter,
-        'list_playlist_tags': PlaylistTagRepository().get_list_active_tags(),
+        'list_playlist_tags_dict': {t.label: t.name for t in tags},
         'selected_playlist_tag': playlist_tag_filter,
     })
 
@@ -362,13 +363,14 @@ def soundboard_edit_mode_my_playlist_list(request, soundboard_uuid):
     paginator = Paginator(playlists, 10)
     context = extract_context_to_paginator(paginator, page_number)
 
+    tags = PlaylistTagRepository().get_list_active_tags()
     return render(request, 'Html/Soundboard/modal/soundboard_edit_mode_my_playlist_list.html', {
         'soundboard': soundboard,
         'page_objects': context['page_objects'],
         'paginator': context['paginator'],
         'playlistType': PlaylistTypeEnum.convert_to_dict(),
         'selected_type': playlist_type_filter,
-        'list_playlist_tags': PlaylistTagRepository().get_list_active_tags(),
+        'list_playlist_tags_dict': {t.label: t.name for t in tags},
         'selected_playlist_tag': playlist_tag_filter,
     })
 

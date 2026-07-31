@@ -326,9 +326,12 @@ class MusicElement {
         if (this.checkLoop()) {
             this.nextLoopStarted = true;
             ConsoleTesteur.log("loopOrStop => SoundBoardManager.createPlaylistLink");
-            this.applyDelay(() => {
-                SoundBoardManager.createPlaylistLink(buttonPlaylist);
-            })
+            const delaiFadeOff = this.fadeOutDeferredToEnded ? 0 : this.fadeOutDuration;
+            
+            this.applyDelay(
+                () => { SoundBoardManager.createPlaylistLink(buttonPlaylist); },
+                delaiFadeOff
+            );
 
         }
     }
@@ -357,18 +360,19 @@ class MusicElement {
         return 0;
     }
 
-    private applyDelay(callback: () => void) {
+    private applyDelay(callback: () => void, timeFadeOff: number = 0) {
         ConsoleTesteur.log(`applyDelay => ${this.delay} ${typeof this.delay}`);
         if (this.delay > 0) {
             const delay = this.getTimeDelay();
-            ConsoleTesteur.log("delay: " + delay);
+            const delaiAjusted = delay + timeFadeOff;
+            ConsoleTesteur.log("delay: " + delay + " delaiAjusted: " + delaiAjusted);
             setTimeout(() => {
                 ConsoleTesteur.log("applyDelay callback: ");
                 const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist);
                 if (buttonPlaylist && buttonPlaylist.isActive() && this.butonPlaylistToken == buttonPlaylist.getToken()) {
                     callback()
                 }
-            }, Time.get_seconds(delay));
+            }, Time.get_seconds(delaiAjusted));
         } else {
             callback();
         }
@@ -379,7 +383,6 @@ class MusicElement {
         this.removeDomElement();
 
         if (this.fadeOutDeferredToEnded) {
-            this.fadeOutDeferredToEnded = false;
             this.startIfLooped();
         }
     }

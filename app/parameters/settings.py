@@ -488,7 +488,31 @@ CELERY_TASK_ROUTES = {
     'main.domain.brokers.message.MusicLabelerMessenger.analyze_music_task': {
         'queue': 'music_labeler',
     },
+    'main.domain.brokers.message.ManagerEmailMessenger.send_manager_email_task': {
+        'queue': 'default',
+    },
+    'main.domain.brokers.message.AsyncDownloadJobMessenger.process_async_download_job': {
+        'queue': 'default',
+    },
+    'main.domain.brokers.message.MediaAudioMessenger.clean_audio_messenger': {
+        'queue': 'default',
+    },
+    'main.domain.brokers.message.MediaImgPlaylistMessenger.clean_img_files': {
+        'queue': 'default',
+    },
+    'main.domain.brokers.message.MediaImgSoundBoardMessenger.clean_img_files': {
+        'queue': 'default',
+    },
+    'main.domain.brokers.message.ReduceBiteRateMessenger.reduce_bit_rate': {
+        'queue': 'default',
+    },
+    'main.domain.brokers.message.ReduceSizeImgMessenger.reduce_size_img': {
+        'queue': 'default',
+    },
 }
+
+CELERY_TASK_ACKS_LATE = True
+CELERY_TASK_REJECT_ON_WORKER_LOST = True
 
 # auth 
 from main.domain.common.enum.GroupEnum import GroupEnum

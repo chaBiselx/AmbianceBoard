@@ -56,3 +56,24 @@ enter:
 	echo "Connexion au conteneur $$CONTAINER_NAME..."; \
 	docker exec -it $$CONTAINER_NAME bash
 
+images-size:
+	@# Help: Afficher le poids des images Docker du projet (trié par nom)
+	@echo "Poids des images Docker du projet :"
+	@docker compose config --images | xargs -I{} docker image inspect {} --format '{{.RepoTags}} {{.Id}}' 2>/dev/null | \
+		awk '{id=$$NF; tags=$$0; sub(/ [^ ]+$$/, "", tags); print tags, id}' | \
+		while read tags id; do \
+			docker image ls --no-trunc --format "{{.Repository}}:{{.Tag}}\t{{.Size}}\t{{.ID}}" | \
+			grep "$$id" | awk -v t="$$tags" '{printf "%-50s %s\n", t, $$2}'; \
+		done | sort
+	@echo "---"
+	@echo "Total des images :"
+	@docker compose config --images | xargs docker image inspect --format '{{.Size}}' 2>/dev/null | \
+		awk '{sum+=$$1} END {printf "%.2f MB\n", sum/1024/1024}'
+
+## —— DEBUG  ————————————————————————————————————————————————————————————————
+debug-fix-front-perms:
+	@# Help: Réparer les permissions du frontend (node_modules) pour l'utilisateur node
+	@echo "Réparation des permissions frontend..."
+	@docker compose exec -u root front sh -lc 'chown -R node:node /app 2>/dev/null || true'
+	@docker compose exec front sh -lc 'id && ls -ld /app /app/node_modules 2>/dev/null || true'
+

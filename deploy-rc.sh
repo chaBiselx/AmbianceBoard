@@ -16,6 +16,10 @@ docker compose -f docker-compose.prod.yml down
 echo "suppression des dossier static"
 rm -rf staticfiles/
 
+echo "🔧 Recréation du dossier static avec les bonnes permissions (nodeuser uid/gid 1001)..."
+mkdir -p staticfiles
+chown -R 1001:1001 staticfiles
+
 echo "🔧 Configuration des permissions..."
 chmod +x ./app/entrypoint.sh
 chmod +x ./app/entrypoint.prod.sh

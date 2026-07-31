@@ -2,6 +2,7 @@ import Notification from '@/modules/General/Notifications';
 import ReportingContent from '@/modules/ReportingContent'
 import { PaginationManager } from '@/modules/PaginationManager';
 import { TagManager } from '@/modules/TagManager';
+import FilterFormHtmlManager from '@/modules/Filter/FilterFormHtmlManager';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
 import BootstrapComponentInitializer from "@/modules/General/BootstrapComponentInitializer";
 import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
@@ -55,6 +56,7 @@ globalThis.addEventListener('error', (event) => {
 // Initialise automatiquement tous les composants Bootstrap disponibles
 document.addEventListener('DOMContentLoaded', async () => {
     new BootstrapComponentInitializer().initialize();
+    new FilterFormHtmlManager().init();
     ConsoleTesteur.log('General Event initialised');
 });
 

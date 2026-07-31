@@ -2,10 +2,14 @@
 
 <div class="d-flex align-items-center gap-2">
     <label for="{{ field_id }}" class="form-label mb-0">{{ label }} :</label>
-    <select name="{{ field_name }}" id="{{ field_id }}" class="form-select" style="width: auto;" onchange="this.form.submit()">
+    <select name="{{ field_name }}" id="{{ field_id }}" class="form-select" style="width: auto;" data-filter-select>
         <option value="">{{ all_option_label }}</option>
         {% for key, value in options.items %}
+        {% if use_key_as_value %}
+        <option value="{{ key }}" {% if selected_value == key %}selected{% endif %}>{{ value }}</option>
+        {% else %}
         <option value="{{ value }}" {% if selected_value == value %}selected{% endif %}>{{ value }}</option>
+        {% endif %}
         {% endfor %}
     </select>
 </div>

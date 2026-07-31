@@ -1,4 +1,5 @@
-FROM python:3.14.6-slim-trixie
+#3.14.6-slim-trixie
+FROM python@sha256:cea0e6040540fb2b965b6e7fb5ffa00871e632eef63719f0ea54bca189ce14a6
 
 WORKDIR /app
 
@@ -21,12 +22,18 @@ RUN pip install --no-cache-dir \
 
 COPY main.py .
 COPY app/ ./app/
+COPY tests/ ./tests/
 
 # Pré-télécharge le modèle au build pour un démarrage rapide
 ARG CLAP_MODEL=laion/clap-htsat-unfused
 ENV CLAP_MODEL=${CLAP_MODEL}
 
-RUN adduser --disabled-password --gecos '' appuser
+RUN adduser --disabled-password --gecos '' appuser && \
+    mkdir -p /tmp/pytest-cache && \
+    chown -R appuser:appuser /app /tmp/pytest-cache
+
+ENV PYTEST_ADDOPTS="-o cache_dir=/tmp/pytest-cache"
+
 USER appuser
 
 RUN python -c "\

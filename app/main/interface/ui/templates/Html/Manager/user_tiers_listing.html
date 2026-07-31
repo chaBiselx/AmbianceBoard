@@ -18,33 +18,15 @@
     <!-- Filtres -->
     <div class="row mb-4">
         <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <form method="get" class="form-inline">
-                        <div class="form-group mr-3">
-                            <label class="d-none" for="search">Recherche</label>
-                            <input type="text" class="form-control" id="search" name="search" placeholder="Rechercher par nom ou email..." value="{{ search }}">
-                        </div>
-                        <div class="form-group mr-3">
-                            <label class="d-none" for="tier-select">Tiers</label>
-                            <select name="tier" class="form-control" id="tier-select">
-                                <option value="">Tous les tiers</option>
-                                {% for tier_key, tier_name in tier_choices %}
-                                <option value="{{ tier_key }}" {% if tier_filter == tier_key %}selected{% endif %}>
-                                    {{ tier_name }}
-                                </option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i> Filtrer
-                        </button>
-                        <a href="{% url 'adminUserTiersListing' %}" class="btn btn-outline-secondary ml-2">
-                            <i class="fas fa-times"></i> Réinitialiser
-                        </a>
-                    </form>
-                </div>
-            </div>
+            {% url 'adminUserTiersListing' as filter_reset_url %}
+            <form method="get" action="{{ filter_reset_url }}" data-filter-form class="d-flex align-items-center gap-3 flex-wrap">
+                {% include 'Html/partial/filter/search/filter_text.html' with field_name="search" field_id="search" placeholder="Rechercher par nom ou email..." value=search label="Recherche" %}
+                {% include 'Html/partial/filter/search/filter_select.html' with label="Tiers" field_name="tier" field_id="tier-select" options=tier_choices selected_value=tier_filter all_option_label="Tous les tiers" use_key_as_value=True %}
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Filtrer
+                </button>
+                {% include 'Html/partial/filter/search/reset_btn.html' with reset_url=filter_reset_url %}
+            </form>
         </div>
     </div>
 

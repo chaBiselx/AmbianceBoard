@@ -34,11 +34,17 @@ class ManagerEmailService:
         :param sender: Utilisateur manager à l'origine de l'envoi.
         :returns: Nombre de tâches enfilées.
         """
-        html_content = render_to_string('EmailTemplate/manager/managerEmail.html', {
-            'title': subject,
-            'message': body,
-            'sender': sender,
-        })
+        try:
+            html_content = render_to_string('EmailTemplate/manager/managerEmail.html', {
+                'title': subject,
+                'message': body,
+                'sender': sender,
+            })
+        except Exception as exc:
+            self.logger.error(
+                f"ManagerEmailService: échec rendu template email pour {sender.username} — sujet: {subject} — {exc}"
+            )
+            raise
         
 
         queued = 0

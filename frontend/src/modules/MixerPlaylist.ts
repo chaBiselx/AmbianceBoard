@@ -179,7 +179,7 @@ class MixerPlaylist {
 
     private closeSpecificMusicToggle() {
         const checkBox = document.getElementById(this.inputShowSpecificMusic) as HTMLInputElement | null
-        if (checkBox && checkBox.checked) {
+        if (checkBox?.checked) {
             checkBox.checked = false
             checkBox.dispatchEvent(new Event('change'))
         }
