@@ -1,5 +1,6 @@
 {% extends 'Html/partial/structure/base.html' %}
 {% load SoundBoard %}
+{% load i18n %}
 
 
 {% block content %}
@@ -9,7 +10,7 @@
 
 <div class="row">
     <div class="col-12 fullScreen-element">
-        <h4  id="soundboard-name">{{ soundboard | get_name }} <span class="fs-6 text-success fst-italic">Publique</span></h4> 
+        <h4  id="soundboard-name">{{ soundboard | get_name }} <span class="fs-6 text-success fst-italic">{% trans "template.publicSoundboard.badge.public" %}</span></h4> 
     </div>
     <div class="col-12">
         <div style="display:None;" id="players"></div>

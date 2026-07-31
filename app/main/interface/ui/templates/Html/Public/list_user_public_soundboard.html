@@ -3,8 +3,9 @@
 {% load PaginationLinks %}
 {% load FrontJs %}
 {% load static %}
+{% load i18n %}
 
-{% block page_title %}Soundboards Publics - Ambiance JDR | AmbianceBoard{% endblock %}
+{% block page_title %}{% trans "template.publicListing.page_title" %}{% endblock %}
 
 {% block javascript %}
 {{ block.super }}
@@ -19,8 +20,8 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Visuel</th>
-                        <th>Nom</th>
+                        <th>{% trans "template.publicUserListing.table.col.visual" %}</th>
+                        <th>{% trans "template.publicUserListing.table.col.name" %}</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -38,7 +39,7 @@
                             </span>
                         </td>
                         <td>
-                            <a href="{% url 'PublicUserSoundboardsStats' soundboard.uuid %}" class="btn btn-primary"  data-bs-toggle="tooltip" data-bs-title="Voir les stats">
+                            <a href="{% url 'PublicUserSoundboardsStats' soundboard.uuid %}" class="btn btn-primary"  data-bs-toggle="tooltip" data-bs-title="{% trans 'template.publicUserListing.button.stats.tooltip' %}">
                                 <i class="fas fa-eye"></i>
                             </a>
                         </td>
@@ -51,7 +52,7 @@
         {% applys_pagination paginator %}
         {% else %}
         <div class="alert alert-info">
-            <i class="fas fa-info-circle"></i> Aucune playliste trouvée.
+            <i class="fas fa-info-circle"></i> {% trans "template.publicUserListing.empty" %}
         </div>
         {% endif %}
     </div>

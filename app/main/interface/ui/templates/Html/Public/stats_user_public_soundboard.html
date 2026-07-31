@@ -4,6 +4,7 @@
 
 {% load static %}
 {% load FrontJs %}
+{% load i18n %}
 
 {% block javascript %}
 {{ block.super }}
@@ -18,11 +19,11 @@
         <!-- Outils d'administration -->
         <div class="row mb-4">
             <div class="col-12">
-                <h3>Paramètre</h3>
+                <h3>{% trans "template.publicStats.section.parameter" %}</h3>
                 <div class="row">
                     <div class="col-12 col-md-4 col-xl-2 form-group">
                         <form method="GET" action="{% url 'PublicUserSoundboardsStats' soundboard.uuid %}">
-                            <label for="periode-chart">Période</label>
+                            <label for="periode-chart">{% trans "template.publicStats.field.period.label" %}</label>
                             <select name="periode-chart" id="periode-chart" class="form-select" onchange="this.form.submit()">
                                 {% for value, label in selectPeriods.items %}
                                 <option value="{{ value }}" {% if value == periode_chart %}selected{% endif %}>{{ label }}</option>
@@ -36,7 +37,7 @@
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Fréquentations</h5>
+                        <h5>{% trans "template.publicStats.card.frequentation" %}</h5>
                     </div>
                     <div class="card-body">
                         <div id="user-frequentation" data-url="{% url 'PublicUserSoundboardsFrequentationStats' soundboard.uuid %}"></div>
@@ -46,7 +47,7 @@
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Moyenne durée des sessions</h5>
+                        <h5>{% trans "template.publicStats.card.average_session_duration" %}</h5>
                     </div>
                     <div class="card-body">
                         <div id="user-average-session-duration" data-url="{% url 'PublicUserSoundboardsAverageSessionDurationStats' soundboard.uuid %}"></div>

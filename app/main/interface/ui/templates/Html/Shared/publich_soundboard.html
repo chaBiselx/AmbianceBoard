@@ -1,9 +1,10 @@
 
+{% load i18n %}
 {% if can_share_soundboard %}
 <div class="row">
     <div class="col-12 text-center">
-        Lien du soundboard =<button class="btn btn-primary share-link-btn" data-url="{{ shared_url }}">
-            <i class="fa-solid fa-copy"></i> Partager le lien
+        {% trans "template.publicShareLink.link_label" %} =<button class="btn btn-primary share-link-btn" data-url="{{ shared_url }}">
+            <i class="fa-solid fa-copy"></i> {% trans "template.publicShareLink.button.label" %}
         </button>
     </div>
 </div>

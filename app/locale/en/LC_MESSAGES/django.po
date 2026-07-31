@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-01 06:30+0000\n"
+"POT-Creation-Date: 2026-07-31 19:36+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -198,13 +198,78 @@ msgstr ""
 "Manage your profile, notification preferences, favorite theme, and "
 "subscription."
 
+#: main/interface/ui/controller/public/analyseStatsViews.py:46
+msgid "view.publicStats.page_title"
+msgstr "Soundboard Statistics - %s"
+
+#: main/interface/ui/controller/public/analyseStatsViews.py:66
+msgid "view.publicStats.frequentation.chart_title"
+msgstr "Visits over time - %s days"
+
+#: main/interface/ui/controller/public/analyseStatsViews.py:67
+#: main/interface/ui/controller/public/analyseStatsViews.py:98
+msgid "view.publicStats.chart.x_label"
+msgstr "Date"
+
+#: main/interface/ui/controller/public/analyseStatsViews.py:68
+msgid "view.publicStats.frequentation.y_label"
+msgstr "Visits"
+
+#: main/interface/ui/controller/public/analyseStatsViews.py:97
+msgid "view.publicStats.session_duration.chart_title"
+msgstr "Average session duration - %s days"
+
+#: main/interface/ui/controller/public/analyseStatsViews.py:99
+msgid "view.publicStats.session_duration.y_label"
+msgstr "Average Session Duration (min)"
+
+#: main/interface/ui/controller/public/publicViews.py:58
+msgid "view.publicListing.title"
+msgstr "Public Soundboards"
+
+#: main/interface/ui/controller/public/publicViews.py:70
+msgid "view.publicFavorite.title"
+msgstr "Favorite Soundboards"
+
+#: main/interface/ui/controller/public/publicViews.py:179
+msgid "view.favoriteUpdate.error.not_found"
+msgstr "SoundBoard not found."
+
+#: main/interface/ui/controller/public/publicViews.py:196
+msgid "view.favoriteUpdate.error.favorite_not_found"
+msgstr "Favorite not found."
+
+#: main/interface/ui/templates/Html/Account/async_download_jobs_recent.html:15
+msgid "Statut"
+msgstr "Status"
+
+#: main/interface/ui/templates/Html/Account/async_download_jobs_recent.html:16
+msgid "URL"
+msgstr "URL"
+
+#: main/interface/ui/templates/Html/Account/async_download_jobs_recent.html:17
+msgid "Playlist"
+msgstr "Playlist"
+
+#: main/interface/ui/templates/Html/Account/async_download_jobs_recent.html:18
+msgid "Nom alternatif"
+msgstr "Alternative name"
+
+#: main/interface/ui/templates/Html/Account/async_download_jobs_recent.html:19
+msgid "Erreur"
+msgstr "Error"
+
+#: main/interface/ui/templates/Html/Account/async_download_jobs_recent.html:59
+msgid "Aucun téléchargement différé mis à jour sur les 24 dernières heures."
+msgstr "No deferred downloads updated in the last 24 hours."
+
 #: main/interface/ui/templates/Html/Account/send_reset_password.html:11
 msgid "template.sendResetPassword.card.title"
-msgstr "Envoi de réinitialisation de mot de passe"
+msgstr "Sending password reset"
 
 #: main/interface/ui/templates/Html/Account/send_reset_password.html:20
 msgid "template.sendResetPassword.form.submit"
-msgstr "Reinitialiser le mot de passe"
+msgstr "Reset password"
 
 #: main/interface/ui/templates/Html/General/403_modal.html:7
 msgid "template.403.title"
@@ -227,17 +292,17 @@ msgstr "Add link"
 msgid "generic.back"
 msgstr "Back"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:28
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:13
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:30
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:15
 msgid "generic.filter_by_type"
 msgstr "Filter by type"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:29
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:14
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:31
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:16
 msgid "generic.filter_by_type.value.all"
 msgstr "All"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:60
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:65
 msgid "template.playlist_copiable.preview.instruction"
 msgstr "Click on a button to preview the playlist."
 
@@ -249,22 +314,74 @@ msgstr "Duplicate the button"
 msgid "template.playlist_copiable_preview.already_duplicated"
 msgstr "The button has already been duplicated."
 
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:52
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:56
 msgid "template.playlist_read_all.button.add"
 msgstr "Add a button"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:53
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:57
 msgid "template.playlist_read_all.button.listPublic"
 msgstr "List of copyable buttons from community "
 
+#: main/interface/ui/templates/Html/Public/list_user_public_soundboard.html:8
+#: main/interface/ui/templates/Html/Public/listing_soundboard.html:12
+msgid "template.publicListing.page_title"
+msgstr "Public Soundboards - Ambiance RPG | AmbianceBoard"
+
+#: main/interface/ui/templates/Html/Public/list_user_public_soundboard.html:23
+msgid "template.publicUserListing.table.col.visual"
+msgstr "Visual"
+
+#: main/interface/ui/templates/Html/Public/list_user_public_soundboard.html:24
+msgid "template.publicUserListing.table.col.name"
+msgstr "Name"
+
+#: main/interface/ui/templates/Html/Public/list_user_public_soundboard.html:42
+msgid "template.publicUserListing.button.stats.tooltip"
+msgstr "View stats"
+
+#: main/interface/ui/templates/Html/Public/list_user_public_soundboard.html:55
+msgid "template.publicUserListing.empty"
+msgstr "No playlist found."
+
+#: main/interface/ui/templates/Html/Public/listing_soundboard.html:26
+#: main/interface/ui/templates/Html/partial/filter/search/filter_tag_cloud.html:12
+msgid "template.filterTagCloud.accordion_title"
+msgstr "Filter by tag"
+
+#: main/interface/ui/templates/Html/Public/soundboard_read.html:13
+msgid "template.publicSoundboard.badge.public"
+msgstr "Public"
+
+#: main/interface/ui/templates/Html/Public/stats_user_public_soundboard.html:22
+msgid "template.publicStats.section.parameter"
+msgstr "Settings"
+
+#: main/interface/ui/templates/Html/Public/stats_user_public_soundboard.html:26
+msgid "template.publicStats.field.period.label"
+msgstr "Period"
+
+#: main/interface/ui/templates/Html/Public/stats_user_public_soundboard.html:40
+msgid "template.publicStats.card.frequentation"
+msgstr "Visits"
+
+#: main/interface/ui/templates/Html/Public/stats_user_public_soundboard.html:50
+msgid "template.publicStats.card.average_session_duration"
+msgstr "Average session duration"
+
+#: main/interface/ui/templates/Html/Shared/publich_soundboard.html:6
+msgid "template.publicShareLink.link_label"
+msgstr "Soundboard link"
+
+#: main/interface/ui/templates/Html/Shared/publich_soundboard.html:7
+msgid "template.publicShareLink.button.label"
+msgstr "Share link"
+
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:25
-msgid ""
-"template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
+msgid "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
 msgstr "This account cannot access this feature"
 
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:29
-msgid ""
-"template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
+msgid "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
 msgstr "keyboard shortcut"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:5
@@ -286,6 +403,26 @@ msgstr "Organize"
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:36
 msgid "template.soundboard_read.button.edit_soundboard"
 msgstr "Edit SoundBoard"
+
+#: main/interface/ui/templates/Html/partial/filter/search/filter_tag_cloud.html:21
+msgid "template.filterTagCloud.active_filter_prefix"
+msgstr "Filtered by tag:"
+
+#: main/interface/ui/templates/Html/partial/filter/search/filter_tag_cloud.html:23
+msgid "template.filterTagCloud.clear_filter"
+msgstr "Clear filter"
+
+#: main/interface/ui/templates/Html/partial/filter/search/filter_tag_cloud.html:31
+msgid "template.filterTagCloud.no_tag.tooltip"
+msgstr "No tag"
+
+#: main/interface/ui/templates/Html/partial/filter/search/filter_tag_cloud.html:35
+msgid "template.filterTagCloud.no_tag.label"
+msgstr "none"
+
+#: main/interface/ui/templates/Html/partial/filter/search/filter_tag_cloud.html:40
+msgid "template.filterTagCloud.no_description"
+msgstr "No description"
 
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:7
 msgid "template.shareSoundboard.button.tooltip"
@@ -333,8 +470,16 @@ msgstr "List of your buttons"
 msgid "Boutons"
 msgstr "Buttons"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:36
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:38
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:30
+msgid "Téléchargements des dernières 24h"
+msgstr "Downloads in the last 24h"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:32
+msgid "Téléchargements"
+msgstr "Downloads"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:42
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:44
 msgid "Login"
 msgstr "Login"
 

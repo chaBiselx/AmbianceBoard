@@ -1,4 +1,5 @@
 {# Paramètres: list_tags, selected_tag, reset_url, show_empty_option (bool), accordion_title (optionnel) #}
+{% load i18n %}
 <div class="accordion mb-3">
     <div class="accordion-item">
         <h2 class="accordion-header">
@@ -8,7 +9,7 @@
                     data-bs-target="#tag-filter-body"
                     aria-expanded="{{ selected_tag|yesno:'true,false' }}"
                     aria-controls="tag-filter-body">
-                {% if accordion_title %}{{ accordion_title }}{% else %}Filtrer par tag{% endif %}
+                {% if accordion_title %}{{ accordion_title }}{% else %}{% trans "template.filterTagCloud.accordion_title" %}{% endif %}
             </button>
         </h2>
         <div id="tag-filter-body" class="accordion-collapse collapse {% if selected_tag %}show{% endif %}">
@@ -17,9 +18,9 @@
                 {% if selected_tag %}
                 <div class="alert alert-info d-flex align-items-center mb-3">
                     <i class="fas fa-filter me-2"></i>
-                    Filtré par le tag : <strong class="ms-1">{{ selected_tag }}</strong>
+                    {% trans "template.filterTagCloud.active_filter_prefix" %} <strong class="ms-1">{{ selected_tag }}</strong>
                     <a href="{{ reset_url }}" class="btn btn-sm btn-outline-secondary ms-2">
-                        <i class="fas fa-times"></i> Effacer le filtre
+                        <i class="fas fa-times"></i> {% trans "template.filterTagCloud.clear_filter" %}
                     </a>
                 </div>
                 {% endif %}
@@ -27,20 +28,22 @@
                 <div class="tags-container" id="tag-search">
                     <div class="d-flex flex-wrap gap-2">
                         {% if show_empty_option %}
+                        {% trans "template.filterTagCloud.no_tag.tooltip" as no_tag_tooltip %}
                         <a data-tag="empty" class="tag-element-redirect btn-link text-decoration-none">
                             <span class="badge tag-badge text-warning {% if selected_tag == 'empty' %}badge-selected{% else %}badge-unselected{% endif %}"
-                                  data-bs-toggle="tooltip" data-bs-title="Aucun tag">
-                                <i class="fas fa-tag me-1"></i>aucun
+                                  data-bs-toggle="tooltip" data-bs-title="{{ no_tag_tooltip }}">
+                                <i class="fas fa-tag me-1"></i>{% trans "template.filterTagCloud.no_tag.label" %}
                             </span>
                         </a>
                         {% endif %}
 
+                        {% trans "template.filterTagCloud.no_description" as no_description %}
                         {% for tag in list_tags %}
                         {# label pour PlaylistTag (slug URL), name comme fallback pour SoundboardTag #}
                         {% with tag_value=tag.label|default:tag.name %}
                         <a data-tag="{{ tag_value }}" class="tag-element-redirect btn-link text-decoration-none">
                             <span class="badge tag-badge {% if selected_tag == tag_value %}badge-selected{% else %}badge-unselected{% endif %} tag-cloud-item"
-                                  {% if tag.description %}data-bs-toggle="tooltip" data-bs-title="{{ tag.description|default:'Aucune description' }}"{% endif %}>
+                                  {% if tag.description %}data-bs-toggle="tooltip" data-bs-title="{{ tag.description|default:no_description }}"{% endif %}>
                                 <i class="fas fa-tag me-1"></i>{{ tag.name }}
                                 {% if tag.soundboard_count is not None %}<small class="badge bg-secondary ms-1">{{ tag.soundboard_count }}</small>{% endif %}
                             </span>

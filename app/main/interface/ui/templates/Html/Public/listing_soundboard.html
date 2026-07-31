@@ -3,12 +3,13 @@
 {% load PaginationLinks %}
 {% load FrontJs %}
 {% load static %}
+{% load i18n %}
 
 {% block page_title %}
     {% if seo and seo.title %}
         {{ seo.title }}
     {% else %}
-        Soundboards Publics - Ambiance JDR | AmbianceBoard
+        {% trans "template.publicListing.page_title" %}
     {% endif %}
 {% endblock %}
 
@@ -22,7 +23,8 @@
 {% block content %}
 {% if listTags %}
 {% url 'publicListingSoundboard' as filter_reset_url %}
-{% include 'Html/partial/filter/search/filter_tag_cloud.html' with list_tags=listTags selected_tag=selected_tag reset_url=filter_reset_url accordion_title="Filtrer par tag" %}
+{% trans "template.filterTagCloud.accordion_title" as accordion_title_trans %}
+{% include 'Html/partial/filter/search/filter_tag_cloud.html' with list_tags=listTags selected_tag=selected_tag reset_url=filter_reset_url accordion_title=accordion_title_trans %}
 {% endif %}
 
 

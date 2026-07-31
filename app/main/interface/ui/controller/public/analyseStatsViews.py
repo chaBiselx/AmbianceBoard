@@ -12,6 +12,7 @@ from main.architecture.persistence.repository.SoundBoardRepository import SoundB
 from main.domain.common.enum.ChartPeriodEnum import ChartPeriodEnum
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.public.service.UserPublicActivityStatsService import UserPublicActivityStatsService
+from django.utils.translation import gettext as _
 
 
 
@@ -42,7 +43,7 @@ def stats_user_public_soundboard(request, soundboard_uuid):
     soundboard = SoundBoardRepository().get_by_uuid_and_user(soundboard_uuid, request.user)
     if(not soundboard):
         return TemplateResponse(request, HtmlDefaultPageEnum.NOT_FOUND.value, status=404)
-    return TemplateResponse(request, 'Html/Public/stats_user_public_soundboard.html', {'title': f'Statistiques de la soundboard {soundboard.name}', 'periode_chart': periode_chart, 'selectPeriods':select_periods, 'soundboard':soundboard})
+    return TemplateResponse(request, 'Html/Public/stats_user_public_soundboard.html', {'title': _("view.publicStats.page_title") % soundboard.name, 'periode_chart': periode_chart, 'selectPeriods':select_periods, 'soundboard':soundboard})
 
 
 @login_required
@@ -62,9 +63,9 @@ def stats_frequentation(request, soundboard_uuid) -> JsonResponse:
         response_data = service.get_frequentation(soundboard, start_dt, end_dt)
 
         json = {
-            'title' : f"Évolution des fréquentations - {days} jours",
-            'x_label': 'Date',
-            'y_label': 'Consultations',
+            'title' : _("view.publicStats.frequentation.chart_title") % days,
+            'x_label': _("view.publicStats.chart.x_label"),
+            'y_label': _("view.publicStats.frequentation.y_label"),
             'data':response_data
         }
         return JsonResponse(json)
@@ -93,9 +94,9 @@ def stats_moyenne_duration_session(request, soundboard_uuid) -> JsonResponse:
         response_data = service.get_moyenne_duration_session(soundboard, start_dt, end_dt)
 
         json = {
-            'title' : f"Durée moyenne des sessions - {days} jours",
-            'x_label': 'Date',
-            'y_label': 'Durée Moyenne des Sessions (min)',
+            'title' : _("view.publicStats.session_duration.chart_title") % days,
+            'x_label': _("view.publicStats.chart.x_label"),
+            'y_label': _("view.publicStats.session_duration.y_label"),
             'data':response_data
         }
         return JsonResponse(json)
