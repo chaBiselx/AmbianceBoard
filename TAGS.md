@@ -333,6 +333,7 @@ Sécurité
 
 Améliorations
 - Améliorations des performances sur les soundboards
+- Ajout de filtres pour le profil modérateur
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

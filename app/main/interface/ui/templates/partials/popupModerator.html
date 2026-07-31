@@ -68,6 +68,10 @@
                                 <dd>{{soundboard.name}}</dd>
                                 <dt>Nombre d'éléments</dt>
                                 <dd>{{soundboard.playlists.count}}</dd>
+                                {% if soundboard.playlists.count > 0 %}
+                                <dt>Liste des éléments</dt>
+                                <dd class="text-link"><a href="{% url 'moderatorControleImagesPlaylist' %}?soundboard={{ soundboard.uuid }}">Voir les éléments</a></dd>
+                                {% endif %}
 
                             </dl>
                         </div>

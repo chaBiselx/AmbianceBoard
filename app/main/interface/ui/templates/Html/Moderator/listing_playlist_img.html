@@ -7,6 +7,15 @@
 
 <div class="row">
     <div class="col-12">
+        {% url 'moderatorControleImagesPlaylist' as filter_reset_url %}
+        <form method="GET" action="{{ filter_reset_url }}" class="mb-3" data-filter-form>
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                {% include 'Html/partial/filter/search/filter_select.html' with label="Filtre utilisateur" field_name="user" field_id="filter-user" options=users_select selected_value=selected_user all_option_label="Tous les utilisateurs" use_key_as_value=True %}
+                {% include 'Html/partial/filter/search/filter_select.html' with label="Filtre soundboard" field_name="soundboard" field_id="filter-soundboard" options=soundboards_select selected_value=selected_soundboard all_option_label="Tous les soundboards" use_key_as_value=True %}
+                {% include 'Html/partial/filter/search/filter_select.html' with label="Filtre date de création" field_name="period" field_id="filter-period" options=period_choices selected_value=selected_period all_option_label="Toutes les dates" use_key_as_value=True %}
+                {% include 'Html/partial/filter/search/reset_btn.html' with reset_url=filter_reset_url %}
+            </div>
+        </form>
 
         <div class="flex-container">
             {% for playlist in page_objects %}
