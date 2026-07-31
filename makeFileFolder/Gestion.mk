@@ -54,7 +54,7 @@ enter:
 	@I=$${I:-1}; \
 	CONTAINER_NAME="ambianceboard-$(S)-$$I"; \
 	echo "Connexion au conteneur $$CONTAINER_NAME..."; \
-	docker exec -it $$CONTAINER_NAME bash
+	docker exec -it $$CONTAINER_NAME sh
 
 images-size:
 	@# Help: Afficher le poids des images Docker du projet (trié par nom)

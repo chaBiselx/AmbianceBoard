@@ -328,6 +328,8 @@ Améliorations
 - Uniformatisation des filtres à travers l'application
 
 ### 0.4.6 - 2026/08
+Sécurité
+- Mise a jours des dépendances 
 
 Améliorations
 - Améliorations des performances sur les soundboards
