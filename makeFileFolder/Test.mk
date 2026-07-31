@@ -9,7 +9,7 @@ test-backend-coverage:
 	@# Help: lance les tests backend avec couverture
 	$(CONTAINER_BACKEND) sh -c "coverage run --source='.' manage.py test && coverage report"
 
-test-backend: test-backend-tu test-backend-ti
+test-backend: test-backend-tu test-backend-ti test-backend-st
 	@# Help: lance l'ensemble des tests backend (unitaires et d'intégration)
 
 test-backend-tu:
@@ -26,6 +26,14 @@ test-backend-ti:
 		$(CONTAINER_BACKEND) python manage.py test --tag=integration --noinput; \
 	else \
 		$(CONTAINER_BACKEND) python manage.py test --tag=integration $(FILTER) --noinput; \
+	fi
+
+test-backend-st:
+	@# Help: lance les tests de stress backend
+	@-if [ -z "$(FILTER)" ]; then \
+		$(CONTAINER_BACKEND) python manage.py test --tag=stress-test --noinput; \
+	else \
+		$(CONTAINER_BACKEND) python manage.py test --tag=stress-test $(FILTER) --noinput; \
 	fi
 
 test-frontend: test-frontend-tu test-frontend-ti
@@ -57,3 +65,6 @@ test-music-labeler-tu:
 	else \
 		$(CONTAINER_MUSIC_LABELER) python -m pytest -q $(FILTER); \
 	fi
+
+test-stress: test-backend-st
+	@# Help: lance les tests de stress

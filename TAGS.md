@@ -329,6 +329,9 @@ Améliorations
 
 ### 0.4.6 - 2026/08
 
+Améliorations
+- Améliorations des performances sur les soundboards
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

@@ -99,7 +99,7 @@ jobs:
       - name: Compile messages
         run: docker compose exec back sh -c "python manage.py compilemessages"
       - name: Run tests
-        run: docker compose exec back sh -c "coverage run --source='.' manage.py test && coverage report"
+        run: docker compose exec back sh -c "coverage run --source='.' manage.py test --exclude-tag=stress-test && coverage report"
 
   TestDockerFront:
     needs: BuildDockerCompose
