@@ -147,6 +147,7 @@ jobs:
       - name: Run tests
         run: docker compose exec music-labeler python -m pytest -q tests
 
+  # TODO retry car les issues ne sont pas actualisé dans SonarQube, donc le job échoue même si les issues sont corrigées 
   # TestQualityGate:
   #   needs:
   #     - GitGuardian
