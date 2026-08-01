@@ -25,7 +25,7 @@
         "quill": "^2.0.2",
         "sass": "^1.70.0",
         "shepherd.js": "^15.2.2",
-        "vitest": "^3.2.4"
+        "vitest": "^4.1.10"
     },
     "devDependencies": {
         "@types/bootstrap": "^5.2.10",
