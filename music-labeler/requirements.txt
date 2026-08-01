@@ -1,5 +1,5 @@
 fastapi==0.139.0
-uvicorn[standard]==0.49.0
+uvicorn[standard]==0.52.0
 transformers==5.13.1
 librosa==0.11.0
 soundfile==0.14.0
