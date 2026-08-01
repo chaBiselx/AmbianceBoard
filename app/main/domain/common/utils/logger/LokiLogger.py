@@ -202,7 +202,10 @@ class LokiLogger(ILogger):
         if remaining <= 0:
             return None, False
 
-        timeout = min(remaining, 0.5)
+        # Timeout réduit à 0.1s pour être plus réactif aux batch_timeout et spike de logs.
+        # Avec 0.5s, on attendait trop longtemps et on perdait des opportunités d'envoi.
+        # 0.1s permet au thread de vérifier batch_timeout toutes les 100ms.
+        timeout = min(remaining, 0.1)
         try:
             return self._log_queue.get(timeout=timeout), False
         except Empty:

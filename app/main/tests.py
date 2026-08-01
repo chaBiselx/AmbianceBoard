@@ -163,4 +163,5 @@ from main.TNR.TI.websocket.SharedSoundboardConsumerTest import *
 # =======================================================================
 # ======================== STRESS TEST =============================
 # =======================================================================
+from main.TNR.ST.utils.logger.LokiLoggingAdvancedLatencyTestCase import *
 from main.TNR.ST.utils.logger.LokiLoggingLatencyIntegrationTestCase import *
