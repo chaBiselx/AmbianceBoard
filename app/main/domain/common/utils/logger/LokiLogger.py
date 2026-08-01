@@ -57,9 +57,6 @@ class LokiLogger(ILogger):
         # Thread pour l'envoi en arrière-plan
         self._sender_thread = threading.Thread(target=self._sender_worker, daemon=True)
         self._sender_thread.start()
-        
-        # Quick health check de Loki (non-bloquant, timeout 1s)
-        self._check_loki_available()
     
     def debug(self, message: str, *args, **kwargs) -> None:
         """Log un message de niveau DEBUG"""

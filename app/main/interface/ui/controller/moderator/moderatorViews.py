@@ -19,6 +19,7 @@ from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from django.utils import timezone
 from main.domain.common.utils.url import redirection_url
+from main.domain.common.utils.uuidUtils import _parse_uuid_or_empty
 from main.interface.ui.forms.moderator.TagForm import TagForm
 from main.interface.ui.forms.moderator.PlaylistTagForm import PlaylistTagForm
 from main.architecture.persistence.repository.UserRepository import UserRepository
@@ -62,7 +63,7 @@ def moderator_dashboard(request) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_images_playlist(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
-    selected_user = (request.GET.get('user') or '').strip()
+    selected_user = _parse_uuid_or_empty((request.GET.get('user') or '').strip())
     selected_soundboard = (request.GET.get('soundboard') or '').strip()
     selected_period = (request.GET.get('period') or '').strip()
 
@@ -130,7 +131,7 @@ def moderator_listing_images_playlist(request) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_images_soundboard(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
-    selected_user = (request.GET.get('user') or '').strip()
+    selected_user = _parse_uuid_or_empty((request.GET.get('user') or '').strip())
     selected_period = (request.GET.get('period') or '').strip()
     public = (request.GET.get('public') or '').strip()
 

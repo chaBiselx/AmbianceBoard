@@ -8,6 +8,22 @@ est un UUID valide, avec ou sans extension de fichier.
 import os
 import uuid
 
+
+def _parse_uuid_or_empty(raw_value: str) -> str:
+    """Retourne un UUID normalise ou une chaine vide si invalide."""
+    if not raw_value:
+        return ''
+
+    try:
+        return str(uuid.UUID(raw_value))
+    except (ValueError, TypeError):
+        return ''
+
+
+def parse_uuid_or_empty(raw_value: str) -> str:
+    """Alias explicite pour un usage hors contexte prive."""
+    return _parse_uuid_or_empty(raw_value)
+
 def is_not_uuid_with_extension(filename: str) -> bool:
     """
     Vérifie si le nom d'un fichier (sans son extension) n'est pas un UUID valide.
