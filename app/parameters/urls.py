@@ -12,7 +12,7 @@ from main.interface.ui.controller.private.soundboardViews import soundboard_list
 from main.interface.ui.controller.private.soundboardSpecifiqueViews import list_playlists_for_specific_action, update_specific_actionable_playlists, update_specific_shortcut_playlists
 from main.interface.ui.controller.private.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
 from main.interface.ui.controller.private.showSoundboardViews import (
-    playlist_show,
+    soundboard_show,
     music_stream,
     update_direct_volume,
     playlist_tracks_list,
@@ -108,7 +108,7 @@ urlpatterns = [
 
     path("soundBoards/", soundboard_list, name="soundboardsList"),
     path("soundBoards/new", soundboard_create, name="soundboardsNew"),
-    path("soundBoards/<uuid:soundboard_uuid>", playlist_show, name="soundboardsRead"),
+    path("soundBoards/<uuid:soundboard_uuid>", soundboard_show, name="soundboardsRead"),
     path("soundBoards/<uuid:soundboard_uuid>/edit-mode/panel", soundboard_edit_mode_panel, name="soundboardEditModePanel"),
     path("soundBoards/<uuid:soundboard_uuid>/edit-mode/playlist-list", soundboard_edit_mode_playlist_list, name="soundboardEditModePlaylistList"),
     path("soundBoards/<uuid:soundboard_uuid>/edit-mode/create", soundboard_edit_mode_create_playlist, name="soundboardEditModeCreatePlaylist"),
