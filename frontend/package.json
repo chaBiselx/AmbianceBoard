@@ -29,7 +29,7 @@
     },
     "devDependencies": {
         "@types/bootstrap": "^5.2.10",
-        "@types/node": "^26.0.0",
+        "@types/node": "^26.1.2",
         "concurrently": "^10.0.3",
         "jsdom": "^29.1.1",
         "typescript": "^5.9.0",
