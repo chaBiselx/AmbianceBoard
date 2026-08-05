@@ -51,13 +51,29 @@ class SoundboardPlaylistRepository:
         return None
         
     def get_all(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
-        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard).order_by('section', 'order')
+        return (
+            SoundboardPlaylist.objects
+            .filter(SoundBoard=soundboard)
+            .select_related('Playlist')
+            .order_by('section', 'order')
+        )
     
     def get_all_playable(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
-        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, activable_by_player=True).order_by('section', 'order')
+        return (
+            SoundboardPlaylist.objects
+            .filter(SoundBoard=soundboard, activable_by_player=True)
+            .select_related('Playlist')
+            .order_by('section', 'order')
+        )
     
     def get_all_with_min_one_track(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
-        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, Playlist__tracks__isnull=False).distinct().order_by('section', 'order')
+        return (
+            SoundboardPlaylist.objects
+            .filter(SoundBoard=soundboard, Playlist__tracks__isnull=False)
+            .select_related('Playlist')
+            .distinct()
+            .order_by('section', 'order')
+        )
     
     def get_playlist_formated(self, soundboard: "SoundBoard", public=False) -> Any:
         if public :

@@ -56,7 +56,7 @@ class ModeratorListingSoundboardRouteTest(TestCase):
 
         response = self.client.get(
             reverse('moderatorControleImagesSoundboard'),
-            {'user': self.owner_1.username}
+            {'user': str(self.owner_1.uuid)}
         )
 
         self.assertEqual(response.status_code, 200)
@@ -86,7 +86,7 @@ class ModeratorListingSoundboardRouteTest(TestCase):
         response = self.client.get(
             reverse('moderatorControleImagesSoundboard'),
             {
-                'user': self.owner_1.username,
+                'user': str(self.owner_1.uuid),
                 'period': '31',
             }
         )
@@ -94,3 +94,14 @@ class ModeratorListingSoundboardRouteTest(TestCase):
         self.assertEqual(response.status_code, 200)
         page_objects = list(response.context['page_objects'])
         self.assertEqual([kept.pk], [item.pk for item in page_objects])
+
+    def test_filter_by_invalid_user_value_does_not_break_listing(self):
+        self.client.force_login(self.moderator)
+        self._create_soundboard('SB owner1', self.owner_1, days_ago=5)
+
+        response = self.client.get(
+            reverse('moderatorControleImagesSoundboard'),
+            {'user': 'owner-one'}
+        )
+
+        self.assertEqual(response.status_code, 200)

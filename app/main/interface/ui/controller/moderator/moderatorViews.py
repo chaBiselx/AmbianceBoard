@@ -19,6 +19,7 @@ from django.views.decorators.http import require_http_methods
 from datetime import datetime, timedelta
 from django.utils import timezone
 from main.domain.common.utils.url import redirection_url
+from main.domain.common.utils.uuidUtils import _parse_uuid_or_empty
 from main.interface.ui.forms.moderator.TagForm import TagForm
 from main.interface.ui.forms.moderator.PlaylistTagForm import PlaylistTagForm
 from main.architecture.persistence.repository.UserRepository import UserRepository
@@ -62,10 +63,66 @@ def moderator_dashboard(request) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_images_playlist(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
-    
-    queryset = PlaylistRepository().get_all_queryset()
+    selected_user = _parse_uuid_or_empty((request.GET.get('user') or '').strip())
+    selected_soundboard = (request.GET.get('soundboard') or '').strip()
+    selected_period = (request.GET.get('period') or '').strip()
+
+    period_choices = {
+        "183": ChartPeriodEnum.MONTH_6.value,
+        "91": ChartPeriodEnum.MONTH_3.value,
+        "14": ChartPeriodEnum.WEEK_2.value,
+        "7": ChartPeriodEnum.WEEK_1.value,
+    }
+
+    queryset = PlaylistRepository().get_all_queryset().select_related('user')
+
+    if selected_user:
+        queryset = queryset.filter(user__uuid=selected_user)
+
+    soundboards_with_playlists = (
+        SoundBoard.objects.filter(playlists__isnull=False)
+        .select_related('user')
+        .distinct()
+        .order_by('name')
+    )
+    soundboards_select = {
+        str(sb.uuid): f"{sb.name} ({sb.user.username})"
+        for sb in soundboards_with_playlists
+    }
+
+    if selected_soundboard:
+        if selected_soundboard in soundboards_select:
+            queryset = queryset.filter(soundboards__uuid=selected_soundboard)
+        else:
+            selected_soundboard = ''
+
+    if selected_period:
+        if selected_period in period_choices:
+            days = int(selected_period)
+            start_dt = timezone.now() - timedelta(days=days)
+            queryset = queryset.filter(created_at__gte=start_dt)
+        else:
+            selected_period = ''
+
+    queryset = queryset.order_by('-created_at').distinct()
+
+    users_with_playlists = (
+        User.objects.filter(playlist__isnull=False)
+        .order_by('username')
+        .distinct()
+    )
+
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
+    context.update({
+        'users_with_playlists': users_with_playlists,
+        'users_select': {str(u.uuid): u.username for u in users_with_playlists},
+        'soundboards_select': soundboards_select,
+        'period_choices': period_choices,
+        'selected_user': selected_user,
+        'selected_soundboard': selected_soundboard,
+        'selected_period': selected_period,
+    })
     
     return render(request, 'Html/Moderator/listing_playlist_img.html', context)
 
@@ -74,15 +131,24 @@ def moderator_listing_images_playlist(request) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_listing_images_soundboard(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
-    selected_user = (request.GET.get('user') or '').strip()
+    selected_user = _parse_uuid_or_empty((request.GET.get('user') or '').strip())
     selected_period = (request.GET.get('period') or '').strip()
+    public = (request.GET.get('public') or '').strip()
 
     period_choices = ChartPeriodEnum.get_days_mapping()
 
     queryset = SoundBoardRepository().get_all_queryset().select_related('user')
+    
+    if public:
+        if public.lower() == 'true':
+            queryset = queryset.filter(is_public=True)
+        elif public.lower() == 'false':
+            queryset = queryset.filter(is_public=False)
+        else:
+            public = ''
 
     if selected_user:
-        queryset = queryset.filter(user__username=selected_user)
+        queryset = queryset.filter(user__uuid=selected_user)
 
     if selected_period:
         if selected_period in period_choices:
@@ -104,10 +170,12 @@ def moderator_listing_images_soundboard(request) -> HttpResponse:
     context = extract_context_to_paginator(paginator, page_number)
     context.update({
         'users_with_soundboards': users_with_soundboards,
-        'users_select': {u.username: u.username for u in users_with_soundboards},
+        'users_select': {str(u.uuid): u.username for u in users_with_soundboards},
         'period_choices': period_choices,
+        'public_choices': {'true': 'Public','false': 'Privé'},
         'selected_user': selected_user,
         'selected_period': selected_period,
+        'public': public,
     })
     
     return render(request, 'Html/Moderator/listing_soundboard_img.html', context)

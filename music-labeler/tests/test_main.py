@@ -119,7 +119,7 @@ def test_label_upload_returns_audio_features_and_labels(monkeypatch, client):
     monkeypatch.setattr(main.UploadValidator, "validate_extension", fake_validate_extension)
     monkeypatch.setattr(main.TempUploadFileManager, "save", fake_save)
     monkeypatch.setattr(main.TempUploadFileManager, "cleanup", staticmethod(fake_cleanup))
-    monkeypatch.setattr(main.librosa, "load", fake_load)
+    monkeypatch.setattr(main, "load_audio", fake_load)
     monkeypatch.setattr(main.AudioFeatureExtractor, "extract", staticmethod(fake_extract))
     monkeypatch.setattr(main, "MusicClassifier", FakeMusicClassifier)
 

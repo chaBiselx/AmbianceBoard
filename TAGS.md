@@ -327,6 +327,17 @@ Améliorations
 - Ajout de filtres coté modération
 - Uniformatisation des filtres à travers l'application
 
+### 0.4.6 - 2026/08
+Sécurité
+- Mise a jours des dépendances 
+
+Améliorations
+- Améliorations des performances sur les soundboards
+- Ajout de filtres pour le profil modérateur
+
+Modifications
+- Après création d'un soundboard l'application redirige automatiquement vers le soundbaord en question
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

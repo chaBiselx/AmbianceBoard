@@ -23,6 +23,7 @@ from main.architecture.persistence.repository.UserFavoritePublicSoundboardReposi
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
 from main.domain.common.utils.logger import logger
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
@@ -54,7 +55,7 @@ def public_listing_soundboard(request):
     context['listTags'] = tag_repository.get_tag_with_count()
     context['listFavorite'] = UserFavoritePublicSoundboardRepository().get_list_uuids(request.user)
     context['selected_tag'] = selected_tag
-    context['title'] = "Soundboard publiques"
+    context['title'] = _("view.publicListing.title")
     return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
 
 @require_http_methods(['GET'])
@@ -66,7 +67,7 @@ def public_favorite(request):
     paginator = Paginator(queryset, 100)  
     context = extract_context_to_paginator(paginator, page_number)
     context['listFavorite'] = UserFavoritePublicSoundboardRepository().get_list_uuids(request.user)
-    context['title'] = "Soundboard favorites"
+    context['title'] = _("view.publicFavorite.title")
     return TemplateResponse(request, 'Html/Public/listing_soundboard.html', context)
 
 
@@ -175,7 +176,7 @@ def public_specific_track_stream(request, soundboard_uuid, playlist_uuid, music_
 def favorite_update(request, soundboard_uuid) -> JsonResponse:
     soundboard = SoundBoardRepository().get(soundboard_uuid)
     if not soundboard:
-        return JsonResponse({"error": "SoundBoard introuvable."}, status=404)
+        return JsonResponse({"error": _("view.favoriteUpdate.error.not_found")}, status=404)
     
     if request.method == 'POST':
         try:
@@ -192,7 +193,7 @@ def favorite_update(request, soundboard_uuid) -> JsonResponse:
             favorite.delete()
             return JsonResponse({"message": "success"}, status=200)
         except ObjectDoesNotExist:
-            return JsonResponse({"error": "Favorite not found."}, status=404)
+            return JsonResponse({"error": _("view.favoriteUpdate.error.favorite_not_found")}, status=404)
         except Exception as e:
             logger.error(f"favorite_update : {e}")
             return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)

@@ -3,13 +3,13 @@ import logging
 from contextlib import asynccontextmanager
 from typing import Annotated
 
-import librosa
 from fastapi import Depends, FastAPI, File, HTTPException, Query, Request, UploadFile
 from app.classification.clap_audio_model import ClapAudioModel
 from app.classification.classifier import MusicClassifier
 from app.classification.labels import SOUNDBOARD_LABELS
 from app.config import API_TOKEN, MAX_UPLOAD_SIZE, SAMPLE_RATE
 from app.upload.audio_feature_extractor import AudioFeatureExtractor
+from app.upload.audio_loader import load_audio
 from app.upload.temp_upload_file_manager import TempUploadFileManager
 from app.upload.upload_validator import UploadValidator
 
@@ -74,7 +74,7 @@ async def label_upload(
 
     try:
         logger.info("Chargement audio : %s", safe_filename)
-        audio, sr = await asyncio.to_thread(librosa.load, tmp_path, sr=SAMPLE_RATE, mono=True)
+        audio, sr = await asyncio.to_thread(load_audio, tmp_path, SAMPLE_RATE, True)
         logger.info("Extraction features : %s", safe_filename)
         features = await asyncio.to_thread(AudioFeatureExtractor.extract, audio, sr)
         logger.info("Classification : %s", safe_filename)

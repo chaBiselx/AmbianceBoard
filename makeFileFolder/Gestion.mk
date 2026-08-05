@@ -35,6 +35,14 @@ up: clear-old-containers
 	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose up -d
 	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose logs -f back front db cronjob
 
+make logs:
+	@# Help: Afficher les logs des conteneurs Docker
+	@docker compose logs -f back cronjob music-labeler
+
+make logs-all:
+	@# Help: Afficher les logs de tous les conteneurs Docker
+	@docker compose logs -f
+
 clear-old-containers:
 	@# Help: Supprimer les anciens conteneurs Docker
 	@docker container prune -f
@@ -54,7 +62,7 @@ enter:
 	@I=$${I:-1}; \
 	CONTAINER_NAME="ambianceboard-$(S)-$$I"; \
 	echo "Connexion au conteneur $$CONTAINER_NAME..."; \
-	docker exec -it $$CONTAINER_NAME bash
+	docker exec -it $$CONTAINER_NAME sh
 
 images-size:
 	@# Help: Afficher le poids des images Docker du projet (trié par nom)

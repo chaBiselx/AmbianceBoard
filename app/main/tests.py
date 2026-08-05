@@ -160,3 +160,8 @@ from main.TNR.TI.routing.SharedStreamMusicRouteTest import *
 # Websocket consumer tests (P0)
 from main.TNR.TI.websocket.SharedSoundboardConsumerTest import *
 
+# =======================================================================
+# ======================== STRESS TEST =============================
+# =======================================================================
+from main.TNR.ST.utils.logger.LokiLoggingAdvancedLatencyTestCase import *
+from main.TNR.ST.utils.logger.LokiLoggingLatencyIntegrationTestCase import *

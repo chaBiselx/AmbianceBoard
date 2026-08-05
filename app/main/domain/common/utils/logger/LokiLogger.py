@@ -57,9 +57,6 @@ class LokiLogger(ILogger):
         # Thread pour l'envoi en arrière-plan
         self._sender_thread = threading.Thread(target=self._sender_worker, daemon=True)
         self._sender_thread.start()
-        
-        # Quick health check de Loki (non-bloquant, timeout 1s)
-        self._check_loki_available()
     
     def debug(self, message: str, *args, **kwargs) -> None:
         """Log un message de niveau DEBUG"""
@@ -205,7 +202,10 @@ class LokiLogger(ILogger):
         if remaining <= 0:
             return None, False
 
-        timeout = min(remaining, 0.5)
+        # Timeout réduit à 0.1s pour être plus réactif aux batch_timeout et spike de logs.
+        # Avec 0.5s, on attendait trop longtemps et on perdait des opportunités d'envoi.
+        # 0.1s permet au thread de vérifier batch_timeout toutes les 100ms.
+        timeout = min(remaining, 0.1)
         try:
             return self._log_queue.get(timeout=timeout), False
         except Empty:
