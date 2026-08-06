@@ -15,7 +15,7 @@
                 <input type="hidden" name="language" value="fr">
                 <button type="submit" class="btn btn-link text-decoration-none p-0 text-start w-100" style="color: inherit;">
                     <img src="{% static 'img/lang/fr.svg' %}" class="d-sm-inline me-2" alt="Français" width="17" height="17">
-                    Francais
+                    {% trans "template.nav.lang.fr" %}
                 </button>
             </form>
         </li>
@@ -25,7 +25,7 @@
                 <input type="hidden" name="language" value="en">
                 <button type="submit" class="btn btn-link text-decoration-none p-0 text-start w-100" style="color: inherit;">
                     <img src="{% static 'img/lang/en.svg' %}" class="d-sm-inline me-2" alt="English" width="17" height="17">
-                    English
+                    {% trans "template.nav.lang.en" %}
                 </button>
             </form>
         </li>

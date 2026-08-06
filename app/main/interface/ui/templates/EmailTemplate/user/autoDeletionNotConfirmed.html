@@ -1,11 +1,12 @@
 {% extends "Email/base.html" %}
+{% load i18n %}
 
 
 {% block content %} 
 
 <div>
-    <h1>Bonjour {{ user.username }} !</h1>
-    <p>Après 2 mois sans confirmation de votre email. votre compte est supprimé</p>
+    <h1>{% blocktrans with username=user.username %}template.email.user.greeting{% endblocktrans %}</h1>
+    <p>{% trans "template.email.user.auto_delete_unconfirmed.body" %}</p>
 </div>
 
 {% endblock content %}

@@ -3,6 +3,7 @@
 {% load SoundBoard %}
 {% load FrontJs %}
 {% load static %}
+{% load i18n %}
 
 {% block javascript %}
 {{ block.super }}
@@ -31,8 +32,8 @@
 
 
         <div class="alert alert-info mt-3 text-sm" role="alert">
-            L'application est synchonisé avec le soundboard du maitre du jeu. <br />
-            C'est lui qui controle la lecture des musiques. vous pouvez mettre cette page en arrière plan et profiter de l'ambiance sonore.
+            {% trans "template.shared.read.info.sync" %} <br />
+            {% trans "template.shared.read.info.master" %}
         </div>
 
         <div class="responsive-sections-container">

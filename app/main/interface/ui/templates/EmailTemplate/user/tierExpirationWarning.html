@@ -1,13 +1,14 @@
 {% extends "Email/base.html" %}
+{% load i18n %}
 
 
 {% block content %} 
 
 <div>
-    <h1>Bonjour {{ user.username }} !</h1>
-    <p> Votre compte arrive à expiration dans {{ days_left }} jours.</p>
-    <p>Pour éviter toute diminution de service, veuillez renouveler votre abonnement dès que possible.</p>
-    <p>Merci de votre compréhension.</p>
+    <h1>{% blocktrans with username=user.username %}template.email.user.greeting{% endblocktrans %}</h1>
+    <p>{% blocktrans with remaining_days=days_left %}template.email.user.tier_expiration.body{% endblocktrans %}</p>
+    <p>{% trans "template.email.user.tier_expiration.renew" %}</p>
+    <p>{% trans "template.email.user.common.thanks_understanding" %}</p>
 
 </div>
 

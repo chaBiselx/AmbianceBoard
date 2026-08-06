@@ -7,8 +7,8 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <div class="text-center mb-3">
-                <h2 class="display-5 fw-bold text-primary">Nos Formules</h2>
-                <p class="lead text-muted">Choisissez l'offre qui correspond le mieux à vos besoins</p>
+                <h2 class="display-5 fw-bold text-primary">{% trans "template.pricing.title" %}</h2>
+                <p class="lead text-muted">{% trans "template.pricing.subtitle" %}</p>
             </div>
         </div>
     </div>
@@ -16,8 +16,8 @@
     <div class="row">
         <div class="col">
             <div class="alert alert-warning">
-                Ces tarifications ne sont pas encore en place. 
-                Elles sont présentées à titre indicatif et peuvent évoluer en fonction de vos retours.
+                {% trans "template.pricing.warning.not_live" %}
+                {% trans "template.pricing.warning.may_change" %}
             </div>
         </div>
     </div>
@@ -30,25 +30,25 @@
                 <div class="card-header bg-primary text-white text-center">
                     <i class="fas fa-star fa-1x mb-2"></i>
                     <h4 class="mb-0">{{ tier_data.display_name_short }}</h4>
-                    <small>Pour soutenir</small>
+                    <small>{% trans "template.pricing.tier.basic.caption" %}</small>
                 </div>
                 {% elif tier_key == 'PREMIUM_ADVANCED' %}
                 <div class="card-header bg-warning text-dark text-center">
                     <i class="fas fa-crown fa-1x mb-2"></i>
                     <h4 class="mb-0">{{ tier_data.display_name_short }}</h4>
-                    <small>Pour les créateurs</small>
+                    <small>{% trans "template.pricing.tier.advanced.caption" %}</small>
                 </div>
                 {% elif tier_key == 'PREMIUM_PRO' %}
                 <div class="card-header bg-success text-white text-center">
                     <i class="fas fa-trophy fa-1x mb-2"></i>
                     <h4 class="mb-0">{{ tier_data.display_name_short }}</h4>
-                    <small>Solution professionnelle</small>
+                    <small>{% trans "template.pricing.tier.pro.caption" %}</small>
                 </div>
                 {% else %}
                 <div class="card-header bg-transparent text-center">
                     <i class="fas fa-user fa-1x mb-2 text-muted"></i>
                     <h4 class="mb-0">{{ tier_data.display_name_short }}</h4>
-                    <small class="text-muted">Gratuit</small>
+                    <small class="text-muted">{% trans "template.pricing.free" %}</small>
                 </div>
                 {% endif %}
 
@@ -57,25 +57,25 @@
                     <div class="pricing-section mb-4">
                         <div class="d-flex justify-content-center align-items-center mb-2">
                             <span class="display-5 fw-bold text-primary">{{ tier_data.pricing.monthly|ht_to_ttc }}{% get_currency_symbol %}</span>
-                            <span class="text-muted">/mois</span>
+                            <span class="text-muted">{% trans "template.pricing.per_month" %}</span>
                         </div>
                         {% if tier_data.pricing.yearly %}
                         <div class="text-muted">
-                            <small>ou {{ tier_data.pricing.yearly|ht_to_ttc }}{% get_currency_symbol %}/an</small>
+                            <small>{% blocktrans with yearly_price=tier_data.pricing.yearly|ht_to_ttc currency_symbol=get_currency_symbol %}template.pricing.or_yearly {{ yearly_price }}{{ currency_symbol }}{% endblocktrans %}</small>
                         </div>
                         {% endif %}
                         <div class="text-muted mt-1">
                             <small>
                                 <i class="fas fa-info-circle me-1"></i>
-                                Prix HT: {{ tier_data.pricing.monthly }}{% get_currency_symbol %}/mois
-                                {% if tier_data.pricing.yearly %}- {{ tier_data.pricing.yearly }}{% get_currency_symbol %}/an{% endif %}<br/>
-                                (TVA {% get_tva_rate %}% incluse)
+                                {% blocktrans with monthly_price=tier_data.pricing.monthly currency_symbol=get_currency_symbol %}template.pricing.excl_tax_monthly {{ monthly_price }}{{ currency_symbol }}{% endblocktrans %}
+                                {% if tier_data.pricing.yearly %}{% blocktrans with yearly_price=tier_data.pricing.yearly currency_symbol=get_currency_symbol %}template.pricing.excl_tax_yearly {{ yearly_price }}{{ currency_symbol }}{% endblocktrans %}{% endif %}<br/>
+                                {% blocktrans with tva_rate=get_tva_rate %}template.pricing.vat_included {{ tva_rate }}{% endblocktrans %}
                             </small>
                         </div>
                     </div>
                     {% else %}
                     <div class="pricing-section mb-4">
-                        <span class="display-5 fw-bold text-success">Gratuit</span>
+                        <span class="display-5 fw-bold text-success">{% trans "template.pricing.free" %}</span>
                     </div>
                     {% endif %}
 
@@ -89,7 +89,7 @@
                                     {{ tier_data.limits.soundboard }}
                                 {% endif %}
                             
-                            </strong> soundboards
+                            </strong> {% trans "template.pricing.features.soundboards" %}
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-list text-primary me-2"></i>
@@ -99,40 +99,40 @@
                                 {% else %}
                                     {{ tier_data.limits.playlist }}
                                 {% endif %}
-                            </strong> boutons
+                            </strong> {% trans "template.pricing.features.buttons" %}
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-headphones text-primary me-2"></i>
-                            <strong>{{ tier_data.limits.music_per_playlist }}</strong> musiques par boutons
+                            <strong>{{ tier_data.limits.music_per_playlist }}</strong> {% trans "template.pricing.features.music_per_button" %}
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-file-audio text-primary me-2"></i>
-                            Fichiers jusqu'à <strong>{{ tier_data.limits.weight_music_mb }}MB</strong>
+                            {% trans "template.pricing.features.file_limit" %} <strong>{{ tier_data.limits.weight_music_mb }}MB</strong>
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-rectangle-ad text-primary me-2"></i>
-                            Publicité (<strong>0 pub sonores</strong>) <i>(A venir)</i> : <strong>
+                            {% trans "template.pricing.features.ads" %} (<strong>0 {% trans "template.pricing.features.audio_ads" %}</strong>) <i>({% trans "template.pricing.coming_soon" %})</i> : <strong>
                                 {{ tier_data.limits.advertising.get_text_pricing }}
                             </strong>
-                            {% if tier_data.limits.advertising == 'partial' %} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Sur les pages général (hors soundboard)">ⓘ</span>{% endif %}
+                            {% if tier_data.limits.advertising == 'partial' %} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.pricing.features.ads.partial.tooltip' %}">ⓘ</span>{% endif %}
                         </li>
                         {% if tier_data.limits.share_soundboard %}
                             <li class="mb-1">
                                 <i class="fas fa-share-alt text-primary me-2"></i>
-                                <strong>partage</strong> de l'écoute des soundboards
+                                <strong>{% trans "template.pricing.features.share" %}</strong> {% trans "template.pricing.features.shared_listening" %}
                                 <span class="tex-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip" %}">ⓘ</span>
                             </li>
                         {% endif %}
                         {% if tier_data.limits.shared_playlist_playable_by_shared_user %}
                             <li class="mb-1">
                                 <i class="fa-solid fa-users text-primary me-2"></i>
-                                Interactions <strong> des joueurs possibles</strong> sur les soundboards partagées
+                                {% trans "template.pricing.features.player_interactions" %} <strong>{% trans "template.pricing.features.player_interactions.enabled" %}</strong> {% trans "template.pricing.features.player_interactions.on_shared" %}
                             </li>
                         {% endif %}
                         {% if tier_data.limits.get_statistics_from_public %}
                             <li class="mb-1">
                                 <i class="fa-solid fa-chart-line text-primary me-2"></i>
-                                statistiques sur les soundboards publiques
+                                {% trans "template.pricing.features.public_statistics" %}
                             </li>
                         {% endif %}
                         
@@ -143,11 +143,11 @@
                 <div class="card-footer bg-transparent text-center">
                     {% if user.tier_info.tier_name == tier_key %}
                     <button class="btn btn-outline-primary w-100" disabled>
-                        <i class="fas fa-check me-2"></i>Formule actuelle
+                        <i class="fas fa-check me-2"></i>{% trans "template.pricing.current_plan" %}
                     </button>
                     {% else %}
                     <button class="btn btn-primary w-100" onclick="upgradeTier('{{ tier_key }}')">
-                        <i class="fas fa-arrow-up me-2"></i>Passer à cette formule
+                        <i class="fas fa-arrow-up me-2"></i>{% trans "template.pricing.choose_plan" %}
                     </button>
                     {% endif %}
                 </div>

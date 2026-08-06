@@ -1,17 +1,17 @@
 {% extends 'Html/partial/structure/base.html' %}
 {% load i18n %}
 
-{% block page_title %}Contacter le support - AmbianceBoard{% endblock %}
+{% block page_title %}{% trans "template.support.page_title" %}{% endblock %}
 
 {% block content %}
 <div class="container py-4 py-lg-5">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-xl-7">
             <div class="text-center mb-4">
-                <h2 class="mb-2">Contacter le support</h2>
+                <h2 class="mb-2">{% trans "template.support.title" %}</h2>
                 <p class="text-muted mb-0">
-                    Une question, un bug, une suggestion ?
-                    Envoyez-nous un message, nous le recevons sur support@ambianceboard.com.
+                    {% trans "template.support.subtitle.line1" %}
+                    {% trans "template.support.subtitle.line2" %}
                 </p>
             </div>
 
@@ -23,10 +23,10 @@
 
                         <div class="d-flex flex-wrap gap-2 mt-3">
                             <button class="btn btn-info" type="submit">
-                                <i class="fa-solid fa-paper-plane me-2"></i>Envoyer
+                                <i class="fa-solid fa-paper-plane me-2"></i>{% trans "template.support.form.submit" %}
                             </button>
                             <a href="{% url 'home' %}" class="btn btn-outline-secondary">
-                                Retour a l'accueil
+                                {% trans "template.support.form.back_home" %}
                             </a>
                         </div>
                     </form>

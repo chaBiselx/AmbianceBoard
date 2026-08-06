@@ -1,23 +1,24 @@
 {% extends "Email/base.html" %}
+{% load i18n %}
 
 
 {% block content %} 
 
 <div>
-    <h1>Contenu signalé</h1>
+    <h1>{% trans "template.email.moderator.reported.title" %}</h1>
     <p>
-        <h3>Détails du contenu signalé :</h3>
-        <strong>Element :</strong> {{ report.typeElement }}<br>
-        <strong>Precision :</strong> {{ report.precisionElement }}<br>
-        <strong>Description :</strong> {{ report.descriptionElement }} <br>
-        <strong>Date de signalement :</strong> {{ report.created_at|date:"Y-m-d H:i:s" }}<br>
+        <h3>{% trans "template.email.moderator.reported.details.title" %}</h3>
+        <strong>{% trans "template.email.moderator.reported.field.element" %}</strong> {{ report.typeElement }}<br>
+        <strong>{% trans "template.email.moderator.reported.field.precision" %}</strong> {{ report.precisionElement }}<br>
+        <strong>{% trans "template.email.moderator.reported.field.description" %}</strong> {{ report.descriptionElement }} <br>
+        <strong>{% trans "template.email.moderator.reported.field.reported_at" %}</strong> {{ report.created_at|date:"Y-m-d H:i:s" }}<br>
     </p>
     {% if report.creator %}
         <p>
-            <h3>Informations sur l'utilisateur :</h3>
-            <strong>Email :</strong> {{ report.creator.email }}<br>
-            <strong>Nom d'utilisateur :</strong> {{ report.creator.username }}<br>
-            <strong>Date d'inscription :</strong> {{ report.creator.date_joined }}<br>
+            <h3>{% trans "template.email.moderator.reported.user_info.title" %}</h3>
+            <strong>{% trans "template.email.moderator.reported.user_info.email" %}</strong> {{ report.creator.email }}<br>
+            <strong>{% trans "template.email.moderator.reported.user_info.username" %}</strong> {{ report.creator.username }}<br>
+            <strong>{% trans "template.email.moderator.reported.user_info.registered_at" %}</strong> {{ report.creator.date_joined }}<br>
         </p>
     {% endif %}
 </div>
