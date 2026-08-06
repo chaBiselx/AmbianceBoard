@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 19:36+0000\n"
+"POT-Creation-Date: 2026-08-06 11:07+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -243,6 +243,139 @@ msgstr "SoundBoard introuvable."
 msgid "view.favoriteUpdate.error.favorite_not_found"
 msgstr "Favori introuvable."
 
+#: main/interface/ui/templates/Email/base.html:156
+msgid "template.email.base.tagline"
+msgstr "Soundboard pour jeux de rôle"
+
+#: main/interface/ui/templates/Email/base.html:169
+msgid "template.email.base.footer.autosent"
+msgstr "Cet email a été envoyé automatiquement, merci de ne pas y répondre."
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:8
+msgid "template.email.moderator.reported.title"
+msgstr "Contenu signalé"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:10
+msgid "template.email.moderator.reported.details.title"
+msgstr "Détails du contenu signalé :"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:11
+msgid "template.email.moderator.reported.field.element"
+msgstr "Element :"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:12
+msgid "template.email.moderator.reported.field.precision"
+msgstr "Precision :"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:13
+msgid "template.email.moderator.reported.field.description"
+msgstr "Description :"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:14
+msgid "template.email.moderator.reported.field.reported_at"
+msgstr "Date de signalement :"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:18
+msgid "template.email.moderator.reported.user_info.title"
+msgstr "Informations sur l'utilisateur :"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:19
+msgid "template.email.moderator.reported.user_info.email"
+msgstr "Email :"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:20
+msgid "template.email.moderator.reported.user_info.username"
+msgstr "Nom d'utilisateur :"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:21
+msgid "template.email.moderator.reported.user_info.registered_at"
+msgstr "Date d'inscription :"
+
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccount.html:8
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccountNeverLogin.html:8
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionNotConfirmed.html:8
+#: main/interface/ui/templates/EmailTemplate/user/confirmEmail.html:8
+#: main/interface/ui/templates/EmailTemplate/user/password_changed.html:8
+#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletion.html:8
+#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletionNotConfirmed.html:8
+#: main/interface/ui/templates/EmailTemplate/user/resetPassword.html:8
+#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:8
+#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:8
+msgid "template.email.user.greeting"
+msgstr "Bonjour %(username)s !"
+
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccount.html:9
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccountNeverLogin.html:9
+msgid "template.email.user.auto_delete_24m.body"
+msgstr ""
+"Suite à une inactivité de 24 mois, votre compte est supprimé de notre site."
+
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionNotConfirmed.html:9
+msgid "template.email.user.auto_delete_unconfirmed.body"
+msgstr ""
+"Après 2 mois sans confirmation de votre email, votre compte est supprimé."
+
+#: main/interface/ui/templates/EmailTemplate/user/confirmEmail.html:9
+msgid "template.email.user.confirm_account.body"
+msgstr ""
+"Merci de confirmer votre compte. <a href=\"%"
+"(confirmation_url)s\">Confirmation</a>"
+
+#: main/interface/ui/templates/EmailTemplate/user/password_changed.html:9
+msgid "template.email.user.password_changed.body"
+msgstr "Votre mot de passe a bien été changé."
+
+#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletion.html:9
+msgid "template.email.user.prevent_auto_delete_22m.body"
+msgstr ""
+"Suite à une inactivité de plus de 22 mois, votre compte sera supprimé de "
+"notre site."
+
+#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletionNotConfirmed.html:9
+msgid "template.email.user.prevent_auto_delete_unconfirmed.body"
+msgstr ""
+"Votre compte n'est pas confirmé, veuillez confirmer votre compte via le lien "
+"suivant : <a href=\"%(confirmation_url)s\">Confirmation</a>."
+
+#: main/interface/ui/templates/EmailTemplate/user/resetPassword.html:9
+msgid "template.email.user.reset_password.body"
+msgstr ""
+"Voici votre demande de réinitialisation de mot de passe. <a href=\"%"
+"(reset_url)s\">Réinitialiser</a>"
+
+#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:9
+msgid "template.email.user.tier_downgrade.body"
+msgstr "Votre compte a été rétrogradé vers le niveau %(tier_label)s."
+
+#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:10
+msgid "template.email.user.tier_downgrade.help"
+msgstr ""
+"Si vous avez des questions ou des préoccupations, n'hésitez pas à nous "
+"contacter."
+
+#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:11
+#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:11
+msgid "template.email.user.common.thanks_understanding"
+msgstr "Merci de votre compréhension."
+
+#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:9
+msgid "template.email.user.tier_expiration.body"
+msgstr "Votre compte arrive à expiration dans %(remaining_days)s jours."
+
+#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:10
+msgid "template.email.user.tier_expiration.renew"
+msgstr ""
+"Pour éviter toute diminution de service, veuillez renouveler votre "
+"abonnement dès que possible."
+
+#: main/interface/ui/templates/EmailTemplate/user/welcomEmail.html:8
+msgid "template.email.user.welcome_greeting"
+msgstr "Bienvenue %(username)s !"
+
+#: main/interface/ui/templates/EmailTemplate/user/welcomEmail.html:9
+msgid "template.email.user.welcome.body"
+msgstr "Merci de vous être inscrit sur notre site."
+
 #: main/interface/ui/templates/Html/Account/async_download_jobs_recent.html:15
 msgid "Statut"
 msgstr "Statut"
@@ -267,6 +400,75 @@ msgstr "Erreur"
 msgid "Aucun téléchargement différé mis à jour sur les 24 dernières heures."
 msgstr "Aucun téléchargement différé mis à jour sur les 24 dernières heures."
 
+#: main/interface/ui/templates/Html/Account/create_account.html:16
+msgid "template.account.create.title"
+msgstr "Inscription"
+
+#: main/interface/ui/templates/Html/Account/create_account.html:76
+#: main/interface/ui/templates/Html/Account/reset_password.html:33
+msgid "template.account.password_rule.min_length"
+msgstr "Minimum 8 caractères"
+
+#: main/interface/ui/templates/Html/Account/create_account.html:77
+#: main/interface/ui/templates/Html/Account/reset_password.html:34
+msgid "template.account.password_rule.uppercase"
+msgstr "1 majuscule"
+
+#: main/interface/ui/templates/Html/Account/create_account.html:78
+#: main/interface/ui/templates/Html/Account/reset_password.html:35
+msgid "template.account.password_rule.lowercase"
+msgstr "1 minuscule"
+
+#: main/interface/ui/templates/Html/Account/create_account.html:79
+#: main/interface/ui/templates/Html/Account/reset_password.html:36
+msgid "template.account.password_rule.number"
+msgstr "1 chiffre"
+
+#: main/interface/ui/templates/Html/Account/create_account.html:80
+#: main/interface/ui/templates/Html/Account/reset_password.html:37
+msgid "template.account.password_rule.special_char"
+msgstr "1 caractère spécial"
+
+#: main/interface/ui/templates/Html/Account/create_account.html:94
+msgid "template.account.create.form.submit"
+msgstr "Création du compte"
+
+#: main/interface/ui/templates/Html/Account/login.html:10
+msgid "template.account.login.title"
+msgstr "Connexion"
+
+#: main/interface/ui/templates/Html/Account/login.html:15
+msgid "template.account.login.field.identifier.label"
+msgstr "Nom d'utilisateur (ou email) :"
+
+#: main/interface/ui/templates/Html/Account/login.html:18
+msgid "template.account.login.field.password.label"
+msgstr "Mot de passe :"
+
+#: main/interface/ui/templates/Html/Account/login.html:22
+msgid "template.account.login.form.submit"
+msgstr "Se connecter"
+
+#: main/interface/ui/templates/Html/Account/login.html:23
+msgid "template.account.login.form.forgot_password"
+msgstr "Mot de passe oublié"
+
+#: main/interface/ui/templates/Html/Account/login.html:25
+msgid "template.account.login.form.create_account"
+msgstr "Créer un compte"
+
+#: main/interface/ui/templates/Html/Account/login.html:33
+msgid "template.account.login.form.google"
+msgstr "Se connecter avec Google"
+
+#: main/interface/ui/templates/Html/Account/reset_password.html:16
+msgid "template.account.reset_password.title"
+msgstr "Réinitialisation de mot de passe"
+
+#: main/interface/ui/templates/Html/Account/reset_password.html:51
+msgid "template.account.reset_password.form.submit"
+msgstr "Modifier le mot de passe"
+
 #: main/interface/ui/templates/Html/Account/send_reset_password.html:11
 msgid "template.sendResetPassword.card.title"
 msgstr "Envoi de réinitialisation de mot de passe"
@@ -283,9 +485,386 @@ msgstr "Accès refusé"
 msgid "template.403.message"
 msgstr "Vous n'avez pas la permission d'accéder à cette page."
 
+#: main/interface/ui/templates/Html/General/404_modal.html:6
+msgid "template.404.title"
+msgstr "Page introuvable"
+
+#: main/interface/ui/templates/Html/General/404_modal.html:7
+msgid "template.404.message"
+msgstr "La page demandée n'existe pas ou n'est plus disponible."
+
+#: main/interface/ui/templates/Html/General/429.html:8
+msgid "template.429.title"
+msgstr "Trop de requêtes"
+
+#: main/interface/ui/templates/Html/General/429.html:9
+msgid "template.429.message"
+msgstr ""
+"Vous avez effectué trop d'actions en peu de temps. Le service limite "
+"temporairement le rythme des demandes."
+
+#: main/interface/ui/templates/Html/General/429.html:10
+msgid "template.429.hint"
+msgstr "Veuillez patienter quelques instants avant de réessayer."
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:10
+msgid "template.pricing.title"
+msgstr "Nos Formules"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:11
+msgid "template.pricing.subtitle"
+msgstr "Choisissez l'offre qui correspond le mieux à vos besoins"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:19
+msgid "template.pricing.warning.not_live"
+msgstr "Ces tarifications ne sont pas encore en place."
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:20
+msgid "template.pricing.warning.may_change"
+msgstr ""
+"Elles sont présentées à titre indicatif et peuvent évoluer en fonction de "
+"vos retours."
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:33
+msgid "template.pricing.tier.basic.caption"
+msgstr "Pour soutenir"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:39
+msgid "template.pricing.tier.advanced.caption"
+msgstr "Pour les créateurs"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:45
+msgid "template.pricing.tier.pro.caption"
+msgstr "Solution professionnelle"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:51
+#: main/interface/ui/templates/Html/General/general_pricing.html:78
+msgid "template.pricing.free"
+msgstr "Gratuit"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:60
+msgid "template.pricing.per_month"
+msgstr "/mois"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:64
+#, python-format
+msgid "template.pricing.or_yearly %(yearly_price)s%(currency_symbol)s"
+msgstr "ou %(yearly_price)s%(currency_symbol)s/an"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:70
+#, python-format
+msgid "template.pricing.excl_tax_monthly %(monthly_price)s%(currency_symbol)s"
+msgstr "Prix HT: %(monthly_price)s%(currency_symbol)s/mois"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:71
+#, python-format
+msgid "template.pricing.excl_tax_yearly %(yearly_price)s%(currency_symbol)s"
+msgstr "- %(yearly_price)s%(currency_symbol)s/an"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:72
+#, python-format
+msgid "template.pricing.vat_included %(tva_rate)s"
+msgstr "(TVA %(tva_rate)s%% incluse)"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:92
+msgid "template.pricing.features.soundboards"
+msgstr "soundboards"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:102
+msgid "template.pricing.features.buttons"
+msgstr "boutons"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:106
+msgid "template.pricing.features.music_per_button"
+msgstr "musiques par boutons"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:110
+msgid "template.pricing.features.file_limit"
+msgstr "Fichiers jusqu'à"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:114
+msgid "template.pricing.features.ads"
+msgstr "Publicité"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:114
+msgid "template.pricing.features.audio_ads"
+msgstr "pub sonores"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:114
+msgid "template.pricing.coming_soon"
+msgstr "A venir"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:117
+msgid "template.pricing.features.ads.partial.tooltip"
+msgstr "Sur les pages général (hors soundboard)"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:122
+msgid "template.pricing.features.share"
+msgstr "partage"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:122
+msgid "template.pricing.features.shared_listening"
+msgstr "de l'écoute des soundboards"
+
 #: main/interface/ui/templates/Html/General/general_pricing.html:123
 msgid "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip"
 msgstr "Pouvoir partager l'écoute de la soundboard avec vos joueurs en ligne."
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:129
+msgid "template.pricing.features.player_interactions"
+msgstr "Interactions"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:129
+msgid "template.pricing.features.player_interactions.enabled"
+msgstr "des joueurs possibles"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:129
+msgid "template.pricing.features.player_interactions.on_shared"
+msgstr "sur les soundboards partagées"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:135
+msgid "template.pricing.features.public_statistics"
+msgstr "statistiques sur les soundboards publiques"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:146
+msgid "template.pricing.current_plan"
+msgstr "Formule actuelle"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:150
+msgid "template.pricing.choose_plan"
+msgstr "Passer a cette formule"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:10
+msgid "template.legal.lead"
+msgstr "Informations légales relatives à l'application Ambiance Soundboard"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:19
+msgid "template.legal.section1.title"
+msgstr "1. Éditeur du site"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:23
+msgid "template.legal.section1.app_prefix"
+msgstr "L'application"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:23
+msgid "template.legal.section1.app_suffix"
+msgstr "est éditée par :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:27
+msgid "template.legal.section1.company_name"
+msgstr "Nom ou raison sociale :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:28
+msgid "template.legal.section1.email"
+msgstr "Email :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:40
+msgid "template.legal.section2.title"
+msgstr "2. Hébergeur"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:44
+msgid "template.legal.section2.hosting_by"
+msgstr "L'hébergement du service est assuré par :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:46
+msgid "template.legal.section2.host_name"
+msgstr "Nom de l'hébergeur :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:47
+msgid "template.legal.section2.address"
+msgstr "Adresse :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:48
+msgid "template.legal.section2.contact"
+msgstr "Email / Contact :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:57
+msgid "template.legal.section3.title"
+msgstr "3. Objet du service"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:62
+msgid "template.legal.section3.body"
+msgstr ""
+"est une application permettant aux utilisateurs d'ajouter et d'organiser des "
+"sons/musiques sous forme de soundboard."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:72
+msgid "template.legal.section4.title"
+msgstr "4. Responsabilité de l'éditeur"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:78
+msgid "template.legal.important"
+msgstr "Important :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:78
+msgid "template.legal.section4.warning"
+msgstr ""
+"L'éditeur met à disposition une plateforme technique mais n'est pas "
+"responsable des contenus téléchargés par les utilisateurs."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:80
+msgid "template.legal.section4.body"
+msgstr ""
+"L'utilisateur est seul responsable des fichiers qu'il met en ligne et "
+"s'engage à respecter les droits d'auteur ainsi que les lois en vigueur."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:89
+msgid "template.legal.section5.title"
+msgstr "5. Responsabilité des utilisateurs"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:93
+msgid "template.legal.section5.commitments"
+msgstr "L'utilisateur s'engage à :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:97
+msgid "template.legal.section5.item1"
+msgstr ""
+"Ne pas mettre en ligne de contenus protégés par des droits d'auteur sans "
+"autorisation."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:101
+msgid "template.legal.section5.item2"
+msgstr ""
+"Ne pas utiliser le service pour héberger ou diffuser des contenus illégaux "
+"(incitation à la haine, diffamation, atteinte à la vie privée, etc.)."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:105
+msgid "template.legal.section5.item3"
+msgstr "Respecter les conditions générales d'utilisation du service."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:109
+msgid "template.legal.section5.item4"
+msgstr ""
+"Tout contenu illicite signalé pourra être supprimé sans préavis, et "
+"l'éditeur se réserve le droit de suspendre ou bannir les comptes concernés."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:119
+msgid "template.legal.section6.title"
+msgstr "6. Propriété intellectuelle"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:124
+msgid "template.legal.section6.prefix"
+msgstr "Le design, le code et les fonctionnalités de"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:124
+msgid "template.legal.section6.suffix"
+msgstr ""
+"sont protégés par les droits de propriété intellectuelle. Toute reproduction "
+"non autorisée est interdite."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:134
+msgid "template.legal.section7.title"
+msgstr "7. Signalement et suppression de contenu"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:139
+msgid "template.legal.section7.prefix"
+msgstr ""
+"Si un titulaire de droits constate qu'un contenu portant atteinte à ses "
+"droits est hébergé sur Ambiance soundboard,"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:140
+msgid "template.legal.section7.contact_via"
+msgstr "il peut contacter l'éditeur via"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:140
+msgid "template.legal.section7.details"
+msgstr "en précisant :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:147
+msgid "template.legal.section7.item1"
+msgstr "L'URL du contenu litigieux"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:151
+msgid "template.legal.section7.item2"
+msgstr "La preuve de la titularité des droits"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:155
+msgid "template.legal.section7.item3"
+msgstr "Une demande de suppression"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:162
+msgid "template.legal.section7.note"
+msgstr ""
+"L'éditeur s'engage à examiner et traiter la demande dans un délai "
+"raisonnable."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:172
+msgid "template.legal.section8.title"
+msgstr "8. Protection des données personnelles"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:178
+msgid "template.legal.section8.body"
+msgstr ""
+"Les données des utilisateurs sont collectées uniquement dans le cadre du "
+"fonctionnement du service et ne sont pas revendues à des tiers."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:183
+msgid "template.legal.section8.rgpd_title"
+msgstr "Conformité RGPD"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:186
+msgid "template.legal.section8.rgpd_body"
+msgstr ""
+"Conformément au RGPD, chaque utilisateur dispose d'un droit d'accès, de "
+"rectification et de suppression de ses données via sa page de paramètres "
+"accessible depuis son profil."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:192
+msgid "template.legal.section8.retention_title"
+msgstr "Rétention des données :"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:192
+msgid "template.legal.section8.retention_body"
+msgstr ""
+"Au bout de 24 mois d'inactivité, les données personnelles des utilisateurs "
+"seront supprimées automatiquement."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:204
+msgid "template.legal.section9.title"
+msgstr "9. Droit applicable et juridiction compétente"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:209
+msgid "template.legal.section9.prefix"
+msgstr "Les présentes mentions légales sont soumises au"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:209
+msgid "template.legal.section9.french_law"
+msgstr "droit français"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:210
+msgid "template.legal.section9.suffix"
+msgstr ""
+"En cas de litige, les tribunaux compétents seront ceux du ressort du "
+"domicile de l'éditeur."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:220
+msgid "template.legal.last_update"
+msgstr "Dernière mise à jour : Août 2025"
+
+#: main/interface/ui/templates/Html/General/support_contact.html:4
+msgid "template.support.page_title"
+msgstr "Contacter le support - AmbianceBoard"
+
+#: main/interface/ui/templates/Html/General/support_contact.html:11
+msgid "template.support.title"
+msgstr "Contacter le support"
+
+#: main/interface/ui/templates/Html/General/support_contact.html:13
+msgid "template.support.subtitle.line1"
+msgstr "Une question, un bug, une suggestion ?"
+
+#: main/interface/ui/templates/Html/General/support_contact.html:14
+msgid "template.support.subtitle.line2"
+msgstr ""
+"Envoyez-nous un message, nous le recevons sur support@ambianceboard.com."
+
+#: main/interface/ui/templates/Html/General/support_contact.html:26
+msgid "template.support.form.submit"
+msgstr "Envoyer"
+
+#: main/interface/ui/templates/Html/General/support_contact.html:29
+msgid "template.support.form.back_home"
+msgstr "Retour a l'accueil"
 
 #: main/interface/ui/templates/Html/Music/add_link_music.html:7
 #: main/interface/ui/templates/Html/Music/add_link_music_ajax.html:7
@@ -380,6 +959,16 @@ msgstr "Lien du soundboard"
 msgid "template.publicShareLink.button.label"
 msgstr "Partager le lien"
 
+#: main/interface/ui/templates/Html/Shared/soundboard_read.html:35
+msgid "template.shared.read.info.sync"
+msgstr "L'application est synchonisé avec le soundboard du maitre du jeu."
+
+#: main/interface/ui/templates/Html/Shared/soundboard_read.html:36
+msgid "template.shared.read.info.master"
+msgstr ""
+"C'est lui qui controle la lecture des musiques. vous pouvez mettre cette "
+"page en arrière plan et profiter de l'ambiance sonore."
+
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:25
 msgid "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
 msgstr "Ce compte ne peux pas avoir accès a cette fonctionnalité :"
@@ -437,74 +1026,245 @@ msgstr ""
 msgid "template.shareSoundboard.button.label"
 msgstr "Partager l'écoute"
 
+#: main/interface/ui/templates/Html/partial/structure/base.html:13
+msgid "template.base.default_page_title"
+msgstr "AmbianceBoard - Click here, play anywhere"
+
+#: main/interface/ui/templates/Html/partial/structure/base.html:42
+msgid "template.base.tagline"
+msgstr "Soundboard pour jeux de rôle"
+
+#: main/interface/ui/templates/Html/partial/structure/base.html:50
+msgid "template.base.theme_toggle"
+msgstr "Changer le thème"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:11
+msgid "template.footer.legal_notice"
+msgstr "Mention légal"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:13
+msgid "template.footer.pricing"
+msgstr "Tarification"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:22
+msgid "template.footer.social.discord"
+msgstr "Rejoindre AmbianceBoard sur Discord"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:25
+msgid "template.footer.social.youtube"
+msgstr "Voir AmbianceBoard sur YouTube"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:28
+msgid "template.footer.social.x"
+msgstr "Suivre AmbianceBoard sur X"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:33
+msgid "template.footer.social.github"
+msgstr "Consulter AmbianceBoard sur GitHub"
+
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:5
-msgid "Masquer tout"
+msgid "template.nav.main.hide_all"
 msgstr "Masquer tout"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:10
-msgid "Soundboard publique"
+msgid "template.nav.main.public_soundboard"
 msgstr "Soundboard publique"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:12
-msgid "Public"
+msgid "template.nav.main.public"
 msgstr "Public"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:15
-msgid "Signaler un problème"
+msgid "template.nav.main.report_issue"
 msgstr "Signaler un problème"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:17
-msgid "Report"
-msgstr "Signaler"
+msgid "template.nav.main.report"
+msgstr "Report"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:21
-msgid "liste de vos soundboards"
-msgstr "Liste de vos soundboards"
+msgid "template.nav.main.my_soundboards"
+msgstr "liste de vos soundboards"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:23
-msgid "Soundboards"
+msgid "template.nav.main.soundboards"
 msgstr "Soundboards"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:25
-msgid "Liste de vos boutons"
+msgid "template.nav.main.my_buttons"
 msgstr "Liste de vos boutons"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:27
-msgid "Boutons"
+msgid "template.nav.main.buttons"
 msgstr "Boutons"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:30
-msgid "Téléchargements des dernières 24h"
+msgid "template.nav.main.recent_downloads"
 msgstr "Téléchargements des dernières 24h"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:32
-msgid "Téléchargements"
+msgid "template.nav.main.downloads"
 msgstr "Téléchargements"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:42
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:44
-msgid "Login"
-msgstr "Connexion"
+msgid "template.nav.main.login"
+msgstr "Login"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:18
+msgid "template.nav.lang.fr"
+msgstr "Francais"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:28
+msgid "template.nav.lang.en"
+msgstr "English"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:10
+msgid "template.nav.user.logout"
+msgstr "Deconnexion"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:14
+msgid "template.nav.user.settings"
+msgstr "Paramètres"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:19
+msgid "template.nav.user.moderation"
+msgstr "Modération"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:25
+msgid "template.nav.user.manager"
+msgstr "Manager"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:31
+msgid "template.nav.user.grafana"
+msgstr "Graphana"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:32
+msgid "template.nav.user.superadmin"
+msgstr "Superadmin"
+
+#: main/interface/ui/templates/Html/partial/structure/utils/message.html:14
+#: main/interface/ui/templates/Html/partial/structure/utils/modal.html:8
+msgid "template.common.close"
+msgstr "Close"
+
+#: main/interface/ui/templates/Html/partial/structure/utils/modal.html:32
+msgid "template.modal.loading"
+msgstr "Chargement"
 
 #: main/interface/ui/templates/socialaccount/login.html:9
-msgid "Connexion via Google"
+msgid "template.social.google.title"
 msgstr "Connexion via Google"
 
 #: main/interface/ui/templates/socialaccount/login.html:12
-msgid ""
-"Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
-"Google."
+msgid "template.social.google.description"
 msgstr ""
 "Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
 "Google."
 
 #: main/interface/ui/templates/socialaccount/login.html:16
-msgid "Continuer"
+msgid "template.social.google.continue"
 msgstr "Continuer"
 
 #: main/interface/ui/templates/socialaccount/login.html:20
-msgid "Retour"
+msgid "template.social.google.back"
 msgstr "Retour"
+
+#, python-format
+#~ msgid "Soundboard publique 100%% Gratuit"
+#~ msgstr "Soundboard publique"
+
+#~ msgid "Créer un soundboard pour vos ambiances de jeu de rôle"
+#~ msgstr "Soundboard publique"
+
+#~ msgid "Ambiance Continue"
+#~ msgstr "Continuer"
+
+#~ msgid "Partage public"
+#~ msgstr "Public"
+
+#~ msgid "Copie de boutons"
+#~ msgstr "Liste de vos boutons"
+
+#~ msgid "Mes soundboards"
+#~ msgstr "Soundboards"
+
+#~ msgid "Créer mon soundboard"
+#~ msgstr "Liste de vos soundboards"
+
+#~ msgid "soundboards"
+#~ msgstr "Soundboards"
+
+#~ msgid "boutons"
+#~ msgstr "Boutons"
+
+#~ msgid "Publicité"
+#~ msgstr "Public"
+
+#~ msgid "de l'écoute des soundboards"
+#~ msgstr "Liste de vos soundboards"
+
+#~ msgid "Masquer tout"
+#~ msgstr "Masquer tout"
+
+#~ msgid "Soundboard publique"
+#~ msgstr "Soundboard publique"
+
+#~ msgid "Public"
+#~ msgstr "Public"
+
+#~ msgid "Signaler un problème"
+#~ msgstr "Signaler un problème"
+
+#~ msgid "Report"
+#~ msgstr "Signaler"
+
+#~ msgid "liste de vos soundboards"
+#~ msgstr "Liste de vos soundboards"
+
+#~ msgid "Soundboards"
+#~ msgstr "Soundboards"
+
+#~ msgid "Liste de vos boutons"
+#~ msgstr "Liste de vos boutons"
+
+#~ msgid "Boutons"
+#~ msgstr "Boutons"
+
+#~ msgid "Téléchargements des dernières 24h"
+#~ msgstr "Téléchargements des dernières 24h"
+
+#~ msgid "Téléchargements"
+#~ msgstr "Téléchargements"
+
+#~ msgid "Login"
+#~ msgstr "Connexion"
+
+#~ msgid "Connexion via Google"
+#~ msgstr "Connexion via Google"
+
+#~ msgid ""
+#~ "Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
+#~ "Google."
+#~ msgstr ""
+#~ "Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
+#~ "Google."
+
+#~ msgid "Continuer"
+#~ msgstr "Continuer"
+
+#~ msgid "Retour"
+#~ msgstr "Retour"
+
+#~ msgid "Soundboard pour jeux de rôle"
+#~ msgstr "Soundboard publique"
+
+#~ msgid "Chargement"
+#~ msgstr "Téléchargements"
+
+#~| msgid "Connexion via Google"
+#~ msgid "Connexion"
+#~ msgstr "Connexion via Google"
 
 #~ msgid "enum.fade_playlist.off"
 #~ msgstr "Désactivé"

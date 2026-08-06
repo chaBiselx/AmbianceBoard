@@ -1,5 +1,6 @@
 {% load Bootstrap %}
 {% load Json %}
+{% load i18n %}
 
 
 {% if messages %}
@@ -10,7 +11,7 @@
             {% with meta_data=message.extra_tags|parse_meta_json %}
             <div class="alert {% if message.tags %}alert-{{ message.tags|applys_boostrap_class }}{% endif %} alert-dismissible fade show" role="alert">
                 {{ message }}
-                <button class="btn-close close-notification" data-dismiss="alert" aria-label="Close"
+                <button class="btn-close close-notification" data-dismiss="alert" aria-label="{% trans 'template.common.close' %}"
                 {% if meta_data %}
                     {% for key, value in meta_data.items %}
                         data-meta-{{ key }}="{{ value }}"

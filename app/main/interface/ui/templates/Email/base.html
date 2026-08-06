@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -152,7 +153,7 @@
             <div>
                 <img src="https://ambianceboard.com/static/img/logo.png" alt="AmbianceBoard Logo" class="logo-img">
                 <h1 class="logo-text">AmbianceBoard</h1>
-                <p class="tagline">Soundboard pour jeux de rôle</p>
+                <p class="tagline">{% trans "template.email.base.tagline" %}</p>
             </div>
         </div>
         
@@ -165,7 +166,7 @@
         <div class="email-footer">
             <p class="copyright">
                 © 2026 AmbianceBoard. Tous droits réservés.<br>
-                Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+                {% trans "template.email.base.footer.autosent" %}
             </p>
         </div>
     </div>

@@ -1,11 +1,12 @@
 {% extends "Email/base.html" %}
+{% load i18n %}
 
 
 {% block content %} 
 
 <div>
-    <h1>Bonjour {{ user.username }} !</h1>
-    <p>Merci de confirmer votre compte. <a href="{{ url }}">Confirmation</a></p>
+    <h1>{% blocktrans with username=user.username %}template.email.user.greeting{% endblocktrans %}</h1>
+    <p>{% blocktrans with confirmation_url=url %}template.email.user.confirm_account.body{% endblocktrans %}</p>
 </div>
 
 {% endblock content %}

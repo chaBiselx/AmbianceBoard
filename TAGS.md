@@ -346,6 +346,9 @@ Corrections
 Nouveautés
 - Ajout nouveaux workflox pour maj les sha digest pour les docker
 
+Améliorations
+- Ajout de champ utilisable pour l'internationnalisation 
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

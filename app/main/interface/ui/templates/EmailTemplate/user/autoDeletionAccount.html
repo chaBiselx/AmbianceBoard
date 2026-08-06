@@ -1,11 +1,12 @@
 {% extends "Email/base.html" %}
+{% load i18n %}
 
 
 {% block content %} 
 
 <div>
-    <h1>Bonjour {{ user.username }} !</h1>
-    <p>Suite a une inactivité de 24 mois, votre compte est supprimé de notre site.</p>
+    <h1>{% blocktrans with username=user.username %}template.email.user.greeting{% endblocktrans %}</h1>
+    <p>{% trans "template.email.user.auto_delete_24m.body" %}</p>
 </div>
 
 {% endblock content %}
