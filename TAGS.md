@@ -343,6 +343,8 @@ Corrections
 - Fix sur des problèmes de lenteurs à cause d'un outils de journalisation
 
 ### 0.4.8 - 2026/08
+Nouveautés
+- Ajout nouveaux workflox pour maj les sha digest pour les docker
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
