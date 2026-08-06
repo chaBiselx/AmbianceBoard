@@ -37,7 +37,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
       - name: Install crane
-        uses: imjasonh/setup-crane@v0.4
+        uses: imjasonh/setup-crane@feee3b6bb0d4c68370f256a4502498c9227e5c6b
 
       - uses: actions/setup-python@v5
         with:
@@ -49,7 +49,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.check.outputs.has_updates == 'true'
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
         with:
           base: ${{ steps.target-branch.outputs.branch }}
           commit-message: 'chore: update Docker image digests'
