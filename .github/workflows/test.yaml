@@ -84,4 +84,4 @@ jobs:
           gh workflow run "Docker-digest-update.yml" \
             --repo ${{ github.repository }} \
             --ref 0.4.8 \
-            --branch ${{ github.ref }}
+            --branch 0.4.8
