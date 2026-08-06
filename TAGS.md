@@ -345,6 +345,7 @@ Corrections
 ### 0.4.8 - 2026/08
 Nouveautés
 - Ajout nouveaux workflox pour maj les sha digest pour les docker
+- Ajout du lien de contact dans le footer
 
 Améliorations
 - Ajout de champ utilisable pour l'internationnalisation 

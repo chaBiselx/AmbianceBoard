@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-06 11:07+0000\n"
+"POT-Creation-Date: 2026-08-06 19:18+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -1046,19 +1046,24 @@ msgstr "Mention légal"
 msgid "template.footer.pricing"
 msgstr "Tarification"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:22
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:15
+#| msgid "template.footer.pricing"
+msgid "template.footer.support"
+msgstr "Contact"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:24
 msgid "template.footer.social.discord"
 msgstr "Rejoindre AmbianceBoard sur Discord"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:25
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:27
 msgid "template.footer.social.youtube"
 msgstr "Voir AmbianceBoard sur YouTube"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:28
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:30
 msgid "template.footer.social.x"
 msgstr "Suivre AmbianceBoard sur X"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:33
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:35
 msgid "template.footer.social.github"
 msgstr "Consulter AmbianceBoard sur GitHub"
 
