@@ -1,7 +1,7 @@
 name: CD-test
 run-name: CD-test | ${{ github.ref }} | ${{ github.actor }}
 on:
-  - push 
+  - push
 
 concurrency:
   group: cd-${{ github.ref }}
@@ -40,6 +40,8 @@ jobs:
     permissions:
       actions: read
       contents: write
+    outputs:
+      new_version: ${{ steps.bump_version.outputs.new_version }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6
@@ -57,8 +59,8 @@ jobs:
           fi
 
           IFS='.' read -r major minor patch <<< "$latest_tag"
-          new_minor=$((minor + 1))
-          new_version="${major}.${new_minor}.0"
+          new_patch=$((patch + 1))
+          new_version="${major}.${minor}.${new_patch}"
 
           echo "new_version=$new_version" >> "$GITHUB_OUTPUT"
 
@@ -81,4 +83,4 @@ jobs:
         run: |
           gh workflow run "Docker-digest-update.yml" \
             --repo ${{ github.repository }} \
-            --ref ${{ steps.bump_version.outputs.new_version }}
+            --ref ${{ needs.CreateVersionBranch.outputs.new_version }}
