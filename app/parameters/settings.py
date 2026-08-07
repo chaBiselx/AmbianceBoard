@@ -264,6 +264,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "main.architecture.middleware.LogRequestsMiddleware.LogRequestsMiddleware",
     "main.architecture.middleware.DailySessionMiddleware.DailySessionMiddleware",
+    "main.architecture.middleware.PublicVisitTrackingMiddleware.PublicVisitTrackingMiddleware",
     "main.architecture.middleware.ErrorTrackingMiddleware.ErrorTrackingMiddleware",
 ]
 

@@ -47,6 +47,7 @@ from main.TNR.TU.config.PlaylistStrategyTest import *
 #MiddleWare
 from main.TNR.TU.middleware.ErrorTrackingMiddlewareTest import *
 from main.TNR.TU.middleware.DailySessionMiddlewareTest import *
+from main.TNR.TU.middleware.PublicVisitTrackingMiddlewareTest import *
 
 #Repository
 from main.TNR.TU.repository.AsyncDownloadJobRepositoryTest import *
@@ -65,6 +66,7 @@ from main.TNR.TU.repository.TrackRepositoryTest import *
 from main.TNR.TU.repository.SoundboardPlaylistRepositoryTest import * 
 from main.TNR.TU.repository.TagRepositoryTest import *
 from main.TNR.TU.repository.TestUserRepository import *
+from main.TNR.TU.repository.TrafficAttributionVisitRepositoryTest import *
 from main.TNR.TU.repository.UserModerationLogRepositoryTest import *
 from main.TNR.TU.repository.UserNotificationDismissalRepositoryTest import *
 from main.TNR.TU.repository.UserPreferenceRepositoryTest import *

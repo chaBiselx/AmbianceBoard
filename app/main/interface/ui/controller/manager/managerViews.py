@@ -14,6 +14,7 @@ from main.domain.common.enum.ChartPeriodEnum import ChartPeriodEnum
 from main.architecture.persistence.repository.UserRepository import UserRepository
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
+from main.domain.manager.service.TrafficAttributionStatsService import TrafficAttributionStatsService
 
 
 @login_required
@@ -124,6 +125,60 @@ def error_activity_dashboard(request) -> JsonResponse:
             'x_label': 'Date',
             'y_label': 'Erreurs',
             'data':response_data
+        }
+        return JsonResponse(json)
+
+    except Exception as e:
+        return JsonResponse({
+            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'message': str(e)
+        }, status=500)
+
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def referer_activity_dashboard(request) -> JsonResponse:
+    try:
+        days = int(request.GET.get('period', 30 * 6))
+        end_dt = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+        start_dt = end_dt - timedelta(days=days-1)
+
+        service = TrafficAttributionStatsService()
+        response_data = service.get_referer_data(start_dt, end_dt)
+
+        json = {
+            'title': f"Evolution des visites par referer - {days} jours",
+            'x_label': 'Date',
+            'y_label': 'Visites',
+            'data': response_data
+        }
+        return JsonResponse(json)
+
+    except Exception as e:
+        return JsonResponse({
+            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'message': str(e)
+        }, status=500)
+
+
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def utm_source_activity_dashboard(request) -> JsonResponse:
+    try:
+        days = int(request.GET.get('period', 30 * 6))
+        end_dt = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0) + timedelta(days=1)
+        start_dt = end_dt - timedelta(days=days-1)
+
+        service = TrafficAttributionStatsService()
+        response_data = service.get_utm_source_data(start_dt, end_dt)
+
+        json = {
+            'title': f"Evolution des visites par utm_source - {days} jours",
+            'x_label': 'Date',
+            'y_label': 'Visites',
+            'data': response_data
         }
         return JsonResponse(json)
 

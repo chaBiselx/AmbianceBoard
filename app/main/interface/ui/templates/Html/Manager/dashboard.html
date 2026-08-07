@@ -69,6 +69,26 @@
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-header">
+                        <h5>Visites par referer</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="activity-referer" data-url="{% url 'managerRefererActivityDashboard' %}"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Visites par UTM source</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="activity-utm-source" data-url="{% url 'managerUtmSourceActivityDashboard' %}"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">
                         <h5><i class="fa-solid fa-ranking-star me-2"></i>Top 10 utilisateurs les plus actifs</h5>
                     </div>
                     <div class="card-body">

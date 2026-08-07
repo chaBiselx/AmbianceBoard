@@ -1,6 +1,7 @@
 import os 
 from main.domain.common.utils.logger import LoggerFactory
 from main.architecture.persistence.repository.UserActivityRepository import UserActivityRepository
+from main.architecture.persistence.repository.TrafficAttributionVisitRepository import TrafficAttributionVisitRepository
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 class PurgeUserActivityService:
@@ -8,6 +9,7 @@ class PurgeUserActivityService:
     def __init__(self):
         self.logger = LoggerFactory.get_default_logger()
         self.user_activity_repository = UserActivityRepository()
+        self.traffic_attribution_visit_repository = TrafficAttributionVisitRepository()
         self.days_older = 366  # Default to 366 days, can be overridden in _purge_old method
         self.days_error = 30  # Default to 30 days, can be overridden in purge_error method
 
@@ -19,6 +21,7 @@ class PurgeUserActivityService:
         
     def purge(self):
         self._purge_old()
+        self._purge_old_traffic_attribution_visits()
         self._purge_error_log()
 
     def _purge_old(self):
@@ -35,6 +38,21 @@ class PurgeUserActivityService:
                 self.logger.info("No old user activities to purge.")
         except Exception as e:
             self.logger.error(f"Error during purge: {e}")
+
+    def _purge_old_traffic_attribution_visits(self):
+        """Purge traffic attribution visits older than a certain number of days"""
+        try:
+            from datetime import timedelta
+            from django.utils import timezone
+            threshold_date = timezone.now() - timedelta(days=self.days_older)
+            old_visits = self.traffic_attribution_visit_repository.get_visits_before(threshold_date)
+            if old_visits.exists():
+                self.logger.info(f"Purged {old_visits.count()} old traffic attribution visits.")
+                old_visits.delete()
+            else:
+                self.logger.info("No old traffic attribution visits to purge.")
+        except Exception as e:
+            self.logger.error(f"Error during traffic attribution purge: {e}")
             
     def _purge_error_log(self):
         """Purge user activities related to errors older than a certain number of days"""
