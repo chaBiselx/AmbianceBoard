@@ -1,11 +1,9 @@
 {% extends 'Html/partial/structure/base.html' %}
 {% load i18n %}
-{% load FrontJs %}
-{% load static %}
 
 {% block javascript %}
 {{ block.super }}
-<script type="module" src="{% static "PasswordRules"|search_true_file %}"></script>
+{% include 'Html/partial/account/password_rules_script.html' %}
 {% endblock javascript %}
 
 {% block content %}
@@ -72,13 +70,7 @@
                         {% endif %}
                     </div>
                     <div>
-                        <ul>
-                            <li class="password-rules" id="password_rules_minLength">{% trans "template.account.password_rule.min_length" %}</li>
-                            <li class="password-rules" id="password_rules_hasUpperCase">{% trans "template.account.password_rule.uppercase" %}</li>
-                            <li class="password-rules" id="password_rules_hasLowerCase">{% trans "template.account.password_rule.lowercase" %}</li>
-                            <li class="password-rules" id="password_rules_hasNumber">{% trans "template.account.password_rule.number" %}</li>
-                            <li class="password-rules" id="password_rules_hasSpecialChar">{% trans "template.account.password_rule.special_char" %}</li>
-                        </ul>
+                        {% include 'Html/partial/account/password_rules.html' %}
                     </div>
                     <div>
                         {{ form.confirm_password.label_tag  }}<br /> {{ form.confirm_password }}

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-06 19:18+0000\n"
+"POT-Creation-Date: 2026-08-07 06:21+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -404,32 +404,7 @@ msgstr "Aucun téléchargement différé mis à jour sur les 24 dernières heure
 msgid "template.account.create.title"
 msgstr "Inscription"
 
-#: main/interface/ui/templates/Html/Account/create_account.html:76
-#: main/interface/ui/templates/Html/Account/reset_password.html:33
-msgid "template.account.password_rule.min_length"
-msgstr "Minimum 8 caractères"
-
-#: main/interface/ui/templates/Html/Account/create_account.html:77
-#: main/interface/ui/templates/Html/Account/reset_password.html:34
-msgid "template.account.password_rule.uppercase"
-msgstr "1 majuscule"
-
-#: main/interface/ui/templates/Html/Account/create_account.html:78
-#: main/interface/ui/templates/Html/Account/reset_password.html:35
-msgid "template.account.password_rule.lowercase"
-msgstr "1 minuscule"
-
-#: main/interface/ui/templates/Html/Account/create_account.html:79
-#: main/interface/ui/templates/Html/Account/reset_password.html:36
-msgid "template.account.password_rule.number"
-msgstr "1 chiffre"
-
-#: main/interface/ui/templates/Html/Account/create_account.html:80
-#: main/interface/ui/templates/Html/Account/reset_password.html:37
-msgid "template.account.password_rule.special_char"
-msgstr "1 caractère spécial"
-
-#: main/interface/ui/templates/Html/Account/create_account.html:94
+#: main/interface/ui/templates/Html/Account/create_account.html:88
 msgid "template.account.create.form.submit"
 msgstr "Création du compte"
 
@@ -465,7 +440,7 @@ msgstr "Se connecter avec Google"
 msgid "template.account.reset_password.title"
 msgstr "Réinitialisation de mot de passe"
 
-#: main/interface/ui/templates/Html/Account/reset_password.html:51
+#: main/interface/ui/templates/Html/Account/reset_password.html:45
 msgid "template.account.reset_password.form.submit"
 msgstr "Modifier le mot de passe"
 
@@ -997,6 +972,26 @@ msgstr "Organiser"
 msgid "template.soundboard_read.button.edit_soundboard"
 msgstr "Modifier le SoundBoard"
 
+#: main/interface/ui/templates/Html/partial/account/password_rules.html:4
+msgid "template.account.password_rule.min_length"
+msgstr "Minimum 8 caractères"
+
+#: main/interface/ui/templates/Html/partial/account/password_rules.html:5
+msgid "template.account.password_rule.uppercase"
+msgstr "1 majuscule"
+
+#: main/interface/ui/templates/Html/partial/account/password_rules.html:6
+msgid "template.account.password_rule.lowercase"
+msgstr "1 minuscule"
+
+#: main/interface/ui/templates/Html/partial/account/password_rules.html:7
+msgid "template.account.password_rule.number"
+msgstr "1 chiffre"
+
+#: main/interface/ui/templates/Html/partial/account/password_rules.html:8
+msgid "template.account.password_rule.special_char"
+msgstr "1 caractère spécial"
+
 #: main/interface/ui/templates/Html/partial/filter/search/filter_tag_cloud.html:21
 msgid "template.filterTagCloud.active_filter_prefix"
 msgstr "Filtré par le tag :"
@@ -1047,7 +1042,6 @@ msgid "template.footer.pricing"
 msgstr "Tarification"
 
 #: main/interface/ui/templates/Html/partial/structure/footer/footer.html:15
-#| msgid "template.footer.pricing"
 msgid "template.footer.support"
 msgstr "Contact"
 
