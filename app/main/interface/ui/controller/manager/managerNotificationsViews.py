@@ -11,7 +11,7 @@ from main.domain.cron.service.MediaImgSoundboardService import MediaImgSoundboar
 from main.domain.cron.service.UserTierExpirationService  import UserTierExpirationService
 from main.domain.cron.service.DomainBlacklistCronService import DomainBlacklistCronService
 from main.domain.cron.service.SharedSoundboardService import SharedSoundboardService
-from main.domain.cron.service.PurgeUserActivityService import PurgeUserActivityService
+from main.domain.cron.service.PurgeOldStatsService import PurgeOldStatsService
 from main.domain.common.utils.logger import logger
 from main.architecture.persistence.repository.GeneralNotificationRepository import GeneralNotificationRepository
 from main.interface.ui.forms.manager.GeneralNotificationForm import GeneralNotificationForm
