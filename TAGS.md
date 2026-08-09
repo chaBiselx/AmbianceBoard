@@ -347,6 +347,7 @@ Nouveautés
 - Ajout nouveaux workflox pour maj les sha digest pour les docker
 - Ajout du lien de contact dans le footer
 - Ajout de statistique pour le suivi des sources d'arrivées
+- Ajout de tags par default pour un soundbaord si aucun selectionné 
 
 Améliorations
 - Ajout de champ utilisable pour l'internationnalisation 

@@ -6,7 +6,15 @@ from django.db.models import QuerySet
 
 
 
-class TagRepository:
+class SoundboardTagRepository:
+    
+    def create(self, name: str, description: str = "", is_active: bool = True, is_default: bool = False) -> SoundboardTag:
+        """
+        Crée un nouveau tag de soundboard.
+        """
+        tag = SoundboardTag(name=name, description=description, is_active=is_active, is_default=is_default)
+        tag.save()
+        return tag
 
     def get_with_uuid(self, uuid: str) -> Optional[SoundboardTag]:
         try:
@@ -26,3 +34,15 @@ class TagRepository:
         """
         tags = SoundboardTag.objects.filter(is_active=True).annotate(soundboard_count=models.Count('soundboards')).filter(soundboard_count__gt=0).order_by('-soundboard_count', 'name')
         return list(tags)
+    
+    def get_default_tag(self) -> Optional[SoundboardTag]:
+        """
+        Retourne le tag par défaut s'il existe
+        """
+        try:
+            return SoundboardTag.objects.get(is_default=True)
+        except SoundboardTag.DoesNotExist:
+            try:
+                return SoundboardTag.objects.filter(is_active=True).first()  # Retourne le premier tag actif s'il n'y a pas de tag par défaut
+            except SoundboardTag.DoesNotExist:
+                return self.create(name="Default", description="Tag par défaut créé automatiquement", is_active=True, is_default=True)

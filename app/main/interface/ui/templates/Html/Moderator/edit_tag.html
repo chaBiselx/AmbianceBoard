@@ -8,7 +8,7 @@
         <form method="POST" action="{% url 'moderatorEditTag' tag.uuid %}">
             {% csrf_token %}
             <div class="form-group">
-                {{ form.name.label_tag }}<br/>
+                {{ form.name.label_tag }}<br />
                 {{ form.name }}
                 {% if form.name.help_text %}
                 <div>
@@ -21,13 +21,13 @@
             </div>
 
             <div class="form-group">
-                {{ form.description.label_tag }}<br/>
+                {{ form.description.label_tag }}<br />
                 {{ form.description }}
                 {% if form.description.help_text %}
                 <div>
                     <small class="form-text text-muted">{{ form.description.help_text }}</small>
                 </div>
-                    {% endif %}
+                {% endif %}
                 {% if form.description.errors %}
                 <div class="text-danger">{{ form.description.errors }}</div>
                 {% endif %}
@@ -43,6 +43,18 @@
                 {% endif %}
                 {% if form.is_active.errors %}
                 <div class="text-danger">{{ form.is_active.errors }}</div>
+                {% endif %}
+            </div>
+            <div class="form-group form-check">
+                {{ form.is_default }}
+                {{ form.is_default.label_tag }}
+                {% if form.is_default.help_text %}
+                <div>
+                    <small class="form-text text-muted">{{ form.is_default.help_text }}</small>
+                </div>
+                {% endif %}
+                {% if form.is_default.errors %}
+                <div class="text-danger">{{ form.is_default.errors }}</div>
                 {% endif %}
             </div>
 

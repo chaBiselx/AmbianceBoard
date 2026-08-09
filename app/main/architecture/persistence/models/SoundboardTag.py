@@ -31,6 +31,10 @@ class SoundboardTag(models.Model):
         default=True,
         help_text="Indique si le tag est actif et peut être utilisé"
     )
+    is_default = models.BooleanField(
+        default=False,
+        help_text="Indique si le tag est un tag par défaut"
+    )
 
     class Meta:
         db_table = 'main_soundboardtag'

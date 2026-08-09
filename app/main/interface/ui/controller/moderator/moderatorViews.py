@@ -29,7 +29,7 @@ from main.architecture.persistence.repository.UserModerationLogRepository import
 from main.architecture.persistence.repository.ReportContentRepository import ReportContentRepository
 from main.domain.moderator.service.TreatmentReportService import TreatmentReportService
 from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
-from main.architecture.persistence.repository.TagRepository import TagRepository
+from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
 from main.architecture.persistence.repository.PlaylistTagRepository import PlaylistTagRepository
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ChartPeriodEnum import ChartPeriodEnum
@@ -304,7 +304,7 @@ def reporting_add_log(request) -> HttpResponse:
 def moderator_listing_tags(request) -> HttpResponse:
     page_number = int(request.GET.get('page', 1))
     
-    tag_repository = TagRepository()
+    tag_repository = SoundboardTagRepository()
     queryset = tag_repository.get_all_queryset()
     paginator = Paginator(queryset, 50)  
     context = extract_context_to_paginator(paginator, page_number)
@@ -329,7 +329,7 @@ def moderator_create_tag(request) -> HttpResponse:
 @require_http_methods(['GET', 'POST'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_edit_tag(request, tag_uuid) -> HttpResponse:
-    tag_repository = TagRepository()
+    tag_repository = SoundboardTagRepository()
     tag = tag_repository.get_with_uuid(uuid=tag_uuid)
 
     if request.method == 'POST':
@@ -347,7 +347,7 @@ def moderator_edit_tag(request, tag_uuid) -> HttpResponse:
 @require_http_methods(['GET'])
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_infos_tag(request, tag_uuid) -> HttpResponse:
-    tag_repository = TagRepository()
+    tag_repository = SoundboardTagRepository()
     tag = tag_repository.get_with_uuid(uuid=tag_uuid)
     if tag:
         return render(request, 'Html/Moderator/info_tag.html', {"tag": tag})

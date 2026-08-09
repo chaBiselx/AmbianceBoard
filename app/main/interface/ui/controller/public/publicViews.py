@@ -33,7 +33,7 @@ from main.domain.common.service.DefaultColorPlaylistService import DefaultColorP
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
-from main.architecture.persistence.repository.TagRepository import TagRepository
+from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
 
 @require_http_methods(['GET'])
 def public_index(request):
@@ -42,7 +42,7 @@ def public_index(request):
 @require_http_methods(['GET'])
 @add_reporting_btn()
 def public_listing_soundboard(request):
-    tag_repository = TagRepository()
+    tag_repository = SoundboardTagRepository()
     page_number = int(request.GET.get('page', 1))
     selected_tag = request.GET.get('tag', None)
     

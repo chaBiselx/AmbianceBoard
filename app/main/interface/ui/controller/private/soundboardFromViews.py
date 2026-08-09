@@ -20,9 +20,10 @@ def soundboard_create(request):
     """Création d'un nouveau soundboard"""
     if request.method == 'POST':
         soundboard = (SoundBoardService(request)).save_form()
-        ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_CREATE, user=request.user, content_object=soundboard)
-        
-        return redirect('soundboardsRead', soundboard_uuid=soundboard.uuid)
+        if soundboard is not None:
+            ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_CREATE, user=request.user, content_object=soundboard)
+            return redirect('soundboardsRead', soundboard_uuid=soundboard.uuid)
+        form = SoundBoardForm()
     else:
         form = SoundBoardForm()
     return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method': 'create', 'title': 'Création d\'un nouveau Soundboard'})

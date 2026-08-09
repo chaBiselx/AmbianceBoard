@@ -2,7 +2,7 @@ from typing import List
 from main.architecture.persistence.models.HomeDemoItem import HomeDemoItem
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
-from main.architecture.persistence.repository.TagRepository import TagRepository
+from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
 
 
 class HomeDemoItemRepository:

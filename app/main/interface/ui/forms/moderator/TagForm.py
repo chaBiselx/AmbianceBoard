@@ -32,3 +32,9 @@ class TagForm(BootstrapFormMixin, forms.ModelForm):
         initial=True,
         help_text="Indique si le tag est actif et peut être utilisé"
     )
+    is_default = forms.BooleanField(
+        required=False,
+        label='Tag par défaut',
+        initial=False,
+        help_text="Indique si le tag est un tag par défaut"
+    )

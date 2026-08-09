@@ -3,13 +3,13 @@ from django.test import TestCase, tag
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardTag import SoundboardTag
 from main.architecture.persistence.models.User import User
-from main.architecture.persistence.repository.TagRepository import TagRepository
+from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
 
 
 @tag('unitaire')
 class TagRepositoryTest(TestCase):
     def setUp(self):
-        self.repository = TagRepository()
+        self.repository = SoundboardTagRepository()
         self.user = User.objects.create_user(username='tag-user', password='pw')
 
         self.tag_active_used = SoundboardTag.objects.create(name='used')
