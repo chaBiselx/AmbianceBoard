@@ -1,4 +1,7 @@
-import os 
+from datetime import timedelta
+
+from django.utils import timezone
+
 from main.domain.common.utils.logger import LoggerFactory
 from main.architecture.persistence.repository.UserActivityRepository import UserActivityRepository
 from main.architecture.persistence.repository.TrafficAttributionVisitRepository import TrafficAttributionVisitRepository
@@ -24,49 +27,51 @@ class PurgeOldStatsService:
         self._purge_old_traffic_attribution_visits()
         self._purge_error_log()
 
+    def _purge_queryset(self, queryset, success_message: str, empty_message: str, error_message: str):
+        try:
+            if queryset.exists():
+                deleted_count = queryset.count()
+                queryset.delete()
+                self.logger.info(success_message.format(count=deleted_count))
+            else:
+                self.logger.info(empty_message)
+        except Exception as e:
+            self.logger.error(f"{error_message}: {e}")
+
     def _purge_old(self):
         """Purge user activities older than a certain number of days"""
-        try:
-            from datetime import timedelta
-            from django.utils import timezone
-            threshold_date = timezone.now() - timedelta(days=self.days_older)
-            old_activities = self.user_activity_repository.get_activity_before(threshold_date)
-            if old_activities.exists():
-                self.logger.info(f"Purged {old_activities.count()} old user activities.")
-                old_activities.delete()
-            else:
-                self.logger.info("No old user activities to purge.")
-        except Exception as e:
-            self.logger.error(f"Error during purge: {e}")
+        threshold_date = timezone.now() - timedelta(days=self.days_older)
+        old_activities = self.user_activity_repository.get_activity_before(threshold_date)
+        self._purge_queryset(
+            queryset=old_activities,
+            success_message="Purged {count} old user activities.",
+            empty_message="No old user activities to purge.",
+            error_message="Error during purge",
+        )
 
     def _purge_old_traffic_attribution_visits(self):
         """Purge traffic attribution visits older than a certain number of days"""
-        try:
-            from datetime import timedelta
-            from django.utils import timezone
-            threshold_date = timezone.now() - timedelta(days=self.days_older)
-            old_visits = self.traffic_attribution_visit_repository.get_visits_before(threshold_date)
-            if old_visits.exists():
-                self.logger.info(f"Purged {old_visits.count()} old traffic attribution visits.")
-                old_visits.delete()
-            else:
-                self.logger.info("No old traffic attribution visits to purge.")
-        except Exception as e:
-            self.logger.error(f"Error during traffic attribution purge: {e}")
+        threshold_date = timezone.now() - timedelta(days=self.days_older)
+        old_visits = self.traffic_attribution_visit_repository.get_visits_before(threshold_date)
+        self._purge_queryset(
+            queryset=old_visits,
+            success_message="Purged {count} old traffic attribution visits.",
+            empty_message="No old traffic attribution visits to purge.",
+            error_message="Error during traffic attribution purge",
+        )
             
     def _purge_error_log(self):
         """Purge user activities related to errors older than a certain number of days"""
-        try:
-            from datetime import timedelta
-            from django.utils import timezone
-            threshold_date = timezone.now() - timedelta(days=self.days_error)
-            error_activities = self.user_activity_repository.get_activity_before_with_type(threshold_date, activity_type=[e.value for e in UserActivityTypeEnum.listing_errors().values()])
-            if error_activities.exists():
-                self.logger.info(f"Purged {error_activities.count()} old error user activities.")
-                error_activities.delete()
-            else:
-                self.logger.info("No old error user activities to purge.")
-        except Exception as e:
-            self.logger.error(f"Error during error log purge: {e}")
+        threshold_date = timezone.now() - timedelta(days=self.days_error)
+        error_activities = self.user_activity_repository.get_activity_before_with_type(
+            threshold_date,
+            activity_type=[e.value for e in UserActivityTypeEnum.listing_errors().values()],
+        )
+        self._purge_queryset(
+            queryset=error_activities,
+            success_message="Purged {count} old error user activities.",
+            empty_message="No old error user activities to purge.",
+            error_message="Error during error log purge",
+        )
 
     
