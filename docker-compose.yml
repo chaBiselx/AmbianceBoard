@@ -129,7 +129,7 @@ services:
 
   redis:
     # redis:7-alpine
-    image: redis@sha256:6ab0b6e7381779332f97b8ca76193e45b0756f38d4c0dcda72dbb3c32061ab99
+    image: redis@sha256:e7723ff73d963f5cc6d9c4643ea3d989527a402a319239054e9472a7fb9219a2
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
     volumes:
@@ -140,7 +140,7 @@ services:
 
   loki:
     # grafana/loki:latest
-    image: grafana/loki@sha256:87f0a067673756a3cede1bcbf0c74875f7df9b09fddb53e399d0c576f756cfcc
+    image: grafana/loki@sha256:efd47c67f9bac88ca29bcf8cb997d9ab29d1848bd0aff579282295542a745952
     ports:
       - "${LOKI_PORT}:3100"
     volumes:
@@ -160,7 +160,7 @@ services:
 
   grafana:
     # grafana/grafana:latest
-    image: grafana/grafana@sha256:1c1bd67c54c5fcf6e759897852b5a584191bd6796e8d328a5ace457799801261
+    image: grafana/grafana@sha256:ab5cb380e3ff3172d6c8bd2e7cfd31cce977d2881b260e1f5bc089bf0b759b43
     ports:
       - "${GRAFANA_PORT}:3000"
     env_file:

@@ -1,5 +1,5 @@
 #node:26
-FROM node@sha256:e88a35be04478413b7c71c455cd9865de9b9360e1f43456be5951032d7ac1a66
+FROM node@sha256:bde0dae02f2b12d2bce5ee72b2432f0e511767b7b2dc4dd3b064df11ae422fee
 
 WORKDIR /app
 
