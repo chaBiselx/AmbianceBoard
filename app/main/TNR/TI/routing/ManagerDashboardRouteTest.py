@@ -48,3 +48,15 @@ class ManagerDashboardRouteTest(TestCase):
         response = self.client.get(reverse('managerUserActivityDetails', kwargs={'user_uuid': self.user.uuid}))
         self.assertIn(response.status_code, [200, 302])
 
+    def test_manager_referer_activity_dashboard_accessible_when_authenticated(self):
+        """Test que la route JSON de stats referer est accessible pour un admin"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.get(reverse('managerRefererActivityDashboard'))
+        self.assertIn(response.status_code, [200, 302])
+
+    def test_manager_utm_source_activity_dashboard_accessible_when_authenticated(self):
+        """Test que la route JSON de stats utm_source est accessible pour un admin"""
+        self.client.login(username='testuser', password='testpass123')
+        response = self.client.get(reverse('managerUtmSourceActivityDashboard'))
+        self.assertIn(response.status_code, [200, 302])
+

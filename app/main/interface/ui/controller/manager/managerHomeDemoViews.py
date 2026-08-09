@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.common.utils.ExtractPaginator import extract_context_to_paginator
 from main.architecture.persistence.repository.HomeDemoItemRepository import HomeDemoItemRepository
-from main.architecture.persistence.repository.TagRepository import TagRepository
+from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
 from main.domain.manager.service.ManageHomeDemoItemService import ManageHomeDemoItemService
 
 
@@ -35,7 +35,7 @@ def select_home_demo_soundboard(request) -> HttpResponse:
     context = extract_context_to_paginator(paginator, page_number)
     context.update({
         'title': 'Sélectionner un soundboard public',
-        'listTags': TagRepository().get_tag_with_count(),
+        'listTags': SoundboardTagRepository().get_tag_with_count(),
         'selected_tag': selected_tag,
         'soundboards': context['page_objects'],
         'used_soundboard_ids': HomeDemoItemRepository().get_used_soundboard_ids(),

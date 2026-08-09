@@ -1,4 +1,5 @@
 {% load Register %}
+{% load i18n %}
 
 <div class="dropdown">
     <button class="btn btn-link url_link dropdown-toggle d-flex align-items-center text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -6,29 +7,29 @@
         <span class="d-none d-lg-inline">&nbsp;{{request.user.username}}</span>
     </button>
     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-        <li><a class="dropdown-item"  href="{% url 'logout' %}">Deconnexion</a></li>
+        <li><a class="dropdown-item"  href="{% url 'logout' %}">{% trans "template.nav.user.logout" %}</a></li>
         <li>
             <hr class="dropdown-divider">
         </li>
-        <li><a class="dropdown-item" href="{% url 'settingsIndex' %}" data-shepherd="user-settings-link">Paramètres</a></li>
+        <li><a class="dropdown-item" href="{% url 'settingsIndex' %}" data-shepherd="user-settings-link">{% trans "template.nav.user.settings" %}</a></li>
         {% if request.user|has_group:"MODERATEUR" %}
         <li>
             <hr class="dropdown-divider">    
         </li>
-        <li><a class="dropdown-item" href="{% url 'moderatorDashboard' %}">Modération</a></li>
+        <li><a class="dropdown-item" href="{% url 'moderatorDashboard' %}">{% trans "template.nav.user.moderation" %}</a></li>
         {% endif %}
         {% if request.user|has_group:"MANAGER" %}
         <li>
             <hr class="dropdown-divider">    
         </li>
-        <li><a class="dropdown-item" href="{% url 'managerDashboard' %}">Manager</a></li>
+        <li><a class="dropdown-item" href="{% url 'managerDashboard' %}">{% trans "template.nav.user.manager" %}</a></li>
         {% endif %}
         {% if request.user.is_superuser %}
         <li>
             <hr class="dropdown-divider">    
         </li>
-        <li><a class="dropdown-item" href="{{ GRAFANA_URL }}">Graphana</a></li>
-        <li><a class="dropdown-item" href="{% url 'admin:index' %}">Superadmin</a></li>
+        <li><a class="dropdown-item" href="{{ GRAFANA_URL }}">{% trans "template.nav.user.grafana" %}</a></li>
+        <li><a class="dropdown-item" href="{% url 'admin:index' %}">{% trans "template.nav.user.superadmin" %}</a></li>
         {% endif %}
     </ul>
 </div>

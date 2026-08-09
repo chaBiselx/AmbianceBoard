@@ -53,7 +53,7 @@ delete-db:
 	$(CONTAINER_BACKEND) mkdir -p $(BACKUP_DIR)
 
 
-update-db:
+db-update:
 	@# Help: Met a jour la base de données
 	@echo "$(GREEN)Migrations...$(NC)"
 	$(CONTAINER_BACKEND) python manage.py makemigrations

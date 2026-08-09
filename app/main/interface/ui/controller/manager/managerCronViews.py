@@ -10,7 +10,7 @@ from main.domain.cron.service.MediaImgSoundboardService import MediaImgSoundboar
 from main.domain.cron.service.UserTierExpirationService  import UserTierExpirationService
 from main.domain.cron.service.DomainBlacklistCronService import DomainBlacklistCronService
 from main.domain.cron.service.SharedSoundboardService import SharedSoundboardService
-from main.domain.cron.service.PurgeUserActivityService import PurgeUserActivityService
+from main.domain.cron.service.PurgeOldStatsService import PurgeOldStatsService
 from main.domain.cron.service.MusicLabelerCronService import MusicLabelerCronService
 from main.domain.common.utils.logger import logger
 
@@ -87,7 +87,7 @@ def purge_expired_shared_soundboard(request) -> JsonResponse:
 def purge_old_user_activity(request) -> JsonResponse:
     try:
         logger.warning("Starting PurgeOldUserActivity View")
-        (PurgeUserActivityService()).purge()
+        (PurgeOldStatsService()).purge()
         logger.warning("Ending PurgeOldUserActivity View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:

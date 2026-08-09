@@ -1,11 +1,9 @@
 {% extends 'Html/partial/structure/base.html' %}
 {% load i18n %}
-{% load FrontJs %}
-{% load static %}
 
 {% block javascript %}
 {{ block.super }}
-<script type="module" src="{% static "PasswordRules"|search_true_file %}"></script>
+{% include 'Html/partial/account/password_rules_script.html' %}
 {% endblock javascript %}
 
 {% block content %}
@@ -13,7 +11,7 @@
     <div class="col-12 col-sm-6 col-md-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Inscription</h5>
+                <h5 class="card-title">{% trans "template.account.create.title" %}</h5>
             </div>
             <div class="card-body">
                 <form method="post">
@@ -72,13 +70,7 @@
                         {% endif %}
                     </div>
                     <div>
-                        <ul>
-                            <li class="password-rules" id="password_rules_minLength">Minumum 8 caractères</li>
-                            <li class="password-rules" id="password_rules_hasUpperCase">1 majuscule</li>
-                            <li class="password-rules" id="password_rules_hasLowerCase">1 minuscule</li>
-                            <li class="password-rules" id="password_rules_hasNumber">1 chiffre</li>
-                            <li class="password-rules" id="password_rules_hasSpecialChar">1 caractère special</li>
-                        </ul>
+                        {% include 'Html/partial/account/password_rules.html' %}
                     </div>
                     <div>
                         {{ form.confirm_password.label_tag  }}<br /> {{ form.confirm_password }}
@@ -91,7 +83,7 @@
                         {% endif %}
                     </div>
                     <button class="btn btn-primary btn-block" type="submit">
-                        Création du compte
+                        {% trans "template.account.create.form.submit" %}
                     </button>
                 </form>
             </div>

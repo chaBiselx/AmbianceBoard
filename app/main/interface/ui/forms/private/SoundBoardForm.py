@@ -11,7 +11,7 @@ from django.core.files.uploadedfile import UploadedFile
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
-from main.architecture.persistence.repository.TagRepository import TagRepository
+from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
 
 class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     """
@@ -38,7 +38,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
             **kwargs: Arguments nommés pour ModelForm
         """
         super().__init__(*args, **kwargs)
-        tag_repository = TagRepository()
+        tag_repository = SoundboardTagRepository()
         # Supprime le lien si un fichier existe
         if self.instance and self.instance.icon:
             self.fields['icon'].widget.attrs.update({'placeholder': 'Choisissez un nouveau fichier'})
@@ -87,7 +87,7 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
     clear_icon = forms.BooleanField(required=False, label='Supprimer le fichier', initial=False)
     
     tags = forms.ModelMultipleChoiceField(
-        queryset=TagRepository().get_list_active_tags(),
+        queryset=SoundboardTagRepository().get_list_active_tags(),
         widget=forms.CheckboxSelectMultiple,
         required=True,
         label='Tags',

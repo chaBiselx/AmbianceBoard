@@ -35,11 +35,11 @@ up: clear-old-containers
 	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose up -d
 	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose logs -f back front db cronjob
 
-make logs:
+logs:
 	@# Help: Afficher les logs des conteneurs Docker
 	@docker compose logs -f back cronjob music-labeler
 
-make logs-all:
+logs-all:
 	@# Help: Afficher les logs de tous les conteneurs Docker
 	@docker compose logs -f
 

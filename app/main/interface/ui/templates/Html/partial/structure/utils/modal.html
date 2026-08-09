@@ -1,9 +1,11 @@
+{% load i18n %}
+
 <div class="modal fade " id="mainModal" tabindex="-1" aria-labelledby="mainModalTitle" aria-hidden="true">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header modal-bg-header p-3">
                 <h5 class="modal-title font-alt" id="mainModalTitle">&nbsp;</h5>
-                <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button class="btn-close btn-close-white" type="button" data-bs-dismiss="modal" aria-label="{% trans 'template.common.close' %}"></button>
             </div>
             <div class="modal-body border-0 p-4" id="mainModalBody">
             </div>
@@ -27,7 +29,7 @@
                     <div class="bar bar-7"></div>
                     <div class="bar bar-8"></div>
                 </div>
-                <div class="loader-text">Chargement</div>
+                <div class="loader-text">{% trans "template.modal.loading" %}</div>
             </div>
         </div>
     </div>

@@ -1,4 +1,5 @@
 from typing import Optional
+from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
 from django.http import HttpRequest
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.interface.ui.forms.private.SoundBoardForm import SoundBoardForm
@@ -26,6 +27,7 @@ class SoundBoardService:
         """
         self.request = request
         self.soundboard_repository = SoundBoardRepository()
+        self.soundboard_tag_repository = SoundboardTagRepository()
         
     
     def get_soundboard(self, soundboard_uuid: int) -> Optional[SoundBoard]:
@@ -104,12 +106,24 @@ class SoundBoardService:
             ).set_statut("error").send()
             return None
         
-        form = SoundBoardForm(self.request.POST, self.request.FILES)
+        form_data = self.request.POST.copy()
+        if not form_data.getlist('tags'):
+            default_tag = self.soundboard_tag_repository.get_default_tag()
+            if default_tag is not None:
+                # Injecte un tag par défaut avant validation du formulaire.
+                form_data.setlist('tags', [str(default_tag.pk)])
+
+        form = SoundBoardForm(form_data, self.request.FILES)
         if form.is_valid():
             soundboard = form.save(commit=False)
             soundboard.user = self.request.user
             soundboard.save()
+            form.save_m2m()
             return soundboard
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    ServerNotificationBuilder(self.request).set_message(error).set_statut("error").send()
         return None
         
 

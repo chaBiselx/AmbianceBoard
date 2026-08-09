@@ -1,0 +1,60 @@
+name: Docker Digest Update
+
+on:
+  schedule:
+    - cron: '0 5 1 * *' # Run at 5:00 AM on the first day of every month
+  workflow_dispatch:
+
+jobs:
+  check-digests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # nécessaire pour voir toutes les branches distantes
+
+      - name: Determine target branch
+        id: target-branch
+        run: |
+          # Récupère la branche par défaut du repo
+          DEFAULT_BRANCH=$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name)
+
+          # Cherche les branches distantes matchant le pattern X.Y.Z
+          VERSION_BRANCH=$(git branch -r | sed 's/origin\///' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n1 || true)
+
+          if [ -n "$VERSION_BRANCH" ]; then
+            echo "Branche version trouvée : $VERSION_BRANCH"
+            echo "branch=$VERSION_BRANCH" >> "$GITHUB_OUTPUT"
+          else
+            echo "Aucune branche version trouvée, utilisation de la branche par défaut : $DEFAULT_BRANCH"
+            echo "branch=$DEFAULT_BRANCH" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Install crane
+        uses: imjasonh/setup-crane@feee3b6bb0d4c68370f256a4502498c9227e5c6b
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+
+      - name: Check and update Docker image digests
+        id: check
+        run: python .github/scripts/check_docker_digests.py
+
+      - name: Create Pull Request
+        if: steps.check.outputs.has_updates == 'true'
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1
+        with:
+          base: ${{ steps.target-branch.outputs.branch }}
+          commit-message: 'chore: update Docker image digests'
+          title: 'chore: update Docker image digests'
+          body: ${{ steps.check.outputs.report }}
+          branch: chore/docker-digest-updates
+          labels: dependencies,docker
+          delete-branch: true

@@ -12,7 +12,7 @@ from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
 
 from main.domain.cron.service.UserTierExpirationService import UserTierExpirationService
-from main.domain.cron.service.PurgeUserActivityService import PurgeUserActivityService
+from main.domain.cron.service.PurgeOldStatsService import PurgeOldStatsService
 from main.domain.cron.service.DomainBlacklistCronService import DomainBlacklistCronService
 from main.domain.cron.service.SharedSoundboardService import SharedSoundboardService
 
@@ -41,7 +41,7 @@ class CronServicesTest(TestCase):
         old_activity.start_date = timezone.now() - timedelta(days=400)
         old_activity.save(update_fields=['start_date'])
         recent_activity = UserActivity.objects.create(user=self.user, activity_type='LOGIN')
-        service = PurgeUserActivityService()
+        service = PurgeOldStatsService()
         service.set_days_older(365)
         service.purge()
         self.assertFalse(UserActivity.objects.filter(id=old_activity.id).exists())

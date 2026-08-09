@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <footer class="footer pb-1 bg-body fullScreen-element" id="mainFooter">
     <div class="container-fluid">
 
@@ -6,9 +8,11 @@
                 <p class="mb-0">© <span id="copyright-year">2026</span> Ambiance Soundboard. Tous droits réservés.</p>
             </div>
             <div class="col-12 col-md-3 text-center mb-1 mb-md-3">
-                <a href="{% url 'legalNotice' %}" class="footer-link url_link">Mention légal</a>
+                <a href="{% url 'legalNotice' %}" class="footer-link url_link">{% trans "template.footer.legal_notice" %}</a>
                 <span>|</span>
-                <a href="{% url 'pricing' %}" class="footer-link url_link">Tarification</a>
+                <a href="{% url 'pricing' %}" class="footer-link url_link">{% trans "template.footer.pricing" %}</a>
+                <span>|</span>
+                <a href="{% url 'supportContact' %}" class="footer-link url_link">{% trans "template.footer.support" %}</a>
             </div>
             <div class="col-12 col-md-3 text-center text-md-end mb-1 mb-md-3">
                 <div class="d-flex justify-content-center justify-content-md-end gap-3">
@@ -17,18 +21,18 @@
                         <i class="fa-solid fa-bug"></i>
                     </button>
                     {% endif %}
-                    <a href="https://discord.gg/jAkYukwbW9" class="footer-link url_link" aria-label="Rejoindre AmbianceBoard sur Discord">
+                    <a href="https://discord.gg/jAkYukwbW9" class="footer-link url_link" aria-label="{% trans 'template.footer.social.discord' %}">
                         <i class="fa-brands fa-discord"></i>
                     </a>
-                    <a href="https://www.youtube.com/channel/UCusaCGqBd_3hIa-7S0JQdCw" class="footer-link url_link" aria-label="Voir AmbianceBoard sur YouTube">
+                    <a href="https://www.youtube.com/channel/UCusaCGqBd_3hIa-7S0JQdCw" class="footer-link url_link" aria-label="{% trans 'template.footer.social.youtube' %}">
                         <i class="fa-brands fa-youtube"></i>
                     </a>
-                    <a href="https://x.com/AmbianceBoard" class="footer-link url_link" aria-label="Suivre AmbianceBoard sur X">
+                    <a href="https://x.com/AmbianceBoard" class="footer-link url_link" aria-label="{% trans 'template.footer.social.x' %}">
                         <i class="fa-brands fa-x-twitter"></i>
                     </a>
 
 
-                    <a href="https://github.com/chaBiselx/AmbianceBoard" class="footer-link url_link" aria-label="Consulter AmbianceBoard sur GitHub">
+                    <a href="https://github.com/chaBiselx/AmbianceBoard" class="footer-link url_link" aria-label="{% trans 'template.footer.social.github' %}">
                         <i class="fa-brands fa-github"></i>
                     </a>
                 </div>

@@ -28,7 +28,7 @@ from main.architecture.persistence.models.UserDevicePreference import UserDevice
 from main.architecture.persistence.models.TrackLabel import TrackLabel
 from main.architecture.persistence.models.HomeDemoItem import HomeDemoItem
 from main.architecture.persistence.models.AsyncDownloadJob import AsyncDownloadJob
-
+from main.architecture.persistence.models.TrafficAttributionVisit import TrafficAttributionVisit
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -54,4 +54,4 @@ admin.site.register(UserActivity)
 admin.site.register(UserDevicePreference)
 admin.site.register(TrackLabel)
 admin.site.register(HomeDemoItem)
-admin.site.register(AsyncDownloadJob)
+admin.site.register(TrafficAttributionVisit)

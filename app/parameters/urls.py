@@ -55,7 +55,7 @@ from main.interface.ui.controller.moderator.moderatorViews import (
     moderator_post_popup_playlist_tag
 )
 from main.interface.ui.controller.manager.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
-from main.interface.ui.controller.manager.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard, manager_user_activity_details
+from main.interface.ui.controller.manager.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard, manager_user_activity_details, referer_activity_dashboard, utm_source_activity_dashboard
 from main.interface.ui.controller.manager.managerCronViews import (
     listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity, music_labeler_cron_service
     )
@@ -231,6 +231,8 @@ urlpatterns = [
     path("manager/dashboard/user-account/", user_account_dashboard, name="managerUserAccountDashboard"),
     path("manager/dashboard/users-activity/", user_activity_dashboard, name="managerUsersActivityDashboard"),
     path("manager/dashboard/error-activity/", error_activity_dashboard, name="managerErrorActivityDashboard"),
+    path("manager/dashboard/referer-activity/", referer_activity_dashboard, name="managerRefererActivityDashboard"),
+    path("manager/dashboard/utm-source-activity/", utm_source_activity_dashboard, name="managerUtmSourceActivityDashboard"),
     path("manager/dashboard/users-activity/<uuid:user_uuid>/", manager_user_activity_details, name="managerUserActivityDetails"),
     
     

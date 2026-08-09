@@ -7,22 +7,22 @@
     <div class="col-12 col-sm-6 col-md-4">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Connexion</h5>
+                <h5 class="card-title">{% trans "template.account.login.title" %}</h5>
             </div>
             <div class="card-body">
                 <form id="connexion-form" method="post" action="{% url 'loginPost' %}">
                     {% csrf_token %}
-                    <label for="identifiant" class="form-label">Nom d'utilisateur (ou email) :</label>
+                    <label for="identifiant" class="form-label">{% trans "template.account.login.field.identifier.label" %}</label>
                     <input type="text" class="form-control" id="identifiant" name="identifiant" required>
 
-                    <label for="password" class="form-label">Mot de passe :</label>
+                    <label for="password" class="form-label">{% trans "template.account.login.field.password.label" %}</label>
                     <input type="password" class="form-control" id="password" name="password" required>
                     <hr class="my-4">
 
-                    <button class="btn btn-primary btn-block mt-2" type="submit">Se connecter</button>
-                    <a class="btn btn-secondary btn-block mt-2" href="{% url 'send_reset_password' %}">Mot de passe oublié</a>
+                    <button class="btn btn-primary btn-block mt-2" type="submit">{% trans "template.account.login.form.submit" %}</button>
+                    <a class="btn btn-secondary btn-block mt-2" href="{% url 'send_reset_password' %}">{% trans "template.account.login.form.forgot_password" %}</a>
 
-                    <a class="btn btn-info btn-block mt-2" href="{% url 'createAccount' %}">Créer un compte</a>
+                    <a class="btn btn-info btn-block mt-2" href="{% url 'createAccount' %}">{% trans "template.account.login.form.create_account" %}</a>
                 </form>
                 <div class="mt-2">
                     {% get_providers as socialaccount_providers %}
@@ -30,7 +30,7 @@
                         {% if provider.id == "google" %}
                         <a href="{% provider_login_url 'google' %}" class="d-block border rounded p-2 text-center" data-provider="google">
                             <i class="fa-brands fa-google"></i>&nbsp;
-                            <span data-i18n="sign_in_with_google">Se connecter avec Google</span>
+                            <span data-i18n="sign_in_with_google">{% trans "template.account.login.form.google" %}</span>
                         </a>
                         {% endif %}
                     {% endfor %}

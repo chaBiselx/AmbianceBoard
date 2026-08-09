@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-31 19:36+0000\n"
+"POT-Creation-Date: 2026-08-07 06:21+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -239,6 +239,136 @@ msgstr "SoundBoard not found."
 msgid "view.favoriteUpdate.error.favorite_not_found"
 msgstr "Favorite not found."
 
+#: main/interface/ui/templates/Email/base.html:156
+msgid "template.email.base.tagline"
+msgstr "Soundboard for role-playing games"
+
+#: main/interface/ui/templates/Email/base.html:169
+msgid "template.email.base.footer.autosent"
+msgstr "This email was sent automatically, please do not reply."
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:8
+msgid "template.email.moderator.reported.title"
+msgstr "Reported content"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:10
+msgid "template.email.moderator.reported.details.title"
+msgstr "Reported content details:"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:11
+msgid "template.email.moderator.reported.field.element"
+msgstr "Item:"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:12
+msgid "template.email.moderator.reported.field.precision"
+msgstr "Details:"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:13
+msgid "template.email.moderator.reported.field.description"
+msgstr "Description:"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:14
+msgid "template.email.moderator.reported.field.reported_at"
+msgstr "Reported on:"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:18
+msgid "template.email.moderator.reported.user_info.title"
+msgstr "User information:"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:19
+msgid "template.email.moderator.reported.user_info.email"
+msgstr "Email:"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:20
+msgid "template.email.moderator.reported.user_info.username"
+msgstr "Username:"
+
+#: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:21
+msgid "template.email.moderator.reported.user_info.registered_at"
+msgstr "Registration date:"
+
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccount.html:8
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccountNeverLogin.html:8
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionNotConfirmed.html:8
+#: main/interface/ui/templates/EmailTemplate/user/confirmEmail.html:8
+#: main/interface/ui/templates/EmailTemplate/user/password_changed.html:8
+#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletion.html:8
+#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletionNotConfirmed.html:8
+#: main/interface/ui/templates/EmailTemplate/user/resetPassword.html:8
+#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:8
+#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:8
+msgid "template.email.user.greeting"
+msgstr "Hello %(username)s!"
+
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccount.html:9
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccountNeverLogin.html:9
+msgid "template.email.user.auto_delete_24m.body"
+msgstr ""
+"Following 24 months of inactivity, your account has been deleted from our "
+"site."
+
+#: main/interface/ui/templates/EmailTemplate/user/autoDeletionNotConfirmed.html:9
+msgid "template.email.user.auto_delete_unconfirmed.body"
+msgstr ""
+"After 2 months without confirming your email, your account has been deleted."
+
+#: main/interface/ui/templates/EmailTemplate/user/confirmEmail.html:9
+msgid "template.email.user.confirm_account.body"
+msgstr ""
+"Please confirm your account. <a href=\"%(confirmation_url)s\">Confirm</a>"
+
+#: main/interface/ui/templates/EmailTemplate/user/password_changed.html:9
+msgid "template.email.user.password_changed.body"
+msgstr "Your password has been successfully changed."
+
+#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletion.html:9
+msgid "template.email.user.prevent_auto_delete_22m.body"
+msgstr ""
+"After more than 22 months of inactivity, your account will be deleted from "
+"our site."
+
+#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletionNotConfirmed.html:9
+msgid "template.email.user.prevent_auto_delete_unconfirmed.body"
+msgstr ""
+"Your account is not confirmed. Please confirm your account using the "
+"following link: <a href=\"%(confirmation_url)s\">Confirm</a>."
+
+#: main/interface/ui/templates/EmailTemplate/user/resetPassword.html:9
+msgid "template.email.user.reset_password.body"
+msgstr ""
+"Here is your password reset request. <a href=\"%(reset_url)s\">Reset</a>"
+
+#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:9
+msgid "template.email.user.tier_downgrade.body"
+msgstr "Your account has been downgraded to the %(tier_label)s tier."
+
+#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:10
+msgid "template.email.user.tier_downgrade.help"
+msgstr "If you have any questions or concerns, feel free to contact us."
+
+#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:11
+#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:11
+msgid "template.email.user.common.thanks_understanding"
+msgstr "Thank you for your understanding."
+
+#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:9
+msgid "template.email.user.tier_expiration.body"
+msgstr "Your account will expire in %(remaining_days)s days."
+
+#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:10
+msgid "template.email.user.tier_expiration.renew"
+msgstr ""
+"To avoid any service downgrade, please renew your subscription as soon as "
+"possible."
+
+#: main/interface/ui/templates/EmailTemplate/user/welcomEmail.html:8
+msgid "template.email.user.welcome_greeting"
+msgstr "Welcome %(username)s!"
+
+#: main/interface/ui/templates/EmailTemplate/user/welcomEmail.html:9
+msgid "template.email.user.welcome.body"
+msgstr "Thank you for signing up on our site."
+
 #: main/interface/ui/templates/Html/Account/async_download_jobs_recent.html:15
 msgid "Statut"
 msgstr "Status"
@@ -263,6 +393,50 @@ msgstr "Error"
 msgid "Aucun téléchargement différé mis à jour sur les 24 dernières heures."
 msgstr "No deferred downloads updated in the last 24 hours."
 
+#: main/interface/ui/templates/Html/Account/create_account.html:16
+msgid "template.account.create.title"
+msgstr "Sign up"
+
+#: main/interface/ui/templates/Html/Account/create_account.html:88
+msgid "template.account.create.form.submit"
+msgstr "Create account"
+
+#: main/interface/ui/templates/Html/Account/login.html:10
+msgid "template.account.login.title"
+msgstr "Sign in"
+
+#: main/interface/ui/templates/Html/Account/login.html:15
+msgid "template.account.login.field.identifier.label"
+msgstr "Username (or email):"
+
+#: main/interface/ui/templates/Html/Account/login.html:18
+msgid "template.account.login.field.password.label"
+msgstr "Password:"
+
+#: main/interface/ui/templates/Html/Account/login.html:22
+msgid "template.account.login.form.submit"
+msgstr "Sign in"
+
+#: main/interface/ui/templates/Html/Account/login.html:23
+msgid "template.account.login.form.forgot_password"
+msgstr "Forgot password"
+
+#: main/interface/ui/templates/Html/Account/login.html:25
+msgid "template.account.login.form.create_account"
+msgstr "Create account"
+
+#: main/interface/ui/templates/Html/Account/login.html:33
+msgid "template.account.login.form.google"
+msgstr "Sign in with Google"
+
+#: main/interface/ui/templates/Html/Account/reset_password.html:16
+msgid "template.account.reset_password.title"
+msgstr "Password reset"
+
+#: main/interface/ui/templates/Html/Account/reset_password.html:45
+msgid "template.account.reset_password.form.submit"
+msgstr "Update password"
+
 #: main/interface/ui/templates/Html/Account/send_reset_password.html:11
 msgid "template.sendResetPassword.card.title"
 msgstr "Sending password reset"
@@ -279,9 +453,379 @@ msgstr "Access denied"
 msgid "template.403.message"
 msgstr "You do not have permission to access this page."
 
+#: main/interface/ui/templates/Html/General/404_modal.html:6
+msgid "template.404.title"
+msgstr "Page not found"
+
+#: main/interface/ui/templates/Html/General/404_modal.html:7
+msgid "template.404.message"
+msgstr "The requested page does not exist or is no longer available."
+
+#: main/interface/ui/templates/Html/General/429.html:8
+msgid "template.429.title"
+msgstr "Too many requests"
+
+#: main/interface/ui/templates/Html/General/429.html:9
+msgid "template.429.message"
+msgstr ""
+"You performed too many actions in a short time. The service is temporarily "
+"limiting request frequency."
+
+#: main/interface/ui/templates/Html/General/429.html:10
+msgid "template.429.hint"
+msgstr "Please wait a few moments before trying again."
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:10
+msgid "template.pricing.title"
+msgstr "Our Plans"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:11
+msgid "template.pricing.subtitle"
+msgstr "Choose the offer that best fits your needs"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:19
+msgid "template.pricing.warning.not_live"
+msgstr "These prices are not live yet."
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:20
+msgid "template.pricing.warning.may_change"
+msgstr "They are provided as guidance and may evolve based on your feedback."
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:33
+msgid "template.pricing.tier.basic.caption"
+msgstr "To support"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:39
+msgid "template.pricing.tier.advanced.caption"
+msgstr "For creators"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:45
+msgid "template.pricing.tier.pro.caption"
+msgstr "Professional solution"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:51
+#: main/interface/ui/templates/Html/General/general_pricing.html:78
+msgid "template.pricing.free"
+msgstr "Free"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:60
+msgid "template.pricing.per_month"
+msgstr "/month"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:64
+#, python-format
+msgid "template.pricing.or_yearly %(yearly_price)s%(currency_symbol)s"
+msgstr "or %(yearly_price)s%(currency_symbol)s/year"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:70
+#, python-format
+msgid "template.pricing.excl_tax_monthly %(monthly_price)s%(currency_symbol)s"
+msgstr "Excl. tax: %(monthly_price)s%(currency_symbol)s/month"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:71
+#, python-format
+msgid "template.pricing.excl_tax_yearly %(yearly_price)s%(currency_symbol)s"
+msgstr "- %(yearly_price)s%(currency_symbol)s/year"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:72
+#, python-format
+msgid "template.pricing.vat_included %(tva_rate)s"
+msgstr "(VAT %(tva_rate)s%% included)"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:92
+msgid "template.pricing.features.soundboards"
+msgstr "soundboards"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:102
+msgid "template.pricing.features.buttons"
+msgstr "buttons"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:106
+msgid "template.pricing.features.music_per_button"
+msgstr "tracks per button"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:110
+msgid "template.pricing.features.file_limit"
+msgstr "Files up to"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:114
+msgid "template.pricing.features.ads"
+msgstr "Advertising"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:114
+msgid "template.pricing.features.audio_ads"
+msgstr "audio ads"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:114
+msgid "template.pricing.coming_soon"
+msgstr "Coming soon"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:117
+msgid "template.pricing.features.ads.partial.tooltip"
+msgstr "On general pages (excluding soundboard)"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:122
+msgid "template.pricing.features.share"
+msgstr "sharing"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:122
+msgid "template.pricing.features.shared_listening"
+msgstr "of soundboard listening"
+
 #: main/interface/ui/templates/Html/General/general_pricing.html:123
 msgid "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip"
 msgstr "Ability to share soundboard listening with your online players."
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:129
+msgid "template.pricing.features.player_interactions"
+msgstr "Player"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:129
+msgid "template.pricing.features.player_interactions.enabled"
+msgstr "interactions enabled"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:129
+msgid "template.pricing.features.player_interactions.on_shared"
+msgstr "on shared soundboards"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:135
+msgid "template.pricing.features.public_statistics"
+msgstr "statistics on public soundboards"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:146
+msgid "template.pricing.current_plan"
+msgstr "Current plan"
+
+#: main/interface/ui/templates/Html/General/general_pricing.html:150
+msgid "template.pricing.choose_plan"
+msgstr "Choose this plan"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:10
+msgid "template.legal.lead"
+msgstr "Legal information related to the Ambiance Soundboard application"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:19
+msgid "template.legal.section1.title"
+msgstr "1. Site publisher"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:23
+msgid "template.legal.section1.app_prefix"
+msgstr "The application"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:23
+msgid "template.legal.section1.app_suffix"
+msgstr "is published by:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:27
+msgid "template.legal.section1.company_name"
+msgstr "Name or company name:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:28
+msgid "template.legal.section1.email"
+msgstr "Email:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:40
+msgid "template.legal.section2.title"
+msgstr "2. Hosting provider"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:44
+msgid "template.legal.section2.hosting_by"
+msgstr "The service is hosted by:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:46
+msgid "template.legal.section2.host_name"
+msgstr "Host name:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:47
+msgid "template.legal.section2.address"
+msgstr "Address:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:48
+msgid "template.legal.section2.contact"
+msgstr "Email / Contact:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:57
+msgid "template.legal.section3.title"
+msgstr "3. Purpose of the service"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:62
+msgid "template.legal.section3.body"
+msgstr ""
+"is an application that allows users to add and organize sounds/music as a "
+"soundboard."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:72
+msgid "template.legal.section4.title"
+msgstr "4. Publisher liability"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:78
+msgid "template.legal.important"
+msgstr "Important:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:78
+msgid "template.legal.section4.warning"
+msgstr ""
+"The publisher provides a technical platform but is not responsible for "
+"content uploaded by users."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:80
+msgid "template.legal.section4.body"
+msgstr ""
+"Users are solely responsible for the files they upload and agree to respect "
+"copyright and applicable laws."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:89
+msgid "template.legal.section5.title"
+msgstr "5. User responsibilities"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:93
+msgid "template.legal.section5.commitments"
+msgstr "The user agrees to:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:97
+msgid "template.legal.section5.item1"
+msgstr "Not upload copyrighted content without authorization."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:101
+msgid "template.legal.section5.item2"
+msgstr ""
+"Not use the service to host or distribute illegal content (hate speech, "
+"defamation, invasion of privacy, etc.)."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:105
+msgid "template.legal.section5.item3"
+msgstr "Comply with the service terms and conditions."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:109
+msgid "template.legal.section5.item4"
+msgstr ""
+"Any reported unlawful content may be removed without notice, and the "
+"publisher reserves the right to suspend or ban the related accounts."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:119
+msgid "template.legal.section6.title"
+msgstr "6. Intellectual property"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:124
+msgid "template.legal.section6.prefix"
+msgstr "The design, code and features of"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:124
+msgid "template.legal.section6.suffix"
+msgstr ""
+"are protected by intellectual property rights. Any unauthorized reproduction "
+"is prohibited."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:134
+msgid "template.legal.section7.title"
+msgstr "7. Content reporting and removal"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:139
+msgid "template.legal.section7.prefix"
+msgstr ""
+"If a rights holder finds content infringing their rights hosted on Ambiance "
+"soundboard,"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:140
+msgid "template.legal.section7.contact_via"
+msgstr "they can contact the publisher via"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:140
+msgid "template.legal.section7.details"
+msgstr "by providing:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:147
+msgid "template.legal.section7.item1"
+msgstr "The URL of the disputed content"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:151
+msgid "template.legal.section7.item2"
+msgstr "Proof of ownership of the rights"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:155
+msgid "template.legal.section7.item3"
+msgstr "A removal request"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:162
+msgid "template.legal.section7.note"
+msgstr ""
+"The publisher undertakes to review and process the request within a "
+"reasonable timeframe."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:172
+msgid "template.legal.section8.title"
+msgstr "8. Personal data protection"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:178
+msgid "template.legal.section8.body"
+msgstr ""
+"User data is collected only for service operation and is not sold to third "
+"parties."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:183
+msgid "template.legal.section8.rgpd_title"
+msgstr "GDPR compliance"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:186
+msgid "template.legal.section8.rgpd_body"
+msgstr ""
+"In accordance with GDPR, each user has the right to access, rectify and "
+"delete their data through the settings page accessible from their profile."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:192
+msgid "template.legal.section8.retention_title"
+msgstr "Data retention:"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:192
+msgid "template.legal.section8.retention_body"
+msgstr ""
+"After 24 months of inactivity, users personal data is automatically deleted."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:204
+msgid "template.legal.section9.title"
+msgstr "9. Applicable law and jurisdiction"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:209
+msgid "template.legal.section9.prefix"
+msgstr "These legal notices are governed by"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:209
+msgid "template.legal.section9.french_law"
+msgstr "French law"
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:210
+msgid "template.legal.section9.suffix"
+msgstr ""
+"In the event of a dispute, the competent courts are those in the publisher's "
+"place of residence."
+
+#: main/interface/ui/templates/Html/General/legal_notice.html:220
+msgid "template.legal.last_update"
+msgstr "Last update: August 2025"
+
+#: main/interface/ui/templates/Html/General/support_contact.html:4
+msgid "template.support.page_title"
+msgstr "Contact support - AmbianceBoard"
+
+#: main/interface/ui/templates/Html/General/support_contact.html:11
+msgid "template.support.title"
+msgstr "Contact support"
+
+#: main/interface/ui/templates/Html/General/support_contact.html:13
+msgid "template.support.subtitle.line1"
+msgstr "A question, a bug, a suggestion?"
+
+#: main/interface/ui/templates/Html/General/support_contact.html:14
+msgid "template.support.subtitle.line2"
+msgstr "Send us a message, we will receive it at support@ambianceboard.com."
+
+#: main/interface/ui/templates/Html/General/support_contact.html:26
+msgid "template.support.form.submit"
+msgstr "Send"
+
+#: main/interface/ui/templates/Html/General/support_contact.html:29
+msgid "template.support.form.back_home"
+msgstr "Back to home"
 
 #: main/interface/ui/templates/Html/Music/add_link_music.html:7
 #: main/interface/ui/templates/Html/Music/add_link_music_ajax.html:7
@@ -376,6 +920,16 @@ msgstr "Soundboard link"
 msgid "template.publicShareLink.button.label"
 msgstr "Share link"
 
+#: main/interface/ui/templates/Html/Shared/soundboard_read.html:35
+msgid "template.shared.read.info.sync"
+msgstr "The app is synchronized with the game master soundboard."
+
+#: main/interface/ui/templates/Html/Shared/soundboard_read.html:36
+msgid "template.shared.read.info.master"
+msgstr ""
+"The game master controls music playback. You can keep this page in the "
+"background and enjoy the ambience."
+
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:25
 msgid "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
 msgstr "This account cannot access this feature"
@@ -403,6 +957,26 @@ msgstr "Organize"
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:36
 msgid "template.soundboard_read.button.edit_soundboard"
 msgstr "Edit SoundBoard"
+
+#: main/interface/ui/templates/Html/partial/account/password_rules.html:4
+msgid "template.account.password_rule.min_length"
+msgstr "Minimum 8 characters"
+
+#: main/interface/ui/templates/Html/partial/account/password_rules.html:5
+msgid "template.account.password_rule.uppercase"
+msgstr "1 uppercase letter"
+
+#: main/interface/ui/templates/Html/partial/account/password_rules.html:6
+msgid "template.account.password_rule.lowercase"
+msgstr "1 lowercase letter"
+
+#: main/interface/ui/templates/Html/partial/account/password_rules.html:7
+msgid "template.account.password_rule.number"
+msgstr "1 number"
+
+#: main/interface/ui/templates/Html/partial/account/password_rules.html:8
+msgid "template.account.password_rule.special_char"
+msgstr "1 special character"
 
 #: main/interface/ui/templates/Html/partial/filter/search/filter_tag_cloud.html:21
 msgid "template.filterTagCloud.active_filter_prefix"
@@ -434,72 +1008,384 @@ msgstr ""
 msgid "template.shareSoundboard.button.label"
 msgstr "Share listening"
 
+#: main/interface/ui/templates/Html/partial/structure/base.html:13
+msgid "template.base.default_page_title"
+msgstr "AmbianceBoard - Click here, play anywhere"
+
+#: main/interface/ui/templates/Html/partial/structure/base.html:42
+msgid "template.base.tagline"
+msgstr "Soundboard for role-playing games"
+
+#: main/interface/ui/templates/Html/partial/structure/base.html:50
+msgid "template.base.theme_toggle"
+msgstr "Change theme"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:11
+msgid "template.footer.legal_notice"
+msgstr "Legal notice"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:13
+msgid "template.footer.pricing"
+msgstr "Pricing"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:15
+msgid "template.footer.support"
+msgstr "Support"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:24
+msgid "template.footer.social.discord"
+msgstr "Join AmbianceBoard on Discord"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:27
+msgid "template.footer.social.youtube"
+msgstr "Watch AmbianceBoard on YouTube"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:30
+msgid "template.footer.social.x"
+msgstr "Follow AmbianceBoard on X"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:35
+msgid "template.footer.social.github"
+msgstr "Browse AmbianceBoard on GitHub"
+
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:5
-msgid "Masquer tout"
+msgid "template.nav.main.hide_all"
 msgstr "Hide all"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:10
-msgid "Soundboard publique"
+msgid "template.nav.main.public_soundboard"
 msgstr "Public soundboard"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:12
-msgid "Public"
+msgid "template.nav.main.public"
 msgstr "Public"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:15
-msgid "Signaler un problème"
+msgid "template.nav.main.report_issue"
 msgstr "Report an issue"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:17
-msgid "Report"
+msgid "template.nav.main.report"
 msgstr "Report"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:21
-msgid "liste de vos soundboards"
+msgid "template.nav.main.my_soundboards"
 msgstr "list of your soundboards"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:23
-msgid "Soundboards"
+msgid "template.nav.main.soundboards"
 msgstr "Soundboards"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:25
-msgid "Liste de vos boutons"
+msgid "template.nav.main.my_buttons"
 msgstr "List of your buttons"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:27
-msgid "Boutons"
+msgid "template.nav.main.buttons"
 msgstr "Buttons"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:30
-msgid "Téléchargements des dernières 24h"
+msgid "template.nav.main.recent_downloads"
 msgstr "Downloads in the last 24h"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:32
-msgid "Téléchargements"
+msgid "template.nav.main.downloads"
 msgstr "Downloads"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:42
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:44
-msgid "Login"
+msgid "template.nav.main.login"
 msgstr "Login"
 
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:18
+msgid "template.nav.lang.fr"
+msgstr "French"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:28
+msgid "template.nav.lang.en"
+msgstr "English"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:10
+msgid "template.nav.user.logout"
+msgstr "Logout"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:14
+msgid "template.nav.user.settings"
+msgstr "Settings"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:19
+msgid "template.nav.user.moderation"
+msgstr "Moderation"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:25
+msgid "template.nav.user.manager"
+msgstr "Manager"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:31
+msgid "template.nav.user.grafana"
+msgstr "Grafana"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:32
+msgid "template.nav.user.superadmin"
+msgstr "Superadmin"
+
+#: main/interface/ui/templates/Html/partial/structure/utils/message.html:14
+#: main/interface/ui/templates/Html/partial/structure/utils/modal.html:8
+msgid "template.common.close"
+msgstr "Close"
+
+#: main/interface/ui/templates/Html/partial/structure/utils/modal.html:32
+msgid "template.modal.loading"
+msgstr "Loading"
+
 #: main/interface/ui/templates/socialaccount/login.html:9
-msgid "Connexion via Google"
+msgid "template.social.google.title"
 msgstr "Sign in with Google"
 
 #: main/interface/ui/templates/socialaccount/login.html:12
-msgid ""
-"Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
-"Google."
+msgid "template.social.google.description"
 msgstr "You are about to sign in using a third-party Google account."
 
 #: main/interface/ui/templates/socialaccount/login.html:16
-msgid "Continuer"
+msgid "template.social.google.continue"
 msgstr "Continue"
 
 #: main/interface/ui/templates/socialaccount/login.html:20
-msgid "Retour"
+msgid "template.social.google.back"
 msgstr "Back"
+
+#, python-format
+#~ msgid "Soundboard publique 100%% Gratuit"
+#~ msgstr "Public soundboard"
+
+#~ msgid "Créer un soundboard pour vos ambiances de jeu de rôle"
+#~ msgstr "Public soundboard"
+
+#~ msgid "Soundboards personnalisés :"
+#~ msgstr "My private soundboards"
+
+#~ msgid "Ambiance Continue"
+#~ msgstr "Continue"
+
+#~ msgid "Mode plein écran"
+#~ msgstr "Fullscreen mode"
+
+#~ msgid "Partage public"
+#~ msgstr "Public"
+
+#~ msgid "Copie de boutons"
+#~ msgstr "List of your buttons"
+
+#~ msgid "Niveaux d'utilisateurs"
+#~ msgstr "User settings"
+
+#~ msgid "Mes soundboards"
+#~ msgstr "My private soundboards"
+
+#~ msgid "Créer mon soundboard"
+#~ msgstr "Create a new soundboard"
+
+#~ msgid "Créer mon premier soundboard"
+#~ msgstr "Create a new soundboard"
+
+#~ msgid "Créez un soundboard"
+#~ msgstr "Create a new soundboard"
+
+#~ msgid "Créer un nouveau soundboard"
+#~ msgstr "Create a new soundboard"
+
+#~ msgid "soundboards"
+#~ msgstr "Soundboards"
+
+#~ msgid "boutons"
+#~ msgstr "Buttons"
+
+#~ msgid "Publicité"
+#~ msgstr "Public"
+
+#~ msgid "de l'écoute des soundboards"
+#~ msgstr "list of your soundboards"
+
+#~ msgid "sur les soundboards partagées"
+#~ msgstr "My private soundboards"
+
+#~ msgid "Email :"
+#~ msgstr "Email:"
+
+#~ msgid "L'utilisateur s'engage à :"
+#~ msgstr "User settings"
+
+#~ msgid "Masquer tout"
+#~ msgstr "Hide all"
+
+#~ msgid "Soundboard publique"
+#~ msgstr "Public soundboard"
+
+#~ msgid "Public"
+#~ msgstr "Public"
+
+#~ msgid "Signaler un problème"
+#~ msgstr "Report an issue"
+
+#~ msgid "Report"
+#~ msgstr "Report"
+
+#~ msgid "liste de vos soundboards"
+#~ msgstr "list of your soundboards"
+
+#~ msgid "Soundboards"
+#~ msgstr "Soundboards"
+
+#~ msgid "Liste de vos boutons"
+#~ msgstr "List of your buttons"
+
+#~ msgid "Boutons"
+#~ msgstr "Buttons"
+
+#~ msgid "Téléchargements des dernières 24h"
+#~ msgstr "Downloads in the last 24h"
+
+#~ msgid "Téléchargements"
+#~ msgstr "Downloads"
+
+#~ msgid "Login"
+#~ msgstr "Login"
+
+#~ msgid "Connexion via Google"
+#~ msgstr "Sign in with Google"
+
+#~ msgid ""
+#~ "Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
+#~ "Google."
+#~ msgstr "You are about to sign in using a third-party Google account."
+
+#~ msgid "Continuer"
+#~ msgstr "Continue"
+
+#~ msgid "Retour"
+#~ msgstr "Back"
+
+#~ msgid "Soundboard pour jeux de rôle"
+#~ msgstr "Public soundboard"
+
+#~ msgid "Cet email a été envoyé automatiquement, merci de ne pas y répondre."
+#~ msgstr "This email was sent automatically, please do not reply."
+
+#~ msgid "Contenu signalé"
+#~ msgstr "Reported content"
+
+#~ msgid "Détails du contenu signalé :"
+#~ msgstr "Reported content details:"
+
+#~ msgid "Element :"
+#~ msgstr "Item:"
+
+#~ msgid "Precision :"
+#~ msgstr "Details:"
+
+#~ msgid "Description :"
+#~ msgstr "Description:"
+
+#~ msgid "Date de signalement :"
+#~ msgstr "Reported on:"
+
+#~ msgid "Informations sur l'utilisateur :"
+#~ msgstr "User information:"
+
+#~ msgid "Nom d'utilisateur :"
+#~ msgstr "User settings"
+
+#~ msgid "Date d'inscription :"
+#~ msgstr "Registration date:"
+
+#, python-format
+#~ msgid "Bonjour %(username)s !"
+#~ msgstr "Hello %(username)s!"
+
+#~ msgid ""
+#~ "Suite à une inactivité de 24 mois, votre compte est supprimé de notre "
+#~ "site."
+#~ msgstr ""
+#~ "Following 24 months of inactivity, your account has been deleted from our "
+#~ "site."
+
+#~ msgid ""
+#~ "Après 2 mois sans confirmation de votre email, votre compte est supprimé."
+#~ msgstr ""
+#~ "After 2 months without confirming your email, your account has been "
+#~ "deleted."
+
+#, python-format
+#~ msgid ""
+#~ "Merci de confirmer votre compte. <a "
+#~ "href=\"%(confirmation_url)s\">Confirmation</a>"
+#~ msgstr ""
+#~ "Please confirm your account. <a href=\"%(confirmation_url)s\">Confirm</a>"
+
+#~ msgid "Votre mot de passe a bien été changé."
+#~ msgstr "Your password has been successfully changed."
+
+#~ msgid ""
+#~ "Suite à une inactivité de plus de 22 mois, votre compte sera supprimé de "
+#~ "notre site."
+#~ msgstr ""
+#~ "After more than 22 months of inactivity, your account will be deleted "
+#~ "from our site."
+
+#, python-format
+#~ msgid ""
+#~ "Votre compte n'est pas confirmé, veuillez confirmer votre compte via le "
+#~ "lien suivant : <a href=\"%(confirmation_url)s\">Confirmation</a>."
+#~ msgstr ""
+#~ "Your account is not confirmed. Please confirm your account using the "
+#~ "following link: <a href=\"%(confirmation_url)s\">Confirm</a>."
+
+#, python-format
+#~ msgid ""
+#~ "Voici votre demande de réinitialisation de mot de passe. <a "
+#~ "href=\"%(reset_url)s\">Réinitialiser</a>"
+#~ msgstr ""
+#~ "Here is your password reset request. <a href=\"%(reset_url)s\">Reset</a>"
+
+#, python-format
+#~ msgid "Votre compte a été rétrogradé vers le niveau %(tier_label)s."
+#~ msgstr "Your account has been downgraded to the %(tier_label)s tier."
+
+#~ msgid ""
+#~ "Si vous avez des questions ou des préoccupations, n'hésitez pas à nous "
+#~ "contacter."
+#~ msgstr "If you have any questions or concerns, feel free to contact us."
+
+#~ msgid "Merci de votre compréhension."
+#~ msgstr "Thank you for your understanding."
+
+#, python-format
+#~ msgid "Votre compte arrive à expiration dans %(remaining_days)s jours."
+#~ msgstr "Your account will expire in %(remaining_days)s days."
+
+#~ msgid ""
+#~ "Pour éviter toute diminution de service, veuillez renouveler votre "
+#~ "abonnement dès que possible."
+#~ msgstr ""
+#~ "To avoid any service downgrade, please renew your subscription as soon as "
+#~ "possible."
+
+#, python-format
+#~ msgid "Bienvenue %(username)s !"
+#~ msgstr "Welcome %(username)s!"
+
+#~ msgid "Merci de vous être inscrit sur notre site."
+#~ msgstr "Thank you for signing up on our site."
+
+#~ msgid "Paramètres"
+#~ msgstr "User settings"
+
+#~ msgid "Chargement"
+#~ msgstr "Downloads"
+
+#~| msgid "Connexion via Google"
+#~ msgid "Connexion"
+#~ msgstr "Sign in with Google"
 
 #~ msgid "enum.fade_playlist.off"
 #~ msgstr "Off"
@@ -523,9 +1409,6 @@ msgstr "Back"
 #~ "Switch between light and dark modes for better reading comfort. Your "
 #~ "preference is saved automatically."
 
-#~ msgid "Mode plein écran"
-#~ msgstr "Fullscreen mode"
-
 #~ msgid ""
 #~ "Agrandissez le soundboard pour une meilleure immersion audio. Idéal pour "
 #~ "vos sessions de streaming ou de travail créatif."
@@ -541,18 +1424,12 @@ msgstr "Back"
 #~ "Explore community-created soundboards. You can listen to them, preview "
 #~ "them, and even copy their buttons into your own soundboard."
 
-#~ msgid "Mes soundboards privés"
-#~ msgstr "My private soundboards"
-
 #~ msgid ""
 #~ "Voici vos soundboards personnels. Vous pouvez les éditer, les partager ou "
 #~ "les supprimer. Chaque soundboard peut contenir jusqu'à 100 boutons audio."
 #~ msgstr ""
 #~ "These are your personal soundboards. You can edit, share, or delete them. "
 #~ "Each soundboard can contain up to 100 audio buttons."
-
-#~ msgid "Créer un nouveau soundboard"
-#~ msgstr "Create a new soundboard"
 
 #~ msgid ""
 #~ "Créez votre propre soundboard en 3 clics. Donnez-lui un nom, une "
@@ -574,9 +1451,6 @@ msgstr "Back"
 #~ msgstr ""
 #~ "Copy this soundboard audio controls to integrate them into your website "
 #~ "or personal app."
-
-#~ msgid "Paramètres utilisateur"
-#~ msgstr "User settings"
 
 #~ msgid ""
 #~ "Gérez votre profil, vos préférences de notification, votre thème préféré "

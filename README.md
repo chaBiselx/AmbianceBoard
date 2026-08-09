@@ -29,7 +29,7 @@ Le projet se lance principalement avec Docker Compose.
 make init
 make build
 make up
-make update-db
+make db-update
 make fixtures
 ```
 
