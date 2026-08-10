@@ -352,6 +352,11 @@ Nouveautés
 Améliorations
 - Ajout de champ utilisable pour l'internationnalisation 
 
+### 0.4.9 - 2026/08
+Sécurité
+- mise a jour de sécurité
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
