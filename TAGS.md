@@ -354,7 +354,10 @@ Améliorations
 
 ### 0.4.9 - 2026/08
 Sécurité
-- mise a jour de sécurité
+- Mise a jour de sécurité
+
+Nouveautés
+- Ajout d'une page de FAQ
 
 
 ### X.Y.Z - Date
