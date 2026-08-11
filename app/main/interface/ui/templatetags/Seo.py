@@ -4,6 +4,7 @@ from urllib.parse import urlencode
 from django import template
 from django.templatetags.static import static
 from django.urls import reverse
+from main.domain.general.service.FAQService import FAQService
 
 
 register = template.Library()
@@ -212,7 +213,100 @@ def _resolve_read_seo_context(request, context):
     return None
 
 
+def _build_home_seo_context(request, _context) -> dict:
+    """Calcule les metadonnees SEO/GEO pour la page d'accueil avec schema FAQPage."""
+    title = 'AmbianceBoard — Soundboard JDR gratuit pour Maître du Jeu'
+    description = (
+        'Soundboard JDR gratuit en ligne pour maîtres du jeu. '
+        'Déclenchez ambiances, effets sonores et musiques en un clic. '
+        'Alternative open source à Syrinscape, sans installation, avec partage en temps réel.'
+    )
+    keywords = _unique_keep_order([
+        'soundboard jdr gratuit',
+        'soundboard maître du jeu',
+        'outil MJ jeu de rôle',
+        'ambiance sonore jdr',
+        'alternative syrinscape',
+        'soundboard en ligne jdr',
+        'améliorer immersion jdr',
+        'playlist ambiance jdr',
+        'outils maître du jeu',
+        'soundboard',
+        'jeux de rôle',
+    ])
+    canonical = _build_absolute_url(request, 'home')
+    og_image = _fallback_og_image(request)
 
+    json_ld = {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        'name': 'AmbianceBoard',
+        'alternateName': ['Soundboard JDR', 'Soundboard Ambiance'],
+        'url': canonical,
+        'description': description,
+        'applicationCategory': 'MultimediaApplication',
+        'operatingSystem': 'Web Browser',
+        'inLanguage': 'fr-FR',
+        'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR'},
+        'keywords': ', '.join(keywords),
+        'audience': {'@type': 'Audience', 'audienceType': 'Maîtres du jeu et joueurs de jeux de rôle'},
+    }
+    return _build_seo_payload(
+        title=title,
+        description=description,
+        keywords=keywords,
+        canonical=canonical,
+        og_image=og_image,
+        robots='index,follow',
+        json_ld=json_ld,
+    )
+
+
+
+
+
+def _build_faq_seo_context(request, _context) -> dict:
+    """Calcule les metadonnees SEO pour la page FAQ avec schema FAQPage."""
+    title = 'FAQ — Soundboard JDR & outils pour Maître du Jeu | AmbianceBoard'
+    description = (
+        'Toutes les réponses sur AmbianceBoard : soundboard JDR gratuit, alternative à Syrinscape, '
+        'outils pour maître du jeu, immersion en jeu de rôle et partage en temps réel.'
+    )
+    keywords = _unique_keep_order([
+        'faq soundboard jdr',
+        'questions soundboard maître du jeu',
+        'alternative syrinscape gratuit',
+        'comment créer ambiance jdr',
+        'outils maître du jeu',
+        'soundboard jdr gratuit',
+        'améliorer immersion jdr',
+        'jeu de rôle ambiance sonore',
+    ])
+    canonical = _build_absolute_url(request, 'faq')
+    og_image = _fallback_og_image(request)
+    HOME_FAQ = FAQService().HOME_FAQ
+    faq_entities = [
+        {
+            '@type': 'Question',
+            'name': item['question'],
+            'acceptedAnswer': {'@type': 'Answer', 'text': item['answer']},
+        }
+        for item in HOME_FAQ
+    ]
+    json_ld = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': faq_entities,
+    }
+    return _build_seo_payload(
+        title=title,
+        description=description,
+        keywords=keywords,
+        canonical=canonical,
+        og_image=og_image,
+        robots='index,follow',
+        json_ld=json_ld,
+    )
 
 
 @register.simple_tag(takes_context=True)
@@ -246,6 +340,8 @@ def get_current_seo(context):
 def _get_route_resolvers() -> dict:
     """Retourne la table de resolvers SEO par route apres definition des fonctions."""
     return {
+        'home': _build_home_seo_context,
+        'faq': _build_faq_seo_context,
         'publicListingSoundboard': _resolve_listing_seo_context,
         'publicReadSoundboard': _resolve_read_seo_context,
     }

@@ -37,6 +37,7 @@ from main.domain.common.helper.ActivityContextHelper import ActivityContextHelpe
 from main.interface.ui.forms.general.SupportContactForm import SupportContactForm
 from main.domain.general.dto.SupportContactDto import SupportContactDto
 from main.domain.general.service.SupportContactService import SupportContactService
+from main.domain.general.service.FAQService import FAQService
 
 
 
@@ -60,6 +61,14 @@ def home(request: HttpRequest) -> HttpResponse:
         "title": "Accueil",
         "link_donation": Settings.get("LINK_DONATION"),
         "home_demo_items": home_demo_items,
+    })
+
+
+@require_http_methods(['GET'])
+def faq(request: HttpRequest) -> HttpResponse:
+    return render(request, "Html/General/faq.html", {
+        "title": "FAQ",
+        "faq_groups": FAQService().get_faqs(),
     })
 
 
