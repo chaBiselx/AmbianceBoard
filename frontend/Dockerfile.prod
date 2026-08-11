@@ -2,7 +2,14 @@
 FROM node@sha256:bde0dae02f2b12d2bce5ee72b2432f0e511767b7b2dc4dd3b064df11ae422fee AS builder
 
 # Créer un utilisateur non-root pour des raisons de sécurité
-RUN addgroup -g 1001 -S nodeuser && adduser -S nodeuser -G nodeuser -u 1001
+RUN set -eux; \
+        if command -v groupadd >/dev/null 2>&1; then \
+            groupadd --gid 1001 nodeuser; \
+            useradd --uid 1001 --gid 1001 --create-home --shell /bin/sh nodeuser; \
+        else \
+            addgroup -g 1001 -S nodeuser; \
+            adduser -S -D -u 1001 -G nodeuser nodeuser; \
+        fi
 
 WORKDIR /app
 
