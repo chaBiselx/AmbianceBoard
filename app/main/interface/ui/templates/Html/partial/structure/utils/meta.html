@@ -4,61 +4,25 @@
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<meta name="description" content="{% if meta_seo and meta_seo.description %}{{ meta_seo.description }}{% else %}Soundboard JDR gratuit en ligne pour maître du jeu. Déclenchez ambiances, effets sonores et playlists musicales en un clic. Alternative open source à Syrinscape, sans installation.{% endif %}" />
-<meta name="keywords" content="{% if meta_seo and meta_seo.keywords %}{{ meta_seo.keywords }}{% else %}soundboard jdr gratuit, soundboard maître du jeu, outil MJ jeu de rôle, ambiance sonore jdr, alternative syrinscape, améliorer immersion jdr, soundboard en ligne, playlist ambiance jdr, outils maître du jeu, soundboard, ambiance musicale, jeux de rôle, JDR, musique jdr, effets sonores jdr{% endif %}" />
+<meta name="description" content="{{ meta_seo.description|default:'' }}" />
+<meta name="keywords" content="{{ meta_seo.keywords|default:'' }}" />
 <meta name="author" content="BISELX" />
-<meta name="robots" content="{% if meta_seo and meta_seo.robots %}{{ meta_seo.robots }}{% else %}index,follow{% endif %}" />
-<meta property="og:title" content="{% if meta_seo and meta_seo.og_title %}{{ meta_seo.og_title }}{% else %}AmbianceBoard — Soundboard JDR gratuit pour Maître du Jeu{% endif %}" />
-<meta property="og:description" content="{% if meta_seo and meta_seo.og_description %}{{ meta_seo.og_description }}{% else %}Soundboard JDR gratuit en ligne pour maître du jeu. Ambiances, effets et playlists en un clic. Alternative open source à Syrinscape, sans installation.{% endif %}" />
-<meta property="og:type" content="{% if meta_seo and meta_seo.og_type %}{{ meta_seo.og_type }}{% else %}website{% endif %}" />
-<meta property="og:url" content="{% if meta_seo and meta_seo.og_url %}{{ meta_seo.og_url }}{% else %}{{ request.build_absolute_uri }}{% endif %}" />
-<meta property="og:image" content="{% if meta_seo and meta_seo.og_image %}{{ meta_seo.og_image }}{% else %}{% static 'img/logo.png' %}{% endif %}" />
-<meta name="twitter:card" content="{% if meta_seo and meta_seo.twitter_card %}{{ meta_seo.twitter_card }}{% else %}summary_large_image{% endif %}" />
-<meta name="twitter:title" content="{% if meta_seo and meta_seo.twitter_title %}{{ meta_seo.twitter_title }}{% else %}AmbianceBoard — Soundboard JDR gratuit pour Maître du Jeu{% endif %}" />
-<meta name="twitter:description" content="{% if meta_seo and meta_seo.twitter_description %}{{ meta_seo.twitter_description }}{% else %}Soundboard JDR gratuit en ligne pour maître du jeu. Ambiances, effets et playlists en un clic. Alternative open source à Syrinscape, sans installation.{% endif %}" />
-<meta name="twitter:image" content="{% if meta_seo and meta_seo.twitter_image %}{{ meta_seo.twitter_image }}{% else %}{% static 'img/logo.png' %}{% endif %}" />
-<link rel="canonical" href="{% if meta_seo and meta_seo.canonical %}{{ meta_seo.canonical }}{% else %}{{ request.build_absolute_uri }}{% endif %}" />
+<meta name="robots" content="{{ meta_seo.robots|default:'index,follow' }}" />
+<meta property="og:title" content="{{ meta_seo.og_title|default:'' }}" />
+<meta property="og:description" content="{{ meta_seo.og_description|default:'' }}" />
+<meta property="og:type" content="{{ meta_seo.og_type|default:'website' }}" />
+<meta property="og:url" content="{{ meta_seo.og_url|default:request.build_absolute_uri }}" />
+<meta property="og:image" content="{{ meta_seo.og_image|default:'' }}" />
+<meta name="twitter:card" content="{{ meta_seo.twitter_card|default:'summary_large_image' }}" />
+<meta name="twitter:title" content="{{ meta_seo.twitter_title|default:'' }}" />
+<meta name="twitter:description" content="{{ meta_seo.twitter_description|default:'' }}" />
+<meta name="twitter:image" content="{{ meta_seo.twitter_image|default:'' }}" />
+<link rel="canonical" href="{{ meta_seo.canonical|default:request.build_absolute_uri }}" />
 <link rel="icon" type="image/x-icon" href="{% static 'img/favicon-32x32.png' %}">
 
 <!-- Schema.org structured data -->
 {% if meta_seo and meta_seo.json_ld_json %}
     <script type="application/ld+json">
     {{ meta_seo.json_ld_json|safe }}
-    </script>
-{% else %}
-    <script type="application/ld+json">
-    {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "AmbianceBoard",
-    "alternateName": "Soundboard Ambiance",
-    "url": "https://ambianceboard.fr",
-    "description": "Soundboard JDR gratuit en ligne pour maître du jeu. Déclenchez ambiances, effets sonores et playlists musicales en un clic. Alternative open source à Syrinscape, sans installation.",
-    "applicationCategory": "MultimediaApplication",
-    "operatingSystem": "Web Browser",
-    "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "EUR"
-    },
-    "featureList": [
-        "Soundboard interactif",
-        "Playlists musicales aleatoires",
-        "Ambiances sonores pour jeux de role",
-        "Boutons personnalisables",
-        "Interface gratuite"
-    ],
-    "author": {
-        "@type": "Person",
-        "name": "BISELX"
-    },
-    "audience": {
-        "@type": "Audience",
-        "audienceType": "Joueurs de jeux de role et jeux de societe"
-    },
-    "inLanguage": "fr-FR",
-    "browserRequirements": "Requires JavaScript. Requires HTML5.",
-    "keywords": "soundboard jdr gratuit, soundboard maître du jeu, outil MJ jeu de rôle, ambiance sonore jdr, alternative syrinscape, améliorer immersion jdr, playlist ambiance jdr"
-    }
     </script>
 {% endif %}

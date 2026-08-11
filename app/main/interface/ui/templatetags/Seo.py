@@ -9,6 +9,10 @@ from main.domain.general.service.FAQService import FAQService
 
 register = template.Library()
 
+SCHEMA_ORG_CONTEXT = 'https://schema.org'
+ROBOTS_INDEX_FOLLOW = 'index,follow'
+ROBOTS_NOINDEX_FOLLOW = 'noindex,follow'
+
 DEFAULT_LISTING_KEYWORDS = [
     'soundboard',
     'soundboard public',
@@ -49,7 +53,7 @@ def _fallback_og_image(request) -> str:
 def _build_json_ld(json_ld_type: str, name: str, description: str, canonical: str, keywords: list[str], image: str | None = None, about: list[str] | None = None) -> dict:
     """Assemble la structure JSON-LD commune des pages SEO."""
     json_ld = {
-        '@context': 'https://schema.org',
+        '@context': SCHEMA_ORG_CONTEXT,
         '@type': json_ld_type,
         'name': name,
         'description': description,
@@ -115,7 +119,7 @@ def _build_listing_seo_context(request, selected_tag, list_tags, current_page: i
 
     canonical_query = {'tag': selected_tag} if selected_tag else None
     canonical = _build_absolute_url(request, 'publicListingSoundboard', query_params=canonical_query)
-    robots = 'noindex,follow' if current_page > 1 or total_results == 0 else 'index,follow'
+    robots = ROBOTS_NOINDEX_FOLLOW if current_page > 1 or total_results == 0 else ROBOTS_INDEX_FOLLOW
     json_ld_type = 'WebPage' if total_results == 0 else 'CollectionPage'
     json_ld = _build_json_ld(
         json_ld_type=json_ld_type,
@@ -200,7 +204,42 @@ def _build_read_seo_context(request, soundboard) -> dict:
         keywords=keywords,
         canonical=canonical,
         og_image=og_image,
-        robots='index,follow',
+        robots=ROBOTS_INDEX_FOLLOW,
+        json_ld=json_ld,
+    )
+
+
+def _build_default_seo_context(request, _context) -> dict:
+    """Fournit un SEO generique lorsque la route n'a pas de resolver specifique."""
+    title = 'AmbianceBoard'
+    description = (
+        'Soundboard JDR gratuit en ligne pour maitres du jeu. '
+        'Declenchez ambiances, effets sonores et musiques en un clic.'
+    )
+    keywords = _unique_keep_order([
+        'soundboard',
+        'soundboard jdr gratuit',
+        'maitre du jeu',
+        'ambiance sonore jdr',
+        'playlist ambiance',
+    ])
+    canonical = request.build_absolute_uri()
+    og_image = _fallback_og_image(request)
+    json_ld = _build_json_ld(
+        json_ld_type='WebPage',
+        name=title,
+        description=description,
+        canonical=canonical,
+        keywords=keywords,
+        image=og_image,
+    )
+    return _build_seo_payload(
+        title=title,
+        description=description,
+        keywords=keywords,
+        canonical=canonical,
+        og_image=og_image,
+        robots=ROBOTS_INDEX_FOLLOW,
         json_ld=json_ld,
     )
 
@@ -238,7 +277,7 @@ def _build_home_seo_context(request, _context) -> dict:
     og_image = _fallback_og_image(request)
 
     json_ld = {
-        '@context': 'https://schema.org',
+        '@context': SCHEMA_ORG_CONTEXT,
         '@type': 'WebApplication',
         'name': 'AmbianceBoard',
         'alternateName': ['Soundboard JDR', 'Soundboard Ambiance'],
@@ -257,7 +296,7 @@ def _build_home_seo_context(request, _context) -> dict:
         keywords=keywords,
         canonical=canonical,
         og_image=og_image,
-        robots='index,follow',
+        robots=ROBOTS_INDEX_FOLLOW,
         json_ld=json_ld,
     )
 
@@ -294,7 +333,7 @@ def _build_faq_seo_context(request, _context) -> dict:
         for item in HOME_FAQ
     ]
     json_ld = {
-        '@context': 'https://schema.org',
+        '@context': SCHEMA_ORG_CONTEXT,
         '@type': 'FAQPage',
         'mainEntity': faq_entities,
     }
@@ -304,7 +343,7 @@ def _build_faq_seo_context(request, _context) -> dict:
         keywords=keywords,
         canonical=canonical,
         og_image=og_image,
-        robots='index,follow',
+        robots=ROBOTS_INDEX_FOLLOW,
         json_ld=json_ld,
     )
 
@@ -324,7 +363,7 @@ def resolve_page_seo(context):
     route_name = getattr(getattr(request, 'resolver_match', None), 'url_name', '')
     resolver = _get_route_resolvers().get(route_name)
     if resolver is None:
-        return None
+        return _build_default_seo_context(request, context)
     return resolver(request, context)
 
 

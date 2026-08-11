@@ -1,4 +1,5 @@
 from itertools import groupby
+from main.domain.general.enum.FAQCategorieEnum import FAQCategorieEnum
 
 class FAQService:
     """
@@ -7,7 +8,7 @@ class FAQService:
     HOME_FAQ = [
         # ── Présentation & tarifs ────────────────────────────────────────────
         {
-            'theme': 'Présentation & tarifs',
+            'theme': FAQCategorieEnum.PRESENTATION.value,
             'question': 'Quel est le meilleur soundboard gratuit pour JDR ?',
             'answer': (
                 'AmbianceBoard est un soundboard en ligne gratuit conçu spécifiquement pour les maîtres du jeu. '
@@ -16,7 +17,7 @@ class FAQService:
             ),
         },
         {
-            'theme': 'Présentation & tarifs',
+            'theme': FAQCategorieEnum.PRESENTATION.value,
             'question': 'Existe-t-il un outil en ligne pour maître du jeu accessible gratuitement ?',
             'answer': (
                 'AmbianceBoard est un outil web 100 % gratuit pour les maîtres du jeu. '
@@ -27,7 +28,7 @@ class FAQService:
         },
         # ── Maître du Jeu & immersion ────────────────────────────────────────
         {
-            'theme': 'Maître du Jeu & immersion',
+            'theme': FAQCategorieEnum.MJ.value,
             'question': 'Quels outils sont indispensables pour un Maître du Jeu (MJ) ?',
             'answer': (
                 'Pour orchestrer une partie de JDR immersive, un MJ a besoin d\'un soundboard audio pour l\'ambiance, '
@@ -36,7 +37,7 @@ class FAQService:
             ),
         },
         {
-            'theme': 'Maître du Jeu & immersion',
+            'theme': FAQCategorieEnum.MJ.value,
             'question': 'Comment créer une ambiance sonore pour une partie de JDR ?',
             'answer': (
                 'Créez un soundboard sur AmbianceBoard, ajoutez des playlists par type de scène (taverne, combat, exploration), '
@@ -45,7 +46,7 @@ class FAQService:
             ),
         },
         {
-            'theme': 'Maître du Jeu & immersion',
+            'theme': FAQCategorieEnum.MJ.value,
             'question': 'Comment améliorer l\'immersion dans une partie de jeu de rôle ?',
             'answer': (
                 'L\'immersion en JDR repose sur trois piliers : le visuel, la narration et le son. '
@@ -56,7 +57,7 @@ class FAQService:
         },
         # ── Comparaisons & alternatives ──────────────────────────────────────
         {
-            'theme': 'Comparaisons & alternatives',
+            'theme': FAQCategorieEnum.COMPARAISON.value,
             'question': 'AmbianceBoard est-il une alternative à Syrinscape ?',
             'answer': (
                 'Oui. AmbianceBoard est une alternative open source et gratuite à Syrinscape. '
