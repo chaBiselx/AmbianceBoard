@@ -363,7 +363,8 @@ Corrections
 - Fix lors de la duplication de boutons 
 
 ### 0.4.10 - 2026/08
-- Correction deploiement 
+Correction 
+- Fix deploiement 
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
