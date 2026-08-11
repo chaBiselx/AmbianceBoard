@@ -352,6 +352,17 @@ Nouveautés
 Améliorations
 - Ajout de champ utilisable pour l'internationnalisation 
 
+### 0.4.9 - 2026/08
+Sécurité
+- Mise a jour de sécurité
+
+Nouveautés
+- Ajout d'une page de FAQ
+
+Corrections
+- Fix lors de la duplication de boutons 
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

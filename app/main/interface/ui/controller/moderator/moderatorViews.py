@@ -20,7 +20,7 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 from main.domain.common.utils.url import redirection_url
 from main.domain.common.utils.uuidUtils import _parse_uuid_or_empty
-from main.interface.ui.forms.moderator.TagForm import TagForm
+from main.interface.ui.forms.moderator.SoundboardTagForm import SoundboardTagForm
 from main.interface.ui.forms.moderator.PlaylistTagForm import PlaylistTagForm
 from main.architecture.persistence.repository.UserRepository import UserRepository
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
@@ -316,12 +316,12 @@ def moderator_listing_tags(request) -> HttpResponse:
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_create_tag(request) -> HttpResponse:
     if request.method == 'POST':
-        form = TagForm(request.POST)
+        form = SoundboardTagForm(request.POST)
         if form.is_valid():
             form.save()
         return redirect('moderatorListingTags')
     else:
-        form = TagForm()
+        form = SoundboardTagForm()
     
     return render(request, 'Html/Moderator/create_tag.html', {'form': form})
 
@@ -333,12 +333,12 @@ def moderator_edit_tag(request, tag_uuid) -> HttpResponse:
     tag = tag_repository.get_with_uuid(uuid=tag_uuid)
 
     if request.method == 'POST':
-        form = TagForm(request.POST, instance=tag)
+        form = SoundboardTagForm(request.POST, instance=tag)
         if form.is_valid():
             form.save()
             return redirect('moderatorListingTags')
     else:
-        form = TagForm(instance=tag)
+        form = SoundboardTagForm(instance=tag)
     
     return render(request, 'Html/Moderator/edit_tag.html', {'form': form, 'tag': tag})
 

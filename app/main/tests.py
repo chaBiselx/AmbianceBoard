@@ -123,6 +123,7 @@ from main.TNR.TI.routing.SoundboardsListRouteTest import *
 from main.TNR.TI.routing.SoundboardsNewRouteTest import *
 from main.TNR.TI.routing.SoundboardsReadRouteTest import *
 from main.TNR.TI.routing.OrganizeSoundboardUpdateRouteTest import *
+from main.TNR.TI.routing.SoundboardEditModeDuplicatePlaylistRouteTest import *
 
 # Routes Settings
 from main.TNR.TI.routing.SettingsIndexRouteTest import *

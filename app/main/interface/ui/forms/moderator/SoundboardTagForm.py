@@ -3,10 +3,10 @@ from main.architecture.persistence.models.SoundboardTag import SoundboardTag
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 
-class TagForm(BootstrapFormMixin, forms.ModelForm):
+class SoundboardTagForm(BootstrapFormMixin, forms.ModelForm):
     class Meta:
         model = SoundboardTag
-        fields = ('name', 'description', 'is_active')
+        fields = ('name', 'description', 'is_active', 'is_default')
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

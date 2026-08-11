@@ -98,7 +98,6 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Utilisateur</th>
-                                    <th>Email</th>
                                     <th class="text-end">Activités</th>
                                     <th class="text-end">Action</th>
                                 </tr>
@@ -107,8 +106,7 @@
                                 {% for user in top_active_users %}
                                 <tr>
                                     <td>{{ user.rank }}</td>
-                                    <td>{{ user.username }}</td>
-                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.username }}<br/><small>{{ user.email }}</small></td>
                                     <td class="text-end">{{ user.activity_count }}</td>
                                     <td class="text-end">
                                         <a href="{% url 'managerUserActivityDetails' user.user_uuid %}" class="btn btn-sm btn-outline-primary">
