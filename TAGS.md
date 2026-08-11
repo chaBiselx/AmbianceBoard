@@ -359,6 +359,9 @@ Sécurité
 Nouveautés
 - Ajout d'une page de FAQ
 
+Corrections
+- Fix lors de la duplication de boutons 
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

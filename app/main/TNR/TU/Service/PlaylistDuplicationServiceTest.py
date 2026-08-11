@@ -20,6 +20,7 @@ from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.Music import Music
 from main.architecture.persistence.models.LinkMusic import LinkMusic
 from main.architecture.persistence.models.Track import Track
+from main.architecture.persistence.models.TrackLabel import TrackLabel
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
@@ -266,6 +267,34 @@ class PlaylistDuplicationServiceTest(TestCase):
         self.assertEqual(duplicated_content, source_content)
         self.assertTrue(duplicated_music.file.name.endswith('.mp3'))
         self.assertNotEqual(duplicated_music.file.name, music.file.name)
+
+    def test_duplicate_copies_track_labels_to_duplicated_music(self):
+        """Test que les labels IA sont copiés vers la musique dupliquée"""
+        music = Music.objects.create(
+            playlist=self.source_playlist,
+            fileName="labeled.mp3",
+            file=SimpleUploadedFile("labeled.mp3", b'labeled audio', content_type=local_format_audio1),
+            alternativeName="Labeled Music",
+            duration=90.0
+        )
+        TrackLabel.objects.create(
+            track=music,
+            category="environment",
+            label="void",
+            confidence=0.91,
+        )
+
+        service = PlaylistDuplicationService(self.source_playlist, self.target_user)
+        duplicated = service.duplicate()
+
+        duplicated_music = Music.objects.get(playlist=duplicated)
+        duplicated_labels = TrackLabel.objects.filter(track=duplicated_music)
+
+        self.assertEqual(duplicated_labels.count(), 1)
+        self.assertEqual(duplicated_labels.first().category, "environment")
+        self.assertEqual(duplicated_labels.first().label, "void")
+        self.assertEqual(duplicated_labels.first().confidence, 0.91)
+        self.assertEqual(TrackLabel.objects.filter(track=music).count(), 1)
 
     def test_duplicate_copies_link_music(self):
         """Test que les LinkMusic sont copiés correctement"""

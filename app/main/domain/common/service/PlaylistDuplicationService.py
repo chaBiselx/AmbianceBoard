@@ -208,9 +208,12 @@ class PlaylistDuplicationService:
         # si le source_music a des labels, les copier aussi
         source_labels = source_music.labels.all()
         for label in source_labels:
-            label.pk = None  # Réinitialiser la PK pour créer un nouvel enregistrement
-            label.track = duplicated_music.tracks.first()  # Associer au nouveau track
-            label.save()
+            label.__class__.objects.create(
+                track=duplicated_music,
+                category=label.category,
+                label=label.label,
+                confidence=label.confidence,
+            )
             
         return duplicated_music
     
