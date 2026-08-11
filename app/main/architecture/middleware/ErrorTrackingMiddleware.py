@@ -101,12 +101,9 @@ class ErrorTrackingMiddleware:
         except Exception as e:
             # Gestion des erreurs 5XX non prévues
             self.logger.error(f"Erreur inattendue dans ErrorTrackingMiddleware: {e}")
-            response = self.get_response(request)
-            
             # Tracer l'erreur 500 générique
             self._track_error(request, 500)
-            
-            return response
+            raise
 
     def _should_exclude_url(self, request: HttpRequest) -> bool:
         """
