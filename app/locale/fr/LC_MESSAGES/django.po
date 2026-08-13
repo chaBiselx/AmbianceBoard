@@ -255,6 +255,50 @@ msgstr "Cet email a été envoyé automatiquement, merci de ne pas y répondre."
 msgid "template.email.moderator.reported.title"
 msgstr "Contenu signalé"
 
+#: main/architecture/messaging/email/UserMail.py:0
+msgid "template.email.user.welcome.subject"
+msgstr "Bienvenue sur notre site"
+
+#: main/architecture/messaging/email/UserMail.py:0
+msgid "template.email.user.confirm.subject"
+msgstr "Confirmation de votre compte"
+
+#: main/architecture/messaging/email/UserMail.py:0
+msgid "template.email.user.reset_password.subject"
+msgstr "Réinitialisation de votre mot de passe"
+
+#: main/architecture/messaging/email/UserMail.py:0
+msgid "template.email.user.password_changed.subject"
+msgstr "Modification de mot de passe"
+
+#: main/architecture/messaging/email/UserMail.py:0
+msgid "template.email.user.account_deleted.subject"
+msgstr "Votre compte a été supprimé"
+
+#: main/architecture/messaging/email/UserMail.py:0
+msgid "template.email.user.prevent_deletion.subject"
+msgstr "Votre compte va être supprimé"
+
+#: main/architecture/messaging/email/UserMail.py:0
+msgid "template.email.user.prevent_deletion_unconfirmed.subject"
+msgstr "Votre compte va être supprimé car non confirmé"
+
+#: main/architecture/messaging/email/UserMail.py:0
+msgid "template.email.user.account_deleted_unconfirmed.subject"
+msgstr "Votre compte a été supprimé car non confirmé"
+
+#: main/architecture/messaging/email/UserMail.py:0
+msgid "template.email.user.tier_downgrade.subject"
+msgstr "Votre tier a été rétrogradé"
+
+#: main/architecture/messaging/email/UserMail.py:0
+msgid "template.email.user.tier_expiration.subject"
+msgstr "Avertissement d'expiration de votre tier"
+
+#: main/architecture/messaging/email/ModeratorEmail.py:0
+msgid "template.email.moderator.reported.subject"
+msgstr "Contenu signalé"
+
 #: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:10
 msgid "template.email.moderator.reported.details.title"
 msgstr "Détails du contenu signalé :"

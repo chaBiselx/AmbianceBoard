@@ -9,7 +9,7 @@ from main.domain.common.utils.settings import Settings
 
 
 ROOT_USERNAME = "root"
-ROOT_EMAIL = "root@localhost"
+ROOT_EMAIL = "root@localhost.com"
 ROOT_PASSWORD = "root"
 
 

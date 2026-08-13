@@ -18,7 +18,7 @@ scrape_configs:
         labels:
           job: ambianceboard
           service: app
-          __path__: /app/logs/app_logs.log*
+          __path__: /prod-logs/app_logs.log
 
   - job_name: ambianceboard-front-logs
     static_configs:
@@ -27,7 +27,7 @@ scrape_configs:
         labels:
           job: ambianceboard
           service: frontend
-          __path__: /app/logs/front_logs.log*
+          __path__: /prod-logs/front_logs.log
 
   - job_name: ambianceboard-mail-logs
     static_configs:
@@ -36,7 +36,7 @@ scrape_configs:
         labels:
           job: ambianceboard
           service: mail
-          __path__: /app/logs/mails_logs.log*
+          __path__: /prod-logs/mails_logs.log
 
   - job_name: ambianceboard-orm-logs
     static_configs:
@@ -45,7 +45,7 @@ scrape_configs:
         labels:
           job: ambianceboard
           service: orm
-          __path__: /app/logs/orm_logs.log*
+          __path__: /prod-logs/orm_logs.log
 
   - job_name: ambianceboard-websocket-logs
     static_configs:
@@ -54,7 +54,7 @@ scrape_configs:
         labels:
           job: ambianceboard
           service: websocket
-          __path__: /app/logs/websocket_logs.log*
+          __path__: /prod-logs/websocket_logs.log
 
   - job_name: ambianceboard-request-logs
     static_configs:
@@ -63,7 +63,7 @@ scrape_configs:
         labels:
           job: ambianceboard
           service: request
-          __path__: /app/logs/request_logs.log*
+          __path__: /prod-logs/request_logs.log
 
   - job_name: ambianceboard-celery-logs
     static_configs:
@@ -72,7 +72,7 @@ scrape_configs:
         labels:
           job: ambianceboard
           service: celery
-          __path__: /app/logs/celery_*_worker.log*
+          __path__: /prod-logs/celery_*_worker.log
 
   # Configuration pour les logs des conteneurs Docker
   - job_name: docker-containers

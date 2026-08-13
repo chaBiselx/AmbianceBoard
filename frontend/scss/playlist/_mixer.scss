@@ -4,8 +4,8 @@
 
 // Définition des variables SCSS
 $gap: round(.2em, 1px);
-$lineThickness: round(.2em, 1px);
-$thumbSize: round(1.3em, 1px);
+$lineThickness: round(.5em, 1px);
+$thumbSize: round(2em, 1px);
 $tooltipTailSize: round(.8em, 1px);
 $tooltipRadius: round(.8em, 1px);
 
@@ -43,7 +43,7 @@ $tooltipRadius: round(.8em, 1px);
     timeline-scope: --thumb-view;
     position: relative;
     /* No, It's not useless so don't remove it (or remove it and see what happens) */
-    font-size: 1vh;
+    font-size: 1.2vh;
 }
 
 .horizontal-slider-input {
@@ -98,6 +98,7 @@ $tooltipRadius: round(.8em, 1px);
 }
 
 .horizontal-slider-output {
+    pointer-events: none;
     position-anchor: --thumb;// NOSONAR
     position: absolute;
     position-area: top; // NOSONAR
@@ -109,6 +110,7 @@ $tooltipRadius: round(.8em, 1px);
     width: 3.2em;
     padding-top: 0px;
     padding-bottom: 0px;
+    margin-top: calc(var(--tooltipTailSize) + 5px);
     border-bottom: var(--tooltipTailSize) solid #0000;
     border-radius: var(--tooltipRadius)/var(--tooltipRadius) var(--tooltipRadius) calc(var(--tooltipRadius) + var(--tooltipTailSize)) calc(var(--tooltipRadius) + var(--tooltipTailSize));
     --_m: 100%/var(--tooltipTailSize) var(--tooltipTailSize) no-repeat;

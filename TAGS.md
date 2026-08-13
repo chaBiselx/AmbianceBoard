@@ -363,7 +363,13 @@ Corrections
 - Fix lors de la duplication de boutons 
 
 ### 0.4.10 - 2026/08
-- Correction deploiement 
+Correction 
+- Fix deploiement 
+
+### 0.4.11 - 2026/08
+Correction 
+- Fix l'absence de traduction dans les mails envoyé 
+- Fix de l'affichage des slider sous les boutons
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

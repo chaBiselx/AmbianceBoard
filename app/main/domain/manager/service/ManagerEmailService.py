@@ -1,5 +1,6 @@
 from typing import List
 from django.template.loader import render_to_string
+from django.utils.translation import get_language, override
 from main.architecture.persistence.models.User import User
 from main.domain.brokers.message.ManagerEmailMessenger import send_manager_email_task
 from main.domain.common.utils.logger import LoggerFactory
@@ -35,11 +36,13 @@ class ManagerEmailService:
         :returns: Nombre de tâches enfilées.
         """
         try:
-            html_content = render_to_string('EmailTemplate/manager/managerEmail.html', {
-                'title': subject,
-                'message': body,
-                'sender': sender,
-            })
+            language = get_language() or 'fr'
+            with override(language):
+                html_content = render_to_string('EmailTemplate/manager/managerEmail.html', {
+                    'title': subject,
+                    'message': body,
+                    'sender': sender,
+                })
         except Exception as exc:
             self.logger.error(
                 f"ManagerEmailService: échec rendu template email pour {sender.username} — sujet: {subject} — {exc}"

@@ -37,6 +37,9 @@
 
 {% if request.user.is_authenticated %}
 {% include 'Html/partial/structure/navbar/navbar_dropdown_user.html'%}
+{% if DEBUG %}
+{% include 'Html/partial/structure/navbar/navbar_dropdown_debug.html'%}
+{% endif %}
 {% else %}
 
 <a class="btn btn-link url_link p-1" href="{% url 'login' %}" aria-label="Login" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans 'template.nav.main.login' %}">

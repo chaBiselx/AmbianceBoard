@@ -1,12 +1,12 @@
 {% extends "Email/base.html" %}
-{% load i18n %}
+{% load i18n Translation %}
 
 
 {% block content %} 
 
 <div>
-    <h1>{% blocktrans with username=user.username %}template.email.user.greeting{% endblocktrans %}</h1>
-    <p>{% blocktrans with remaining_days=days_left %}template.email.user.tier_expiration.body{% endblocktrans %}</p>
+    <h1>{% tkey "template.email.user.greeting" username=user.username %}</h1>
+    <p>{% tkey "template.email.user.tier_expiration.body" remaining_days=days_left %}</p>
     <p>{% trans "template.email.user.tier_expiration.renew" %}</p>
     <p>{% trans "template.email.user.common.thanks_understanding" %}</p>
 

@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from django.views.i18n import set_language as django_set_language
 
 from main.interface.ui.controller.general.generalViews import home, faq, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice, support_contact, dismiss_general_notification, dismiss_trace_user_activity, callback_oauth_google, onboarding_context
+from main.interface.ui.controller.debug.debugEmailViews import debug_email_test
 from main.interface.ui.controller.general.confirmViews import confirm_account
 from main.interface.ui.controller.general.traceFrontViews import trace_front
 from main.interface.ui.controller.private.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
@@ -269,6 +270,9 @@ urlpatterns = [
 
 
 if bool(Settings.get('DEBUG')):
+    urlpatterns += [
+        path("debug/emails/", debug_email_test, name="debugEmailTest"),
+    ]
     urlpatterns += static(Settings.get('MEDIA_URL'), document_root=Settings.get('MEDIA_ROOT'))
 
 # debug toolbar
