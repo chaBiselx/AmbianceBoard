@@ -1,12 +1,12 @@
 {% extends "Email/base.html" %}
-{% load i18n %}
+{% load i18n Translation %}
 
 
 {% block content %} 
 
 <div>
-    <h1>{% blocktrans with username=user.username %}template.email.user.greeting{% endblocktrans %}</h1>
-    <p><strong>{% blocktrans with tier_label=new_tier %}template.email.user.tier_downgrade.body{% endblocktrans %}</strong></p>
+    <h1>{% tkey "template.email.user.greeting" username=user.username %}</h1>
+    <p><strong>{% tkey "template.email.user.tier_downgrade.body" tier_label=new_tier %}</strong></p>
     <p>{% trans "template.email.user.tier_downgrade.help" %}</p>
     <p>{% trans "template.email.user.common.thanks_understanding" %}</p>
 </div>

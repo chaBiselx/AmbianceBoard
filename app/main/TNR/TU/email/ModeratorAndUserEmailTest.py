@@ -225,7 +225,7 @@ class UserMailTest(TestCase):
         user_mail.send_reset_password_email(reset_url)
 
         mock_mailer.send_email.assert_called_once_with(
-            'Reinitialisation de votre mot de passe',
+            'Réinitialisation de votre mot de passe',
             "<html>Reset</html>",
             self.from_email,
             [self.user.email]

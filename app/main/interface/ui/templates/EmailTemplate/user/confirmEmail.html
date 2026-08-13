@@ -1,12 +1,12 @@
 {% extends "Email/base.html" %}
-{% load i18n %}
+{% load i18n Translation %}
 
 
 {% block content %} 
 
 <div>
-    <h1>{% blocktrans with username=user.username %}template.email.user.greeting{% endblocktrans %}</h1>
-    <p>{% blocktrans with confirmation_url=url %}template.email.user.confirm_account.body{% endblocktrans %}</p>
+    <h1>{% tkey "template.email.user.greeting" username=user.username %}</h1>
+    <p>{% tkey "template.email.user.confirm_account.body" confirmation_url=url %}</p>
 </div>
 
 {% endblock content %}

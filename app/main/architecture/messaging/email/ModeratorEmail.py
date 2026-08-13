@@ -1,5 +1,6 @@
 from main.domain.common.utils.logger.ILogger import ILogger
 from django.template.loader import render_to_string
+from django.utils.translation import get_language, gettext as _, override
 from main.domain.common.utils.settings import Settings
 from main.architecture.persistence.models.ReportContent import ReportContent
 from main.domain.common.utils.EmailSender import EmailSender
@@ -12,6 +13,11 @@ class ModeratorEmail():
         self.from_email: str = Settings.get('EMAIL_NO_REPLY')
         self.to_emails: list[str] = Settings.get('EMAILS_LISTING_MODERATORS')
 
+    def _render_email_template(self, template_name: str, context: dict) -> str:
+        language = get_language() or 'fr'
+        with override(language):
+            return render_to_string(template_name, context)
+
     def report_content_reported(self, report: ReportContent) -> None:
         """
         Send an email to the moderator when content is reported.
@@ -23,9 +29,9 @@ class ModeratorEmail():
             self.logger.error("No moderator email configured.")
             return
         
-        subject = 'Contenu signalé'
-        html_content = render_to_string('EmailTemplate/moderator/contentReported.html', {
-            'title': "Contenu signalé",
+        subject = _('template.email.moderator.reported.subject')
+        html_content = self._render_email_template('EmailTemplate/moderator/contentReported.html', {
+            'title': _('template.email.moderator.reported.subject'),
             'report': report
         })
         

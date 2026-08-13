@@ -1,5 +1,6 @@
 from main.domain.common.utils.logger.ILogger import ILogger
 from main.domain.common.utils.settings import Settings
+from django.utils.translation import get_language, gettext as _, override
 from django.template.loader import render_to_string
 from main.architecture.persistence.models.User import User
 from main.domain.common.utils.EmailSender import EmailSender
@@ -11,6 +12,11 @@ class UserMail:
         self.logger: ILogger = LoggerFactory.get_default_logger()
         self.from_email: str = Settings.get('EMAIL_NO_REPLY')
         self.user: User = user
+
+    def _render_email_template(self, template_name: str, context: dict) -> str:
+        language = get_language() or 'fr'
+        with override(language):
+            return render_to_string(template_name, context)
         
     def send_welcome_email(self) -> None:
         """
@@ -19,8 +25,11 @@ class UserMail:
         The email's subject is 'Bienvenue sur notre site'
         The recipient is the user's email address.
         """
-        subject = 'Bienvenue sur notre site'
-        html_content = render_to_string('EmailTemplate/user/welcomEmail.html', {'title': "Bienvenue" ,'user': self.user})
+        subject = _('template.email.user.welcome.subject')
+        html_content = self._render_email_template(
+            'EmailTemplate/user/welcomEmail.html',
+            {'title': _('template.email.user.welcome.subject'), 'user': self.user},
+        )
         
         try:
             mailer = EmailSender()
@@ -34,9 +43,12 @@ class UserMail:
         Sends a welcome email to the user using a predefined HTML template.
         
         """
-        subject = 'Confirmation de votre compte'
+        subject = _('template.email.user.confirm.subject')
       
-        html_content = render_to_string('EmailTemplate/user/confirmEmail.html', {'title': "Bienvenue" ,'user': self.user, 'url': url})
+        html_content = self._render_email_template(
+            'EmailTemplate/user/confirmEmail.html',
+            {'title': _('template.email.user.confirm.subject'), 'user': self.user, 'url': url},
+        )
         
         try:
             mailer = EmailSender()
@@ -51,9 +63,12 @@ class UserMail:
         Sends an email to send a link to reset account
         
         """
-        subject = 'Reinitialisation de votre mot de passe'
+        subject = _('template.email.user.reset_password.subject')
       
-        html_content = render_to_string('EmailTemplate/user/resetPassword.html', {'title': "Bienvenue" ,'user': self.user, 'url': url})
+        html_content = self._render_email_template(
+            'EmailTemplate/user/resetPassword.html',
+            {'title': _('template.email.user.reset_password.subject'), 'user': self.user, 'url': url},
+        )
         
         try:
             mailer = EmailSender()
@@ -67,8 +82,11 @@ class UserMail:
         Sends an email to prevent user from changing password
         
         """
-        subject = 'Modification de mot de passe'
-        html_content = render_to_string('EmailTemplate/user/password_changed.html', {'title': "Bienvenue" ,'user': self.user})
+        subject = _('template.email.user.password_changed.subject')
+        html_content = self._render_email_template(
+            'EmailTemplate/user/password_changed.html',
+            {'title': _('template.email.user.password_changed.subject'), 'user': self.user},
+        )
         
         try:
             mailer = EmailSender()
@@ -84,8 +102,11 @@ class UserMail:
         The email's subject is 'Votre compte a été supprimé'
         The recipient is the user's email address.
         """
-        subject = 'Votre compte a été supprimé'
-        html_content = render_to_string('EmailTemplate/user/autoDeletionAccount.html', {'title': "Account deleted" ,'user': self.user})
+        subject = _('template.email.user.account_deleted.subject')
+        html_content = self._render_email_template(
+            'EmailTemplate/user/autoDeletionAccount.html',
+            {'title': _('template.email.user.account_deleted.subject'), 'user': self.user},
+        )
         
         try:
             mailer = EmailSender()
@@ -101,9 +122,12 @@ class UserMail:
         The email's subject is 'Votre compte a été supprimé'
         The recipient is the user's email address.
         """
-        subject = 'Votre compte a été supprimé'
+        subject = _('template.email.user.account_deleted.subject')
         
-        html_content = render_to_string('EmailTemplate/user/autoDeletionAccountNeverLogin.html', {'title': "Account deleted" ,'user': self.user})
+        html_content = self._render_email_template(
+            'EmailTemplate/user/autoDeletionAccountNeverLogin.html',
+            {'title': _('template.email.user.account_deleted.subject'), 'user': self.user},
+        )
         
         try:
             mailer = EmailSender()
@@ -119,9 +143,12 @@ class UserMail:
         The email's subject is 'votre compte est inactif'
         The recipient is the user's email address.
         """
-        subject = 'Votre compte va être supprimé'
+        subject = _('template.email.user.prevent_deletion.subject')
         
-        html_content = render_to_string('EmailTemplate/user/preventAutoDeletion.html', {'title': "Prevent deletion account due to inactivity" ,'user': self.user})
+        html_content = self._render_email_template(
+            'EmailTemplate/user/preventAutoDeletion.html',
+            {'title': _('template.email.user.prevent_deletion.subject'), 'user': self.user},
+        )
         
         try:
             mailer = EmailSender()
@@ -137,8 +164,15 @@ class UserMail:
         The email's subject is 'votre compte est inactif'
         The recipient is the user's email address.
         """
-        subject = 'Votre compte va être supprimé car non confirmé'
-        html_content = render_to_string('EmailTemplate/user/preventAutoDeletionNotConfirmed.html', {'title': "Prevent deletion account due not confirmed" ,'user': self.user, 'url': url})
+        subject = _('template.email.user.prevent_deletion_unconfirmed.subject')
+        html_content = self._render_email_template(
+            'EmailTemplate/user/preventAutoDeletionNotConfirmed.html',
+            {
+                'title': _('template.email.user.prevent_deletion_unconfirmed.subject'),
+                'user': self.user,
+                'url': url,
+            },
+        )
         
         try:
             mailer = EmailSender()
@@ -154,8 +188,11 @@ class UserMail:
         The email's subject is 'Votre compte a été supprimé'
         The recipient is the user's email address.
         """
-        subject = 'Votre compte a été supprimé car non confirmé'
-        html_content = render_to_string('EmailTemplate/user/autoDeletionNotConfirmed.html', {'title': "Deletion account due not confirmed" ,'user': self.user})
+        subject = _('template.email.user.account_deleted_unconfirmed.subject')
+        html_content = self._render_email_template(
+            'EmailTemplate/user/autoDeletionNotConfirmed.html',
+            {'title': _('template.email.user.account_deleted_unconfirmed.subject'), 'user': self.user},
+        )
         
         try:
             mailer = EmailSender()
@@ -170,8 +207,15 @@ class UserMail:
         Sends a notification email to the user when their tier is downgraded.
         
         """
-        subject = 'Votre tier a été rétrogradé'
-        html_content = render_to_string('EmailTemplate/user/tierDowngradeNotification.html', {'title': "Tier downgraded" ,'user': self.user, 'new_tier': new_tier})
+        subject = _('template.email.user.tier_downgrade.subject')
+        html_content = self._render_email_template(
+            'EmailTemplate/user/tierDowngradeNotification.html',
+            {
+                'title': _('template.email.user.tier_downgrade.subject'),
+                'user': self.user,
+                'new_tier': new_tier,
+            },
+        )
         
         try:
             mailer = EmailSender()
@@ -185,8 +229,15 @@ class UserMail:
         Sends a warning email to the user when their tier is about to expire.
         
         """
-        subject = 'Avertissement d\'expiration de votre tier'
-        html_content = render_to_string('EmailTemplate/user/tierExpirationWarning.html', {'title': "Tier expiration warning" ,'user': self.user, 'days_left': days_left})
+        subject = _('template.email.user.tier_expiration.subject')
+        html_content = self._render_email_template(
+            'EmailTemplate/user/tierExpirationWarning.html',
+            {
+                'title': _('template.email.user.tier_expiration.subject'),
+                'user': self.user,
+                'days_left': days_left,
+            },
+        )
         
         try:
             mailer = EmailSender()
