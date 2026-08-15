@@ -371,6 +371,10 @@ Correction
 - Fix l'absence de traduction dans les mails envoyé 
 - Fix de l'affichage des slider sous les boutons
 
+### 0.4.12 - 2026/08
+Modifications
+- Remlacement du "mixer le son" par "Paramètre audio"
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
