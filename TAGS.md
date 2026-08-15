@@ -375,6 +375,9 @@ Correction
 Modifications
 - Remlacement du "mixer le son" par "Paramètre audio"
 
+Correction 
+- Ajustement de l'affichage des slider sous les boutons sur mobile
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

@@ -5,6 +5,7 @@
 // Définition des variables SCSS
 $gap: round(.2em, 1px);
 $lineThickness: round(.5em, 1px);
+$cursorSize: round(.2em, 1px);
 $thumbSize: round(2em, 1px);
 $tooltipTailSize: round(.8em, 1px);
 $tooltipRadius: round(.8em, 1px);
@@ -32,6 +33,7 @@ $tooltipRadius: round(.8em, 1px);
 
     --gap: #{$gap};
     --lineThickness: #{$lineThickness};
+    --cursorSize: #{$cursorSize};
     --thumbSize: #{$thumbSize};
     --tooltipTailSize: #{$tooltipTailSize};
     --tooltipRadius: #{$tooltipRadius};
@@ -72,7 +74,7 @@ $tooltipRadius: round(.8em, 1px);
         height: var(--thumbSize);
         aspect-ratio: 1;
         border-radius: 50%;
-        box-shadow: 0 0 0 var(--_b, var(--lineThickness)) inset var(--sliderColorMixed);
+        box-shadow: 0 0 0 var(--_b, var(--cursorSize)) inset var(--sliderColorMixed);
         border-image: linear-gradient(90deg, var(--sliderColorMixed) 50%, #ababab 0) 0 1/calc(50% - var(--lineThickness)/2) 100vw/0 calc(100vw + var(--gap));
         -webkit-appearance: none;
         appearance: none;
@@ -87,7 +89,7 @@ $tooltipRadius: round(.8em, 1px);
         width: var(--thumbSize);
         background: none;
         border-radius: 50%;
-        box-shadow: 0 0 0 var(--_b, var(--lineThickness)) inset var(--sliderColorMixed);
+        box-shadow: 0 0 0 var(--_b, var(--cursorSize)) inset var(--sliderColorMixed);
         border-image: linear-gradient(90deg, var(--sliderColorMixed) 50%, #ababab 0) 0 1/calc(50% - var(--lineThickness)/2) 100vw/0 calc(100vw + var(--gap));
         -moz-appearance: none;
         appearance: none;
