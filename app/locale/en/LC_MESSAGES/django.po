@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-07 06:21+0000\n"
+"POT-Creation-Date: 2026-08-15 18:20+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -16,6 +16,75 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: main/architecture/messaging/email/ModeratorEmail.py:32
+#: main/architecture/messaging/email/ModeratorEmail.py:34
+#: main/interface/ui/controller/debug/debugEmailViews.py:46
+msgid "template.email.moderator.reported.subject"
+msgstr "Reported content"
+
+#: main/architecture/messaging/email/UserMail.py:28
+#: main/architecture/messaging/email/UserMail.py:31
+#: main/interface/ui/controller/debug/debugEmailViews.py:166
+msgid "template.email.user.welcome.subject"
+msgstr "Welcome to our site"
+
+#: main/architecture/messaging/email/UserMail.py:46
+#: main/architecture/messaging/email/UserMail.py:50
+#: main/interface/ui/controller/debug/debugEmailViews.py:60
+msgid "template.email.user.confirm.subject"
+msgstr "Confirm your account"
+
+#: main/architecture/messaging/email/UserMail.py:66
+#: main/architecture/messaging/email/UserMail.py:70
+#: main/interface/ui/controller/debug/debugEmailViews.py:78
+msgid "template.email.user.reset_password.subject"
+msgstr "Reset your password"
+
+#: main/architecture/messaging/email/UserMail.py:85
+#: main/architecture/messaging/email/UserMail.py:88
+#: main/interface/ui/controller/debug/debugEmailViews.py:180
+msgid "template.email.user.password_changed.subject"
+msgstr "Password changed"
+
+#: main/architecture/messaging/email/UserMail.py:105
+#: main/architecture/messaging/email/UserMail.py:108
+#: main/architecture/messaging/email/UserMail.py:125
+#: main/architecture/messaging/email/UserMail.py:129
+#: main/interface/ui/controller/debug/debugEmailViews.py:190
+#: main/interface/ui/controller/debug/debugEmailViews.py:200
+msgid "template.email.user.account_deleted.subject"
+msgstr "Your account has been deleted"
+
+#: main/architecture/messaging/email/UserMail.py:146
+#: main/architecture/messaging/email/UserMail.py:150
+#: main/interface/ui/controller/debug/debugEmailViews.py:210
+msgid "template.email.user.prevent_deletion.subject"
+msgstr "Your account will be deleted"
+
+#: main/architecture/messaging/email/UserMail.py:167
+#: main/architecture/messaging/email/UserMail.py:171
+#: main/interface/ui/controller/debug/debugEmailViews.py:220
+msgid "template.email.user.prevent_deletion_unconfirmed.subject"
+msgstr "Your account will be deleted because it is not confirmed"
+
+#: main/architecture/messaging/email/UserMail.py:191
+#: main/architecture/messaging/email/UserMail.py:194
+#: main/interface/ui/controller/debug/debugEmailViews.py:231
+msgid "template.email.user.account_deleted_unconfirmed.subject"
+msgstr "Your account has been deleted because it is not confirmed"
+
+#: main/architecture/messaging/email/UserMail.py:210
+#: main/architecture/messaging/email/UserMail.py:214
+#: main/interface/ui/controller/debug/debugEmailViews.py:241
+msgid "template.email.user.tier_downgrade.subject"
+msgstr "Your tier has been downgraded"
+
+#: main/architecture/messaging/email/UserMail.py:232
+#: main/architecture/messaging/email/UserMail.py:236
+#: main/interface/ui/controller/debug/debugEmailViews.py:252
+msgid "template.email.user.tier_expiration.subject"
+msgstr "Your tier expiration warning"
 
 #: main/domain/common/enum/FadePlaylistEnum.py:26
 #: main/domain/common/enum/FadePlaylistEnum.py:58
@@ -251,50 +320,6 @@ msgstr "This email was sent automatically, please do not reply."
 msgid "template.email.moderator.reported.title"
 msgstr "Reported content"
 
-#: main/architecture/messaging/email/UserMail.py:0
-msgid "template.email.user.welcome.subject"
-msgstr "Welcome to our site"
-
-#: main/architecture/messaging/email/UserMail.py:0
-msgid "template.email.user.confirm.subject"
-msgstr "Confirm your account"
-
-#: main/architecture/messaging/email/UserMail.py:0
-msgid "template.email.user.reset_password.subject"
-msgstr "Reset your password"
-
-#: main/architecture/messaging/email/UserMail.py:0
-msgid "template.email.user.password_changed.subject"
-msgstr "Password changed"
-
-#: main/architecture/messaging/email/UserMail.py:0
-msgid "template.email.user.account_deleted.subject"
-msgstr "Your account has been deleted"
-
-#: main/architecture/messaging/email/UserMail.py:0
-msgid "template.email.user.prevent_deletion.subject"
-msgstr "Your account will be deleted"
-
-#: main/architecture/messaging/email/UserMail.py:0
-msgid "template.email.user.prevent_deletion_unconfirmed.subject"
-msgstr "Your account will be deleted because it is not confirmed"
-
-#: main/architecture/messaging/email/UserMail.py:0
-msgid "template.email.user.account_deleted_unconfirmed.subject"
-msgstr "Your account has been deleted because it is not confirmed"
-
-#: main/architecture/messaging/email/UserMail.py:0
-msgid "template.email.user.tier_downgrade.subject"
-msgstr "Your tier has been downgraded"
-
-#: main/architecture/messaging/email/UserMail.py:0
-msgid "template.email.user.tier_expiration.subject"
-msgstr "Your tier expiration warning"
-
-#: main/architecture/messaging/email/ModeratorEmail.py:0
-msgid "template.email.moderator.reported.subject"
-msgstr "Reported content"
-
 #: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:10
 msgid "template.email.moderator.reported.details.title"
 msgstr "Reported content details:"
@@ -331,19 +356,6 @@ msgstr "Username:"
 msgid "template.email.moderator.reported.user_info.registered_at"
 msgstr "Registration date:"
 
-#: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccount.html:8
-#: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccountNeverLogin.html:8
-#: main/interface/ui/templates/EmailTemplate/user/autoDeletionNotConfirmed.html:8
-#: main/interface/ui/templates/EmailTemplate/user/confirmEmail.html:8
-#: main/interface/ui/templates/EmailTemplate/user/password_changed.html:8
-#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletion.html:8
-#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletionNotConfirmed.html:8
-#: main/interface/ui/templates/EmailTemplate/user/resetPassword.html:8
-#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:8
-#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:8
-msgid "template.email.user.greeting"
-msgstr "Hello %(username)s!"
-
 #: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccount.html:9
 #: main/interface/ui/templates/EmailTemplate/user/autoDeletionAccountNeverLogin.html:9
 msgid "template.email.user.auto_delete_24m.body"
@@ -356,11 +368,6 @@ msgid "template.email.user.auto_delete_unconfirmed.body"
 msgstr ""
 "After 2 months without confirming your email, your account has been deleted."
 
-#: main/interface/ui/templates/EmailTemplate/user/confirmEmail.html:9
-msgid "template.email.user.confirm_account.body"
-msgstr ""
-"Please confirm your account. <a href=\"%(confirmation_url)s\">Confirm</a>"
-
 #: main/interface/ui/templates/EmailTemplate/user/password_changed.html:9
 msgid "template.email.user.password_changed.body"
 msgstr "Your password has been successfully changed."
@@ -371,21 +378,6 @@ msgstr ""
 "After more than 22 months of inactivity, your account will be deleted from "
 "our site."
 
-#: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletionNotConfirmed.html:9
-msgid "template.email.user.prevent_auto_delete_unconfirmed.body"
-msgstr ""
-"Your account is not confirmed. Please confirm your account using the "
-"following link: <a href=\"%(confirmation_url)s\">Confirm</a>."
-
-#: main/interface/ui/templates/EmailTemplate/user/resetPassword.html:9
-msgid "template.email.user.reset_password.body"
-msgstr ""
-"Here is your password reset request. <a href=\"%(reset_url)s\">Reset</a>"
-
-#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:9
-msgid "template.email.user.tier_downgrade.body"
-msgstr "Your account has been downgraded to the %(tier_label)s tier."
-
 #: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:10
 msgid "template.email.user.tier_downgrade.help"
 msgstr "If you have any questions or concerns, feel free to contact us."
@@ -395,19 +387,11 @@ msgstr "If you have any questions or concerns, feel free to contact us."
 msgid "template.email.user.common.thanks_understanding"
 msgstr "Thank you for your understanding."
 
-#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:9
-msgid "template.email.user.tier_expiration.body"
-msgstr "Your account will expire in %(remaining_days)s days."
-
 #: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:10
 msgid "template.email.user.tier_expiration.renew"
 msgstr ""
 "To avoid any service downgrade, please renew your subscription as soon as "
 "possible."
-
-#: main/interface/ui/templates/EmailTemplate/user/welcomEmail.html:8
-msgid "template.email.user.welcome_greeting"
-msgstr "Welcome %(username)s!"
 
 #: main/interface/ui/templates/EmailTemplate/user/welcomEmail.html:9
 msgid "template.email.user.welcome.body"
@@ -437,11 +421,11 @@ msgstr "Error"
 msgid "Aucun téléchargement différé mis à jour sur les 24 dernières heures."
 msgstr "No deferred downloads updated in the last 24 hours."
 
-#: main/interface/ui/templates/Html/Account/create_account.html:16
+#: main/interface/ui/templates/Html/Account/create_account.html:14
 msgid "template.account.create.title"
 msgstr "Sign up"
 
-#: main/interface/ui/templates/Html/Account/create_account.html:88
+#: main/interface/ui/templates/Html/Account/create_account.html:86
 msgid "template.account.create.form.submit"
 msgstr "Create account"
 
@@ -473,11 +457,11 @@ msgstr "Create account"
 msgid "template.account.login.form.google"
 msgstr "Sign in with Google"
 
-#: main/interface/ui/templates/Html/Account/reset_password.html:16
+#: main/interface/ui/templates/Html/Account/reset_password.html:14
 msgid "template.account.reset_password.title"
 msgstr "Password reset"
 
-#: main/interface/ui/templates/Html/Account/reset_password.html:45
+#: main/interface/ui/templates/Html/Account/reset_password.html:43
 msgid "template.account.reset_password.form.submit"
 msgstr "Update password"
 
@@ -1068,27 +1052,27 @@ msgstr "Change theme"
 msgid "template.footer.legal_notice"
 msgstr "Legal notice"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:13
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:15
 msgid "template.footer.pricing"
 msgstr "Pricing"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:15
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:17
 msgid "template.footer.support"
 msgstr "Support"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:24
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:26
 msgid "template.footer.social.discord"
 msgstr "Join AmbianceBoard on Discord"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:27
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:29
 msgid "template.footer.social.youtube"
 msgstr "Watch AmbianceBoard on YouTube"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:30
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:32
 msgid "template.footer.social.x"
 msgstr "Follow AmbianceBoard on X"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:35
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:37
 msgid "template.footer.social.github"
 msgstr "Browse AmbianceBoard on GitHub"
 
@@ -1136,8 +1120,8 @@ msgstr "Downloads in the last 24h"
 msgid "template.nav.main.downloads"
 msgstr "Downloads"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:42
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:44
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:45
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:47
 msgid "template.nav.main.login"
 msgstr "Login"
 
@@ -1197,6 +1181,31 @@ msgstr "Continue"
 #: main/interface/ui/templates/socialaccount/login.html:20
 msgid "template.social.google.back"
 msgstr "Back"
+
+#~ msgid "template.email.user.greeting"
+#~ msgstr "Hello %(username)s!"
+
+#~ msgid "template.email.user.confirm_account.body"
+#~ msgstr ""
+#~ "Please confirm your account. <a href=\"%(confirmation_url)s\">Confirm</a>"
+
+#~ msgid "template.email.user.prevent_auto_delete_unconfirmed.body"
+#~ msgstr ""
+#~ "Your account is not confirmed. Please confirm your account using the "
+#~ "following link: <a href=\"%(confirmation_url)s\">Confirm</a>."
+
+#~ msgid "template.email.user.reset_password.body"
+#~ msgstr ""
+#~ "Here is your password reset request. <a href=\"%(reset_url)s\">Reset</a>"
+
+#~ msgid "template.email.user.tier_downgrade.body"
+#~ msgstr "Your account has been downgraded to the %(tier_label)s tier."
+
+#~ msgid "template.email.user.tier_expiration.body"
+#~ msgstr "Your account will expire in %(remaining_days)s days."
+
+#~ msgid "template.email.user.welcome_greeting"
+#~ msgstr "Welcome %(username)s!"
 
 #, python-format
 #~ msgid "Soundboard publique 100%% Gratuit"
