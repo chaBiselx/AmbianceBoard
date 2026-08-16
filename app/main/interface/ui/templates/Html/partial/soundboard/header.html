@@ -1,0 +1,33 @@
+{% load SoundBoard %}
+{% load i18n %}
+{% if soundboard %}
+
+<div class="row fullScreen-element">
+    <div class="col-md-6 col-12">
+        <h4 id="soundboard-name">{{ soundboard | get_name }}
+            {% if type_header == "private" %}
+            <span class="fs-6 text-primary fst-italic">{% trans "template.soundboard_read.badge.private" %}</span>
+            {% elif type_header == "public" %}
+            <span class="fs-6 text-success fst-italic">{% trans "template.publicSoundboard.badge.public" %}</span>
+            {% endif %}
+        </h4>
+    </div>
+    {% if type_header == "shared" %}
+    <div class="col">
+        <div class="float-end"><button class="btn btn-sm btn-secondary" id="shared-custom-volume-button"><i class="fa-solid fa-volume-low"></i></button></div>
+    </div>
+    {% endif %}
+    {% if type_header == "private" or type_header == "public" %}
+    {% if can_share_soundboard %}
+
+    <div class="col">
+        <button class="btn btn-outline-secondary float-end" id="btn-publish-soundboard" data-url="{% url 'publish_soundboard' soundboard.uuid %}" data-bs-toggle="tooltip" data-bs-title="{% trans "template.shareSoundboard.button.tooltip" %}">
+            <i class="fa-solid fa-square-share-nodes"></i> {% trans "template.shareSoundboard.button.label" %}
+        </button>
+    </div>
+    {% endif %}
+    {% endif %}
+
+
+</div>
+{% endif %}

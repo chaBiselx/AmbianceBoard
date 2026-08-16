@@ -6,11 +6,9 @@
 
 {% block content %}
 
-{% include 'Html/partial/soundboard/share_soundboard.html'%}
+{% include 'Html/partial/soundboard/header.html' with type_header="private" %}
 <div class="row">
-    <div class="col-12 fullScreen-element">
-        <h4 id="soundboard-name">{{ soundboard | get_name }} <span class="fs-6 text-primary fst-italic">{% trans "template.soundboard_read.badge.private" %}</span></h4>
-    </div>
+
     <div class="d-none">
     </div>
     <div class="col">
