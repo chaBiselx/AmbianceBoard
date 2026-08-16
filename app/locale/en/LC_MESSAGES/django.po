@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-15 18:22+0000\n"
+"POT-Creation-Date: 2026-08-16 19:00+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -87,7 +87,7 @@ msgid "template.email.user.tier_expiration.subject"
 msgstr "Your tier expiration warning"
 
 #: main/domain/common/enum/FadePlaylistEnum.py:26
-#: main/domain/common/enum/FadePlaylistEnum.py:58
+#: main/domain/common/enum/FadePlaylistEnum.py:60
 msgid "enum.fade_playlist.default"
 msgstr "Default"
 
@@ -126,6 +126,14 @@ msgstr "Ease in/out (quadratic)"
 #: main/domain/common/enum/FadePlaylistEnum.py:35
 msgid "enum.fade_curve.ease_out_cubic"
 msgstr "Ease out (cubic)"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:36
+msgid "enum.fade_curve.ease_in_exponential"
+msgstr "Ease in (Exponential)"
+
+#: main/domain/common/enum/FadePlaylistEnum.py:37
+msgid "enum.fade_curve.ease_out_exponential"
+msgstr "Ease out (Exponential)"
 
 #: main/domain/general/service/OnboardingContextService.py:38
 msgid "onboarding.labels.next"
@@ -920,10 +928,6 @@ msgstr "No playlist found."
 msgid "template.filterTagCloud.accordion_title"
 msgstr "Filter by tag"
 
-#: main/interface/ui/templates/Html/Public/soundboard_read.html:13
-msgid "template.publicSoundboard.badge.public"
-msgstr "Public"
-
 #: main/interface/ui/templates/Html/Public/stats_user_public_soundboard.html:22
 msgid "template.publicStats.section.parameter"
 msgstr "Settings"
@@ -948,11 +952,11 @@ msgstr "Soundboard link"
 msgid "template.publicShareLink.button.label"
 msgstr "Share link"
 
-#: main/interface/ui/templates/Html/Shared/soundboard_read.html:35
+#: main/interface/ui/templates/Html/Shared/soundboard_read.html:32
 msgid "template.shared.read.info.sync"
 msgstr "The app is synchronized with the game master soundboard."
 
-#: main/interface/ui/templates/Html/Shared/soundboard_read.html:36
+#: main/interface/ui/templates/Html/Shared/soundboard_read.html:33
 msgid "template.shared.read.info.master"
 msgstr ""
 "The game master controls music playback. You can keep this page in the "
@@ -970,19 +974,15 @@ msgstr "keyboard shortcut"
 msgid "template.soundboard_read.page_title_suffix"
 msgstr "Ambiance Soundboard | AmbianceBoard"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:12
-msgid "template.soundboard_read.badge.private"
-msgstr "Private"
-
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:31
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:30
 msgid "template.soundboard_read.button.edit_mode"
 msgstr "Edit mode"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:34
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:33
 msgid "template.soundboard_read.button.organize"
 msgstr "Organize"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:36
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:35
 msgid "template.soundboard_read.button.edit_soundboard"
 msgstr "Edit SoundBoard"
 
@@ -1026,6 +1026,24 @@ msgstr "none"
 msgid "template.filterTagCloud.no_description"
 msgstr "No description"
 
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:11
+msgid "template.soundboard_read.badge.private"
+msgstr "Private"
+
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:13
+msgid "template.publicSoundboard.badge.public"
+msgstr "Public"
+
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:23
+msgid "template.shareSoundboard.button.tooltip"
+msgstr ""
+"Send the generated link to share the listening experience with your online "
+"players."
+
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:24
+msgid "template.shareSoundboard.button.label"
+msgstr "Share listening"
+
 #: main/interface/ui/templates/Html/partial/soundboard/mixer.html:9
 msgid "template.mixer.setting.accordion.title"
 msgstr "Audio settings"
@@ -1034,19 +1052,9 @@ msgstr "Audio settings"
 msgid "template.playingMonitor.accordion.title"
 msgstr "Now playing"
 
-#: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:15
+#: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:14
 msgid "template.playingMonitor.empty"
 msgstr "No sound playing"
-
-#: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:7
-msgid "template.shareSoundboard.button.tooltip"
-msgstr ""
-"Send the generated link to share the listening experience with your online "
-"players."
-
-#: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:8
-msgid "template.shareSoundboard.button.label"
-msgstr "Share listening"
 
 #: main/interface/ui/templates/Html/partial/structure/base.html:13
 msgid "template.base.default_page_title"

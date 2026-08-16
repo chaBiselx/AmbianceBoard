@@ -260,6 +260,7 @@ Corrections
 Nouveautés
 - Ajout d'un mode édition directement sur un soundboard privée, il permet d'ajouter directement les boutons copiables de la communauté ou ses boutons personnels
 - Ajout de workflow pour valider de travail
+- Ajout d'un nouveau type de fondu exponentiel
 
 Corrections
 - Eviter la concurrence pour la labellisation pour ne pas surcharger le serveur

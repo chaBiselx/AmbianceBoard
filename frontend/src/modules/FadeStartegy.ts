@@ -62,6 +62,18 @@ class EaseOutCubic extends FadeStrategy implements FadeStrategyInterface {
     }
 }
 
+class EaseInExponential extends FadeStrategy implements FadeStrategyInterface {
+    calculateVolume(startVolume: number, endVolume: number, progress: number) {
+        return startVolume + (endVolume - startVolume) * (progress === 0 ? 0 : Math.pow(2, 10 * progress - 10));
+    }
+}
+
+class EaseOutExponential extends FadeStrategy implements FadeStrategyInterface {
+    calculateVolume(startVolume: number, endVolume: number, progress: number) {
+        return startVolume + (endVolume - startVolume) * (progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress));
+    }
+}
+
 class FadeSelector {
 
     private static readonly strategies: Record<string, FadeStrategyInterface> = {
@@ -73,7 +85,9 @@ class FadeSelector {
         'ease-out-quad': new EaseOutQuad(),
         'ease-in-out-quad': new EaseInOutQuad(),
         'ease-in-cubic': new EaseInCubic(),
-        'ease-out-cubic': new EaseOutCubic()
+        'ease-out-cubic': new EaseOutCubic(),
+        'ease-in-exponential': new EaseInExponential(),
+        'ease-out-exponential': new EaseOutExponential()
     };
     static selectTypeFade(fadeType: string): FadeStrategy {
         return this.strategies[fadeType] ?? this.strategies['linear'];

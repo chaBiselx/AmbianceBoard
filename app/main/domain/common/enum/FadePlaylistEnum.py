@@ -33,6 +33,8 @@ class FadePlaylistEnum(BaseEnum):
             FadeEnum.EASE_OUT_QUAD.name: _("enum.fade_curve.ease_out_quad"),
             FadeEnum.EASE_IN_OUT_QUAD.name: _("enum.fade_curve.ease_in_out_quad"),
             FadeEnum.EASE_OUT_CUBIC.name: _("enum.fade_curve.ease_out_cubic"),
+            FadeEnum.EASE_IN_EXPONENTIAL.name: _("enum.fade_curve.ease_in_exponential"),
+            FadeEnum.EASE_OUT_EXPONENTIAL.name: _("enum.fade_curve.ease_out_exponential"),
         }
 
     @classmethod

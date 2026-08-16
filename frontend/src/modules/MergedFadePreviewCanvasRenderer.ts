@@ -38,6 +38,8 @@ const FADE_ENUM_TO_STRATEGY: Record<string, string> = {
     EASE_OUT_QUAD: 'ease-out-quad',
     EASE_IN_OUT_QUAD: 'ease-in-out-quad',
     EASE_OUT_CUBIC: 'ease-out-cubic',
+    EASE_IN_EXPONENTIAL: 'ease-in-exponential',
+    EASE_OUT_EXPONENTIAL: 'ease-out-exponential',
 };
 
 export default class MergedFadePreviewCanvasRenderer {
