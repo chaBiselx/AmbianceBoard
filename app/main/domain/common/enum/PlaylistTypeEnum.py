@@ -69,5 +69,19 @@ class PlaylistTypeEnum(BaseEnum):
         for member in cls:
             if member.value == search_str:
                 return member
-        raise ValueError(f"No enum member found with name: {name}")
+        raise ValueError(f"No enum member found with name: {search_str}")
         
+        
+    def get_short_description(self) -> str:
+        """
+        Récupère une description courte pour ce type de playlist.
+        
+        Returns:
+            str: Description courte
+        """
+        descriptions = {
+            self.PLAYLIST_TYPE_INSTANT.name: "Sons instantanés (effets sonores courts, bruits, cris, etc.)",
+            self.PLAYLIST_TYPE_AMBIENT.name: "Sons d'ambiance (boucles, atmosphères, sons pour les personnages)",
+            self.PLAYLIST_TYPE_MUSIC.name: "Musiques (morceaux musicaux, sons pour les joueurs)"
+        }
+        return descriptions.get(self.name, "Type de playlist inconnu")
