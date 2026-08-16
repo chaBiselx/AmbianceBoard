@@ -375,6 +375,7 @@ Correction
 Nouveautés
 - Ajout d'un monitoring pour avoir le liste des éléments en cours sur un sounboard
 - Si un sounboard est vide, l'application proposer d'ajouter des sons automatiquement
+- Ajout d'un label pour indiquer les type de musique avec les codes couleurs
 
 Améliorations
 - Adapte la taille du texte en fonction de la taille de l'éléments pour les soundboard/playlist
@@ -384,6 +385,7 @@ Modifications
 
 Correction 
 - Ajustement de l'affichage des slider sous les boutons sur mobile
+- Corrections du rendu des courbes pour les fondues au chargement de la page qui était plat
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

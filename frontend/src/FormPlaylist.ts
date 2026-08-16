@@ -4,7 +4,7 @@ import Csrf from './modules/General/Csrf';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import { addClearIconConfirmation } from '@/modules/ClearIconConfirmation';
 import MergedFadePreviewCanvasRenderer from '@/modules/MergedFadePreviewCanvasRenderer';
-import TagSelector  from '@/modules/Form/TagSelector';
+import TagSelector from '@/modules/Form/TagSelector';
 
 
 
@@ -19,6 +19,11 @@ declare global {
 type playlist = { color: string, colorText: string, typePlaylist: string };
 
 const mergedFadePreviewCanvasRenderer = new MergedFadePreviewCanvasRenderer();
+
+function renderMergedFadePreview(): void {
+    mergedFadePreviewCanvasRenderer.renderFromDom();
+}
+
 
 simulatePlaylistColor();
 toggleShowColorForm();
@@ -52,15 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
     addPopupDescriptionPlaylistType();
     addListingOtherColorsEvent();
     addClearIconConfirmation('de la playlist');
-    mergedFadePreviewCanvasRenderer.renderFromDom();
-    window.addEventListener('resize', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    mergedFadePreviewCanvasRenderer.enableAutoRefresh();
+    window.addEventListener('load', renderMergedFadePreview, { once: true });
+    window.addEventListener('resize', renderMergedFadePreview);
 
     const id_typePlaylist = document.getElementById('id_typePlaylist');
-    id_typePlaylist?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    id_typePlaylist?.addEventListener('change', renderMergedFadePreview);
     const id_fadeIn = document.getElementById('id_fadeIn');
-    id_fadeIn?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    id_fadeIn?.addEventListener('change', renderMergedFadePreview);
     const id_fadeOut = document.getElementById('id_fadeOut');
-    id_fadeOut?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    id_fadeOut?.addEventListener('change', renderMergedFadePreview);
     (new TagSelector()).init();
 
 });
