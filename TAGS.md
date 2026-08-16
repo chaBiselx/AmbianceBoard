@@ -376,6 +376,9 @@ Nouveautés
 - Ajout d'un monitoring pour avoir le liste des éléments en cours sur un sounboard
 - Si un sounboard est vide, l'application proposer d'ajouter des sons automatiquement
 
+Améliorations
+- Adapte la taille du texte en fonction de la taille de l'éléments pour les soundboard/playlist
+
 Modifications
 - Remlacement du "mixer le son" par "Paramètre audio"
 
