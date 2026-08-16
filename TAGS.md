@@ -372,6 +372,9 @@ Correction
 - Fix de l'affichage des slider sous les boutons
 
 ### 0.4.12 - 2026/08
+Nouveautés
+- Ajout d'un monitoring pour avoir le liste des éléments en cours sur un sounboard
+
 Modifications
 - Remlacement du "mixer le son" par "Paramètre audio"
 

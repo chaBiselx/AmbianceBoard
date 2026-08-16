@@ -1042,6 +1042,14 @@ msgstr "Aucune description"
 msgid "template.mixer.setting.accordion.title"
 msgstr "Paramètres audio"
 
+#: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:7
+msgid "template.playingMonitor.accordion.title"
+msgstr "En cours de lecture"
+
+#: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:15
+msgid "template.playingMonitor.empty"
+msgstr "Aucun son en cours"
+
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:7
 msgid "template.shareSoundboard.button.tooltip"
 msgstr ""

@@ -1030,6 +1030,14 @@ msgstr "No description"
 msgid "template.mixer.setting.accordion.title"
 msgstr "Audio settings"
 
+#: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:7
+msgid "template.playingMonitor.accordion.title"
+msgstr "Now playing"
+
+#: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:15
+msgid "template.playingMonitor.empty"
+msgstr "No sound playing"
+
 #: main/interface/ui/templates/Html/partial/soundboard/share_soundboard.html:7
 msgid "template.shareSoundboard.button.tooltip"
 msgstr ""

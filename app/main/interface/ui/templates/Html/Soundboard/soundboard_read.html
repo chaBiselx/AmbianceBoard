@@ -18,6 +18,7 @@
 
         {% include 'Html/partial/soundboard/shortcutSoundboard.html' with list_shortcut_keyboard=list_shortcut_keyboard %}
         {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum owner=True master=True %}
+        {% include 'Html/partial/soundboard/playing_monitor.html' %}
         {% include 'Html/partial/soundboard/board.html' with master=True owner=True soundboard=soundboard %}
 
     </div>

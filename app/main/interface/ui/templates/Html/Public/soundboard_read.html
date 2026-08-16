@@ -17,6 +17,8 @@
 
         {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum owner=False master=True %}
 
+        {% include 'Html/partial/soundboard/playing_monitor.html' %}
+
         {% include 'Html/partial/soundboard/board.html' with master=True owner=False soundboard=soundboard %}
 
 

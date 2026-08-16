@@ -1,0 +1,28 @@
+{% load static i18n %}
+
+<div class="accordion" id="accordionPlayingMonitor">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="playingMonitor-heading">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#playingMonitor-collapse" aria-expanded="false" aria-controls="playingMonitor-collapse">
+                {% trans "template.playingMonitor.accordion.title" %}
+            </button>
+        </h2>
+        <div id="playingMonitor-collapse" class="accordion-collapse collapse" aria-labelledby="playingMonitor-heading">
+            <div class="accordion-body p-2">
+                <div id="playing-monitor-list" class="playing-monitor-list d-flex flex-wrap gap-1">
+                    <span id="playing-monitor-empty" class="text-muted fst-italic text-sm">
+                        {% trans "template.playingMonitor.empty" %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<template id="playing-monitor-btn-template">
+    <div role="button" class="playlist-element playing-monitor-stop-btn m-1 position-relative" data-playlist-id="">
+        <span class="playing-monitor-btn-content"></span>
+        <!-- stop badge overlaid on the button corner -->
+        <span class="playing-monitor-stop-badge"><i class="fa-solid fa-stop"></i></span>
+    </div>
+</template>

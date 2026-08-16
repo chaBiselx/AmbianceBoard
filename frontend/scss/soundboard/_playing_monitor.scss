@@ -1,0 +1,21 @@
+.playing-monitor-list {
+    min-height: 2rem;
+}
+
+.playing-monitor-stop-btn {
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+
+    &:hover {
+        filter: brightness(0.85);
+    }
+
+    // stop icon pinned to bottom-right corner
+    .playing-monitor-stop-badge {
+        position: absolute;
+        bottom: 2px;
+        right: 3px;
+        font-size: 0.6rem;
+        opacity: 0.85;
+    }
+}
