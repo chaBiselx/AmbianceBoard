@@ -386,6 +386,7 @@ Améliorations
 Modifications
 - Remplacement du "mixer le son" par "Paramètre audio"
 - Changement des couleurs par default
+- Les tooltip des graphiques ignorent désormais les valeur à 0
 
 Correction 
 - Ajustement de l'affichage des slider sous les boutons sur mobile
