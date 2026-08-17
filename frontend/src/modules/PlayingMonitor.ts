@@ -77,7 +77,7 @@ class PlayingMonitor {
         const template = document.getElementById(this.TEMPLATE_ID) as HTMLTemplateElement | null;
         if (!template) return;
 
-        const btn = (template.content.cloneNode(true) as DocumentFragment).querySelector<HTMLElement>('div')!;
+        const btn = (template.content.cloneNode(true) as DocumentFragment).querySelector<HTMLElement>('button')!;
         btn.dataset.playlistId = playlistId;
 
         // mirror the source button's visual identity
@@ -117,7 +117,9 @@ class PlayingMonitor {
             const test = regex.exec(dimClassOrigin);
             if (test?.[1]) {
                 dimClass = Number.parseInt(test[1]);
-                dimClass = Math.max((dimClass - 25), 50);
+                let reduction = 25;
+                if (dimClass >= 100) reduction = 50;
+                dimClass = Math.max((dimClass - reduction), 50);
             }
         }
         return `playlist-dim-${dimClass}`;

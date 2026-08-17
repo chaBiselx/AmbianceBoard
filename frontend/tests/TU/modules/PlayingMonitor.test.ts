@@ -29,10 +29,10 @@ const setupDOM = (playlistClass = 'playlist-dim-150', active = false): HTMLEleme
         </div>
 
         <template id="playing-monitor-btn-template">
-            <div role="button" class="playlist-element playing-monitor-stop-btn m-1 position-relative" data-playlist-id="">
+            <button class="playlist-element playing-monitor-stop-btn m-1 position-relative" data-playlist-id="">
                 <span class="playing-monitor-btn-content"></span>
                 <span class="playing-monitor-stop-badge"><i class="fa-solid fa-stop"></i></span>
-            </div>
+            </button>
         </template>
     `;
 
@@ -46,7 +46,7 @@ describe('PlayingMonitor', () => {
         document.body.innerHTML = '';
     });
 
-    it('should create monitor button from an already active playlist at init', async () => {
+    it('should create monitor button from an already active playlist at init with big', async () => {
         setupDOM('playlist-dim-150', true);
         const monitor = new PlayingMonitor();
 
@@ -56,7 +56,22 @@ describe('PlayingMonitor', () => {
         const stopBtn = document.querySelector('.playing-monitor-stop-btn') as HTMLElement;
         expect(stopBtn).not.toBeNull();
         expect(stopBtn.dataset.playlistId).toBe('abc');
-        expect(stopBtn.classList.contains('playlist-dim-125')).toBe(true);
+        expect(stopBtn.classList.contains('playlist-dim-100')).toBe(true);
+        expect(stopBtn.querySelector('.playing-monitor-btn-content')?.innerHTML).toContain('Thunder');
+        expect(stopBtn.getAttribute('style')).toContain('background-color');
+    });
+
+    it('should create monitor button from an already active playlist at init with small', async () => {
+        setupDOM('playlist-dim-75', true);
+        const monitor = new PlayingMonitor();
+
+        monitor.init();
+        await flushMutationObservers();
+
+        const stopBtn = document.querySelector('.playing-monitor-stop-btn') as HTMLElement;
+        expect(stopBtn).not.toBeNull();
+        expect(stopBtn.dataset.playlistId).toBe('abc');
+        expect(stopBtn.classList.contains('playlist-dim-50')).toBe(true);
         expect(stopBtn.querySelector('.playing-monitor-btn-content')?.innerHTML).toContain('Thunder');
         expect(stopBtn.getAttribute('style')).toContain('background-color');
     });
