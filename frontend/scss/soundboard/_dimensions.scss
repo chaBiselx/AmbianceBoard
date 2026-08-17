@@ -5,6 +5,7 @@ $playlist-dimensions: 50, 75, 100, 125, 150, 175, 200;
 
 @each $dimension in $playlist-dimensions {
     .soundboard-dim-#{$dimension} {
+        --soundboard-size: #{$dimension};
         width: math.div($dimension, 100) * $base_dimension * 1px;
         height: math.div($dimension, 100) * $base_dimension * 1px;
     }
@@ -23,6 +24,11 @@ $playlist-dimensions: 50, 75, 100, 125, 150, 175, 200;
     /* Centre horizontalement */
     align-items: center;
     /* Centre verticalement */
+    text-align: center;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+    font-size: clamp(5px, calc(var(--soundboard-size, #{$base_dimension}) * 0.12px), 15px);
+
 }
 
 .soundboard-img {

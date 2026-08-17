@@ -4,7 +4,8 @@ import Csrf from './modules/General/Csrf';
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import { addClearIconConfirmation } from '@/modules/ClearIconConfirmation';
 import MergedFadePreviewCanvasRenderer from '@/modules/MergedFadePreviewCanvasRenderer';
-import TagSelector  from '@/modules/Form/TagSelector';
+import TagSelector from '@/modules/Form/TagSelector';
+import ColorSoftener from '@/modules/Form/ColorSoftoner';
 
 
 
@@ -20,16 +21,31 @@ type playlist = { color: string, colorText: string, typePlaylist: string };
 
 const mergedFadePreviewCanvasRenderer = new MergedFadePreviewCanvasRenderer();
 
+function renderMergedFadePreview(): void {
+    mergedFadePreviewCanvasRenderer.renderFromDom();
+}
+
+
 simulatePlaylistColor();
 toggleShowColorForm();
 toggleShowDelayForm();
+
+const updatecolor = (target: HTMLInputElement) => {
+    console.log("updatecolor", target.value);
+    const colorSoftener = new ColorSoftener();
+    const softenedColor = colorSoftener.soften(target.value);
+    target.value = softenedColor;
+    console.log("softenedColor", softenedColor);
+    simulatePlaylistColor();
+
+};
 
 const DomElementAddEvent = ['id_name', 'id_color', 'id_colorText', 'id_icon', 'id_typePlaylist', 'id_useSpecificColor'];
 for (const element of DomElementAddEvent) {
     const input = document.getElementById(element) as HTMLInputElement
     if (input) {
-        input.addEventListener('input', simulatePlaylistColor);
-        input.addEventListener('change', simulatePlaylistColor);
+        input.addEventListener('input', updatecolor.bind(null, input));
+        input.addEventListener('change', updatecolor.bind(null, input));
     }
 }
 
@@ -52,15 +68,16 @@ document.addEventListener("DOMContentLoaded", () => {
     addPopupDescriptionPlaylistType();
     addListingOtherColorsEvent();
     addClearIconConfirmation('de la playlist');
-    mergedFadePreviewCanvasRenderer.renderFromDom();
-    window.addEventListener('resize', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    mergedFadePreviewCanvasRenderer.enableAutoRefresh();
+    window.addEventListener('load', renderMergedFadePreview, { once: true });
+    window.addEventListener('resize', renderMergedFadePreview);
 
     const id_typePlaylist = document.getElementById('id_typePlaylist');
-    id_typePlaylist?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    id_typePlaylist?.addEventListener('change', renderMergedFadePreview);
     const id_fadeIn = document.getElementById('id_fadeIn');
-    id_fadeIn?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    id_fadeIn?.addEventListener('change', renderMergedFadePreview);
     const id_fadeOut = document.getElementById('id_fadeOut');
-    id_fadeOut?.addEventListener('change', () => mergedFadePreviewCanvasRenderer.renderFromDom());
+    id_fadeOut?.addEventListener('change', renderMergedFadePreview);
     (new TagSelector()).init();
 
 });

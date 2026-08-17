@@ -38,9 +38,51 @@ const FADE_ENUM_TO_STRATEGY: Record<string, string> = {
     EASE_OUT_QUAD: 'ease-out-quad',
     EASE_IN_OUT_QUAD: 'ease-in-out-quad',
     EASE_OUT_CUBIC: 'ease-out-cubic',
+    EASE_IN_EXPONENTIAL: 'ease-in-exponential',
+    EASE_OUT_EXPONENTIAL: 'ease-out-exponential',
 };
 
 export default class MergedFadePreviewCanvasRenderer {
+    private resizeObserver?: ResizeObserver;
+    private renderQueued = false;
+
+    private queueRender(): void {
+        if (this.renderQueued) {
+            return;
+        }
+
+        this.renderQueued = true;
+        requestAnimationFrame(() => {
+            this.renderQueued = false;
+            this.renderFromDom();
+        });
+    }
+
+    enableAutoRefresh(): void {
+        if (this.resizeObserver || typeof ResizeObserver === 'undefined') {
+            return;
+        }
+
+        const canvas = document.getElementById('canvas-fade-merged') as HTMLCanvasElement | null;
+        if (!canvas) {
+            return;
+        }
+
+        this.resizeObserver = new ResizeObserver(() => {
+            this.queueRender();
+        });
+
+        const previewBlock = canvas.closest('.fade-preview-block');
+        if (previewBlock) {
+            this.resizeObserver.observe(previewBlock);
+            return;
+        }
+
+        if (canvas.parentElement) {
+            this.resizeObserver.observe(canvas.parentElement);
+        }
+    }
+
     renderFromDom(): void {
         const fadeInSelect = document.getElementById('id_fadeIn') as HTMLSelectElement | null;
         const fadeOutSelect = document.getElementById('id_fadeOut') as HTMLSelectElement | null;
@@ -55,6 +97,10 @@ export default class MergedFadePreviewCanvasRenderer {
 
         const ctx = canvas.getContext('2d');
         if (!ctx) {
+            return;
+        }
+
+        if (canvas.clientWidth <= 1) {
             return;
         }
 
@@ -73,6 +119,10 @@ export default class MergedFadePreviewCanvasRenderer {
         const padding = 8;
         const drawWidth = width - padding * 2;
         const drawHeight = height - padding * 2;
+
+        if (drawWidth <= 0 || drawHeight <= 0) {
+            return;
+        }
 
         ctx.clearRect(0, 0, width, height);
         ctx.fillStyle = colors.BG;

@@ -1,0 +1,55 @@
+{% load SoundBoard %}
+{% load PlaylistEnum %}
+{% load i18n %}
+
+{% if soundboard %}
+
+<div class="row fullScreen-element">
+    <div class="col-md-6 col-12">
+        <h4 id="soundboard-name">{{ soundboard | get_name }}
+            {% if type_header == "private" %}
+            <span class="fs-6 text-primary fst-italic">{% trans "template.soundboard_read.badge.private" %}</span>
+            {% elif type_header == "public" %}
+            <span class="fs-6 text-success fst-italic">{% trans "template.publicSoundboard.badge.public" %}</span>
+            {% endif %}
+        </h4>
+    </div>
+    <div class="col-md-6 col-12">
+        {% if type_header == "shared" %}
+        <div class="float-end"><button class="btn btn-sm btn-secondary" id="shared-custom-volume-button"><i class="fa-solid fa-volume-low"></i></button></div>
+        {% endif %}
+        {% if type_header == "private" or type_header == "public" %}
+        {% if can_share_soundboard %}
+        <button class="btn btn-outline-secondary float-end" id="btn-publish-soundboard" data-url="{% url 'publish_soundboard' soundboard.uuid %}" data-bs-toggle="tooltip" data-bs-title="{% trans "template.shareSoundboard.button.tooltip" %}">
+            <i class="fa-solid fa-square-share-nodes"></i> {% trans "template.shareSoundboard.button.label" %}
+        </button>
+        {% endif %}
+        {% endif %}
+        {% get_playlist_type_style 'PLAYLIST_TYPE_INSTANT' as instant_style %}
+        {% get_playlist_type_short_description 'PLAYLIST_TYPE_INSTANT' as instant_description %}
+        {% get_playlist_type_style 'PLAYLIST_TYPE_AMBIENT' as ambient_style %}
+        {% get_playlist_type_short_description 'PLAYLIST_TYPE_AMBIENT' as ambient_description %}
+        {% get_playlist_type_style 'PLAYLIST_TYPE_MUSIC' as music_style %}
+        {% get_playlist_type_short_description 'PLAYLIST_TYPE_MUSIC' as music_description %}
+        <div class="soundboard-type-legend small text-body-secondary float-md-end float-start">
+            <span class="soundboard-type-legend__item d-inline-flex align-items-center">
+                <span class="soundboard-type-legend__swatch" style="{{ instant_style }};"></span>
+                <span><strong>Instant</strong></span>
+                <span class="text-info" data-bs-toggle="tooltip" data-bs-title="{{ instant_description }}" data-bs-placement="bottom"><i class="fa-solid fa-circle-info"></i></span>
+            </span>
+            <span class="soundboard-type-legend__item d-inline-flex align-items-center">
+                <span class="soundboard-type-legend__swatch" style="{{ ambient_style }};"></span>
+                <span><strong>Ambiance</strong></span>
+                <span class="text-info" data-bs-toggle="tooltip" data-bs-title="{{ ambient_description }}" data-bs-placement="bottom"><i class="fa-solid fa-circle-info"></i></span>
+            </span>
+            <span class="soundboard-type-legend__item d-inline-flex align-items-center">
+                <span class="soundboard-type-legend__swatch" style="{{ music_style }};"></span>
+                <span><strong>Musique</strong></span>
+                <span class="text-info" data-bs-toggle="tooltip" data-bs-title="{{ music_description }}" data-bs-placement="bottom"><i class="fa-solid fa-circle-info"></i></span>
+            </span>
+        </div>
+    </div>
+
+
+</div>
+{% endif %}

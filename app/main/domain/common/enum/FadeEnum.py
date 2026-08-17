@@ -21,6 +21,8 @@ class FadeEnum(BaseEnum):
     - EASE_OUT_QUAD : Transition quadratique en sortie
     - EASE_IN_OUT_QUAD : Transition quadratique bidirectionnelle
     - EASE_OUT_CUBIC : Transition cubique en sortie
+    - EASE_IN_EXPONENTIAL : Transition exponentielle en entrée
+    - EASE_OUT_EXPONENTIAL : Transition exponentielle en sortie
     """
     
     DISABLED = "disabled"
@@ -32,3 +34,5 @@ class FadeEnum(BaseEnum):
     EASE_OUT_QUAD = "ease-out-quad"
     EASE_IN_OUT_QUAD = "ease-in-out-quad"
     EASE_OUT_CUBIC = "ease-out-cubic"
+    EASE_IN_EXPONENTIAL = "ease-in-exponential"
+    EASE_OUT_EXPONENTIAL = "ease-out-exponential"

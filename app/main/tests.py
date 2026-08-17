@@ -35,6 +35,7 @@ from main.TNR.TU.Service.ConfirmationUserServiceTest import *
 from main.TNR.TU.Service.ReportContentServiceTest import *
 from main.TNR.TU.Service.PlaylistDuplicationServiceTest import *
 from main.TNR.TU.Service.PlaylistDataServiceTest import *
+from main.TNR.TU.Service.DefaultColorPlaylistServiceTest import *
 from main.TNR.TU.Service.SoundboardPlaylistServiceTest import *
 
 from main.TNR.TU.UserParametersFactoryTest import *

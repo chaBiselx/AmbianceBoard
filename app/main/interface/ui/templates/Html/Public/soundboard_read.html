@@ -6,16 +6,16 @@
 {% block content %}
 
 
-{% include 'Html/partial/soundboard/share_soundboard.html'%}
-
+{% include 'Html/partial/soundboard/header.html' with type_header="public" %}
 <div class="row">
-    <div class="col-12 fullScreen-element">
-        <h4  id="soundboard-name">{{ soundboard | get_name }} <span class="fs-6 text-success fst-italic">{% trans "template.publicSoundboard.badge.public" %}</span></h4> 
-    </div>
+
+    
     <div class="col-12">
         <div style="display:None;" id="players"></div>
 
         {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum owner=False master=True %}
+
+        {% include 'Html/partial/soundboard/playing_monitor.html' %}
 
         {% include 'Html/partial/soundboard/board.html' with master=True owner=False soundboard=soundboard %}
 

@@ -37,7 +37,6 @@ class DailySessionMiddleware:
         """
         self.get_response = get_response
         self.logger = LoggerFactory.get_default_logger()
-        self.now = timezone.now()
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
         """
@@ -68,7 +67,8 @@ class DailySessionMiddleware:
         Args:
             request: Requête HTTP avec utilisateur authentifié
         """
-        current_date = self.now.date()
+        current_datetime = timezone.now()
+        current_date = current_datetime.date()
         session_date_str = request.session.get(self.SESSION_DATE_KEY)
         
         # Convertir la date de session si elle existe
@@ -79,34 +79,45 @@ class DailySessionMiddleware:
             except ValueError:
                 # Format de date invalide, traiter comme une nouvelle session
                 session_date = None
+
+        db_last_login_date = None
+        if request.user.last_login:
+            db_last_login_date = timezone.localtime(request.user.last_login).date()
+
+        should_update_last_login = (
+            session_date != current_date or db_last_login_date != current_date
+        )
         
         # Si c'est une nouvelle session ou une session d'un jour différent
-        if session_date != current_date:
-            self._update_user_last_login(request.user, current_date)
+        if should_update_last_login:
+            self._update_user_last_login(request.user, current_datetime)
             
             # Mettre à jour la session avec la nouvelle date
             request.session[self.SESSION_DATE_KEY] = current_date.strftime('%Y-%m-%d')
 
     
-    def _update_user_last_login(self, user: User, previous_session_date: datetime.date = None) -> None:
+    def _update_user_last_login(self, user: User, current_datetime: datetime.datetime) -> None:
         """
         Met à jour le champ last_login de l'utilisateur.
         
         Args:
             user: Instance de l'utilisateur
-            current_date: Date actuelle
-            previous_session_date: Date de la session précédente (peut être None)
+            current_datetime: Date et heure actuelles
         """
         try:
+            if timezone.is_naive(current_datetime):
+                login_datetime = timezone.make_aware(current_datetime)
+            else:
+                login_datetime = current_datetime
+
             # Utiliser update() pour éviter les conflits de concurrence
-            User.objects.filter(pk=user.pk).update(last_login=self.now )
+            User.objects.filter(pk=user.pk).update(last_login=login_datetime)
             
             # Mettre à jour l'instance en mémoire pour cohérence
-            user.last_login = self.now 
+            user.last_login = login_datetime
             
             self.logger.info(
-                f"last_login mis à jour pour {user.username}: {self.now}"
-                + (f" (session précédente: {previous_session_date})" if previous_session_date else " (première session)")
+                f"last_login mis à jour pour {user.username}: {login_datetime}"
             )
             
         except Exception as e:

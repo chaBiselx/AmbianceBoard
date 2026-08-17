@@ -201,7 +201,7 @@ class Command(BaseCommand):
         for playlist_payload in self._iter_playlist_payloads(max_delay_variants):
             expected_values = {
                 "typePlaylist": playlist_payload["type_playlist"],
-                "useSpecificColor": True,
+                "useSpecificColor": False,
                 "color": playlist_payload["color"],
                 "colorText": playlist_payload["color_text"],
                 "volume": 75,
@@ -372,7 +372,7 @@ class Command(BaseCommand):
 
         expected_values = {
             "typePlaylist": PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT.name,
-            "useSpecificColor": True,
+            "useSpecificColor": False,
             "color": "#8b0000",
             "colorText": "#ffffff",
             "volume": 75,

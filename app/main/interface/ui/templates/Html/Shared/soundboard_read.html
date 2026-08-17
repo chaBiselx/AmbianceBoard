@@ -12,11 +12,8 @@
 
 {% block content %}
 
+{% include 'Html/partial/soundboard/header.html' with type_header="shared" %}
 <div class="row">
-    <div class="col-12 fullScreen-element">
-        <div class="float-end"><button class="btn btn-sm btn-secondary" id="shared-custom-volume-button"><i class="fa-solid fa-volume-low"></i></button></div>
-        <h4 id="soundboard-name">{{ soundboard | get_name }}</h4>
-    </div>
     <div class="col-12">
         <div style="display:None;" id="players"></div>
         <div style="display:None;" id="active-WS" data-url="{{ ws_url }}"></div>

@@ -2,6 +2,7 @@ import Csrf from "@/modules/General/Csrf";
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import { addClearIconConfirmation } from '@/modules/ClearIconConfirmation';
 import TagSelector  from '@/modules/Form/TagSelector';
+import ColorSoftener from "./modules/Form/ColorSoftoner";
 
 type deleteConfig = { delete_url: string, redirect_url: string };
 
@@ -9,11 +10,21 @@ type deleteConfig = { delete_url: string, redirect_url: string };
 simulateSoundBoardColor();
 addClearIconConfirmation('du soundboard');
 
+const updatecolor = (target: HTMLInputElement) => {
+    console.log("updatecolor", target.value);
+    const colorSoftener = new ColorSoftener();
+    const softenedColor = colorSoftener.soften(target.value);
+    target.value = softenedColor;
+    console.log("softenedColor", softenedColor);
+    simulateSoundBoardColor();
+
+};
+
 const DomElementAddEventList = ['id_name', 'id_color', 'id_colorText', 'id_icon'];
 for (const DomElementAddEvent of DomElementAddEventList) {
     const input = document.getElementById(DomElementAddEvent) as HTMLInputElement;
-    input.addEventListener('input', simulateSoundBoardColor);
-    input.addEventListener('change', simulateSoundBoardColor);
+    input.addEventListener('input', updatecolor.bind(null, input));
+    input.addEventListener('change', updatecolor.bind(null, input));
 }
 document.addEventListener('DOMContentLoaded', function () {
     (new TagSelector()).init();

@@ -134,6 +134,9 @@ export class ChartConfigs {
                     legend: {
                         display: true,
                         position: 'top'
+                    },
+                    tooltip: {
+                        filter: (tooltipItem: any) => Number(tooltipItem.raw) !== 0
                     }
                 },
                 scales: {

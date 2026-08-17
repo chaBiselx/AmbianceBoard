@@ -137,6 +137,25 @@ class DailySessionMiddlewareTest(TestCase):
         current_date = timezone.now().date()
         session_date_str = request.session[DailySessionMiddleware.SESSION_DATE_KEY]
         self.assertEqual(session_date_str, current_date.strftime('%Y-%m-%d'))
+
+    def test_same_day_session_updates_when_db_is_outdated(self):
+        """Test qu'une session du jour met à jour last_login si la BDD est désynchronisée."""
+        request = self._get_request_with_session(self.user)
+        current_date = timezone.now().date()
+
+        # Session déjà au jour courant
+        request.session[DailySessionMiddleware.SESSION_DATE_KEY] = current_date.strftime('%Y-%m-%d')
+
+        # BDD en retard d'un jour
+        old_last_login = timezone.now() - datetime.timedelta(days=1)
+        User.objects.filter(pk=self.user.pk).update(last_login=old_last_login)
+
+        # Traiter la session
+        self.middleware._process_daily_session(request)
+
+        # Le middleware doit resynchroniser last_login en BDD
+        self.user.refresh_from_db()
+        self.assertGreater(self.user.last_login, old_last_login)
     
     def test_invalid_session_date_format(self):
         """Test le comportement avec un format de date de session invalide."""

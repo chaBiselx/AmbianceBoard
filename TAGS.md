@@ -260,6 +260,7 @@ Corrections
 Nouveautés
 - Ajout d'un mode édition directement sur un soundboard privée, il permet d'ajouter directement les boutons copiables de la communauté ou ses boutons personnels
 - Ajout de workflow pour valider de travail
+- Ajout d'un nouveau type de fondu exponentiel
 
 Corrections
 - Eviter la concurrence pour la labellisation pour ne pas surcharger le serveur
@@ -370,6 +371,27 @@ Correction
 Correction 
 - Fix l'absence de traduction dans les mails envoyé 
 - Fix de l'affichage des slider sous les boutons
+
+### 0.4.12 - 2026/08
+Nouveautés
+- Ajout d'un monitoring pour avoir le liste des éléments en cours sur un sounboard
+- Si un sounboard est vide, l'application proposer d'ajouter des sons automatiquement
+- Ajout d'un label pour indiquer les type de musique avec les codes couleurs
+
+Améliorations
+- Adapte la taille du texte en fonction de la taille de l'éléments pour les soundboard/playlist
+- Ajout d'une fonction qui permet d'avoir une couleur plus douce
+- Amélioration du listing des referer pour le manager
+
+Modifications
+- Remplacement du "mixer le son" par "Paramètre audio"
+- Changement des couleurs par default
+- Les tooltip des graphiques ignorent désormais les valeur à 0
+
+Correction 
+- Ajustement de l'affichage des slider sous les boutons sur mobile
+- Corrections du rendu des courbes pour les fondues au chargement de la page qui était plat
+- Corrections du suivi des connexions du middleware
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

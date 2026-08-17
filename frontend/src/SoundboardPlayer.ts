@@ -17,6 +17,7 @@ import ShorcutKeyBoardDetector from "@/modules/Control/ShorcutKeyBoardDetector";
 import SoundBoardEventListener from '@/modules/SoundBoardEventListener';
 import StreamConnectionWarmup from '@/modules/StreamConnectionWarmup';
 import SoundboardEditMode from '@/modules/SoundBoardEditor/SoundboardEditMode';
+import PlayingMonitor from '@/modules/PlayingMonitor';
 
 
 
@@ -27,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new StreamConnectionWarmup().initialize();
     showPopupSharedPlaylist();
     new SoundBoardEventListener().addEventListenerDom();
+    new PlayingMonitor().init();
     MixerManager.setUpMixerPlaylist();
     MixerManager.updatePlaylistVolumeWidths();
     addEventPublishEvent();

@@ -49,6 +49,19 @@ class PublicReadSoundboardRouteTest(TestCase):
             })
         )
         self.assertEqual(response.status_code, 200)
+
+    def test_public_read_soundboard_header_shows_color_legend(self):
+        """Le header affiche une légende simple avec les couleurs du système."""
+        soundboard = self._create_public_soundboard()
+        response = self.client.get(
+            reverse('publicReadSoundboard', kwargs={'soundboard_uuid': soundboard.uuid})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'soundboard-type-legend', html=False)
+        self.assertContains(response, '<strong>Instant</strong>', html=False)
+        self.assertContains(response, '<strong>Ambiance</strong>', html=False)
+        self.assertContains(response, '<strong>Musique</strong>', html=False)
     
     def test_public_read_soundboard_with_invalid_uuid(self):
         """Test avec un UUID invalide"""

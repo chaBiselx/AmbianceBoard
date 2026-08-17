@@ -15,24 +15,26 @@ class SoundboardEditMode {
     private boardContainer: HTMLElement | null = null;
     private playlistListFilters: Record<string, string> = {};
     private myPlaylistListFilters: Record<string, string> = {};
+    private buttonAction: HTMLButtonElement | null = null;
 
     public addEvent(): void {
-        const button = document.getElementById('btn-soundboard-edit-mode');
-        if (!button) return;
+        this.buttonAction = document.getElementById('btn-soundboard-edit-mode') as HTMLButtonElement | null;
+        if (!this.buttonAction) return;
 
-        if (!(button instanceof HTMLButtonElement)) return;
-        this.panelUrl = button.dataset.urlPanel || null;
+        if (!(this.buttonAction instanceof HTMLButtonElement)) return;
+        this.panelUrl = this.buttonAction.dataset.urlPanel || null;
         this.boardContainer = document.querySelector('[data-soundboard-editable="true"]');
 
         if (!this.boardContainer || !this.panelUrl) return;
 
-        button.setAttribute('aria-pressed', 'false');
+        this.buttonAction.setAttribute('aria-pressed', 'false');
 
-        button.addEventListener('click', () => {
-            this.toggleEditMode(button);
+        this.buttonAction.addEventListener('click', () => {
+            this.toggleEditMode(this.buttonAction!);
         });
 
         this.bindAddZones();
+        this._startIfEmpty();
     }
 
     private toggleEditMode(button: HTMLButtonElement): void {
@@ -43,6 +45,14 @@ class SoundboardEditMode {
         button.setAttribute('aria-pressed', this.isEditModeActive ? 'true' : 'false');
         button.classList.toggle('btn-outline-success', !this.isEditModeActive);
         button.classList.toggle('btn-success', this.isEditModeActive);
+    }
+
+    private _startIfEmpty(): void {
+        const listPlaylistElement = document.querySelectorAll('.responsive-sections-container .playlist-link');
+        const lengthPlaylistElement = listPlaylistElement?.length ?? 0;
+        if(lengthPlaylistElement === 0) {
+            this.buttonAction?.click();
+        }
     }
 
     private bindAddZones(): void {

@@ -32,9 +32,9 @@ class PlaylistTypeEnum(BaseEnum):
                            et 'colorText' (couleur du texte)
         """
         default_color ={
-            self.PLAYLIST_TYPE_INSTANT.name: {'color': '#f40b0b', 'colorText': '#ffffff'},
-            self.PLAYLIST_TYPE_AMBIENT.name: {'color': '#0bf40d', 'colorText': '#000000'},
-            self.PLAYLIST_TYPE_MUSIC.name: {'color': '#0b10f4', 'colorText': '#ffffff'}
+            self.PLAYLIST_TYPE_INSTANT.name: {'color': '#d22d2d', 'colorText': '#ffffff'},
+            self.PLAYLIST_TYPE_AMBIENT.name: {'color': '#2dd22d', 'colorText': '#000000'},
+            self.PLAYLIST_TYPE_MUSIC.name: {'color': '#2d30d2', 'colorText': '#ffffff'}
         }
         return default_color.get(self.name, {'color': '#000000', 'colorText': '#ffffff'})
  
@@ -69,5 +69,19 @@ class PlaylistTypeEnum(BaseEnum):
         for member in cls:
             if member.value == search_str:
                 return member
-        raise ValueError(f"No enum member found with name: {name}")
+        raise ValueError(f"No enum member found with name: {search_str}")
         
+        
+    def get_short_description(self) -> str:
+        """
+        Récupère une description courte pour ce type de playlist.
+        
+        Returns:
+            str: Description courte
+        """
+        descriptions = {
+            self.PLAYLIST_TYPE_INSTANT.name: "Sons instantanés (effets sonores courts, bruits, cris, etc.)",
+            self.PLAYLIST_TYPE_AMBIENT.name: "Sons d'ambiance (boucles, atmosphères, sons pour les personnages)",
+            self.PLAYLIST_TYPE_MUSIC.name: "Musiques (morceaux musicaux, sons pour les joueurs)"
+        }
+        return descriptions.get(self.name, "Type de playlist inconnu")
