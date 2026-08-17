@@ -37,7 +37,7 @@ class DefaultColorPlaylistService():
     
     
     def get_list_default_color_ajax(self):
-        existing_data = {pcu.typePlaylist: pcu for pcu in  self.PlaylistColorUserRepository.get_list_with_user(self.user)}
+        existing_data = {pcu.typePlaylist: pcu for pcu in  self.playlist_color_user_repository.get_list_with_user(self.user)}
         
         initial_data = []
         for playlist_type in PlaylistTypeEnum:
