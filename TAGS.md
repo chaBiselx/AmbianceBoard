@@ -390,6 +390,7 @@ Modifications
 Correction 
 - Ajustement de l'affichage des slider sous les boutons sur mobile
 - Corrections du rendu des courbes pour les fondues au chargement de la page qui était plat
+- Corrections du suivi des connexions du middleware
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
