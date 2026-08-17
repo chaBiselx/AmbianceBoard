@@ -8,7 +8,7 @@ class PlayingMonitor {
     private readonly CONTENT_CLASS = 'playing-monitor-btn-content';
 
     private boardObserver: MutationObserver | null = null;
-    private buttonObservers: Map<HTMLElement, MutationObserver> = new Map();
+    private readonly buttonObservers: Map<HTMLElement, MutationObserver> = new Map();
     private initialized: boolean = false;
 
     public init(): void {
@@ -113,9 +113,10 @@ class PlayingMonitor {
         const dimClassOrigin = Array.from(el.classList).find((c) => c.startsWith('playlist-dim-'));
         let dimClass = 100;
         if (dimClassOrigin) {
-            let test = dimClassOrigin.match(/playlist-dim-(\d+)/);
-            if (test && test[1]) {
-                dimClass = parseInt(test[1]);
+            const regex = /playlist-dim-(\d+)/;
+            const test = regex.exec(dimClassOrigin);
+            if (test?.[1]) {
+                dimClass = Number.parseInt(test[1]);
                 dimClass = Math.max((dimClass - 25), 50);
             }
         }
