@@ -381,6 +381,7 @@ Nouveautés
 Améliorations
 - Adapte la taille du texte en fonction de la taille de l'éléments pour les soundboard/playlist
 - Ajout d'une fonction qui permet d'avoir une couleur plus douce
+- Amélioration du listing des referer pour le manager
 
 Modifications
 - Remplacement du "mixer le son" par "Paramètre audio"
