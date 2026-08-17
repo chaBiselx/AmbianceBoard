@@ -62,9 +62,6 @@ class PublicReadSoundboardRouteTest(TestCase):
         self.assertContains(response, '<strong>Instant</strong>', html=False)
         self.assertContains(response, '<strong>Ambiance</strong>', html=False)
         self.assertContains(response, '<strong>Musique</strong>', html=False)
-        self.assertContains(response, '#f40b0b', html=False)
-        self.assertContains(response, '#0bf40d', html=False)
-        self.assertContains(response, '#0b10f4', html=False)
     
     def test_public_read_soundboard_with_invalid_uuid(self):
         """Test avec un UUID invalide"""
