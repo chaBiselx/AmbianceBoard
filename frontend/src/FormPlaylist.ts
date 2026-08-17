@@ -31,11 +31,12 @@ toggleShowColorForm();
 toggleShowDelayForm();
 
 const updatecolor = (target: HTMLInputElement) => {
-    console.log("updatecolor", target.value);
-    const colorSoftener = new ColorSoftener();
-    const softenedColor = colorSoftener.soften(target.value);
-    target.value = softenedColor;
-    console.log("softenedColor", softenedColor);
+    if (target.type == 'color') {
+        const colorSoftener = new ColorSoftener();
+        const softenedColor = colorSoftener.soften(target.value);
+        target.value = softenedColor;
+    }
+
     simulatePlaylistColor();
 
 };
