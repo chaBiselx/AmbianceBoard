@@ -393,6 +393,10 @@ Correction
 - Corrections du rendu des courbes pour les fondues au chargement de la page qui était plat
 - Corrections du suivi des connexions du middleware
 
+### 0.4.13 - 2026/08
+Correction 
+- Corrections sur les formulaires soundboard/playlist qui ajoute #NaNNaNNaN
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

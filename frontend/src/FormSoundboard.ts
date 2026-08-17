@@ -1,7 +1,7 @@
 import Csrf from "@/modules/General/Csrf";
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import { addClearIconConfirmation } from '@/modules/ClearIconConfirmation';
-import TagSelector  from '@/modules/Form/TagSelector';
+import TagSelector from '@/modules/Form/TagSelector';
 import ColorSoftener from "./modules/Form/ColorSoftoner";
 
 type deleteConfig = { delete_url: string, redirect_url: string };
@@ -11,11 +11,11 @@ simulateSoundBoardColor();
 addClearIconConfirmation('du soundboard');
 
 const updatecolor = (target: HTMLInputElement) => {
-    console.log("updatecolor", target.value);
-    const colorSoftener = new ColorSoftener();
-    const softenedColor = colorSoftener.soften(target.value);
-    target.value = softenedColor;
-    console.log("softenedColor", softenedColor);
+    if (target.type == 'color') {
+        const colorSoftener = new ColorSoftener();
+        const softenedColor = colorSoftener.soften(target.value);
+        target.value = softenedColor;
+    }
     simulateSoundBoardColor();
 
 };
