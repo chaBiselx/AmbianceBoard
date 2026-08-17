@@ -5,6 +5,7 @@ import ConsoleCustom from "./modules/General/ConsoleCustom";
 import { addClearIconConfirmation } from '@/modules/ClearIconConfirmation';
 import MergedFadePreviewCanvasRenderer from '@/modules/MergedFadePreviewCanvasRenderer';
 import TagSelector from '@/modules/Form/TagSelector';
+import ColorSoftener from '@/modules/Form/ColorSoftoner';
 
 
 
@@ -29,12 +30,22 @@ simulatePlaylistColor();
 toggleShowColorForm();
 toggleShowDelayForm();
 
+const updatecolor = (target: HTMLInputElement) => {
+    console.log("updatecolor", target.value);
+    const colorSoftener = new ColorSoftener();
+    const softenedColor = colorSoftener.soften(target.value);
+    target.value = softenedColor;
+    console.log("softenedColor", softenedColor);
+    simulatePlaylistColor();
+
+};
+
 const DomElementAddEvent = ['id_name', 'id_color', 'id_colorText', 'id_icon', 'id_typePlaylist', 'id_useSpecificColor'];
 for (const element of DomElementAddEvent) {
     const input = document.getElementById(element) as HTMLInputElement
     if (input) {
-        input.addEventListener('input', simulatePlaylistColor);
-        input.addEventListener('change', simulatePlaylistColor);
+        input.addEventListener('input', updatecolor.bind(null, input));
+        input.addEventListener('change', updatecolor.bind(null, input));
     }
 }
 

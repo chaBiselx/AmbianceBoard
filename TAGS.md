@@ -380,9 +380,11 @@ Nouveautés
 
 Améliorations
 - Adapte la taille du texte en fonction de la taille de l'éléments pour les soundboard/playlist
+- Ajout d'une fonction qui permet d'avoir une couleur plus douce
 
 Modifications
-- Remlacement du "mixer le son" par "Paramètre audio"
+- Remplacement du "mixer le son" par "Paramètre audio"
+- Changement des couleurs par default
 
 Correction 
 - Ajustement de l'affichage des slider sous les boutons sur mobile

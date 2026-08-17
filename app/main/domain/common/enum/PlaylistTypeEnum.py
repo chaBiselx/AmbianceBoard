@@ -32,9 +32,9 @@ class PlaylistTypeEnum(BaseEnum):
                            et 'colorText' (couleur du texte)
         """
         default_color ={
-            self.PLAYLIST_TYPE_INSTANT.name: {'color': '#f40b0b', 'colorText': '#ffffff'},
-            self.PLAYLIST_TYPE_AMBIENT.name: {'color': '#0bf40d', 'colorText': '#000000'},
-            self.PLAYLIST_TYPE_MUSIC.name: {'color': '#0b10f4', 'colorText': '#ffffff'}
+            self.PLAYLIST_TYPE_INSTANT.name: {'color': '#d22d2d', 'colorText': '#ffffff'},
+            self.PLAYLIST_TYPE_AMBIENT.name: {'color': '#2dd22d', 'colorText': '#000000'},
+            self.PLAYLIST_TYPE_MUSIC.name: {'color': '#2d30d2', 'colorText': '#ffffff'}
         }
         return default_color.get(self.name, {'color': '#000000', 'colorText': '#ffffff'})
  
