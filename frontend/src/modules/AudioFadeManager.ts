@@ -6,7 +6,6 @@ import Time from "@/modules/Util/Time";
 
 class AudioFadeManager {
     musicElement: MusicElement;
-    audioElement: HTMLAudioElement;
     fadeStrategy: Model.FadeStrategyInterface;
     isFadeIn: boolean;
     onComplete: null | Function;
@@ -18,7 +17,6 @@ class AudioFadeManager {
 
     constructor(MusicElement: MusicElement, fadeStrategy = new Model.default.LinearFade(), isFadeIn = true, onComplete: null | Function = null) {
         this.musicElement = MusicElement;
-        this.audioElement = MusicElement.DOMElement;
         this.fadeStrategy = fadeStrategy;
         this.isFadeIn = isFadeIn;
         this.onComplete = onComplete;

@@ -13,6 +13,7 @@ import Cookie from '@/modules/General/Cookie';
 import Time from "@/modules/Util/Time";
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import { MusicElementDTO } from '@/modules/MusicElementFactory';
+import { IAudioAdapter } from '@/modules/Audio/IAudioAdapter';
 
 
 
@@ -20,7 +21,7 @@ import { MusicElementDTO } from '@/modules/MusicElementFactory';
 
 class MusicElement {
     private static readonly ENDED_CLEANUP_DELAY_MS = 35;
-    DOMElement: HTMLAudioElement
+    private readonly audioAdapter: IAudioAdapter;
     idPlaylist: string = '';
     playlistType: string = '';
     defaultVolume: number | null = null;
@@ -45,8 +46,8 @@ class MusicElement {
     private fadeOutDeferredToEnded: boolean = false;
 
 
-    constructor(audioElement: HTMLAudioElement, dto: MusicElementDTO) {
-        this.DOMElement = audioElement;
+    constructor(audioAdapter: IAudioAdapter, dto: MusicElementDTO) {
+        this.audioAdapter = audioAdapter;
         this.initializeFromDTO(dto);
 
         if (Cookie.get('WebSocketToken') != null) {
@@ -76,13 +77,13 @@ class MusicElement {
 
     public setDefaultVolume(volume: number) {
         this.defaultVolume = volume;
-        this.DOMElement.dataset.defaultvolume = this.defaultVolume.toString();
+        this.audioAdapter.setDatasetValue('defaultvolume', this.defaultVolume.toString());
     }
 
     public addToDOM(): this {
         const audioElementDiv = document.getElementById(Config.SOUNDBOARD_DIV_ID_PLAYERS) as HTMLElement;
-        audioElementDiv.appendChild(this.DOMElement);
-        this.DOMElement.preload = 'metadata';
+        this.audioAdapter.appendTo(audioElementDiv);
+        this.audioAdapter.setPreload('metadata');
 
 
         return this
@@ -120,17 +121,17 @@ class MusicElement {
 
     private removeDomElement() {
         if (this.boundEventEnd) {
-            this.DOMElement.removeEventListener('timeupdate', this.boundEventEnd);
+            this.audioAdapter.removeEventListener('timeupdate', this.boundEventEnd);
         }
-        this.DOMElement.remove();
+        this.audioAdapter.remove();
     }
 
 
 
     public setSpecificMusic(baseUrl: string) {
         this.baseUrl = baseUrl;
-        this.DOMElement.dataset.baseurl = this.baseUrl;
-        this.DOMElement.src = this.baseUrl;
+        this.audioAdapter.setDatasetValue('baseurl', this.baseUrl);
+        this.audioAdapter.setSource(this.baseUrl);
     }
 
     /**
@@ -142,7 +143,7 @@ class MusicElement {
 
         setTimeout(async () => {// délai pour s'assurer de la generation du cache serveur car Firefox envoi trop vite la requete
             try {
-                const response = await fetch(this.DOMElement.src, { method: 'GET', headers: { 'X-Metadata-Only': 'true' } });
+                const response = await fetch(this.audioAdapter.getSource(), { method: 'GET', headers: { 'X-Metadata-Only': 'true' } });
                 if (!response.ok) {
                     console.error('Failed to fetch metadata:', response.statusText);
                     return;
@@ -173,11 +174,11 @@ class MusicElement {
 
         this.nextLoopStarted = false;
 
-        this.DOMElement.addEventListener('error', (e) => {
+        this.audioAdapter.addEventListener('error', (e) => {
             this.handleAudioError(e);
         });
 
-        this.DOMElement.addEventListener('playing', () => {
+        this.audioAdapter.addEventListener('playing', () => {
             this.getDurationFromHeaders();
         });
 
@@ -187,10 +188,10 @@ class MusicElement {
 
         if (this.durationRemainingTriggerNextMusic > 0) {
             this.boundEventEnd = this.eventFadeOut.bind(this);
-            this.DOMElement.addEventListener('loadedmetadata', () => {
-                this.DOMElement.addEventListener('timeupdate', this.boundEventEnd!);
+            this.audioAdapter.addEventListener('loadedmetadata', () => {
+                this.audioAdapter.addEventListener('timeupdate', this.boundEventEnd!);
             });
-            this.DOMElement.addEventListener('ended', () => {
+            this.audioAdapter.addEventListener('ended', () => {
                 // Slightly defer cleanup to avoid cutting the very end on some browsers/codecs.
                 globalThis.setTimeout(() => this.eventDeleteFadeOut(), MusicElement.ENDED_CLEANUP_DELAY_MS);
             }, { once: true });
@@ -199,14 +200,14 @@ class MusicElement {
                 this.eventDeleteNoFadeOut.bind(this)();
                 this.disactiveButtonPlaylist.bind(this)();
             };
-            this.DOMElement.addEventListener('ended', () => {
+            this.audioAdapter.addEventListener('ended', () => {
                 // Slightly defer cleanup to avoid cutting the very end on some browsers/codecs.
                 globalThis.setTimeout(() => this.boundEventEnd!(), MusicElement.ENDED_CLEANUP_DELAY_MS);
             }, { once: true });
         }
         ConsoleTesteur.info(`▶️ Play ${this.idPlaylist} ${this.isSlave()}`);
 
-        this.DOMElement.play();
+        this.audioAdapter.play();
     }
 
     private disactiveButtonPlaylist() {
@@ -244,7 +245,7 @@ class MusicElement {
             this.fadeInGoing = false;
         });
         audioFade.setDuration(this.fadeInDuration);
-        this.DOMElement.addEventListener('playing', () => {
+        this.audioAdapter.addEventListener('playing', () => {
             const duration = this.getTrackDuration() || 0;
             if (this.fadeInDuration * 2 > duration) { // fade in duration is too long for the track duration, so we skip the fade in
                 ConsoleTesteur.info('addFadeIn skipped because fade in duration is too long for the track duration');
@@ -253,7 +254,7 @@ class MusicElement {
                 audioFade.skip();
             } else {
                 let time = Date.now();
-                while (this.DOMElement.readyState != 2) {
+                while (this.audioAdapter.getReadyState() != 2) {
                     if (time + 1 < Date.now()) {
                         break;
                     }
@@ -292,7 +293,7 @@ class MusicElement {
         if (durationRemaining <= this.durationRemainingTriggerNextMusic) {
             ConsoleTesteur.info(`eventFadeOut triggered durationRemaining ${durationRemaining}`);
             if (this.boundEventEnd) {
-                this.DOMElement.removeEventListener('timeupdate', this.boundEventEnd);
+                this.audioAdapter.removeEventListener('timeupdate', this.boundEventEnd);
             }
 
             if (this.shouldDeferFadeOutToEnded()) {
@@ -343,9 +344,9 @@ class MusicElement {
      */
     private calculTimeRemaining(): number {
         if (this.duration !== null) {
-            return this.duration - this.DOMElement.currentTime;
+            return this.duration - this.audioAdapter.getCurrentTime();
         }
-        return this.DOMElement.duration - this.DOMElement.currentTime;
+        return this.audioAdapter.getDuration() - this.audioAdapter.getCurrentTime();
     }
 
     /**
@@ -406,8 +407,9 @@ class MusicElement {
             return this.duration;
         }
 
-        if (Number.isFinite(this.DOMElement.duration) && this.DOMElement.duration > 0) {
-            return this.DOMElement.duration;
+        const duration = this.audioAdapter.getDuration();
+        if (Number.isFinite(duration) && duration > 0) {
+            return duration;
         }
 
         return null;
@@ -432,20 +434,20 @@ class MusicElement {
         }
     }
 
-    private handleAudioError(event: Event) {
+    public setVolume(volume: number): void {
+        this.audioAdapter.setVolume(volume);
+    }
 
-        if (event.target && event.target instanceof HTMLAudioElement) {
-            const audioElement = event.target;
+    private handleAudioError(_: Event) {
+        const audioError = this.audioAdapter.getError();
+        if (audioError?.code === 4) { // => ERROR 404
+            // Log toutes les informations disponibles
+            ConsoleTraceServeur.error('handleAudioError', audioError.code, audioError.message, this.idPlaylist, this.baseUrl, this.audioAdapter.getSource());
 
-            if (audioElement.error?.code === 4) { // => ERROR 404
-                // Log toutes les informations disponibles
-                ConsoleTraceServeur.error('handleAudioError', audioElement.error.code, audioElement.error.message, this.idPlaylist, this.baseUrl, audioElement.src);
-
-                const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist) as ButtonPlaylist;
-                buttonPlaylist.disactive();
-                Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
-                event.target.remove();
-            }
+            const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist) as ButtonPlaylist;
+            buttonPlaylist.disactive();
+            Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
+            this.audioAdapter.remove();
         }
     }
 
