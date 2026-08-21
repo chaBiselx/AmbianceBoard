@@ -192,6 +192,23 @@ services:
       - loki
     restart: unless-stopped
 
+  playwright:
+    # mcr.microsoft.com/playwright:latest — Node.js + Chromium/Firefox/WebKit pré-installés
+    image: mcr.microsoft.com/playwright:v1.62.1-jammy
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - playwright-node-modules:/app/node_modules
+    environment:
+      - BASE_URL=http://back:${WEB_PORT}
+      - E2E_USERNAME=root
+      - E2E_PASSWORD=root
+    command: sh -c "npm install && npx playwright test"
+    depends_on:
+      - back
+    profiles:
+      - test
+
 volumes:
   db-data: null
   rabbitmq-data: null
@@ -202,3 +219,4 @@ volumes:
   grafana-provisioning: null
   loki-data: null
   hf-cache: null
+  playwright-node-modules: null

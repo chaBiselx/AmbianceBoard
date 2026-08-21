@@ -66,5 +66,28 @@ test-music-labeler-tu:
 		$(CONTAINER_MUSIC_LABELER) python -m pytest -q $(FILTER); \
 	fi
 
+test-e2e:
+	@# Help: lance les tests E2E Playwright avec SQLite en surchargeant les variables de base de données
+	@echo "$(GREEN)Migration et chargement des fixtures sur back avec SQLite...$(NC)"
+	docker compose --profile test run --rm \
+		-e SQL_ENGINE=django.db.backends.sqlite3 \
+		-e SQL_DATABASE=/usr/src/db.sqlite3 \
+		-e SQL_USER= \
+		-e SQL_PASSWORD= \
+		-e SQL_HOST=localhost \
+		-e SQL_PORT=5432 \
+		back sh -c "\
+			python manage.py migrate && \
+			python manage.py create_root_user && \
+			python manage.py seed_dev && \
+			python manage.py seed_public_soundboard && \
+			python manage.py seed_playlist_tags && \
+			python manage.py seed_soundboard_tags && \
+			python manage.py seed_E2E_public_soundboard"
+	@echo "$(GREEN)Démarrage de back avec SQLite...$(NC)"
+	docker compose --profile test up -d back
+	@until $(CONTAINER_BACKEND) python manage.py check --database default > /dev/null 2>&1; do sleep 2; done
+	docker compose --profile test run --rm playwright
+
 test-stress: test-backend-st
 	@# Help: lance les tests de stress

@@ -62,7 +62,7 @@ db-update:
 	@echo "$(GREEN)Migrations terminées.$(NC)"
 
 ## —— Fixtures  ————————————————————————————————————————————————————————————————
-fixtures: fixture-create-root fixture-seed-dev fixture-seed-soundboard fixture-tag-playlist fixture-tag-soundboard
+fixtures: fixture-create-root fixture-seed-dev fixture-seed-soundboard fixture-tag-playlist fixture-tag-soundboard fixture-seed-e2e
 	@# Help: Lance l'ensemble des fixtures de développement 
 
 fixture-create-root:
@@ -94,6 +94,12 @@ fixture-tag-soundboard:
 	@echo "$(GREEN)Création des tags pour les soundboards existantes...$(NC)"
 	$(CONTAINER_BACKEND) python manage.py seed_soundboard_tags
 	@echo "$(GREEN)Tags créés.$(NC)"
+
+fixture-seed-e2e:
+	@# Help: Crée un soundboard public pour les tests E2E
+	@echo "$(GREEN)Création d'un soundboard public pour les tests E2E...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py seed_E2E_public_soundboard
+	@echo "$(GREEN)Soundboard public créé.$(NC)"
 
 ## —— Traductions  ————————————————————————————————————————————————————————————————
 trad-init:
