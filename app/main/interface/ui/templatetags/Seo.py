@@ -2,6 +2,7 @@ import json
 from urllib.parse import urlencode
 
 from django import template
+from django.conf import settings
 from django.templatetags.static import static
 from django.urls import reverse
 from main.domain.general.service.FAQService import FAQService
@@ -50,6 +51,11 @@ def _fallback_og_image(request) -> str:
     return request.build_absolute_uri(static('img/logo.png'))
 
 
+def _get_available_languages() -> list[str]:
+    """Retourne les langues configurees au format attendu par les moteurs de recherche."""
+    return [language_code.replace('_', '-') for language_code, _ in settings.LANGUAGES]
+
+
 def _build_json_ld(json_ld_type: str, name: str, description: str, canonical: str, keywords: list[str], image: str | None = None, about: list[str] | None = None) -> dict:
     """Assemble la structure JSON-LD commune des pages SEO."""
     json_ld = {
@@ -94,6 +100,7 @@ def _build_seo_payload(title: str, description: str, keywords: list[str], canoni
         'twitter_description': description,
         'twitter_image': og_image,
         'canonical': canonical,
+        'available_languages': _get_available_languages(),
         'robots': robots,
         'json_ld_json': json_ld_json,
     }

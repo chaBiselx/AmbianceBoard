@@ -59,6 +59,11 @@ class PublicListingSoundboardRouteTest(TestCase):
         self.assertContains(response, '<meta property="og:url" content="http://testserver/public/soundboards?tag=dragon"', html=False)
         self.assertContains(response, '<meta name="twitter:title" content="Soundboards publics - Tag dragon | AmbianceBoard"', html=False)
         self.assertContains(response, '<link rel="canonical" href="http://testserver/public/soundboards?tag=dragon"', html=False)
+        self.assertContains(response, '<meta property="og:locale:alternate" content="fr"', html=False)
+        self.assertContains(response, '<meta property="og:locale:alternate" content="en"', html=False)
+        self.assertContains(response, '<link rel="alternate" hreflang="fr" href="http://testserver/public/soundboards?tag=dragon"', html=False)
+        self.assertContains(response, '<link rel="alternate" hreflang="en" href="http://testserver/public/soundboards?tag=dragon"', html=False)
+        self.assertContains(response, '<link rel="alternate" hreflang="x-default" href="http://testserver/public/soundboards?tag=dragon"', html=False)
         self.assertContains(response, '<meta name="robots" content="index,follow"', html=False)
         self.assertContains(response, '"@type": "CollectionPage"', html=False)
 

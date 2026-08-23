@@ -12,6 +12,11 @@
 <meta property="og:description" content="{{ meta_seo.og_description|default:'' }}" />
 <meta property="og:type" content="{{ meta_seo.og_type|default:'website' }}" />
 <meta property="og:url" content="{{ meta_seo.og_url|default:request.build_absolute_uri }}" />
+{% for language in meta_seo.available_languages %}
+<meta property="og:locale:alternate" content="{{ language }}" />
+<link rel="alternate" hreflang="{{ language }}" href="{{ meta_seo.canonical|default:request.build_absolute_uri }}" />
+{% endfor %}
+<link rel="alternate" hreflang="x-default" href="{{ meta_seo.canonical|default:request.build_absolute_uri }}" />
 <meta property="og:image" content="{{ meta_seo.og_image|default:'' }}" />
 <meta name="twitter:card" content="{{ meta_seo.twitter_card|default:'summary_large_image' }}" />
 <meta name="twitter:title" content="{{ meta_seo.twitter_title|default:'' }}" />
