@@ -5,8 +5,10 @@
 {% load Theme %}
 {% load Seo %}
 {% load i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
 
-<html lang="fr" {% include 'Html/partial/structure/theme/theme.html' %} data-bs-theme="{% get_user_theme %}">
+
+<html lang="{{ CURRENT_LANGUAGE }}" {% include 'Html/partial/structure/theme/theme.html' %} data-bs-theme="{% get_user_theme %}">
 {% resolve_page_seo as resolved_seo %}
 
 <head>

@@ -398,6 +398,9 @@ Correction
 - Corrections sur les formulaires soundboard/playlist qui ajoute #NaNNaNNaN
 
 ### 0.4.14 - 2026/08
+Nouveautés
+- Ajout de l'internationnalistion 
+
 Correction 
 - ajout d'un solution temporaire pour recharger le css en prod 
 
