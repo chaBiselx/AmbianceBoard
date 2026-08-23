@@ -2,7 +2,7 @@ FILTER ?=
 
 
 ## —— Tests  ————————————————————————————————————————————————————————————————
-test-all: test-backend test-frontend test-music-labeler
+test-all: test-backend test-frontend test-music-labeler test-e2e
 	@# Help: lance l'ensemble des tests (backend et frontend)
 
 test-backend-coverage:

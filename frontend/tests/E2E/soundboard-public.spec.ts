@@ -21,7 +21,7 @@ test.describe('Soundboard Public', () => {
     // Intercepter la requête de streaming déclenchée par le clic (avant le clic)
     const streamRequest: Promise<Request> = page.waitForRequest(
       (req: Request): boolean => req.url().includes('/stream'),
-      { timeout: 10000 },
+      { timeout: 200 },
     );
     await firstPlaylist.click();
 
