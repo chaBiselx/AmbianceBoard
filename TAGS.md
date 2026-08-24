@@ -407,7 +407,8 @@ Modifications
 - Changement de logo suite au sondage
 
 Correction 
-- ajout d'un solution temporaire pour recharger le css en prod 
+- Ajout d'une solution temporaire pour recharger le css en prod
+- Corrections des traductions pour les mails qui n'était pas traduits 
 
 
 ### X.Y.Z - Date

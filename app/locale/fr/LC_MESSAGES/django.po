@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-24 09:03+0000\n"
+"POT-Creation-Date: 2026-08-24 13:43+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -325,11 +325,11 @@ msgstr "Soundboard publiques"
 msgid "view.publicFavorite.title"
 msgstr "Soundboard favorites"
 
-#: main/interface/ui/controller/public/publicViews.py:185
+#: main/interface/ui/controller/public/publicViews.py:192
 msgid "view.favoriteUpdate.error.not_found"
 msgstr "SoundBoard introuvable."
 
-#: main/interface/ui/controller/public/publicViews.py:202
+#: main/interface/ui/controller/public/publicViews.py:209
 msgid "view.favoriteUpdate.error.favorite_not_found"
 msgstr "Favori introuvable."
 
@@ -382,6 +382,36 @@ msgstr "Soundboard pour jeux de rôle"
 #: main/interface/ui/templates/Email/base.html:169
 msgid "template.email.base.footer.autosent"
 msgstr "Cet email a été envoyé automatiquement, merci de ne pas y répondre."
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:8
+msgid "template.email.user.greeting"
+msgstr "Bonjour %(username)s !"
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:9
+msgid "template.email.user.welcome_greeting"
+msgstr "Bienvenue %(username)s"
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:10
+msgid "template.email.user.confirm_account.body"
+msgstr "Merci de confirmer votre compte. <a href=\"%(confirmation_url)s\">Confirmation</a>"
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:11
+msgid "template.email.user.prevent_auto_delete_unconfirmed.body"
+msgstr ""
+"Votre compte n'est pas confirmé, veuillez confirmer votre compte via le lien "
+"suivant : <a href=\"%(confirmation_url)s\">Confirmation</a>."
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:12
+msgid "template.email.user.reset_password.body"
+msgstr "Voici votre demande de réinitialisation de mot de passe. <a href=\"%(reset_url)s\">Réinitialiser</a>"
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:13
+msgid "template.email.user.tier_downgrade.body"
+msgstr "Votre compte a été rétrogradé vers le niveau %(tier_label)s."
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:14
+msgid "template.email.user.tier_expiration.body"
+msgstr "Votre compte arrive à expiration dans %(remaining_days)s jours."
 
 #: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:8
 msgid "template.email.moderator.reported.title"
@@ -1082,23 +1112,23 @@ msgstr "Propositions de playlist reçues"
 msgid "Proposée par %(username)s pour \"%(soundboard_name)s\""
 msgstr "Proposée par %(username)s pour \"%(soundboard_name)s\""
 
-#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:35
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:37
 msgid "template.playlistProposalsList.action.listen"
 msgstr "Écouter"
 
-#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:48
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:52
 msgid "template.playlistProposalsList.no_track"
 msgstr "Aucun son dans cette playlist."
 
-#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:54
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:61
 msgid "template.playlistProposalsList.action.accept"
 msgstr "Accepter"
 
-#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:57
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:64
 msgid "template.playlistProposalsList.action.refuse"
 msgstr "Refuser"
 
-#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:67
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:74
 msgid "template.playlistProposalsList.empty"
 msgstr "Aucune proposition de playlist en attente."
 
@@ -1371,30 +1401,6 @@ msgstr "Continuer"
 #: main/interface/ui/templates/socialaccount/login.html:20
 msgid "template.social.google.back"
 msgstr "Retour"
-
-#~ msgid "template.email.user.greeting"
-#~ msgstr "Bonjour %(username)s !"
-
-#~ msgid "template.email.user.confirm_account.body"
-#~ msgstr ""
-#~ "Merci de confirmer votre compte. <a href=\"%"
-#~ "(confirmation_url)s\">Confirmation</a>"
-
-#~ msgid "template.email.user.prevent_auto_delete_unconfirmed.body"
-#~ msgstr ""
-#~ "Votre compte n'est pas confirmé, veuillez confirmer votre compte via le "
-#~ "lien suivant : <a href=\"%(confirmation_url)s\">Confirmation</a>."
-
-#~ msgid "template.email.user.reset_password.body"
-#~ msgstr ""
-#~ "Voici votre demande de réinitialisation de mot de passe. <a href=\"%"
-#~ "(reset_url)s\">Réinitialiser</a>"
-
-#~ msgid "template.email.user.tier_downgrade.body"
-#~ msgstr "Votre compte a été rétrogradé vers le niveau %(tier_label)s."
-
-#~ msgid "template.email.user.tier_expiration.body"
-#~ msgstr "Votre compte arrive à expiration dans %(remaining_days)s jours."
 
 #, python-format
 #~ msgid "Soundboard publique 100%% Gratuit"
