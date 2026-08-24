@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-23 19:03+0000\n"
+"POT-Creation-Date: 2026-08-24 09:03+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -23,65 +23,70 @@ msgstr ""
 msgid "template.email.moderator.reported.subject"
 msgstr "Reported content"
 
-#: main/architecture/messaging/email/UserMail.py:28
-#: main/architecture/messaging/email/UserMail.py:31
+#: main/architecture/messaging/email/UserMail.py:30
+#: main/architecture/messaging/email/UserMail.py:33
 #: main/interface/ui/controller/debug/debugEmailViews.py:166
 msgid "template.email.user.welcome.subject"
 msgstr "Welcome to our site"
 
-#: main/architecture/messaging/email/UserMail.py:46
-#: main/architecture/messaging/email/UserMail.py:50
+#: main/architecture/messaging/email/UserMail.py:48
+#: main/architecture/messaging/email/UserMail.py:52
 #: main/interface/ui/controller/debug/debugEmailViews.py:60
 msgid "template.email.user.confirm.subject"
 msgstr "Confirm your account"
 
-#: main/architecture/messaging/email/UserMail.py:66
-#: main/architecture/messaging/email/UserMail.py:70
+#: main/architecture/messaging/email/UserMail.py:68
+#: main/architecture/messaging/email/UserMail.py:72
 #: main/interface/ui/controller/debug/debugEmailViews.py:78
 msgid "template.email.user.reset_password.subject"
 msgstr "Reset your password"
 
-#: main/architecture/messaging/email/UserMail.py:85
-#: main/architecture/messaging/email/UserMail.py:88
+#: main/architecture/messaging/email/UserMail.py:87
+#: main/architecture/messaging/email/UserMail.py:90
 #: main/interface/ui/controller/debug/debugEmailViews.py:180
 msgid "template.email.user.password_changed.subject"
 msgstr "Password changed"
 
-#: main/architecture/messaging/email/UserMail.py:105
-#: main/architecture/messaging/email/UserMail.py:108
-#: main/architecture/messaging/email/UserMail.py:125
-#: main/architecture/messaging/email/UserMail.py:129
+#: main/architecture/messaging/email/UserMail.py:107
+#: main/architecture/messaging/email/UserMail.py:110
+#: main/architecture/messaging/email/UserMail.py:127
+#: main/architecture/messaging/email/UserMail.py:131
 #: main/interface/ui/controller/debug/debugEmailViews.py:190
 #: main/interface/ui/controller/debug/debugEmailViews.py:200
 msgid "template.email.user.account_deleted.subject"
 msgstr "Your account has been deleted"
 
-#: main/architecture/messaging/email/UserMail.py:146
-#: main/architecture/messaging/email/UserMail.py:150
+#: main/architecture/messaging/email/UserMail.py:148
+#: main/architecture/messaging/email/UserMail.py:152
 #: main/interface/ui/controller/debug/debugEmailViews.py:210
 msgid "template.email.user.prevent_deletion.subject"
 msgstr "Your account will be deleted"
 
-#: main/architecture/messaging/email/UserMail.py:167
-#: main/architecture/messaging/email/UserMail.py:171
+#: main/architecture/messaging/email/UserMail.py:169
+#: main/architecture/messaging/email/UserMail.py:173
 #: main/interface/ui/controller/debug/debugEmailViews.py:220
 msgid "template.email.user.prevent_deletion_unconfirmed.subject"
 msgstr "Your account will be deleted because it is not confirmed"
 
-#: main/architecture/messaging/email/UserMail.py:191
-#: main/architecture/messaging/email/UserMail.py:194
+#: main/architecture/messaging/email/UserMail.py:193
+#: main/architecture/messaging/email/UserMail.py:196
 #: main/interface/ui/controller/debug/debugEmailViews.py:231
 msgid "template.email.user.account_deleted_unconfirmed.subject"
 msgstr "Your account has been deleted because it is not confirmed"
 
-#: main/architecture/messaging/email/UserMail.py:210
-#: main/architecture/messaging/email/UserMail.py:214
+#: main/architecture/messaging/email/UserMail.py:212
+#: main/architecture/messaging/email/UserMail.py:216
 #: main/interface/ui/controller/debug/debugEmailViews.py:241
 msgid "template.email.user.tier_downgrade.subject"
 msgstr "Your tier has been downgraded"
 
-#: main/architecture/messaging/email/UserMail.py:232
-#: main/architecture/messaging/email/UserMail.py:236
+#: main/architecture/messaging/email/UserMail.py:234
+#: main/architecture/messaging/email/UserMail.py:239
+msgid "template.email.user.playlist_proposal_received.subject"
+msgstr "New playlist proposal"
+
+#: main/architecture/messaging/email/UserMail.py:258
+#: main/architecture/messaging/email/UserMail.py:262
 #: main/interface/ui/controller/debug/debugEmailViews.py:252
 msgid "template.email.user.tier_expiration.subject"
 msgstr "Your tier expiration warning"
@@ -308,19 +313,19 @@ msgstr "Average session duration - %s days"
 msgid "view.publicStats.session_duration.y_label"
 msgstr "Average Session Duration (min)"
 
-#: main/interface/ui/controller/public/publicViews.py:58
+#: main/interface/ui/controller/public/publicViews.py:59
 msgid "view.publicListing.title"
 msgstr "Public Soundboards"
 
-#: main/interface/ui/controller/public/publicViews.py:70
+#: main/interface/ui/controller/public/publicViews.py:71
 msgid "view.publicFavorite.title"
 msgstr "Favorite Soundboards"
 
-#: main/interface/ui/controller/public/publicViews.py:179
+#: main/interface/ui/controller/public/publicViews.py:185
 msgid "view.favoriteUpdate.error.not_found"
 msgstr "SoundBoard not found."
 
-#: main/interface/ui/controller/public/publicViews.py:196
+#: main/interface/ui/controller/public/publicViews.py:202
 msgid "view.favoriteUpdate.error.favorite_not_found"
 msgstr "Favorite not found."
 
@@ -362,7 +367,8 @@ msgstr "Tags"
 
 #: main/interface/ui/forms/private/SoundBoardForm.py:95
 msgid "form.soundboard.tags.helptext"
-msgstr "Select tags if necessary to categorize your soundboard for search purposes."
+msgstr ""
+"Select tags if necessary to categorize your soundboard for search purposes."
 
 #: main/interface/ui/templates/Email/base.html:156
 msgid "template.email.base.tagline"
@@ -428,6 +434,38 @@ msgstr ""
 msgid "template.email.user.password_changed.body"
 msgstr "Your password has been successfully changed."
 
+#: main/interface/ui/templates/EmailTemplate/user/playlistProposalReceived.html:8
+msgid "template.email.user.playlist_proposal_received.title"
+msgstr "New playlist proposal"
+
+#: main/interface/ui/templates/EmailTemplate/user/playlistProposalReceived.html:9
+#, python-format
+msgid "Bonjour %(username)s,"
+msgstr "Hello %(username)s,"
+
+#: main/interface/ui/templates/EmailTemplate/user/playlistProposalReceived.html:11
+#, python-format
+msgid ""
+"\n"
+"        %(username)s propose d'ajouter sa playlist \"%(playlist_name)s\" à "
+"votre soundboard \"%(soundboard_name)s\".\n"
+"        "
+msgstr ""
+"\n"
+"        %(username)s would like to add their playlist \"%(playlist_name)s\" "
+"to your soundboard \"%(soundboard_name)s\".\n"
+"        "
+
+#: main/interface/ui/templates/EmailTemplate/user/playlistProposalReceived.html:15
+msgid "template.email.user.playlist_proposal_received.action"
+msgstr "Go to your soundboard to accept or refuse this proposal."
+
+#: main/interface/ui/templates/EmailTemplate/user/playlistProposalReceived.html:17
+#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:11
+#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:11
+msgid "template.email.user.common.thanks_understanding"
+msgstr "Thank you for your understanding."
+
 #: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletion.html:9
 msgid "template.email.user.prevent_auto_delete_22m.body"
 msgstr ""
@@ -437,11 +475,6 @@ msgstr ""
 #: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:10
 msgid "template.email.user.tier_downgrade.help"
 msgstr "If you have any questions or concerns, feel free to contact us."
-
-#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:11
-#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:11
-msgid "template.email.user.common.thanks_understanding"
-msgstr "Thank you for your understanding."
 
 #: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:10
 msgid "template.email.user.tier_expiration.renew"
@@ -1018,6 +1051,43 @@ msgstr "This account cannot access this feature"
 msgid "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
 msgstr "keyboard shortcut"
 
+#: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_list.html:28
+msgid "template.proposePlaylist.modal.action.propose"
+msgstr "Propose"
+
+#: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_list.html:37
+msgid "template.proposePlaylist.modal.empty"
+msgstr "No playlist available to propose for this soundboard."
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:15
+msgid "template.playlistProposalsList.title"
+msgstr "Received playlist proposals"
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:26
+#, python-format
+msgid "Proposée par %(username)s pour \"%(soundboard_name)s\""
+msgstr "Proposed by %(username)s for \"%(soundboard_name)s\""
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:35
+msgid "template.playlistProposalsList.action.listen"
+msgstr "Listen"
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:48
+msgid "template.playlistProposalsList.no_track"
+msgstr "No sound in this playlist."
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:54
+msgid "template.playlistProposalsList.action.accept"
+msgstr "Accept"
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:57
+msgid "template.playlistProposalsList.action.refuse"
+msgstr "Refuse"
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:67
+msgid "template.playlistProposalsList.empty"
+msgstr "No pending playlist proposal."
+
 #: main/interface/ui/templates/Html/Soundboard/soundboard_list.html:25
 msgid "template.soundboard.list.new_soundbaord"
 msgstr "Add a soundboard"
@@ -1078,6 +1148,26 @@ msgstr "none"
 msgid "template.filterTagCloud.no_description"
 msgstr "No description"
 
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:59
+msgid "template.soundboard_read.my_proposals.title"
+msgstr "My proposals"
+
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:74
+msgid "template.soundboard_read.my_proposals.status.pending"
+msgstr "Pending"
+
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:75
+msgid "template.soundboard_read.my_proposals.action.withdraw"
+msgstr "Withdraw"
+
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:77
+msgid "template.soundboard_read.my_proposals.status.refused"
+msgstr "Refused"
+
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:78
+msgid "template.soundboard_read.my_proposals.action.dismiss"
+msgstr "Delete"
+
 #: main/interface/ui/templates/Html/partial/soundboard/header.html:11
 msgid "template.soundboard_read.badge.private"
 msgstr "Private"
@@ -1095,6 +1185,14 @@ msgstr ""
 #: main/interface/ui/templates/Html/partial/soundboard/header.html:24
 msgid "template.shareSoundboard.button.label"
 msgstr "Share listening"
+
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:31
+msgid "template.proposePlaylist.button.tooltip"
+msgstr "Propose one of your playlists to the owner of this soundboard."
+
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:32
+msgid "template.proposePlaylist.button.label"
+msgstr "Propose a playlist"
 
 #: main/interface/ui/templates/Html/partial/soundboard/mixer.html:9
 msgid "template.mixer.setting.accordion.title"
@@ -1192,8 +1290,13 @@ msgstr "Downloads in the last 24h"
 msgid "template.nav.main.downloads"
 msgstr "Downloads"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:45
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:47
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:36
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:38
+msgid "template.nav.main.playlist_proposals"
+msgstr "Proposals"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:52
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:54
 msgid "template.nav.main.login"
 msgstr "Login"
 
@@ -1275,9 +1378,6 @@ msgstr "Back"
 
 #~ msgid "template.email.user.tier_expiration.body"
 #~ msgstr "Your account will expire in %(remaining_days)s days."
-
-#~ msgid "template.email.user.welcome_greeting"
-#~ msgstr "Welcome %(username)s!"
 
 #, python-format
 #~ msgid "Soundboard publique 100%% Gratuit"
@@ -1407,10 +1507,6 @@ msgstr "Back"
 
 #~ msgid "Date d'inscription :"
 #~ msgstr "Registration date:"
-
-#, python-format
-#~ msgid "Bonjour %(username)s !"
-#~ msgstr "Hello %(username)s!"
 
 #~ msgid ""
 #~ "Suite à une inactivité de 24 mois, votre compte est supprimé de notre "

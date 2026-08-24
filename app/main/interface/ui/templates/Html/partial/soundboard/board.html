@@ -2,6 +2,7 @@
 {% load static %}
 {% load FrontJs %}
 {% load SoundBoard %}
+{% load i18n %}
 
 
 {% block javascript %}
@@ -51,6 +52,50 @@
     </section>
     {% endfor %}
 </div>
+
+{% if master == True and owner == False and user_proposals %}
+<section class="section-proposals border rounded border-warning">
+    <div class="section-content">
+        <h6 class="text-warning-emphasis px-2 pt-2 mb-1">{% trans "template.soundboard_read.my_proposals.title" %}</h6>
+        <div class="flex-container">
+            {% for proposal in user_proposals %}
+            <div class="flex-item">
+                {% with playlist_data=proposal.playlist|get_playlist_data %}
+                <div class="playlist-link playlist-element playlist-proposal playlist-dim-{{ playlist_dim }} m-1 {% if proposal.status != 'PENDING' %}disabled{% endif %}"
+                    id='playlist-{{ proposal.playlist.uuid }}' data-id='{{ proposal.playlist.uuid }}'
+                    data-playlist-uri="{% if proposal.status == 'PENDING' %}{% url 'publicProposalStreamMusic' soundboard.uuid proposal.uuid %}{% endif %}"
+                    {% for key, value in playlist_data.items %}data-playlist-{{ key }}="{{ value }}" {% endfor %} data-last-activation="0"
+                    style="background-color: {{ proposal.playlist.get_color }};color: {{ proposal.playlist.get_color_text }};">
+                    {{ proposal.playlist | applys_playlist_content }}
+                </div>
+                {% endwith %}
+                <div class="proposal-status small text-center mt-1">
+                    {% if proposal.status == 'PENDING' %}
+                    <span class="badge bg-warning text-dark">{% trans "template.soundboard_read.my_proposals.status.pending" %}</span>
+                    <button type="button" class="btn btn-link btn-sm p-0 ms-1 proposal-withdraw-btn" data-url="{% url 'publicSoundboardWithdrawProposal' soundboard.uuid proposal.uuid %}">{% trans "template.soundboard_read.my_proposals.action.withdraw" %}</button>
+                    {% else %}
+                    <span class="badge bg-danger">{% trans "template.soundboard_read.my_proposals.status.refused" %}</span>
+                    <button type="button" class="btn btn-link btn-sm p-0 ms-1 proposal-dismiss-btn" data-url="{% url 'publicSoundboardDismissProposal' soundboard.uuid proposal.uuid %}">{% trans "template.soundboard_read.my_proposals.action.dismiss" %}</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{% if pending_proposal_placeholders %}
+{# Ancres DOM invisibles pour permettre aux auditeurs (maître ou partagé) de jouer l'aperçu d'une proposition en attente qui ne leur appartient pas #}
+<div class="d-none" aria-hidden="true">
+    {% for proposal in pending_proposal_placeholders %}
+    {% with playlist_data=proposal.playlist|get_playlist_data %}
+    <div class="playlist-link playlist-element disabled" id='playlist-{{ proposal.playlist.uuid }}'
+        {% for key, value in playlist_data.items %}data-playlist-{{ key }}="{{ value }}" {% endfor %} data-last-activation="0"></div>
+    {% endwith %}
+    {% endfor %}
+</div>
+{% endif %}
 
 
 

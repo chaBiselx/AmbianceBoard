@@ -1,0 +1,41 @@
+{% load Playlist %}
+{% load PlaylistEnum %}
+{% load PaginationLinks %}
+{% load i18n %}
+
+<div class="row g-2 mb-2">
+    {% include 'Html/partial/filter/search/filter_modal_select.html' with label="Type de son" field_id="propose-playlist-type-filter" field_name="playlistType" options=playlistType selected_value=selected_type all_option_label="Tous les types" %}
+    {% include 'Html/partial/filter/search/filter_modal_select.html' with label="Tag" field_id="propose-playlist-tag-filter" field_name="playlistTag" options=list_playlist_tags_dict selected_value=selected_playlist_tag all_option_label="Tous les tags" use_key_as_value=True %}
+</div>
+
+{% if page_objects %}
+<div class="row g-2" id="propose-playlist-list">
+    {% for playlist in page_objects %}
+    <div class="col-12 col-md-6">
+        <div class="border rounded m-1 h-100 row">
+            <div class="col-12">
+                <div class="fw-bold">{{ playlist.uuid }}</div>
+                <div class="small text-muted">{{ playlist.typePlaylist|to_value }}</div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <div class="playlist-link playlist-element playlist-dim-75 mt-2" style="background-color: {{ playlist.get_color }};color: {{ playlist.get_color_text }};">
+                    {{ playlist | applys_playlist_content }}
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <button class="btn btn-block btn-outline-warning btn-sm mt-2 btn-propose-playlist"
+                        data-url-propose="{% url 'publicSoundboardProposePlaylist' soundboard.uuid playlist.uuid %}">
+                    {% trans "template.proposePlaylist.modal.action.propose" %}
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info m-0">
+    {% trans "template.proposePlaylist.modal.empty" %}
+</div>
+{% endif %}
+
+{% applys_pagination paginator %}

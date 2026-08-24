@@ -33,6 +33,18 @@ class SharedSoundboardService():
                     "playlist_uuid": str(playlist_uuid),
                 }
             )
+
+    def proposal_music_start(self, proposal_uuid, playlist_uuid, music):
+        """Diffuse le démarrage de la piste d'une proposition en attente aux auditeurs de la session partagée."""
+        if(self._get_shared_soundboard()):
+            self._diffuser_message(
+                {
+                    "type": "music_start",
+                    "track": music.id,
+                    'url_music': reverse('sharedProposalStreamMusic', args=[self.soundboard_uuid, self.token, proposal_uuid, music.id]),
+                    "playlist_uuid": str(playlist_uuid),
+                }
+            )
             
     def reset_soundboard_player(self):
         if(self._get_shared_soundboard()):

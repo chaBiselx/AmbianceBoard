@@ -24,6 +24,12 @@ from main.interface.ui.controller.private.showSoundboardViews import (
     soundboard_edit_mode_my_playlist_list,
     soundboard_edit_mode_add_my_playlist,
 )
+from main.interface.ui.controller.private.playlistProposalManagementViews import (
+    playlist_proposals_list,
+    playlist_proposal_accept,
+    playlist_proposal_refuse,
+    playlist_proposal_track_stream,
+)
 from main.interface.ui.controller.private.playlistFormViews import (
     playlist_read_all, playlist_create,  playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
@@ -64,8 +70,15 @@ from main.interface.ui.controller.manager.managerSendEmailViews import manager_s
 from main.interface.ui.controller.manager.managerMusicLabelerViews import music_labeler_index, music_labeler_analyze, music_labeler_stream
 from main.interface.ui.controller.manager.managerHomeDemoViews import listing_home_demo_items, select_home_demo_soundboard, manage_home_demo_item
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_playlist_tracks_list, favorite_update, reporting_content, public_favorite, public_specific_track_stream
+from main.interface.ui.controller.public.playlistProposalViews import (
+    public_soundboard_propose_my_playlist_list,
+    public_soundboard_propose_playlist,
+    public_soundboard_withdraw_proposal,
+    public_soundboard_dismiss_proposal,
+    public_soundboard_proposal_stream,
+)
 from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation, stats_moyenne_duration_session
-from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream, shared_soundboard_refresh
+from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream, shared_soundboard_refresh, shared_proposal_music_stream
 from main.domain.sharedSoundboard.consummers.SharedSoundboardConsummers import SharedSoundboardConsummers
 
 
@@ -126,6 +139,11 @@ urlpatterns = [
     path("soundBoards/specific/shortcut/update", update_specific_shortcut_playlists, name="updateShortcutPlaylistsForPlayers"),
     
     path("soundBoards/add-music/<uuid:playlist_uuid>", add_music_from_soundboard, name="add_music_from_soundboard"),
+
+    path("soundBoards/propositions", playlist_proposals_list, name="playlistProposalsList"),
+    path("soundBoards/propositions/<uuid:proposal_uuid>/accept", playlist_proposal_accept, name="playlistProposalAccept"),
+    path("soundBoards/propositions/<uuid:proposal_uuid>/refuse", playlist_proposal_refuse, name="playlistProposalRefuse"),
+    path("soundBoards/propositions/<uuid:proposal_uuid>/track/<int:music_id>/stream", playlist_proposal_track_stream, name="playlistProposalTrackStream"),
     
     
     
@@ -174,6 +192,12 @@ urlpatterns = [
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreamMusic"),
     path("public/soundboards/<uuid:soundboard_uuid>/fetch/tracks", public_playlist_tracks_list, name="publicSoundboardTracksList"),
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/<int:music_id>/stream", public_specific_track_stream, name="publicSpecificTrackStream"),
+
+    path("public/soundboards/<uuid:soundboard_uuid>/propose/my-playlists", public_soundboard_propose_my_playlist_list, name="publicSoundboardProposeMyPlaylistList"),
+    path("public/soundboards/<uuid:soundboard_uuid>/propose/<uuid:playlist_uuid>", public_soundboard_propose_playlist, name="publicSoundboardProposePlaylist"),
+    path("public/soundboards/<uuid:soundboard_uuid>/propose/<uuid:proposal_uuid>/withdraw", public_soundboard_withdraw_proposal, name="publicSoundboardWithdrawProposal"),
+    path("public/soundboards/<uuid:soundboard_uuid>/propose/<uuid:proposal_uuid>/dismiss", public_soundboard_dismiss_proposal, name="publicSoundboardDismissProposal"),
+    path("public/soundboards/<uuid:soundboard_uuid>/proposal/<uuid:proposal_uuid>/stream", public_soundboard_proposal_stream, name="publicProposalStreamMusic"),
     
     
     path("public/report", reporting_content, name="publicReportingContent"),
@@ -190,6 +214,7 @@ urlpatterns = [
     path('shared/<uuid:soundboard_uuid>/<str:token>', shared_soundboard_read, name="shared_soundboard"),
     path('shared/<uuid:soundboard_uuid>/<str:token>/refresh', shared_soundboard_refresh, name="shared_soundboard_refresh"),
     path('shared/<uuid:soundboard_uuid>/<str:token>/<uuid:playlist_uuid>/<int:music_id>/stream', shared_music_stream, name="sharedStreamMusic"),
+    path('shared/<uuid:soundboard_uuid>/<str:token>/proposal/<uuid:proposal_uuid>/<int:music_id>/stream', shared_proposal_music_stream, name="sharedProposalStreamMusic"),
     
     
     

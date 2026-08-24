@@ -1,0 +1,20 @@
+{% extends "Email/base.html" %}
+{% load i18n %}
+
+
+{% block content %}
+
+<div>
+    <h1>{% trans "template.email.user.playlist_proposal_received.title" %}</h1>
+    <p>{% blocktrans with username=proposal.soundboard.user.username %}Bonjour {{ username }},{% endblocktrans %}</p>
+    <p>
+        {% blocktrans with username=proposal.proposer.uuid playlist_name=proposal.playlist.name soundboard_name=proposal.soundboard.name %}
+        {{ username }} propose d'ajouter sa playlist "{{ playlist_name }}" à votre soundboard "{{ soundboard_name }}".
+        {% endblocktrans %}
+    </p>
+    <p>{% trans "template.email.user.playlist_proposal_received.action" %}</p>
+    <p><a href="{{ manage_url }}">{{ manage_url }}</a></p>
+    <p>{% trans "template.email.user.common.thanks_understanding" %}</p>
+</div>
+
+{% endblock content %}

@@ -4,6 +4,8 @@ from main.domain.common.utils.ServerNotificationBuilder import ServerNotificatio
 from django.urls import reverse
 from main.domain.common.utils.settings import Settings
 from main.architecture.persistence.repository.AsyncDownloadJobRepository import AsyncDownloadJobRepository
+from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
+from main.domain.common.service.PlaylistProposalService import PlaylistProposalService
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.domain.private.service.LinkService import LinkService
 
@@ -26,6 +28,23 @@ def __get_has_recent_async_download_jobs(request) -> bool:
     return has_recent_async_download_jobs
 
 
+def __get_pending_playlist_proposals_count(request) -> int:
+    """Retourne le nombre de propositions de playlist en attente sur les soundboards de l'utilisateur."""
+    if not request.user.is_authenticated:
+        return 0
+
+    cache = CacheFactory.get_default_cache()
+    cache_key = f"{PlaylistProposalService.PREFIX_CACHE_NAVBAR_PROPOSALS}{request.user.id}"
+    cached_value = cache.get(cache_key)
+
+    if cached_value is not None:
+        return int(cached_value)
+
+    count = PlaylistProposalRepository().count_pending_for_owner(request.user)
+    cache.set(cache_key, count, timeout=5 * 60)  # Cache pour 5 minutes
+    return count
+
+
 def general_information_processor(request):
     # Liste des URLs où la sidebar doit apparaître
     general_notifications = GeneralNotificationService(request.user).get_list_notifications()
@@ -41,10 +60,12 @@ def general_information_processor(request):
 
 
     has_recent_async_download_jobs = __get_has_recent_async_download_jobs(request)
+    pending_playlist_proposals_count = __get_pending_playlist_proposals_count(request)
     
     return {
         'APP_ENV': Settings.get('APP_ENV'),
         'DEBUG': Settings.get('DEBUG', False),
         'GRAFANA_URL': Settings.get('GRAFANA_URL', ''),
         'has_recent_async_download_jobs': has_recent_async_download_jobs,
+        'pending_playlist_proposals_count': pending_playlist_proposals_count,
     }

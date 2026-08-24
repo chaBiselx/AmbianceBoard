@@ -34,10 +34,10 @@ from main.TNR.TU.Service.RGPDServiceNotConfirmedTest import *
 from main.TNR.TU.Service.ConfirmationUserServiceTest import *
 from main.TNR.TU.Service.ReportContentServiceTest import *
 from main.TNR.TU.Service.PlaylistDuplicationServiceTest import *
+from main.TNR.TU.Service.PlaylistProposalServiceTest import *
 from main.TNR.TU.Service.PlaylistDataServiceTest import *
 from main.TNR.TU.Service.DefaultColorPlaylistServiceTest import *
 from main.TNR.TU.Service.SoundboardPlaylistServiceTest import *
-from main.TNR.TU.Service.YoutubeAudioServiceTest import *
 
 from main.TNR.TU.UserParametersFactoryTest import *
 from main.TNR.TU.UserTierManagerTest import *
@@ -126,6 +126,7 @@ from main.TNR.TI.routing.SoundboardsNewRouteTest import *
 from main.TNR.TI.routing.SoundboardsReadRouteTest import *
 from main.TNR.TI.routing.OrganizeSoundboardUpdateRouteTest import *
 from main.TNR.TI.routing.SoundboardEditModeDuplicatePlaylistRouteTest import *
+from main.TNR.TI.routing.PlaylistProposalRouteTest import *
 
 # Routes Settings
 from main.TNR.TI.routing.SettingsIndexRouteTest import *

@@ -29,7 +29,14 @@
 {% if has_recent_async_download_jobs %}
 <a class="btn btn-link url_link p-1 text-warning" href="{% url 'asyncDownloadJobsRecent' %}" aria-label="Téléchargements" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans 'template.nav.main.recent_downloads' %}">
     <i class="fa-solid fa-cloud-arrow-down"></i>
-    <span class="d-none d-lg-inline">{% trans "template.nav.main.downloads" %}</span>
+    <span class="d-none d-xl-inline">{% trans "template.nav.main.downloads" %}</span>
+</a>
+{% endif %}
+{% if pending_playlist_proposals_count %}
+<a class="btn btn-link url_link p-1 text-warning" href="{% url 'playlistProposalsList' %}" aria-label="Propositions" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans 'template.nav.main.playlist_proposals' %}">
+    <i class="fa-solid fa-inbox"></i>
+    <span class="d-none d-xl-inline">{% trans "template.nav.main.playlist_proposals" %}</span>
+    <span class="badge rounded-pill bg-danger">{{ pending_playlist_proposals_count }}</span>
 </a>
 {% endif %}
 {% endif %}
