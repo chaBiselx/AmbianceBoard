@@ -1,9 +1,12 @@
 import uuid
 from main.domain.common.utils.settings import Settings
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.models import Group
 from django.http import JsonResponse, HttpRequest, HttpResponse
+from django.utils import translation
+from django.views.i18n import set_language as django_set_language
 from main.architecture.persistence.models.User import User
 from main.domain.common.enum.GroupEnum import GroupEnum
 from main.interface.ui.forms.general.CreateUserForm import CreateUserForm
@@ -202,13 +205,39 @@ def login_post(request: HttpRequest):
             login(request, user)
             failed_login_attempt_service.purge()
             ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LOGIN, user=user)
-            return redirect('home')
+            response = redirect('home')
+            if user.language:
+                translation.activate(user.language)
+                response.set_cookie(
+                    settings.LANGUAGE_COOKIE_NAME,
+                    user.language,
+                    max_age=settings.LANGUAGE_COOKIE_AGE,
+                    path=settings.LANGUAGE_COOKIE_PATH,
+                    domain=settings.LANGUAGE_COOKIE_DOMAIN,
+                    secure=settings.LANGUAGE_COOKIE_SECURE,
+                    httponly=settings.LANGUAGE_COOKIE_HTTPONLY,
+                    samesite=settings.LANGUAGE_COOKIE_SAMESITE,
+                )
+            return response
         
         # wrong password
         failed_login_attempt_service.add_or_create_failed_login_attempt()
         if(failed_login_attempt_service.is_timeout()) :
             return render(request, HtmlDefaultPageEnum.ERROR_429.value, status=429)
     return redirect('login')
+
+
+@require_http_methods(['POST'])
+def set_language(request: HttpRequest) -> HttpResponse:
+    """
+    Change la langue courante et la persiste sur l'utilisateur connecté.
+    """
+    response = django_set_language(request)
+    language = request.POST.get('language')
+    if request.user.is_authenticated and language in dict(settings.LANGUAGES) and request.user.language != language:
+        request.user.language = language
+        request.user.save(update_fields=['language'])
+    return response
 
 
 @require_http_methods(['GET'])

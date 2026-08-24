@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-16 19:00+0000\n"
+"POT-Creation-Date: 2026-08-23 19:03+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -279,6 +279,14 @@ msgstr ""
 "Gérez votre profil, vos préférences de notification, votre thème préféré et "
 "votre abonnement."
 
+#: main/interface/ui/controller/private/soundboardFromViews.py:30
+msgid "template.soundboard.create.title"
+msgstr "Création d'un nouveau Soundboard"
+
+#: main/interface/ui/controller/private/soundboardViews.py:33
+msgid "template.soundboard.list.title"
+msgstr "Mes soundboards"
+
 #: main/interface/ui/controller/public/analyseStatsViews.py:46
 msgid "view.publicStats.page_title"
 msgstr "Statistiques de la soundboard %s"
@@ -319,6 +327,47 @@ msgstr "SoundBoard introuvable."
 #: main/interface/ui/controller/public/publicViews.py:196
 msgid "view.favoriteUpdate.error.favorite_not_found"
 msgstr "Favori introuvable."
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:56
+msgid "form.soundboard.name.label"
+msgstr "Soundboard's names"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:62
+msgid "form.soundboard.description.name"
+msgstr "Description du soundboard"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:66
+msgid "form.soundboard.description.helptext"
+msgstr "Description du soundboard, max 500 caractères"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:69
+msgid "form.soundboard.backgroundColor.name"
+msgstr "Couleur du background"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:74
+msgid "form.soundboard.textColor.name"
+msgstr "Couleur du texte"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:80
+msgid "form.soundboard.share.name"
+msgstr "Partager le soundboard"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:84
+msgid "form.soundboard.icon.name"
+msgstr "Icone du soundboard"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:88
+msgid "form.soundboard.delete.icon.name"
+msgstr "Suppression icone"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:94
+msgid "form.soundboard.tags.name"
+msgstr "Tags"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:95
+msgid "form.soundboard.tags.helptext"
+msgstr "Sélectionnez si necessaires des tags pour catégoriser votre soundboard pour "
+"les recherches"
 
 #: main/interface/ui/templates/Email/base.html:156
 msgid "template.email.base.tagline"
@@ -982,6 +1031,10 @@ msgstr "Ce compte ne peux pas avoir accès a cette fonctionnalité :"
 msgid "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
 msgstr "Raccourci clavier"
 
+#: main/interface/ui/templates/Html/Soundboard/soundboard_list.html:25
+msgid "template.soundboard.list.new_soundbaord"
+msgstr "Ajouter un soundboard"
+
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:5
 msgid "template.soundboard_read.page_title_suffix"
 msgstr "Soundboard Ambiance | AmbianceBoard"
@@ -1067,15 +1120,15 @@ msgstr "En cours de lecture"
 msgid "template.playingMonitor.empty"
 msgstr "Aucun son en cours"
 
-#: main/interface/ui/templates/Html/partial/structure/base.html:13
+#: main/interface/ui/templates/Html/partial/structure/base.html:15
 msgid "template.base.default_page_title"
 msgstr "AmbianceBoard - Click here, play anywhere"
 
-#: main/interface/ui/templates/Html/partial/structure/base.html:42
+#: main/interface/ui/templates/Html/partial/structure/base.html:45
 msgid "template.base.tagline"
 msgstr "Soundboard pour jeux de rôle"
 
-#: main/interface/ui/templates/Html/partial/structure/base.html:50
+#: main/interface/ui/templates/Html/partial/structure/base.html:53
 msgid "template.base.theme_toggle"
 msgstr "Changer le thème"
 
@@ -1156,11 +1209,11 @@ msgstr "Téléchargements"
 msgid "template.nav.main.login"
 msgstr "Login"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:18
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:17
 msgid "template.nav.lang.fr"
 msgstr "Francais"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:28
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:27
 msgid "template.nav.lang.en"
 msgstr "English"
 
@@ -1258,15 +1311,6 @@ msgstr "Retour"
 #~ msgid "Copie de boutons"
 #~ msgstr "Liste de vos boutons"
 
-#~ msgid "Mes soundboards"
-#~ msgstr "Soundboards"
-
-#~ msgid "Créer mon soundboard"
-#~ msgstr "Liste de vos soundboards"
-
-#~ msgid "soundboards"
-#~ msgstr "Soundboards"
-
 #~ msgid "boutons"
 #~ msgstr "Boutons"
 
@@ -1290,9 +1334,6 @@ msgstr "Retour"
 
 #~ msgid "Report"
 #~ msgstr "Signaler"
-
-#~ msgid "liste de vos soundboards"
-#~ msgstr "Liste de vos soundboards"
 
 #~ msgid "Soundboards"
 #~ msgstr "Soundboards"

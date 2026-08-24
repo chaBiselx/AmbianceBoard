@@ -1,5 +1,6 @@
 import json
 from django.shortcuts import render, redirect
+from django.utils.translation import gettext as _
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
@@ -29,7 +30,7 @@ def soundboard_list(request):
     except Exception:
         soundboards = []
     
-    return render(request, 'Html/Soundboard/soundboard_list.html', {'soundboards': soundboards, 'title': 'Mes Soundboards'})
+    return render(request, 'Html/Soundboard/soundboard_list.html', {'soundboards': soundboards, 'title': _('template.soundboard.list.title')})
 
 
 

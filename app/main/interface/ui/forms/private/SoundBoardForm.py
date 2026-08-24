@@ -8,6 +8,7 @@ des images et gestion des tags.
 from typing import Any, Optional
 from django import forms
 from django.core.files.uploadedfile import UploadedFile
+from django.utils.translation import gettext_lazy  as _
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 from main.domain.common.enum.ImageFormatEnum import ImageFormatEnum
@@ -52,46 +53,46 @@ class SoundBoardForm(BootstrapFormMixin, forms.ModelForm):
             self.fields['tags'].initial = self.instance.tags.filter(is_active=True)
  
     name = forms.CharField(
-        label='Nom du soundboard', 
+        label=_('form.soundboard.name.label'), 
         widget=forms.TextInput(attrs={'typeInput': 'text'}),
         max_length=64, 
         required=True
     )
     descriptionSEO = forms.CharField(
-        label='Description du soundboard',
+        label=_('form.soundboard.description.name'),
         widget=forms.Textarea(attrs={'typeInput': 'textarea', 'rows': 3, 'placeholder': 'D&D, '}),
         max_length=500,
         required=False,
-        help_text='Description du soundboard, max 500 caractères'
+        help_text=_('form.soundboard.description.helptext')
     )
     color = forms.CharField(
-        label='Couleur du background',
+        label=_('form.soundboard.backgroundColor.name'),
         widget=forms.TextInput(attrs={'type': 'color', 'typeInput': 'color'}),
         initial="#000000"
     )
     colorText = forms.CharField(
-        label='Couleur du texte',
+        label=_('form.soundboard.textColor.name'),
         widget=forms.TextInput(attrs={'type': 'color', 'typeInput': 'color'}),
         initial="#ffffff"
     )
     is_public = forms.BooleanField(
         required=False, 
-        label='Partager le soundboard', 
+        label=_('form.soundboard.share.name'), 
         initial=True
     )
     icon = forms.FileField(
-        label='Icone de la playlist', 
+        label=_('form.soundboard.icon.name'), 
         widget=forms.FileInput(attrs={'accept': ', '.join(ImageFormatEnum.values())}),
         required=False
     )
-    clear_icon = forms.BooleanField(required=False, label='Supprimer le fichier', initial=False)
+    clear_icon = forms.BooleanField(required=False, label=_('form.soundboard.delete.icon.name'), initial=False)
     
     tags = forms.ModelMultipleChoiceField(
         queryset=SoundboardTagRepository().get_list_active_tags(),
         widget=forms.CheckboxSelectMultiple,
         required=True,
-        label='Tags',
-        help_text='Sélectionnez si necessaires des tags pour catégoriser votre soundboard pour les recherches'
+        label=_('form.soundboard.tags.name'),
+        help_text=_('form.soundboard.tags.helptext')
     )
 
     def clean_icon(self) -> Optional[UploadedFile]:

@@ -1,5 +1,6 @@
 {% extends 'Html/partial/structure/base.html' %}
 {% load SoundBoard %}
+{% load i18n %}
 
 {% block page_title %}Mes Soundboards Ambiance | AmbianceBoard{% endblock %}
 
@@ -21,6 +22,6 @@
 
 
 <div>
-    <a class="btn btn-primary btn-block" href="{% url 'soundboardsNew' %}" data-shepherd="create-soundboard-btn">Ajouter un Soundboard</a>
+    <a class="btn btn-primary btn-block" href="{% url 'soundboardsNew' %}" data-shepherd="create-soundboard-btn">{% trans "template.soundboard.list.new_soundbaord" %}</a>
 </div>
 {% endblock %}
