@@ -37,6 +37,7 @@ from main.TNR.TU.Service.PlaylistDuplicationServiceTest import *
 from main.TNR.TU.Service.PlaylistDataServiceTest import *
 from main.TNR.TU.Service.DefaultColorPlaylistServiceTest import *
 from main.TNR.TU.Service.SoundboardPlaylistServiceTest import *
+from main.TNR.TU.Service.YoutubeAudioServiceTest import *
 
 from main.TNR.TU.UserParametersFactoryTest import *
 from main.TNR.TU.UserTierManagerTest import *

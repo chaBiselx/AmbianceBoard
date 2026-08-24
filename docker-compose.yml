@@ -23,6 +23,7 @@ services:
     build:
       context: ./app
       dockerfile: Dockerfile
+    restart: unless-stopped
     command: python manage.py runserver 0.0.0.0:${WEB_PORT}
     volumes:
       - ./app/:/usr/src/app/
