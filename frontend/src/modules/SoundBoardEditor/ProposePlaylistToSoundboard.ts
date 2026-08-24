@@ -18,7 +18,7 @@ class ProposePlaylistToSoundboard {
 
     private bindProposeButton(): void {
         const button = document.getElementById('btn-propose-playlist-to-soundboard') as HTMLButtonElement | null;
-        if (!button || !button.dataset.urlList) return;
+        if (!button?.dataset.urlList) return;
 
         button.addEventListener('click', () => this.openModal(button.dataset.urlList!));
     }
