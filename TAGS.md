@@ -398,6 +398,9 @@ Correction
 - Corrections sur les formulaires soundboard/playlist qui ajoute #NaNNaNNaN
 
 ### 0.4.14 - 2026/08
+Sécurité
+- Durcissement des packages pour un service 
+
 Nouveautés
 - Ajout de l'internationnalistion 
 - Ajout la possiblité de proposer des sons aux soundboards publiques
