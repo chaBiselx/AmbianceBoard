@@ -17,6 +17,9 @@ Elle permet de preparer des ambiances sonores, d organiser des playlists et de p
 ![Duplication](https://sonarcloud.io/api/project_badges/measure?project=chaBiselx_AmbianceBoard&metric=duplicated_lines_density)  
 👉 [Voir le rapport SonarCloud](https://sonarcloud.io/project/overview?id=chaBiselx_AmbianceBoard)  
 
+## 📊 Score  
+[![Plumber Score](https://score.getplumber.io/github.com/OWNER/REPO.svg)](https://score.getplumber.io/github.com/OWNER/REPO)
+
 ## 🤝 Avancement 
 Suivi du projet
 [clickUp](https://sharing.clickup.com/9014791178/l/h/8cn5k0a-554/d11e2ded9d8d1d4)

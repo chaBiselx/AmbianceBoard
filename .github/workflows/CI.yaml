@@ -42,6 +42,22 @@ jobs:
         ggshield --config-path .github/gitguardian.yaml secret scan path --recursive --yes . 2>&1 | tee ggshield-report.txt
         exit ${PIPESTATUS[0]}
 
+  #https://getplumber.io/docs/cli/github
+  Plumber: 
+    needs: GitGuardian
+
+    permissions:
+      contents: read
+      security-events: write
+      id-token: write          #  to publish a live Plumber Score badge
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: getplumber/plumber@7bdbfee1f067431ce13f1b239c76f724ccadd0bf # pinned plumber version: v0.4.41
+        with:
+          score-push: push # set to "true" to publish a public Plumber Score badge
+          min-score: "A"
+
   BuildDockerCompose:
     needs: GitGuardian
     # if: ${{ github.event.workflow_run.conclusion == 'success' && github.event_name == 'workflow_run' }}

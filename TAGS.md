@@ -402,6 +402,7 @@ Nouveautés
 - Ajout de l'internationnalistion 
 - Ajout la possiblité de proposer des sons aux soundboards publiques
 - Ajout d'accepter ou refuser la propositions d'ajouter un son aux soundboard
+- Ajout de Plumber dans la CI
 
 Modifications
 - Changement de logo suite au sondage
