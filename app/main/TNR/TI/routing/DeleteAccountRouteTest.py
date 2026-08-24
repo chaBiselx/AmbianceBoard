@@ -24,11 +24,11 @@ class DeleteAccountRouteTest(TestCase):
     def test_deleteaccount_accessible_when_authenticated(self):
         """Test que la route delete account est accessible pour un utilisateur authentifié"""
         self.client.login(username='testuser', password='testpass123')
-        response = self.client.get(reverse('deleteAccount'))
+        response = self.client.get(reverse('account'))
         self.assertIn(response.status_code, [200, 302])
     
     def test_deleteaccount_requires_auth(self):
         """Test que la route nécessite une authentification"""
-        response = self.client.get(reverse('deleteAccount'))
+        response = self.client.delete(reverse('deleteAccount'))
         self.assertIn(response.status_code, [302, 401, 403])
 

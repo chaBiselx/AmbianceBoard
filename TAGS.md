@@ -407,6 +407,7 @@ Nouveautés
 Modifications
 - Changement de logo suite au sondage
 - Après enregistrement du compte, la connexion est faite automatiquement
+- La création de compte ne nécessite plus le nom est le prénom
 
 Correction 
 - Ajout d'une solution temporaire pour recharger le css en prod

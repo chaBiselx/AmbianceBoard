@@ -134,10 +134,14 @@ def update_soundboard_dim(request):
     return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.value}, status=400)
 
 @login_required
-@require_http_methods(['GET', 'DELETE'])
+@require_http_methods(['GET'])
+def account(request):
+    
+    return render(request, 'Html/Account/Settings/account.html')
+
+@login_required
+@require_http_methods(['DELETE'])
 def delete_account(request):
-    if request.method == 'GET':
-        return render(request, 'Html/Account/Settings/delete_account.html', {'title': 'Suppression de compte'})
     if request.method == 'DELETE':
         try:
             user = request.user

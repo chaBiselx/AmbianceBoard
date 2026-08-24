@@ -34,7 +34,7 @@ from main.interface.ui.controller.private.playlistFormViews import (
     playlist_read_all, playlist_create,  playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
 from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
-from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
+from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, account, delete_account
 from main.interface.ui.controller.private.asyncDownloadJobViews import recent_async_download_jobs
 from main.interface.ui.controller.moderator.moderatorViews import (
     moderator_dashboard, 
@@ -154,7 +154,8 @@ urlpatterns = [
     path('account/settings/playlists/style',settings_update_default_style, name="defaultPlaylistType"),
     path('account/settings/playlists/dimension',update_playlist_dim, name="updatePlaylistDim"),
     path('account/settings/soundboards/dimension',update_soundboard_dim, name="updateSoundboardDim"),
-    path('account/settings/delete-account',delete_account, name="deleteAccount"),
+    path('account/settings/account',account, name="account"),
+    path('account/settings/account/delete',delete_account, name="deleteAccount"),
 
     path("playlist/create", playlist_create, name="addPlaylist"),
     path("playlist/all", playlist_read_all, name="playlistsAllList"),
