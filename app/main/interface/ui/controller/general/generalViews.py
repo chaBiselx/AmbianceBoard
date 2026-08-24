@@ -141,6 +141,7 @@ def support_contact(request: HttpRequest) -> HttpResponse:
     })
 
 @require_http_methods(['GET', 'POST'])
+@ratelimit(key='ip', rate='5/m', method='POST', block=True)
 def create_account(request: HttpRequest) -> HttpResponse:
     """
     Vue de création de compte utilisateur.
@@ -179,6 +180,13 @@ def create_account(request: HttpRequest) -> HttpResponse:
                 logger.info(f"User {user.username} created")
                 UserTiersRepository().create(user)
                 ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.REGISTRATION, user=user)
+                
+                # conexion automatique après création de compte
+                raw_password = form.cleaned_data["password"]
+                auth_user = authenticate(request, username=user.username, password=raw_password)
+                if auth_user is not None:
+                    login(request, auth_user)
+                    return redirect("home")
                 return redirect('login')
             except Exception as e:
                 logger.error(e)

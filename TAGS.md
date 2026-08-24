@@ -406,6 +406,7 @@ Nouveautés
 
 Modifications
 - Changement de logo suite au sondage
+- Après enregistrement du compte, la connexion est faite automatiquement
 
 Correction 
 - Ajout d'une solution temporaire pour recharger le css en prod
