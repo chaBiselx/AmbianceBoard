@@ -45,6 +45,7 @@ jobs:
   #https://getplumber.io/docs/cli/github
   Plumber: 
     needs: GitGuardian
+    runs-on: ubuntu-latest
 
     permissions:
       contents: read
