@@ -48,7 +48,7 @@ def _build_absolute_url(request, route_name: str, query_params: dict | None = No
 
 def _fallback_og_image(request) -> str:
     """Retourne l'image Open Graph par defaut utilisee en absence d'icone specifique."""
-    return request.build_absolute_uri(static('img/logo.png'))
+    return request.build_absolute_uri(static('img/logo.webp'))
 
 
 def _get_available_languages() -> list[str]:
