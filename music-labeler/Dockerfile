@@ -9,16 +9,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     libsndfile1 \
     && rm -rf /var/lib/apt/lists/* && \
-    pip install --no-cache-dir --upgrade pip
+    pip install --no-cache-dir --upgrade pip pdm
   
 
-COPY requirements.txt .
-RUN pip install --only-binary :all: --no-cache-dir \
-    -r requirements.txt
-
-COPY requirements.dev.txt .
-RUN pip install --only-binary :all: --no-cache-dir \
-    -r requirements.dev.txt 
+COPY pyproject.toml pdm.lock ./
+RUN pdm config python.use_venv false && \
+    pdm sync --dev --no-editable
 
 COPY main.py .
 COPY app/ ./app/
@@ -36,7 +32,7 @@ ENV PYTEST_ADDOPTS="-o cache_dir=/tmp/pytest-cache"
 
 USER appuser
 
-RUN python -c "\
+RUN pdm run python -c "\
 from transformers import ClapModel, ClapProcessor; \
 ClapProcessor.from_pretrained('${CLAP_MODEL}'); \
 ClapModel.from_pretrained('${CLAP_MODEL}')"
@@ -45,4 +41,4 @@ ClapModel.from_pretrained('${CLAP_MODEL}')"
 
 EXPOSE 8089
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8089"]
+CMD ["pdm", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8089"]

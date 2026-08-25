@@ -108,6 +108,7 @@ services:
       context: ./music-labeler
       dockerfile: Dockerfile
     volumes:
+      - ./music-labeler:/app/
       - hf-cache:/home/appuser/.cache/huggingface
     ports:
       - "8089:8089"
