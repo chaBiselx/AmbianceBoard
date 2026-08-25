@@ -418,6 +418,7 @@ Correction
 - Ajout d'une solution temporaire pour recharger le css en prod
 - Corrections des traductions pour les mails qui n'était pas traduits 
 - Remise en place de loki pour les logs
+- Lorsque l'on passe en plein écran sur mobile, les tooltips peuvent rester présent
 
 
 ### X.Y.Z - Date

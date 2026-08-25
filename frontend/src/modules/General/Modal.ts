@@ -77,6 +77,7 @@ class ModalCustom {
         document.getElementById("mainModalBody")!.innerHTML = config.body;
         document.getElementById("mainModalFooter")!.innerHTML = config.footer;
 
+        BootstrapComponentInitializer.hideAllTooltips();
 
         mainModal.show();
 
