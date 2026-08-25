@@ -417,6 +417,7 @@ Modifications
 Correction 
 - Ajout d'une solution temporaire pour recharger le css en prod
 - Corrections des traductions pour les mails qui n'était pas traduits 
+- Remise en place de loki pour les logs
 
 
 ### X.Y.Z - Date
