@@ -409,6 +409,7 @@ Nouveautés
 
 Modifications
 - Changement de logo suite au sondage
+- Changement du favicon pour passer par un SVG
 - Après enregistrement du compte, la connexion est faite automatiquement
 - La création de compte ne nécessite plus le nom est le prénom
 
