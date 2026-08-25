@@ -68,7 +68,7 @@
                             <small>
                                 <i class="fas fa-info-circle me-1"></i>
                                 {% blocktrans with monthly_price=tier_data.pricing.monthly currency_symbol=get_currency_symbol %}template.pricing.excl_tax_monthly {{ monthly_price }}{{ currency_symbol }}{% endblocktrans %}
-                                {% if tier_data.pricing.yearly %}{% blocktrans with yearly_price=tier_data.pricing.yearly currency_symbol=get_currency_symbol %}template.pricing.excl_tax_yearly {{ yearly_price }}{{ currency_symbol }}{% endblocktrans %}{% endif %}<br/>
+                                {% if tier_data.pricing.yearly %}{% blocktrans with yearly_price=tier_data.pricing.yearly currency_symbol=get_currency_symbol %}template.pricing.excl_tax_yearly {{ yearly_price }}{{ currency_symbol }}{% endblocktrans %}{% endif %}<br />
                                 {% blocktrans with tva_rate=get_tva_rate %}template.pricing.vat_included {{ tva_rate }}{% endblocktrans %}
                             </small>
                         </div>
@@ -84,20 +84,20 @@
                             <i class="fas fa-music text-primary me-2"></i>
                             <strong>
                                 {% if tier_data.limits.soundboard|stringformat:"s" == 'inf' %}
-                                	<i class="fa-solid fa-infinity"></i>
+                                <i class="fa-solid fa-infinity"></i>
                                 {% else %}
-                                    {{ tier_data.limits.soundboard }}
+                                {{ tier_data.limits.soundboard }}
                                 {% endif %}
-                            
+
                             </strong> {% trans "template.pricing.features.soundboards" %}
                         </li>
                         <li class="mb-1">
                             <i class="fas fa-list text-primary me-2"></i>
                             <strong>
                                 {% if tier_data.limits.playlist|stringformat:"s" == 'inf' %}
-                                    <i class="fa-solid fa-infinity"></i>
+                                <i class="fa-solid fa-infinity"></i>
                                 {% else %}
-                                    {{ tier_data.limits.playlist }}
+                                {{ tier_data.limits.playlist }}
                                 {% endif %}
                             </strong> {% trans "template.pricing.features.buttons" %}
                         </li>
@@ -116,26 +116,24 @@
                             </strong>
                             {% if tier_data.limits.advertising == 'partial' %} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.pricing.features.ads.partial.tooltip' %}">ⓘ</span>{% endif %}
                         </li>
-                        {% if tier_data.limits.share_soundboard %}
-                            <li class="mb-1">
-                                <i class="fas fa-share-alt text-primary me-2"></i>
-                                <strong>{% trans "template.pricing.features.share" %}</strong> {% trans "template.pricing.features.shared_listening" %}
-                                <span class="tex-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip" %}">ⓘ</span>
-                            </li>
-                        {% endif %}
+                        <li class="mb-1">
+                            <i class="fas fa-share-alt text-primary me-2"></i>
+                            <strong>{% trans "template.pricing.features.share" %}</strong> {% trans "template.pricing.features.shared_listening" %}
+                            <span class="tex-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip" %}">ⓘ</span>
+                        </li>
                         {% if tier_data.limits.shared_playlist_playable_by_shared_user %}
-                            <li class="mb-1">
-                                <i class="fa-solid fa-users text-primary me-2"></i>
-                                {% trans "template.pricing.features.player_interactions" %} <strong>{% trans "template.pricing.features.player_interactions.enabled" %}</strong> {% trans "template.pricing.features.player_interactions.on_shared" %}
-                            </li>
+                        <li class="mb-1">
+                            <i class="fa-solid fa-users text-primary me-2"></i>
+                            {% trans "template.pricing.features.player_interactions" %} <strong>{% trans "template.pricing.features.player_interactions.enabled" %}</strong> {% trans "template.pricing.features.player_interactions.on_shared" %}
+                        </li>
                         {% endif %}
                         {% if tier_data.limits.get_statistics_from_public %}
-                            <li class="mb-1">
-                                <i class="fa-solid fa-chart-line text-primary me-2"></i>
-                                {% trans "template.pricing.features.public_statistics" %}
-                            </li>
+                        <li class="mb-1">
+                            <i class="fa-solid fa-chart-line text-primary me-2"></i>
+                            {% trans "template.pricing.features.public_statistics" %}
+                        </li>
                         {% endif %}
-                        
+
 
                     </ul>
                 </div>

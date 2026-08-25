@@ -12,7 +12,6 @@ def user_preference_processor(request):
     theme = None
     soundboard_dim = None
     playlist_dim = None
-    can_share_soundboard = False
     device_type = detect_device_type(request)
     can_shared_playlist_playable_by_shared_user = False
     
@@ -33,7 +32,6 @@ def user_preference_processor(request):
                 
         
         # Vérifier si l'utilisateur peut partager des soundboards
-        can_share_soundboard = UserTierManager.can_boolean(request.user, 'share_soundboard')
         can_shared_playlist_playable_by_shared_user = UserTierManager.can_boolean(request.user, 'shared_playlist_playable_by_shared_user')
 
     if theme is None:
@@ -47,7 +45,6 @@ def user_preference_processor(request):
         'theme': theme,
         'soundboard_dim': soundboard_dim,
         'playlist_dim': playlist_dim,
-        'can_share_soundboard': can_share_soundboard,
         'can_shared_playlist_playable_by_shared_user': can_shared_playlist_playable_by_shared_user,
         'device_type': device_type
     }

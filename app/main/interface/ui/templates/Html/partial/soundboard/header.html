@@ -19,13 +19,11 @@
         <div class="float-end"><button class="btn btn-sm btn-secondary" id="shared-custom-volume-button"><i class="fa-solid fa-volume-low"></i></button></div>
         {% endif %}
         {% if type_header == "private" or type_header == "public" %}
-        {% if can_share_soundboard %}
         <button class="btn btn-outline-secondary float-end" id="btn-publish-soundboard" data-url="{% url 'publish_soundboard' soundboard.uuid %}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{% trans "template.shareSoundboard.button.tooltip" %}">
             <i class="fa-solid fa-square-share-nodes"></i> {% trans "template.shareSoundboard.button.label" %}
         </button>
         {% endif %}
-        {% endif %}
-        {% if type_header == "public" and request.user.is_authenticated and soundboard.user != request.user %}
+        {% if type_header == "public" and soundboard.user != request.user %}
         <button class="btn btn-outline-warning float-end" id="btn-propose-playlist-to-soundboard"
             data-url-list="{% url 'publicSoundboardProposeMyPlaylistList' soundboard.uuid %}"
             data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title='{% trans "template.proposePlaylist.button.tooltip" %}'>

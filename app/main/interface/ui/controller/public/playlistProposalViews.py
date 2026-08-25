@@ -24,10 +24,12 @@ from main.architecture.persistence.repository.TrackRepository import TrackReposi
 from main.domain.common.utils.logger import logger
 
 
-@login_required
 @require_http_methods(['GET'])
 def public_soundboard_propose_my_playlist_list(request, soundboard_uuid):
     """Retourne la liste paginée des playlists de l'utilisateur proposables à ce soundboard public."""
+    if not request.user.is_authenticated:
+        return render(request, 'Html/Soundboard/modal/soundboard_propose_playlist_need_connexion.html', {'soundboard_uuid': soundboard_uuid})
+
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
     if not soundboard or soundboard.user == request.user:
         return HttpResponse(status=404)

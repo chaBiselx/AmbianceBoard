@@ -34,6 +34,9 @@ def publish_soundboard(request, soundboard_uuid):
     soundboard = SoundBoardRepository().get(soundboard_uuid)
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+    
+    if not request.user.is_authenticated : 
+        return render(request, 'Html/Shared/modal/soundboard_shared_need_connexion.html', {'soundboard_uuid': soundboard_uuid}, status=403)
 
     # Réutiliser la session existante au lieu d'en créer une nouvelle
     shared = SharedSoundboardRepository().get_or_create_for_owner(soundboard=soundboard)

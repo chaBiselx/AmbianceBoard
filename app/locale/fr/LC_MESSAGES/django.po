@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-24 13:43+0000\n"
+"POT-Creation-Date: 2026-08-25 19:49+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -393,7 +393,9 @@ msgstr "Bienvenue %(username)s"
 
 #: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:10
 msgid "template.email.user.confirm_account.body"
-msgstr "Merci de confirmer votre compte. <a href=\"%(confirmation_url)s\">Confirmation</a>"
+msgstr ""
+"Merci de confirmer votre compte. <a href=\"%"
+"(confirmation_url)s\">Confirmation</a>"
 
 #: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:11
 msgid "template.email.user.prevent_auto_delete_unconfirmed.body"
@@ -403,7 +405,9 @@ msgstr ""
 
 #: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:12
 msgid "template.email.user.reset_password.body"
-msgstr "Voici votre demande de réinitialisation de mot de passe. <a href=\"%(reset_url)s\">Réinitialiser</a>"
+msgstr ""
+"Voici votre demande de réinitialisation de mot de passe. <a href=\"%"
+"(reset_url)s\">Réinitialiser</a>"
 
 #: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:13
 msgid "template.email.user.tier_downgrade.body"
@@ -551,7 +555,7 @@ msgstr "Aucun téléchargement différé mis à jour sur les 24 dernières heure
 msgid "template.account.create.title"
 msgstr "Inscription"
 
-#: main/interface/ui/templates/Html/Account/create_account.html:86
+#: main/interface/ui/templates/Html/Account/create_account.html:64
 msgid "template.account.create.form.submit"
 msgstr "Création du compte"
 
@@ -720,39 +724,39 @@ msgstr "A venir"
 msgid "template.pricing.features.ads.partial.tooltip"
 msgstr "Sur les pages général (hors soundboard)"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:122
+#: main/interface/ui/templates/Html/General/general_pricing.html:121
 msgid "template.pricing.features.share"
 msgstr "partage"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:122
+#: main/interface/ui/templates/Html/General/general_pricing.html:121
 msgid "template.pricing.features.shared_listening"
 msgstr "de l'écoute des soundboards"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:123
+#: main/interface/ui/templates/Html/General/general_pricing.html:122
 msgid "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip"
 msgstr "Pouvoir partager l'écoute de la soundboard avec vos joueurs en ligne."
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:129
+#: main/interface/ui/templates/Html/General/general_pricing.html:127
 msgid "template.pricing.features.player_interactions"
 msgstr "Interactions"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:129
+#: main/interface/ui/templates/Html/General/general_pricing.html:127
 msgid "template.pricing.features.player_interactions.enabled"
 msgstr "des joueurs possibles"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:129
+#: main/interface/ui/templates/Html/General/general_pricing.html:127
 msgid "template.pricing.features.player_interactions.on_shared"
 msgstr "sur les soundboards partagées"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:135
+#: main/interface/ui/templates/Html/General/general_pricing.html:133
 msgid "template.pricing.features.public_statistics"
 msgstr "statistiques sur les soundboards publiques"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:146
+#: main/interface/ui/templates/Html/General/general_pricing.html:144
 msgid "template.pricing.current_plan"
 msgstr "Formule actuelle"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:150
+#: main/interface/ui/templates/Html/General/general_pricing.html:148
 msgid "template.pricing.choose_plan"
 msgstr "Passer a cette formule"
 
@@ -1069,11 +1073,24 @@ msgstr "Fréquentations"
 msgid "template.publicStats.card.average_session_duration"
 msgstr "Moyenne durée des sessions"
 
-#: main/interface/ui/templates/Html/Shared/publich_soundboard.html:6
+#: main/interface/ui/templates/Html/Shared/modal/soundboard_shared_need_connexion.html:4
+#: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_need_connexion.html:3
+msgid "template.modal.soundboard_shared_need_connexion.title"
+msgstr "Connexion requise"
+
+#: main/interface/ui/templates/Html/Shared/modal/soundboard_shared_need_connexion.html:5
+msgid "template.modal.soundboard_shared_need_connexion.message"
+msgstr "Veuillez vous connecter ou créer un compte pour continuer."
+
+#: main/interface/ui/templates/Html/Shared/modal/soundboard_shared_need_connexion.html:7
+msgid "template.modal.soundboard_shared_need_connexion.cta"
+msgstr "Vous devez être connecté pour partager l'écoute."
+
+#: main/interface/ui/templates/Html/Shared/publich_soundboard.html:5
 msgid "template.publicShareLink.link_label"
 msgstr "Lien du soundboard"
 
-#: main/interface/ui/templates/Html/Shared/publich_soundboard.html:7
+#: main/interface/ui/templates/Html/Shared/publich_soundboard.html:6
 msgid "template.publicShareLink.button.label"
 msgstr "Partager le lien"
 
@@ -1102,6 +1119,14 @@ msgstr "Proposer"
 #: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_list.html:37
 msgid "template.proposePlaylist.modal.empty"
 msgstr "Aucune playlist disponible à proposer pour ce soundboard."
+
+#: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_need_connexion.html:4
+msgid "template.modal.soundboard_propose_playlist_need_connexion.message"
+msgstr "Veuillez vous connecter ou créer un compte pour continuer."
+
+#: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_need_connexion.html:6
+msgid "template.modal.soundboard_propose_playlist_need_connexion.cta"
+msgstr "Vous devez être connecté pour partager proposer des boutons."
 
 #: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:15
 msgid "template.playlistProposalsList.title"
@@ -1220,20 +1245,20 @@ msgstr "Privé"
 msgid "template.publicSoundboard.badge.public"
 msgstr "Publique"
 
-#: main/interface/ui/templates/Html/partial/soundboard/header.html:23
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:22
 msgid "template.shareSoundboard.button.tooltip"
 msgstr ""
 "Envoyer le lien généré afin de partager l'ecoute avec vos joueurs en ligne."
 
-#: main/interface/ui/templates/Html/partial/soundboard/header.html:24
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:23
 msgid "template.shareSoundboard.button.label"
 msgstr "Partager l'écoute"
 
-#: main/interface/ui/templates/Html/partial/soundboard/header.html:31
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:29
 msgid "template.proposePlaylist.button.tooltip"
 msgstr "Proposer une de vos playlists au propriétaire de ce soundboard."
 
-#: main/interface/ui/templates/Html/partial/soundboard/header.html:32
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:30
 msgid "template.proposePlaylist.button.label"
 msgstr "Proposer une playlist"
 
@@ -1481,10 +1506,6 @@ msgstr "Retour"
 
 #~ msgid "Chargement"
 #~ msgstr "Téléchargements"
-
-#~| msgid "Connexion via Google"
-#~ msgid "Connexion"
-#~ msgstr "Connexion via Google"
 
 #~ msgid "enum.fade_playlist.off"
 #~ msgstr "Désactivé"
