@@ -412,6 +412,7 @@ Modifications
 - Changement du favicon pour passer par un SVG
 - Après enregistrement du compte, la connexion est faite automatiquement
 - La création de compte ne nécessite plus le nom est le prénom
+- Modification de la home page pour le SEO 
 
 Correction 
 - Ajout d'une solution temporaire pour recharger le css en prod
