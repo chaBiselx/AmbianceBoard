@@ -3,25 +3,19 @@ FROM python@sha256:7bec7ddcddeff7975d6ba9b4be7dd6f6b2f55e7491539145e2978f7f97ce9
 
 WORKDIR /app
 
-
 # Dépendances système pour le traitement audio
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     libsndfile1 \
     && rm -rf /var/lib/apt/lists/* && \
-    pip install --no-cache-dir --upgrade pip pdm
+    pip install --no-cache-dir --upgrade pip pdm && \
+    python -m venv /opt/venv
   
 
-COPY requirements.txt .
-RUN pip install --only-binary :all: --no-cache-dir \
-    -r requirements.txt
-
-COPY requirements.dev.txt .
-RUN pip install --only-binary :all: --no-cache-dir \
-    -r requirements.dev.txt 
-# COPY pyproject.toml pdm.lock ./
-# RUN pdm config python.use_venv false && \
-#     pdm sync --prod --no-editable
+COPY pyproject.toml pdm.lock ./
+ENV VIRTUAL_ENV="/opt/venv"
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pdm sync --dev --no-editable
 
 COPY main.py .
 COPY app/ ./app/
