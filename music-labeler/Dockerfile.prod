@@ -4,12 +4,14 @@ FROM python@sha256:7bec7ddcddeff7975d6ba9b4be7dd6f6b2f55e7491539145e2978f7f97ce9
 WORKDIR /app
 
 # Dépendances système pour le traitement audio
+ARG PDM_VERSION=2.28.2
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     libsndfile1 \
     && rm -rf /var/lib/apt/lists/* && \
-    pip install --no-cache-dir --upgrade pip pdm && \
-    python -m venv /opt/venv
+    python -m venv /opt/venv && \
+    /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}"
   
 
 COPY pyproject.toml pdm.lock ./
