@@ -221,7 +221,6 @@ class ErrorTrackingMiddlewareTest(TestCase):
         excluded_urls = [
             '/.well-known/appspecific/com.chrome.devtools.json',
             '/.well-known/security.txt',
-            '/favicon.ico',
             '/llms.txt',
             '/robots.txt',
             '/sitemap.xml',
@@ -296,7 +295,7 @@ class ErrorTrackingMiddlewareTest(TestCase):
             # URLs à exclure
             ('/.well-known/appspecific/com.chrome.devtools.json', True),
             ('/.well-known/security.txt', True),
-            ('/favicon.ico', True),
+            ('/favicon.svg', True),
             ('/wp-admin/login.php', True),
             ('/.git/config', True),
             ('/phpmyadmin/index.php', True),

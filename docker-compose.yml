@@ -23,6 +23,7 @@ services:
     build:
       context: ./app
       dockerfile: Dockerfile
+    restart: unless-stopped
     command: python manage.py runserver 0.0.0.0:${WEB_PORT}
     volumes:
       - ./app/:/usr/src/app/
@@ -107,6 +108,7 @@ services:
       context: ./music-labeler
       dockerfile: Dockerfile
     volumes:
+      - ./music-labeler:/app/
       - hf-cache:/home/appuser/.cache/huggingface
     ports:
       - "8089:8089"

@@ -1,11 +1,16 @@
 {% extends 'Html/partial/structure/base.html' %}
 
 {% block content %}
+
+<hr>
 <div class="container mt-4">
+    <h3> Supprimer votre compte</h3>
     
     <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et supprimera toutes vos données.</p>
     
     <form method="DELETE" action="{% url 'deleteAccount' %}">
+        {% csrf_token %}
+        <input type="hidden" name="_method" value="DELETE">
         <button type="submit" id="delete-account" class="btn btn-danger">Supprimer mon compte</button>
     </form>
 </div>

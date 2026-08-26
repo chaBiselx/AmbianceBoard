@@ -22,6 +22,7 @@ from main.domain.common.service.DefaultColorPlaylistService import DefaultColorP
 
 
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
@@ -33,6 +34,9 @@ def publish_soundboard(request, soundboard_uuid):
     soundboard = SoundBoardRepository().get(soundboard_uuid)
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+    
+    if not request.user.is_authenticated : 
+        return render(request, 'Html/Shared/modal/soundboard_shared_need_connexion.html', {'soundboard_uuid': soundboard_uuid}, status=403)
 
     # Réutiliser la session existante au lieu d'en créer une nouvelle
     shared = SharedSoundboardRepository().get_or_create_for_owner(soundboard=soundboard)
@@ -53,7 +57,14 @@ def shared_soundboard_read(request, soundboard_uuid, token):
             'token': token,
         })
         ws_url = get_full_ws(f'{request.get_host()}{ws_path}')
-        return render(request, 'Html/Shared/soundboard_read.html', {'soundboard': soundboard, 'token' : token, 'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(), 'ws_url' : ws_url, 'list_shortcut_keyboard': []})
+        return render(request, 'Html/Shared/soundboard_read.html', {
+            'soundboard': soundboard,
+            'token' : token,
+            'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(),
+            'ws_url' : ws_url,
+            'list_shortcut_keyboard': [],
+            'pending_proposal_placeholders': PlaylistProposalRepository().get_pending_for_soundboard(soundboard),
+        })
     
 @require_http_methods(['GET'])
 def shared_soundboard_refresh(request, soundboard_uuid, token):
@@ -61,7 +72,12 @@ def shared_soundboard_refresh(request, soundboard_uuid, token):
     if not soundboard :
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     else:   
-        return render(request, 'Html/partial/soundboard/board.html', {'soundboard': soundboard,  'master': False, 'owner': False})
+        return render(request, 'Html/partial/soundboard/board.html', {
+            'soundboard': soundboard,
+            'master': False,
+            'owner': False,
+            'pending_proposal_placeholders': PlaylistProposalRepository().get_pending_for_soundboard(soundboard),
+        })
 
 
 @require_http_methods(['GET'])
@@ -86,4 +102,18 @@ def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id
             return ret
     except Exception as e:
         logger.error(f"Error in shared_music_stream: {e}")
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+
+
+@require_http_methods(['GET'])
+def shared_proposal_music_stream(request, soundboard_uuid, token, proposal_uuid, music_id) -> HttpResponse|JsonResponse:
+    """Stream d'une piste d'une proposition en attente pour les auditeurs d'une session partagée."""
+    try:
+        track = (RandomizeTrackService(request)).get_shared_proposal(soundboard_uuid, token, proposal_uuid, music_id)
+        if track:
+            if request.headers.get('X-Metadata-Only') == 'true':
+                return JsonResponse({"duration": track.get_duration()}, status=200)
+            return track.get_reponse_content()
+    except Exception as e:
+        logger.error(f"Error in shared_proposal_music_stream: {e}")
     return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)

@@ -1,0 +1,79 @@
+{% extends 'Html/partial/structure/base.html' %}
+{% load i18n %}
+{% load Playlist %}
+{% load static %}
+{% load FrontJs %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "PlaylistProposalsManagement"|search_true_file %}"></script>
+{% endblock javascript %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h4>{% trans "template.playlistProposalsList.title" %}</h4>
+
+        {% if proposals %}
+        <div class="row g-2" id="playlist-proposals-list">
+            {% for proposal, tracks in proposals_with_tracks %}
+            <div class="col-12 col-md-6" id="proposal-card-{{ proposal.uuid }}">
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <div class="fw-bold">{{ proposal.playlist.name }}</div>
+                                <div class="small text-muted">{% blocktrans with username=proposal.proposer.uuid soundboard_name=proposal.soundboard.name %}Proposée par {{ username }} pour "{{ soundboard_name }}"{% endblocktrans %}</div>
+                                <div class="small text-muted">{{ proposal.created_at|date:"d/m/Y H:i" }}</div>
+                            </div>
+                            <div class="playlist-link playlist-element playlist-dim-75" style="background-color: {{ proposal.playlist.get_color }};color: {{ proposal.playlist.get_color_text }};">
+                                {{ proposal.playlist | applys_playlist_content }}
+                            </div>
+                        </div>
+                        <div class="accordion" id="accordionMixerSoundboard" data-shepherd="soundboard-mixer">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="listen-action-{{ proposal.uuid }}">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#listen-action-collapse-{{ proposal.uuid }}" aria-expanded="false" aria-controls="listen-action-collapse-{{ proposal.uuid }}">
+                                        {% trans "template.playlistProposalsList.action.listen" %}
+                                    </button>
+                                </h2>
+                                <div id="listen-action-collapse-{{ proposal.uuid }}" class="accordion-collapse collapse" aria-labelledby="listen-action-{{ proposal.uuid }}">
+                                    <div class="accordion-body" id="proposal-tracks-{{ proposal.uuid }}">
+                                        {% if tracks %}
+                                        {% for track in tracks %}
+                                        <div class="music flex-item p-2 mb-1">
+                                            <div class="music-name"><small>{{ track.get_name }}</small></div>
+                                            <div class="player-custom" data-url="{% url 'playlistProposalTrackStream' proposal.uuid track.id %}">
+                                                <audio class="music-player d-none"></audio>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                        {% else %}
+                                        <div class="alert alert-info mb-0 py-1 small">{% trans "template.playlistProposalsList.no_track" %}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="mt-2 text-end">
+                            <button type="button" class="btn btn-success btn-sm proposal-accept-btn" data-url="{% url 'playlistProposalAccept' proposal.uuid %}">
+                                {% trans "template.playlistProposalsList.action.accept" %}
+                            </button>
+                            <button type="button" class="btn btn-outline-danger btn-sm proposal-refuse-btn" data-url="{% url 'playlistProposalRefuse' proposal.uuid %}">
+                                {% trans "template.playlistProposalsList.action.refuse" %}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            {% trans "template.playlistProposalsList.empty" %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

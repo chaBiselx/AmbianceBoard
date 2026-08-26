@@ -9,6 +9,7 @@ from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
+from main.architecture.persistence.models.PlaylistProposal import PlaylistProposal
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.PlaylistTag import PlaylistTag
 from main.architecture.persistence.repository.filters.PlaylistFilter import PlaylistFilter
@@ -128,3 +129,19 @@ class PlaylistRepository:
     
     def get_all_without_playlist_tag_queryset(self) -> QuerySet:
         return Playlist.objects.filter(playlist_tags__isnull=True).distinct()
+
+    def get_proposable_playlists_for_soundboard(self, user: User, soundboard: SoundBoard, filter: dict) -> List[Playlist]:
+        """Récupère les playlists copiables de l'utilisateur pas encore proposées à ce soundboard."""
+        already_proposed = PlaylistProposal.objects.filter(soundboard=soundboard).values_list('playlist_id', flat=True)
+
+        query_set = Playlist.objects.filter(
+            user=user,
+            is_copiable=True,
+            moderator_ban_copie=False,
+            tracks__isnull=False,
+        ).exclude(id__in=already_proposed).distinct()
+        if 'typePlaylist' in filter:
+            query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
+        if 'playlistTagLabel' in filter:
+            query_set = query_set.filter(playlist_tags__label=filter['playlistTagLabel'])
+        return query_set.order_by('name')

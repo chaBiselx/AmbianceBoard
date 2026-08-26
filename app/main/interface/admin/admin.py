@@ -29,6 +29,7 @@ from main.architecture.persistence.models.TrackLabel import TrackLabel
 from main.architecture.persistence.models.HomeDemoItem import HomeDemoItem
 from main.architecture.persistence.models.AsyncDownloadJob import AsyncDownloadJob
 from main.architecture.persistence.models.TrafficAttributionVisit import TrafficAttributionVisit
+from main.architecture.persistence.models.PlaylistProposal import PlaylistProposal
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -55,3 +56,4 @@ admin.site.register(UserDevicePreference)
 admin.site.register(TrackLabel)
 admin.site.register(HomeDemoItem)
 admin.site.register(TrafficAttributionVisit)
+admin.site.register(PlaylistProposal)

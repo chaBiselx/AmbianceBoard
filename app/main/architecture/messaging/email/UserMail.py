@@ -2,9 +2,11 @@ from main.domain.common.utils.logger.ILogger import ILogger
 from main.domain.common.utils.settings import Settings
 from django.utils.translation import get_language, gettext as _, override
 from django.template.loader import render_to_string
+from django.urls import reverse
 from main.architecture.persistence.models.User import User
 from main.domain.common.utils.EmailSender import EmailSender
 from main.domain.common.utils.logger import LoggerFactory
+from main.domain.common.utils.url import get_full_url
 
 
 class UserMail:
@@ -224,6 +226,30 @@ class UserMail:
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de notification de rétrogradation à {self.user.email}: {e}") 
             
+    def playlist_proposal_received(self, playlist_proposal) -> None:
+        """
+        Sends an email to the soundboard owner when a playlist proposal is received.
+
+        """
+        subject = _('template.email.user.playlist_proposal_received.subject')
+        manage_url = get_full_url(reverse('playlistProposalsList'))
+        html_content = self._render_email_template(
+            'EmailTemplate/user/playlistProposalReceived.html',
+            {
+                'title': _('template.email.user.playlist_proposal_received.subject'),
+                'user': self.user,
+                'proposal': playlist_proposal,
+                'manage_url': manage_url,
+            },
+        )
+
+        try:
+            mailer = EmailSender()
+            mailer.send_email(subject, html_content, self.from_email, [self.user.email])
+            self.logger.info(f"Email de proposition de playlist envoyé à {self.user.email}")
+        except Exception as e:
+            self.logger.error(f"Erreur lors de l'envoi de l'email de proposition de playlist à {self.user.email}: {e}")
+
     def tiers_expiration_warning(self, days_left):
         """
         Sends a warning email to the user when their tier is about to expire.

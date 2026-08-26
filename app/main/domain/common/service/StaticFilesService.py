@@ -9,6 +9,9 @@ class StaticFilesService:
         
     
     def search(self, filename: str) -> str|None:
+        if not os.path.isdir(self.folder):
+            return None
+
         files = os.listdir(self.folder)
     
         js_files = [f for f in files if re.match(rf"{filename}\.[a-zA-Z0-9-_]+\.js", f)]

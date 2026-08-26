@@ -1,0 +1,40 @@
+[project]
+name = "ambianceboard-music-labeler"
+version = "0.1.0"
+description = "Microservice IA de classification audio d'AmbianceBoard"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "fastapi==0.140.13",
+    "uvicorn[standard]==0.52.0",
+    "transformers==5.14.1",
+    "soundfile==0.14.0",
+    "python-multipart==0.0.32",
+    "numpy==2.5.1",
+    "scipy==1.18.0",
+    "torch==2.13.0+cpu",
+]
+authors = [
+    {name = "Charles BISELX",email = "cha.biselx@gmail.com"},
+]
+readme = "README.md"
+license = {text = "MIT"}
+
+[dependency-groups]
+dev = [
+    "pytest==9.1.1",
+]
+
+[tool.pdm]
+distribution = false
+
+[[tool.pdm.source]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"
+include_packages = ["torch"]
+
+[[tool.pdm.source]]
+name = "23b9ae"
+url = "https://download.pytorch.org/whl/cpu"
+verify_ssl = true
+[tool.pytest.ini_options]
+testpaths = ["tests"]

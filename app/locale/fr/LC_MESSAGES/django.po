@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-16 19:00+0000\n"
+"POT-Creation-Date: 2026-08-25 19:49+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -23,65 +23,70 @@ msgstr ""
 msgid "template.email.moderator.reported.subject"
 msgstr "Contenu signalé"
 
-#: main/architecture/messaging/email/UserMail.py:28
-#: main/architecture/messaging/email/UserMail.py:31
+#: main/architecture/messaging/email/UserMail.py:30
+#: main/architecture/messaging/email/UserMail.py:33
 #: main/interface/ui/controller/debug/debugEmailViews.py:166
 msgid "template.email.user.welcome.subject"
 msgstr "Bienvenue sur notre site"
 
-#: main/architecture/messaging/email/UserMail.py:46
-#: main/architecture/messaging/email/UserMail.py:50
+#: main/architecture/messaging/email/UserMail.py:48
+#: main/architecture/messaging/email/UserMail.py:52
 #: main/interface/ui/controller/debug/debugEmailViews.py:60
 msgid "template.email.user.confirm.subject"
 msgstr "Confirmation de votre compte"
 
-#: main/architecture/messaging/email/UserMail.py:66
-#: main/architecture/messaging/email/UserMail.py:70
+#: main/architecture/messaging/email/UserMail.py:68
+#: main/architecture/messaging/email/UserMail.py:72
 #: main/interface/ui/controller/debug/debugEmailViews.py:78
 msgid "template.email.user.reset_password.subject"
 msgstr "Réinitialisation de votre mot de passe"
 
-#: main/architecture/messaging/email/UserMail.py:85
-#: main/architecture/messaging/email/UserMail.py:88
+#: main/architecture/messaging/email/UserMail.py:87
+#: main/architecture/messaging/email/UserMail.py:90
 #: main/interface/ui/controller/debug/debugEmailViews.py:180
 msgid "template.email.user.password_changed.subject"
 msgstr "Modification de mot de passe"
 
-#: main/architecture/messaging/email/UserMail.py:105
-#: main/architecture/messaging/email/UserMail.py:108
-#: main/architecture/messaging/email/UserMail.py:125
-#: main/architecture/messaging/email/UserMail.py:129
+#: main/architecture/messaging/email/UserMail.py:107
+#: main/architecture/messaging/email/UserMail.py:110
+#: main/architecture/messaging/email/UserMail.py:127
+#: main/architecture/messaging/email/UserMail.py:131
 #: main/interface/ui/controller/debug/debugEmailViews.py:190
 #: main/interface/ui/controller/debug/debugEmailViews.py:200
 msgid "template.email.user.account_deleted.subject"
 msgstr "Votre compte a été supprimé"
 
-#: main/architecture/messaging/email/UserMail.py:146
-#: main/architecture/messaging/email/UserMail.py:150
+#: main/architecture/messaging/email/UserMail.py:148
+#: main/architecture/messaging/email/UserMail.py:152
 #: main/interface/ui/controller/debug/debugEmailViews.py:210
 msgid "template.email.user.prevent_deletion.subject"
 msgstr "Votre compte va être supprimé"
 
-#: main/architecture/messaging/email/UserMail.py:167
-#: main/architecture/messaging/email/UserMail.py:171
+#: main/architecture/messaging/email/UserMail.py:169
+#: main/architecture/messaging/email/UserMail.py:173
 #: main/interface/ui/controller/debug/debugEmailViews.py:220
 msgid "template.email.user.prevent_deletion_unconfirmed.subject"
 msgstr "Votre compte va être supprimé car non confirmé"
 
-#: main/architecture/messaging/email/UserMail.py:191
-#: main/architecture/messaging/email/UserMail.py:194
+#: main/architecture/messaging/email/UserMail.py:193
+#: main/architecture/messaging/email/UserMail.py:196
 #: main/interface/ui/controller/debug/debugEmailViews.py:231
 msgid "template.email.user.account_deleted_unconfirmed.subject"
 msgstr "Votre compte a été supprimé car non confirmé"
 
-#: main/architecture/messaging/email/UserMail.py:210
-#: main/architecture/messaging/email/UserMail.py:214
+#: main/architecture/messaging/email/UserMail.py:212
+#: main/architecture/messaging/email/UserMail.py:216
 #: main/interface/ui/controller/debug/debugEmailViews.py:241
 msgid "template.email.user.tier_downgrade.subject"
 msgstr "Votre tier a été rétrogradé"
 
-#: main/architecture/messaging/email/UserMail.py:232
-#: main/architecture/messaging/email/UserMail.py:236
+#: main/architecture/messaging/email/UserMail.py:234
+#: main/architecture/messaging/email/UserMail.py:239
+msgid "template.email.user.playlist_proposal_received.subject"
+msgstr "Nouvelle proposition de playlist"
+
+#: main/architecture/messaging/email/UserMail.py:258
+#: main/architecture/messaging/email/UserMail.py:262
 #: main/interface/ui/controller/debug/debugEmailViews.py:252
 msgid "template.email.user.tier_expiration.subject"
 msgstr "Avertissement d'expiration de votre tier"
@@ -279,6 +284,14 @@ msgstr ""
 "Gérez votre profil, vos préférences de notification, votre thème préféré et "
 "votre abonnement."
 
+#: main/interface/ui/controller/private/soundboardFromViews.py:30
+msgid "template.soundboard.create.title"
+msgstr "Création d'un nouveau Soundboard"
+
+#: main/interface/ui/controller/private/soundboardViews.py:33
+msgid "template.soundboard.list.title"
+msgstr "Mes soundboards"
+
 #: main/interface/ui/controller/public/analyseStatsViews.py:46
 msgid "view.publicStats.page_title"
 msgstr "Statistiques de la soundboard %s"
@@ -304,21 +317,63 @@ msgstr "Durée moyenne des sessions - %s jours"
 msgid "view.publicStats.session_duration.y_label"
 msgstr "Durée Moyenne des Sessions (min)"
 
-#: main/interface/ui/controller/public/publicViews.py:58
+#: main/interface/ui/controller/public/publicViews.py:59
 msgid "view.publicListing.title"
 msgstr "Soundboard publiques"
 
-#: main/interface/ui/controller/public/publicViews.py:70
+#: main/interface/ui/controller/public/publicViews.py:71
 msgid "view.publicFavorite.title"
 msgstr "Soundboard favorites"
 
-#: main/interface/ui/controller/public/publicViews.py:179
+#: main/interface/ui/controller/public/publicViews.py:192
 msgid "view.favoriteUpdate.error.not_found"
 msgstr "SoundBoard introuvable."
 
-#: main/interface/ui/controller/public/publicViews.py:196
+#: main/interface/ui/controller/public/publicViews.py:209
 msgid "view.favoriteUpdate.error.favorite_not_found"
 msgstr "Favori introuvable."
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:56
+msgid "form.soundboard.name.label"
+msgstr "Soundboard's names"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:62
+msgid "form.soundboard.description.name"
+msgstr "Description du soundboard"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:66
+msgid "form.soundboard.description.helptext"
+msgstr "Description du soundboard, max 500 caractères"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:69
+msgid "form.soundboard.backgroundColor.name"
+msgstr "Couleur du background"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:74
+msgid "form.soundboard.textColor.name"
+msgstr "Couleur du texte"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:80
+msgid "form.soundboard.share.name"
+msgstr "Partager le soundboard"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:84
+msgid "form.soundboard.icon.name"
+msgstr "Icone du soundboard"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:88
+msgid "form.soundboard.delete.icon.name"
+msgstr "Suppression icone"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:94
+msgid "form.soundboard.tags.name"
+msgstr "Tags"
+
+#: main/interface/ui/forms/private/SoundBoardForm.py:95
+msgid "form.soundboard.tags.helptext"
+msgstr ""
+"Sélectionnez si necessaires des tags pour catégoriser votre soundboard pour "
+"les recherches"
 
 #: main/interface/ui/templates/Email/base.html:156
 msgid "template.email.base.tagline"
@@ -327,6 +382,40 @@ msgstr "Soundboard pour jeux de rôle"
 #: main/interface/ui/templates/Email/base.html:169
 msgid "template.email.base.footer.autosent"
 msgstr "Cet email a été envoyé automatiquement, merci de ne pas y répondre."
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:8
+msgid "template.email.user.greeting"
+msgstr "Bonjour %(username)s !"
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:9
+msgid "template.email.user.welcome_greeting"
+msgstr "Bienvenue %(username)s"
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:10
+msgid "template.email.user.confirm_account.body"
+msgstr ""
+"Merci de confirmer votre compte. <a href=\"%"
+"(confirmation_url)s\">Confirmation</a>"
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:11
+msgid "template.email.user.prevent_auto_delete_unconfirmed.body"
+msgstr ""
+"Votre compte n'est pas confirmé, veuillez confirmer votre compte via le lien "
+"suivant : <a href=\"%(confirmation_url)s\">Confirmation</a>."
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:12
+msgid "template.email.user.reset_password.body"
+msgstr ""
+"Voici votre demande de réinitialisation de mot de passe. <a href=\"%"
+"(reset_url)s\">Réinitialiser</a>"
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:13
+msgid "template.email.user.tier_downgrade.body"
+msgstr "Votre compte a été rétrogradé vers le niveau %(tier_label)s."
+
+#: main/interface/ui/templates/EmailTemplate/_i18n_extraction_keys.html:14
+msgid "template.email.user.tier_expiration.body"
+msgstr "Votre compte arrive à expiration dans %(remaining_days)s jours."
 
 #: main/interface/ui/templates/EmailTemplate/moderator/contentReported.html:8
 msgid "template.email.moderator.reported.title"
@@ -383,6 +472,39 @@ msgstr ""
 msgid "template.email.user.password_changed.body"
 msgstr "Votre mot de passe a bien été changé."
 
+#: main/interface/ui/templates/EmailTemplate/user/playlistProposalReceived.html:8
+msgid "template.email.user.playlist_proposal_received.title"
+msgstr "Nouvelle proposition de playlist"
+
+#: main/interface/ui/templates/EmailTemplate/user/playlistProposalReceived.html:9
+#, python-format
+msgid "Bonjour %(username)s,"
+msgstr "Bonjour %(username)s,"
+
+#: main/interface/ui/templates/EmailTemplate/user/playlistProposalReceived.html:11
+#, python-format
+msgid ""
+"\n"
+"        %(username)s propose d'ajouter sa playlist \"%(playlist_name)s\" à "
+"votre soundboard \"%(soundboard_name)s\".\n"
+"        "
+msgstr ""
+"\n"
+"        %(username)s propose d'ajouter sa playlist \"%(playlist_name)s\" à "
+"votre soundboard \"%(soundboard_name)s\".\n"
+"        "
+
+#: main/interface/ui/templates/EmailTemplate/user/playlistProposalReceived.html:15
+msgid "template.email.user.playlist_proposal_received.action"
+msgstr ""
+"Rendez-vous sur votre soundboard pour accepter ou refuser cette proposition."
+
+#: main/interface/ui/templates/EmailTemplate/user/playlistProposalReceived.html:17
+#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:11
+#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:11
+msgid "template.email.user.common.thanks_understanding"
+msgstr "Merci de votre compréhension."
+
 #: main/interface/ui/templates/EmailTemplate/user/preventAutoDeletion.html:9
 msgid "template.email.user.prevent_auto_delete_22m.body"
 msgstr ""
@@ -394,11 +516,6 @@ msgid "template.email.user.tier_downgrade.help"
 msgstr ""
 "Si vous avez des questions ou des préoccupations, n'hésitez pas à nous "
 "contacter."
-
-#: main/interface/ui/templates/EmailTemplate/user/tierDowngradeNotification.html:11
-#: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:11
-msgid "template.email.user.common.thanks_understanding"
-msgstr "Merci de votre compréhension."
 
 #: main/interface/ui/templates/EmailTemplate/user/tierExpirationWarning.html:10
 msgid "template.email.user.tier_expiration.renew"
@@ -438,7 +555,7 @@ msgstr "Aucun téléchargement différé mis à jour sur les 24 dernières heure
 msgid "template.account.create.title"
 msgstr "Inscription"
 
-#: main/interface/ui/templates/Html/Account/create_account.html:86
+#: main/interface/ui/templates/Html/Account/create_account.html:64
 msgid "template.account.create.form.submit"
 msgstr "Création du compte"
 
@@ -607,39 +724,39 @@ msgstr "A venir"
 msgid "template.pricing.features.ads.partial.tooltip"
 msgstr "Sur les pages général (hors soundboard)"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:122
+#: main/interface/ui/templates/Html/General/general_pricing.html:121
 msgid "template.pricing.features.share"
 msgstr "partage"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:122
+#: main/interface/ui/templates/Html/General/general_pricing.html:121
 msgid "template.pricing.features.shared_listening"
 msgstr "de l'écoute des soundboards"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:123
+#: main/interface/ui/templates/Html/General/general_pricing.html:122
 msgid "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip"
 msgstr "Pouvoir partager l'écoute de la soundboard avec vos joueurs en ligne."
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:129
+#: main/interface/ui/templates/Html/General/general_pricing.html:127
 msgid "template.pricing.features.player_interactions"
 msgstr "Interactions"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:129
+#: main/interface/ui/templates/Html/General/general_pricing.html:127
 msgid "template.pricing.features.player_interactions.enabled"
 msgstr "des joueurs possibles"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:129
+#: main/interface/ui/templates/Html/General/general_pricing.html:127
 msgid "template.pricing.features.player_interactions.on_shared"
 msgstr "sur les soundboards partagées"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:135
+#: main/interface/ui/templates/Html/General/general_pricing.html:133
 msgid "template.pricing.features.public_statistics"
 msgstr "statistiques sur les soundboards publiques"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:146
+#: main/interface/ui/templates/Html/General/general_pricing.html:144
 msgid "template.pricing.current_plan"
 msgstr "Formule actuelle"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:150
+#: main/interface/ui/templates/Html/General/general_pricing.html:148
 msgid "template.pricing.choose_plan"
 msgstr "Passer a cette formule"
 
@@ -956,11 +1073,24 @@ msgstr "Fréquentations"
 msgid "template.publicStats.card.average_session_duration"
 msgstr "Moyenne durée des sessions"
 
-#: main/interface/ui/templates/Html/Shared/publich_soundboard.html:6
+#: main/interface/ui/templates/Html/Shared/modal/soundboard_shared_need_connexion.html:4
+#: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_need_connexion.html:3
+msgid "template.modal.soundboard_shared_need_connexion.title"
+msgstr "Connexion requise"
+
+#: main/interface/ui/templates/Html/Shared/modal/soundboard_shared_need_connexion.html:5
+msgid "template.modal.soundboard_shared_need_connexion.message"
+msgstr "Veuillez vous connecter ou créer un compte pour continuer."
+
+#: main/interface/ui/templates/Html/Shared/modal/soundboard_shared_need_connexion.html:7
+msgid "template.modal.soundboard_shared_need_connexion.cta"
+msgstr "Vous devez être connecté pour partager l'écoute."
+
+#: main/interface/ui/templates/Html/Shared/publich_soundboard.html:5
 msgid "template.publicShareLink.link_label"
 msgstr "Lien du soundboard"
 
-#: main/interface/ui/templates/Html/Shared/publich_soundboard.html:7
+#: main/interface/ui/templates/Html/Shared/publich_soundboard.html:6
 msgid "template.publicShareLink.button.label"
 msgstr "Partager le lien"
 
@@ -981,6 +1111,55 @@ msgstr "Ce compte ne peux pas avoir accès a cette fonctionnalité :"
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:29
 msgid "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
 msgstr "Raccourci clavier"
+
+#: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_list.html:28
+msgid "template.proposePlaylist.modal.action.propose"
+msgstr "Proposer"
+
+#: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_list.html:37
+msgid "template.proposePlaylist.modal.empty"
+msgstr "Aucune playlist disponible à proposer pour ce soundboard."
+
+#: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_need_connexion.html:4
+msgid "template.modal.soundboard_propose_playlist_need_connexion.message"
+msgstr "Veuillez vous connecter ou créer un compte pour continuer."
+
+#: main/interface/ui/templates/Html/Soundboard/modal/soundboard_propose_playlist_need_connexion.html:6
+msgid "template.modal.soundboard_propose_playlist_need_connexion.cta"
+msgstr "Vous devez être connecté pour partager proposer des boutons."
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:15
+msgid "template.playlistProposalsList.title"
+msgstr "Propositions de playlist reçues"
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:26
+#, python-format
+msgid "Proposée par %(username)s pour \"%(soundboard_name)s\""
+msgstr "Proposée par %(username)s pour \"%(soundboard_name)s\""
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:37
+msgid "template.playlistProposalsList.action.listen"
+msgstr "Écouter"
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:52
+msgid "template.playlistProposalsList.no_track"
+msgstr "Aucun son dans cette playlist."
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:61
+msgid "template.playlistProposalsList.action.accept"
+msgstr "Accepter"
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:64
+msgid "template.playlistProposalsList.action.refuse"
+msgstr "Refuser"
+
+#: main/interface/ui/templates/Html/Soundboard/playlist_proposals_list.html:74
+msgid "template.playlistProposalsList.empty"
+msgstr "Aucune proposition de playlist en attente."
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_list.html:25
+msgid "template.soundboard.list.new_soundbaord"
+msgstr "Ajouter un soundboard"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:5
 msgid "template.soundboard_read.page_title_suffix"
@@ -1038,6 +1217,26 @@ msgstr "aucun"
 msgid "template.filterTagCloud.no_description"
 msgstr "Aucune description"
 
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:59
+msgid "template.soundboard_read.my_proposals.title"
+msgstr "Mes propositions"
+
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:74
+msgid "template.soundboard_read.my_proposals.status.pending"
+msgstr "En attente"
+
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:75
+msgid "template.soundboard_read.my_proposals.action.withdraw"
+msgstr "Retirer"
+
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:77
+msgid "template.soundboard_read.my_proposals.status.refused"
+msgstr "Refusé"
+
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:78
+msgid "template.soundboard_read.my_proposals.action.dismiss"
+msgstr "Supprimer"
+
 #: main/interface/ui/templates/Html/partial/soundboard/header.html:11
 msgid "template.soundboard_read.badge.private"
 msgstr "Privé"
@@ -1046,14 +1245,22 @@ msgstr "Privé"
 msgid "template.publicSoundboard.badge.public"
 msgstr "Publique"
 
-#: main/interface/ui/templates/Html/partial/soundboard/header.html:23
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:22
 msgid "template.shareSoundboard.button.tooltip"
 msgstr ""
 "Envoyer le lien généré afin de partager l'ecoute avec vos joueurs en ligne."
 
-#: main/interface/ui/templates/Html/partial/soundboard/header.html:24
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:23
 msgid "template.shareSoundboard.button.label"
 msgstr "Partager l'écoute"
+
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:29
+msgid "template.proposePlaylist.button.tooltip"
+msgstr "Proposer une de vos playlists au propriétaire de ce soundboard."
+
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:30
+msgid "template.proposePlaylist.button.label"
+msgstr "Proposer une playlist"
 
 #: main/interface/ui/templates/Html/partial/soundboard/mixer.html:9
 msgid "template.mixer.setting.accordion.title"
@@ -1067,15 +1274,15 @@ msgstr "En cours de lecture"
 msgid "template.playingMonitor.empty"
 msgstr "Aucun son en cours"
 
-#: main/interface/ui/templates/Html/partial/structure/base.html:13
+#: main/interface/ui/templates/Html/partial/structure/base.html:15
 msgid "template.base.default_page_title"
 msgstr "AmbianceBoard - Click here, play anywhere"
 
-#: main/interface/ui/templates/Html/partial/structure/base.html:42
+#: main/interface/ui/templates/Html/partial/structure/base.html:45
 msgid "template.base.tagline"
 msgstr "Soundboard pour jeux de rôle"
 
-#: main/interface/ui/templates/Html/partial/structure/base.html:50
+#: main/interface/ui/templates/Html/partial/structure/base.html:53
 msgid "template.base.theme_toggle"
 msgstr "Changer le thème"
 
@@ -1151,16 +1358,21 @@ msgstr "Téléchargements des dernières 24h"
 msgid "template.nav.main.downloads"
 msgstr "Téléchargements"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:45
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:47
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:36
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:38
+msgid "template.nav.main.playlist_proposals"
+msgstr "Propositions"
+
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:52
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:54
 msgid "template.nav.main.login"
 msgstr "Login"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:18
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:17
 msgid "template.nav.lang.fr"
 msgstr "Francais"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:28
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_lang.html:27
 msgid "template.nav.lang.en"
 msgstr "English"
 
@@ -1215,33 +1427,6 @@ msgstr "Continuer"
 msgid "template.social.google.back"
 msgstr "Retour"
 
-#~ msgid "template.email.user.greeting"
-#~ msgstr "Bonjour %(username)s !"
-
-#~ msgid "template.email.user.confirm_account.body"
-#~ msgstr ""
-#~ "Merci de confirmer votre compte. <a href=\"%"
-#~ "(confirmation_url)s\">Confirmation</a>"
-
-#~ msgid "template.email.user.prevent_auto_delete_unconfirmed.body"
-#~ msgstr ""
-#~ "Votre compte n'est pas confirmé, veuillez confirmer votre compte via le "
-#~ "lien suivant : <a href=\"%(confirmation_url)s\">Confirmation</a>."
-
-#~ msgid "template.email.user.reset_password.body"
-#~ msgstr ""
-#~ "Voici votre demande de réinitialisation de mot de passe. <a href=\"%"
-#~ "(reset_url)s\">Réinitialiser</a>"
-
-#~ msgid "template.email.user.tier_downgrade.body"
-#~ msgstr "Votre compte a été rétrogradé vers le niveau %(tier_label)s."
-
-#~ msgid "template.email.user.tier_expiration.body"
-#~ msgstr "Votre compte arrive à expiration dans %(remaining_days)s jours."
-
-#~ msgid "template.email.user.welcome_greeting"
-#~ msgstr "Bienvenue %(username)s !"
-
 #, python-format
 #~ msgid "Soundboard publique 100%% Gratuit"
 #~ msgstr "Soundboard publique"
@@ -1257,15 +1442,6 @@ msgstr "Retour"
 
 #~ msgid "Copie de boutons"
 #~ msgstr "Liste de vos boutons"
-
-#~ msgid "Mes soundboards"
-#~ msgstr "Soundboards"
-
-#~ msgid "Créer mon soundboard"
-#~ msgstr "Liste de vos soundboards"
-
-#~ msgid "soundboards"
-#~ msgstr "Soundboards"
 
 #~ msgid "boutons"
 #~ msgstr "Boutons"
@@ -1290,9 +1466,6 @@ msgstr "Retour"
 
 #~ msgid "Report"
 #~ msgstr "Signaler"
-
-#~ msgid "liste de vos soundboards"
-#~ msgstr "Liste de vos soundboards"
 
 #~ msgid "Soundboards"
 #~ msgstr "Soundboards"
@@ -1333,10 +1506,6 @@ msgstr "Retour"
 
 #~ msgid "Chargement"
 #~ msgstr "Téléchargements"
-
-#~| msgid "Connexion via Google"
-#~ msgid "Connexion"
-#~ msgstr "Connexion via Google"
 
 #~ msgid "enum.fade_playlist.off"
 #~ msgstr "Désactivé"

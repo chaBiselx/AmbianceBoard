@@ -34,6 +34,7 @@ from main.domain.common.service.DefaultColorPlaylistService import DefaultColorP
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
+from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
 
 @require_http_methods(['GET'])
 def public_index(request):
@@ -81,12 +82,24 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     else:  
         activity = ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW, user=request.user, content_object=soundboard)
-        
+
+        user_proposals = []
+        if request.user.is_authenticated and soundboard.user != request.user:
+            user_proposals = PlaylistProposalRepository().get_for_proposer_and_soundboard(request.user, soundboard)
+
+        own_proposal_ids = {proposal.id for proposal in user_proposals}
+        pending_proposal_placeholders = [
+            proposal for proposal in PlaylistProposalRepository().get_pending_for_soundboard(soundboard)
+            if proposal.id not in own_proposal_ids
+        ]
+
         response = TemplateResponse(request, 'Html/Public/soundboard_read.html', {
             'soundboard': soundboard, 
             'PlaylistTypeMixer': DefaultColorPlaylistService(request.user).get_list_playlist_enum_with_color(),
             'trace_user_activity': activity,
             'list_shortcut_keyboard': [],
+            'user_proposals': user_proposals,
+            'pending_proposal_placeholders': pending_proposal_placeholders,
         })
         
         # Auto-initialisation WebSocket

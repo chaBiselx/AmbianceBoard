@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Fond -->
+  <circle cx="32" cy="32" r="31" fill="#06182D"/>
+
+  <!-- Note de musique -->
+  <path
+    d="M14 17v11.5a3.5 3.5 0 1 1-2-3.16V15l10-2v10.5a3.5 3.5 0 1 1-2-3.16V15.5z"
+    fill="#FFFFFF"
+  />
+
+  <!-- Étoile à 4 branches : haut droite -->
+  <path
+    d="M49 12
+       L51 18
+       L57 20
+       L51 22
+       L49 28
+       L47 22
+       L41 20
+       L47 18 Z"
+    fill="#FFC04D"
+  />
+
+  <!-- Montagne -->
+  <path
+    d="M15 48 L27 26 L36 38 L41 34 L48 48 Z"
+    fill="#FFFFFF"
+  />
+
+  <!-- Soleil -->
+  <circle cx="32" cy="46" r="5" fill="#FF9D00"/>
+
+
+</svg>

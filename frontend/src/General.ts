@@ -160,6 +160,13 @@ class FullScreen {
         if (mainBody) mainBody.classList.toggle('p-0');
         const mainContent = document.getElementById('main-content');
         if (mainContent) mainContent.classList.toggle('py-lg-5');
+
+        setTimeout(() => {
+            BootstrapComponentInitializer.hideAllTooltips();
+        }, 30);
+        setTimeout(() => {
+            BootstrapComponentInitializer.hideAllTooltips();
+        }, 50);
     }
 }
 

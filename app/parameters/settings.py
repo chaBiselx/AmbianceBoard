@@ -120,9 +120,9 @@ if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
     os.mkdir(os.path.join(BASE_DIR, 'logs'), mode=0o777 if DEBUG else 0o666)
 
 
-LOGGER_TYPE = "file"
+LOGGER_TYPE = "loki"
 if DEBUG :
-    LOGGER_TYPE = "loki"
+    LOGGER_TYPE = "composite"
 # For tests, use the MemoryLogger
 if TESTING:
     LOGGER_TYPE = "memory"
@@ -570,7 +570,6 @@ USER_TIERS = {
             'playlist': 50,
             'music_per_playlist': 5,
             'weight_music_mb': 10,
-            'share_soundboard': True,
             'advertising' : AdvertisingEnum.FULL,
             'shared_playlist_playable_by_shared_user' : False,
             'get_statistics_from_public' : False
@@ -590,7 +589,6 @@ USER_TIERS = {
             'playlist': 150,
             'music_per_playlist': 10,
             'weight_music_mb': 20,
-            'share_soundboard': True,
             'advertising' : AdvertisingEnum.PARTIAL,
             'shared_playlist_playable_by_shared_user' : True,
             'get_statistics_from_public' : True
@@ -611,7 +609,6 @@ USER_TIERS = {
             'playlist': 250,
             'music_per_playlist': 20,
             'weight_music_mb': 25,
-            'share_soundboard': True,
             'advertising' : AdvertisingEnum.NONE,
             'shared_playlist_playable_by_shared_user' : True,
             'get_statistics_from_public' : True
@@ -631,7 +628,6 @@ USER_TIERS = {
             'playlist': float('inf'),
             'music_per_playlist': 30,
             'weight_music_mb': 30,
-            'share_soundboard': True,
             'advertising' : AdvertisingEnum.NONE,
             'shared_playlist_playable_by_shared_user' : True,
             'get_statistics_from_public' : True

@@ -1,6 +1,5 @@
 
 {% load i18n %}
-{% if can_share_soundboard %}
 <div class="row">
     <div class="col-12 text-center">
         {% trans "template.publicShareLink.link_label" %} =<button class="btn btn-primary share-link-btn" data-url="{{ shared_url }}">
@@ -8,5 +7,4 @@
         </button>
     </div>
 </div>
-{% endif %}
 

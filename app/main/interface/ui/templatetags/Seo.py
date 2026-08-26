@@ -2,6 +2,7 @@ import json
 from urllib.parse import urlencode
 
 from django import template
+from django.conf import settings
 from django.templatetags.static import static
 from django.urls import reverse
 from main.domain.general.service.FAQService import FAQService
@@ -47,7 +48,12 @@ def _build_absolute_url(request, route_name: str, query_params: dict | None = No
 
 def _fallback_og_image(request) -> str:
     """Retourne l'image Open Graph par defaut utilisee en absence d'icone specifique."""
-    return request.build_absolute_uri(static('img/logo.png'))
+    return request.build_absolute_uri(static('img/logo.webp'))
+
+
+def _get_available_languages() -> list[str]:
+    """Retourne les langues configurees au format attendu par les moteurs de recherche."""
+    return [language_code.replace('_', '-') for language_code, _ in settings.LANGUAGES]
 
 
 def _build_json_ld(json_ld_type: str, name: str, description: str, canonical: str, keywords: list[str], image: str | None = None, about: list[str] | None = None) -> dict:
@@ -94,6 +100,7 @@ def _build_seo_payload(title: str, description: str, keywords: list[str], canoni
         'twitter_description': description,
         'twitter_image': og_image,
         'canonical': canonical,
+        'available_languages': _get_available_languages(),
         'robots': robots,
         'json_ld_json': json_ld_json,
     }

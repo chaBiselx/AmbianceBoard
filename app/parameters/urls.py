@@ -3,9 +3,8 @@ from django.urls import path, include
 from main.domain.common.utils.settings import Settings
 from django.views.generic.base import TemplateView
 from django.conf.urls.static import static
-from django.views.i18n import set_language as django_set_language
 
-from main.interface.ui.controller.general.generalViews import home, faq, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice, support_contact, dismiss_general_notification, dismiss_trace_user_activity, callback_oauth_google, onboarding_context
+from main.interface.ui.controller.general.generalViews import home, faq, pricing,  create_account, login_view,login_post, logout_view, resend_email_confirmation, send_reset_password, token_validation_reset_password, legal_notice, support_contact, dismiss_general_notification, dismiss_trace_user_activity, callback_oauth_google, onboarding_context, set_language
 from main.interface.ui.controller.debug.debugEmailViews import debug_email_test
 from main.interface.ui.controller.general.confirmViews import confirm_account
 from main.interface.ui.controller.general.traceFrontViews import trace_front
@@ -25,11 +24,17 @@ from main.interface.ui.controller.private.showSoundboardViews import (
     soundboard_edit_mode_my_playlist_list,
     soundboard_edit_mode_add_my_playlist,
 )
+from main.interface.ui.controller.private.playlistProposalManagementViews import (
+    playlist_proposals_list,
+    playlist_proposal_accept,
+    playlist_proposal_refuse,
+    playlist_proposal_track_stream,
+)
 from main.interface.ui.controller.private.playlistFormViews import (
     playlist_read_all, playlist_create,  playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
 from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
-from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, delete_account
+from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, account, delete_account
 from main.interface.ui.controller.private.asyncDownloadJobViews import recent_async_download_jobs
 from main.interface.ui.controller.moderator.moderatorViews import (
     moderator_dashboard, 
@@ -65,8 +70,15 @@ from main.interface.ui.controller.manager.managerSendEmailViews import manager_s
 from main.interface.ui.controller.manager.managerMusicLabelerViews import music_labeler_index, music_labeler_analyze, music_labeler_stream
 from main.interface.ui.controller.manager.managerHomeDemoViews import listing_home_demo_items, select_home_demo_soundboard, manage_home_demo_item
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_playlist_tracks_list, favorite_update, reporting_content, public_favorite, public_specific_track_stream
+from main.interface.ui.controller.public.playlistProposalViews import (
+    public_soundboard_propose_my_playlist_list,
+    public_soundboard_propose_playlist,
+    public_soundboard_withdraw_proposal,
+    public_soundboard_dismiss_proposal,
+    public_soundboard_proposal_stream,
+)
 from main.interface.ui.controller.public.analyseStatsViews import list_user_public_soundboard, stats_user_public_soundboard, stats_frequentation, stats_moyenne_duration_session
-from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream, shared_soundboard_refresh
+from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_soundboard, shared_soundboard_read, shared_music_stream, shared_soundboard_refresh, shared_proposal_music_stream
 from main.domain.sharedSoundboard.consummers.SharedSoundboardConsummers import SharedSoundboardConsummers
 
 
@@ -83,7 +95,7 @@ urlpatterns = [
     path("legal-notice", legal_notice, name="legalNotice"),
     path("support", support_contact, name="supportContact"),
     path("pricing", pricing, name="pricing"),
-    path("set-language/", django_set_language, name="set_language"),
+    path("set-language/", set_language, name="set_language"),
 
     #technique
     path("trace-front", trace_front, name="traceFront"),
@@ -127,6 +139,11 @@ urlpatterns = [
     path("soundBoards/specific/shortcut/update", update_specific_shortcut_playlists, name="updateShortcutPlaylistsForPlayers"),
     
     path("soundBoards/add-music/<uuid:playlist_uuid>", add_music_from_soundboard, name="add_music_from_soundboard"),
+
+    path("soundBoards/propositions", playlist_proposals_list, name="playlistProposalsList"),
+    path("soundBoards/propositions/<uuid:proposal_uuid>/accept", playlist_proposal_accept, name="playlistProposalAccept"),
+    path("soundBoards/propositions/<uuid:proposal_uuid>/refuse", playlist_proposal_refuse, name="playlistProposalRefuse"),
+    path("soundBoards/propositions/<uuid:proposal_uuid>/track/<int:music_id>/stream", playlist_proposal_track_stream, name="playlistProposalTrackStream"),
     
     
     
@@ -137,7 +154,8 @@ urlpatterns = [
     path('account/settings/playlists/style',settings_update_default_style, name="defaultPlaylistType"),
     path('account/settings/playlists/dimension',update_playlist_dim, name="updatePlaylistDim"),
     path('account/settings/soundboards/dimension',update_soundboard_dim, name="updateSoundboardDim"),
-    path('account/settings/delete-account',delete_account, name="deleteAccount"),
+    path('account/settings/account',account, name="account"),
+    path('account/settings/account/delete',delete_account, name="deleteAccount"),
 
     path("playlist/create", playlist_create, name="addPlaylist"),
     path("playlist/all", playlist_read_all, name="playlistsAllList"),
@@ -175,6 +193,12 @@ urlpatterns = [
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", public_music_stream, name="publicStreamMusic"),
     path("public/soundboards/<uuid:soundboard_uuid>/fetch/tracks", public_playlist_tracks_list, name="publicSoundboardTracksList"),
     path("public/soundboards/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/<int:music_id>/stream", public_specific_track_stream, name="publicSpecificTrackStream"),
+
+    path("public/soundboards/<uuid:soundboard_uuid>/propose/my-playlists", public_soundboard_propose_my_playlist_list, name="publicSoundboardProposeMyPlaylistList"),
+    path("public/soundboards/<uuid:soundboard_uuid>/propose/<uuid:playlist_uuid>", public_soundboard_propose_playlist, name="publicSoundboardProposePlaylist"),
+    path("public/soundboards/<uuid:soundboard_uuid>/propose/<uuid:proposal_uuid>/withdraw", public_soundboard_withdraw_proposal, name="publicSoundboardWithdrawProposal"),
+    path("public/soundboards/<uuid:soundboard_uuid>/propose/<uuid:proposal_uuid>/dismiss", public_soundboard_dismiss_proposal, name="publicSoundboardDismissProposal"),
+    path("public/soundboards/<uuid:soundboard_uuid>/proposal/<uuid:proposal_uuid>/stream", public_soundboard_proposal_stream, name="publicProposalStreamMusic"),
     
     
     path("public/report", reporting_content, name="publicReportingContent"),
@@ -191,6 +215,7 @@ urlpatterns = [
     path('shared/<uuid:soundboard_uuid>/<str:token>', shared_soundboard_read, name="shared_soundboard"),
     path('shared/<uuid:soundboard_uuid>/<str:token>/refresh', shared_soundboard_refresh, name="shared_soundboard_refresh"),
     path('shared/<uuid:soundboard_uuid>/<str:token>/<uuid:playlist_uuid>/<int:music_id>/stream', shared_music_stream, name="sharedStreamMusic"),
+    path('shared/<uuid:soundboard_uuid>/<str:token>/proposal/<uuid:proposal_uuid>/<int:music_id>/stream', shared_proposal_music_stream, name="sharedProposalStreamMusic"),
     
     
     

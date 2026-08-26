@@ -28,6 +28,7 @@ from main.architecture.persistence.repository.PlaylistTagRepository import Playl
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from main.architecture.persistence.repository.PlaylistDuplicationHistoryRepository import PlaylistDuplicationHistoryRepository
+from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
 from main.domain.common.service.PlaylistDuplicationService import PlaylistDuplicationService
 from main.domain.common.exceptions.PlaylistDuplicationException import (
     PlaylistAlreadyDuplicatedException,
@@ -61,6 +62,7 @@ def soundboard_show(request, soundboard_uuid):
             'trace_user_activity': activity,
             'list_shortcut_keyboard': soundboard_playlist_repository.get_list_shortcut_keyboard(soundboard),
             'link_music_allowed': LinkMusicAllowedEnum.convert_to_dict(),
+            'pending_proposal_placeholders': PlaylistProposalRepository().get_pending_for_soundboard(soundboard),
         })
         
         # Auto-initialisation WebSocket

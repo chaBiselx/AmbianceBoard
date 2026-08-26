@@ -37,7 +37,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
       - name: Install crane
-        uses: imjasonh/setup-crane@feee3b6bb0d4c68370f256a4502498c9227e5c6b
+        env:
+          CRANE_VERSION: v0.21.9
+          CRANE_SHA256: 5c16d8ddb971cb1d5e6ed8b1e743da8224414eeba2c2762d8f1a61b2f095699e
+        run: |
+          curl --fail --silent --show-error \
+            "https://github.com/google/go-containerregistry/releases/download/${CRANE_VERSION}/go-containerregistry_Linux_x86_64.tar.gz" \
+            --output crane.tar.gz
+          echo "${CRANE_SHA256}  crane.tar.gz" | sha256sum --check --status
+          tar --extract --gzip --file crane.tar.gz --directory "$RUNNER_TEMP" crane
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+          crane version
 
       - uses: actions/setup-python@v5
         with:

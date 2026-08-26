@@ -44,10 +44,10 @@ log-all:
 	@docker compose logs -f
 
 clear-old-containers:
-	@# Help: Supprimer les anciens conteneurs Docker
-	@docker container prune -f
+	@# Help: Supprimer les anciens conteneurs Docker (garde le cache/images des 7 derniers jours)
+	@docker system prune -a -f --filter "until=168h"
 	@docker volume prune -f
-	@docker image prune -f
+	@docker builder prune -a -f --filter "until=168h"
 
 down:
 	@# Help: Arrêter les ressources de l'application

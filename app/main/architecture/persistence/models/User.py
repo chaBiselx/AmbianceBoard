@@ -1,8 +1,9 @@
 from typing import Optional
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import uuid
-from django.utils import timezone
+from django.utils import timezone, translation
 from encrypted_model_fields.fields import EncryptedCharField
 
 
@@ -47,8 +48,31 @@ class User(AbstractUser):
     tokenReinitialisation = models.CharField(max_length=255, default=None, null=True, blank=True)
     demandeTokenDate = models.DateTimeField(default=None, null=True, blank=True)
     betaTester = models.BooleanField(default=False, help_text="Indicates if the user is a beta tester")
-    
-    
+    language = models.CharField(
+        max_length=10,
+        choices=settings.LANGUAGES,
+        blank=True,
+        default="fr",
+        help_text="Langue de l'utilisateur, détectée automatiquement à la création du compte"
+    )
+
+    def save(self, *args, **kwargs) -> None:
+        if self._state.adding and not self.language:
+            self.language = self._detect_language()
+        super().save(*args, **kwargs)
+
+    @staticmethod
+    def _detect_language() -> str:
+        """Détecte la langue active (définie par LocaleMiddleware) parmi celles disponibles."""
+        available_languages = dict(settings.LANGUAGES)
+        current_language = translation.get_language() or ""
+        if current_language in available_languages:
+            return current_language
+        base_language = current_language.split('-')[0]
+        if base_language in available_languages:
+            return base_language
+        return settings.LANGUAGE_CODE
+
     def checkBanned(self) -> bool:
         """
         Check if the user is banned.

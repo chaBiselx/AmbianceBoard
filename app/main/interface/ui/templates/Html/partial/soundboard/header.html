@@ -19,11 +19,16 @@
         <div class="float-end"><button class="btn btn-sm btn-secondary" id="shared-custom-volume-button"><i class="fa-solid fa-volume-low"></i></button></div>
         {% endif %}
         {% if type_header == "private" or type_header == "public" %}
-        {% if can_share_soundboard %}
-        <button class="btn btn-outline-secondary float-end" id="btn-publish-soundboard" data-url="{% url 'publish_soundboard' soundboard.uuid %}" data-bs-toggle="tooltip" data-bs-title="{% trans "template.shareSoundboard.button.tooltip" %}">
+        <button class="btn btn-outline-secondary float-end" id="btn-publish-soundboard" data-url="{% url 'publish_soundboard' soundboard.uuid %}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{% trans "template.shareSoundboard.button.tooltip" %}">
             <i class="fa-solid fa-square-share-nodes"></i> {% trans "template.shareSoundboard.button.label" %}
         </button>
         {% endif %}
+        {% if type_header == "public" and soundboard.user != request.user %}
+        <button class="btn btn-outline-warning float-end" id="btn-propose-playlist-to-soundboard"
+            data-url-list="{% url 'publicSoundboardProposeMyPlaylistList' soundboard.uuid %}"
+            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title='{% trans "template.proposePlaylist.button.tooltip" %}'>
+            <i class="fa-solid fa-share-from-square"></i> {% trans "template.proposePlaylist.button.label" %}
+        </button>
         {% endif %}
         {% get_playlist_type_style 'PLAYLIST_TYPE_INSTANT' as instant_style %}
         {% get_playlist_type_short_description 'PLAYLIST_TYPE_INSTANT' as instant_description %}
@@ -31,7 +36,7 @@
         {% get_playlist_type_short_description 'PLAYLIST_TYPE_AMBIENT' as ambient_description %}
         {% get_playlist_type_style 'PLAYLIST_TYPE_MUSIC' as music_style %}
         {% get_playlist_type_short_description 'PLAYLIST_TYPE_MUSIC' as music_description %}
-        <div class="soundboard-type-legend small text-body-secondary float-md-end float-start">
+        <div class="soundboard-type-legend small text-body-secondary me-2 float-md-end float-start">
             <span class="soundboard-type-legend__item d-inline-flex align-items-center">
                 <span class="soundboard-type-legend__swatch" style="{{ instant_style }};"></span>
                 <span><strong>Instant</strong></span>

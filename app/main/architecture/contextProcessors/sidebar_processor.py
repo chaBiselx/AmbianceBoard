@@ -12,9 +12,9 @@ def sidebar_processor(request):
             'show_sidebar': True,
             'sidebar_items': [
                 {'title': 'Index', 'url': reverse("settingsIndex"), 'classIcon':None},
+                {'title': 'Compte', 'url': reverse("account"), 'classIcon':None},
                 {'title': 'Couleurs des boutons', 'url': reverse("defaultPlaylistType"), 'classIcon':None},
                 {'title': 'Dimensions boutons', 'url': reverse("updateDimensions"), 'classIcon':None},
-                {'title': 'Suppression de compte', 'url': reverse("deleteAccount"), 'classIcon':None},
             ]
         }
         

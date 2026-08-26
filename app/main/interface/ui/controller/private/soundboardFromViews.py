@@ -2,6 +2,7 @@ import json
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods
 from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.interface.ui.forms.private.SoundBoardForm import SoundBoardForm
@@ -26,7 +27,7 @@ def soundboard_create(request):
         form = SoundBoardForm()
     else:
         form = SoundBoardForm()
-    return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method': 'create', 'title': 'Création d\'un nouveau Soundboard'})
+    return render(request, 'Html/Soundboard/soundboard_form.html', {'form': form, 'method': 'create', 'title': _('template.soundboard.create.title')})
 
 
 

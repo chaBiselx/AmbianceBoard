@@ -12,6 +12,7 @@ def search_true_file(name_file):
     js_dir = os.path.join(static_root, 'js')
     
     static_files_service = StaticFilesService(js_dir)
-    return 'js/' + static_files_service.search(name_file)
+    filename = static_files_service.search(name_file)
+    return f'js/{filename}' if filename else None
     
     

@@ -47,7 +47,7 @@ class ErrorTrackingMiddleware:
             # Chrome DevTools et outils de développement
             "/.well-known/appspecific/com.chrome.devtools.json",
             "/.well-known/",
-            "/favicon.ico",
+            "/favicon.svg",
             "/robots.txt",
             "/llms.txt",
             "/sitemap.xml",

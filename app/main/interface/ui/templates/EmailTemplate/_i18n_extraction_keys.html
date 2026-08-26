@@ -1,0 +1,14 @@
+{% load i18n %}
+{#
+  Extraction anchors for translation keys used through the custom `tkey` template tag.
+  `makemessages` does not extract string arguments of custom tags, so we keep
+  these keys referenced through `{% trans %}` to avoid them being marked obsolete.
+#}
+
+{% trans "template.email.user.greeting" %}
+{% trans "template.email.user.welcome_greeting" %}
+{% trans "template.email.user.confirm_account.body" %}
+{% trans "template.email.user.prevent_auto_delete_unconfirmed.body" %}
+{% trans "template.email.user.reset_password.body" %}
+{% trans "template.email.user.tier_downgrade.body" %}
+{% trans "template.email.user.tier_expiration.body" %}

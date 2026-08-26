@@ -397,6 +397,30 @@ Correction
 Correction 
 - Corrections sur les formulaires soundboard/playlist qui ajoute #NaNNaNNaN
 
+### 0.4.14 - 2026/08
+Sécurité
+- Durcissement des packages pour un service 
+
+Nouveautés
+- Ajout de l'internationnalistion 
+- Ajout la possiblité de proposer des sons aux soundboards publiques
+- Ajout d'accepter ou refuser la propositions d'ajouter un son aux soundboard
+- Ajout de Plumber dans la CI
+
+Modifications
+- Changement de logo suite au sondage
+- Changement du favicon pour passer par un SVG
+- Après enregistrement du compte, la connexion est faite automatiquement
+- La création de compte ne nécessite plus le nom est le prénom
+- Modification de la home page pour le SEO 
+
+Correction 
+- Ajout d'une solution temporaire pour recharger le css en prod
+- Corrections des traductions pour les mails qui n'était pas traduits 
+- Remise en place de loki pour les logs
+- Lorsque l'on passe en plein écran sur mobile, les tooltips peuvent rester présent
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

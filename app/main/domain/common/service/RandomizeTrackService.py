@@ -10,6 +10,8 @@ from main.interface.ui.forms.private.MusicForm import MusicForm
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
+from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
+from main.domain.common.enum.PlaylistProposalStatusEnum import PlaylistProposalStatusEnum
 
 
 class RandomizeTrackService:
@@ -51,5 +53,24 @@ class RandomizeTrackService:
         if not soundboard or not self._is_playlist_in_soundboard(soundboard, playlist_uuid):
             return None
         return self.track_repository.get(music_id, playlist_uuid)
+
+    def generate_public_proposal(self, soundboard_uuid:uuid, proposal_uuid:uuid) -> Music|None :
+        """Génère une piste aléatoire pour la playlist d'une proposition en attente, réservée à son auteur."""
+        proposal = PlaylistProposalRepository().get(proposal_uuid)
+        if not proposal or str(proposal.soundboard.uuid) != str(soundboard_uuid):
+            return None
+        if proposal.status != PlaylistProposalStatusEnum.PENDING.name or proposal.proposer != self.request.user:
+            return None
+        return self.track_repository.get_random_public(proposal.playlist.uuid)
+
+    def get_shared_proposal(self, soundboard_uuid:uuid, token:str, proposal_uuid:uuid, music_id: int) -> Music|None :
+        """Récupère une piste précise d'une proposition en attente pour les auditeurs d'une session partagée."""
+        soundboard = (SoundBoardService(self.request)).get_soundboard_from_shared_soundboard(soundboard_uuid, token)
+        if not soundboard:
+            return None
+        proposal = PlaylistProposalRepository().get(proposal_uuid)
+        if not proposal or str(proposal.soundboard.uuid) != str(soundboard_uuid) or proposal.status != PlaylistProposalStatusEnum.PENDING.name:
+            return None
+        return self.track_repository.get(music_id, proposal.playlist.uuid)
      
         
