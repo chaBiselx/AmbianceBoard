@@ -9,7 +9,17 @@ class FAQService:
         # ── Présentation & tarifs ────────────────────────────────────────────
         {
             'theme': FAQCategorieEnum.PRESENTATION.value,
-            'question': 'Quel est le meilleur soundboard gratuit pour JDR ?',
+            'question': 'Est-ce que c\'est vraiment gratuit ?',
+            'answer': (
+                'Oui, AmbianceBoard est entièrement gratuit et ça le restera. '
+                'Le JDR coûte déjà assez cher, je ne veux pas ajouter de frais supplémentaires pour les maîtres du jeu. '
+                'Vous pouvez créer des soundboards, les partager et les utiliser sans aucun coût. '
+                'Un compte gratuit vous permet de sauvegarder vos soundboards et de partager l\'écoute avec vos joueurs.'
+            ),
+        },
+        {
+            'theme': FAQCategorieEnum.PRESENTATION.value,
+            'question': 'Qu\'est-ce qu\'AmbianceBoard ?',
             'answer': (
                 'AmbianceBoard est un soundboard en ligne gratuit conçu spécifiquement pour les maîtres du jeu. '
                 'Il permet de déclencher des ambiances sonores, des effets instantanés et des playlists musicales '
@@ -18,12 +28,31 @@ class FAQService:
         },
         {
             'theme': FAQCategorieEnum.PRESENTATION.value,
-            'question': 'Existe-t-il un outil en ligne pour maître du jeu accessible gratuitement ?',
+            'question': 'Comment ça marche ?',
             'answer': (
-                'AmbianceBoard est un outil web 100 % gratuit pour les maîtres du jeu. '
-                'Aucune installation n\'est requise : ouvrez le site, créez un soundboard et commencez à jouer. '
-                'Un compte gratuit permet de sauvegarder vos boards, de les partager avec vos joueurs '
-                'et d\'accéder aux soundboards publics de la communauté.'
+                'AmbianceBoard fonctionne directement dans votre navigateur web. '
+                'Il suffit de créer un soundboard, d\'ajouter vos sons, de les organiser et de commencer à jouer.'
+                'Il est possible d\'utiliser des sons de la communauté ou d\'importer vos propres sons. '
+            ),
+        },
+        {
+            'theme': FAQCategorieEnum.PRESENTATION.value,
+            'question': 'Pourquoi y a-t-il un système Premium ?',
+            'answer': (
+                'Le système Premium permet de financer le développement d\'AmbianceBoard et de couvrir les coûts associés, tout en offrant '
+                'des fonctionnalités avancées aux utilisateurs. '
+                'Cela augmente les limites de stockage et offre un accès à des fonctionnalités exclusives.'
+                'L\'offre Premium est optionnelle et ne limite pas l\'utilisation de la version gratuite.'
+            ),
+        },
+        {
+            'theme': FAQCategorieEnum.PRESENTATION.value,
+            'question': 'Quelle est la différence entre un soundboard public et privé ?',
+            'answer': (
+                'Un soundboard public est accessible à tous les utilisateurs. '
+                'Un utilisateur peut consulter, écouter et proposer des sons pour un soundboard public. '
+                'Un soundboard privé est réservé à son créateur, garantissant un contrôle total sur le contenu. '
+                'Il ne peut pas être consulté par d\'autres utilisateurs.'
             ),
         },
         # ── Maître du Jeu & immersion ────────────────────────────────────────
@@ -55,6 +84,14 @@ class FAQService:
                 'l\'atmosphère et l\'engagement des joueurs.'
             ),
         },
+        {
+            'theme': FAQCategorieEnum.MJ.value,
+            'question': 'Puis-je autoriser mes joueurs à déclencher certains sons ?',
+            'answer': (
+                'Oui, vous pouvez autoriser vos joueurs à déclencher certains sons en leur donnant les permissions appropriées sur le soundboard. '
+                'Cela permet à chaque joueur de contribuer à l\'ambiance sonore de la partie.'
+            ),
+        },
         # ── Comparaisons & alternatives ──────────────────────────────────────
         {
             'theme': FAQCategorieEnum.COMPARAISON.value,
@@ -64,6 +101,55 @@ class FAQService:
                 'Là où Syrinscape propose des packs sonores payants, AmbianceBoard vous laisse importer '
                 'vos propres sons, utiliser des liens externes ou des radios en streaming. '
                 'La synchronisation en temps réel avec vos joueurs est incluse sans abonnement.'
+            ),
+        },
+        # ── Droits et license ──────────────────────────────────────
+        {
+            'theme': FAQCategorieEnum.DROITS.value,
+            'question': 'Puis-je importer n\'importe quel son ?',
+            'answer': (
+                'Vous pouvez importer n\'importe quel son sur AmbianceBoard, mais vous devez respecter les droits d\'auteur. '
+                'En cas de doutes garder les boutons non copiables et ne partager pas vos soundboards contenant des sons protégés par le droit d\'auteur. '
+            ),
+        },
+        {
+            'theme': FAQCategorieEnum.DROITS.value,
+            'question': 'Quels sont les droits d\'utilisation des sons sur AmbianceBoard ?',
+            'answer': (
+                'Les sons que vous importez sur AmbianceBoard restent sous votre responsabilité en termes de droits d\'auteur. '
+                'La modération se réserve le droit de supprimer tout contenu qui enfreint les lois sur les droits d\'auteur. '
+            ),
+        },
+        {
+            'theme': FAQCategorieEnum.DROITS.value,
+            'question': 'Comment signaler un contenu ?',
+            'answer': (
+                'Si vous constatez un contenu qui enfreint les droits d\'auteur ou les règles de la communauté,'
+                'vous pouvez le signaler via le formulaire de contact sur le site ou en cliquant sur le bouton de signalement'
+                'en forme de drapeau dans la barre de navigation sur la soundboard à signaler.'
+            ),
+        },
+        # ── Participation ──────────────────────────────────────
+        {
+            'theme': FAQCategorieEnum.PARTICIPATION.value,
+            'question': 'Comment puis-je contribuer à AmbianceBoard ?',
+            'answer': (
+                'Vous pouvez contribuer à AmbianceBoard de plusieurs façons : en proposant des sons, en signalant des bugs, '
+                'en proposant des idées via le support ou sur le Discord. '
+                'Si vous êtes motivé, vous pouvez devenir bêta-testeur et avoir un accès anticipé aux nouvelles fonctionnalités.'
+                'Si vous êtes développeur, vous pouvez également contribuer directement sur GitHub. '
+            ),
+        }
+
+        # ── Autres ──────────────────────────────────────
+        {
+            'theme': FAQCategorieEnum.OTHER.value,
+            'question': 'Pourquoi ça ne fonctionne pas correctement sur Safari/IOS ?',
+            'answer': (
+                'Safari et IOS utilisent le moteur de rendu Webkit. Celui-ci possède des restrictions spécifiques '
+                'concernant la lecture automatique des médias et la gestion des fichiers audio. '
+                'Je travaille pour trouver des solutions alternatives. '
+                'À ce jour, je n\'ai pas d\'alternative viable pour le moment. '
             ),
         },
     ]

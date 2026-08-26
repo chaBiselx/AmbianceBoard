@@ -420,6 +420,13 @@ Correction
 - Remise en place de loki pour les logs
 - Lorsque l'on passe en plein écran sur mobile, les tooltips peuvent rester présent
 
+### 0.4.14 - 2026/08
+
+Modifications
+- Modification de la FAQ
+
+Fiabilité & Confiance
+- Ajout de tests E2E
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
