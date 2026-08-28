@@ -428,6 +428,11 @@ Modifications
 Fiabilité & Confiance
 - Ajout de tests E2E
 
+### 0.5.0 - 2026/08
+Nouveautés
+- Ajout de test E2E avec Playwright
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
