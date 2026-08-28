@@ -139,7 +139,7 @@ class FAQService:
                 'Si vous êtes motivé, vous pouvez devenir bêta-testeur et avoir un accès anticipé aux nouvelles fonctionnalités.'
                 'Si vous êtes développeur, vous pouvez également contribuer directement sur GitHub. '
             ),
-        }
+        },
 
         # ── Autres ──────────────────────────────────────
         {
