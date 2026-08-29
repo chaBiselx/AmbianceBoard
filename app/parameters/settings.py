@@ -120,7 +120,7 @@ if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
     os.mkdir(os.path.join(BASE_DIR, 'logs'), mode=0o777 if DEBUG else 0o666)
 
 
-LOGGER_TYPE = "loki"
+LOGGER_TYPE = "file"
 if DEBUG :
     LOGGER_TYPE = "composite"
 # For tests, use the MemoryLogger
