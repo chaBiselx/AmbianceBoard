@@ -432,6 +432,9 @@ Fiabilité & Confiance
 Nouveautés
 - Ajout de test E2E avec Playwright
 
+Améliorations
+- Amélioration de la place prise pour ajouter un boutons depuis un soundboard
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
