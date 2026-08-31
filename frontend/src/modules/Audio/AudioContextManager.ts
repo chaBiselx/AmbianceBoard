@@ -1,11 +1,11 @@
 class AudioContextManager {
     private static context: AudioContext | null = null;
-    private static sourceNodes = new WeakMap<HTMLMediaElement, MediaElementAudioSourceNode>();
-    private static gainNodes = new WeakMap<HTMLMediaElement, GainNode>();
+    private static readonly sourceNodes = new WeakMap<HTMLMediaElement, MediaElementAudioSourceNode>();
+    private static readonly gainNodes = new WeakMap<HTMLMediaElement, GainNode>();
     private static unlockRegistered = false;
 
     static isSupported(): boolean {
-        return typeof window !== 'undefined' && (typeof window.AudioContext !== 'undefined' || typeof (window as any).webkitAudioContext !== 'undefined');
+        return typeof window !== 'undefined' && (window.AudioContext !== undefined ||  (window as any).webkitAudioContext !== undefined);
     }
 
     static getContext(): AudioContext | null {
