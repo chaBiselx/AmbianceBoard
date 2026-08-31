@@ -435,6 +435,9 @@ Nouveautés
 Améliorations
 - Amélioration de la place prise pour ajouter un boutons depuis un soundboard
 
+Nouveautés
+- Affichage du nom et des tags au survol sur les soundboards publiques
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
