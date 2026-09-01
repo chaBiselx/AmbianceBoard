@@ -14,5 +14,5 @@ channels_redis
 django-encrypted-model-fields==0.6.5
 requests==2.34.2
 bleach==6.4.0
-django-allauth[socialaccount]==65.18.0
+django-allauth[socialaccount]==65.19.1
 yt-dlp==2026.7.4
