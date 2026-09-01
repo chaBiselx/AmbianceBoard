@@ -38,7 +38,10 @@ describe('UpdateVolumeElement', () => {
             playlistType: 'music',
             defaultVolume: 0.8,
             levelFade: 1,
-        } as MusicElement;
+            setVolume: vi.fn((volume: number) => {
+                mockAudioElement.volume = volume;
+            }),
+        } as unknown as MusicElement;
 
         // Réinitialisation du cache statique avant chaque test
         // @ts-ignore - accès à une propriété privée pour les tests
@@ -312,13 +315,17 @@ describe('UpdateVolumeElement', () => {
         });
 
         it('should share cache between instances', () => {
+            const secondAudioElement = document.createElement('audio') as HTMLAudioElement;
             const secondMusicElement = {
-                DOMElement: document.createElement('audio') as HTMLAudioElement,
+                DOMElement: secondAudioElement,
                 idPlaylist: 'playlist-456',
                 playlistType: 'music',
                 defaultVolume: 0.9,
                 levelFade: 1,
-            } as MusicElement;
+                setVolume: vi.fn((volume: number) => {
+                    secondAudioElement.volume = volume;
+                }),
+            } as unknown as MusicElement;
             
             const secondUpdateVolume = new UpdateVolumeElement(secondMusicElement);
             

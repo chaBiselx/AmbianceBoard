@@ -438,6 +438,8 @@ Améliorations
 Nouveautés
 - Affichage du nom et des tags au survol sur les soundboards publiques
 
+Corrections
+- Corrige le Drag&Drop sur les supports sans souris ( tablette, téléphone, ...)
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
