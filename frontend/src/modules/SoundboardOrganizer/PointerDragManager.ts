@@ -1,26 +1,53 @@
 import { PlaylistDropHandler } from './PlaylistDropHandler';
 
 class PointerDragState {
-    public static pointerId: number | null = null;
-    public static element: HTMLElement | null = null;
-    public static ghost: HTMLElement | null = null;
-    public static sourceZone = '';
-    public static startX = 0;
-    public static startY = 0;
-    public static offsetX = 0;
-    public static offsetY = 0;
-    public static dragging = false;
+    private static _pointerId: number | null = null;
+    private static _element: HTMLElement | null = null;
+    private static _ghost: HTMLElement | null = null;
+    private static _sourceZone = '';
+    private static _startX = 0;
+    private static _startY = 0;
+    private static _offsetX = 0;
+    private static _offsetY = 0;
+    private static _dragging = false;
+
+    public static get pointerId(): number | null { return this._pointerId; }
+    public static set pointerId(value: number | null) { this._pointerId = value; }
+
+    public static get element(): HTMLElement | null { return this._element; }
+    public static set element(value: HTMLElement | null) { this._element = value; }
+
+    public static get ghost(): HTMLElement | null { return this._ghost; }
+    public static set ghost(value: HTMLElement | null) { this._ghost = value; }
+
+    public static get sourceZone(): string { return this._sourceZone; }
+    public static set sourceZone(value: string) { this._sourceZone = value; }
+
+    public static get startX(): number { return this._startX; }
+    public static set startX(value: number) { this._startX = value; }
+
+    public static get startY(): number { return this._startY; }
+    public static set startY(value: number) { this._startY = value; }
+
+    public static get offsetX(): number { return this._offsetX; }
+    public static set offsetX(value: number) { this._offsetX = value; }
+
+    public static get offsetY(): number { return this._offsetY; }
+    public static set offsetY(value: number) { this._offsetY = value; }
+
+    public static get dragging(): boolean { return this._dragging; }
+    public static set dragging(value: boolean) { this._dragging = value; }
 
     public static reset(): void {
-        this.pointerId = null;
-        this.element = null;
-        this.ghost = null;
-        this.sourceZone = '';
-        this.startX = 0;
-        this.startY = 0;
-        this.offsetX = 0;
-        this.offsetY = 0;
-        this.dragging = false;
+        this._pointerId = null;
+        this._element = null;
+        this._ghost = null;
+        this._sourceZone = '';
+        this._startX = 0;
+        this._startY = 0;
+        this._offsetX = 0;
+        this._offsetY = 0;
+        this._dragging = false;
     }
 }
 
