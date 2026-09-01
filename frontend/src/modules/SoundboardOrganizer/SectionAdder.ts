@@ -46,7 +46,7 @@ class SectionDomManager {
 }
 
 export class SectionAdder {
-    private template: HTMLTemplateElement | null = null;
+    private readonly template: HTMLTemplateElement | null = null;
     private readonly sectionDomManager = new SectionDomManager();
 
     constructor(private readonly setupDragEvents: () => void) {
