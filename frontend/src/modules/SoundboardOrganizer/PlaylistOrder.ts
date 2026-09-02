@@ -38,7 +38,7 @@ export class CleanOrderHandler {
         const playlists = section.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>;
         let order = 1;
         for (const playlist of playlists) {
-            playlist.dataset.order = order++.toString();
+            playlist.dataset.order = (order++).toString();
             playlist.dataset.section = sectionNumber.toString();
         }
         ConsoleTesteur.info('Reordered section:', sectionNumber);
