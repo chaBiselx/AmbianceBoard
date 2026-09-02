@@ -147,9 +147,6 @@ export class MusicElementFactory {
      */
     private static createAudioAdapter(buttonPlaylist: ButtonPlaylist, dto: MusicElementDTO): IAudioAdapter {
         const audioElement = new Audio();
-        console.log('================ ')
-        console.log('audioElement ', typeof audioElement, buttonPlaylist.idPlaylist)
-        console.log('================ ')
         const audioAdapter = this.createAdapter(audioElement);
         audioAdapter.setClassName(`playlist-audio-${buttonPlaylist.idPlaylist}`);
         audioAdapter.addClass('audio-' + buttonPlaylist.dataset.playlistType);
