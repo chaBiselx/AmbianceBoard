@@ -193,14 +193,14 @@ class BaseSoundboardSeedCommand(BaseCommand):
                 counters["playlist_links_created"] += 1
 
             counters["musics_created"] += self._attach_audio_files_for_playlist(
-                playlist, playlist_payload, audio_files
+                playlist, audio_files
             )
             order += 1
 
         return order
 
     def _attach_audio_files_for_playlist(
-        self, playlist, playlist_payload: dict, audio_files: list[Path]
+        self, playlist, audio_files: list[Path]
     ) -> int:
         """Strategie par defaut: alimenter la playlist avec tous les fichiers audio."""
         return self._attach_audio_files(playlist, audio_files)
