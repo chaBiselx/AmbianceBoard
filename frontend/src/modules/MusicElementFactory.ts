@@ -3,6 +3,9 @@ import { ButtonPlaylist } from '@/modules/ButtonPlaylist';
 import Boolean from "@/modules/Util/Boolean";
 import Config from '@/modules/General/Config';
 import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil';
+import HtmlAudioAdapter from '@/modules/Audio/HtmlAudioAdapter';
+import { IAudioAdapter } from '@/modules/Audio/IAudioAdapter';
+import WebAudioAdapter from '@/modules/Audio/WebAudioAdapter';
 
 /**
  * DTO pour la configuration d'un MusicElement
@@ -35,8 +38,9 @@ export class MusicElementFactory {
      * Crée un MusicElement à partir d'un HTMLAudioElement existant
      */
     static fromAudioElement(element: HTMLAudioElement): MusicElement {
-        const dto = this.extractDTOFromAudioElement(element);
-        return this.createFromDTO(dto, element);
+        const adapter = this.createAdapter(element);
+        const dto = this.extractDTOFromAudioAdapter(adapter);
+        return this.createFromDTO(dto, adapter);
     }
 
     /**
@@ -44,52 +48,52 @@ export class MusicElementFactory {
      */
     static fromButtonPlaylist(buttonPlaylist: ButtonPlaylist): MusicElement {
         const dto = this.extractDTOFromButtonPlaylist(buttonPlaylist);
-        const audioElement = this.createAudioElement(buttonPlaylist, dto);
-        return this.createFromDTO(dto, audioElement);
+        const audioAdapter = this.createAudioAdapter(buttonPlaylist, dto);
+        return this.createFromDTO(dto, audioAdapter);
     }
 
     /**
      * Crée un MusicElement à partir d'un DTO et d'un élément audio
      */
-    private static createFromDTO(dto: MusicElementDTO, audioElement: HTMLAudioElement): MusicElement {
-        const musicElement = new MusicElement(audioElement, dto);
+    private static createFromDTO(dto: MusicElementDTO, audioAdapter: IAudioAdapter): MusicElement {
+        const musicElement = new MusicElement(audioAdapter, dto);
         return musicElement;
     }
 
     /**
      * Extrait le DTO à partir d'un HTMLAudioElement
      */
-    private static extractDTOFromAudioElement(element: HTMLAudioElement): MusicElementDTO {
+    private static extractDTOFromAudioAdapter(adapter: IAudioAdapter): MusicElementDTO {
         return {
-            butonPlaylistToken: element.dataset.butonPlaylistToken || null,
-            defaultVolume: element.dataset.defaultvolume
-                ? Number.parseFloat(element.dataset.defaultvolume)
+            butonPlaylistToken: adapter.getDatasetValue('butonPlaylistToken') || null,
+            defaultVolume: adapter.getDatasetValue('defaultvolume')
+                ? Number.parseFloat(adapter.getDatasetValue('defaultvolume')!)
                 : 1,
-            fadeIn: element.dataset.fadein === "true",
-            fadeInType: element.dataset.fadeintype || 'linear',
-            fadeInDuration: element.dataset.fadeinduration
-                ? Number.parseFloat(element.dataset.fadeinduration)
+            fadeIn: adapter.getDatasetValue('fadein') === "true",
+            fadeInType: adapter.getDatasetValue('fadeintype') || 'linear',
+            fadeInDuration: adapter.getDatasetValue('fadeinduration')
+                ? Number.parseFloat(adapter.getDatasetValue('fadeinduration')!)
                 : 0,
-            fadeOut: element.dataset.fadeout === "true",
-            fadeOutType: element.dataset.fadeouttype || 'linear',
-            fadeOutDuration: element.dataset.fadeoutduration
-                ? Number.parseFloat(element.dataset.fadeoutduration)
+            fadeOut: adapter.getDatasetValue('fadeout') === "true",
+            fadeOutType: adapter.getDatasetValue('fadeouttype') || 'linear',
+            fadeOutDuration: adapter.getDatasetValue('fadeoutduration')
+                ? Number.parseFloat(adapter.getDatasetValue('fadeoutduration')!)
                 : 0,
-            playlistType: element.dataset.playlisttype || '',
-            idPlaylist: element.dataset.playlistid || '',
-            playlistLoop: element.dataset.playlistloop === "true",
-            delay: element.dataset.playlistdelay
-                ? Number.parseFloat(element.dataset.playlistdelay)
+            playlistType: adapter.getDatasetValue('playlisttype') || '',
+            idPlaylist: adapter.getDatasetValue('playlistid') || '',
+            playlistLoop: adapter.getDatasetValue('playlistloop') === "true",
+            delay: adapter.getDatasetValue('playlistdelay')
+                ? Number.parseFloat(adapter.getDatasetValue('playlistdelay')!)
                 : 0,
-            baseUrl: element.dataset.baseurl || '',
-            durationRemainingTriggerNextMusic: element.dataset.durationremainingtriggernextmusic
-                ? Number.parseFloat(element.dataset.durationremainingtriggernextmusic)
+            baseUrl: adapter.getDatasetValue('baseurl') || '',
+            durationRemainingTriggerNextMusic: adapter.getDatasetValue('durationremainingtriggernextmusic')
+                ? Number.parseFloat(adapter.getDatasetValue('durationremainingtriggernextmusic')!)
                 : 0,
-            fadeOffOnStop: element.dataset.fadeoffonstop === "true",
-            fadeOffOnStopDuration: element.dataset.fadeoffonstopduration
-                ? Number.parseFloat(element.dataset.fadeoffonstopduration)
+            fadeOffOnStop: adapter.getDatasetValue('fadeoffonstop') === "true",
+            fadeOffOnStopDuration: adapter.getDatasetValue('fadeoffonstopduration')
+                ? Number.parseFloat(adapter.getDatasetValue('fadeoffonstopduration')!)
                 : 0,
-            fadeOffOnStopType: element.dataset.fadeoffonstoptype || 'linear',
+            fadeOffOnStopType: adapter.getDatasetValue('fadeoffonstoptype') || 'linear',
         };
     }
 
@@ -141,48 +145,57 @@ export class MusicElementFactory {
     /**
      * Crée un élément audio HTML à partir d'un ButtonPlaylist
      */
-    private static createAudioElement(buttonPlaylist: ButtonPlaylist, dto: MusicElementDTO): HTMLAudioElement {
-        const audioElement = document.createElement('audio');
-        audioElement.className = `playlist-audio-${buttonPlaylist.idPlaylist}`;
-        audioElement.classList.add('audio-' + buttonPlaylist.dataset.playlistType);
+    private static createAudioAdapter(buttonPlaylist: ButtonPlaylist, dto: MusicElementDTO): IAudioAdapter {
+        const audioElement = new Audio();
+        const audioAdapter = this.createAdapter(audioElement);
+        audioAdapter.setClassName(`playlist-audio-${buttonPlaylist.idPlaylist}`);
+        audioAdapter.addClass('audio-' + buttonPlaylist.dataset.playlistType);
 
         // Configurer la source
         let src = dto.baseUrl;
         if (!this.isSlave()) {
             src += "?i=" + Date.now();
         }
-        audioElement.src = src;
-        audioElement.controls = Config.DEBUG;
+        audioAdapter.setSource(src);
+        audioAdapter.setControls(Config.DEBUG);
 
         // Définir les attributs data-*
-        this.setDataAttributes(audioElement, dto);
+        this.setDataAttributes(audioAdapter, dto);
 
-        return audioElement;
+        return audioAdapter;
+    }
+
+    private static createAdapter(audioElement: HTMLAudioElement): IAudioAdapter {
+        if (WebAudioAdapter.isSupported()) {
+            return new WebAudioAdapter(audioElement);
+        }
+
+        return new HtmlAudioAdapter(audioElement);
     }
 
     /**
      * Définit les attributs data-* sur l'élément audio
      */
-    private static setDataAttributes(audioElement: HTMLAudioElement, dto: MusicElementDTO): void {
+    private static setDataAttributes(audioAdapter: IAudioAdapter, dto: MusicElementDTO): void {
         if (dto.butonPlaylistToken) {
-            audioElement.dataset.butonPlaylistToken = dto.butonPlaylistToken;
+            audioAdapter.setDatasetValue('butonPlaylistToken', dto.butonPlaylistToken);
         }
-        audioElement.dataset.defaultvolume = dto.defaultVolume.toString();
-        audioElement.dataset.fadein = dto.fadeIn.toString();
-        audioElement.dataset.fadeintype = dto.fadeInType;
-        audioElement.dataset.fadeinduration = dto.fadeInDuration.toString();
-        audioElement.dataset.fadeout = dto.fadeOut.toString();
-        audioElement.dataset.fadeouttype = dto.fadeOutType;
-        audioElement.dataset.fadeoutduration = dto.fadeOutDuration.toString();
-        audioElement.dataset.playlisttype = dto.playlistType;
-        audioElement.dataset.playlistid = dto.idPlaylist;
-        audioElement.dataset.playlistloop = dto.playlistLoop.toString();
-        audioElement.dataset.playlistdelay = dto.delay.toString();
-        audioElement.dataset.baseurl = dto.baseUrl;
-        audioElement.dataset.durationremainingtriggernextmusic = dto.durationRemainingTriggerNextMusic.toString();
-        audioElement.dataset.fadeoffonstop = dto.fadeOffOnStop.toString();
-        audioElement.dataset.fadeoffonstopduration = dto.fadeOffOnStopDuration.toString();
-        audioElement.dataset.fadeoffonstoptype = dto.fadeOffOnStopType;
+        audioAdapter.setDatasetValue('defaultvolume', dto.defaultVolume.toString());
+        audioAdapter.setDatasetValue('fadein', dto.fadeIn.toString());
+        audioAdapter.setDatasetValue('fadeintype', dto.fadeInType);
+        audioAdapter.setDatasetValue('fadeinduration', dto.fadeInDuration.toString());
+        audioAdapter.setDatasetValue('fadeout', dto.fadeOut.toString());
+        audioAdapter.setDatasetValue('fadeouttype', dto.fadeOutType);
+        audioAdapter.setDatasetValue('fadeoutduration', dto.fadeOutDuration.toString());
+        audioAdapter.setDatasetValue('playlisttype', dto.playlistType);
+        audioAdapter.setDatasetValue('playlistid', dto.idPlaylist);
+        audioAdapter.setDatasetValue('playlistloop', dto.playlistLoop.toString());
+        audioAdapter.setDatasetValue('playlistdelay', dto.delay.toString());
+        audioAdapter.setDatasetValue('baseurl', dto.baseUrl);
+        audioAdapter.setDatasetValue('durationremainingtriggernextmusic', dto.durationRemainingTriggerNextMusic.toString());
+        audioAdapter.setDatasetValue('fadeoffonstop', dto.fadeOffOnStop.toString());
+        audioAdapter.setDatasetValue('fadeoffonstopduration', dto.fadeOffOnStopDuration.toString());
+        audioAdapter.setDatasetValue('fadeoffonstoptype', dto.fadeOffOnStopType);
     }
 
     /**

@@ -420,6 +420,32 @@ Correction
 - Remise en place de loki pour les logs
 - Lorsque l'on passe en plein écran sur mobile, les tooltips peuvent rester présent
 
+### 0.4.14 - 2026/08
+
+Modifications
+- Modification de la FAQ
+
+Fiabilité & Confiance
+- Ajout de tests E2E
+
+### 0.4.15 - 2026/09
+Sécurité
+- Mise a jours des dépendances 
+
+### 0.5.0 - 2026/09
+Nouveautés
+- Ajout de test E2E avec Playwright
+- Mise en place place du script de façon experimental pour les beta testeur 
+
+Améliorations
+- Amélioration de la place prise pour ajouter un boutons depuis un soundboard
+- Ajouter la possiblité de dupliquer sans édition 
+
+Nouveautés
+- Affichage du nom et des tags au survol sur les soundboards publiques
+
+Corrections
+- Corrige le Drag&Drop sur les supports sans souris ( tablette, téléphone, ...)
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

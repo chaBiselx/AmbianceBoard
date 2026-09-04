@@ -27,6 +27,7 @@ from main.architecture.persistence.repository.PlaylistRepository import Playlist
 from main.architecture.persistence.repository.PlaylistTagRepository import PlaylistTagRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+from main.domain.common.helper.ScriptContextHelper import ScriptContextHelper
 from main.architecture.persistence.repository.PlaylistDuplicationHistoryRepository import PlaylistDuplicationHistoryRepository
 from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
 from main.domain.common.service.PlaylistDuplicationService import PlaylistDuplicationService
@@ -63,6 +64,7 @@ def soundboard_show(request, soundboard_uuid):
             'list_shortcut_keyboard': soundboard_playlist_repository.get_list_shortcut_keyboard(soundboard),
             'link_music_allowed': LinkMusicAllowedEnum.convert_to_dict(),
             'pending_proposal_placeholders': PlaylistProposalRepository().get_pending_for_soundboard(soundboard),
+            **ScriptContextHelper.build(soundboard),
         })
         
         # Auto-initialisation WebSocket

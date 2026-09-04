@@ -55,6 +55,13 @@ class PlaylistRepositoryTest(TestCase):
             is_copiable=True,
             moderator_ban_copie=False,
         )
+        self.playlist_empty = Playlist.objects.create(
+            user=self.owner,
+            name='Empty Playlist',
+            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
+            is_copiable=True,
+            moderator_ban_copie=False,
+        )
 
         Track.objects.create(playlist=self.playlist_music, alternativeName='Track music')
         Track.objects.create(playlist=self.playlist_ambient, alternativeName='Track ambient')
@@ -63,6 +70,14 @@ class PlaylistRepositoryTest(TestCase):
         self.tag_ambient = PlaylistTag.objects.create(name='ambient_tag')
         self.playlist_music.playlist_tags.add(self.tag_music)
         self.playlist_ambient.playlist_tags.add(self.tag_ambient)
+        
+    def test_get_copiable_playlists_excludes_empty_playlists(self):
+        result = self.repository.get_copiable_playlists_excluding_user(self.target_user, {})
+        result_ids = {playlist.id for playlist in result}
+
+        self.assertIn(self.playlist_music.id, result_ids)
+        self.assertIn(self.playlist_ambient.id, result_ids)
+        self.assertNotIn(self.playlist_empty.id, result_ids)
 
     def test_get_copiable_playlists_excluding_user_filters_non_copiable_banned_and_user_owned(self):
         result = self.repository.get_copiable_playlists_excluding_user(self.target_user, {})

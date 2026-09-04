@@ -5,6 +5,7 @@ Configuration de l'interface d'administration Django
 from django.contrib import admin
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.Music import Music
 from main.architecture.persistence.models.LinkMusic import LinkMusic
@@ -30,6 +31,8 @@ from main.architecture.persistence.models.HomeDemoItem import HomeDemoItem
 from main.architecture.persistence.models.AsyncDownloadJob import AsyncDownloadJob
 from main.architecture.persistence.models.TrafficAttributionVisit import TrafficAttributionVisit
 from main.architecture.persistence.models.PlaylistProposal import PlaylistProposal
+from main.architecture.persistence.models.SoundboardScript import SoundboardScript
+from main.architecture.persistence.models.SoundboardScriptStep import SoundboardScriptStep
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -54,6 +57,9 @@ admin.site.register(UserNotificationDismissal)
 admin.site.register(UserActivity)
 admin.site.register(UserDevicePreference)
 admin.site.register(TrackLabel)
+admin.site.register(Track)
 admin.site.register(HomeDemoItem)
 admin.site.register(TrafficAttributionVisit)
 admin.site.register(PlaylistProposal)
+admin.site.register(SoundboardScript)
+admin.site.register(SoundboardScriptStep)

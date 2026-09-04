@@ -11,6 +11,16 @@ from main.interface.ui.controller.general.traceFrontViews import trace_front
 from main.interface.ui.controller.private.soundboardViews import soundboard_list, soundboard_organize, soundboard_organize_update
 from main.interface.ui.controller.private.soundboardSpecifiqueViews import list_playlists_for_specific_action, update_specific_actionable_playlists, update_specific_shortcut_playlists
 from main.interface.ui.controller.private.soundboardFromViews import soundboard_create, soundboard_update, soundboard_delete
+from main.interface.ui.controller.private.soundboardScriptViews import (
+    soundboard_scripts,
+    soundboard_script_create,
+    soundboard_script_update,
+    soundboard_script_delete,
+    soundboard_script_steps,
+    soundboard_script_step_save,
+    soundboard_script_step_delete,
+    soundboard_script_steps_reorder,
+)
 from main.interface.ui.controller.private.showSoundboardViews import (
     soundboard_show,
     music_stream,
@@ -133,6 +143,14 @@ urlpatterns = [
     path("soundBoards/<uuid:soundboard_uuid>/delete", soundboard_delete, name="soundboardsDelete"),
     path("soundBoards/<uuid:soundboard_uuid>/organize", soundboard_organize, name="organizeSoundboard"),
     path("soundBoards/<uuid:soundboard_uuid>/organize/update", soundboard_organize_update, name="organizeSoundboardUpdate"),
+    path("soundBoards/<uuid:soundboard_uuid>/scripts", soundboard_scripts, name="soundboardScripts"),
+    path("soundBoards/<uuid:soundboard_uuid>/scripts/create", soundboard_script_create, name="soundboardScriptCreate"),
+    path("soundBoards/<uuid:soundboard_uuid>/scripts/<uuid:script_uuid>/update", soundboard_script_update, name="soundboardScriptUpdate"),
+    path("soundBoards/<uuid:soundboard_uuid>/scripts/<uuid:script_uuid>/delete", soundboard_script_delete, name="soundboardScriptDelete"),
+    path("soundBoards/<uuid:soundboard_uuid>/scripts/<uuid:script_uuid>/steps", soundboard_script_steps, name="soundboardScriptSteps"),
+    path("soundBoards/<uuid:soundboard_uuid>/scripts/<uuid:script_uuid>/steps/save", soundboard_script_step_save, name="soundboardScriptStepSave"),
+    path("soundBoards/<uuid:soundboard_uuid>/scripts/<uuid:script_uuid>/steps/reorder", soundboard_script_steps_reorder, name="soundboardScriptStepsReorder"),
+    path("soundBoards/<uuid:soundboard_uuid>/scripts/<uuid:script_uuid>/steps/<uuid:step_uuid>/delete", soundboard_script_step_delete, name="soundboardScriptStepDelete"),
     path("soundBoards/<uuid:soundboard_uuid>/user/favorite", favorite_update, name="publicFavoriteSoundboard"),
     path("soundBoards/<uuid:soundboard_uuid>/specific", list_playlists_for_specific_action, name="listSoundboardPlaylistsSpecific"),
     path("soundBoards/specific/actionnable/update", update_specific_actionable_playlists, name="updateActionablePlaylistsForPlayers"),

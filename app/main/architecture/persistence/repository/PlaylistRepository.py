@@ -91,6 +91,8 @@ class PlaylistRepository:
             query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
         if 'playlistTagLabel' in filter:
             query_set = query_set.filter(playlist_tags__label=filter['playlistTagLabel'])
+        query_set = query_set.annotate(tracks_count=Count('tracks')).filter(tracks_count__gt=0)  # Exclure les playlists sans pistes 
+         
         return query_set.distinct()
 
     def get_copiable_playlists_for_soundboard(self, user: User, filter: dict) -> List[Playlist]:
@@ -106,9 +108,12 @@ class PlaylistRepository:
         source_playlist_uuids_already_duplicated = PlaylistDuplicationHistory.objects.filter(
             duplicated_playlist__user=user
         ).values_list('source_playlist_uuid', flat=True)
+        
+
 
         return self.get_copiable_playlists_excluding_user(user, filter).exclude(
             uuid__in=source_playlist_uuids_already_duplicated
+            
         )
 
     def get_user_playlists_not_in_soundboard(self, user: User, soundboard: SoundBoard, filter: dict) -> List[Playlist]:

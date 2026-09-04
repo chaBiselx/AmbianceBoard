@@ -21,8 +21,8 @@ class SoundBoardEventListener {
     }
 
     private eventTogglePlaylist(event: Event) {
-        if (event.target instanceof HTMLElement) {
-            const buttonPlaylist = new ButtonPlaylist(event.target)
+        if (event.currentTarget instanceof HTMLElement) {
+            const buttonPlaylist = new ButtonPlaylist(event.currentTarget)
             if (buttonPlaylist.isActive()) {
                 buttonPlaylist.disactive();
                 SoundBoardManager.removePlaylist(buttonPlaylist);
@@ -34,8 +34,8 @@ class SoundBoardEventListener {
     }
 
     private eventPlayInMasterSoundboard(event: Event) {
-        if (event.target instanceof HTMLElement) {
-            const buttonPlaylist = new ButtonPlaylist(event.target)
+        if (event.currentTarget instanceof HTMLElement) {
+            const buttonPlaylist = new ButtonPlaylist(event.currentTarget)
             if (!buttonPlaylist.isActive()) {
                 new SharedSoundboardSendCmdMaster().sendPlayPlaylistOnMaster(buttonPlaylist.getUuid());
                 buttonPlaylist.active();

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-25 19:54+0000\n"
+"POT-Creation-Date: 2026-09-04 10:59+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -284,6 +284,38 @@ msgstr ""
 msgid "template.soundboard.create.title"
 msgstr "Create a new soundboard"
 
+#: main/interface/ui/controller/private/soundboardScriptViews.py:33
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:34
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:11
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:18
+msgid "template.scripts.page.title"
+msgstr "Scripts"
+
+#: main/interface/ui/controller/private/soundboardScriptViews.py:43
+msgid "template.scripts.error.soundboard_not_found"
+msgstr "Soundboard not found"
+
+#: main/interface/ui/controller/private/soundboardScriptViews.py:47
+#: main/interface/ui/controller/private/soundboardScriptViews.py:67
+msgid "template.scripts.error.name_required"
+msgstr "The script name is required"
+
+#: main/interface/ui/controller/private/soundboardScriptViews.py:140
+#: main/interface/ui/controller/private/soundboardScriptViews.py:189
+#: main/interface/ui/controller/private/soundboardScriptViews.py:213
+msgid "template.scripts.error.script_not_found"
+msgstr "Script not found"
+
+#: main/interface/ui/controller/private/soundboardScriptViews.py:166
+#: main/interface/ui/controller/private/soundboardScriptViews.py:197
+msgid "template.scripts.error.step_not_found"
+msgstr "Step not found"
+
+#: main/interface/ui/controller/private/soundboardScriptViews.py:174
+#: main/interface/ui/controller/private/soundboardScriptViews.py:222
+msgid "template.scripts.error.invalid_step"
+msgstr "Invalid step"
+
 #: main/interface/ui/controller/private/soundboardViews.py:33
 msgid "template.soundboard.list.title"
 msgstr "My private soundboards"
@@ -313,19 +345,19 @@ msgstr "Average session duration - %s days"
 msgid "view.publicStats.session_duration.y_label"
 msgstr "Average Session Duration (min)"
 
-#: main/interface/ui/controller/public/publicViews.py:59
+#: main/interface/ui/controller/public/publicViews.py:60
 msgid "view.publicListing.title"
 msgstr "Public Soundboards"
 
-#: main/interface/ui/controller/public/publicViews.py:71
+#: main/interface/ui/controller/public/publicViews.py:72
 msgid "view.publicFavorite.title"
 msgstr "Favorite Soundboards"
 
-#: main/interface/ui/controller/public/publicViews.py:192
+#: main/interface/ui/controller/public/publicViews.py:194
 msgid "view.favoriteUpdate.error.not_found"
 msgstr "SoundBoard not found."
 
-#: main/interface/ui/controller/public/publicViews.py:209
+#: main/interface/ui/controller/public/publicViews.py:211
 msgid "view.favoriteUpdate.error.favorite_not_found"
 msgstr "Favorite not found."
 
@@ -1000,10 +1032,14 @@ msgid "template.playlist_copiable.preview.instruction"
 msgstr "Click on a button to preview the playlist."
 
 #: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:55
+msgid "template.playlist_copiable_preview.duplicate_playlist_with_edition"
+msgstr "Duplicate the button with edition"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:56
 msgid "template.playlist_copiable_preview.duplicate_playlist"
 msgstr "Duplicate the button"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:57
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:58
 msgid "template.playlist_copiable_preview.already_duplicated"
 msgstr "The button has already been duplicated."
 
@@ -1149,17 +1185,47 @@ msgstr "Add a soundboard"
 msgid "template.soundboard_read.page_title_suffix"
 msgstr "Ambiance Soundboard | AmbianceBoard"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:30
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:27
 msgid "template.soundboard_read.button.edit_mode"
 msgstr "Edit mode"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:33
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:30
 msgid "template.soundboard_read.button.organize"
 msgstr "Organize"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:35
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:37
 msgid "template.soundboard_read.button.edit_soundboard"
 msgstr "Edit SoundBoard"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:17
+msgid "template.scripts.page.back"
+msgstr "Back to soundboard"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:23
+msgid "template.scripts.form.new_script_placeholder"
+msgstr "New script name"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:24
+msgid "template.scripts.form.add"
+msgstr "Add"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:33
+msgid "template.scripts.form.enabled"
+msgstr "Enabled"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:35
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:31
+msgid "template.scripts.form.delete"
+msgstr "Delete"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:41
+#: main/interface/ui/templates/Html/partial/soundboard/scripts.html:24
+msgid "template.scripts.empty"
+msgstr "No script configured"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:48
+msgid "template.scripts.page.select_script"
+msgstr "Select a script to edit its steps"
 
 #: main/interface/ui/templates/Html/partial/account/password_rules.html:4
 msgid "template.account.password_rule.min_length"
@@ -1201,23 +1267,23 @@ msgstr "none"
 msgid "template.filterTagCloud.no_description"
 msgstr "No description"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:59
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:64
 msgid "template.soundboard_read.my_proposals.title"
 msgstr "My proposals"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:74
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:79
 msgid "template.soundboard_read.my_proposals.status.pending"
 msgstr "Pending"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:75
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:80
 msgid "template.soundboard_read.my_proposals.action.withdraw"
 msgstr "Withdraw"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:77
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:82
 msgid "template.soundboard_read.my_proposals.status.refused"
 msgstr "Refused"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:78
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:83
 msgid "template.soundboard_read.my_proposals.action.dismiss"
 msgstr "Delete"
 
@@ -1258,6 +1324,50 @@ msgstr "Now playing"
 #: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:14
 msgid "template.playingMonitor.empty"
 msgstr "No sound playing"
+
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:23
+msgid "template.scripts.step.move_up"
+msgstr "Move up"
+
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:26
+msgid "template.scripts.step.move_down"
+msgstr "Move down"
+
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:37
+msgid "template.scripts.step.empty"
+msgstr "No step in this script"
+
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:43
+msgid "template.scripts.step.action"
+msgstr "Action"
+
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:52
+msgid "template.scripts.step.playlist"
+msgstr "Button"
+
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:61
+msgid "template.scripts.step.volume"
+msgstr "Volume (%)"
+
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:66
+msgid "template.scripts.step.trigger"
+msgstr "Trigger"
+
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:75
+msgid "template.scripts.step.offset"
+msgstr "Offset (ms)"
+
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:80
+msgid "template.scripts.step.source"
+msgstr "Source step"
+
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:89
+msgid "template.scripts.step.add"
+msgstr "Add step"
+
+#: main/interface/ui/templates/Html/partial/soundboard/scripts.html:9
+msgid "template.scripts.accordion.title"
+msgstr "Scripts"
 
 #: main/interface/ui/templates/Html/partial/structure/base.html:15
 msgid "template.base.default_page_title"

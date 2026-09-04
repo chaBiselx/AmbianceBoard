@@ -16,22 +16,24 @@
 
         {% include 'Html/partial/soundboard/shortcutSoundboard.html' with list_shortcut_keyboard=list_shortcut_keyboard %}
         {% include 'Html/partial/soundboard/mixer.html' with PlaylistTypeEnum=PlaylistTypeEnum owner=True master=True %}
+        {% include 'Html/partial/soundboard/scripts.html' %}
         {% include 'Html/partial/soundboard/playing_monitor.html' %}
         {% include 'Html/partial/soundboard/board.html' with master=True owner=True soundboard=soundboard %}
 
     </div>
     <div class="col-12 col-xl-2 fullScreen-element" id="soundboard-menu">
         <div>
-            <button
-                type="button"
-                class="btn btn-success btn-block py-1 my-1"
-                id="btn-soundboard-edit-mode"
-                data-url-panel="{% url 'soundboardEditModePanel' soundboard.uuid %}">
+            <button type="button" class="btn btn-success btn-block py-1 my-1" id="btn-soundboard-edit-mode" data-url-panel="{% url 'soundboardEditModePanel' soundboard.uuid %}">
                 {% trans "template.soundboard_read.button.edit_mode" %}
             </button>
 
             <a class="btn btn-primary btn-block py-1 my-1" href="{% url 'organizeSoundboard' soundboard.uuid %}">{% trans "template.soundboard_read.button.organize" %}</a>
+            {% if request.user.is_authenticated  and request.user.isBetaTester %}
+            <div class="beta-test">
 
+                <a class="btn btn-secondary btn-block py-1 my-1" href="{% url 'soundboardScripts' soundboard.uuid %}">{% trans "template.scripts.page.title" %}</a>
+            </div>
+            {% endif %}
             <a class="btn btn-warning btn-block py-1 my-1" href="{% url 'soundboardsUpdate' soundboard.uuid %}">{% trans "template.soundboard_read.button.edit_soundboard" %}</a>
 
         </div>

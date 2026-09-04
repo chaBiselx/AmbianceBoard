@@ -52,7 +52,8 @@
 
     <div class="col-12">
         {% if not already_duplicated %}
-        <button class="btn btn-primary btn-sm btn-block" id="duplicate-playlist-button" data-url-duplication="{% url 'playlistDuplicate' playlist.uuid %}">{% trans "template.playlist_copiable_preview.duplicate_playlist" %}</button>
+        <button class="btn btn-primary btn-sm btn-block duplication-button" id="duplicate-playlist-button-with-edition" data-url-duplication="{% url 'playlistDuplicate' playlist.uuid %}" data-is-edition="true">{% trans "template.playlist_copiable_preview.duplicate_playlist_with_edition" %}</button>
+        <button class="btn btn-primary btn-sm btn-block duplication-button" id="duplicate-playlist-button-without-edition" data-url-duplication="{% url 'playlistDuplicate' playlist.uuid %}" data-is-edition="false">{% trans "template.playlist_copiable_preview.duplicate_playlist" %}</button>
         {% else %}
         <button class="btn btn-secondary btn-sm btn-block" disabled>{% trans "template.playlist_copiable_preview.already_duplicated" %}</button>
         {% endif %}

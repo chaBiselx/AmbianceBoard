@@ -1,0 +1,58 @@
+{% extends 'Html/partial/structure/base.html' %}
+{% load static %}
+{% load FrontJs %}
+{% load i18n %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="module" src="{% static "FormScript"|search_true_file %}"></script>
+{% endblock javascript %}
+
+{% block page_title %}{{ soundboard.name }} - {% trans "template.scripts.page.title" %}{% endblock %}
+
+{% block content %}
+{% if request.user.is_authenticated  and request.user.isBetaTester %}
+<div class="row beta-test" id="script-editor" data-url-create="{% url 'soundboardScriptCreate' soundboard.uuid %}">
+    <div class="col-12 mb-2">
+        <a href="{% url 'soundboardsRead' soundboard.uuid %}" class="btn btn-info float-end">{% trans "template.scripts.page.back" %}</a>
+        <h3>{% trans "template.scripts.page.title" %} - {{ soundboard.name }}</h3>
+    </div>
+
+    <div class="col-12">
+        <div class="alert alert-warning">
+            WIP Les scripts sont en cours de création ceci est encore expérimental.
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-4 px-sm-2 px-1 ">
+        <form id="script-create-form" class="d-flex gap-1 mb-2">
+            <input type="text" id="name" class="form-control" name="name" maxlength="255" required placeholder="{% trans 'template.scripts.form.new_script_placeholder' %}">
+            <button type="submit" class="btn btn-success text-nowrap">{% trans "template.scripts.form.add" %}</button>
+        </form>
+
+        <div class="list-group" id="script-listing">
+            {% for script in scripts %}
+            <div class="list-group-item d-flex justify-content-between align-items-center gap-2" data-script-uuid="{{ script.uuid }}" data-url-steps="{% url 'soundboardScriptSteps' soundboard.uuid script.uuid %}" data-url-update="{% url 'soundboardScriptUpdate' soundboard.uuid script.uuid %}"
+                data-url-delete="{% url 'soundboardScriptDelete' soundboard.uuid script.uuid %}">
+                <button type="button" class="btn btn-link p-0 text-start flex-grow-1 script-select">{{ script.name }}</button>
+                <div class="form-check form-switch m-0">
+                    <input class="form-check-input script-enabled" id="script-enabled-{{ script.uuid }}" type="checkbox" {% if script.enabled %}checked{% endif %} title="{% trans 'template.scripts.form.enabled' %}">
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-danger script-delete" title="{% trans 'template.scripts.form.delete' %}">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+            {% empty %}
+            <div class="list-group-item text-muted fst-italic" id="script-listing-empty">
+                {% trans "template.scripts.empty" %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-8 px-sm-2 px-1" id="script-steps-panel">
+        <p class="text-muted fst-italic">{% trans "template.scripts.page.select_script" %}</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
