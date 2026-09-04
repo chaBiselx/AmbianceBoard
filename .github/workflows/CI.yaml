@@ -27,7 +27,7 @@ jobs:
         python-version: "3.x"
 
     - name: Install ggshield
-      run: 'pip install --only-binary :all: ggshield==1.53.0'
+      run: 'pip install --only-binary :all: ggshield==1.54.0'
 
     - name: GitGuardian scan pushed commits (history)
       env:
