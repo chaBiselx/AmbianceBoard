@@ -84,7 +84,6 @@ def soundboard_script_delete(request, soundboard_uuid, script_uuid):
     """Suppression d'un script et de ses étapes"""
     try:
         resolver = ScriptResolverService(request)
-        soundboard = resolver.get_soundboard(soundboard_uuid)
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
         if script is None:
@@ -138,7 +137,6 @@ def soundboard_script_step_save(request, soundboard_uuid, script_uuid):
     
     try:
         resolver = ScriptResolverService(request)
-        soundboard = resolver.get_soundboard(soundboard_uuid)
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
         if script is None:
@@ -190,14 +188,15 @@ def soundboard_script_step_delete(request, soundboard_uuid, script_uuid, step_uu
     """Suppression d'une étape de script"""
     try:
         resolver = ScriptResolverService(request)
-        soundboard = resolver.get_soundboard(soundboard_uuid)
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
         if script is None:
             return JsonResponse({'error': _('template.scripts.error.script_not_found')}, status=404)
     except ValueError as ve:
+        logger.error(f"soundboard_script_step_delete : {ve}")
         return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
     except Exception as e:
+        logger.error(f"soundboard_script_step_delete : {e}")
         return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
 
     step = service.step_repository.get(script, step_uuid)
@@ -214,19 +213,20 @@ def soundboard_script_steps_reorder(request, soundboard_uuid, script_uuid):
     """Réordonnancement des étapes d'un script"""
     try:
         resolver = ScriptResolverService(request)
-        soundboard = resolver.get_soundboard(soundboard_uuid)
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
         if script is None:
             return JsonResponse({'error': _('template.scripts.error.script_not_found')}, status=404)
     except ValueError as ve:
+        logger.error(f"soundboard_script_steps_reorder : {ve}")
         return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
     except Exception as e:
+        logger.error(f"soundboard_script_steps_reorder : {e}")
         return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
 
     try:
         ordered_uuids = json.loads(request.body.decode('utf-8')).get('steps', [])
-    except (ValueError, UnicodeDecodeError):
+    except (ValueError):
         return JsonResponse({'error': _('template.scripts.error.invalid_step')}, status=400)
 
     service.reorder_steps(script, ordered_uuids)
