@@ -56,7 +56,6 @@ def soundboard_script_update(request, soundboard_uuid, script_uuid):
     """Mise à jour des propriétés d'un script"""
     try:
         resolver = ScriptResolverService(request)
-        soundboard = resolver.get_soundboard(soundboard_uuid)
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
 
@@ -72,8 +71,10 @@ def soundboard_script_update(request, soundboard_uuid, script_uuid):
         service.update(script, **fields)
         return JsonResponse({'success': True}, status=200)
     except ValueError as ve:
+        logger.error(f"Error updating script: {ve}")
         return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
     except Exception as e:
+        logger.error(f"Unexpected error updating script: {e}")
         return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
 
 
@@ -92,8 +93,10 @@ def soundboard_script_delete(request, soundboard_uuid, script_uuid):
         service.delete(script)
         return JsonResponse({'success': True}, status=200)
     except ValueError as ve:
+        logger.error(f"Error deleting script: {ve}")
         return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
     except Exception as e:
+        logger.error(f"Unexpected error deleting script: {e}")
         return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
 
 
@@ -121,8 +124,10 @@ def soundboard_script_steps(request, soundboard_uuid, script_uuid):
         })
         
     except ValueError as ve:
+        logger.error(f"Error fetching script steps: {ve}")
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     except Exception as e:
+        logger.error(f"Unexpected error fetching script steps: {e}")
         return render(request, HtmlDefaultPageEnum.ERROR_500.value, status=500)
 
 
@@ -139,8 +144,10 @@ def soundboard_script_step_save(request, soundboard_uuid, script_uuid):
         if script is None:
             return JsonResponse({'error': _('template.scripts.error.script_not_found')}, status=404)
     except ValueError as ve:
+        logger.error(f"Error fetching script for step save: {ve}")
         return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
     except Exception as e:
+        logger.error(f"Unexpected error fetching script for step save: {e}")
         return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
 
     action_type = request.POST.get('action_type', '')
@@ -168,6 +175,7 @@ def soundboard_script_step_save(request, soundboard_uuid, script_uuid):
         else:
             service.add_step(script, **payload)
     except SoundboardScriptException as error:
+        logger.error(f"Soundboard script exception: {error}")
         return JsonResponse({'error': str(error)}, status=400)
     except (TypeError, ValueError) as error:
         logger.error(f"soundboard_script_step_save : {error}")

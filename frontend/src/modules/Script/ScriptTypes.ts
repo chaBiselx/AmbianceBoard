@@ -1,5 +1,5 @@
-export type ScriptActionType = 'PLAY_PLAYLIST' | 'STOP_PLAYLIST' | 'SET_VOLUME' | 'PLAY_TRACK' | string;
-export type ScriptTriggerType = 'IMMEDIATE' | 'TIMECODE' | 'ON_STEP_END' | string;
+export type ScriptActionType = 'PLAY_PLAYLIST' | 'STOP_PLAYLIST' | 'SET_VOLUME' | 'PLAY_TRACK';
+export type ScriptTriggerType = 'IMMEDIATE' | 'TIMECODE' | 'ON_STEP_END';
 
 export interface ScriptStepDTO {
     uuid: string;
