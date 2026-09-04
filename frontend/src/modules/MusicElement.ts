@@ -14,6 +14,7 @@ import Time from "@/modules/Util/Time";
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import { MusicElementDTO } from '@/modules/MusicElementFactory';
 import { IAudioAdapter } from '@/modules/Audio/IAudioAdapter';
+import SoundEventBus from '@/modules/Script/SoundEventBus';
 
 
 
@@ -97,6 +98,7 @@ class MusicElement {
             this.removeDomElement();
         });
         this.callAPIToStop();
+        SoundEventBus.emit('music:stopped', { playlistId: this.idPlaylist, token: this.butonPlaylistToken });
     }
 
     private addFadeOutOnStop(callback: () => void) {
@@ -206,6 +208,10 @@ class MusicElement {
             }, { once: true });
         }
         ConsoleTesteur.info(`▶️ Play ${this.idPlaylist} ${this.isSlave()}`);
+
+        this.audioAdapter.addEventListener('ended', () => {
+            SoundEventBus.emit('music:ended', { playlistId: this.idPlaylist, token: this.butonPlaylistToken });
+        }, { once: true });
 
         this.audioAdapter.play();
     }

@@ -31,6 +31,8 @@ from main.architecture.persistence.models.HomeDemoItem import HomeDemoItem
 from main.architecture.persistence.models.AsyncDownloadJob import AsyncDownloadJob
 from main.architecture.persistence.models.TrafficAttributionVisit import TrafficAttributionVisit
 from main.architecture.persistence.models.PlaylistProposal import PlaylistProposal
+from main.architecture.persistence.models.SoundboardScript import SoundboardScript
+from main.architecture.persistence.models.SoundboardScriptStep import SoundboardScriptStep
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -59,3 +61,5 @@ admin.site.register(Track)
 admin.site.register(HomeDemoItem)
 admin.site.register(TrafficAttributionVisit)
 admin.site.register(PlaylistProposal)
+admin.site.register(SoundboardScript)
+admin.site.register(SoundboardScriptStep)

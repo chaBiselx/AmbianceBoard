@@ -660,6 +660,8 @@ APP_TVA = 20.0  # en pourcentage
 APP_CURRENCY = "EUR"
 
 SOUNDBOARD_LIMIT_SECTION = 100
+# Delai minimal entre deux declenchements d'un meme script de soundboard.
+SOUNDBOARD_SCRIPT_COOLDOWN_MS = int(2000) # TODO add to env SOUNDBOARD_SCRIPT_COOLDOWN_MS
 # Celery result backend cleanup - prevent memory accumulation
 CELERY_RESULT_EXPIRES = 3600  # Results expire after 1 hour to prevent memory leak
 CELERY_TASK_TRACK_STARTED = False  # Reduce result backend load

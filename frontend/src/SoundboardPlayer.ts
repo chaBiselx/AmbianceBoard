@@ -19,6 +19,7 @@ import StreamConnectionWarmup from '@/modules/StreamConnectionWarmup';
 import SoundboardEditMode from '@/modules/SoundBoardEditor/SoundboardEditMode';
 import ProposePlaylistToSoundboard from '@/modules/SoundBoardEditor/ProposePlaylistToSoundboard';
 import PlayingMonitor from '@/modules/PlayingMonitor';
+import ScriptManager from '@/modules/Script/ScriptManager';
 
 
 
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showPopupSharedPlaylist();
     new SoundBoardEventListener().addEventListenerDom();
     new PlayingMonitor().init();
+    new ScriptManager().init();
     MixerManager.setUpMixerPlaylist();
     MixerManager.updatePlaylistVolumeWidths();
     addEventPublishEvent();

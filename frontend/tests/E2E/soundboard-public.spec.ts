@@ -1,4 +1,4 @@
-import { test, expect, type Request } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
 const SOUNDBOARD_NAME = 'E2E_Test_Soundboard_Public';
 
@@ -18,14 +18,14 @@ test.describe('Soundboard Public', () => {
     const firstPlaylist = page.locator('.playlist-link').first();
     await expect(firstPlaylist).toBeVisible();
 
-    // Intercepter la requête de streaming déclenchée par le clic (avant le clic)
-    const streamRequest: Promise<Request> = page.waitForRequest(
-      (req: Request): boolean => req.url().includes('/stream'),
-      { timeout: 200 },
-    );
+    const playlistId = await firstPlaylist.getAttribute('data-id');
+    expect(playlistId).not.toBeNull();
     await firstPlaylist.click();
 
-    const req = await streamRequest;
-    expect(req.url()).toContain('/public/soundboards/');
+    const audio = page.locator(`.playlist-audio-${playlistId}`);
+    await expect(audio).toHaveAttribute(
+      'src',
+      /\/public\/soundboards\/.*\/stream\?i=\d+$/,
+    );
   });
 });

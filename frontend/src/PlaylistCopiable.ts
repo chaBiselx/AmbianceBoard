@@ -1,6 +1,8 @@
 import { PlayerCustomFactory } from '@/modules/Audio/PlayerCustom';
 import Notification from '@/modules/General/Notifications';
 import Csrf from "@/modules/General/Csrf";
+import Boolean from "@/modules/Util/Boolean";
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const listButtons = document.querySelectorAll('.playlist-copiable');
@@ -42,15 +44,25 @@ class PlaylistCopiable {
     }
 
     private addEventDuplicateButton() {
-        const duplicateButton = document.getElementById('duplicate-playlist-button');
+        const duplicateButtonWithEdition = document.getElementById('duplicate-playlist-button-with-edition');
+        const duplicateButton = document.getElementById('duplicate-playlist-button-without-edition');
         this.urlDuplication = duplicateButton?.dataset.urlDuplication || null;
         if (duplicateButton) {
             duplicateButton.addEventListener('click', this.duplicatePreview.bind(this));
         }
+        if (duplicateButtonWithEdition) {
+            duplicateButtonWithEdition.addEventListener('click', this.duplicatePreview.bind(this));
+        }
     }
 
-    private duplicatePreview() {
-        document.getElementById('duplicate-playlist-button')?.setAttribute('disabled', 'true');
+    private duplicatePreview(event: Event) {
+        event.preventDefault();
+        const listButtonDuplication = [
+            document.getElementById('duplicate-playlist-button-with-edition'),
+            document.getElementById('duplicate-playlist-button-without-edition')
+        ];
+        listButtonDuplication.forEach(button => button?.setAttribute('disabled', 'true'));
+        const isEdition = Boolean.convert((event.target as HTMLElement).dataset.isEdition ?? false);
         fetch(`${this.urlDuplication}`, {
             method: 'POST',
             headers: {
@@ -63,40 +75,43 @@ class PlaylistCopiable {
             })
             .then(({ data, status, ok }) => {
                 if (ok && data.success) {
-                    Notification.createClientNotification({ 
-                        message: data.message || 'Playlist dupliquée avec succès', 
-                        type: 'success' 
+                    Notification.createClientNotification({
+                        message: data.message || 'Playlist dupliquée avec succès',
+                        type: 'success'
                     });
                     // Optionnel : rediriger vers la nouvelle playlist
                     if (data.new_playlist_uuid) {
-                        setTimeout(() => {
-                            globalThis.location.href = `/playlist/${data.new_playlist_uuid}/update`;
-                        }, 500);
+                        if (isEdition) {
+                            setTimeout(() => {
+                                globalThis.location.href = `/playlist/${data.new_playlist_uuid}/update`;
+                            }, 500);
+                        }
+
                     }
                 } else if (data.error) {
                     // Gérer les différents types d'erreurs selon le status code
                     let notificationType: 'error' | 'warning' = 'error';
-                    
+
                     if (status === 409) { // Playlist déjà dupliquée
                         notificationType = 'warning';
                     }
-                    
-                    Notification.createClientNotification({ 
-                        message: data.error, 
-                        type: notificationType 
+
+                    Notification.createClientNotification({
+                        message: data.error,
+                        type: notificationType
                     });
                 } else {
-                    Notification.createClientNotification({ 
-                        message: 'Une erreur inattendue est survenue', 
-                        type: 'error' 
+                    Notification.createClientNotification({
+                        message: 'Une erreur inattendue est survenue',
+                        type: 'error'
                     });
                 }
             })
             .catch(error => {
                 console.error('Error duplicating playlist:', error);
-                Notification.createClientNotification({ 
-                    message: 'Erreur de communication avec le serveur', 
-                    type: 'error' 
+                Notification.createClientNotification({
+                    message: 'Erreur de communication avec le serveur',
+                    type: 'error'
                 });
             });
     }

@@ -80,7 +80,7 @@ class Command(BaseCommand):
                 "is_staff": _DEV_USER["is_staff"],
                 "is_superuser": _DEV_USER["is_superuser"],
                 "isConfirmed": _DEV_USER["isConfirmed"],
-                "isBetaTester": _DEV_USER["isBetaTester"],
+                "betaTester": _DEV_USER["isBetaTester"],
             },
         )
 
