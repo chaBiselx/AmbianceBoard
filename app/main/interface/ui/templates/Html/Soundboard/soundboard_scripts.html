@@ -26,6 +26,7 @@
 
     <div class="col-12 col-lg-4 px-sm-2 px-1 ">
         <form id="script-create-form" class="d-flex gap-1 mb-2">
+            <label for="name">{% trans 'template.scripts.form.new_script_label' %}</label>
             <input type="text" id="name" class="form-control" name="name" maxlength="255" required placeholder="{% trans 'template.scripts.form.new_script_placeholder' %}">
             <button type="submit" class="btn btn-success text-nowrap">{% trans "template.scripts.form.add" %}</button>
         </form>
