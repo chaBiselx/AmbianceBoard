@@ -6,7 +6,8 @@ import { ScriptStepDTO } from '@/modules/Script/ScriptTypes';
 
 class StopPlaylistAction implements IScriptAction {
     execute(step: ScriptStepDTO): ScriptStepHandle {
-        const playlistId = String(step.params.playlist_uuid ?? '');
+        const playlistUuid = step.params.playlist_uuid;
+        const playlistId = typeof playlistUuid === 'string' ? playlistUuid : '';
         const buttonPlaylist = ButtonPlaylistFinder.search(playlistId);
         if (buttonPlaylist) {
             buttonPlaylist.disactive();
