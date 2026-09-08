@@ -140,56 +140,44 @@ services:
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
 
-  loki:
-    # grafana/loki:latest
-    image: grafana/loki@sha256:efd47c67f9bac88ca29bcf8cb997d9ab29d1848bd0aff579282295542a745952
-    ports:
-      - "${LOKI_PORT}:3100"
+  mongodb:
+    container_name: mongodb-greylog
+    image: mongo@sha256:0c17421487ae4a5cae88e7652a26ef72a8162adbc599a0730805526f5ff5ee83
     volumes:
-      - loki-data:/loki
-      - ./loki-config.yml:/etc/loki/local-config.yaml
-    command: -config.file=/etc/loki/local-config.yaml
+      - graylog-mongodb-data:/data/db
     restart: unless-stopped
-    # Ajouter les limits de ressources
-    deploy:
-      resources:
-        limits:
-          memory: 1g  # Limiter à 1GB max
-          cpus: '1.0'  # Limiter à 1 CPU
-        reservations:
-          memory: 512m
-          cpus: '0.5'
 
-  grafana:
-    # grafana/grafana:latest
-    image: grafana/grafana@sha256:ab5cb380e3ff3172d6c8bd2e7cfd31cce977d2881b260e1f5bc089bf0b759b43
+  opensearch:
+    container_name: opensearch-greylog
+    image: opensearchproject/opensearch@sha256:bcc1797519726ceb6d651d4a3e60b7c30da91793914a8dfe75fd441d4f641509
+    environment:
+      - discovery.type=single-node
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - DISABLE_INSTALL_DEMO_CONFIG=true
+      - DISABLE_SECURITY_PLUGIN=true
+    volumes:
+      - graylog-opensearch-data:/usr/share/opensearch/data
+    restart: unless-stopped
+
+  graylog:
+    image: graylog/graylog:7.1
+
     ports:
-      - "${GRAFANA_PORT}:3000"
+      - "${GRAYLOG_PORT}:9000"
+      - "${GRAYLOG_GELF_PORT}:12201/udp"
     env_file:
       - ./.env
     environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
-      - GF_USERS_ALLOW_SIGN_UP=false
+      GRAYLOG_PASSWORD_SECRET: ${GRAYLOG_PASSWORD_SECRET}
+      GRAYLOG_ROOT_PASSWORD_SHA2: ${GRAYLOG_ROOT_PASSWORD_SHA2}
+      GRAYLOG_HTTP_EXTERNAL_URI: ${GRAYLOG_URL}
+      GRAYLOG_MONGODB_URI: mongodb://mongodb:27017/graylog
+      GRAYLOG_ELASTICSEARCH_HOSTS: http://opensearch:9200
     volumes:
-      - grafana-data:/var/lib/grafana
-      - grafana-provisioning:/etc/grafana/provisioning
+      - graylog-data:/usr/share/graylog/data
     depends_on:
-      - loki
-
-  promtail:
-    # grafana/promtail:latest
-    image: grafana/promtail@sha256:6cfa64ec432b24a912d640e2edb940eeae2666f61861a66c121d763dd7241381
-    volumes:
-      - ./promtail-config.yml:/etc/promtail/config.yml
-      - /var/log:/var/log:ro
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./app/logs:/app/logs:ro
-      - ./logs:/prod-logs:ro
-    command: -config.file=/etc/promtail/config.yml
-    depends_on:
-      - loki
+      - mongodb
+      - opensearch
     restart: unless-stopped
 
   playwright:
@@ -217,6 +205,8 @@ volumes:
   grafana-data:
     name: ambianceboard_grafana_data
   grafana-provisioning: null
-  loki-data: null
+  graylog-data: null
+  graylog-mongodb-data: null
+  graylog-opensearch-data: null
   hf-cache: null
   playwright-node-modules: null

@@ -437,12 +437,15 @@ Nouveautés
 - Ajout de test E2E avec Playwright
 - Mise en place place du script de façon experimental pour les beta testeur 
 
+Nouveautés
+- Affichage du nom et des tags au survol sur les soundboards publiques
+
 Améliorations
 - Amélioration de la place prise pour ajouter un boutons depuis un soundboard
 - Ajouter la possiblité de dupliquer sans édition 
 
-Nouveautés
-- Affichage du nom et des tags au survol sur les soundboards publiques
+Modifications
+- Changement d'outils pour la gestion des logs
 
 Corrections
 - Corrige le Drag&Drop sur les supports sans souris ( tablette, téléphone, ...)

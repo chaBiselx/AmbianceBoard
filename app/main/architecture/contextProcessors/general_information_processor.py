@@ -65,7 +65,7 @@ def general_information_processor(request):
     return {
         'APP_ENV': Settings.get('APP_ENV'),
         'DEBUG': Settings.get('DEBUG', False),
-        'GRAFANA_URL': Settings.get('GRAFANA_URL', ''),
+        'GRAYLOG_URL': Settings.get('GRAYLOG_URL', ''),
         'has_recent_async_download_jobs': has_recent_async_download_jobs,
         'pending_playlist_proposals_count': pending_playlist_proposals_count,
     }

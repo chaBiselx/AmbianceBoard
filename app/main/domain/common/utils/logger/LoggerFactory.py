@@ -9,7 +9,7 @@ from .ILogger import ILogger
 from .LoggerFile import LoggerFile
 from .MemoryLogger import MemoryLogger
 from .CompositeLogger import CompositeLogger
-from .LokiLogger import LokiLogger
+from .GraylogLogger import GraylogLogger
 
 
 class LoggerFactory:
@@ -25,7 +25,7 @@ class LoggerFactory:
         
         Args:
             logger_name (str): Nom du logger à créer
-            logger_type (str): Type de logger ('file', 'memory', 'loki')
+            logger_type (str): Type de logger ('file', 'memory', 'graylog')
             **kwargs: Arguments additionnels pour la configuration du logger
             
         Returns:
@@ -40,12 +40,12 @@ class LoggerFactory:
             return LoggerFile(logger_name)
         elif logger_type == 'memory':
             return MemoryLogger(logger_name)
-        elif logger_type == 'loki':
-            return LokiLogger(
+        elif logger_type == 'graylog':
+            return GraylogLogger(
                 logger_name=logger_name,
             )
         elif logger_type == 'composite':
-            logger_types = kwargs.get('logger_types', ['file', 'loki'])
+            logger_types = kwargs.get('logger_types', ['file', 'graylog'])
             loggers = []
             
             for sub_logger_type in logger_types:
@@ -58,7 +58,7 @@ class LoggerFactory:
                     continue
             return CompositeLogger(logger_name, loggers)
         else:
-            raise ValueError(f"Type de logger non supporté: {logger_type}. Types supportés: 'file', 'memory', 'loki', 'composite'")
+            raise ValueError(f"Type de logger non supporté: {logger_type}. Types supportés: 'file', 'memory', 'graylog', 'composite'")
     
     
     @staticmethod
