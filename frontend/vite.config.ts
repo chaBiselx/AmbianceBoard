@@ -54,6 +54,7 @@ export default defineConfig(({ mode }) => {
         test: {
             globals: true,
             environment: 'jsdom',
+            exclude: ['tests/E2E/**'],
         },
     };
 });
