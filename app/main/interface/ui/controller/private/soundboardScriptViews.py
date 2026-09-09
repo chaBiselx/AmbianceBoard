@@ -55,7 +55,7 @@ def soundboard_script_create(request, soundboard_uuid):
 def soundboard_script_update(request, soundboard_uuid, script_uuid):
     """Mise à jour des propriétés d'un script"""
     try:
-        resolver = ScriptResolverService(request)
+        resolver = ScriptResolverService(request, soundboard_uuid)
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
 
@@ -83,7 +83,7 @@ def soundboard_script_update(request, soundboard_uuid, script_uuid):
 def soundboard_script_delete(request, soundboard_uuid, script_uuid):
     """Suppression d'un script et de ses étapes"""
     try:
-        resolver = ScriptResolverService(request)
+        resolver = ScriptResolverService(request, soundboard_uuid)
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
         if script is None:
@@ -104,8 +104,8 @@ def soundboard_script_delete(request, soundboard_uuid, script_uuid):
 def soundboard_script_steps(request, soundboard_uuid, script_uuid):
     """Fragment HTML listant et éditant les étapes d'un script"""
     try:
-        resolver = ScriptResolverService(request)
-        soundboard = resolver.get_soundboard(soundboard_uuid)
+        resolver = ScriptResolverService(request, soundboard_uuid)
+        soundboard = resolver.get_soundboard()
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
 
@@ -136,7 +136,7 @@ def soundboard_script_step_save(request, soundboard_uuid, script_uuid):
     """Création ou mise à jour d'une étape de script"""
     
     try:
-        resolver = ScriptResolverService(request)
+        resolver = ScriptResolverService(request, soundboard_uuid)
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
         if script is None:
@@ -187,7 +187,7 @@ def soundboard_script_step_save(request, soundboard_uuid, script_uuid):
 def soundboard_script_step_delete(request, soundboard_uuid, script_uuid, step_uuid):
     """Suppression d'une étape de script"""
     try:
-        resolver = ScriptResolverService(request)
+        resolver = ScriptResolverService(request, soundboard_uuid)
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
         if script is None:
@@ -212,7 +212,7 @@ def soundboard_script_step_delete(request, soundboard_uuid, script_uuid, step_uu
 def soundboard_script_steps_reorder(request, soundboard_uuid, script_uuid):
     """Réordonnancement des étapes d'un script"""
     try:
-        resolver = ScriptResolverService(request)
+        resolver = ScriptResolverService(request, soundboard_uuid)
         script = resolver.get_script(script_uuid)
         service = resolver.get_script_service()
         if script is None:

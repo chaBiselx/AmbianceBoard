@@ -8,14 +8,15 @@ from main.architecture.persistence.models.SoundBoard import SoundBoard
 class ScriptResolverService:
     
     
-    def __init__(self, request: "HttpRequest"):
+    def __init__(self, request: "HttpRequest", soundboard_uuid):
         self.soundboard_service = SoundBoardService(request)
-        
-    def get_soundboard(self, soundboard_uuid) -> "SoundBoard":
         self.soundboard = self.soundboard_service.get_soundboard(soundboard_uuid)
         if not self.soundboard:
             raise ValueError("Soundboard not found")
+        
+    def get_soundboard(self) -> "SoundBoard":
         return self.soundboard
+        
     
     def get_script(self, script_uuid) -> Optional["SoundboardScript"]:
         return (self.get_script_service()).get(script_uuid)

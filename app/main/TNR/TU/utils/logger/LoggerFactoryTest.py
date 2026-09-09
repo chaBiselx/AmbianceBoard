@@ -12,7 +12,7 @@ from main.domain.common.utils.logger.LoggerFactory import LoggerFactory
 from main.domain.common.utils.logger.ILogger import ILogger
 from main.domain.common.utils.logger.LoggerFile import LoggerFile
 from main.domain.common.utils.logger.MemoryLogger import MemoryLogger
-from main.domain.common.utils.logger.LokiLogger import LokiLogger
+from main.domain.common.utils.logger.GraylogLogger import GraylogLogger
 from main.domain.common.utils.logger.CompositeLogger import CompositeLogger
 
 
@@ -83,7 +83,7 @@ class LoggerFactoryTestCase(TestCase):
         
         error_message = str(context.exception)
         self.assertIn('Type de logger non supporté: invalid_type', error_message)
-        self.assertIn("Types supportés: 'file', 'memory', 'loki', 'composite'", error_message)
+        self.assertIn("Types supportés: 'file', 'memory', 'graylog', 'composite'", error_message)
     
     def test_create_logger_empty_type(self):
         """Test avec un type de logger vide"""
@@ -297,40 +297,7 @@ class LoggerFactoryTestCase(TestCase):
         
         self.assertIn('Type de logger non supporté: invalid_type', str(context.exception))
     
-    @patch('main.domain.common.utils.logger.LoggerFactory.LokiLogger')
-    def test_create_loki_logger(self, mock_loki_logger):
-        """Test de création d'un LokiLogger"""
-        mock_loki_instance = MagicMock(spec=ILogger)
-        mock_loki_logger.return_value = mock_loki_instance
-
-        instance = LoggerFactory.create_logger('test_loki', 'loki')
-
-        self.assertIs(instance, mock_loki_instance)
-        mock_loki_logger.assert_called_once()
-        call_args = mock_loki_logger.call_args
-        # Implémentation actuelle: seul logger_name est transmis
-        self.assertEqual(call_args[1]['logger_name'], 'test_loki')
-    
-    @patch('main.domain.common.utils.logger.LoggerFactory.LokiLogger')
-    def test_create_loki_logger_with_custom_params(self, mock_loki_logger):
-        """Test de création d'un LokiLogger avec paramètres personnalisés"""
-        mock_loki_instance = MagicMock(spec=ILogger)
-        mock_loki_logger.return_value = mock_loki_instance
-
-        custom_labels = {'service': 'test_service'}
-        instance = LoggerFactory.create_logger(
-            'test_loki_custom',
-            'loki',
-            loki_url='http://custom-loki:3100', # NOSONAR
-            labels=custom_labels,
-            batch_size=20,
-            batch_timeout=10.0
-        )
-
-        self.assertIs(instance, mock_loki_instance)
-        mock_loki_logger.assert_called_once()
-        call_args = mock_loki_logger.call_args
-        self.assertEqual(call_args[1]['logger_name'], 'test_loki_custom')
+   
     
     def test_create_composite_logger(self):
         """Test de création d'un CompositeLogger"""
@@ -348,16 +315,16 @@ class LoggerFactoryTestCase(TestCase):
         for sub_logger in logger.loggers:
             self.assertIsInstance(sub_logger, MemoryLogger)
     
-    @patch('main.domain.common.utils.logger.LoggerFactory.LokiLogger')
-    def test_create_composite_logger_with_mixed_types(self, mock_loki_logger):
+    @patch('main.domain.common.utils.logger.LoggerFactory.GraylogLogger')
+    def test_create_composite_logger_with_mixed_types(self, mock_grey_logger):
         """Test de création d'un CompositeLogger avec types mixtes"""
-        mock_loki_instance = MagicMock(spec=ILogger)
-        mock_loki_logger.return_value = mock_loki_instance
+        mock_grey_instance = MagicMock(spec=ILogger)
+        mock_grey_logger.return_value = mock_grey_instance
 
         logger = LoggerFactory.create_logger(
             'test_mixed_composite',
             'composite',
-            logger_types=['memory', 'file', 'loki']
+            logger_types=['memory', 'file', 'graylog']
         )
         
         self.assertIsInstance(logger, CompositeLogger)
@@ -368,53 +335,53 @@ class LoggerFactoryTestCase(TestCase):
         logger_types = [type(sub_logger).__name__ for sub_logger in logger.loggers]
         self.assertIn('MemoryLogger', logger_types)
         self.assertIn('LoggerFile', logger_types)
-        # LokiLogger est mocké
-        mock_loki_logger.assert_called_once()
+        # GraylogLogger est mocké
+        mock_grey_logger.assert_called_once()
     
-    @patch('main.domain.common.utils.logger.LoggerFactory.LokiLogger')
-    def test_create_composite_logger_default_types(self, mock_loki_logger):
+    @patch('main.domain.common.utils.logger.LoggerFactory.GraylogLogger')
+    def test_create_composite_logger_default_types(self, mock_grey_logger):
         """Test de création d'un CompositeLogger avec types par défaut"""
-        mock_loki_instance = MagicMock(spec=ILogger)
-        mock_loki_logger.return_value = mock_loki_instance
+        mock_grey_instance = MagicMock(spec=ILogger)
+        mock_grey_logger.return_value = mock_grey_instance
 
         logger = LoggerFactory.create_logger('test_default_composite', 'composite')
 
         self.assertIsInstance(logger, CompositeLogger)
         # Par défaut: ['file', 'loki'] => 2 sous-loggers
         self.assertEqual(logger.logger_count, 2)
-        mock_loki_logger.assert_called_once()
+        mock_grey_logger.assert_called_once()
     
 
-    @patch('main.domain.common.utils.logger.LoggerFactory.LokiLogger')
-    def test_create_composite_logger_with_failing_sublogger(self, mock_loki_logger):
+    @patch('main.domain.common.utils.logger.LoggerFactory.GraylogLogger')
+    def test_create_composite_logger_with_failing_sublogger(self, mock_grey_logger):
         """Test de création d'un CompositeLogger quand un sous-logger échoue"""
         # Faire échouer la création du LokiLogger
-        mock_loki_logger.side_effect = Exception("LokiLogger creation failed")
+        mock_grey_logger.side_effect = Exception("GraylogLogger creation failed")
 
         logger = LoggerFactory.create_logger(
             'test_failing_sublogger',
             'composite',
-            logger_types=['memory', 'loki', 'file']
+            logger_types=['memory', 'graylog', 'file']
         )
 
         self.assertIsInstance(logger, CompositeLogger)
-        # Seuls memory et file devraient être créés (loki a échoué)
+        # Seuls memory et file devraient être créés (grey a échoué)
         self.assertEqual(logger.logger_count, 2)
 
         logger_types = [type(sub_logger).__name__ for sub_logger in logger.loggers]
         self.assertIn('MemoryLogger', logger_types)
         self.assertIn('LoggerFile', logger_types)
     
-    @patch('main.domain.common.utils.logger.LoggerFactory.LokiLogger')
-    def test_loki_logger_case_insensitive(self, mock_loki_logger):
-        """Test que le type loki est insensible à la casse"""
-        mock_loki_instance = MagicMock(spec=ILogger)
-        mock_loki_logger.return_value = mock_loki_instance
-        logger_upper = LoggerFactory.create_logger('test', 'LOKI') # NOSONAR
-        logger_mixed = LoggerFactory.create_logger('test', 'Loki') # NOSONAR
-        self.assertIs(logger_upper, mock_loki_instance)
-        self.assertIs(logger_mixed, mock_loki_instance)
-        self.assertEqual(mock_loki_logger.call_count, 2)
+    @patch('main.domain.common.utils.logger.LoggerFactory.GraylogLogger')
+    def test_graylog_logger_case_insensitive(self, mock_grey_logger):
+        """Test que le type graylog est insensible à la casse"""
+        mock_grey_instance = MagicMock(spec=ILogger)
+        mock_grey_logger.return_value = mock_grey_instance
+        logger_upper = LoggerFactory.create_logger('test', 'GRAYLOG') # NOSONAR
+        logger_mixed = LoggerFactory.create_logger('test', 'Graylog') # NOSONAR
+        self.assertIs(logger_upper, mock_grey_instance)
+        self.assertIs(logger_mixed, mock_grey_instance)
+        self.assertEqual(mock_grey_logger.call_count, 2)
             
     
     def test_composite_logger_case_insensitive(self):

@@ -200,13 +200,12 @@ services:
 volumes:
   db-data: null
   rabbitmq-data: null
-  front_build: null
   redis-data: null
-  grafana-data:
-    name: ambianceboard_grafana_data
-  grafana-provisioning: null
-  graylog-data: null
+  graylog-data:
+    name: ambianceboard_graylog_data
   graylog-mongodb-data: null
   graylog-opensearch-data: null
   hf-cache: null
+  # dev
+  front_build: null 
   playwright-node-modules: null

@@ -204,6 +204,5 @@ volumes:
   graylog-mongodb-data: null
   graylog-opensearch-data: null
   grafana-provisioning: null
-  loki-data: null
   hf-cache: null
 
