@@ -12,7 +12,7 @@ from main.domain.common.utils.logger.LoggerFactory import LoggerFactory
 from main.domain.common.utils.logger.ILogger import ILogger
 from main.domain.common.utils.logger.LoggerFile import LoggerFile
 from main.domain.common.utils.logger.MemoryLogger import MemoryLogger
-from main.domain.common.utils.logger.LokiLogger import LokiLogger
+from main.domain.common.utils.logger.GraylogLogger import GraylogLogger
 from main.domain.common.utils.logger.CompositeLogger import CompositeLogger
 
 
@@ -91,39 +91,22 @@ class LoggerFactoryIntegrationTestCase(TestCase):
             mock_get_logger.assert_called_with('mock_test')
             mock_django_logger.info.assert_called_with("Test message")
     
-    @override_settings(
-        LOGGER_TYPE='loki',
-        LOKI_URL='http://test-loki:3100' # NOSONAR
-    )
-    @patch('main.domain.common.utils.logger.LoggerFactory.LokiLogger')
-    def test_factory_with_django_settings_loki(self, mock_loki_logger):
-        """Test d'intégration avec settings Django pour LokiLogger (factory simplifiée)"""
-        mock_loki_instance = MagicMock(spec=ILogger)
-        mock_loki_logger.return_value = mock_loki_instance
-
-        logger = LoggerFactory.get_default_logger('django_loki_integration')
-
-        self.assertEqual(logger, mock_loki_instance)
-        mock_loki_logger.assert_called_once()
-        call_args = mock_loki_logger.call_args
-        # La factory actuelle ne transmet que logger_name
-        self.assertEqual(call_args[1]['logger_name'], 'django_loki_integration')
     
     @override_settings(LOGGER_TYPE='composite')
-    @patch('main.domain.common.utils.logger.LoggerFactory.LokiLogger')
-    def test_factory_with_django_settings_composite(self, mock_loki_logger):
+    @patch('main.domain.common.utils.logger.LoggerFactory.GraylogLogger')
+    def test_factory_with_django_settings_composite(self, mock_graylog_logger):
         """Test d'intégration avec settings Django pour CompositeLogger (factory simplifiée)"""
-        mock_loki_instance = MagicMock(spec=ILogger)
-        mock_loki_logger.return_value = mock_loki_instance
+        mock_graylog_instance = MagicMock(spec=ILogger)
+        mock_graylog_logger.return_value = mock_graylog_instance
 
         logger = LoggerFactory.get_default_logger('django_composite_integration')
 
         self.assertIsInstance(logger, CompositeLogger)
         self.assertEqual(logger.logger_name, 'django_composite_integration')
-        self.assertEqual(logger.logger_count, 2)  # file + loki par défaut
+        self.assertEqual(logger.logger_count, 2)  # file + grey par défaut
         logger_types = [type(sub_logger).__name__ for sub_logger in logger.loggers]
         self.assertIn('LoggerFile', logger_types)
-        mock_loki_logger.assert_called_once()
+        mock_graylog_logger.assert_called_once()
     
 
     
@@ -163,25 +146,6 @@ class LoggerFactoryIntegrationTestCase(TestCase):
                 'Critical message'
             ])
     
-    @override_settings(
-        LOKI_URL='http://settings-loki:3100', # NOSONAR
-        LOKI_BATCH_SIZE=15,
-        LOKI_BATCH_TIMEOUT=3.0
-    )
-    @patch('main.domain.common.utils.logger.LoggerFactory.LokiLogger')
-    def test_loki_logger_uses_django_settings(self, mock_loki_logger):
-        """Test que LokiLogger est créé sans erreur et reçoit le logger_name avec la factory simplifiée"""
-        mock_loki_instance = MagicMock(spec=ILogger)
-        mock_loki_logger.return_value = mock_loki_instance
-
-        # Création du logger (la factory actuelle ne transmet que logger_name)
-        LoggerFactory.create_logger('settings_test', 'loki')
-
-        mock_loki_logger.assert_called_once()
-        call_args = mock_loki_logger.call_args
-        # Vérifier uniquement le paramètre réellement transmis par la factory
-        self.assertEqual(call_args[1]['logger_name'], 'settings_test')
-
 
 # Export des classes de test pour l'import dans tests.py
 __all__ = ['LoggerFactoryIntegrationTestCase']

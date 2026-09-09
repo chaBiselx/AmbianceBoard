@@ -81,7 +81,7 @@ class SoundboardEditMode {
             .then(response => response.text())
             .then((body) => {
                 ModalCustom.show({
-                    title: "Ajouter une playlist",
+                    title: "Ajouter un bouton",
                     body: body,
                     footer: "",
                     width: "lg",

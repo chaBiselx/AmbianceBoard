@@ -68,7 +68,7 @@ APP_PORT = os.getenv('WEB_PORT')
 APP_SCHEME  = 'https' if ACTIVE_SSL else 'http'
 
 URI_ADMIN = os.environ.get('URI_ADMIN', '/admin/')
-GRAFANA_URL = os.environ.get('GRAFANA_URL')
+GRAYLOG_URL = os.environ.get('GRAYLOG_URL')
 
 RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
 RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
@@ -120,17 +120,16 @@ if not os.path.exists(os.path.join(BASE_DIR, 'logs')):
     os.mkdir(os.path.join(BASE_DIR, 'logs'), mode=0o777 if DEBUG else 0o666)
 
 
-LOGGER_TYPE = "file"
+LOGGER_TYPE = "greylog"
 if DEBUG :
     LOGGER_TYPE = "composite"
 # For tests, use the MemoryLogger
 if TESTING:
     LOGGER_TYPE = "memory"
 
-# Configuration Loki pour le logging vers Grafana
-LOKI_URL = os.environ.get('LOKI_URL')
-LOKI_BATCH_SIZE = int(os.environ.get('LOKI_BATCH_SIZE', '10'))
-LOKI_BATCH_TIMEOUT = float(os.environ.get('LOKI_BATCH_TIMEOUT', '5.0'))
+# Configuration Graylog pour le logging GELF
+GRAYLOG_HOST = os.environ.get('GRAYLOG_HOST', 'graylog')
+GRAYLOG_PORT = int(os.environ.get('GRAYLOG_GELF_PORT', '12201'))
     
 level_log_debug = 'DEBUG' if DEBUG else 'INFO'
 timed_rotating_file_handler = 'logging.handlers.TimedRotatingFileHandler'
@@ -660,6 +659,8 @@ APP_TVA = 20.0  # en pourcentage
 APP_CURRENCY = "EUR"
 
 SOUNDBOARD_LIMIT_SECTION = 100
+# Delai minimal entre deux declenchements d'un meme script de soundboard.
+SOUNDBOARD_SCRIPT_COOLDOWN_MS = int(2000) # TODO add to env SOUNDBOARD_SCRIPT_COOLDOWN_MS
 # Celery result backend cleanup - prevent memory accumulation
 CELERY_RESULT_EXPIRES = 3600  # Results expire after 1 hour to prevent memory leak
 CELERY_TASK_TRACK_STARTED = False  # Reduce result backend load

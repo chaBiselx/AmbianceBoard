@@ -11,9 +11,10 @@
         "prebuild": "node scripts/pre-build.js",
         "test": "npm run test:smoke && npm run test:all",
         "test:smoke": "vitest run tests/Smoke.test.ts",
-        "test:all": "vitest run --bail=1",
-        "test:tu": "vitest run --bail=1 tests/TU/**/*.test.ts",
-        "test:ti": "vitest run tests/TI/**/*.test.ts"
+        "test:all": "vitest run --bail=1 --exclude \"tests/E2E/**\"",
+        "test:tu": "vitest run --bail=1 \"tests/TU/**/*.test.ts\"",
+        "test:ti": "vitest run \"tests/TI/**/*.test.ts\"",
+        "test:e2e": "playwright test \"tests/E2E/**/*.spec.ts\""
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^7.3.0",
@@ -28,6 +29,7 @@
         "vitest": "^4.1.11"
     },
     "devDependencies": {
+        "@playwright/test": "1.62.1",
         "@types/bootstrap": "^5.2.10",
         "@types/node": "^26.4.0",
         "concurrently": "^10.0.3",

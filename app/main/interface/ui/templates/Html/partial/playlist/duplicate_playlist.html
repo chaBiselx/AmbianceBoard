@@ -1,0 +1,27 @@
+{% load Playlist %}
+{% load PlaylistEnum %}
+
+
+<div class="border rounded m-1 h-100 row">
+    <div class="col-12">
+        <div class="float-end"><small>{{ playlist.tracks.count}} <i class="fa-solid fa-music"></i></small></div>
+        <div class="fw-bold">{{ playlist.name }}</div>
+        <div class="small text-muted"> {{ playlist.typePlaylist|to_value }}</div>
+    </div>
+    <div class="col-6">
+        <div class="playlist-link playlist-element playlist-dim-75 mt-2" style="background-color: {{ playlist.get_color }};color: {{ playlist.get_color_text }};">
+            {{ playlist | applys_playlist_content }}
+        </div>
+    </div>
+    <div class="col-6">
+        {% if type_import == "duplicate" %}
+        <button class="btn btn-block btn-outline-primary btn-sm mt-2 btn-edit-mode-duplicate" data-url-duplication="{{url_duplication}}">
+            Copier
+        </button>
+        {% elif type_import == "add" %}
+        <button class="btn btn-block btn-outline-success btn-sm mt-2 btn-edit-mode-add-my-playlist" data-url-add="{{url_duplication}}">
+            Ajouter
+        </button>
+        {% endif %}
+    </div>
+</div>

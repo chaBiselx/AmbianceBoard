@@ -1,3 +1,4 @@
 ./node_modules
 ./static/*
 ./staticProtected/*
+E2E_result/

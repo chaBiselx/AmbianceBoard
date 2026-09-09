@@ -4,6 +4,7 @@ sudo apt install make
 sudo apt install docker
 sudo apt install ufw
 sudo apt install certbot python3-certbot-nginx
+sudo apt install rsync
 
 cd /srv/www/AmbianceBoard/
 

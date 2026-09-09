@@ -19,7 +19,7 @@
                     <input type="password" class="form-control" id="password" name="password" required>
                     <hr class="my-4">
 
-                    <button class="btn btn-primary btn-block mt-2" type="submit">{% trans "template.account.login.form.submit" %}</button>
+                    <button class="btn btn-primary btn-block mt-2" id="login-button" type="submit">{% trans "template.account.login.form.submit" %}</button>
                     <a class="btn btn-secondary btn-block mt-2" href="{% url 'send_reset_password' %}">{% trans "template.account.login.form.forgot_password" %}</a>
 
                     <a class="btn btn-info btn-block mt-2" href="{% url 'createAccount' %}">{% trans "template.account.login.form.create_account" %}</a>

@@ -20,7 +20,7 @@ class UpdateVolumeElement {
         let VolumeSharedCustom = this.getVolumeSharedCustomCookie(this.musicElement.idPlaylist)
         let new_volume = Math.min(1, Math.max(0, this.truncDecimal(VolumeDefault * VolumeFade * VolumeMixerGeneral * VolumeMixerType * VolumeSharedCustom)));
         // console.log(`VolumeDefault: ${VolumeDefault}, VolumeFade: ${VolumeFade}, VolumeMixerGeneral: ${VolumeMixerGeneral}, VolumeMixerType: ${VolumeMixerType}, new_volume: ${new_volume}, VolumeSharedCustom: ${VolumeSharedCustom}`); // NOSONAR
-        this.musicElement.DOMElement.volume = new_volume;
+        this.musicElement.setVolume(new_volume);
     }
 
 

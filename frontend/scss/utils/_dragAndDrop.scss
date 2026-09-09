@@ -15,4 +15,27 @@
     flex-grow: 0; /* Empêche les enfants de grandir */
     flex-shrink: 0; /* Permet aux enfants de rétrécir si nécessaire */
     align-self: flex-start;
+    touch-action: none; /* Empêche le scrolling natif pendant un drag sur mobile */
+}
+
+body.dragging-active {
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+.drag-ghost {
+    position: fixed;
+    left: 0;
+    top: 0;
+    opacity: 0.8;
+    z-index: 9999;
+    pointer-events: none;
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.25);
+    transform-origin: 0 0;
+}
+
+.dragging-source {
+    opacity: 0.45;
+    filter: saturate(0.7);
 }

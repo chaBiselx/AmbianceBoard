@@ -13,6 +13,7 @@ from main.domain.common.exceptions.YoutubeDownloadException import (
 )
 from main.domain.common.service.youtube.IYoutubeDownloader import IYoutubeDownloader
 from main.domain.common.utils.settings import Settings
+from main.domain.common.utils.logger import LoggerFactory
 
 
 class YtDlpYoutubeDownloader(IYoutubeDownloader):
@@ -20,6 +21,7 @@ class YtDlpYoutubeDownloader(IYoutubeDownloader):
 
     def __init__(self) -> None:
         self.target_bitrate = str(Settings.get('AUDIO_BITRATE_REDUCER_TARGET_BITRATE'))
+        self.logger = LoggerFactory.get_default_logger('async_youtube_downloader')
 
     def download_audio(
         self,
@@ -49,7 +51,8 @@ class YtDlpYoutubeDownloader(IYoutubeDownloader):
 
         if max_filesize_bytes is not None:
             options["max_filesize"] = max_filesize_bytes
-
+        self.logger.info("Starting Youtube download", extra={"url": url, "temp_dir": temp_dir, "max_filesize_bytes": max_filesize_bytes})
+    
         try:
             with yt_dlp.YoutubeDL(options) as ydl:
                 info = ydl.extract_info(url, download=True)
@@ -57,7 +60,9 @@ class YtDlpYoutubeDownloader(IYoutubeDownloader):
         except DownloadError as exc:
             message = str(exc).lower()
             if "max-filesize" in message or "larger than" in message:
+                self.logger.warning("Youtube download larger than max filesize", exc_info=exc)
                 raise YoutubeAudioTooLargeException() from exc
+            self.logger.error("Youtube download failed", exc_info=exc)
             raise YoutubeAudioDownloadFailedException() from exc
 
         mp3_path = self._resolve_mp3_path(info, downloaded_path, temp_dir)

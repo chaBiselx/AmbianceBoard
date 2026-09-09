@@ -1,0 +1,23 @@
+.script-list {
+    min-height: 2rem;
+}
+
+.script-link {
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s ease, filter 0.15s ease;
+
+    &:hover {
+        filter: brightness(0.85);
+    }
+
+    &.active-script {
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+    }
+
+    &.script-cooldown {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+}

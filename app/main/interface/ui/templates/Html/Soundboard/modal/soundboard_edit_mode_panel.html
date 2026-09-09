@@ -1,7 +1,7 @@
 {% load Playlist %}
 {% load PlaylistEnum %}
 
-<div class="accordion" id="soundboard-edit-mode-accordion">
+<div class="accordion m-md-2 m-0" id="soundboard-edit-mode-accordion">
 
     <div class="accordion-item">
         <h2 class="accordion-header" id="soundboard-edit-heading-create">
@@ -10,7 +10,7 @@
             </button>
         </h2>
         <div id="soundboard-edit-collapse-create" class="accordion-collapse collapse show" aria-labelledby="soundboard-edit-heading-create" data-bs-parent="#soundboard-edit-mode-accordion">
-            <div class="accordion-body">
+            <div class="accordion-body m-md-2 m-0 p-md-2 p-1">
                 <form id="soundboard-edit-mode-create-form" data-url-create="{% url 'soundboardEditModeCreatePlaylist' soundboard.uuid %}">
                     {% csrf_token %}
                     <div class="row g-2 align-items-end">
@@ -42,7 +42,7 @@
             </button>
         </h2>
         <div id="soundboard-edit-collapse-mine" class="accordion-collapse collapse" aria-labelledby="soundboard-edit-heading-mine" data-bs-parent="#soundboard-edit-mode-accordion">
-            <div class="accordion-body">
+            <div class="accordion-body m-md-2 m-0 p-md-2 p-1 ">
                 <div id="soundboard-edit-my-playlist-list-container" data-url-list="{% url 'soundboardEditModeMyPlaylistList' soundboard.uuid %}">
                     <div class="d-flex justify-content-center mt-3">
                         <output class="spinner-border spinner-border-sm">
@@ -61,7 +61,7 @@
             </button>
         </h2>
         <div id="soundboard-edit-collapse-existing" class="accordion-collapse collapse" aria-labelledby="soundboard-edit-heading-existing" data-bs-parent="#soundboard-edit-mode-accordion">
-            <div class="accordion-body">
+            <div class="accordion-body m-md-2 m-0 p-md-2 p-1">
                 <div id="soundboard-edit-playlist-list-container" data-url-list="{% url 'soundboardEditModePlaylistList' soundboard.uuid %}">
                     <div class="d-flex justify-content-center mt-3">
                         <output class="spinner-border spinner-border-sm">

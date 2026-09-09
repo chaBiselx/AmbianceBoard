@@ -2,7 +2,7 @@ import uuid
 import os
 from typing import Any
 from main.domain.common.utils.uuidUtils import is_not_uuid_with_extension
-from django.db import models
+from django.db import models, transaction
 from main.domain.brokers.message.ReduceBiteRateMessenger import reduce_bit_rate
 from .Track import Track
 
@@ -51,12 +51,15 @@ class Music(Track):
             new_file = True
 
         super().save(*args, **kwargs)
-        if new_file: 
-            reduce_bit_rate.apply_async(
-                args=[self.file.path],
-                queue='default',
-                priority=1,
-                countdown=self.REDUCE_BIT_RATE_DELAY_SECONDS,
+        if new_file:
+            file_path = self.file.path
+            transaction.on_commit(
+                lambda: reduce_bit_rate.apply_async(
+                    args=[file_path],
+                    queue='default',
+                    priority=1,
+                    countdown=self.REDUCE_BIT_RATE_DELAY_SECONDS,
+                )
             )
             
     def get_name(self) -> str:

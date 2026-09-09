@@ -1,0 +1,97 @@
+{% load i18n %}
+
+<div id="script-steps"
+     data-params-by-action="{{ params_by_action }}"
+     data-url-save="{% url 'soundboardScriptStepSave' soundboard.uuid script.uuid %}"
+     data-url-reorder="{% url 'soundboardScriptStepsReorder' soundboard.uuid script.uuid %}">
+
+    <h4>{{ script.name }}</h4>
+
+    <ol class="list-group list-group-numbered mb-3" id="script-step-list">
+        {% for step in steps %}
+        <li class="list-group-item d-flex justify-content-between align-items-start gap-2" data-step-uuid="{{ step.uuid }}">
+            <div class="flex-grow-1">
+                <div class=""></div>
+                <strong>{{ step.get_action_type_display }}</strong>
+                <small class="d-block text-muted">
+                    {{ step.get_trigger_type_display }}
+                    {% if step.trigger_offset_ms %}+{{ step.trigger_offset_ms }} ms{% endif %}
+                    {% if step.trigger_source_step %}&rarr; {{ step.trigger_source_step.get_action_type_display }}{% endif %}
+                </small>
+                {% if request.user.is_authenticated and request.user.isBetaTester %}
+                <div class="border rounded">
+                    <small class="text-muted">{{ step.params }}</small>
+                </div>
+                {% endif %}
+            </div>
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-outline-secondary step-move" data-direction="-1" title="{% trans 'template.scripts.step.move_up' %}">
+                    <i class="fa-solid fa-arrow-up"></i>
+                </button>
+                <button type="button" class="btn btn-outline-secondary step-move" data-direction="1" title="{% trans 'template.scripts.step.move_down' %}">
+                    <i class="fa-solid fa-arrow-down"></i>
+                </button>
+                <button type="button" class="btn btn-outline-danger step-delete"
+                        data-url-delete="{% url 'soundboardScriptStepDelete' soundboard.uuid script.uuid step.uuid %}"
+                        title="{% trans 'template.scripts.form.delete' %}">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        </li>
+        {% empty %}
+        <li class="list-group-item text-muted fst-italic">{% trans "template.scripts.step.empty" %}</li>
+        {% endfor %}
+    </ol>
+
+    <form id="script-step-form" class="row g-2">
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="step-action-type">{% trans "template.scripts.step.action" %}</label>
+            <select class="form-select" id="step-action-type" name="action_type">
+                {% for value, label in action_types %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-12 col-md-6 script-param" data-param="playlist_uuid">
+            <label class="form-label" for="step-playlist">{% trans "template.scripts.step.playlist" %}</label>
+            <select class="form-select" id="step-playlist" name="playlist_uuid">
+                {% for playlist in playlists %}
+                <option value="{{ playlist.uuid }}">{{ playlist.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-12 col-md-6 script-param" data-param="volume">
+            <label class="form-label" for="step-volume">{% trans "template.scripts.step.volume" %}</label>
+            <input type="number" class="form-control" id="step-volume" name="volume" min="0" max="100" value="100">
+        </div>
+
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="step-trigger-type">{% trans "template.scripts.step.trigger" %}</label>
+            <select class="form-select" id="step-trigger-type" name="trigger_type">
+                {% for value, label in trigger_types %}
+                <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="step-offset">{% trans "template.scripts.step.offset" %}</label>
+            <input type="number" class="form-control" id="step-offset" name="trigger_offset_ms" min="0" step="100" value="0">
+        </div>
+
+        <div class="col-12 col-md-6" id="step-source-wrapper" hidden>
+            <label class="form-label" for="step-source">{% trans "template.scripts.step.source" %}</label>
+            <select class="form-select" id="step-source" name="trigger_source_step_uuid">
+                {% for step in steps %}
+                <option value="{{ step.uuid }}">{{ forloop.counter }} - {{ step.get_action_type_display }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-success">{% trans "template.scripts.step.add" %}</button>
+        </div>
+    </form>
+</div>

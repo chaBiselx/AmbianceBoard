@@ -20,7 +20,6 @@ from main.TNR.TU.utils.SettingsTest import *
 from main.TNR.TU.utils.SoundBoardTemplateTagTest import *
 
 from main.TNR.TU.utils.logger.LoggerFactoryTest import *
-from main.TNR.TU.utils.logger.LokiLoggerTest import *
 from main.TNR.TU.utils.logger.CompositeLoggerTest import *
 from main.TNR.TU.utils.cache.CacheSystemTest import *
 from main.TNR.TU.utils.cache.RedisCacheSystemTest import *
@@ -38,6 +37,7 @@ from main.TNR.TU.Service.PlaylistProposalServiceTest import *
 from main.TNR.TU.Service.PlaylistDataServiceTest import *
 from main.TNR.TU.Service.DefaultColorPlaylistServiceTest import *
 from main.TNR.TU.Service.SoundboardPlaylistServiceTest import *
+from main.TNR.TU.Service.SoundboardScriptServiceTest import *
 
 from main.TNR.TU.UserParametersFactoryTest import *
 from main.TNR.TU.UserTierManagerTest import *
@@ -97,7 +97,6 @@ from main.TNR.TU.email.ModeratorAndUserEmailTest import *
 from main.TNR.TI.utils.UrlsUtilsTest import *
 
 from main.TNR.TI.utils.logger.LoggerFactoryIntegrationTestCase import *
-from main.TNR.TI.utils.logger.LokiLoggerIntegrationTestCase import *
 from main.TNR.TI.utils.logger.CompositeLoggerIntegrationTestCase import *
 
 # Tests d'intégration des routes (1 route = 1 fichier = 1 classe)
@@ -126,6 +125,7 @@ from main.TNR.TI.routing.SoundboardsNewRouteTest import *
 from main.TNR.TI.routing.SoundboardsReadRouteTest import *
 from main.TNR.TI.routing.OrganizeSoundboardUpdateRouteTest import *
 from main.TNR.TI.routing.SoundboardEditModeDuplicatePlaylistRouteTest import *
+from main.TNR.TI.routing.SoundboardScriptRouteTest import *
 from main.TNR.TI.routing.PlaylistProposalRouteTest import *
 
 # Routes Settings
@@ -169,5 +169,4 @@ from main.TNR.TI.websocket.SharedSoundboardConsumerTest import *
 # =======================================================================
 # ======================== STRESS TEST =============================
 # =======================================================================
-from main.TNR.ST.utils.logger.LokiLoggingAdvancedLatencyTestCase import *
-from main.TNR.ST.utils.logger.LokiLoggingLatencyIntegrationTestCase import *
+

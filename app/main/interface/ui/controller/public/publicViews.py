@@ -35,6 +35,7 @@ from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
 from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
+from main.domain.common.helper.ScriptContextHelper import ScriptContextHelper
 
 @require_http_methods(['GET'])
 def public_index(request):
@@ -100,6 +101,7 @@ def public_soundboard_read_playlist(request, soundboard_uuid):
             'list_shortcut_keyboard': [],
             'user_proposals': user_proposals,
             'pending_proposal_placeholders': pending_proposal_placeholders,
+            **ScriptContextHelper.build(soundboard),
         })
         
         # Auto-initialisation WebSocket

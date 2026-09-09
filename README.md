@@ -18,7 +18,7 @@ Elle permet de preparer des ambiances sonores, d organiser des playlists et de p
 👉 [Voir le rapport SonarCloud](https://sonarcloud.io/project/overview?id=chaBiselx_AmbianceBoard)  
 
 ## 📊 Score  
-[![Plumber Score](https://score.getplumber.io/github.com/OWNER/REPO.svg)](https://score.getplumber.io/github.com/OWNER/REPO)
+[![Plumber Score](https://score.getplumber.io/github.com/chabiselx/ambianceboard.svg)](https://score.getplumber.io/github.com/chabiselx/ambianceboard)
 
 ## 🤝 Avancement 
 Suivi du projet

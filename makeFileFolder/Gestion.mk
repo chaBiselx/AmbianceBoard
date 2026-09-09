@@ -54,13 +54,14 @@ down:
 	@docker compose down
 
 enter:
-	@# Help: Entrer dans un conteneur Docker (usage: make enter S [I=1])
-	@if [ -z "$(S)" ]; then \
-		echo "Erreur: Vous devez spécifier un service. Usage: make enter S=nom_du_service [I=1]"; \
+	@# Help: Entrer dans un conteneur Docker (usage: make enter nom_du_service [I=1])
+	@if [ -z "$(word 2,$(MAKECMDGOALS))" ]; then \
+		echo "Erreur: Vous devez spécifier un service. Usage: make enter nom_du_service [I=1]"; \
 		exit 1; \
 	fi
 	@I=$${I:-1}; \
-	CONTAINER_NAME="ambianceboard-$(S)-$$I"; \
+	SERVICE="$(word 2,$(MAKECMDGOALS))"; \
+	CONTAINER_NAME="ambianceboard-$$SERVICE-$$I"; \
 	echo "Connexion au conteneur $$CONTAINER_NAME..."; \
 	docker exec -it $$CONTAINER_NAME sh
 
