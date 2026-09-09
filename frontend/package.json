@@ -14,7 +14,7 @@
         "test:all": "vitest run --bail=1 --exclude \"tests/E2E/**\"",
         "test:tu": "vitest run --bail=1 \"tests/TU/**/*.test.ts\"",
         "test:ti": "vitest run \"tests/TI/**/*.test.ts\"",
-        "test:e2e": "playwright test \"tests/E2E/**/*.test.ts\""
+        "test:e2e": "playwright test \"tests/E2E/**/*.spec.ts\""
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^7.3.0",
