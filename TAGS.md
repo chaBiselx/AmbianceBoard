@@ -450,6 +450,10 @@ Modifications
 Corrections
 - Corrige le Drag&Drop sur les supports sans souris ( tablette, téléphone, ...)
 
+### 0.5.1 - 2026/09
+Corrections
+- Corrige le logger graylogger
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

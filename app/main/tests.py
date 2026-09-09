@@ -18,6 +18,7 @@ from main.TNR.TU.utils.ExtractPaginatorTest import *
 from main.TNR.TU.utils.EmailSenderTest import *
 from main.TNR.TU.utils.SettingsTest import *
 from main.TNR.TU.utils.SoundBoardTemplateTagTest import *
+from main.TNR.TU.utils.logger.GraylogLoggerTest import *
 
 from main.TNR.TU.utils.logger.LoggerFactoryTest import *
 from main.TNR.TU.utils.logger.CompositeLoggerTest import *

@@ -45,10 +45,15 @@ class GraylogLogger(ILogger):
             except (TypeError, ValueError):
                 pass
 
+        short_message = str(message)
+        if not short_message:
+            # GELF rejects an empty short_message (e.g. str(exception) with no args)
+            short_message = repr(message)
+
         event = {
             'version': '1.1',
             'host': 'ambianceboard',
-            'short_message': str(message),
+            'short_message': short_message,
             'timestamp': time.time(),
             'level': self._syslog_level(level),
             '_application': 'ambianceboard',
