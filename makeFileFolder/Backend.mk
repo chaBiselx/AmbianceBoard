@@ -58,11 +58,13 @@ db-delete:
 	@echo "$(GREEN)Suppression de la base de données...$(NC)"
 	$(CONTAINER_BACKEND) python manage.py flush --no-input
 	@echo "$(GREEN)Suppression terminée.$(NC)"
-	@echo "$(RED)docker compose exec back python manage.py shell -c \"$(NC)"
-	@echo "$(RED)from django.db import connection$(NC)"
-	@echo "$(RED)with connection.cursor() as c:$(NC)"
-	@echo "$(RED)	c.execute('DROP SCHEMA public CASCADE; CREATE SCHEMA public;')$(NC)"
-	@echo "$(RED)\"$(NC)"
+	$(CONTAINER_BACKEND) python manage.py shell -c "from django.db import connection; connection.cursor().execute('DROP SCHEMA public CASCADE; CREATE SCHEMA public;')"
+
+db-reset:
+	@# Help: Réinitialise la base de données
+	make db-delete
+	make db-update
+	make fixtures
 
 ## —— Fixtures  ————————————————————————————————————————————————————————————————
 fixtures: fixture-create-root fixture-seed-dev fixture-seed-soundboard fixture-tag-playlist fixture-tag-soundboard fixture-seed-e2e
