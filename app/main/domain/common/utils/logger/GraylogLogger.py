@@ -45,29 +45,28 @@ class GraylogLogger(ILogger):
             except (TypeError, ValueError):
                 pass
 
-        short_message = str(message)
-        if not short_message:
-            # GELF rejects an empty short_message (e.g. str(exception) with no args)
-            short_message = repr(message)
-        if len(short_message) > 0 :
-            event = {
-                'version': '1.1',
-                'host': 'ambianceboard',
-                'short_message': short_message,
-                'timestamp': time.time(),
-                'level': self._syslog_level(level),
-                '_application': 'ambianceboard',
-                '_logger': self._logger_name,
-                '_log_level': level,
-            }
-            extra_fields = kwargs.get('extra_fields') or {}
-            event.update({f'_{key}': value for key, value in extra_fields.items()})
+        short_message = str(message).strip()
+        if not short_message or short_message in ("''", '""'):
+            return
 
-            try:
-                payload = json.dumps(event, default=str).encode('utf-8')
-                self._socket.sendto(payload, (self._graylog_host, self._graylog_port))
-            except (OSError, TypeError, ValueError):
-                pass
+        event = {
+            'version': '1.1',
+            'host': 'ambianceboard',
+            'short_message': short_message,
+            'timestamp': time.time(),
+            'level': self._syslog_level(level),
+            '_application': 'ambianceboard',
+            '_logger': self._logger_name,
+            '_log_level': level,
+        }
+        extra_fields = kwargs.get('extra_fields') or {}
+        event.update({f'_{key}': value for key, value in extra_fields.items()})
+
+        try:
+            payload = json.dumps(event, default=str).encode('utf-8')
+            self._socket.sendto(payload, (self._graylog_host, self._graylog_port))
+        except (OSError, TypeError, ValueError):
+            pass
 
     @staticmethod
     def _syslog_level(level: str) -> int:
