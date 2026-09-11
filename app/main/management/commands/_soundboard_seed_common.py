@@ -172,6 +172,7 @@ class BaseSoundboardSeedCommand(BaseCommand):
         counters: dict,
     ) -> int:
         order = 1
+        section = 1
         for playlist_payload in self._iter_playlist_payloads(max_delay_variants):
             expected_values = {
                 "typePlaylist": playlist_payload["type_playlist"],
@@ -191,13 +192,16 @@ class BaseSoundboardSeedCommand(BaseCommand):
             if playlist_created:
                 counters["playlists_created"] += 1
 
-            if self._ensure_soundboard_playlist_link(soundboard, playlist, order):
+            if self._ensure_soundboard_playlist_link(soundboard, playlist, order, section):
                 counters["playlist_links_created"] += 1
 
             counters["musics_created"] += self._attach_audio_files_for_playlist(
                 playlist, playlist_payload, audio_files
             )
             order += 1
+            if(order > 3): 
+                section += 1
+                order = 1
 
         return order
 
@@ -208,7 +212,7 @@ class BaseSoundboardSeedCommand(BaseCommand):
         """Strategie par defaut: alimenter la playlist avec tous les fichiers audio."""
         return self._attach_audio_files(playlist, audio_files)
 
-    def _seed_url_playlists(self, user, soundboard, start_order: int, counters: dict) -> None:
+    def _seed_url_playlists(self, user, soundboard, start_order: int, counters: dict, section : int = 1) -> None:
         order = start_order
         for spec in URL_BUTTON_SPECS:
             url_playlist, playlist_created, link_created = self._ensure_url_button_playlist(
@@ -216,6 +220,7 @@ class BaseSoundboardSeedCommand(BaseCommand):
                 soundboard=soundboard,
                 order=order,
                 playlist_name=spec["playlist_name"],
+                section=section,
             )
             if playlist_created:
                 counters["playlists_created"] += 1
@@ -224,6 +229,9 @@ class BaseSoundboardSeedCommand(BaseCommand):
 
             counters["url_links_created"] += self._attach_url_button(url_playlist, spec)
             order += 1
+            if(order > 3): 
+                section += 1
+                order = 1
 
     def _ensure_playlist(self, user, playlist_name: str, expected_values: dict):
         playlist, playlist_created = Playlist.objects.get_or_create(
@@ -234,20 +242,20 @@ class BaseSoundboardSeedCommand(BaseCommand):
         self._reconcile_model_values(playlist, expected_values)
         return playlist, playlist_created
 
-    def _ensure_soundboard_playlist_link(self, soundboard, playlist, order: int) -> bool:
+    def _ensure_soundboard_playlist_link(self, soundboard, playlist, order: int, section: int = 1) -> bool:
         soundboard_link, link_created = SoundboardPlaylist.objects.get_or_create(
             SoundBoard=soundboard,
             Playlist=playlist,
             defaults={
                 "order": order,
-                "section": 1,
+                "section": section,
                 "activable_by_player": True,
             },
         )
 
         expected_link_values = {
             "order": order,
-            "section": 1,
+            "section": section,
             "activable_by_player": True,
         }
         self._reconcile_model_values(soundboard_link, expected_link_values)
@@ -340,7 +348,7 @@ class BaseSoundboardSeedCommand(BaseCommand):
                     payload["audio_file_name"] = blueprint["audio_file_name"]
                 yield payload
 
-    def _ensure_url_button_playlist(self, user, soundboard, order: int, playlist_name: str):
+    def _ensure_url_button_playlist(self, user, soundboard, order: int, playlist_name: str, section: int = 1):
         playlist, playlist_created = Playlist.objects.get_or_create(
             user=user,
             name=playlist_name,
@@ -379,7 +387,7 @@ class BaseSoundboardSeedCommand(BaseCommand):
             Playlist=playlist,
             defaults={
                 "order": order,
-                "section": 1,
+                "section": section,
                 "activable_by_player": True,
             },
         )
@@ -388,8 +396,8 @@ class BaseSoundboardSeedCommand(BaseCommand):
             if soundboard_link.order != order:
                 soundboard_link.order = order
                 link_changed = True
-            if soundboard_link.section != 1:
-                soundboard_link.section = 1
+            if soundboard_link.section != section:
+                soundboard_link.section = section
                 link_changed = True
             if not soundboard_link.activable_by_player:
                 soundboard_link.activable_by_player = True
