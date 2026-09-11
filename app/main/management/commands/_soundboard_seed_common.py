@@ -21,6 +21,7 @@ from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.LinkMusic import LinkMusic
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.UserPreference import UserPreference
 from main.domain.common.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
@@ -243,23 +244,31 @@ class BaseSoundboardSeedCommand(BaseCommand):
         return playlist, playlist_created
 
     def _ensure_soundboard_playlist_link(self, soundboard, playlist, order: int, section: int = 1) -> bool:
+        section_obj = self._ensure_soundboard_section(soundboard, section)
         soundboard_link, link_created = SoundboardPlaylist.objects.get_or_create(
             SoundBoard=soundboard,
             Playlist=playlist,
             defaults={
                 "order": order,
-                "section": section,
+                "section": section_obj,
                 "activable_by_player": True,
             },
         )
 
         expected_link_values = {
             "order": order,
-            "section": section,
+            "section": section_obj,
             "activable_by_player": True,
         }
         self._reconcile_model_values(soundboard_link, expected_link_values)
         return link_created
+
+    def _ensure_soundboard_section(self, soundboard, section: int) -> SoundboardSection:
+        return SoundboardSection.objects.get_or_create(
+            SoundBoard=soundboard,
+            section=section,
+            defaults={"name": f"Section {section}", "order": section},
+        )[0]
 
     def _attach_audio_files(self, playlist, audio_files: list[Path]) -> int:
         musics_created = 0
@@ -382,12 +391,13 @@ class BaseSoundboardSeedCommand(BaseCommand):
         if changed:
             playlist.save()
 
+        section_obj = self._ensure_soundboard_section(soundboard, section)
         soundboard_link, link_created = SoundboardPlaylist.objects.get_or_create(
             SoundBoard=soundboard,
             Playlist=playlist,
             defaults={
                 "order": order,
-                "section": section,
+                "section": section_obj,
                 "activable_by_player": True,
             },
         )
@@ -396,8 +406,8 @@ class BaseSoundboardSeedCommand(BaseCommand):
             if soundboard_link.order != order:
                 soundboard_link.order = order
                 link_changed = True
-            if soundboard_link.section != section:
-                soundboard_link.section = section
+            if soundboard_link.section != section_obj:
+                soundboard_link.section = section_obj
                 link_changed = True
             if not soundboard_link.activable_by_player:
                 soundboard_link.activable_by_player = True

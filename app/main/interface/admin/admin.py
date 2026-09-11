@@ -33,6 +33,7 @@ from main.architecture.persistence.models.TrafficAttributionVisit import Traffic
 from main.architecture.persistence.models.PlaylistProposal import PlaylistProposal
 from main.architecture.persistence.models.SoundboardScript import SoundboardScript
 from main.architecture.persistence.models.SoundboardScriptStep import SoundboardScriptStep
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -63,3 +64,4 @@ admin.site.register(TrafficAttributionVisit)
 admin.site.register(PlaylistProposal)
 admin.site.register(SoundboardScript)
 admin.site.register(SoundboardScriptStep)
+admin.site.register(SoundboardSection)

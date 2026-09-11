@@ -3,6 +3,7 @@ from django.test import TestCase, tag
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 from main.architecture.persistence.models.User import User
 from main.domain.common.enum.ScriptActionEnum import ScriptActionEnum
 from main.domain.common.enum.ScriptTriggerEnum import ScriptTriggerEnum
@@ -22,12 +23,20 @@ class SoundboardScriptServiceTest(TestCase):
         )
         self.soundboard = SoundBoard.objects.create(user=self.user, name='SB script test')
         self.playlist = Playlist.objects.create(name='Playlist script', user=self.user)
-        SoundboardPlaylist.objects.create(SoundBoard=self.soundboard, Playlist=self.playlist, section=1, order=1)
+        section = SoundboardSection.objects.create(
+            SoundBoard=self.soundboard, section=1, name='Section 1', order=1
+        )
+        SoundboardPlaylist.objects.create(
+            SoundBoard=self.soundboard, Playlist=self.playlist, section=section, order=1
+        )
 
         self.other_soundboard = SoundBoard.objects.create(user=self.user, name='SB other')
         self.foreign_playlist = Playlist.objects.create(name='Playlist foreign', user=self.user)
+        other_section = SoundboardSection.objects.create(
+            SoundBoard=self.other_soundboard, section=1, name='Section 1', order=1
+        )
         SoundboardPlaylist.objects.create(
-            SoundBoard=self.other_soundboard, Playlist=self.foreign_playlist, section=1, order=1
+            SoundBoard=self.other_soundboard, Playlist=self.foreign_playlist, section=other_section, order=1
         )
 
         self.service = SoundboardScriptService(self.soundboard)

@@ -78,7 +78,7 @@ export class SectionAdder {
             const position = Math.max(1, Math.min(insertPosition, nextSection));
             if (nextSection > Number.parseInt(this.template.dataset.maxSection || '0')) return;
             const shiftExistingSections = position <= currentCount;
-            if (shiftExistingSections && !await new SendBackendAction().insertSection(position)) return;
+            if (!await new SendBackendAction().insertSection(position)) return;
             const parent = document.getElementById('associated-playlists-container');
             if (!parent) return;
             if (shiftExistingSections) this.sectionDomManager.shiftSectionsForInsertion(position);
