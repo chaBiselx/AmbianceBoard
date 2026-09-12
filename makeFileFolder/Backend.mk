@@ -58,6 +58,10 @@ db-delete:
 	@echo "$(GREEN)Suppression de la base de données...$(NC)"
 	$(CONTAINER_BACKEND) python manage.py flush --no-input
 	@echo "$(GREEN)Suppression terminée.$(NC)"
+	make db-delete-forced
+
+
+db-delete-forced:
 	$(CONTAINER_BACKEND) python manage.py shell -c "from django.db import connection; connection.cursor().execute('DROP SCHEMA public CASCADE; CREATE SCHEMA public;')"
 
 db-reset:
