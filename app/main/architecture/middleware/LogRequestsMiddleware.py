@@ -88,7 +88,7 @@ class LogRequestsMiddleware:
             # Logging avec des informations minimales et sécurisées
             self.logger.info(
                 '',
-                extra={
+                extra_fields={
                     'method': request.method,
                     'request': request.get_full_path(),
                     'post': filtered_post,

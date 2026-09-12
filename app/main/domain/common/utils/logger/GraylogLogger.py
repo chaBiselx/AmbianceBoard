@@ -45,10 +45,9 @@ class GraylogLogger(ILogger):
             except (TypeError, ValueError):
                 pass
 
-        short_message = str(message)
-        if not short_message:
-            # GELF rejects an empty short_message (e.g. str(exception) with no args)
-            short_message = repr(message)
+        short_message = str(message).strip()
+        if not short_message or short_message in ("''", '""'):
+            return
 
         event = {
             'version': '1.1',
