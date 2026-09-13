@@ -27,6 +27,7 @@ from main.architecture.persistence.repository.PlaylistRepository import Playlist
 from main.architecture.persistence.repository.SoundBoardRepository import SoundBoardRepository
 from main.architecture.persistence.repository.UserModerationLogRepository import UserModerationLogRepository
 from main.architecture.persistence.repository.ReportContentRepository import ReportContentRepository
+from main.architecture.persistence.repository.PlaylistDuplicationHistoryRepository import PlaylistDuplicationHistoryRepository
 from main.domain.moderator.service.TreatmentReportService import TreatmentReportService
 from main.domain.moderator.dto.TreatmentReportDto import TreatmentReportDto
 from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
@@ -462,9 +463,10 @@ def moderator_get_popup_playlist_tag(request, playlist_uuid) -> HttpResponse:
             return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     playlist_tag_repository = PlaylistTagRepository()
     list_tag = playlist_tag_repository.get_all()   
+    is_copied_from = PlaylistDuplicationHistoryRepository().get_original_playlist(playlist)
     url_update = reverse('moderatorPostPopupPlaylistTag', kwargs={'playlist_uuid': playlist_uuid})         
 
-    return render(request, 'Html/Moderator/playlist_tag/popup_playlist_tag_update.html', {'playlist': playlist, 'list_tag': list_tag, 'url_update': url_update})
+    return render(request, 'Html/Moderator/playlist_tag/popup_playlist_tag_update.html', {'playlist': playlist, 'list_tag': list_tag, 'url_update': url_update, 'is_copied_from': is_copied_from})
 
 
 @login_required

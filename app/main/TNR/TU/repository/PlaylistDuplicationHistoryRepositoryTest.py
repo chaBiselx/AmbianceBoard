@@ -66,6 +66,20 @@ class PlaylistDuplicationHistoryRepositoryTest(TestCase):
             source_playlist_uuid=self.source_playlist.uuid,
         )
 
+    def test_get_original_playlist_returns_history_for_duplicated_playlist(self):
+        history = self.repository.get_original_playlist(
+            self.duplicated_in_target_soundboard
+        )
+
+        self.assertIsNotNone(history)
+        self.assertEqual(history.id, self.history_in_target.id)
+        self.assertEqual(history.source_playlist, self.source_playlist)
+
+    def test_get_original_playlist_returns_none_for_non_duplicated_playlist(self):
+        history = self.repository.get_original_playlist(self.source_playlist)
+
+        self.assertIsNone(history)
+
     def test_find_existing_duplication_in_soundboard_returns_history_when_present(self):
         history = self.repository.find_existing_duplication_in_soundboard(
             source_playlist_uuid=self.source_playlist.uuid,
