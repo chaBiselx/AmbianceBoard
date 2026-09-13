@@ -454,6 +454,13 @@ Corrections
 Corrections
 - Corrige le logger graylogger
 
+### 0.5.2 - 2026/09
+Améliorations
+- Amélioration de filtres sur les interfaces de modérations
+
+Fiabilité & Confiance
+- Préparation pour la migrations de structure des données pour les soundboards
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

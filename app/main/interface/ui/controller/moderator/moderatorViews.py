@@ -416,6 +416,7 @@ def moderator_get_infos_playlist_tag(request, playlist_tag_label) -> HttpRespons
 @permission_required('auth.' + PermissionEnum.MODERATEUR_ACCESS_DASHBOARD.name, login_url='login')
 def moderator_get_playlist_list_for_playlist_tag(request) -> HttpResponse:
     selected_tag = request.GET.get('tag', None)
+    selected_copiable = request.GET.get('copiable', None)
     page_number = int(request.GET.get('page', 1))
     playlist_repository = PlaylistRepository()
     
@@ -429,6 +430,12 @@ def moderator_get_playlist_list_for_playlist_tag(request) -> HttpResponse:
         queryset = playlist_repository.get_listing_playlist_queryset_with_tag(playlist_tag=playlist_tag)
     else: 
         queryset = playlist_repository.get_all_queryset() 
+
+    # Filter by copiable status if selected
+    if selected_copiable == 'COPIABLE':
+        queryset = queryset.filter(is_copiable=True)
+    elif selected_copiable == 'PRIVATE':
+        queryset = queryset.filter(is_copiable=False)
     
     paginator = Paginator(queryset, 50)
     context = extract_context_to_paginator(paginator, page_number)
@@ -437,6 +444,12 @@ def moderator_get_playlist_list_for_playlist_tag(request) -> HttpResponse:
     playlist_tag_repository = PlaylistTagRepository()
     context['list_tag'] = playlist_tag_repository.get_all()   
     context['selected_tag'] = selected_tag 
+    context['selected_copiable'] = selected_copiable
+    context['copiable_choices'] = {
+        "COPIABLE" : 'Copiable',
+        "PRIVATE" : 'Non copiable'
+    }
+
     return render(request, 'Html/Moderator/playlist_tag/listing_playlist_to_associate.html', context)
 
 @login_required

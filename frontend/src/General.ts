@@ -2,6 +2,7 @@ import Notification from '@/modules/General/Notifications';
 import ReportingContent from '@/modules/ReportingContent'
 import { PaginationManager } from '@/modules/PaginationManager';
 import { TagManager } from '@/modules/TagManager';
+import { SelectManager } from '@/modules/SelectManager';
 import FilterFormHtmlManager from '@/modules/Filter/FilterFormHtmlManager';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
 import BootstrapComponentInitializer from "@/modules/General/BootstrapComponentInitializer";
@@ -71,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     new ReportingContent('reportButton').addEvent();
     new PaginationManager().addEventListeners();
     new TagManager().addEventListeners();
+    new SelectManager().addEventListeners();
     new NotificationGeneral().addEvent();
     new DeleteAccount().addEvent();
     new UserActivityLog().addEvent();

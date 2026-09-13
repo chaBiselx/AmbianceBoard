@@ -1,6 +1,8 @@
 import { PaginationManager } from "@/modules/PaginationManager";
 
-class TagManager {
+
+// TODO add heritage with TagSelector
+class SelectManager {
     private readonly DOMTag: NodeListOf<HTMLElement>;
 
 
@@ -13,13 +15,13 @@ class TagManager {
             return;
         }
         this.DOMTag.forEach(form => {
-            for (const tagElement of form.querySelectorAll('.tag-element-redirect')) {
-                tagElement.addEventListener('click', (event) => {
-                    const target = event.currentTarget as HTMLElement;
-                    const tag = target.dataset.tag;
-                    if (tag) {
-                        this.changePage(tag);
-                    }
+            
+            for (const selectElement of form.querySelectorAll('.select-element-redirect')) {
+                selectElement.addEventListener('change', (event) => {
+                    console.log(event);
+                    const target = event.currentTarget as HTMLSelectElement;
+                    const value = target.value ?? '';
+                    this.changePage(value, target.name);
                 });
             }
         });
@@ -27,9 +29,9 @@ class TagManager {
 
     }
 
-    private changePage(tag: string) {
+    private changePage(value: string, name: string) {
         const url = new URL(globalThis.location.href);
-        url.searchParams.set('tag', tag);
+        url.searchParams.set(name, value);
         url.searchParams.delete(PaginationManager.getParameterName()); // Remove the page parameter to reset pagination
 
         globalThis.location.replace(url.toString());
@@ -37,4 +39,4 @@ class TagManager {
 
 }
 
-export { TagManager }
+export { SelectManager }
