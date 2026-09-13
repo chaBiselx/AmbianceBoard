@@ -37,6 +37,32 @@
     min-height: fit-content;
 }
 
+.section-header {
+        top: 0;
+        left: 10%;
+        transform: translate(-50%, -60%);
+        background-color: var(--bs-body-bg);
+        color: $text_color_light;
+
+
+        font-size: smaller;
+        font-weight: 300;
+        text-align: center;
+        border-radius: 0.5rem;
+
+        padding-left: 0.7rem;
+        padding-right: 0.7rem;
+        padding-top: 0.05rem;
+        padding-bottom: 0.05rem;
+
+        @at-root {
+            html[data-bs-theme="dark"] & {
+                color: $text_color_dark;
+        }
+    }
+}
+
+
 .section-content {
     flex: 1;
     display: flex;

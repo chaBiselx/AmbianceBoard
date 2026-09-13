@@ -2,7 +2,7 @@ from typing import Any, Dict, Optional, List, TYPE_CHECKING
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.Playlist import Playlist
 from django.db import models
-from django.db.models import F
+from django.db.models import F, Prefetch
 
 if TYPE_CHECKING:
     from main.architecture.persistence.models.SoundBoard import SoundBoard
@@ -23,7 +23,6 @@ class SoundboardPlaylistRepository:
             )
 
         return SoundboardPlaylist.objects.create(
-            SoundBoard=soundboard,
             Playlist=playlist,
             order=order,
             section=section_obj,
@@ -31,13 +30,13 @@ class SoundboardPlaylistRepository:
 
     def get(self, soundboard: "SoundBoard", playlist: Playlist) -> SoundboardPlaylist | None:
         try:
-            return SoundboardPlaylist.objects.get(SoundBoard=soundboard, Playlist=playlist)
+            return SoundboardPlaylist.objects.get(section__SoundBoard=soundboard, Playlist=playlist)
         except SoundboardPlaylist.DoesNotExist:
             return None
 
     def get_playlist_in_soundboard_by_uuid(self, soundboard: "SoundBoard", playlist_uuid: str) -> SoundboardPlaylist | None:
         try:
-            return SoundboardPlaylist.objects.get(SoundBoard=soundboard, Playlist__uuid=playlist_uuid)
+            return SoundboardPlaylist.objects.get(section__SoundBoard=soundboard, Playlist__uuid=playlist_uuid)
         except SoundboardPlaylist.DoesNotExist:
             return None
 
@@ -49,12 +48,12 @@ class SoundboardPlaylistRepository:
 
     def get_first(self, soundboard: "SoundBoard") -> SoundboardPlaylist | None:
         try:
-            return SoundboardPlaylist.objects.filter(SoundBoard=soundboard).order_by('order').first()
+            return SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard).order_by('order').first()
         except SoundboardPlaylist.DoesNotExist:
             return None
 
     def get_last_index_by_section(self, soundboard: "SoundBoard", section: int) -> Optional[int]:
-        last_entry = SoundboardPlaylist.objects.filter(SoundBoard=soundboard, section__section=section).order_by('-order').first()
+        last_entry = SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard, section__section=section).order_by('-order').first()
         if last_entry:
             return last_entry.order
         return None
@@ -62,7 +61,7 @@ class SoundboardPlaylistRepository:
     def get_all(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
         return (
             SoundboardPlaylist.objects
-            .filter(SoundBoard=soundboard)
+            .filter(section__SoundBoard=soundboard)
             .select_related('Playlist', 'section')
             .order_by('section__section', 'order')
         )
@@ -70,7 +69,7 @@ class SoundboardPlaylistRepository:
     def get_all_playable(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
         return (
             SoundboardPlaylist.objects
-            .filter(SoundBoard=soundboard, activable_by_player=True)
+            .filter(section__SoundBoard=soundboard, activable_by_player=True)
             .select_related('Playlist', 'section')
             .order_by('section__section', 'order')
         )
@@ -78,7 +77,7 @@ class SoundboardPlaylistRepository:
     def get_all_with_min_one_track(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
         return (
             SoundboardPlaylist.objects
-            .filter(SoundBoard=soundboard, Playlist__tracks__isnull=False)
+            .filter(section__SoundBoard=soundboard, Playlist__tracks__isnull=False)
             .select_related('Playlist', 'section')
             .distinct()
             .order_by('section__section', 'order')
@@ -100,6 +99,17 @@ class SoundboardPlaylistRepository:
         soundboard.dict_section = dict_section
         soundboard.max_section = max_section
         return dict_section.items()
+
+    def get_sectioned_playlists(self, soundboard: "SoundBoard", public=False) -> List[tuple]:
+        playlist_queryset = SoundboardPlaylist.objects.select_related("Playlist").order_by("order", "id")
+        if public:
+            playlist_queryset = playlist_queryset.filter(Playlist__tracks__isnull=False).distinct()
+
+        from main.architecture.persistence.models.SoundboardSection import SoundboardSection
+
+        sections = SoundboardSection.objects.filter(SoundBoard=soundboard).order_by("section", "order", "id")
+        sections = sections.prefetch_related(Prefetch("playlists", queryset=playlist_queryset))
+        return [(section, list(section.playlists.all())) for section in sections]
 
     def get_soundboard_playlist_formated(self, soundboard: "SoundBoard") -> Any:
         list_playlist = self.get_all(soundboard)
@@ -124,17 +134,17 @@ class SoundboardPlaylistRepository:
         return dict_p_s.items()
 
     def get_max_section(self, soundboard: "SoundBoard") -> int:
-        max_section = SoundboardPlaylist.objects.filter(SoundBoard=soundboard).aggregate(models.Max('section__section'))['section__section__max']
+        max_section = SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard).aggregate(models.Max('section__section'))['section__section__max']
         return max_section if max_section is not None else 1
 
     def get_all_by_section(self, soundboard: "SoundBoard", section: int) -> List[SoundboardPlaylist]:
-        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, section__section=section).order_by('order')
+        return SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard, section__section=section).order_by('order')
 
     def get_order_greater_or_equal(self, soundboard: "SoundBoard", order: int) -> List[SoundboardPlaylist]:
-        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, order__gte=order).order_by('order')
+        return SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard, order__gte=order).order_by('order')
 
     def get_order_greater_or_equal_by_section(self, soundboard: "SoundBoard", order: int, section: int) -> List[SoundboardPlaylist]:
-        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, order__gte=order, section__section=section).order_by('order')
+        return SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard, order__gte=order, section__section=section).order_by('order')
 
     def shift_sections_from(self, soundboard: "SoundBoard", section: int) -> int:
         from main.architecture.persistence.models.SoundboardSection import SoundboardSection
@@ -146,11 +156,11 @@ class SoundboardPlaylistRepository:
         return sections.count()
 
     def delete(self, soundboard: "SoundBoard", playlist: Playlist) -> tuple:
-        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard, Playlist=playlist).delete()
+        return SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard, Playlist=playlist).delete()
 
     def count(self, soundboard: "SoundBoard") -> int:
-        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard).count()
+        return SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard).count()
 
     def get_list_shortcut_keyboard(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
-        return SoundboardPlaylist.objects.filter(SoundBoard=soundboard).exclude(shortcut_keyboard__isnull=True).exclude(shortcut_keyboard__exact='').order_by('section__section', 'order')
+        return SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard).exclude(shortcut_keyboard__isnull=True).exclude(shortcut_keyboard__exact='').order_by('section__section', 'order')
 

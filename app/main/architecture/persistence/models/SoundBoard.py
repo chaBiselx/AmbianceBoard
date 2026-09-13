@@ -5,7 +5,6 @@ from django.db import models
 from django.db.models import QuerySet
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.Playlist import Playlist
-from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.SoundboardTag import SoundboardTag
 from main.domain.brokers.message.ReduceSizeImgMessenger import reduce_size_img
 from main.domain.common.utils.OverwriteStorage import OverwriteStorage
@@ -28,13 +27,45 @@ class SoundBoard(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=False)
-    playlists = models.ManyToManyField(Playlist, through=SoundboardPlaylist, related_name='soundboards')
     tags = models.ManyToManyField(SoundboardTag, blank=True, related_name='soundboards', help_text="Tags associés à ce soundboard")
     name = models.CharField(max_length=255)
     color = models.CharField(default="#000000",max_length=7)  # Format hexa (ex: #FFFFFF)
     colorText = models.CharField(default="#ffffff",max_length=7)  # Format hexa (ex: #FFFFFF)
     is_public = models.BooleanField(default=False)
     icon = models.FileField(upload_to=SOUNDBOARD_FOLDER, storage=OverwriteStorage(), default=None, null=True, blank=True)
+
+    @property
+    def playlists(self):
+        from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+        from main.architecture.persistence.models.SoundboardSection import SoundboardSection
+
+        class PlaylistRelation:
+            def __init__(self, soundboard):
+                self.soundboard = soundboard
+
+            def all(self):
+                return Playlist.objects.filter(soundboardplaylist__section__SoundBoard=self.soundboard)
+
+            def filter(self, **kwargs):
+                return self.all().filter(**kwargs)
+
+            def count(self):
+                return self.all().count()
+
+            def add(self, *playlists):
+                section, _ = SoundboardSection.objects.get_or_create(
+                    SoundBoard=self.soundboard,
+                    section=1,
+                    defaults={"name": "Section 1", "order": 1},
+                )
+                for playlist in playlists:
+                    SoundboardPlaylist.objects.get_or_create(
+                        section=section,
+                        Playlist=playlist,
+                        defaults={"order": 0},
+                    )
+
+        return PlaylistRelation(self)
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """

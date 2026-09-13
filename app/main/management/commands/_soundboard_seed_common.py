@@ -246,8 +246,8 @@ class BaseSoundboardSeedCommand(BaseCommand):
     def _ensure_soundboard_playlist_link(self, soundboard, playlist, order: int, section: int = 1) -> bool:
         section_obj = self._ensure_soundboard_section(soundboard, section)
         soundboard_link, link_created = SoundboardPlaylist.objects.get_or_create(
-            SoundBoard=soundboard,
             Playlist=playlist,
+            section=section_obj,
             defaults={
                 "order": order,
                 "section": section_obj,
@@ -393,8 +393,8 @@ class BaseSoundboardSeedCommand(BaseCommand):
 
         section_obj = self._ensure_soundboard_section(soundboard, section)
         soundboard_link, link_created = SoundboardPlaylist.objects.get_or_create(
-            SoundBoard=soundboard,
             Playlist=playlist,
+            section=section_obj,
             defaults={
                 "order": order,
                 "section": section_obj,

@@ -10,19 +10,21 @@ class SoundBoardTemplateTagTest(SimpleTestCase):
     def test_get_ordered_playlists_owner_true_uses_private_mode(self):
         soundboard = Mock()
         expected = [('section-1', ['playlist'])]
-        soundboard.get_list_playlist_ordered.return_value = expected
+        repository = Mock()
+        repository.get_sectioned_playlists.return_value = expected
 
         result = get_ordered_playlists(soundboard, True)
 
         self.assertEqual(result, expected)
-        soundboard.get_list_playlist_ordered.assert_called_once_with(public=False)
+        repository.get_sectioned_playlists.assert_called_once_with(soundboard, public=False)
 
     def test_get_ordered_playlists_owner_false_uses_public_mode(self):
         soundboard = Mock()
         expected = [('section-1', ['playlist'])]
-        soundboard.get_list_playlist_ordered.return_value = expected
+        repository = Mock()
+        repository.get_sectioned_playlists.return_value = expected
 
         result = get_ordered_playlists(soundboard, False)
 
         self.assertEqual(result, expected)
-        soundboard.get_list_playlist_ordered.assert_called_once_with(public=True)
+        repository.get_sectioned_playlists.assert_called_once_with(soundboard, public=True)

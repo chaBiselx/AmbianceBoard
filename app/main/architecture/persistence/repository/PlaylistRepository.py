@@ -119,7 +119,7 @@ class PlaylistRepository:
     def get_user_playlists_not_in_soundboard(self, user: User, soundboard: SoundBoard, filter: dict) -> List[Playlist]:
         """Récupère les playlists de l'utilisateur non encore intégrées dans le soundboard cible."""
         playlists_in_soundboard = SoundboardPlaylist.objects.filter(
-            SoundBoard=soundboard
+            section__SoundBoard=soundboard
         ).values_list('Playlist_id', flat=True)
 
         query_set = Playlist.objects.filter(
