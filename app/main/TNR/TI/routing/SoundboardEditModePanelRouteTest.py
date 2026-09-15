@@ -1,25 +1,21 @@
 """
 Test d'intégration pour la route: soundboardEditModePanel (GET /soundBoards/<uuid>/edit-mode/panel)
 """
-from django.test import TestCase, Client, tag
+from django.test import tag
 from django.urls import reverse
-from django.contrib.auth import get_user_model
-from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.TNR.Fixtures.BaseTestCases import AuthenticatedTestCase
 import uuid
-
-User = get_user_model()
 
 
 @tag('integration')
-class SoundboardEditModePanelRouteTest(TestCase):
+class SoundboardEditModePanelRouteTest(AuthenticatedTestCase):
     """Tests pour la route soundboardEditModePanel (GET)."""
 
     def setUp(self):
-        self.client = Client()
-        self.user = User.objects.create_user(username='owner', email='owner@test.com', password='pw')  # NOSONAR
-        self.other_user = User.objects.create_user(username='other', email='other@test.com', password='pw')  # NOSONAR
+        super().setUp()
+        self.other_user = self.create_user(username='other')
 
-        self.soundboard = SoundBoard.objects.create(user=self.user, name='Board')
+        self.soundboard = self.create_soundboard(name='Board')
 
     def _url(self, soundboard_uuid=None):
         return reverse('soundboardEditModePanel', kwargs={
@@ -31,16 +27,16 @@ class SoundboardEditModePanelRouteTest(TestCase):
         self.assertIn(response.status_code, [302, 401, 403])
 
     def test_returns_200_for_owner(self):
-        self.client.login(username='owner', password='pw')
+        self.login()
         response = self.client.get(self._url())
         self.assertEqual(response.status_code, 200)
 
     def test_returns_404_for_nonexistent_soundboard(self):
-        self.client.login(username='owner', password='pw')
+        self.login()
         response = self.client.get(self._url(soundboard_uuid=uuid.uuid4()))
         self.assertEqual(response.status_code, 404)
 
     def test_returns_404_for_other_users_soundboard(self):
-        self.client.login(username='other', password='pw')
+        self.login(self.other_user)
         response = self.client.get(self._url())
         self.assertEqual(response.status_code, 404)

@@ -1,34 +1,31 @@
 """
 Test d'intégration pour la route: mise à jour d'une playlist (/playlist/<uuid:playlist_uuid>/update)
 """
-from django.test import TestCase, Client, tag
+from django.test import tag
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 import uuid
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.PlaylistTag import PlaylistTag
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-
-User = get_user_model()
+from main.TNR.Fixtures.BaseTestCases import AuthenticatedTestCase
 
 
 @tag('integration')
-class PlaylistUpdateRouteTest(TestCase):
+class PlaylistUpdateRouteTest(AuthenticatedTestCase):
     """Tests pour la route playlist_update (GET/POST)"""
 
     def setUp(self):
-        self.client = Client()
-        self.user = User.objects.create_user(username='owner', email='owner@test.com', password='pw')  # NOSONAR
-        self.other_user = User.objects.create_user(username='other', email='other@test.com', password='pw')  # NOSONAR
+        super().setUp()
+        self.other_user = self.create_user(username='other')
 
         # Create test tags
         self.tag = PlaylistTag.objects.create(name='Action', label='action', is_active=True)
 
-        self.playlist = Playlist.objects.create(
-            user=self.user, name='Ma playlist', typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
+        self.playlist = self.create_playlist(
+            name='Ma playlist', typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
         )
-        self.other_playlist = Playlist.objects.create(
+        self.other_playlist = self.create_playlist(
             user=self.other_user, name='Playlist autre', typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
         )
 
@@ -40,22 +37,22 @@ class PlaylistUpdateRouteTest(TestCase):
         self.assertIn(response.status_code, [302, 401, 403])
 
     def test_returns_200_for_owner(self):
-        self.client.login(username='owner', password='pw')
+        self.login()
         response = self.client.get(self._url())
         self.assertEqual(response.status_code, 200)
 
     def test_returns_404_for_nonexistent_playlist(self):
-        self.client.login(username='owner', password='pw')
+        self.login()
         response = self.client.get(self._url(playlist_uuid=uuid.uuid4()))
         self.assertEqual(response.status_code, 404)
 
     def test_returns_404_for_other_users_playlist(self):
-        self.client.login(username='owner', password='pw')
+        self.login()
         response = self.client.get(self._url(playlist_uuid=self.other_playlist.uuid))
         self.assertEqual(response.status_code, 404)
 
     def test_post_updates_playlist_name(self):
-        self.client.login(username='owner', password='pw')
+        self.login()
         response = self.client.post(self._url(), {
             'name': 'Nouveau nom',
             'typePlaylist': PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
@@ -72,7 +69,7 @@ class PlaylistUpdateRouteTest(TestCase):
         self.assertEqual(self.playlist.name, 'Nouveau nom')
 
     def test_post_with_invalid_data_redisplays_form(self):
-        self.client.login(username='owner', password='pw')
+        self.login()
         response = self.client.post(self._url(), {
             'name': '',
             'typePlaylist': PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
