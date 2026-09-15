@@ -25,6 +25,7 @@ class FileStreamExtract:
             logger.exception(
                 f"[external_stream] file request failed domain={self.link_music.domained_name} "
                 f"url={self.link_music.url}"
+                f"Exception {e}"
             )
             return None
         
@@ -38,6 +39,7 @@ class FileStreamExtract:
             logger.exception(
                 f"[external_stream] file read failed domain={self.link_music.domained_name} "
                 f"url={self.link_music.url}"
+                f"Exception {e}"
             )
             raise
         
