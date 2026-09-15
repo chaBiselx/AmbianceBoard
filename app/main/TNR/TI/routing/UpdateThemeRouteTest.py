@@ -1,29 +1,22 @@
 """
 Test d'intégration pour la route: update theme (/account/settings/theme)
 """
-from django.test import TestCase, Client, tag
+from django.test import tag
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 
-User = get_user_model()
+from main.TNR.Fixtures.BaseTestCases import AuthenticatedTestCase
 
 
 @tag('integration')
-class UpdateThemeRouteTest(TestCase):
+class UpdateThemeRouteTest(AuthenticatedTestCase):
     """Tests pour la route update theme"""
     
     def setUp(self):
-        """Configuration initiale"""
-        self.client = Client()
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='test@example.com',
-            password='testpass123'
-        )
+        super().setUp()
     
     def test_updatetheme_accessible_when_authenticated(self):
         """Test que la route update theme est accessible pour un utilisateur authentifié"""
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         response = self.client.post(reverse('updateTheme'), {'theme': 'dark'})
         self.assertIn(response.status_code, [200, 302, 400, 405])
     

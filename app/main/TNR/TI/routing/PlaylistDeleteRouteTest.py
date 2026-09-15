@@ -1,30 +1,25 @@
-"""
-Test d'intégration pour la route: suppression d'une playlist (/playlist/<uuid:playlist_uuid>/delete)
-"""
-from django.test import TestCase, Client, tag
+"""Test d'intégration pour la suppression d'une playlist."""
+from django.test import tag
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 import uuid
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
-
-User = get_user_model()
+from main.TNR.Fixtures.BaseTestCases import AuthenticatedTestCase
 
 
 @tag('integration')
-class PlaylistDeleteRouteTest(TestCase):
+class PlaylistDeleteRouteTest(AuthenticatedTestCase):
     """Tests pour la route playlist_delete (DELETE)"""
 
     def setUp(self):
-        self.client = Client()
-        self.user = User.objects.create_user(username='owner', email='owner@test.com', password='pw')  # NOSONAR
-        self.other_user = User.objects.create_user(username='other', email='other@test.com', password='pw')  # NOSONAR
+        super().setUp()
+        self.other_user = self.create_user(username='other')
 
-        self.playlist = Playlist.objects.create(
-            user=self.user, name='Ma playlist', typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
+        self.playlist = self.create_playlist(
+            name='Ma playlist', typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
         )
-        self.other_playlist = Playlist.objects.create(
+        self.other_playlist = self.create_playlist(
             user=self.other_user, name='Playlist autre', typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
         )
 

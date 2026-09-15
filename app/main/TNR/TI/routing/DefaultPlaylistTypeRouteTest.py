@@ -1,29 +1,22 @@
 """
 Test d'intégration pour la route: default playlist type (/account/settings/playlists/style)
 """
-from django.test import TestCase, Client, tag
+from django.test import tag
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 
-User = get_user_model()
+from main.TNR.Fixtures.BaseTestCases import AuthenticatedTestCase
 
 
 @tag('integration')
-class DefaultPlaylistTypeRouteTest(TestCase):
+class DefaultPlaylistTypeRouteTest(AuthenticatedTestCase):
     """Tests pour la route default playlist type"""
 
     def setUp(self):
-        """Configuration initiale"""
-        self.client = Client()
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='test@example.com',
-            password='testpass123'
-        )  # NOSONAR
+        super().setUp()
 
     def test_defaultplaylisttype_get_accessible_when_authenticated(self):
         """Test que la route est accessible en GET pour un utilisateur authentifié"""
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         response = self.client.get(reverse('defaultPlaylistType'))
         self.assertEqual(response.status_code, 200)
 
@@ -34,6 +27,6 @@ class DefaultPlaylistTypeRouteTest(TestCase):
 
     def test_defaultplaylisttype_post_invalid_data_renders_form(self):
         """Test qu'un POST avec des données invalides réaffiche le formulaire"""
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         response = self.client.post(reverse('defaultPlaylistType'), {})
         self.assertIn(response.status_code, [200, 302])
