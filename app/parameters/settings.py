@@ -160,6 +160,9 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'console',
         },
+        'null': {
+            'class': 'logging.NullHandler',
+        },
         'AppLogger': {
             'class': 'main.domain.common.utils.logger.AppLoggerHandler.AppLoggerHandler',
             'level': level_log_debug,
@@ -221,12 +224,13 @@ LOGGING = {
             'propagate': False,
         },
         'django.request': {
-            'handlers': [] if TESTING else ['console', 'AppLogger'],
+            # NullHandler avoids Python logging's lastResort stderr fallback during tests.
+            'handlers': ['null'] if TESTING else ['console', 'AppLogger'],
             'level': 'ERROR' if TESTING else 'WARNING',
             'propagate': False,
         },
         'django.server': {
-            'handlers': [] if TESTING else ['console', 'AppLogger'],
+            'handlers': ['null'] if TESTING else ['console', 'AppLogger'],
             'level': 'ERROR' if TESTING else 'INFO',
             'propagate': False,
         },

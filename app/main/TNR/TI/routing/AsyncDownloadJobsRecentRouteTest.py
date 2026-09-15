@@ -11,6 +11,8 @@ from django.utils import timezone
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.AsyncDownloadJob import AsyncDownloadJob
 from main.architecture.persistence.repository.AsyncDownloadJobRepository import AsyncDownloadJobRepository
+from main.domain.common.utils.cache.CacheFactory import CacheFactory
+from main.domain.private.service.LinkService import LinkService
 
 User = get_user_model()
 
@@ -77,7 +79,8 @@ class AsyncDownloadJobsRecentRouteTest(TestCase):
 
         response_without_jobs = self.client.get(route)
         self.assertEqual(response_without_jobs.status_code, 200)
-        self.assertNotContains(response_without_jobs, route)
+        # Use href="..." to avoid false positives from the debug toolbar echoing the current request path
+        self.assertNotContains(response_without_jobs, f'href="{route}"')
 
         recent_job = self.repository.create(
             user=self.user,
@@ -85,7 +88,9 @@ class AsyncDownloadJobsRecentRouteTest(TestCase):
             url='https://youtu.be/user-visible'
         )
         AsyncDownloadJob.objects.filter(pk=recent_job.pk).update(updated_at=timezone.now() - timedelta(hours=2))
+        # The navbar flag is cached per user; bypassing LinkService requires manual invalidation
+        CacheFactory.get_default_cache().delete(f"{LinkService.PREFIX_CACHE_NAVBAR}{self.user.id}")
 
         response_with_job = self.client.get(route)
         self.assertEqual(response_with_job.status_code, 200)
-        self.assertContains(response_with_job, route)
+        self.assertContains(response_with_job, f'href="{route}"')

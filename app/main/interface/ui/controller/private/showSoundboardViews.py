@@ -1,4 +1,5 @@
 import json
+import uuid
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse, StreamingHttpResponse
@@ -76,7 +77,7 @@ def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse|JsonRe
     """Stream d'une musique aléatoire d'une playlist via soundboard"""
     cache = CacheFactory.get_default_cache()
     cache_key = f"musicStream:{request.session.session_key}:{soundboard_uuid}:{playlist_uuid}:{request.GET.get('i','0')}"
-    
+
     try:
         if request.headers.get('X-Metadata-Only') == 'true':
             track_id = cache.get(cache_key)
@@ -93,8 +94,8 @@ def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse|JsonRe
                 ret = track.get_reponse_content()
         if ret:
             return ret
-    except Exception as e:
-        logger.error(f"Error in soundboard_music_stream: {e}")
+    except Exception:
+        logger.error(f"[music_stream] failed cache_key={cache_key}")
     return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
 
 
@@ -146,8 +147,11 @@ def private_specific_track_stream(request, soundboard_uuid, playlist_uuid, music
                 ret = track.get_reponse_content()
         if ret:
             return ret
-    except Exception as e:
-        logger.error(f"Error in private_specific_track_stream: {e}")
+    except Exception:
+        logger.error(
+            f"[private_specific_track_stream] failed request_id={request_id} "
+            f"soundboard_uuid={soundboard_uuid} playlist_uuid={playlist_uuid} music_id={music_id}"
+        )
     return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
 
 
@@ -176,7 +180,7 @@ def soundboard_edit_mode_panel(request, soundboard_uuid):
     """Retourne la vue partielle pour le mode édition du soundboard."""
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
-        return render(request, HtmlDefaultPageEnum.ERROR_404_MODAL.value, status=404, modal=True)
+        return render(request, HtmlDefaultPageEnum.ERROR_404_MODAL.value, status=404)
 
     return render(request, 'Html/Soundboard/modal/soundboard_edit_mode_panel.html', {
         'soundboard': soundboard,

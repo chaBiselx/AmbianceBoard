@@ -22,7 +22,10 @@ class FileStreamExtract:
         try:
             return self._file_generator(self._get_response())
         except Exception as e:
-            logger.error(f"An error occurred while extracting the file: {e}")
+            logger.exception(
+                f"[external_stream] file request failed domain={self.link_music.domained_name} "
+                f"url={self.link_music.url}"
+            )
             return None
         
     def _file_generator(self, response):
@@ -32,8 +35,11 @@ class FileStreamExtract:
                 if chunk:
                     yield chunk
         except Exception as e:
-            logger.error(f"An error occurred while generating file content: {e}")
-            return None
+            logger.exception(
+                f"[external_stream] file read failed domain={self.link_music.domained_name} "
+                f"url={self.link_music.url}"
+            )
+            raise
         
     def _get_response(self):
         response = requests.get(self.link_music.url, stream=True, timeout=10)

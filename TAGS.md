@@ -458,6 +458,12 @@ Corrections
 Améliorations
 - Amélioration de filtres sur les interfaces de modérations
 
+Modifications
+- L'ajout de tag n'est plus obligatoire lors de la création d'un boutons
+
+Corrections
+- Corrections d'une URL dans la page de FAQ qui provoque une erreur
+
 Fiabilité & Confiance
 - Préparation pour la migrations de structure des données pour les soundboards
 

@@ -3,6 +3,7 @@ from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SharedSoundboard import SharedSoundboard
 from django.utils import timezone
 from datetime import timedelta
+import uuid
 
 
 class SharedSoundboardRepository:
@@ -42,6 +43,10 @@ class SharedSoundboardRepository:
         return shared
 
     def get(self, soundboard: SoundBoard, token: str) -> SharedSoundboard|None:
+        try:
+            uuid.UUID(token)
+        except (ValueError, TypeError):
+            return None
         try:
             return SharedSoundboard.objects.filter(
                 soundboard=soundboard,
