@@ -9,7 +9,7 @@ def restore_missing_sections(apps, schema_editor):
 
     for soundboard in sound_board.objects.all():
         max_section = (
-            soundboard_section.objects.filter(soundBoard_id=soundboard.id)
+            soundboard_section.objects.filter(SoundBoard_id=soundboard.id)
             .order_by("-section")
             .values_list("section", flat=True)
             .first()
@@ -19,7 +19,7 @@ def restore_missing_sections(apps, schema_editor):
 
         for section_number in range(1, max_section + 1):
             soundboard_section.objects.get_or_create(
-                soundBoard_id=soundboard.id,
+                SoundBoard_id=soundboard.id,
                 section=section_number,
                 defaults={
                     "name": f"Section {section_number}",
@@ -32,12 +32,12 @@ def migrate_playlist_soundboard_relation(apps, schema_editor):
     soundboard_playlist = apps.get_model("main", "SoundboardPlaylist")
     soundboard_section = apps.get_model("main", "SoundboardSection")
 
-    for playlist in soundboard_playlist.objects.select_related("sound_board", "section"):
-        if playlist.section_id and playlist.section.sound_board_id == playlist.sound_board_id:
+    for playlist in soundboard_playlist.objects.select_related("SoundBoard", "section"):
+        if playlist.section_id and playlist.section.SoundBoard_id == playlist.SoundBoard_id:
             continue
 
         section, _ = soundboard_section.objects.get_or_create(
-            soundBoard_id=playlist.sound_board_id,
+            SoundBoard_id=playlist.SoundBoard_id,
             section=1,
             defaults={"name": "Section 1", "order": 1},
         )

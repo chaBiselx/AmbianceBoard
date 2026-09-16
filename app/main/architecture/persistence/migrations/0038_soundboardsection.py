@@ -9,17 +9,17 @@ def migrate_section_data(apps, schema_editor):
 
     for soundboard in sound_board.objects.all():
         sections_by_number = {}
-        for old_section in soundboard_playlist.objects.filter(soundBoard=soundboard).values_list("section", flat=True).distinct():
+        for old_section in soundboard_playlist.objects.filter(SoundBoard=soundboard).values_list("section", flat=True).distinct():
             if old_section is None:
                 old_section = 1
             section_obj, _ = soundboard_section.objects.get_or_create(
-                soundBoard=soundboard,
+                SoundBoard=soundboard,
                 section=int(old_section),
                 defaults={"name": f"Section {old_section}", "order": int(old_section)},
             )
             sections_by_number[int(old_section)] = section_obj
 
-        for playlist in soundboard_playlist.objects.filter(soundBoard=soundboard):
+        for playlist in soundboard_playlist.objects.filter(SoundBoard=soundboard):
             section_number = int(playlist.section) if playlist.section is not None else 1
             playlist.section_ref = sections_by_number.get(section_number)
             playlist.save(update_fields=["section_ref"])
