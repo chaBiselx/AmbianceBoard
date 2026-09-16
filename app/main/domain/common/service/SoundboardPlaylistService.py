@@ -107,3 +107,14 @@ class SoundboardPlaylistService:
         self.soundboard_playlist_repository.shift_sections_from(self.soundboard, section)
         self._get_or_create_section(section)
         return self
+
+    @transaction.atomic
+    def delete_section(self, section: int):
+        if section <= 0:
+            return self
+        if self.soundboard_playlist_repository.count_sections(self.soundboard) <= 1:
+            return self
+
+        self.soundboard_playlist_repository.delete_section(self.soundboard, section)
+        self.soundboard_playlist_repository.shift_sections_down_from(self.soundboard, section)
+        return self

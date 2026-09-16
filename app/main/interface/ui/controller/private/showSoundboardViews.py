@@ -340,7 +340,6 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
             'add_music_url': reverse('add_music_from_soundboard', args=[playlist.uuid]),
         }, status=201)
     except Exception as e:
-        logger.error("===================================================")
         logger.error(f"Erreur création mode édition pour soundboard {soundboard_uuid}: {e}")
         return JsonResponse({'error': "Une erreur inattendue est survenue"}, status=500)
 

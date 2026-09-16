@@ -24,7 +24,9 @@ class SectionDomManager {
         collapse.id = `panelsStayOpen-${sectionNumber}`;
         collapse.setAttribute('aria-labelledby', `panelsSection-${sectionNumber}`);
         const insertButton = accordionNode.querySelector('.section-insert-before-button') as HTMLButtonElement | null;
-        if (insertButton) insertButton.dataset.insertBefore = sectionNumber.toString();
+        if (insertButton) insertButton.dataset.numSection = sectionNumber.toString();
+        const deleteButton = accordionNode.querySelector('.section-delete-button') as HTMLButtonElement | null;
+        if (deleteButton) deleteButton.dataset.numSection = sectionNumber.toString();
     }
 
     public buildSectionNode(template: HTMLTemplateElement, sectionNumber: number): HTMLElement | null {
@@ -43,9 +45,19 @@ class SectionDomManager {
             accordionNode.replaceWith(shiftedNode);
         }
     }
+
+    public shiftSectionsForDeletion(deletedSection: number, maxSection: number): void {
+        for (let sectionNumber = deletedSection + 1; sectionNumber <= maxSection; sectionNumber++) {
+            const accordionNode = OrganizerDragAndDropZone.associatedPlaylistsSection(sectionNumber)?.closest('.accordion') as HTMLElement | null;
+            if (!accordionNode) continue;
+            const shiftedNode = accordionNode.cloneNode(true) as HTMLElement;
+            this.updateAccordionNode(shiftedNode, sectionNumber - 1);
+            accordionNode.replaceWith(shiftedNode);
+        }
+    }
 }
 
-export class SectionAdder {
+class SectionAdder {
     private readonly template: HTMLTemplateElement | null = null;
     private readonly sectionDomManager = new SectionDomManager();
 
@@ -62,7 +74,7 @@ export class SectionAdder {
         const parent = document.getElementById('associated-playlists-container');
         if (parent && !parent.dataset.insertSectionBound) {
             parent.addEventListener('click', event => {
-                const position = Number.parseInt((event.target as HTMLElement).closest<HTMLButtonElement>('.section-insert-before-button')?.dataset.insertBefore || '');
+                const position = Number.parseInt((event.target as HTMLElement).closest<HTMLButtonElement>('.section-insert-before-button')?.dataset.numSection || '');
                 if (position > 0) void this.addSectionAt(position);
             });
             parent.dataset.insertSectionBound = 'true';
@@ -97,3 +109,43 @@ export class SectionAdder {
         }
     }
 }
+
+class SectionDeleter {
+    private readonly sectionDomManager = new SectionDomManager();
+
+    constructor(private readonly setupDragEvents: () => void) {}
+
+    public addEvent(): void {
+        const parent = document.getElementById('associated-playlists-container');
+        if (parent && !parent.dataset.deleteSectionBound) {
+            parent.addEventListener('click', event => {
+                const position = Number.parseInt((event.target as HTMLElement).closest<HTMLButtonElement>('.section-delete-button')?.dataset.numSection || '');
+                if (position > 0) void this.deleteSectionAt(position);
+            });
+            parent.dataset.deleteSectionBound = 'true';
+        }
+    }
+
+    private async deleteSectionAt(section: number): Promise<void> {
+        try {
+            SectionConfig.refreshMaxSections();
+            const currentCount = SectionConfig.getMaxSections();
+            if (currentCount <= 1) return;
+            if (!confirm('Supprimer cette section et tous ses boutons associés ?')) return;
+            if (!await new SendBackendAction().deleteSection(section)) return;
+
+            const accordionNode = OrganizerDragAndDropZone.associatedPlaylistsSection(section)?.closest('.accordion') as HTMLElement | null;
+            accordionNode?.remove();
+            this.sectionDomManager.shiftSectionsForDeletion(section, currentCount);
+
+            SectionConfig.refreshMaxSections();
+            this.setupDragEvents();
+            EmptyPlaylistChecker.check();
+            new CleanOrderHandler().resetBadge();
+        } catch (error) {
+            ConsoleCustom.error('Failed to delete section', error);
+        }
+    }
+}
+
+export { SectionAdder, SectionDeleter };

@@ -155,6 +155,28 @@ class SoundboardPlaylistRepository:
             item.save()
         return sections.count()
 
+    def shift_sections_down_from(self, soundboard: "SoundBoard", section: int) -> int:
+        from main.architecture.persistence.models.SoundboardSection import SoundboardSection
+
+        sections = SoundboardSection.objects.filter(SoundBoard=soundboard, section__gte=section).order_by('section')
+        count = 0
+        for item in sections:
+            item.section -= 1
+            item.save()
+            count += 1
+        return count
+
+    def count_sections(self, soundboard: "SoundBoard") -> int:
+        from main.architecture.persistence.models.SoundboardSection import SoundboardSection
+
+        return SoundboardSection.objects.filter(SoundBoard=soundboard).count()
+
+    def delete_section(self, soundboard: "SoundBoard", section: int) -> None:
+        from main.architecture.persistence.models.SoundboardSection import SoundboardSection
+
+        SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard, section__section=section).delete()
+        SoundboardSection.objects.filter(SoundBoard=soundboard, section=section).delete()
+
     def delete(self, soundboard: "SoundBoard", playlist: Playlist) -> tuple:
         return SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard, Playlist=playlist).delete()
 

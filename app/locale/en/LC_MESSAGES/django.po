@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-16 08:17+0000\n"
+"POT-Creation-Date: 2026-09-16 10:38+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -1187,9 +1187,13 @@ msgid "template.soundboard.list.new_soundbaord"
 msgstr "Add a soundboard"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:16
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:39
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:38
 msgid "template.soundboard_organize._personalized_actions"
 msgstr "Other personnalised action"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:75
+msgid "template.soundboard_organize.section.delete"
+msgstr "Delete section"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:5
 msgid "template.soundboard_read.page_title_suffix"
@@ -1203,7 +1207,7 @@ msgstr "Edit mode"
 msgid "template.soundboard_read.button.organize"
 msgstr "Organize"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:38
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:39
 msgid "template.soundboard_read.button.edit_soundboard"
 msgstr "Edit SoundBoard"
 
@@ -1281,23 +1285,23 @@ msgstr "none"
 msgid "template.filterTagCloud.no_description"
 msgstr "No description"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:68
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:88
 msgid "template.soundboard_read.my_proposals.title"
 msgstr "My proposals"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:83
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:101
 msgid "template.soundboard_read.my_proposals.status.pending"
 msgstr "Pending"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:84
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:102
 msgid "template.soundboard_read.my_proposals.action.withdraw"
 msgstr "Withdraw"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:86
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:104
 msgid "template.soundboard_read.my_proposals.status.refused"
 msgstr "Refused"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:87
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:105
 msgid "template.soundboard_read.my_proposals.action.dismiss"
 msgstr "Delete"
 

@@ -11,6 +11,11 @@ export class OrganizerApiClient {
         return response.ok;
     }
 
+    public async deleteSection(deleteSection: number, url?: string): Promise<boolean> {
+        const response = await this.request('DELETE', { deleteSection }, url);
+        return response.ok;
+    }
+
     public async request(method: string, body: object, url?: string): Promise<Response> {
         return fetch(url || OrganizerDragAndDropZone.getUrlFromAnySection(), {
             method,
@@ -41,6 +46,15 @@ export class SendBackendAction {
     public async insertSection(insertSection: number, url?: string): Promise<boolean> {
         try {
             return await this.apiClient.insertSection(insertSection, url);
+        } catch (error) {
+            ConsoleCustom.error(error);
+            return false;
+        }
+    }
+
+    public async deleteSection(deleteSection: number, url?: string): Promise<boolean> {
+        try {
+            return await this.apiClient.deleteSection(deleteSection, url);
         } catch (error) {
             ConsoleCustom.error(error);
             return false;

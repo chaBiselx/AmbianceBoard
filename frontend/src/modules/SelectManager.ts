@@ -18,7 +18,6 @@ class SelectManager {
             
             for (const selectElement of form.querySelectorAll('.select-element-redirect')) {
                 selectElement.addEventListener('change', (event) => {
-                    console.log(event);
                     const target = event.currentTarget as HTMLSelectElement;
                     const value = target.value ?? '';
                     this.changePage(value, target.name);

@@ -40,15 +40,12 @@ class SoundBoardPlaylistManager:
         Returns:
             dict: Dictionnaire des playlists organisées par section {section_number: [playlists]}
         """
-        liste_brut = self.sound_play_repository.get_all(self.soundboard)
-        tabul = {}
-        for playlist_soundboard in liste_brut:
-            section = playlist_soundboard.get_section() or 1
-            if section not in tabul:
-                tabul[section] = []
-            tabul[section].append(playlist_soundboard)
-
-        return tabul
+        return {
+            section.section: playlists
+            for section, playlists in self.sound_play_repository.get_sectioned_playlists(
+                self.soundboard
+            )
+        }
 
     def get_unassociated_playlists(self) -> List[Playlist]:
         """

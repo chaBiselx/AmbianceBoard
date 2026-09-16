@@ -39,7 +39,8 @@
             <h3>Boutons associés </h3>
         </div>
         <div data-url="{% url 'organizeSoundboardUpdate' soundboard.uuid %}" id="associated-playlists-container">
-            {% for section_num in max_sections %}
+            {% for soundboard_section in soundboard.sections.all %}
+            {% with section_num=soundboard_section.section %}
             <div class="accordion m-0">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="panelsSection-{{ section_num }}">
@@ -48,7 +49,7 @@
                         </button>
                     </h2>
                     <div class="d-flex justify-content-end pe-2 pt-2">
-                        <button type="button" class="btn btn-sm btn-outline-info section-insert-before-button" data-insert-before="{{ section_num }}" data-bs-toggle="tooltip" data-bs-title="Insérer une section avant">
+                        <button type="button" class="btn btn-sm btn-outline-info section-insert-before-button" data-num-section="{{ section_num }}" data-bs-toggle="tooltip" data-bs-title="Insérer une section avant">
                             <i class="fa-solid fa-plus"></i>
                             <span>Insérer avant</span>
                         </button>
@@ -69,9 +70,16 @@
                             </div>
                         </div>
                     </div>
+                    <div class="d-flex justify-content-end pe-2 pb-2">
+                        <button type="button" class="btn btn-sm btn-outline-danger section-delete-button" data-num-section="{{ section_num }}" data-bs-toggle="tooltip" data-bs-title="Supprimer cette section">
+                            <i class="fa-solid fa-trash"></i>
+                            <span>{% trans "template.soundboard_organize.section.delete" %}</span>
+                        </button>
+                    </div>
                 </div>
 
             </div>
+            {% endwith %}
             {% endfor %}
         </div>
         <button class="btn btn-sm btn-info btn-lg float-end" id="add-section-button" data-bs-toggle="tooltip" data-bs-title="Ajouter une section de fin">
@@ -89,7 +97,7 @@
                 </button>
             </h2>
             <div class="d-flex justify-content-end pe-2 pt-2">
-                <button type="button" class="btn btn-sm btn-outline-info section-insert-before-button" data-insert-before="##SECTION##" data-bs-toggle="tooltip" data-bs-title="Insérer une section avant">
+                <button type="button" class="btn btn-sm btn-outline-info section-insert-before-button" data-num-section="##SECTION##" data-bs-toggle="tooltip" data-bs-title="Insérer une section avant">
                     <i class="fa-solid fa-plus"></i>
                     <span>Insérer avant</span>
                 </button>
@@ -100,6 +108,12 @@
                         <span class="associated-playlists-empty section-0-empty" hidden="true">Aucun bouton dans cette section</span>
                     </div>
                 </div>
+            </div>
+            <div class="d-flex justify-content-end pe-2 pb-2">
+                <button type="button" class="btn btn-sm btn-outline-danger section-delete-button" data-num-section="##SECTION##" data-bs-toggle="tooltip" data-bs-title="Supprimer cette section">
+                    <i class="fa-solid fa-trash"></i>
+                    <span>{% trans "template.soundboard_organize.section.delete" %}</span>
+                </button>
             </div>
         </div>
 
