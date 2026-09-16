@@ -34,32 +34,41 @@ clean:
 	@# Help: vide les fichiers de logs sans les supprimer
 	$(CONTAINER_BACKEND) find $(LOG_DIR) -type f -name "*.log" -exec sh -c '>'{}'; echo "Logs vidés pour {}"' \;
 
-delete-db:
+## —— Migrations  ————————————————————————————————————————————————————————————————
+# Création du dossier de sauvegarde s'il n'existe pas
+.prepare:
+	$(CONTAINER_BACKEND) mkdir -p $(BACKUP_DIR)
+
+db-update:
+	@# Help: Met a jour la base de données
+	@echo "$(GREEN)Migrations...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py makemigrations
+	make db-migrate
+
+db-migrate:
+	@# Help: Applique les migrations de la base de données
+	@echo "$(GREEN)Migrate de la base de données...$(NC)"
+	$(CONTAINER_BACKEND) python manage.py migrate
+	@echo "$(GREEN)Migrations terminées.$(NC)"
+
+db-delete:
 	@# Help: purge la base de données et supprime les fichiers médias
 	@echo "$(GREEN)Suppression des fichiers médias...$(NC)"
 	$(CONTAINER_BACKEND) rm -rf $(MEDIA_FOLDER)/*
 	@echo "$(GREEN)Suppression de la base de données...$(NC)"
 	$(CONTAINER_BACKEND) python manage.py flush --no-input
 	@echo "$(GREEN)Suppression terminée.$(NC)"
-	@echo "$(RED)docker compose exec back python manage.py shell -c \"$(NC)"
-	@echo "$(RED)from django.db import connection$(NC)"
-	@echo "$(RED)with connection.cursor() as c:$(NC)"
-	@echo "$(RED)	c.execute('DROP SCHEMA public CASCADE; CREATE SCHEMA public;')$(NC)"
-	@echo "$(RED)\"$(NC)"
-
-## —— Migrations  ————————————————————————————————————————————————————————————————
-# Création du dossier de sauvegarde s'il n'existe pas
-.prepare:
-	$(CONTAINER_BACKEND) mkdir -p $(BACKUP_DIR)
+	make db-delete-forced
 
 
-db-update:
-	@# Help: Met a jour la base de données
-	@echo "$(GREEN)Migrations...$(NC)"
-	$(CONTAINER_BACKEND) python manage.py makemigrations
-	@echo "$(GREEN)Migrate de la base de données...$(NC)"
-	$(CONTAINER_BACKEND) python manage.py migrate
-	@echo "$(GREEN)Migrations terminées.$(NC)"
+db-delete-forced:
+	$(CONTAINER_BACKEND) python manage.py shell -c "from django.db import connection; connection.cursor().execute('DROP SCHEMA public CASCADE; CREATE SCHEMA public;')"
+
+db-reset:
+	@# Help: Réinitialise la base de données
+	make db-delete
+	make db-update
+	make fixtures
 
 ## —— Fixtures  ————————————————————————————————————————————————————————————————
 fixtures: fixture-create-root fixture-seed-dev fixture-seed-soundboard fixture-tag-playlist fixture-tag-soundboard fixture-seed-e2e

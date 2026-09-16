@@ -160,6 +160,13 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'console',
         },
+        'null': {
+            'class': 'logging.NullHandler',
+        },
+        'AppLogger': {
+            'class': 'main.domain.common.utils.logger.AppLoggerHandler.AppLoggerHandler',
+            'level': level_log_debug,
+        },
         'ORM_file': {
             'level': level_log_debug,
             'class': timed_rotating_file_handler,
@@ -212,37 +219,38 @@ LOGGING = {
             'propagate': True,
         },
         'django.db.backends': {
-            'handlers': ['ORM_file'],
-            'level': 'DEBUG' ,
+            'handlers': ['ORM_file', 'AppLogger'],
+            'level': 'DEBUG' if DEBUG else 'WARNING',
             'propagate': False,
         },
         'django.request': {
-            'handlers': [] if TESTING else ['console'],
+            # NullHandler avoids Python logging's lastResort stderr fallback during tests.
+            'handlers': ['null'] if TESTING else ['console', 'AppLogger'],
             'level': 'ERROR' if TESTING else 'WARNING',
             'propagate': False,
         },
         'django.server': {
-            'handlers': [] if TESTING else ['console'],
+            'handlers': ['null'] if TESTING else ['console', 'AppLogger'],
             'level': 'ERROR' if TESTING else 'INFO',
             'propagate': False,
         },
         'main': {
-            'handlers': ['console', 'APP_file'],
+            'handlers': ['console', 'APP_file', 'AppLogger'],
             'level': level_log_debug,
             'propagate': False,
         },
         'front': {
-            'handlers': ['console', 'front_file'],
+            'handlers': ['console', 'front_file', 'AppLogger'],
             'level': level_log_debug,
             'propagate': False,
         },
         'mail': {
-            'handlers': ['APP_file', 'Mail_file'],
+            'handlers': ['APP_file', 'Mail_file', 'AppLogger'],
             'level': level_log_debug,
             'propagate': False,
         },
         'request': {
-            'handlers': ['request_file'],
+            'handlers': ['request_file', 'AppLogger'],
             'level': level_log_debug,
             'propagate': False,
         },

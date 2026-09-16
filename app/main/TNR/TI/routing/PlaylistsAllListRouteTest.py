@@ -1,29 +1,22 @@
 """
 Test d'intégration pour la route: list all playlists (/playlist/all)
 """
-from django.test import TestCase, Client, tag
+from django.test import tag
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 
-User = get_user_model()
+from main.TNR.Fixtures.BaseTestCases import AuthenticatedTestCase
 
 
 @tag('integration')
-class PlaylistsAllListRouteTest(TestCase):
+class PlaylistsAllListRouteTest(AuthenticatedTestCase):
     """Tests pour la route list all playlists"""
     
     def setUp(self):
-        """Configuration initiale"""
-        self.client = Client()
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='test@example.com',
-            password='testpass123'
-        )
+        super().setUp()
     
     def test_playlistsalllist_accessible_when_authenticated(self):
         """Test que la route list all playlists est accessible pour un utilisateur authentifié"""
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         response = self.client.get(reverse('playlistsAllList'))
         self.assertEqual(response.status_code, 200)
     

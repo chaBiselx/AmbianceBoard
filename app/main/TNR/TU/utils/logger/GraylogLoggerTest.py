@@ -34,18 +34,16 @@ class GraylogLoggerTestCase(UnitTestCase):
         self.assertEqual(event['_log_level'], 'info')
 
     @patch('socket.socket.sendto')
-    def test_log_empty_message_falls_back_to_repr(self, mock_sendto):
-        """Un message vide (ex: str(exception) sans argument) ne doit jamais produire un short_message vide"""
+    def test_log_empty_message_is_ignored(self, mock_sendto):
+        """Un message vide ou vide encadré par des guillemets ne doit pas être envoyé à Graylog"""
         self.logger.error("")
+        self.logger.error("''")
 
-        event = self._get_sent_event(mock_sendto)
-        self.assertNotEqual(event['short_message'], "")
-        self.assertEqual(event['short_message'], repr(""))
+        self.assertEqual(mock_sendto.call_count, 0)
 
     @patch('socket.socket.sendto')
-    def test_log_exception_without_message_falls_back_to_repr(self, mock_sendto):
-        """Une exception sans message (str(e) == '') ne doit pas produire un short_message vide"""
+    def test_log_exception_without_message_is_ignored(self, mock_sendto):
+        """Une exception sans message (str(e) == '') ne doit pas être envoyée à Graylog"""
         self.logger.error(str(ValueError()))
 
-        event = self._get_sent_event(mock_sendto)
-        self.assertNotEqual(event['short_message'], "")
+        self.assertEqual(mock_sendto.call_count, 0)

@@ -108,6 +108,8 @@ from main.TNR.TI.routing.LegalNoticeRouteTest import *
 from main.TNR.TI.routing.SupportContactRouteTest import *
 from main.TNR.TI.routing.RobotsTxtRouteTest import *
 from main.TNR.TI.routing.SitemapXmlRouteTest import *
+from main.TNR.TI.routing.FaqRouteTest import *
+from main.TNR.TI.routing.LlmsTxtRouteTest import *
 
 # Routes d'authentification
 from main.TNR.TI.routing.CreateAccountRouteTest import *
@@ -116,9 +118,16 @@ from main.TNR.TI.routing.LoginPostRouteTest import *
 from main.TNR.TI.routing.LogoutRouteTest import *
 from main.TNR.TI.routing.ResendEmailConfirmationRouteTest import *
 from main.TNR.TI.routing.SendResetPasswordRouteTest import *
+from main.TNR.TI.routing.CallbackOauthGoogleRouteTest import *
+from main.TNR.TI.routing.ConfirmAccountRouteTest import *
+from main.TNR.TI.routing.TokenValidationResetPasswordRouteTest import *
 
 # Routes techniques
 from main.TNR.TI.routing.TraceFrontRouteTest import *
+from main.TNR.TI.routing.SetLanguageRouteTest import *
+from main.TNR.TI.routing.OnboardingContextRouteTest import *
+from main.TNR.TI.routing.DismissGeneralNotificationRouteTest import *
+from main.TNR.TI.routing.DismissTraceUserActivityRouteTest import *
 
 # Routes Soundboards
 from main.TNR.TI.routing.SoundboardsListRouteTest import *
@@ -126,18 +135,52 @@ from main.TNR.TI.routing.SoundboardsNewRouteTest import *
 from main.TNR.TI.routing.SoundboardsReadRouteTest import *
 from main.TNR.TI.routing.OrganizeSoundboardUpdateRouteTest import *
 from main.TNR.TI.routing.SoundboardEditModeDuplicatePlaylistRouteTest import *
+from main.TNR.TI.routing.SoundboardEditModeMyPlaylistRouteTest import *
 from main.TNR.TI.routing.SoundboardScriptRouteTest import *
 from main.TNR.TI.routing.PlaylistProposalRouteTest import *
+from main.TNR.TI.routing.OrganizeSoundboardRouteTest import *
+from main.TNR.TI.routing.SoundboardEditModePanelRouteTest import *
+from main.TNR.TI.routing.SoundboardEditModePlaylistListRouteTest import *
+from main.TNR.TI.routing.SoundboardEditModeCreatePlaylistRouteTest import *
+from main.TNR.TI.routing.SoundboardsUpdateRouteTest import *
+from main.TNR.TI.routing.SoundboardsDeleteRouteTest import *
+from main.TNR.TI.routing.ListSoundboardPlaylistsSpecificRouteTest import *
+from main.TNR.TI.routing.UpdateActionablePlaylistsForPlayersRouteTest import *
+from main.TNR.TI.routing.UpdateShortcutPlaylistsForPlayersRouteTest import *
+from main.TNR.TI.routing.AddMusicFromSoundboardRouteTest import *
+from main.TNR.TI.routing.PlaylistProposalsListRouteTest import *
+from main.TNR.TI.routing.PlaylistProposalTrackStreamRouteTest import *
 
 # Routes Settings
 from main.TNR.TI.routing.SettingsIndexRouteTest import *
 from main.TNR.TI.routing.UpdateThemeRouteTest import *
 from main.TNR.TI.routing.DeleteAccountRouteTest import *
+from main.TNR.TI.routing.UpdateDimensionsRouteTest import *
+from main.TNR.TI.routing.DefaultPlaylistTypeRouteTest import *
+from main.TNR.TI.routing.UpdatePlaylistDimRouteTest import *
+from main.TNR.TI.routing.UpdateSoundboardDimRouteTest import *
 
 # Routes Playlists
 from main.TNR.TI.routing.AddPlaylistRouteTest import *
 from main.TNR.TI.routing.PlaylistsAllListRouteTest import *
 from main.TNR.TI.routing.PlaylistCreateTrackStreamRouteTest import *
+from main.TNR.TI.routing.AsyncDownloadJobsRecentRouteTest import *
+from main.TNR.TI.routing.PlaylistsAllCopiableListRouteTest import *
+from main.TNR.TI.routing.PlaylistPreviewRouteTest import *
+from main.TNR.TI.routing.PlaylistDuplicateRouteTest import *
+from main.TNR.TI.routing.PlaylistUpdateRouteTest import *
+from main.TNR.TI.routing.PlaylistDeleteRouteTest import *
+from main.TNR.TI.routing.PlaylistDescribeTypeRouteTest import *
+
+# Routes Musiques / Liens
+from main.TNR.TI.routing.AddMusicRouteTest import *
+from main.TNR.TI.routing.UploadMultipleMusicRouteTest import *
+from main.TNR.TI.routing.EditMusicRouteTest import *
+from main.TNR.TI.routing.DeleteMusicRouteTest import *
+from main.TNR.TI.routing.AddLinkRouteTest import *
+from main.TNR.TI.routing.AddLinkAjaxRouteTest import *
+from main.TNR.TI.routing.EditLinkRouteTest import *
+from main.TNR.TI.routing.DeleteLinkRouteTest import *
 
 # Routes Streaming
 from main.TNR.TI.routing.StreamMusicRouteTest import *
@@ -149,6 +192,18 @@ from main.TNR.TI.routing.PublicReadSoundboardRouteTest import *
 from main.TNR.TI.routing.PublicStreamMusicRouteTest import *
 from main.TNR.TI.routing.ReportingContentRouteTest import *
 from main.TNR.TI.routing.PublicFavoriteRouteTest import *
+from main.TNR.TI.routing.PublicSoundboardTracksListRouteTest import *
+from main.TNR.TI.routing.PublicSpecificTrackStreamRouteTest import *
+from main.TNR.TI.routing.PublicSoundboardProposeMyPlaylistListRouteTest import *
+from main.TNR.TI.routing.PublicSoundboardDismissProposalRouteTest import *
+from main.TNR.TI.routing.PublicProposalStreamMusicRouteTest import *
+from main.TNR.TI.routing.PublicFavoriteSoundboardRouteTest import *
+
+# Routes Statistiques publiques
+from main.TNR.TI.routing.ListPublicUserSoundboardsStatsRouteTest import *
+from main.TNR.TI.routing.PublicUserSoundboardsStatsRouteTest import *
+from main.TNR.TI.routing.PublicUserSoundboardsFrequentationStatsRouteTest import *
+from main.TNR.TI.routing.PublicUserSoundboardsAverageSessionDurationStatsRouteTest import *
 
 # Routes Modération
 from main.TNR.TI.routing.ModeratorDashboardRouteTest import *
@@ -158,11 +213,20 @@ from main.TNR.TI.routing.ModeratorListingPlaylistTagsRouteTest import *
 
 # Routes Manager
 from main.TNR.TI.routing.ManagerDashboardRouteTest import *
+from main.TNR.TI.routing.ManagerActivityDashboardsRouteTest import *
+from main.TNR.TI.routing.ManagerCronViewsRouteTest import *
+from main.TNR.TI.routing.ManagerNotificationsRouteTest import *
+from main.TNR.TI.routing.ManagerSendEmailRouteTest import *
+from main.TNR.TI.routing.ManagerHomeDemoRouteTest import *
+from main.TNR.TI.routing.ManagerMusicLabelerRouteTest import *
+from main.TNR.TI.routing.ManagerUserTierRouteTest import *
 
 # Routes Partage (Shared)
 from main.TNR.TI.routing.PublishSoundboardRouteTest import *
 from main.TNR.TI.routing.SharedSoundboardRouteTest import *
 from main.TNR.TI.routing.SharedStreamMusicRouteTest import *
+from main.TNR.TI.routing.SharedSoundboardRefreshRouteTest import *
+from main.TNR.TI.routing.SharedProposalStreamMusicRouteTest import *
 
 # Websocket consumer tests (P0)
 from main.TNR.TI.websocket.SharedSoundboardConsumerTest import *

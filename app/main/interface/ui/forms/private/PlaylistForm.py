@@ -113,7 +113,7 @@ class PlaylistForm(BootstrapFormMixin, forms.ModelForm):
     playlist_tags = forms.ModelMultipleChoiceField(
         queryset=PlaylistTagRepository().get_list_active_tags(),
         widget=forms.CheckboxSelectMultiple,
-        required=True,
+        required=False,
         label='Tags',
         help_text='Sélectionnez si necessaires des tags pour catégoriser votre playlist pour les recherches'
     )

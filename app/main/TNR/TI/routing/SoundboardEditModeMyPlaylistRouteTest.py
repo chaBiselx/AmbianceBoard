@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.Track import Track
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 import uuid
 
@@ -33,6 +34,9 @@ class SoundboardEditModeMyPlaylistListRouteTest(TestCase):
         self.playlist_not_integrated = Playlist.objects.create(
             user=self.user, name='Non intégrée', typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.name
         )
+        # Un track est requis: la requête exclut les playlists vides (tracks__isnull=False)
+        Track.objects.create(playlist=self.playlist_integrated, alternativeName='Track intégrée')
+        Track.objects.create(playlist=self.playlist_not_integrated, alternativeName='Track non intégrée')
         SoundboardPlaylist.objects.create(SoundBoard=self.soundboard, Playlist=self.playlist_integrated, order=1)
 
     def _url(self, soundboard_uuid=None):
@@ -94,6 +98,8 @@ class SoundboardEditModeAddMyPlaylistRouteTest(TestCase):
         self.other_playlist = Playlist.objects.create(
             user=self.other_user, name='Playlist autre', typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name
         )
+        Track.objects.create(playlist=self.playlist, alternativeName='Track')
+        Track.objects.create(playlist=self.other_playlist, alternativeName='Track autre')
 
     def _url(self, soundboard_uuid=None, playlist_uuid=None):
         return reverse('soundboardEditModeAddMyPlaylist', kwargs={

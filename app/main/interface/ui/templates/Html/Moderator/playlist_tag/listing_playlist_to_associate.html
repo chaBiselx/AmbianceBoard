@@ -9,6 +9,7 @@
     <div class="col-12 mb-3">
         {% url 'moderatorGetPlaylistListForPlaylistTag' as filter_reset_url %}
         {% include 'Html/partial/filter/search/filter_tag_cloud.html' with list_tags=list_tag selected_tag=selected_tag reset_url=filter_reset_url show_empty_option=True %}
+        {% include 'Html/partial/filter/search/filter_select_accordeon.html' with label="Is copiable" field_name="copiable" field_id="filter-copiable" options=copiable_choices selected_value=selected_copiable all_option_label="Aucune" use_key_as_value=True %}
     </div>
     <div class="col-12">
 

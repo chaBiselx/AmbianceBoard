@@ -1,6 +1,6 @@
 {# Paramètres: list_tags, selected_tag, reset_url, show_empty_option (bool), accordion_title (optionnel) #}
 {% load i18n %}
-<div class="accordion mb-3">
+<div class="accordion">
     <div class="accordion-item">
         <h2 class="accordion-header">
             <button class="accordion-button {% if not selected_tag %}collapsed{% endif %}"
@@ -25,7 +25,7 @@
                 </div>
                 {% endif %}
 
-                <div class="tags-container" id="tag-search">
+                <div class="tags-container dynamic-filter-search">
                     <div class="d-flex flex-wrap gap-2">
                         {% if show_empty_option %}
                         {% trans "template.filterTagCloud.no_tag.tooltip" as no_tag_tooltip %}

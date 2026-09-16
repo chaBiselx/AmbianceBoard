@@ -42,7 +42,7 @@ def stats_user_public_soundboard(request, soundboard_uuid):
         
     soundboard = SoundBoardRepository().get_by_uuid_and_user(soundboard_uuid, request.user)
     if(not soundboard):
-        return TemplateResponse(request, HtmlDefaultPageEnum.NOT_FOUND.value, status=404)
+        return TemplateResponse(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     return TemplateResponse(request, 'Html/Public/stats_user_public_soundboard.html', {'title': _("view.publicStats.page_title") % soundboard.name, 'periode_chart': periode_chart, 'selectPeriods':select_periods, 'soundboard':soundboard})
 
 
