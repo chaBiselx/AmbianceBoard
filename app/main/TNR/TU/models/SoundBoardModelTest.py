@@ -35,11 +35,7 @@ class SoundBoardModelTest(TestCase):
             user=self.user,
             name="Other Name"
         )
-        SoundboardPlaylist.objects.create(
-            SoundBoard=soundboard,
-            Playlist=self.playlist,
-            order=1  
-        )
+        soundboard.playlists.add(self.playlist)
         
         self.assertTrue(isinstance(soundboard, SoundBoard))
         self.assertEqual(soundboard.name, "Other Name")
@@ -139,16 +135,7 @@ class SoundBoardModelTest(TestCase):
         
         # Ajouter plusieurs playlists
         playlist2 = Playlist.objects.create(name="Test Playlist 2",user=self.user)
-        SoundboardPlaylist.objects.create(
-            SoundBoard=soundboard,
-            Playlist=self.playlist,
-            order=1  
-        )
-        SoundboardPlaylist.objects.create(
-            SoundBoard=soundboard,
-            Playlist=playlist2,
-            order=2  
-        )
+        soundboard.playlists.add(self.playlist, playlist2)
         
         # Vérifier les relations
         self.assertEqual(soundboard.playlists.count(), 2)

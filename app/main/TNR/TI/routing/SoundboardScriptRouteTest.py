@@ -34,8 +34,9 @@ class SoundboardScriptRouteTest(TestCase):
         section = SoundboardSection.objects.create(
             SoundBoard=self.soundboard, section=1, name='Section 1', order=1
         )
+        
         SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard, Playlist=self.playlist, section=section, order=1
+            Playlist=self.playlist, section=section, order=1
         )
         self.service = SoundboardScriptService(self.soundboard)
         self.client.login(username='script-route-user', password='testpass123')

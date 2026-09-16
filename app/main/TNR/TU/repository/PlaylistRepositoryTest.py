@@ -4,6 +4,7 @@ from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.architecture.persistence.models.PlaylistTag import PlaylistTag
 from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
@@ -143,7 +144,10 @@ class PlaylistRepositoryTest(TestCase):
 
     def test_get_user_playlists_not_in_soundboard_excludes_already_integrated(self):
         from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
-        SoundboardPlaylist.objects.create(SoundBoard=self.soundboard, Playlist=self.playlist_music, order=1)
+        section = SoundboardSection.objects.create(
+            SoundBoard=self.soundboard, section=1, name='Section 1', order=1
+        )
+        SoundboardPlaylist.objects.create(Playlist=self.playlist_music, section=section, order=1)
 
         result = self.repository.get_user_playlists_not_in_soundboard(self.owner, self.soundboard, {})
         result_ids = {p.id for p in result}
@@ -163,11 +167,14 @@ class PlaylistRepositoryTest(TestCase):
 
     def test_get_user_playlists_not_in_soundboard_returns_empty_when_all_integrated(self):
         from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+        section = SoundboardSection.objects.create(
+            SoundBoard=self.soundboard, section=1, name='Section 1', order=1
+        )
         for i, playlist in enumerate([
             self.playlist_music,
             self.playlist_ambient,
         ]):
-            SoundboardPlaylist.objects.create(SoundBoard=self.soundboard, Playlist=playlist, order=i)
+            SoundboardPlaylist.objects.create(Playlist=playlist, section=section, order=i)
 
         result = self.repository.get_user_playlists_not_in_soundboard(self.owner, self.soundboard, {})
 

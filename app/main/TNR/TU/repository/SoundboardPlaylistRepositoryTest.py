@@ -36,13 +36,11 @@ class SoundboardPlaylistRepositoryTest(TestCase):
         )
 
         SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_with_tracks,
             section=section_1,
             order=1,
         )
         SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_without_tracks,
             section=section_2,
             order=1,
@@ -76,7 +74,7 @@ class SoundboardPlaylistRepositoryTest(TestCase):
         self.assertEqual(section.section, 3)
         self.assertFalse(
             SoundboardPlaylist.objects.filter(
-                SoundBoard=self.soundboard,
+                section__SoundBoard=self.soundboard,
                 section__section=3,
             ).exists()
         )

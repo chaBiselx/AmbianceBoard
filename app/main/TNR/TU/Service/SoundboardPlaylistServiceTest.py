@@ -34,19 +34,16 @@ class SoundboardPlaylistServiceTest(TestCase):
         ]
 
         self.sp_1 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_1,
             section=sections[0],
             order=1,
         )
         self.sp_2 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_2,
             section=sections[1],
             order=1,
         )
         self.sp_3 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_3,
             section=sections[2],
             order=1,
@@ -90,7 +87,7 @@ class SoundboardPlaylistServiceTest(TestCase):
 
         self.assertFalse(
             SoundboardPlaylist.objects.filter(
-                SoundBoard=self.soundboard,
+                section__SoundBoard=self.soundboard,
                 Playlist=self.playlist_unassociated,
             ).exists()
         )
@@ -98,7 +95,7 @@ class SoundboardPlaylistServiceTest(TestCase):
     def test_add_does_not_duplicate_existing_soundboard_playlist(self):
         service = SoundboardPlaylistService(self.soundboard)
         initial_count = SoundboardPlaylist.objects.filter(
-            SoundBoard=self.soundboard,
+            section__SoundBoard=self.soundboard,
             Playlist=self.playlist_1,
         ).count()
 
@@ -106,7 +103,7 @@ class SoundboardPlaylistServiceTest(TestCase):
 
         self.assertEqual(
             SoundboardPlaylist.objects.filter(
-                SoundBoard=self.soundboard,
+                section__SoundBoard=self.soundboard,
                 Playlist=self.playlist_1,
             ).count(),
             initial_count,

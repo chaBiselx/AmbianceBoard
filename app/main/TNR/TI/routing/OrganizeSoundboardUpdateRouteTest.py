@@ -49,19 +49,16 @@ class OrganizeSoundboardUpdateRouteTest(TestCase):
         ]
 
         self.sp_1 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_1,
             section=sections[0],
             order=1,
         )
         self.sp_2 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_2,
             section=sections[1],
             order=1,
         )
         self.sp_3 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_3,
             section=sections[2],
             order=1,
