@@ -61,7 +61,7 @@ sudo mount -t drvfs F: /mnt/f -o metadata,uid=$(id -u),gid=$(id -g),umask=022
 
 ```bash
 mkdir -p "$LOCAL_MEDIA"
-sudo chmod 766 /mnt/f/AmbianceBoard/mediafiles
+sudo chmod 766 "$LOCAL_MEDIA"
 ```
 
 
