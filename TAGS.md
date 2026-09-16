@@ -470,6 +470,7 @@ Fiabilité & Confiance
 ### 0.5.3 - 2026/09
 Modifications
 - Changement de structure entre les boutons et les soundboards
+- Modification des pages pour que le centre des modifications soit le soundboard
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

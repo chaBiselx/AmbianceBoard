@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-04 10:59+0000\n"
+"POT-Creation-Date: 2026-09-16 08:17+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -289,7 +289,7 @@ msgid "template.soundboard.create.title"
 msgstr "Création d'un nouveau Soundboard"
 
 #: main/interface/ui/controller/private/soundboardScriptViews.py:33
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:34
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:35
 #: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:11
 #: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:18
 msgid "template.scripts.page.title"
@@ -300,23 +300,23 @@ msgid "template.scripts.error.soundboard_not_found"
 msgstr "Soundboard introuvable"
 
 #: main/interface/ui/controller/private/soundboardScriptViews.py:47
-#: main/interface/ui/controller/private/soundboardScriptViews.py:67
+#: main/interface/ui/controller/private/soundboardScriptViews.py:66
 msgid "template.scripts.error.name_required"
 msgstr "Le nom du script est obligatoire"
 
-#: main/interface/ui/controller/private/soundboardScriptViews.py:140
-#: main/interface/ui/controller/private/soundboardScriptViews.py:189
-#: main/interface/ui/controller/private/soundboardScriptViews.py:213
+#: main/interface/ui/controller/private/soundboardScriptViews.py:143
+#: main/interface/ui/controller/private/soundboardScriptViews.py:194
+#: main/interface/ui/controller/private/soundboardScriptViews.py:219
 msgid "template.scripts.error.script_not_found"
 msgstr "Script introuvable"
 
-#: main/interface/ui/controller/private/soundboardScriptViews.py:166
-#: main/interface/ui/controller/private/soundboardScriptViews.py:197
+#: main/interface/ui/controller/private/soundboardScriptViews.py:171
+#: main/interface/ui/controller/private/soundboardScriptViews.py:204
 msgid "template.scripts.error.step_not_found"
 msgstr "Étape introuvable"
 
-#: main/interface/ui/controller/private/soundboardScriptViews.py:174
-#: main/interface/ui/controller/private/soundboardScriptViews.py:222
+#: main/interface/ui/controller/private/soundboardScriptViews.py:180
+#: main/interface/ui/controller/private/soundboardScriptViews.py:230
 msgid "template.scripts.error.invalid_step"
 msgstr "Étape invalide"
 
@@ -1140,11 +1140,16 @@ msgstr ""
 "C'est lui qui controle la lecture des musiques. vous pouvez mettre cette "
 "page en arrière plan et profiter de l'ambiance sonore."
 
-#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:25
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:19
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:76
+msgid "template.listePlaylistForSpecificAction.button.back"
+msgstr "Retour"
+
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:29
 msgid "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
 msgstr "Ce compte ne peux pas avoir accès a cette fonctionnalité :"
 
-#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:29
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:33
 msgid "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
 msgstr "Raccourci clavier"
 
@@ -1197,6 +1202,11 @@ msgstr "Aucune proposition de playlist en attente."
 msgid "template.soundboard.list.new_soundbaord"
 msgstr "Ajouter un soundboard"
 
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:16
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:39
+msgid "template.soundboard_organize._personalized_actions"
+msgstr "Autres actions personnalisés"
+
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:5
 msgid "template.soundboard_read.page_title_suffix"
 msgstr "Soundboard Ambiance | AmbianceBoard"
@@ -1205,11 +1215,11 @@ msgstr "Soundboard Ambiance | AmbianceBoard"
 msgid "template.soundboard_read.button.edit_mode"
 msgstr "Mode édition"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:30
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:31
 msgid "template.soundboard_read.button.organize"
 msgstr "Organiser"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:37
+#: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:38
 msgid "template.soundboard_read.button.edit_soundboard"
 msgstr "Modifier le SoundBoard"
 
@@ -1217,29 +1227,33 @@ msgstr "Modifier le SoundBoard"
 msgid "template.scripts.page.back"
 msgstr "Retour au soundboard"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:23
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:29
+msgid "template.scripts.form.new_script_label"
+msgstr "Nom du nouveau script"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:30
 msgid "template.scripts.form.new_script_placeholder"
 msgstr "Nom du nouveau script"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:24
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:31
 msgid "template.scripts.form.add"
 msgstr "Ajouter"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:33
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:40
 msgid "template.scripts.form.enabled"
 msgstr "Actif"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:35
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:31
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:42
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:36
 msgid "template.scripts.form.delete"
 msgstr "Supprimer"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:41
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:48
 #: main/interface/ui/templates/Html/partial/soundboard/scripts.html:24
 msgid "template.scripts.empty"
 msgstr "Aucun script configuré"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:48
+#: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:55
 msgid "template.scripts.page.select_script"
 msgstr "Sélectionnez un script pour éditer ses étapes"
 
@@ -1283,23 +1297,23 @@ msgstr "aucun"
 msgid "template.filterTagCloud.no_description"
 msgstr "Aucune description"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:64
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:68
 msgid "template.soundboard_read.my_proposals.title"
 msgstr "Mes propositions"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:79
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:83
 msgid "template.soundboard_read.my_proposals.status.pending"
 msgstr "En attente"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:80
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:84
 msgid "template.soundboard_read.my_proposals.action.withdraw"
 msgstr "Retirer"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:82
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:86
 msgid "template.soundboard_read.my_proposals.status.refused"
 msgstr "Refusé"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:83
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:87
 msgid "template.soundboard_read.my_proposals.action.dismiss"
 msgstr "Supprimer"
 
@@ -1340,43 +1354,43 @@ msgstr "En cours de lecture"
 msgid "template.playingMonitor.empty"
 msgstr "Aucun son en cours"
 
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:23
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:28
 msgid "template.scripts.step.move_up"
 msgstr "Monter"
 
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:26
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:31
 msgid "template.scripts.step.move_down"
 msgstr "Descendre"
 
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:37
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:42
 msgid "template.scripts.step.empty"
 msgstr "Aucune étape dans ce script"
 
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:43
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:48
 msgid "template.scripts.step.action"
 msgstr "Action"
 
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:52
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:57
 msgid "template.scripts.step.playlist"
 msgstr "Bouton"
 
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:61
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:66
 msgid "template.scripts.step.volume"
 msgstr "Volume (%)"
 
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:66
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:71
 msgid "template.scripts.step.trigger"
 msgstr "Déclencheur"
 
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:75
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:80
 msgid "template.scripts.step.offset"
 msgstr "Décalage (ms)"
 
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:80
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:85
 msgid "template.scripts.step.source"
 msgstr "Étape source"
 
-#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:89
+#: main/interface/ui/templates/Html/partial/soundboard/script_steps.html:94
 msgid "template.scripts.step.add"
 msgstr "Ajouter l'étape"
 
@@ -1501,10 +1515,6 @@ msgstr "Modération"
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:25
 msgid "template.nav.user.manager"
 msgstr "Manager"
-
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:31
-msgid "template.nav.user.grafana"
-msgstr "Graphana"
 
 #: main/interface/ui/templates/Html/partial/structure/navbar/navbar_dropdown_user.html:32
 msgid "template.nav.user.superadmin"

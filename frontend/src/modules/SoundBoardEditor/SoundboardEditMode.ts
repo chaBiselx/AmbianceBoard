@@ -37,6 +37,12 @@ class SoundboardEditMode {
         this._startIfEmpty();
     }
 
+    private toggleSoundboardMenuEdition(): void {
+        const menuEdition = document.querySelector('.soundboard-menu-edition');
+        if (!menuEdition) return;
+        menuEdition.classList.toggle('d-none', !this.isEditModeActive);
+    }
+
     private toggleEditMode(button: HTMLButtonElement): void {
         if (!this.boardContainer) return;
 
@@ -45,6 +51,7 @@ class SoundboardEditMode {
         button.setAttribute('aria-pressed', this.isEditModeActive ? 'true' : 'false');
         button.classList.toggle('btn-outline-success', !this.isEditModeActive);
         button.classList.toggle('btn-success', this.isEditModeActive);
+        this.toggleSoundboardMenuEdition();
     }
 
     private _startIfEmpty(): void {
@@ -52,6 +59,7 @@ class SoundboardEditMode {
         const lengthPlaylistElement = listPlaylistElement?.length ?? 0;
         if(lengthPlaylistElement === 0) {
             this.buttonAction?.click();
+            this.toggleSoundboardMenuEdition();
         }
     }
 
