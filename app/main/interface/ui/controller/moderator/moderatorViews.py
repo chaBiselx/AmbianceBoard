@@ -81,7 +81,7 @@ def moderator_listing_images_playlist(request) -> HttpResponse:
         queryset = queryset.filter(user__uuid=selected_user)
 
     soundboards_with_playlists = (
-        SoundBoard.objects.filter(playlists__isnull=False)
+        SoundBoard.objects.filter(sections__playlists__isnull=False)
         .select_related('user')
         .distinct()
         .order_by('name')
@@ -93,7 +93,7 @@ def moderator_listing_images_playlist(request) -> HttpResponse:
 
     if selected_soundboard:
         if selected_soundboard in soundboards_select:
-            queryset = queryset.filter(soundboards__uuid=selected_soundboard)
+            queryset = queryset.filter(soundboardplaylist__section__SoundBoard__uuid=selected_soundboard)
         else:
             selected_soundboard = ''
 

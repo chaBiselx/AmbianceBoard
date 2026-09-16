@@ -35,6 +35,7 @@ from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.architecture.persistence.repository.SoundboardTagRepository import SoundboardTagRepository
 from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from main.domain.common.helper.ScriptContextHelper import ScriptContextHelper
 
 @require_http_methods(['GET'])
@@ -144,8 +145,10 @@ def public_playlist_tracks_list(request, soundboard_uuid) -> JsonResponse:
 
     track_repository = TrackRepository()
     result = {}
-    for _section, playlists in soundboard.get_list_playlist_ordered():
-        for playlist in playlists:
+    sections = SoundboardPlaylistRepository().get_sections_with_playlists(soundboard, public=True)
+    for section in sections:
+        for soundboard_playlist in section.playlists.all():
+            playlist = soundboard_playlist.Playlist
             tracks = track_repository.get_tracks_by_playlist(playlist)
             result[str(playlist.uuid)] = [
                 {

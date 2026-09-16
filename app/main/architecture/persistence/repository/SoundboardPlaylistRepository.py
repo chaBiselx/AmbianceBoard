@@ -83,32 +83,17 @@ class SoundboardPlaylistRepository:
             .order_by('section__section', 'order')
         )
 
-    def get_playlist_formated(self, soundboard: "SoundBoard", public=False) -> Any:
-        if public:
-            list_playlist = self.get_all_with_min_one_track(soundboard)
-        else:
-            list_playlist = self.get_all(soundboard)
-        dict_section = {}
-        max_section = self.get_max_section(soundboard)
-        for section in range(1, max_section + 1):
-            dict_section[section] = []
-
-        for sp in list_playlist:
-            dict_section[sp.get_section()].append(sp.Playlist)
-
-        soundboard.dict_section = dict_section
-        soundboard.max_section = max_section
-        return dict_section.items()
-
-    def get_sectioned_playlists(self, soundboard: "SoundBoard", public=False) -> List[tuple]:
+    def get_sections_with_playlists(self, soundboard: "SoundBoard", public=False):
         playlist_queryset = SoundboardPlaylist.objects.select_related("Playlist").order_by("order", "id")
         if public:
             playlist_queryset = playlist_queryset.filter(Playlist__tracks__isnull=False).distinct()
 
-        from main.architecture.persistence.models.SoundboardSection import SoundboardSection
+        return soundboard.sections.prefetch_related(
+            Prefetch("playlists", queryset=playlist_queryset)
+        )
 
-        sections = SoundboardSection.objects.filter(SoundBoard=soundboard).order_by("section", "order", "id")
-        sections = sections.prefetch_related(Prefetch("playlists", queryset=playlist_queryset))
+    def get_sectioned_playlists(self, soundboard: "SoundBoard", public=False) -> List[tuple]:
+        sections = self.get_sections_with_playlists(soundboard, public)
         return [(section, list(section.playlists.all())) for section in sections]
 
     def get_soundboard_playlist_formated(self, soundboard: "SoundBoard") -> Any:
@@ -132,10 +117,6 @@ class SoundboardPlaylistRepository:
             dict_p_s[section_number].append(sp.Playlist)
 
         return dict_p_s.items()
-
-    def get_max_section(self, soundboard: "SoundBoard") -> int:
-        max_section = SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard).aggregate(models.Max('section__section'))['section__section__max']
-        return max_section if max_section is not None else 1
 
     def get_all_by_section(self, soundboard: "SoundBoard", section: int) -> List[SoundboardPlaylist]:
         return SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard, section__section=section).order_by('order')

@@ -24,6 +24,7 @@ from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.domain.common.helper.WebSocketInitializationHelper import WebSocketInitializationHelper
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.architecture.persistence.repository.PlaylistTagRepository import PlaylistTagRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
@@ -112,8 +113,10 @@ def playlist_tracks_list(request, soundboard_uuid) -> JsonResponse:
 
     track_repository = TrackRepository()
     result = {}
-    for _section, playlists in soundboard.get_list_playlist_ordered():
-        for playlist in playlists:
+    sections = SoundboardPlaylistRepository().get_sections_with_playlists(soundboard)
+    for section in sections:
+        for soundboard_playlist in section.playlists.all():
+            playlist = soundboard_playlist.Playlist
             tracks = track_repository.get_tracks_by_playlist(playlist)
             result[str(playlist.uuid)] = [
                 {

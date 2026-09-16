@@ -55,8 +55,31 @@ class SoundboardPlaylistRepositoryTest(TestCase):
         self.assertEqual(result.count(), 1)
         self.assertEqual(result.first().Playlist.id, self.playlist_with_tracks.id)
 
-    def test_get_playlist_formated_public_excludes_playlists_without_track(self):
-        result = dict(self.repository.get_playlist_formated(self.soundboard, public=True))
+    def test_get_sections_with_playlists_prefetches_ordered_playlists(self):
+        second_playlist = Playlist.objects.create(
+            user=self.user,
+            name='Second playlist',
+            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
+        )
+        SoundboardPlaylist.objects.create(
+            Playlist=second_playlist,
+            section=SoundboardSection.objects.get(SoundBoard=self.soundboard, section=1),
+            order=2,
+        )
+
+        sections = list(self.repository.get_sections_with_playlists(self.soundboard))
+
+        self.assertEqual([section.section for section in sections], [1, 2])
+        self.assertEqual(
+            [playlist.Playlist.id for playlist in sections[0].playlists.all()],
+            [self.playlist_with_tracks.id, second_playlist.id],
+        )
+
+    def test_get_sectioned_playlists_public_excludes_playlists_without_track(self):
+        result = dict(
+            (section.section, [sp.Playlist for sp in playlists])
+            for section, playlists in self.repository.get_sectioned_playlists(self.soundboard, public=True)
+        )
 
         self.assertEqual(result[1], [self.playlist_with_tracks])
         self.assertEqual(result[2], [])

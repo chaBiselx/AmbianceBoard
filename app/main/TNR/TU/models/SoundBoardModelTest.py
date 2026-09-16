@@ -7,6 +7,7 @@ from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 
 @tag('unitaire')
 class SoundBoardModelTest(TestCase):
@@ -127,20 +128,23 @@ class SoundBoardModelTest(TestCase):
         )
 
     def test_playlist_relationship(self):
-        """Test les relations many-to-many avec les playlists"""
+        """Test la relation réelle SoundBoard -> Section -> Playlist."""
         soundboard = SoundBoard.objects.create(
             user=self.user,
             name="Playlist SoundBoard"
         )
-        
-        # Ajouter plusieurs playlists
-        playlist2 = Playlist.objects.create(name="Test Playlist 2",user=self.user)
-        soundboard.playlists.add(self.playlist, playlist2)
-        
-        # Vérifier les relations
+        section = soundboard.sections.create(section=1, name="Section 1", order=1)
+        playlist2 = Playlist.objects.create(name="Test Playlist 2", user=self.user)
+
+        SoundboardPlaylist.objects.create(Playlist=self.playlist, section=section, order=1)
+        SoundboardPlaylist.objects.create(Playlist=playlist2, section=section, order=2)
+
+        playlists = list(Playlist.objects.filter(soundboardplaylist__section__SoundBoard=soundboard).distinct())
+
         self.assertEqual(soundboard.playlists.count(), 2)
         self.assertIn(self.playlist, soundboard.playlists.all())
         self.assertIn(playlist2, soundboard.playlists.all())
+        self.assertEqual(playlists, [self.playlist, playlist2])
 
     def test_color_validation(self):
         """Test la validation des couleurs au format hexadécimal"""
@@ -177,19 +181,20 @@ class SoundBoardModelTest(TestCase):
         with self.assertRaises(SoundBoard.DoesNotExist):
             SoundBoard.objects.get(uuid=soundboard.uuid)
 
-    @patch('main.architecture.persistence.repository.SoundboardPlaylistRepository.SoundboardPlaylistRepository.get_playlist_formated')
-    def test_get_list_playlist_ordered_forward_public_flag_to_repository(self, mock_get_playlist_formated):
-        """Test que get_list_playlist_ordered transmet bien le flag public au repository."""
+    @patch('main.architecture.persistence.repository.SoundboardPlaylistRepository.SoundboardPlaylistRepository.get_sectioned_playlists')
+    def test_get_sectioned_playlists_uses_soundboard_sections(self, mock_get_sectioned_playlists):
+        """Test que les playlists sont récupérées via les sections du soundboard."""
         soundboard = SoundBoard.objects.create(
             user=self.user,
             name="Delegation SoundBoard"
         )
-        mock_get_playlist_formated.return_value = []
+        mock_get_sectioned_playlists.return_value = []
 
-        result = soundboard.get_list_playlist_ordered(public=True)
+
+        result = SoundboardPlaylistRepository().get_sectioned_playlists(soundboard, public=True)
 
         self.assertEqual(result, [])
-        mock_get_playlist_formated.assert_called_once_with(soundboard, public=True)
+        mock_get_sectioned_playlists.assert_called_once_with(soundboard, public=True)
 
     def tearDown(self):
         """Nettoyage après les tests"""

@@ -6,8 +6,10 @@ des playlists au sein d'un soundboard.
 """
 
 from typing import List
+
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 
@@ -50,10 +52,16 @@ class SoundBoardPlaylistManager:
     def get_unassociated_playlists(self) -> List[Playlist]:
         """
         Récupère les playlists de l'utilisateur non associées à ce soundboard.
-        
-        Returns:
-            List[Playlist]: Liste des playlists disponibles pour l'association
+
+        Les liens sont stockés via SoundboardSection -> SoundboardPlaylist,
+        donc on exclut les IDs déjà rattachés à ce soundboard.
         """
         all_playlists = list((PlaylistService(self.request)).get_listing_playlist())
-        associated_playlists = list(self.soundboard.playlists.all())
-        return [playlist for playlist in all_playlists if playlist not in associated_playlists]
+        associated_playlist_ids = set(
+            SoundboardPlaylist.objects.filter(section__SoundBoard=self.soundboard)
+            .values_list('Playlist_id', flat=True)
+        )
+        return [
+            playlist for playlist in all_playlists
+            if playlist.id not in associated_playlist_ids
+        ]

@@ -4,6 +4,7 @@ from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.architecture.persistence.models.PlaylistTag import PlaylistTag
 from main.architecture.persistence.models.SoundBoard import SoundBoard
+from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.User import User
@@ -72,6 +73,19 @@ class PlaylistRepositoryTest(TestCase):
         self.playlist_music.playlist_tags.add(self.tag_music)
         self.playlist_ambient.playlist_tags.add(self.tag_ambient)
         
+    def test_get_default_volume_by_playlist_uses_sectioned_soundboard_relation(self):
+        section = SoundboardSection.objects.create(
+            SoundBoard=self.soundboard,
+            section=1,
+            name='Section 1',
+            order=1,
+        )
+        SoundboardPlaylist.objects.create(Playlist=self.playlist_music, section=section, order=1)
+
+        result = self.repository.get_default_volume_by_playlist(str(self.soundboard.uuid))
+
+        self.assertEqual(result[str(self.playlist_music.uuid)]['volume'], self.playlist_music.volume)
+
     def test_get_copiable_playlists_excludes_empty_playlists(self):
         result = self.repository.get_copiable_playlists_excluding_user(self.target_user, {})
         result_ids = {playlist.id for playlist in result}

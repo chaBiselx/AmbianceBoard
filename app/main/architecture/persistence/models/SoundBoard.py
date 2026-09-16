@@ -36,6 +36,12 @@ class SoundBoard(models.Model):
 
     @property
     def playlists(self):
+        """Compatibilité avec l'ancienne API historique.
+
+        Les liens réels sont stockés via les sections puis les entrées
+        SoundboardPlaylist. Cette façade ne doit être utilisée que pour les
+        intégrations legacy encore présentes dans le code.
+        """
         from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
         from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 
@@ -44,7 +50,9 @@ class SoundBoard(models.Model):
                 self.soundboard = soundboard
 
             def all(self):
-                return Playlist.objects.filter(soundboardplaylist__section__SoundBoard=self.soundboard)
+                return Playlist.objects.filter(
+                    soundboardplaylist__section__SoundBoard=self.soundboard
+                ).distinct()
 
             def filter(self, **kwargs):
                 return self.all().filter(**kwargs)
@@ -143,19 +151,8 @@ class SoundBoard(models.Model):
         if self.pk:
             self._icon_changed = self.icon != self._icon_original
         super().clean()
-        
-    def get_list_playlist_ordered(self, public: bool = False) -> "dict[int, List[Playlist]]":
-        """
-        Retourne la liste des playlists du soundboard ordonnées.
-        
-        Returns:
-            dict[int, List[Playlist]]: Dictionnaire des playlists associées au soundboard,
-                              ordonnées selon l'ordre défini dans SoundboardPlaylist
-        """
-        # Import local pour éviter l'importation circulaire
-        from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
-        return SoundboardPlaylistRepository().get_playlist_formated(self, public=public)
     
+    # TODO check if legacy playlists handling is still needed
     def get_list_playlist_playable_ordered(self) -> "dict[int, List[Playlist]]":
         """
         Retourne la liste des playlists du soundboard ordonnées.
@@ -167,7 +164,7 @@ class SoundBoard(models.Model):
         # Import local pour éviter l'importation circulaire
         from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
         return SoundboardPlaylistRepository().get_soundboard_playlist_for_player_formated(self)
-    
+
     def get_tags_list(self) -> "QuerySet[SoundboardTag]":
         """
         Retourne la liste des tags associés à ce soundboard.
