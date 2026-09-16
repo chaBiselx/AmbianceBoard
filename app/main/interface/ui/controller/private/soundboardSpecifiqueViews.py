@@ -25,9 +25,8 @@ def list_playlists_for_specific_action(request, soundboard_uuid):
     
     back = request.GET.get('back', '')
     url_back = reverse('soundboardsRead', kwargs={'soundboard_uuid': soundboard_uuid})
-    if back:
-        if back == 'organize':
-            url_back = reverse('organizeSoundboard', kwargs={'soundboard_uuid': soundboard_uuid})
+    if back and back == 'organize':
+        url_back = reverse('organizeSoundboard', kwargs={'soundboard_uuid': soundboard_uuid})
         
     
     

@@ -3,23 +3,23 @@ import django.db.models.deletion
 
 
 def migrate_section_data(apps, schema_editor):
-    SoundBoard = apps.get_model("main", "SoundBoard")
-    SoundboardPlaylist = apps.get_model("main", "SoundboardPlaylist")
-    SoundboardSection = apps.get_model("main", "SoundboardSection")
+    sound_board = apps.get_model("main", "SoundBoard")
+    soundboard_playlist = apps.get_model("main", "SoundboardPlaylist")
+    soundboard_section = apps.get_model("main", "SoundboardSection")
 
-    for soundboard in SoundBoard.objects.all():
+    for soundboard in sound_board.objects.all():
         sections_by_number = {}
-        for old_section in SoundboardPlaylist.objects.filter(SoundBoard=soundboard).values_list("section", flat=True).distinct():
+        for old_section in soundboard_playlist.objects.filter(sound_board=soundboard).values_list("section", flat=True).distinct():
             if old_section is None:
                 old_section = 1
-            section_obj, _ = SoundboardSection.objects.get_or_create(
-                SoundBoard=soundboard,
+            section_obj, _ = soundboard_section.objects.get_or_create(
+                sound_board=soundboard,
                 section=int(old_section),
                 defaults={"name": f"Section {old_section}", "order": int(old_section)},
             )
             sections_by_number[int(old_section)] = section_obj
 
-        for playlist in SoundboardPlaylist.objects.filter(SoundBoard=soundboard):
+        for playlist in soundboard_playlist.objects.filter(sound_board=soundboard):
             section_number = int(playlist.section) if playlist.section is not None else 1
             playlist.section_ref = sections_by_number.get(section_number)
             playlist.save(update_fields=["section_ref"])

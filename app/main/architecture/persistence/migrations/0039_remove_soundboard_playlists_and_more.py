@@ -4,12 +4,12 @@ from django.db import migrations
 
 
 def restore_missing_sections(apps, schema_editor):
-    SoundBoard = apps.get_model("main", "SoundBoard")
-    SoundboardSection = apps.get_model("main", "SoundboardSection")
+    sound_board = apps.get_model("main", "SoundBoard")
+    soundboard_section = apps.get_model("main", "SoundboardSection")
 
-    for soundboard in SoundBoard.objects.all():
+    for soundboard in sound_board.objects.all():
         max_section = (
-            SoundboardSection.objects.filter(SoundBoard_id=soundboard.id)
+            soundboard_section.objects.filter(sound_board_id=soundboard.id)
             .order_by("-section")
             .values_list("section", flat=True)
             .first()
@@ -18,8 +18,8 @@ def restore_missing_sections(apps, schema_editor):
             continue
 
         for section_number in range(1, max_section + 1):
-            SoundboardSection.objects.get_or_create(
-                SoundBoard_id=soundboard.id,
+            soundboard_section.objects.get_or_create(
+                sound_board_id=soundboard.id,
                 section=section_number,
                 defaults={
                     "name": f"Section {section_number}",
@@ -29,20 +29,20 @@ def restore_missing_sections(apps, schema_editor):
 
 
 def migrate_playlist_soundboard_relation(apps, schema_editor):
-    SoundboardPlaylist = apps.get_model("main", "SoundboardPlaylist")
-    SoundboardSection = apps.get_model("main", "SoundboardSection")
+    soundboard_playlist = apps.get_model("main", "SoundboardPlaylist")
+    soundboard_section = apps.get_model("main", "SoundboardSection")
 
-    for playlist in SoundboardPlaylist.objects.select_related("SoundBoard", "section"):
-        if playlist.section_id and playlist.section.SoundBoard_id == playlist.SoundBoard_id:
+    for playlist in soundboard_playlist.objects.select_related("sound_board", "section"):
+        if playlist.section_id and playlist.section.sound_board_id == playlist.sound_board_id:
             continue
 
-        section, _ = SoundboardSection.objects.get_or_create(
-            SoundBoard_id=playlist.SoundBoard_id,
+        section, _ = soundboard_section.objects.get_or_create(
+            sound_board_id=playlist.sound_board_id,
             section=1,
             defaults={"name": "Section 1", "order": 1},
         )
         playlist.section_id = section.id
-        playlist.save(update_fields=["section"])
+        playlist.save(update_fields=["section_id"])
 
 
 class Migration(migrations.Migration):

@@ -16,7 +16,7 @@ class SoundboardEditMode {
     private playlistListFilters: Record<string, string> = {};
     private myPlaylistListFilters: Record<string, string> = {};
     private buttonAction: HTMLButtonElement | null = null;
-    private id_section_add_button: string = 'soundboard-add-section-button';
+    private readonly id_section_add_button: string = 'soundboard-add-section-button';
     private activeAddZone: HTMLElement | null = null;
 
     public addEvent(): void {
@@ -211,7 +211,7 @@ class SoundboardEditMode {
         if (playlistItem) {
             // Insérer avant la zone d'ajout cliquée (ou la première à défaut) pour rester dans la bonne section
             const addZone = this.activeAddZone ?? flexContainer.querySelector('.soundboard-edit-add-zone');
-            if (addZone && addZone.parentElement === flexContainer) {
+            if (addZone?.parentElement === flexContainer) {
                 addZone.before(playlistItem);
             } else {
                 flexContainer.appendChild(playlistItem);
