@@ -107,6 +107,29 @@
     text-align: center;
 }
 
+.soundboard-edit-add-section-button {
+    width: 100%;
+    margin-top: 0.4rem;
+    padding: 0.5rem;
+    border: 2px dashed $border_color_light;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: inherit;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+
+    @at-root {
+        html[data-bs-theme="dark"] & {
+            border-color: $border_color_dark;
+        }
+    }
+}
+
+.soundboard-edit-add-section-button:hover,
+.soundboard-edit-add-section-button:focus-visible {
+    border-color: #0d6efd;
+    background: rgba(13, 110, 253, 0.09);
+}
+
 /* Responsive breakpoints */
 @media (max-width: 768px) {
     .responsive-sections-container {

@@ -29,6 +29,7 @@ from main.architecture.persistence.repository.PlaylistTagRepository import Playl
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from main.domain.common.helper.ScriptContextHelper import ScriptContextHelper
+from main.domain.common.utils.settings import Settings
 from main.architecture.persistence.repository.PlaylistDuplicationHistoryRepository import PlaylistDuplicationHistoryRepository
 from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
 from main.domain.common.service.PlaylistDuplicationService import PlaylistDuplicationService
@@ -65,6 +66,7 @@ def soundboard_show(request, soundboard_uuid):
             'list_shortcut_keyboard': soundboard_playlist_repository.get_list_shortcut_keyboard(soundboard),
             'link_music_allowed': LinkMusicAllowedEnum.convert_to_dict(),
             'pending_proposal_placeholders': PlaylistProposalRepository().get_pending_for_soundboard(soundboard),
+            'limite_max_section': Settings.get('SOUNDBOARD_LIMIT_SECTION'),
             **ScriptContextHelper.build(soundboard),
         })
         
@@ -298,6 +300,13 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
     playlist_name = (request.POST.get('name') or '').strip()
     playlist_type = request.POST.get('typePlaylist')
 
+    try:
+        section = int(request.POST.get('section', 1))
+        if section <= 0:
+            section = 1
+    except (TypeError, ValueError):
+        section = 1
+
     if not playlist_name:
         return JsonResponse({'error': "Le nom de la playlist est obligatoire"}, status=400)
 
@@ -319,7 +328,7 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
             typePlaylist=playlist_type,
         )
         playlist.save()
-        SoundboardPlaylistService(soundboard).add_default(playlist)
+        SoundboardPlaylistService(soundboard).add_default(playlist, section)
 
         playlist_html = render_service.render_playlist_item(playlist, soundboard)
 

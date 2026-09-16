@@ -23,8 +23,7 @@ class SoundboardPlaylistService:
             )
         return section_obj
 
-    def add_default(self, playlist: Playlist):
-        section = 1
+    def add_default(self, playlist: Playlist, section: int = 1):
         last_index_bdd = self.soundboard_playlist_repository.get_last_index_by_section(self.soundboard, section)
         last_index = last_index_bdd + 1 if last_index_bdd is not None else 1
         order = self.__check_order(last_index)

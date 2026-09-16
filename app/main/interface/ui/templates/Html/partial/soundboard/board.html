@@ -14,11 +14,10 @@
 
 
 {% block content %}
-<div class="responsive-sections-container {% if master == False %} d-none {% endif %}" {% if master == True and owner == True %}data-soundboard-tracks-uri="{% url 'soundboardTracksList' soundboard.uuid %}" data-soundboard-editable="true" {% endif %}
-    {% if master == True and owner == False %}data-soundboard-tracks-uri="{% url 'publicSoundboardTracksList' soundboard.uuid %}" {% endif %}
-    data-shepherd="soundboard-tracks">
+<div class="responsive-sections-container {% if master == False %} d-none {% endif %}" {% if master == True and owner == True %}data-soundboard-tracks-uri="{% url 'soundboardTracksList' soundboard.uuid %}" data-soundboard-editable="true"
+    data-soundboard-organize-uri="{% url 'organizeSoundboardUpdate' soundboard.uuid %}" {% endif %} {% if master == True and owner == False %}data-soundboard-tracks-uri="{% url 'publicSoundboardTracksList' soundboard.uuid %}" {% endif %} data-shepherd="soundboard-tracks">
     {% for section, soundboard_playlists in soundboard|get_ordered_playlists:owner %}
-    <section class="section-{{ section.section }} position-relative border rounded mt-2 {% if owner == False %}border-success{%else%}border-primary{% endif %}">
+    <section class="section-{{ section.section }} position-relative border rounded mt-2 {% if owner == False %}border-success{%else%}border-primary{% endif %}" id="board-section-{{ section.section }}">
         <div class="float-start mx-2 position-absolute section-header">{{section.name}}</div>
         <div class="section-content">
             <div class="flex-container" {% if master == False %} id="template-shared-volume" data-shared-volume-soundboard-id="{{ soundboard.uuid }}" {% endif %}>
@@ -27,10 +26,8 @@
                 <div class="flex-item">
                     {% with playlist_data=playlist|get_playlist_data %}
                     <div class="playlist-link {% if master == False %} disabled {% endif %}{% if owner == False %}sound-icon-wrapper reportable{% endif %} playlist-element  playlist-dim-{{ playlist_dim }} m-1" id='playlist-{{ playlist.uuid }}'
-                        style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};" data-id='{{ playlist.uuid }}'
-                        {% if owner == False %}
-                        data-bs-toggle="tooltip" data-bs-delay='{"show":1100,"hide":100}' data-bs-placement="top" data-bs-html="true" title="<strong>{{playlist.name|safe_html}}</strong><br/><small>{% for tag in playlist.playlist_tags.all %} {{tag.name}}{% endfor %}</small>"
-                        {% endif %}
+                        style="background-color: {{playlist.get_color}};color: {{playlist.get_color_text}};" data-id='{{ playlist.uuid }}' {% if owner == False %} data-bs-toggle="tooltip" data-bs-delay='{"show":1100,"hide":100}' data-bs-placement="top" data-bs-html="true"
+                        title="<strong>{{playlist.name|safe_html}}</strong><br/><small>{% for tag in playlist.playlist_tags.all %} {{tag.name}}{% endfor %}</small>" {% endif %}
                         data-playlist-uri="{% if master == True %}{% if owner == True %}{% url 'streamMusic' soundboard.uuid  playlist.uuid %}{% else %}{% url 'publicStreamMusic' soundboard.uuid  playlist.uuid %}{% endif %}{% endif %}" {% for key, value in playlist_data.items %}
                         data-playlist-{{ key }}="{{ value }}" {% endfor %} data-last-activation="0">
                         {{ playlist | applys_playlist_content}}
@@ -51,7 +48,7 @@
                 {% endwith %}
                 {% endfor %}
                 {% if master == True and owner == True %}
-                <button type="button" class="soundboard-edit-add-zone flex-item playlist-element playlist-dim-{{ playlist_dim }} m-1" data-soundboard-edit-open-panel="true" aria-label="Ajouter une playlist via le mode édition">
+                <button type="button" class="soundboard-edit-add-zone flex-item playlist-element playlist-dim-{{ playlist_dim }} m-1" data-soundboard-edit-open-panel="true" data-section="{{ section.section }}" aria-label="Ajouter une playlist via le mode édition">
                     <span class="soundboard-edit-add-zone__label">Ajouter</span>
                 </button>
                 {% endif %}
@@ -60,7 +57,30 @@
 
     </section>
     {% endfor %}
+
 </div>
+<div>
+    {% if master == True and owner == True %}
+    <button type="button" class="soundboard-edit-add-section-button d-none" id="soundboard-add-section-button" aria-label="Ajouter une section">
+        <i class="fa-solid fa-plus"></i> Ajouter une section
+    </button>
+    {% endif %}
+</div>
+
+{% if master == True and owner == True %}
+<template id="add-board-section-template" data-max-section="{{ limite_max_section }}">
+    <section class="section-0 position-relative border rounded mt-2 border-primary">
+        <div class="float-start mx-2 position-absolute section-header"></div>
+        <div class="section-content">
+            <div class="flex-container">
+                <button type="button" class="soundboard-edit-add-zone flex-item playlist-element playlist-dim-{{ playlist_dim }} m-1" data-soundboard-edit-open-panel="true" data-section="0" aria-label="Ajouter une playlist via le mode édition">
+                    <span class="soundboard-edit-add-zone__label">Ajouter</span>
+                </button>
+            </div>
+        </div>
+    </section>
+</template>
+{% endif %}
 
 {% if master == True and owner == False and user_proposals %}
 <section class="section-proposals border rounded border-warning">
@@ -70,10 +90,8 @@
             {% for proposal in user_proposals %}
             <div class="flex-item">
                 {% with playlist_data=proposal.playlist|get_playlist_data %}
-                <div class="playlist-link playlist-element playlist-proposal playlist-dim-{{ playlist_dim }} m-1 {% if proposal.status != 'PENDING' %}disabled{% endif %}"
-                    id='playlist-{{ proposal.playlist.uuid }}' data-id='{{ proposal.playlist.uuid }}'
-                    data-playlist-uri="{% if proposal.status == 'PENDING' %}{% url 'publicProposalStreamMusic' soundboard.uuid proposal.uuid %}{% endif %}"
-                    {% for key, value in playlist_data.items %}data-playlist-{{ key }}="{{ value }}" {% endfor %} data-last-activation="0"
+                <div class="playlist-link playlist-element playlist-proposal playlist-dim-{{ playlist_dim }} m-1 {% if proposal.status != 'PENDING' %}disabled{% endif %}" id='playlist-{{ proposal.playlist.uuid }}' data-id='{{ proposal.playlist.uuid }}'
+                    data-playlist-uri="{% if proposal.status == 'PENDING' %}{% url 'publicProposalStreamMusic' soundboard.uuid proposal.uuid %}{% endif %}" {% for key, value in playlist_data.items %}data-playlist-{{ key }}="{{ value }}" {% endfor %} data-last-activation="0"
                     style="background-color: {{ proposal.playlist.get_color }};color: {{ proposal.playlist.get_color_text }};">
                     {{ proposal.playlist | applys_playlist_content }}
                 </div>
@@ -99,8 +117,7 @@
 <div class="d-none" aria-hidden="true">
     {% for proposal in pending_proposal_placeholders %}
     {% with playlist_data=proposal.playlist|get_playlist_data %}
-    <div class="playlist-link playlist-element disabled" id='playlist-{{ proposal.playlist.uuid }}'
-        {% for key, value in playlist_data.items %}data-playlist-{{ key }}="{{ value }}" {% endfor %} data-last-activation="0"></div>
+    <div class="playlist-link playlist-element disabled" id='playlist-{{ proposal.playlist.uuid }}' {% for key, value in playlist_data.items %}data-playlist-{{ key }}="{{ value }}" {% endfor %} data-last-activation="0"></div>
     {% endwith %}
     {% endfor %}
 </div>
