@@ -467,6 +467,10 @@ Corrections
 Fiabilité & Confiance
 - Préparation pour la migrations de structure des données pour les soundboards
 
+### 0.5.3 - 2026/09
+Modifications
+- Changement de structure entre les boutons et les soundboards
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
