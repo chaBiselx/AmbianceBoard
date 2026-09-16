@@ -131,3 +131,20 @@ class PlaylistDuplicationHistoryRepository:
         return PlaylistDuplicationHistory.objects.filter(
             source_playlist_uuid=source_playlist_uuid
         ).count()
+        
+    def get_original_playlist(
+        self,
+        duplicated_playlist: Playlist
+    ) -> Optional[PlaylistDuplicationHistory]:
+        """
+        Récupère l'historique de duplication original pour une playlist dupliquée.
+        
+        Args:
+            duplicated_playlist: La playlist dupliquée
+            
+        Returns:
+            Optional[PlaylistDuplicationHistory]: L'historique de duplication original ou None si non trouvé
+        """
+        return PlaylistDuplicationHistory.objects.filter(
+            duplicated_playlist=duplicated_playlist
+        ).select_related('source_playlist', 'duplicated_playlist', 'duplicated_playlist__user').first()

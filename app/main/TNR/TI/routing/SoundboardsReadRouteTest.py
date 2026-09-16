@@ -1,63 +1,37 @@
 """
 Test d'intégration pour la route: soundboards read (/soundBoards/<uuid:soundboard_uuid>)
 """
-from django.test import TestCase, Client, tag
+from django.test import tag
 from django.urls import reverse
-from django.contrib.auth import get_user_model
-from main.architecture.persistence.models.SoundBoard import SoundBoard
-from main.architecture.persistence.models.Playlist import Playlist
-from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
+from main.TNR.Fixtures.BaseTestCases import AuthenticatedTestCase
 import uuid
-
-User = get_user_model()
 
 
 @tag('integration')
-class SoundboardsReadRouteTest(TestCase):
+class SoundboardsReadRouteTest(AuthenticatedTestCase):
     """Tests pour la route soundboards read"""
     
     def setUp(self):
-        """Configuration initiale"""
-        self.client = Client()
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='test@example.com',
-            password='testpass123'
+        super().setUp()
+        
+        self.other_user = self.create_user(username='otheruser', password='testpass123')
+        
+        self.soundboard = self.create_soundboard(
+            name='Test Soundboard',
+            color='#FF0000',
+            colorText='#FFFFFF',
         )
         
-        # Créer un autre utilisateur pour tester les permissions
-        self.other_user = User.objects.create_user(
-            username='otheruser',
-            email='other@example.com',
-            password='testpass123'
-        )
-        
-        # Créer un soundboard pour l'utilisateur principal
-        self.soundboard = SoundBoard.objects.create(
-            user=self.user,
-            name="Test Soundboard",
-            color="#FF0000",
-            colorText="#FFFFFF"
-        )
-        
-        # Créer une playlist et l'associer au soundboard
-        self.playlist = Playlist.objects.create(
-            name="Test Playlist",
-            user=self.user,
+        self.playlist = self.create_playlist(
+            name='Test Playlist',
             typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
         )
+        self.link_playlist(self.soundboard, self.playlist, order=1)
         
-        SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
-            Playlist=self.playlist,
-            order=1
-        )
-        
-        # Créer un soundboard pour l'autre utilisateur
-        self.other_soundboard = SoundBoard.objects.create(
+        self.other_soundboard = self.create_soundboard(
             user=self.other_user,
-            name="Other User Soundboard"
+            name='Other User Soundboard',
         )
     
     def test_soundboardsread_requires_authentication(self):
@@ -69,7 +43,7 @@ class SoundboardsReadRouteTest(TestCase):
     
     def test_soundboardsread_accessible_when_authenticated(self):
         """Test que la route est accessible pour un utilisateur authentifié avec son propre soundboard"""
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         response = self.client.get(
             reverse('soundboardsRead', kwargs={'soundboard_uuid': self.soundboard.uuid})
         )
@@ -83,7 +57,7 @@ class SoundboardsReadRouteTest(TestCase):
     
     def test_soundboardsread_returns_404_for_nonexistent_soundboard(self):
         """Test que la route retourne 404 pour un soundboard inexistant"""
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         non_existent_uuid = uuid.uuid4()
         response = self.client.get(
             reverse('soundboardsRead', kwargs={'soundboard_uuid': non_existent_uuid})
@@ -92,7 +66,7 @@ class SoundboardsReadRouteTest(TestCase):
     
     def test_soundboardsread_denies_access_to_other_users_soundboard(self):
         """Test qu'un utilisateur ne peut pas accéder au soundboard d'un autre utilisateur"""
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         response = self.client.get(
             reverse('soundboardsRead', kwargs={'soundboard_uuid': self.other_soundboard.uuid})
         )
@@ -100,7 +74,7 @@ class SoundboardsReadRouteTest(TestCase):
     
     def test_soundboardsread_contains_playlist_data(self):
         """Test que la page contient les données des playlists associées"""
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         response = self.client.get(
             reverse('soundboardsRead', kwargs={'soundboard_uuid': self.soundboard.uuid})
         )
@@ -110,7 +84,7 @@ class SoundboardsReadRouteTest(TestCase):
     
     def test_soundboardsread_renders_correct_template(self):
         """Test que la route utilise le bon template"""
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         response = self.client.get(
             reverse('soundboardsRead', kwargs={'soundboard_uuid': self.soundboard.uuid})
         )
@@ -120,29 +94,18 @@ class SoundboardsReadRouteTest(TestCase):
     def test_soundboardsread_with_multiple_playlists(self):
         """Test l'affichage d'un soundboard avec plusieurs playlists"""
         # Créer plusieurs playlists
-        playlist2 = Playlist.objects.create(
-            name="Test Playlist 2",
-            user=self.user,
+        playlist2 = self.create_playlist(
+            name='Test Playlist 2',
             typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
         )
-        playlist3 = Playlist.objects.create(
-            name="Test Playlist 3",
-            user=self.user,
+        playlist3 = self.create_playlist(
+            name='Test Playlist 3',
             typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
         )
+        self.link_playlist(self.soundboard, playlist2, order=2)
+        self.link_playlist(self.soundboard, playlist3, order=3)
         
-        SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
-            Playlist=playlist2,
-            order=2
-        )
-        SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
-            Playlist=playlist3,
-            order=3
-        )
-        
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         response = self.client.get(
             reverse('soundboardsRead', kwargs={'soundboard_uuid': self.soundboard.uuid})
         )
@@ -152,7 +115,7 @@ class SoundboardsReadRouteTest(TestCase):
     
     def test_soundboardsread_template_renders_without_syntax_error(self):
         """Test que le template se rend complètement sans erreur de syntaxe"""
-        self.client.login(username='testuser', password='testpass123')
+        self.login()
         
         # Effectuer la requête - si une TemplateSyntaxError existe, elle sera levée ici
         response = self.client.get(

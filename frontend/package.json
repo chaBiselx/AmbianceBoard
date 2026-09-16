@@ -12,8 +12,8 @@
         "test": "npm run test:smoke && npm run test:all",
         "test:smoke": "vitest run tests/Smoke.test.ts",
         "test:all": "vitest run --bail=1 --exclude \"tests/E2E/**\"",
-        "test:tu": "vitest run --bail=1 \"tests/TU/**/*.test.ts\"",
-        "test:ti": "vitest run \"tests/TI/**/*.test.ts\"",
+        "test:tu": "vitest run --bail=1 tests/TU",
+        "test:ti": "vitest run tests/TI",
         "test:e2e": "playwright test \"tests/E2E/**/*.spec.ts\""
     },
     "dependencies": {

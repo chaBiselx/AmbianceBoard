@@ -1,26 +1,29 @@
 import { PaginationManager } from "@/modules/PaginationManager";
 
 class TagManager {
-    private readonly DOMTag: HTMLElement;
+    private readonly DOMTag: NodeListOf<HTMLElement>;
 
-    
+
     constructor() {
-        this.DOMTag = document.getElementById('tag-search') as HTMLElement;
+        this.DOMTag = document.querySelectorAll('.dynamic-filter-search');
     }
 
     public addEventListeners() {
         if (!this.DOMTag) {
             return;
         }
-        for (const tagElement of this.DOMTag.querySelectorAll('.tag-element-redirect')) {
-            tagElement.addEventListener('click', (event) => {
-                const target = event.currentTarget as HTMLElement;
-                const tag = target.dataset.tag;
-                if (tag) {
-                    this.changePage(tag);
-                }
-            });
-        }
+        this.DOMTag.forEach(form => {
+            for (const tagElement of form.querySelectorAll('.tag-element-redirect')) {
+                tagElement.addEventListener('click', (event) => {
+                    const target = event.currentTarget as HTMLElement;
+                    const tag = target.dataset.tag;
+                    if (tag) {
+                        this.changePage(tag);
+                    }
+                });
+            }
+        });
+
 
     }
 
@@ -34,4 +37,4 @@ class TagManager {
 
 }
 
-export {TagManager}
+export { TagManager }

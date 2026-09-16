@@ -1,0 +1,30 @@
+{% load i18n %}
+
+<div class="accordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button {% if not selected_value %}collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#tag-filter-{{ field_id }}" aria-expanded="{{ selected_value|yesno:'true,false' }}" aria-controls="tag-filter-{{ field_id }}">
+                {{ label }}
+            </button>
+        </h2>
+        <div id="tag-filter-{{ field_id }}" class="accordion-collapse collapse {% if selected_value %}show{% endif %}">
+            <div class="accordion-body">
+                <div class="d-flex align-items-center gap-2 dynamic-filter-search">
+                    <select name="{{ field_name }}" id="{{ field_id }}" class="form-select select-element-redirect" style="width: auto;" data-filter-select>
+                        <option value="">{{ all_option_label }}</option>
+                        {% for key, value in options.items %}
+                        {% if use_key_as_value %}
+                        <option value="{{ key }}" {% if selected_value == key %}selected{% endif %}>{{ value }}</option>
+                        {% else %}
+                        <option value="{{ value }}" {% if selected_value == value %}selected{% endif %}>{{ value }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

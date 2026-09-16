@@ -378,6 +378,7 @@ def dismiss_trace_user_activity(request, trace_user_activity_uuid: uuid.UUID, ty
             if activity:
                 activity.set_end_time()
                 return JsonResponse({"message": "Trace user activity dismissed"}, status=200)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
         except Exception as e:
             logger.error(f"dismiss trace user activity error : {e}")
             return JsonResponse({"error": "Cannot dismiss trace user activity"}, status=500)

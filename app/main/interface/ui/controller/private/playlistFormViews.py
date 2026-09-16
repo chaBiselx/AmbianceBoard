@@ -102,7 +102,7 @@ def add_music_from_soundboard(request, playlist_uuid)-> JsonResponse:
     if 'new_playlist_uuid' in request.session:
         del request.session['new_playlist_uuid']
     if not playlist:
-        return render(request, HtmlDefaultPageEnum.ERROR_404_MODAL.value, status=404, modal=True) 
+        return render(request, HtmlDefaultPageEnum.ERROR_404_MODAL.value, status=404) 
     
     limit = UserTierManager.get_user_limits(request.user)
     nb_music_remaining = limit['music_per_playlist'] - playlist.tracks.count()
