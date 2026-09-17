@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-16 10:38+0000\n"
+"POT-Creation-Date: 2026-09-17 19:44+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -284,35 +284,35 @@ msgstr ""
 msgid "template.soundboard.create.title"
 msgstr "Create a new soundboard"
 
-#: main/interface/ui/controller/private/soundboardScriptViews.py:33
+#: main/interface/ui/controller/private/soundboardScriptViews.py:35
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:35
 #: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:11
 #: main/interface/ui/templates/Html/Soundboard/soundboard_scripts.html:18
 msgid "template.scripts.page.title"
 msgstr "Scripts"
 
-#: main/interface/ui/controller/private/soundboardScriptViews.py:43
+#: main/interface/ui/controller/private/soundboardScriptViews.py:45
 msgid "template.scripts.error.soundboard_not_found"
 msgstr "Soundboard not found"
 
-#: main/interface/ui/controller/private/soundboardScriptViews.py:47
-#: main/interface/ui/controller/private/soundboardScriptViews.py:66
+#: main/interface/ui/controller/private/soundboardScriptViews.py:49
+#: main/interface/ui/controller/private/soundboardScriptViews.py:68
 msgid "template.scripts.error.name_required"
 msgstr "The script name is required"
 
-#: main/interface/ui/controller/private/soundboardScriptViews.py:143
-#: main/interface/ui/controller/private/soundboardScriptViews.py:194
-#: main/interface/ui/controller/private/soundboardScriptViews.py:219
+#: main/interface/ui/controller/private/soundboardScriptViews.py:145
+#: main/interface/ui/controller/private/soundboardScriptViews.py:196
+#: main/interface/ui/controller/private/soundboardScriptViews.py:221
 msgid "template.scripts.error.script_not_found"
 msgstr "Script not found"
 
-#: main/interface/ui/controller/private/soundboardScriptViews.py:171
-#: main/interface/ui/controller/private/soundboardScriptViews.py:204
+#: main/interface/ui/controller/private/soundboardScriptViews.py:173
+#: main/interface/ui/controller/private/soundboardScriptViews.py:206
 msgid "template.scripts.error.step_not_found"
 msgstr "Step not found"
 
-#: main/interface/ui/controller/private/soundboardScriptViews.py:180
-#: main/interface/ui/controller/private/soundboardScriptViews.py:230
+#: main/interface/ui/controller/private/soundboardScriptViews.py:182
+#: main/interface/ui/controller/private/soundboardScriptViews.py:232
 msgid "template.scripts.error.invalid_step"
 msgstr "Invalid step"
 
@@ -345,19 +345,19 @@ msgstr "Average session duration - %s days"
 msgid "view.publicStats.session_duration.y_label"
 msgstr "Average Session Duration (min)"
 
-#: main/interface/ui/controller/public/publicViews.py:60
+#: main/interface/ui/controller/public/publicViews.py:61
 msgid "view.publicListing.title"
 msgstr "Public Soundboards"
 
-#: main/interface/ui/controller/public/publicViews.py:72
+#: main/interface/ui/controller/public/publicViews.py:73
 msgid "view.publicFavorite.title"
 msgstr "Favorite Soundboards"
 
-#: main/interface/ui/controller/public/publicViews.py:194
+#: main/interface/ui/controller/public/publicViews.py:197
 msgid "view.favoriteUpdate.error.not_found"
 msgstr "SoundBoard not found."
 
-#: main/interface/ui/controller/public/publicViews.py:211
+#: main/interface/ui/controller/public/publicViews.py:214
 msgid "view.favoriteUpdate.error.favorite_not_found"
 msgstr "Favorite not found."
 
@@ -1191,9 +1191,70 @@ msgstr "Add a soundboard"
 msgid "template.soundboard_organize._personalized_actions"
 msgstr "Other personnalised action"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:75
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:17
+msgid "template.soundboard_organize.page.back"
+msgstr "Back to soundboard"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:21
+msgid "template.soundboard_organize.unassociated.title"
+msgstr "Unassociated buttons"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:24
+msgid "template.soundboard_organize.unassociated.empty"
+msgstr "No unassociated buttons"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:39
+msgid "template.soundboard_organize.associated.title"
+msgstr "Associated buttons"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:42
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:111
+msgid "template.soundboard_organize.section.default_title"
+msgstr "Section"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:43
+msgid "template.soundboard_organize.section.delete_confirmation"
+msgstr "Delete this section and all its associated buttons?"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:44
+msgid "template.soundboard_organize.section.rename_cancel"
+msgstr "Cancel"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:45
+msgid "template.soundboard_organize.section.rename_save"
+msgstr "Save"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:56
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:115
+msgid "template.soundboard_organize.title.tooltip"
+msgstr "Rename section"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:58
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:101
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:117
+msgid "template.soundboard_organize.title.rename"
+msgstr "Rename"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:60
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:62
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:121
+msgid "template.soundboard_organize.section.insert_before"
+msgstr "Insert section before"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:68
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:127
+msgid "template.soundboard_organize.section.empty"
+msgstr "No buttons in this section"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:84
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:134
 msgid "template.soundboard_organize.section.delete"
 msgstr "Delete section"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:93
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:94
+msgid "template.soundboard_organize.section.add_end"
+msgstr "Add section at end"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:5
 msgid "template.soundboard_read.page_title_suffix"

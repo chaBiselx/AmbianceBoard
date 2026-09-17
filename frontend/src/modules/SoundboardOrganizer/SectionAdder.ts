@@ -10,7 +10,10 @@ class SectionDomManager {
     public updateAccordionNode(accordionNode: HTMLElement, sectionNumber: number, resetTitle = false): void {
         const sectionContainer = accordionNode.querySelector('.section-container') as HTMLDivElement;
         accordionNode.querySelector('.num-section')!.textContent = sectionNumber.toString();
-        if (resetTitle) accordionNode.querySelector('.section-title')!.textContent = ` Section ${sectionNumber}`;
+        if (resetTitle) {
+            const defaultTitle = document.getElementById('associated-playlists-container')?.dataset.sectionDefaultTitle || 'Section';
+            accordionNode.querySelector('.section-title')!.textContent = ` ${defaultTitle} ${sectionNumber}`;
+        }
         sectionContainer.id = `associated-playlists-section-${sectionNumber}`;
         sectionContainer.dataset.section = sectionNumber.toString();
         for (const playlist of sectionContainer.getElementsByClassName('playlist-dragAndDrop') as HTMLCollectionOf<HTMLDivElement>) {
@@ -136,7 +139,8 @@ class SectionDeleter {
             SectionConfig.refreshMaxSections();
             const currentCount = SectionConfig.getMaxSections();
             if (currentCount <= 1) return;
-            if (!confirm('Supprimer cette section et tous ses boutons associés ?')) return;
+            const confirmation = document.getElementById('associated-playlists-container')?.dataset.sectionDeleteConfirmation;
+            if (!confirm(confirmation)) return;
             if (!await new SendBackendAction().deleteSection(section)) return;
 
             const accordionNode = OrganizerDragAndDropZone.associatedPlaylistsSection(section)?.closest('.accordion') as HTMLElement | null;
@@ -178,9 +182,9 @@ class SectionRenamer {
         if (!titleNode) return;
 
         ModalCustom.show({
-            title: `Section ${section}`,
+            title: `${document.getElementById('associated-playlists-container')?.dataset.sectionDefaultTitle || 'Section'} ${section}`,
             body: template.innerHTML,
-            footer: '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button><button type="button" class="btn btn-primary" id="rename-section-submit">Enregistrer</button>',
+            footer: `<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">${document.getElementById('associated-playlists-container')?.dataset.sectionRenameCancel || 'Cancel'}</button><button type="button" class="btn btn-primary" id="rename-section-submit">${document.getElementById('associated-playlists-container')?.dataset.sectionRenameSave || 'Save'}</button>`,
             width: 'sm',
             callback: () => {
                 const input = document.getElementById('rename-section-input') as HTMLInputElement | null;

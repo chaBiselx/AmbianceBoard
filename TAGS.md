@@ -475,6 +475,9 @@ Modifications
 Correction :
 - Ajout un systeme de cache pour éviter de créer à chaque log une socket. 
 
+### 0.5.4 - 2026/09
+Améliorations
+- Ajout de traductions
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
