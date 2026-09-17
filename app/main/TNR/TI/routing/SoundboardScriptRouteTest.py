@@ -10,6 +10,7 @@ from django.urls import reverse
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 from main.domain.common.enum.ScriptActionEnum import ScriptActionEnum
 from main.domain.common.enum.ScriptTriggerEnum import ScriptTriggerEnum
 from main.domain.common.service.script.SoundboardScriptService import SoundboardScriptService
@@ -30,7 +31,13 @@ class SoundboardScriptRouteTest(TestCase):
         )
         self.soundboard = SoundBoard.objects.create(user=self.user, name='SB scripts')
         self.playlist = Playlist.objects.create(name='Playlist route', user=self.user)
-        SoundboardPlaylist.objects.create(SoundBoard=self.soundboard, Playlist=self.playlist, section=1, order=1)
+        section = SoundboardSection.objects.create(
+            SoundBoard=self.soundboard, section=1, name='Section 1', order=1
+        )
+        
+        SoundboardPlaylist.objects.create(
+            Playlist=self.playlist, section=section, order=1
+        )
         self.service = SoundboardScriptService(self.soundboard)
         self.client.login(username='script-route-user', password='testpass123')
 

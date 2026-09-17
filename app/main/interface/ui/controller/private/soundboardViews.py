@@ -45,19 +45,17 @@ def soundboard_organize(request, soundboard_uuid):
     
     soundboard_manager = SoundBoardPlaylistManager(request, soundboard)
 
-    max_sections = SoundboardPlaylistRepository().get_max_section(soundboard)
     return render(request, 'Html/Soundboard/soundboard_organize.html', {
         'limite_max_section' : Settings.get('SOUNDBOARD_LIMIT_SECTION'),
         'soundboard': soundboard, 
         'actualPlaylist': soundboard_manager.get_playlists, 
         'unassociatedPlaylists': soundboard_manager.get_unassociated_playlists,
-        'max_sections': range(1, max_sections + 1),
         'title': f'Organisation du Soundboard : {soundboard.name}'
     })
 
 
 @login_required
-@require_http_methods(['POST', 'DELETE', 'UPDATE'])
+@require_http_methods(['POST', 'DELETE', 'UPDATE', 'PATCH'])
 def soundboard_organize_update(request, soundboard_uuid):
     """Mise à jour de l'organisation des playlists dans un soundboard"""
     try:
@@ -68,10 +66,21 @@ def soundboard_organize_update(request, soundboard_uuid):
         data = json.loads(request.body.decode('utf-8'))
         soundboard_playlist_service = SoundboardPlaylistService(soundboard)
 
+        if request.method == 'PATCH' and 'renameSection' in data.keys():
+            rename_section = int(data['renameSection'])
+            name = str(data.get('name', ''))
+            soundboard_playlist_service.rename_section(rename_section, name)
+            return JsonResponse({'success': 'section renamed', 'section': rename_section, 'name': name.strip()[:255]}, status=200)
+
         if request.method == 'UPDATE' and 'insertSection' in data.keys():
             insert_section = int(data['insertSection'])
             soundboard_playlist_service.insert_section(insert_section)
             return JsonResponse({'success': 'section inserted', 'section': insert_section}, status=200)
+
+        if request.method == 'DELETE' and 'deleteSection' in data.keys():
+            delete_section = int(data['deleteSection'])
+            soundboard_playlist_service.delete_section(delete_section)
+            return JsonResponse({'success': 'section deleted', 'section': delete_section}, status=200)
 
         playlist = (PlaylistService(request)).get_playlist(data['idPlaylist'])
         new_order = None

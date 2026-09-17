@@ -21,4 +21,6 @@ def get_name(soundboard):
 @register.filter
 def get_ordered_playlists(soundboard, owner):
     """Return ordered playlists with public mode enabled for non-owners."""
-    return soundboard.get_list_playlist_ordered(public=(not bool(owner)))
+    from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
+
+    return SoundboardPlaylistRepository().get_sectioned_playlists(soundboard, public=(not bool(owner)))

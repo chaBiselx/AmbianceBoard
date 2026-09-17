@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
@@ -22,11 +23,18 @@ def list_playlists_for_specific_action(request, soundboard_uuid):
     if not soundboard:
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     
+    back = request.GET.get('back', '')
+    url_back = reverse('soundboardsRead', kwargs={'soundboard_uuid': soundboard_uuid})
+    if back and back == 'organize':
+        url_back = reverse('organizeSoundboard', kwargs={'soundboard_uuid': soundboard_uuid})
+        
+    
     
     ordered_soundboard_playlist = SoundboardPlaylistRepository().get_soundboard_playlist_formated(soundboard)
     return render(request, 'Html/Soundboard/list_playlists_for_specific_action.html', {
         'ordered_soundboard_playlist': ordered_soundboard_playlist,
-        'soundboard': soundboard
+        'soundboard': soundboard,
+        'url_back': url_back
     })
     
 @login_required

@@ -153,6 +153,12 @@ class LoggerFactoryTestCase(TestCase):
             
             self.assertIsInstance(logger, MemoryLogger)
             self.assertEqual(logger.logger_name, 'custom_default')
+
+    @override_settings(LOGGER_TYPE='memory')
+    def test_get_default_logger_reuses_instance(self):
+        logger = LoggerFactory.get_default_logger('shared_default')
+
+        self.assertIs(logger, LoggerFactory.get_default_logger('shared_default'))
     
     @patch('main.domain.common.utils.logger.LoggerFactory.Settings')
     def test_get_default_logger_missing_setting(self, mock_settings):

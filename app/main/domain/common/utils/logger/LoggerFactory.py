@@ -4,6 +4,7 @@ Permet une création centralisée et configurée des loggers.
 """
 
 from main.domain.common.utils.settings import Settings
+from functools import lru_cache
 from typing import Optional, Dict, Any
 from .ILogger import ILogger
 from .LoggerFile import LoggerFile
@@ -70,4 +71,9 @@ class LoggerFactory:
             ILogger: Logger par défaut configuré pour 'main'
         """
         default_logger = Settings.get('LOGGER_TYPE')
-        return LoggerFactory.create_logger(logger_name, default_logger)
+        return LoggerFactory._get_logger(logger_name, default_logger)
+
+    @staticmethod
+    @lru_cache(maxsize=32)
+    def _get_logger(logger_name: str, logger_type: str) -> ILogger:
+        return LoggerFactory.create_logger(logger_name, logger_type)

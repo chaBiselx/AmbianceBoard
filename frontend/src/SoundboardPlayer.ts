@@ -17,6 +17,7 @@ import ShorcutKeyBoardDetector from "@/modules/Control/ShorcutKeyBoardDetector";
 import SoundBoardEventListener from '@/modules/SoundBoardEventListener';
 import StreamConnectionWarmup from '@/modules/StreamConnectionWarmup';
 import SoundboardEditMode from '@/modules/SoundBoardEditor/SoundboardEditMode';
+import { BoardSectionAdder } from '@/modules/SoundboardOrganizer/BoardSectionAdder';
 import ProposePlaylistToSoundboard from '@/modules/SoundBoardEditor/ProposePlaylistToSoundboard';
 import PlayingMonitor from '@/modules/PlayingMonitor';
 import ScriptManager from '@/modules/Script/ScriptManager';
@@ -47,7 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
         sh.addEvent();
     }
     new ShortcutKeyboardSoundboard().addEvent();
-    new SoundboardEditMode().addEvent();
+    const soundboardEditMode = new SoundboardEditMode();
+    soundboardEditMode.addEvent();
+    new BoardSectionAdder(node => soundboardEditMode.bindAddZonesIn(node)).addEvent();
     new ProposePlaylistToSoundboard().addEvent();
 
     // Initialiser automatiquement le WebSocket si on est en mode master

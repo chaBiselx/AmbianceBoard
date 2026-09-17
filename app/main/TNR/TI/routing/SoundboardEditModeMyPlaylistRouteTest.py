@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 from main.architecture.persistence.models.Track import Track
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 import uuid
@@ -37,7 +38,10 @@ class SoundboardEditModeMyPlaylistListRouteTest(TestCase):
         # Un track est requis: la requête exclut les playlists vides (tracks__isnull=False)
         Track.objects.create(playlist=self.playlist_integrated, alternativeName='Track intégrée')
         Track.objects.create(playlist=self.playlist_not_integrated, alternativeName='Track non intégrée')
-        SoundboardPlaylist.objects.create(SoundBoard=self.soundboard, Playlist=self.playlist_integrated, order=1)
+        section = SoundboardSection.objects.create(
+            SoundBoard=self.soundboard, section=1, name='Section 1', order=1
+        )
+        SoundboardPlaylist.objects.create(Playlist=self.playlist_integrated, section=section, order=1)
 
     def _url(self, soundboard_uuid=None):
         return reverse('soundboardEditModeMyPlaylistList', kwargs={
@@ -123,7 +127,7 @@ class SoundboardEditModeAddMyPlaylistRouteTest(TestCase):
         self.client.login(username='owner', password='pw')
         self.client.post(self._url())
         self.assertTrue(
-            SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard, Playlist=self.playlist).exists()
+            SoundboardPlaylist.objects.filter(section__SoundBoard=self.soundboard, Playlist=self.playlist).exists()
         )
 
     def test_returns_404_for_nonexistent_soundboard(self):
@@ -142,7 +146,10 @@ class SoundboardEditModeAddMyPlaylistRouteTest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_returns_409_when_playlist_already_in_soundboard(self):
-        SoundboardPlaylist.objects.create(SoundBoard=self.soundboard, Playlist=self.playlist, order=1)
+        section = SoundboardSection.objects.create(
+            SoundBoard=self.soundboard, section=1, name='Section 1', order=1
+        )
+        SoundboardPlaylist.objects.create(Playlist=self.playlist, section=section, order=1)
         self.client.login(username='owner', password='pw')
         response = self.client.post(self._url())
         self.assertEqual(response.status_code, 409)

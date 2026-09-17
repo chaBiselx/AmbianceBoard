@@ -110,6 +110,12 @@ class TestCacheFactory(unittest.TestCase):
         # Vérifie que CACHE_TYPE a été appelé
         self.assertIn(unittest.mock.call('CACHE_TYPE'), mock_settings.call_args_list)
 
+    @patch('main.domain.common.utils.cache.CacheFactory.Settings.get', return_value='memory')
+    def test_get_default_cache_reuses_instance(self, mock_settings):
+        cache = CacheFactory.get_default_cache()
+
+        self.assertIs(cache, CacheFactory.get_default_cache())
+
     @patch('main.domain.common.utils.cache.CacheFactory.Settings.get')
     def test_get_default_cache_with_invalid_type(self, mock_settings):
         """Test que get_default_cache lève une erreur si type invalide"""

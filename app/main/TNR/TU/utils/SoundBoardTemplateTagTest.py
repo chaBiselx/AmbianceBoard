@@ -1,28 +1,34 @@
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from django.test import SimpleTestCase, tag
 
 from main.interface.ui.templatetags.SoundBoard import get_ordered_playlists
 
+REPOSITORY_PATH = "main.architecture.persistence.repository.SoundboardPlaylistRepository.SoundboardPlaylistRepository"
+
 
 @tag('unitaire')
 class SoundBoardTemplateTagTest(SimpleTestCase):
-    def test_get_ordered_playlists_owner_true_uses_private_mode(self):
+    @patch(REPOSITORY_PATH)
+    def test_get_ordered_playlists_owner_true_uses_private_mode(self, repository_class):
         soundboard = Mock()
         expected = [('section-1', ['playlist'])]
-        soundboard.get_list_playlist_ordered.return_value = expected
+        repository = repository_class.return_value
+        repository.get_sectioned_playlists.return_value = expected
 
         result = get_ordered_playlists(soundboard, True)
 
         self.assertEqual(result, expected)
-        soundboard.get_list_playlist_ordered.assert_called_once_with(public=False)
+        repository.get_sectioned_playlists.assert_called_once_with(soundboard, public=False)
 
-    def test_get_ordered_playlists_owner_false_uses_public_mode(self):
+    @patch(REPOSITORY_PATH)
+    def test_get_ordered_playlists_owner_false_uses_public_mode(self, repository_class):
         soundboard = Mock()
         expected = [('section-1', ['playlist'])]
-        soundboard.get_list_playlist_ordered.return_value = expected
+        repository = repository_class.return_value
+        repository.get_sectioned_playlists.return_value = expected
 
         result = get_ordered_playlists(soundboard, False)
 
         self.assertEqual(result, expected)
-        soundboard.get_list_playlist_ordered.assert_called_once_with(public=True)
+        repository.get_sectioned_playlists.assert_called_once_with(soundboard, public=True)

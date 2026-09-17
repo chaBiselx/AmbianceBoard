@@ -16,6 +16,8 @@ class SoundboardEditMode {
     private playlistListFilters: Record<string, string> = {};
     private myPlaylistListFilters: Record<string, string> = {};
     private buttonAction: HTMLButtonElement | null = null;
+    private readonly id_section_add_button: string = 'soundboard-add-section-button';
+    private activeAddZone: HTMLElement | null = null;
 
     public addEvent(): void {
         this.buttonAction = document.getElementById('btn-soundboard-edit-mode') as HTMLButtonElement | null;
@@ -34,7 +36,14 @@ class SoundboardEditMode {
         });
 
         this.bindAddZones();
+        this.bindAddSectionButton();
         this._startIfEmpty();
+    }
+
+    private toggleSoundboardMenuEdition(): void {
+        const menuEdition = document.querySelector('.soundboard-menu-edition');
+        if (!menuEdition) return;
+        menuEdition.classList.toggle('d-none', !this.isEditModeActive);
     }
 
     private toggleEditMode(button: HTMLButtonElement): void {
@@ -45,6 +54,12 @@ class SoundboardEditMode {
         button.setAttribute('aria-pressed', this.isEditModeActive ? 'true' : 'false');
         button.classList.toggle('btn-outline-success', !this.isEditModeActive);
         button.classList.toggle('btn-success', this.isEditModeActive);
+        this.toggleSoundboardMenuEdition();
+        const addSectionButton = document.getElementById(this.id_section_add_button) as HTMLButtonElement | null;
+        if (addSectionButton) {
+            addSectionButton.classList.toggle('d-none', !this.isEditModeActive);
+        }
+
     }
 
     private _startIfEmpty(): void {
@@ -52,20 +67,35 @@ class SoundboardEditMode {
         const lengthPlaylistElement = listPlaylistElement?.length ?? 0;
         if(lengthPlaylistElement === 0) {
             this.buttonAction?.click();
+            this.toggleSoundboardMenuEdition();
         }
     }
 
     private bindAddZones(): void {
         if (!this.boardContainer) return;
+        this.bindAddZonesIn(this.boardContainer);
+    }
 
-        const zones = this.boardContainer.querySelectorAll('[data-soundboard-edit-open-panel="true"]');
+    /** Rebind les zones d'ajout ("Ajouter") présentes dans un noeud ajouté dynamiquement (ex: nouvelle section). */
+    public bindAddZonesIn(root: ParentNode): void {
+        const zones = root.querySelectorAll('[data-soundboard-edit-open-panel="true"]');
         for (const zone of zones) {
             if (!(zone instanceof HTMLButtonElement)) continue;
             zone.addEventListener('click', () => {
                 if (!this.isEditModeActive) return;
+                this.activeAddZone = zone;
                 this.openPanel();
             });
         }
+    }
+
+    private bindAddSectionButton(): void {
+        const addSectionButton = document.getElementById(this.id_section_add_button) as HTMLButtonElement | null;
+        if (!addSectionButton) return;
+
+        addSectionButton.addEventListener('click', () => {
+            if (!this.isEditModeActive) return;
+        });
     }
 
     private openPanel(): void {
@@ -114,6 +144,8 @@ class SoundboardEditMode {
 
         submitBtn.disabled = true;
         const formData = new FormData(form);
+        const section = this.activeAddZone?.dataset.section;
+        if (section) formData.set('section', section);
 
         fetch(createUrl, {
             method: 'POST',
@@ -169,17 +201,18 @@ class SoundboardEditMode {
     }
 
     private insertPlaylistToBoard(html: string): void {
-        const flexContainer = document.querySelector('.responsive-sections-container .flex-container');
+        const flexContainer = this.activeAddZone?.closest('.flex-container')
+            ?? document.querySelector('.responsive-sections-container .flex-container');
         if (!flexContainer) return;
 
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = html;
         const playlistItem = tempDiv.firstElementChild;
         if (playlistItem) {
-            // Insérer avant la première zone d'ajout (soundboard-edit-add-zone) si elle existe
-            const firstAddZone = flexContainer.querySelector('.soundboard-edit-add-zone');
-            if (firstAddZone) {
-                firstAddZone.before(playlistItem);
+            // Insérer avant la zone d'ajout cliquée (ou la première à défaut) pour rester dans la bonne section
+            const addZone = this.activeAddZone ?? flexContainer.querySelector('.soundboard-edit-add-zone');
+            if (addZone?.parentElement === flexContainer) {
+                addZone.before(playlistItem);
             } else {
                 flexContainer.appendChild(playlistItem);
             }

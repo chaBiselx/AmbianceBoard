@@ -11,6 +11,7 @@ from typing import Any, Dict, List, TYPE_CHECKING
 
 from main.domain.common.enum.ScriptActionEnum import ScriptActionEnum
 from main.domain.common.exceptions.SoundboardScriptException import InvalidScriptStepException
+from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 
 if TYPE_CHECKING:
     from main.architecture.persistence.models.SoundBoard import SoundBoard
@@ -48,7 +49,10 @@ class ScriptActionSpec:
 
         for key in self.playlist_keys:
             cleaned[key] = str(cleaned[key])
-            if not soundboard.playlists.filter(uuid=cleaned[key]).exists():
+            if not SoundboardPlaylist.objects.filter(
+                section__SoundBoard=soundboard,
+                Playlist__uuid=cleaned[key],
+            ).exists():
                 raise InvalidScriptStepException("La playlist référencée n'appartient pas à ce soundboard.")
 
         return cleaned

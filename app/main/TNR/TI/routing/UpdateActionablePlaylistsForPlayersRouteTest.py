@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 from main.architecture.persistence.models.UserTier import UserTier
 
 User = get_user_model()
@@ -29,8 +30,11 @@ class UpdateActionablePlaylistsForPlayersRouteTest(TestCase):
 
         self.soundboard = SoundBoard.objects.create(user=self.user, name='Board')
         self.playlist = Playlist.objects.create(user=self.user, name='Playlist')
+        self.section = SoundboardSection.objects.create(
+            SoundBoard=self.soundboard, section=1, name='Section 1', order=1
+        )
         self.soundboard_playlist = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard, Playlist=self.playlist, section=1, order=1, activable_by_player=False
+            Playlist=self.playlist, section=self.section, order=1, activable_by_player=False
         )
 
     def _url(self):

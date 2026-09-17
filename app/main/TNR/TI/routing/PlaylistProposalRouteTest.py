@@ -93,7 +93,7 @@ class PlaylistProposalRouteTest(TestCase):
         proposal.refresh_from_db()
         self.assertEqual(proposal.status, PlaylistProposalStatusEnum.ACCEPTED.name)
         self.assertTrue(
-            SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard, Playlist=proposal.duplicated_playlist).exists()
+            SoundboardPlaylist.objects.filter(section__SoundBoard=self.soundboard, Playlist=proposal.duplicated_playlist).exists()
         )
 
     def test_accept_proposal_forbidden_for_non_owner(self):

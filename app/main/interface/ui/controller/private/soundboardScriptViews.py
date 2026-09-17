@@ -6,6 +6,8 @@ from django.shortcuts import render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods
 
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
 from main.domain.common.enum.ScriptActionEnum import ScriptActionEnum
@@ -114,7 +116,7 @@ def soundboard_script_steps(request, soundboard_uuid, script_uuid):
             'soundboard': soundboard,
             'script': script,
             'steps': steps,
-            'playlists': soundboard.playlists.all().order_by('name'),
+            'playlists': PlaylistRepository().get_by_soundboard(soundboard),
             'action_types': [(action.name, action.value) for action in ScriptActionEnum.editable_actions()],
             'trigger_types': ScriptTriggerEnum.convert_to_choices(),
             'params_by_action': json.dumps({
