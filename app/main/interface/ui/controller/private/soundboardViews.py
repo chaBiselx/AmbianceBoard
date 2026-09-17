@@ -55,7 +55,7 @@ def soundboard_organize(request, soundboard_uuid):
 
 
 @login_required
-@require_http_methods(['POST', 'DELETE', 'UPDATE'])
+@require_http_methods(['POST', 'DELETE', 'UPDATE', 'PATCH'])
 def soundboard_organize_update(request, soundboard_uuid):
     """Mise à jour de l'organisation des playlists dans un soundboard"""
     try:
@@ -65,6 +65,12 @@ def soundboard_organize_update(request, soundboard_uuid):
 
         data = json.loads(request.body.decode('utf-8'))
         soundboard_playlist_service = SoundboardPlaylistService(soundboard)
+
+        if request.method == 'PATCH' and 'renameSection' in data.keys():
+            rename_section = int(data['renameSection'])
+            name = str(data.get('name', ''))
+            soundboard_playlist_service.rename_section(rename_section, name)
+            return JsonResponse({'success': 'section renamed', 'section': rename_section, 'name': name.strip()[:255]}, status=200)
 
         if request.method == 'UPDATE' and 'insertSection' in data.keys():
             insert_section = int(data['insertSection'])

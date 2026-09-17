@@ -45,10 +45,14 @@
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="panelsSection-{{ section_num }}">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-{{ section_num }}" aria-expanded="true" aria-controls="panelsStayOpen-{{ section_num }}">
-                            <strong>Section <span class="num-section">{{ section_num }}</span></strong>
+                            <strong><span class="num-section">{{ section_num }}</span></strong> - <i class="section-title"> {{ soundboard_section.name }}</i>
                         </button>
                     </h2>
                     <div class="d-flex justify-content-end pe-2 pt-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary section-edit-button" data-num-section="{{ section_num }}" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.title.tooltip' %}">
+                            <i class="fa-solid fa-pen"></i>
+                            <span>{% trans 'template.soundboard_organize.title.rename' %}</span>
+                        </button>
                         <button type="button" class="btn btn-sm btn-outline-info section-insert-before-button" data-num-section="{{ section_num }}" data-bs-toggle="tooltip" data-bs-title="Insérer une section avant">
                             <i class="fa-solid fa-plus"></i>
                             <span>Insérer avant</span>
@@ -88,15 +92,26 @@
     </div>
 </div>
 
+<template id="rename-section-template">
+    <form id="rename-section-form">
+        <label class="form-label" for="rename-section-input">{% trans 'template.soundboard_organize.title.rename' %}</label>
+        <input type="text" class="form-control" id="rename-section-input" name="name" maxlength="255" required>
+    </form>
+</template>
+
 <template id="add-section-template" data-max-section="{{limite_max_section}}">
     <div class="accordion m-0">
         <div class="accordion-item">
             <h2 class="accordion-header" id="panelsSection-##SECTION##">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-##SECTION##" aria-expanded="true" aria-controls="panelsStayOpen-##SECTION##">
-                    <strong>Section <span class="num-section">##SECTION##</span></strong>
+                    <strong><span class="num-section">##SECTION##</span></strong> - <i class="section-title"> section ##SECTION##</i>
                 </button>
             </h2>
             <div class="d-flex justify-content-end pe-2 pt-2">
+                <button type="button" class="btn btn-sm btn-outline-secondary section-edit-button" data-num-section="##SECTION##" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.title.tooltip' %}">
+                    <i class="fa-solid fa-pen"></i>
+                    <span>{% trans 'template.soundboard_organize.title.rename' %}</span>
+                </button>
                 <button type="button" class="btn btn-sm btn-outline-info section-insert-before-button" data-num-section="##SECTION##" data-bs-toggle="tooltip" data-bs-title="Insérer une section avant">
                     <i class="fa-solid fa-plus"></i>
                     <span>Insérer avant</span>

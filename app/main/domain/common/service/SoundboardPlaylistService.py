@@ -109,6 +109,16 @@ class SoundboardPlaylistService:
         return self
 
     @transaction.atomic
+    def rename_section(self, section: int, name: str):
+        if section <= 0:
+            return self
+
+        section_obj = self._get_or_create_section(section)
+        section_obj.name = (name or "").strip()[:255]
+        section_obj.save()
+        return self
+
+    @transaction.atomic
     def delete_section(self, section: int):
         if section <= 0:
             return self

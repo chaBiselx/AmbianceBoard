@@ -16,6 +16,11 @@ export class OrganizerApiClient {
         return response.ok;
     }
 
+    public async renameSection(renameSection: number, name: string, url?: string): Promise<boolean> {
+        const response = await this.request('PATCH', { renameSection, name }, url);
+        return response.ok;
+    }
+
     public async request(method: string, body: object, url?: string): Promise<Response> {
         return fetch(url || OrganizerDragAndDropZone.getUrlFromAnySection(), {
             method,
@@ -55,6 +60,15 @@ export class SendBackendAction {
     public async deleteSection(deleteSection: number, url?: string): Promise<boolean> {
         try {
             return await this.apiClient.deleteSection(deleteSection, url);
+        } catch (error) {
+            ConsoleCustom.error(error);
+            return false;
+        }
+    }
+
+    public async renameSection(renameSection: number, name: string, url?: string): Promise<boolean> {
+        try {
+            return await this.apiClient.renameSection(renameSection, name, url);
         } catch (error) {
             ConsoleCustom.error(error);
             return false;

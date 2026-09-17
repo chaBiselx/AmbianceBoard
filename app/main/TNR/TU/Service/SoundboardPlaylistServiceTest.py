@@ -108,3 +108,51 @@ class SoundboardPlaylistServiceTest(TestCase):
             ).count(),
             initial_count,
         )
+
+    def test_rename_section_updates_name(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.rename_section(2, 'Ambiance combat')
+
+        section = SoundboardSection.objects.get(SoundBoard=self.soundboard, section=2)
+        self.assertEqual(section.name, 'Ambiance combat')
+
+    def test_rename_section_strips_and_truncates_name(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.rename_section(1, '  ' + 'a' * 300 + '  ')
+
+        section = SoundboardSection.objects.get(SoundBoard=self.soundboard, section=1)
+        self.assertEqual(section.name, 'a' * 255)
+
+    def test_rename_section_creates_missing_section(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.rename_section(5, 'Nouvelle section')
+
+        self.assertEqual(
+            SoundboardSection.objects.get(SoundBoard=self.soundboard, section=5).name,
+            'Nouvelle section',
+        )
+
+    def test_rename_section_ignores_invalid_section(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.rename_section(0, 'Ignoree')
+
+        self.assertFalse(
+            SoundboardSection.objects.filter(SoundBoard=self.soundboard, name='Ignoree').exists()
+        )
+
+    def test_rename_section_does_not_shift_sections(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.rename_section(2, 'Ambiance combat')
+
+        self.sp_1.refresh_from_db()
+        self.sp_2.refresh_from_db()
+        self.sp_3.refresh_from_db()
+
+        self.assertEqual(self.sp_1.get_section(), 1)
+        self.assertEqual(self.sp_2.get_section(), 2)
+        self.assertEqual(self.sp_3.get_section(), 3)
