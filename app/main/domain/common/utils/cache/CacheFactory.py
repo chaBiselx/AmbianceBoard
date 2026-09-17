@@ -1,4 +1,5 @@
 from main.domain.common.utils.settings import Settings
+from functools import lru_cache
 from typing import Optional
 from .ICache import ICache
 from .CacheSystem import CacheSystem
@@ -40,4 +41,9 @@ class CacheFactory:
         Returns:
             ICache: Cache par défaut configuré
         """
-        return CacheFactory.create_cache(Settings.get('CACHE_TYPE'))
+        return CacheFactory._get_cache(Settings.get('CACHE_TYPE'))
+
+    @staticmethod
+    @lru_cache(maxsize=2)
+    def _get_cache(cache_type: str) -> ICache:
+        return CacheFactory.create_cache(cache_type)

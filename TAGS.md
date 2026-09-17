@@ -421,7 +421,6 @@ Correction
 - Lorsque l'on passe en plein écran sur mobile, les tooltips peuvent rester présent
 
 ### 0.4.14 - 2026/08
-
 Modifications
 - Modification de la FAQ
 
@@ -472,6 +471,10 @@ Modifications
 - Changement de structure entre les boutons et les soundboards
 - Modification des pages pour que le centre des modifications soit le soundboard
 - Mise a jour de SEO 
+
+Correction :
+- Ajout un systeme de cache pour éviter de créer à chaque log une socket. 
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
