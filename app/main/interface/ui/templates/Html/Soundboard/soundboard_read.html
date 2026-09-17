@@ -26,7 +26,8 @@
             <button type="button" class="btn btn-success btn-block py-1 my-1" id="btn-soundboard-edit-mode" data-url-panel="{% url 'soundboardEditModePanel' soundboard.uuid %}">
                 {% trans "template.soundboard_read.button.edit_mode" %}
             </button>
-
+        </div>
+        <div class="soundboard-menu-edition d-none">
             <a class="btn btn-primary btn-block py-1 my-1" href="{% url 'organizeSoundboard' soundboard.uuid %}">{% trans "template.soundboard_read.button.organize" %}</a>
             {% if request.user.is_authenticated  and request.user.isBetaTester %}
             <div class="beta-test">
@@ -34,8 +35,8 @@
                 <a class="btn btn-secondary btn-block py-1 my-1" href="{% url 'soundboardScripts' soundboard.uuid %}">{% trans "template.scripts.page.title" %}</a>
             </div>
             {% endif %}
+            <a type="button" class="btn btn-warning btn-block py-1 my-1" href="{% url 'listSoundboardPlaylistsSpecific' soundboard.uuid %}?back=soundboard" class="btn btn-primary float-end">{% trans "template.soundboard_organize._personalized_actions" %}</a>
             <a class="btn btn-warning btn-block py-1 my-1" href="{% url 'soundboardsUpdate' soundboard.uuid %}">{% trans "template.soundboard_read.button.edit_soundboard" %}</a>
-
         </div>
     </div>
 </div>

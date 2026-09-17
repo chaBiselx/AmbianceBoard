@@ -3,6 +3,7 @@ from django.test import TestCase, tag
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 from main.architecture.persistence.models.User import User
 from main.domain.common.service.SoundboardPlaylistService import SoundboardPlaylistService
 
@@ -25,22 +26,26 @@ class SoundboardPlaylistServiceTest(TestCase):
         self.playlist_3 = Playlist.objects.create(name='Playlist 3', user=self.user)
         self.playlist_unassociated = Playlist.objects.create(name='Playlist unassociated', user=self.user)
 
+        sections = [
+            SoundboardSection.objects.create(
+                SoundBoard=self.soundboard, section=section, name=f'Section {section}', order=section
+            )
+            for section in range(1, 4)
+        ]
+
         self.sp_1 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_1,
-            section=1,
+            section=sections[0],
             order=1,
         )
         self.sp_2 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_2,
-            section=2,
+            section=sections[1],
             order=1,
         )
         self.sp_3 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_3,
-            section=3,
+            section=sections[2],
             order=1,
         )
 
@@ -53,9 +58,27 @@ class SoundboardPlaylistServiceTest(TestCase):
         self.sp_2.refresh_from_db()
         self.sp_3.refresh_from_db()
 
-        self.assertEqual(self.sp_1.section, 1)
-        self.assertEqual(self.sp_2.section, 3)
-        self.assertEqual(self.sp_3.section, 4)
+        self.assertEqual(self.sp_1.get_section(), 1)
+        self.assertEqual(self.sp_2.get_section(), 3)
+        self.assertEqual(self.sp_3.get_section(), 4)
+        self.assertTrue(
+            SoundboardSection.objects.filter(
+                SoundBoard=self.soundboard,
+                section=2,
+            ).exists()
+        )
+
+    def test_insert_section_creates_section_at_end(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.insert_section(4)
+
+        self.assertTrue(
+            SoundboardSection.objects.filter(
+                SoundBoard=self.soundboard,
+                section=4,
+            ).exists()
+        )
 
     def test_update_does_not_create_soundboard_playlist_when_playlist_is_unassociated(self):
         service = SoundboardPlaylistService(self.soundboard)
@@ -64,7 +87,7 @@ class SoundboardPlaylistServiceTest(TestCase):
 
         self.assertFalse(
             SoundboardPlaylist.objects.filter(
-                SoundBoard=self.soundboard,
+                section__SoundBoard=self.soundboard,
                 Playlist=self.playlist_unassociated,
             ).exists()
         )
@@ -72,7 +95,7 @@ class SoundboardPlaylistServiceTest(TestCase):
     def test_add_does_not_duplicate_existing_soundboard_playlist(self):
         service = SoundboardPlaylistService(self.soundboard)
         initial_count = SoundboardPlaylist.objects.filter(
-            SoundBoard=self.soundboard,
+            section__SoundBoard=self.soundboard,
             Playlist=self.playlist_1,
         ).count()
 
@@ -80,8 +103,56 @@ class SoundboardPlaylistServiceTest(TestCase):
 
         self.assertEqual(
             SoundboardPlaylist.objects.filter(
-                SoundBoard=self.soundboard,
+                section__SoundBoard=self.soundboard,
                 Playlist=self.playlist_1,
             ).count(),
             initial_count,
         )
+
+    def test_rename_section_updates_name(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.rename_section(2, 'Ambiance combat')
+
+        section = SoundboardSection.objects.get(SoundBoard=self.soundboard, section=2)
+        self.assertEqual(section.name, 'Ambiance combat')
+
+    def test_rename_section_strips_and_truncates_name(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.rename_section(1, '  ' + 'a' * 300 + '  ')
+
+        section = SoundboardSection.objects.get(SoundBoard=self.soundboard, section=1)
+        self.assertEqual(section.name, 'a' * 255)
+
+    def test_rename_section_creates_missing_section(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.rename_section(5, 'Nouvelle section')
+
+        self.assertEqual(
+            SoundboardSection.objects.get(SoundBoard=self.soundboard, section=5).name,
+            'Nouvelle section',
+        )
+
+    def test_rename_section_ignores_invalid_section(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.rename_section(0, 'Ignoree')
+
+        self.assertFalse(
+            SoundboardSection.objects.filter(SoundBoard=self.soundboard, name='Ignoree').exists()
+        )
+
+    def test_rename_section_does_not_shift_sections(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        service.rename_section(2, 'Ambiance combat')
+
+        self.sp_1.refresh_from_db()
+        self.sp_2.refresh_from_db()
+        self.sp_3.refresh_from_db()
+
+        self.assertEqual(self.sp_1.get_section(), 1)
+        self.assertEqual(self.sp_2.get_section(), 2)
+        self.assertEqual(self.sp_3.get_section(), 3)

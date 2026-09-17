@@ -53,7 +53,8 @@ class SoundboardPlaylistOptionService:
             self.stack_error.append(f"SoundboardPlaylist with id {dto.soundboard_playlist_id} not found")
             raise ValueError("SoundboardPlaylist not found")
         
-        if str(soundboard_playlist.Playlist.uuid) != dto.playlist_uuid and str(soundboard_playlist.SoundBoard.uuid) != dto.soundboard_uuid:
+        soundboard = soundboard_playlist.section.SoundBoard if soundboard_playlist.section else None
+        if str(soundboard_playlist.Playlist.uuid) != dto.playlist_uuid or soundboard is None or str(soundboard.uuid) != dto.soundboard_uuid:
             self.is_valid = False
             self.stack_error.append(f"SoundboardPlaylist with id {dto.soundboard_playlist_id} does not match the provided soundboard_uuid and playlist_uuid")
             raise ValueError("SoundboardPlaylist does not match the provided soundboard_uuid and playlist_uuid")

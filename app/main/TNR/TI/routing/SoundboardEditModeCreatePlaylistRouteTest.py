@@ -54,7 +54,7 @@ class SoundboardEditModeCreatePlaylistRouteTest(TestCase):
         self.client.post(self._url(), self._valid_payload())
         playlist = Playlist.objects.get(name='Ma nouvelle playlist')
         self.assertTrue(
-            SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard, Playlist=playlist).exists()
+            SoundboardPlaylist.objects.filter(section__SoundBoard=self.soundboard, Playlist=playlist).exists()
         )
 
     def test_returns_404_for_nonexistent_soundboard(self):

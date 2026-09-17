@@ -93,7 +93,7 @@ class PlaylistProposalServiceTest(TestCase):
         self.assertEqual(proposal.duplicated_playlist, duplicated_playlist)
         self.assertEqual(duplicated_playlist.user, self.owner)
         self.assertTrue(
-            SoundboardPlaylist.objects.filter(SoundBoard=self.soundboard, Playlist=duplicated_playlist).exists()
+            SoundboardPlaylist.objects.filter(section__SoundBoard=self.soundboard, Playlist=duplicated_playlist).exists()
         )
 
     def test_accept_reuses_existing_duplication(self, mock_user_mail):

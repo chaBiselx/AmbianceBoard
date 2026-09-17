@@ -60,13 +60,20 @@ class PlaylistRepository:
 
     def get_all_queryset(self) -> QuerySet:
         return Playlist.objects.all()
+
+    def get_by_soundboard(self, soundboard: SoundBoard) -> QuerySet[Playlist]:
+        return Playlist.objects.filter(
+            soundboardplaylist__section__SoundBoard=soundboard
+        ).distinct().order_by('name')
     
     def get_default_volume_by_playlist(self, soundboard_uid: int):
         try:
-            queryset = Playlist.objects.filter(soundboards__uuid=soundboard_uid).values('uuid', 'volume')
+            queryset = SoundboardPlaylist.objects.filter(
+                section__SoundBoard__uuid=soundboard_uid
+            ).select_related('Playlist').values('Playlist__uuid', 'Playlist__volume')
             result = {}
             for entry in queryset:
-                result[str(entry['uuid'])] = {'volume':entry['volume']}
+                result[str(entry['Playlist__uuid'])] = {'volume': entry['Playlist__volume']}
             return result
         except Exception:
             return []
@@ -119,7 +126,7 @@ class PlaylistRepository:
     def get_user_playlists_not_in_soundboard(self, user: User, soundboard: SoundBoard, filter: dict) -> List[Playlist]:
         """Récupère les playlists de l'utilisateur non encore intégrées dans le soundboard cible."""
         playlists_in_soundboard = SoundboardPlaylist.objects.filter(
-            SoundBoard=soundboard
+            section__SoundBoard=soundboard
         ).values_list('Playlist_id', flat=True)
 
         query_set = Playlist.objects.filter(

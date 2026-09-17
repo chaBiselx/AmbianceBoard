@@ -4,6 +4,7 @@ from django.test import Client, TestCase
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 
 
 User = get_user_model()
@@ -33,10 +34,14 @@ class TestDataMixin:
         )
 
     def link_playlist(self, soundboard, playlist, section=1, order=1, **overrides):
-        return SoundboardPlaylist.objects.create(
+        soundboard_section, _ = SoundboardSection.objects.get_or_create(
             SoundBoard=soundboard,
-            Playlist=playlist,
             section=section,
+            defaults={'name': f'Section {section}', 'order': section},
+        )
+        return SoundboardPlaylist.objects.create(
+            Playlist=playlist,
+            section=soundboard_section,
             order=order,
             **overrides,
         )

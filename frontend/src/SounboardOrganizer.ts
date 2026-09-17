@@ -1,6 +1,6 @@
 import { EmptyPlaylistChecker, OrganizerDragAndDropZone } from '@/modules/SoundboardOrganizer/OrganizerDom';
 import { CleanOrderHandler } from '@/modules/SoundboardOrganizer/PlaylistOrder';
-import { SectionAdder } from '@/modules/SoundboardOrganizer/SectionAdder';
+import { SectionAdder, SectionDeleter, SectionRenamer } from '@/modules/SoundboardOrganizer/SectionAdder';
 import { PointerDragManager } from '@/modules/SoundboardOrganizer/PointerDragManager';
 import { ScrollManager } from '@/modules/SoundboardOrganizer/ScrollManager';
 
@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
         EmptyPlaylistChecker.check()
         initOrderBadge()
         new SectionAdder(() => new PointerDragManager().setupEvents()).addEvent();
+        new SectionDeleter(() => new PointerDragManager().setupEvents()).addEvent();
+        new SectionRenamer().addEvent();
         new ScrollManager().addEvent();
     }
 });

@@ -37,7 +37,7 @@ class SoundBoardRepository:
 
     def get_search_public_queryset(self, selected_tag: Optional[str] = None) -> QuerySet[SoundBoard]:
         queryset = SoundBoard.objects.filter(is_public=True, user__isBan=False)
-        queryset = queryset.annotate(track_count=Count('playlists__tracks', distinct=True)).filter(track_count__gt=0)
+        queryset = queryset.annotate(track_count=Count('sections__playlists__Playlist__tracks', distinct=True)).filter(track_count__gt=0)
         if selected_tag:
             queryset = queryset.filter(tags__name=selected_tag)
         return queryset.order_by('uuid')
@@ -59,7 +59,7 @@ class SoundBoardRepository:
         """
         return (
             SoundBoard.objects.filter(is_public=True, user__isBan=False)
-            .annotate(total_tracks=Count('playlists__tracks', distinct=True))
+            .annotate(total_tracks=Count('sections__playlists__Playlist__tracks', distinct=True))
             .filter(total_tracks__gte=minimum_tracks)
             .order_by('?')
             .first()

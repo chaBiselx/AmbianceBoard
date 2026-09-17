@@ -7,6 +7,7 @@ from django.urls import reverse
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 
 User = get_user_model()
 
@@ -40,22 +41,26 @@ class OrganizeSoundboardUpdateRouteTest(TestCase):
         self.playlist_2 = Playlist.objects.create(name='Playlist 2', user=self.user)
         self.playlist_3 = Playlist.objects.create(name='Playlist 3', user=self.user)
 
+        sections = [
+            SoundboardSection.objects.create(
+                SoundBoard=self.soundboard, section=section, name=f'Section {section}', order=section
+            )
+            for section in range(1, 4)
+        ]
+
         self.sp_1 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_1,
-            section=1,
+            section=sections[0],
             order=1,
         )
         self.sp_2 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_2,
-            section=2,
+            section=sections[1],
             order=1,
         )
         self.sp_3 = SoundboardPlaylist.objects.create(
-            SoundBoard=self.soundboard,
             Playlist=self.playlist_3,
-            section=3,
+            section=sections[2],
             order=1,
         )
 
@@ -75,9 +80,9 @@ class OrganizeSoundboardUpdateRouteTest(TestCase):
         self.sp_2.refresh_from_db()
         self.sp_3.refresh_from_db()
 
-        self.assertEqual(self.sp_1.section, 1)
-        self.assertEqual(self.sp_2.section, 3)
-        self.assertEqual(self.sp_3.section, 4)
+        self.assertEqual(self.sp_1.get_section(), 1)
+        self.assertEqual(self.sp_2.get_section(), 3)
+        self.assertEqual(self.sp_3.get_section(), 4)
 
     def test_organize_update_insert_section_denies_access_to_other_user_soundboard(self):
         self.client.login(username='organize-user', password='testpass123')
@@ -90,3 +95,54 @@ class OrganizeSoundboardUpdateRouteTest(TestCase):
         )
 
         self.assertEqual(response.status_code, 404)
+
+    def _rename_section(self, soundboard, payload):
+        return self.client.patch(
+            reverse('organizeSoundboardUpdate', kwargs={'soundboard_uuid': soundboard.uuid}),
+            data=json.dumps(payload),
+            content_type='application/json',
+        )
+
+    def test_organize_update_rename_section_updates_name(self):
+        self.client.login(username='organize-user', password='testpass123')
+
+        response = self._rename_section(self.soundboard, {'renameSection': 2, 'name': 'Ambiance combat'})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['name'], 'Ambiance combat')
+        self.assertEqual(
+            SoundboardSection.objects.get(SoundBoard=self.soundboard, section=2).name,
+            'Ambiance combat',
+        )
+
+    def test_organize_update_rename_section_does_not_shift_sections(self):
+        self.client.login(username='organize-user', password='testpass123')
+
+        self._rename_section(self.soundboard, {'renameSection': 2, 'name': 'Ambiance combat'})
+
+        self.sp_1.refresh_from_db()
+        self.sp_2.refresh_from_db()
+        self.sp_3.refresh_from_db()
+
+        self.assertEqual(self.sp_1.get_section(), 1)
+        self.assertEqual(self.sp_2.get_section(), 2)
+        self.assertEqual(self.sp_3.get_section(), 3)
+
+    def test_organize_update_rename_section_denies_access_to_other_user_soundboard(self):
+        self.client.login(username='organize-user', password='testpass123')
+
+        response = self._rename_section(self.other_soundboard, {'renameSection': 1, 'name': 'Pirate'})
+
+        self.assertEqual(response.status_code, 404)
+        self.assertFalse(
+            SoundboardSection.objects.filter(SoundBoard=self.other_soundboard, name='Pirate').exists()
+        )
+
+    def test_organize_update_rename_section_requires_authentication(self):
+        response = self._rename_section(self.soundboard, {'renameSection': 1, 'name': 'Anonyme'})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(
+            SoundboardSection.objects.get(SoundBoard=self.soundboard, section=1).name,
+            'Section 1',
+        )

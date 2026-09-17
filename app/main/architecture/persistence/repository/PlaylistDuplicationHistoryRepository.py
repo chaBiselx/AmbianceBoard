@@ -89,7 +89,7 @@ class PlaylistDuplicationHistoryRepository:
         Recherche une duplication existante d'une source dans un soundboard cible.
         """
         duplicated_playlist_ids_in_soundboard = SoundboardPlaylist.objects.filter(
-            SoundBoard=target_soundboard
+            section__SoundBoard=target_soundboard
         ).values_list('Playlist_id', flat=True)
 
         return PlaylistDuplicationHistory.objects.filter(

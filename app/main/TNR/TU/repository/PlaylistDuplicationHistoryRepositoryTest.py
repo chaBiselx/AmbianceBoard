@@ -4,6 +4,7 @@ from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
+from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.repository.PlaylistDuplicationHistoryRepository import PlaylistDuplicationHistoryRepository
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
@@ -42,14 +43,21 @@ class PlaylistDuplicationHistoryRepositoryTest(TestCase):
         self.other_soundboard = SoundBoard.objects.create(user=self.target_user, name='Other board')
         self.empty_soundboard = SoundBoard.objects.create(user=self.target_user, name='Empty board')
 
+        target_section = SoundboardSection.objects.create(
+            SoundBoard=self.target_soundboard, section=1, name='Section 1', order=1
+        )
+        other_section = SoundboardSection.objects.create(
+            SoundBoard=self.other_soundboard, section=1, name='Section 1', order=1
+        )
+    
         SoundboardPlaylist.objects.create(
-            SoundBoard=self.target_soundboard,
             Playlist=self.duplicated_in_target_soundboard,
+            section=target_section,
             order=1,
         )
         SoundboardPlaylist.objects.create(
-            SoundBoard=self.other_soundboard,
             Playlist=self.duplicated_not_in_target_soundboard,
+            section=other_section,
             order=1,
         )
 

@@ -80,7 +80,7 @@ class SoundboardEditModeDuplicatePlaylistRouteTest(TestCase):
         self.assertEqual(duplicated_playlist.user, self.owner)
         self.assertTrue(
             SoundboardPlaylist.objects.filter(
-                SoundBoard=self.soundboard,
+                section__SoundBoard=self.soundboard,
                 Playlist=duplicated_playlist,
             ).exists()
         )

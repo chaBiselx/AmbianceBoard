@@ -24,11 +24,13 @@ from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.domain.common.helper.WebSocketInitializationHelper import WebSocketInitializationHelper
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.architecture.persistence.repository.PlaylistTagRepository import PlaylistTagRepository
 from main.domain.common.utils.cache.CacheFactory import CacheFactory
 from main.architecture.persistence.repository.SoundboardPlaylistRepository import SoundboardPlaylistRepository
 from main.domain.common.helper.ScriptContextHelper import ScriptContextHelper
+from main.domain.common.utils.settings import Settings
 from main.architecture.persistence.repository.PlaylistDuplicationHistoryRepository import PlaylistDuplicationHistoryRepository
 from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
 from main.domain.common.service.PlaylistDuplicationService import PlaylistDuplicationService
@@ -65,6 +67,7 @@ def soundboard_show(request, soundboard_uuid):
             'list_shortcut_keyboard': soundboard_playlist_repository.get_list_shortcut_keyboard(soundboard),
             'link_music_allowed': LinkMusicAllowedEnum.convert_to_dict(),
             'pending_proposal_placeholders': PlaylistProposalRepository().get_pending_for_soundboard(soundboard),
+            'limite_max_section': Settings.get('SOUNDBOARD_LIMIT_SECTION'),
             **ScriptContextHelper.build(soundboard),
         })
         
@@ -110,8 +113,10 @@ def playlist_tracks_list(request, soundboard_uuid) -> JsonResponse:
 
     track_repository = TrackRepository()
     result = {}
-    for _section, playlists in soundboard.get_list_playlist_ordered():
-        for playlist in playlists:
+    sections = SoundboardPlaylistRepository().get_sections_with_playlists(soundboard)
+    for section in sections:
+        for soundboard_playlist in section.playlists.all():
+            playlist = soundboard_playlist.Playlist
             tracks = track_repository.get_tracks_by_playlist(playlist)
             result[str(playlist.uuid)] = [
                 {
@@ -298,6 +303,13 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
     playlist_name = (request.POST.get('name') or '').strip()
     playlist_type = request.POST.get('typePlaylist')
 
+    try:
+        section = int(request.POST.get('section', 1))
+        if section <= 0:
+            section = 1
+    except (TypeError, ValueError):
+        section = 1
+
     if not playlist_name:
         return JsonResponse({'error': "Le nom de la playlist est obligatoire"}, status=400)
 
@@ -319,7 +331,7 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
             typePlaylist=playlist_type,
         )
         playlist.save()
-        SoundboardPlaylistService(soundboard).add_default(playlist)
+        SoundboardPlaylistService(soundboard).add_default(playlist, section)
 
         playlist_html = render_service.render_playlist_item(playlist, soundboard)
 
@@ -331,7 +343,6 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
             'add_music_url': reverse('add_music_from_soundboard', args=[playlist.uuid]),
         }, status=201)
     except Exception as e:
-        logger.error("===================================================")
         logger.error(f"Erreur création mode édition pour soundboard {soundboard_uuid}: {e}")
         return JsonResponse({'error': "Une erreur inattendue est survenue"}, status=500)
 

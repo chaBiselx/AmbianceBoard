@@ -355,6 +355,41 @@ def _build_faq_seo_context(request, _context) -> dict:
     )
 
 
+def _build_create_account_seo_context(request, _context) -> dict:
+    """Calcule les metadonnees SEO de la page de creation de compte."""
+    title = 'Creer un compte gratuit | AmbianceBoard'
+    description = (
+        'Creez votre compte AmbianceBoard gratuitement pour utiliser un soundboard JDR en ligne, '
+        'organiser vos playlists et partager vos ambiances sonores.'
+    )
+    keywords = _unique_keep_order([
+        'creer compte soundboard',
+        'soundboard jdr gratuit',
+        'compte ambianceboard',
+        'playlist ambiance jdr',
+        'outil maitre du jeu',
+    ])
+    canonical = _build_absolute_url(request, 'createAccount')
+    og_image = _fallback_og_image(request)
+    json_ld = _build_json_ld(
+        json_ld_type='WebPage',
+        name=title,
+        description=description,
+        canonical=canonical,
+        keywords=keywords,
+        image=og_image,
+    )
+    return _build_seo_payload(
+        title=title,
+        description=description,
+        keywords=keywords,
+        canonical=canonical,
+        og_image=og_image,
+        robots=ROBOTS_INDEX_FOLLOW,
+        json_ld=json_ld,
+    )
+
+
 @register.simple_tag(takes_context=True)
 def resolve_page_seo(context):
     """Resout le SEO d'une page en fonction de la route courante et du contexte template."""
@@ -388,6 +423,7 @@ def _get_route_resolvers() -> dict:
     return {
         'home': _build_home_seo_context,
         'faq': _build_faq_seo_context,
+        'createAccount': _build_create_account_seo_context,
         'publicListingSoundboard': _resolve_listing_seo_context,
         'publicReadSoundboard': _resolve_read_seo_context,
     }
