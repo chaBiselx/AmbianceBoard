@@ -2,7 +2,10 @@
 name = "ambianceboard-music-labeler"
 version = "0.1.0"
 description = "Microservice IA de classification audio d'AmbianceBoard"
-requires-python = ">=3.14,<3.15"
+requires-python = ">=3.14"
+authors = [
+    {name = "Charles BISELX",email = "cha.biselx@gmail.com"},
+]
 dependencies = [
     "fastapi==0.140.13",
     "uvicorn[standard]==0.52.0",
@@ -12,9 +15,6 @@ dependencies = [
     "numpy==2.5.1",
     "scipy==1.18.0",
     "torch==2.13.0+cpu",
-]
-authors = [
-    {name = "Charles BISELX",email = "cha.biselx@gmail.com"},
 ]
 readme = "README.md"
 license = {text = "MIT"}
