@@ -36,12 +36,6 @@ ENV VIRTUAL_ENV="/opt/venv"
 ENV PATH="/opt/venv/bin:$PATH"
 RUN pdm sync --no-editable
 
-# install dependencies
-COPY ./requirements.txt .
-RUN pip install --upgrade pip \
-    && pip install -r requirements.txt \
-    # installer gunicorn pour la prod
-    && pip install gunicorn
 
 # copy project files explicitly (avoiding sensitive data)
 COPY manage.py ./
