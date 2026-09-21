@@ -485,6 +485,9 @@ Améliorations
 Corrections
 - bug de filtre les l'interface de modération
 
+### 0.5.5 - 2026/09
+Fiabilité & Confiance
+- correction doublons déploiement
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
