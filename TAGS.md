@@ -493,6 +493,13 @@ Fiabilité & Confiance
 Sécurité
 - NPM clean install
 
+### 0.5.7 - 2026/09
+Sécurité
+- URL celery 
+
+### 0.5.8 - 2026/09
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
