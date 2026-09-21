@@ -116,7 +116,7 @@ class Track(models.Model):
         """
         Retourne la durée de l'audio en secondes.
         
-        Pour les fichiers Music locaux, utilise pydub pour extraire la durée.
+        Pour les fichiers Music locaux, utilise les métadonnées audio pour extraire la durée.
         Pour les LinkMusic, retourne None car il faudrait télécharger le fichier.
         
         Returns:

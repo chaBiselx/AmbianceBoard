@@ -1,16 +1,16 @@
-"""
-Utilitaires pour la validation et manipulation des UUID.
-
-Ce module fournit des fonctions pour vérifier si une chaîne de caractères
-est un UUID valide, avec ou sans extension de fichier.
-"""
-
-from pydub import AudioSegment
 import os
 import tempfile
 import requests
+from mutagen import File
 
 class AudioDurationUtils:
+
+    @staticmethod
+    def _get_duration_from_metadata(file_path: str) -> float|None:
+        audio_file = File(file_path)
+        if audio_file is None or audio_file.info is None:
+            return None
+        return getattr(audio_file.info, "length", None)
 
     @staticmethod
     def get_duration_from_file(file_path: str) -> float|None:
@@ -27,10 +27,7 @@ class AudioDurationUtils:
             if not os.path.exists(file_path):
                 return None
 
-            # Charge le fichier audio avec pydub
-            audio = AudioSegment.from_file(file_path)
-
-            return len(audio) / 1000.0  # Convertit les millisecondes en secondes
+            return AudioDurationUtils._get_duration_from_metadata(file_path)
         except Exception:
             # En cas d'erreur (fichier corrompu, format non supporté, etc.)
             return None
@@ -59,11 +56,7 @@ class AudioDurationUtils:
                 temp_file_path = temp_file.name
             
             try:
-                # Charge le fichier audio avec pydub
-                audio = AudioSegment.from_file(temp_file_path)
-                
-                # Calcule la durée en secondes
-                return len(audio) / 1000.0
+                return AudioDurationUtils._get_duration_from_metadata(temp_file_path)
           
             finally:
                 # Supprime le fichier temporaire

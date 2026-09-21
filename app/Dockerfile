@@ -8,6 +8,7 @@ WORKDIR /usr/src/app
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ARG PDM_VERSION=2.28.2
 
 # install system dependencies
 RUN apt-get update && apt-get --no-install-recommends install -y build-essential --purge cron \
@@ -22,19 +23,15 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
     systemd \
     zlib1g-dev \
     # clean cache
-    && apt-get clean 
+    && apt-get clean \
+    # PDM
+    && python -m venv /opt/venv \
+    && /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}"
 
-
-    
-
-# install dependencies
-COPY ./requirements.txt .
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
-
-# dev dependencies
-COPY ./requirements-dev.txt .
-RUN pip install -r requirements-dev.txt
+COPY pyproject.toml pdm.lock ./
+ENV VIRTUAL_ENV="/opt/venv"
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pdm sync --dev --no-editable
 
 # copy entrypoint.sh
 COPY ./entrypoint.sh .
