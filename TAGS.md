@@ -489,6 +489,10 @@ Corrections
 Fiabilité & Confiance
 - correction doublons déploiement
 
+### 0.5.6 - 2026/09
+Sécurité
+- NPM clean install
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

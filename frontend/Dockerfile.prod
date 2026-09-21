@@ -28,7 +28,7 @@ USER nodeuser
 
 # Configurer npm localement et installer les dépendances
 RUN npm config set cache /app/.npm-cache && \
-    npm install --ignore-scripts
+    npm ci --ignore-scripts
 
 COPY --chown=nodeuser:nodeuser ./src ./src
 COPY --chown=nodeuser:nodeuser ./scss ./scss
