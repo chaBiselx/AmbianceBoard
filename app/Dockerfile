@@ -23,10 +23,10 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
     systemd \
     zlib1g-dev \
     # clean cache
-    && apt-get clean 
-
-RUN python -m venv /opt/venv && \
-    /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}"
+    && apt-get clean \
+    # PDM
+    && python -m venv /opt/venv \
+    && /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}"
 
 COPY pyproject.toml pdm.lock ./
 ENV VIRTUAL_ENV="/opt/venv"
