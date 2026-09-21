@@ -14,6 +14,7 @@ import os
 import sys
 import importlib.util
 from pathlib import Path
+from urllib.parse import quote
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -479,7 +480,10 @@ if RUN_CRONS:
 # message brokers 
 
 
-CELERY_BROKER_URL = f"amqp://{RABBIT_MQ_USER}:{RABBIT_MQ_PASSWORD}@{RABBIT_MQ_HOST}:{RABBIT_MQ_PORT}/"  # URL de RabbitMQ 
+CELERY_BROKER_URL = (
+    f"amqp://{quote(RABBIT_MQ_USER, safe='')}:{quote(RABBIT_MQ_PASSWORD, safe='')}"
+    f"@{RABBIT_MQ_HOST}:{RABBIT_MQ_PORT}/"
+)  # URL de RabbitMQ
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
