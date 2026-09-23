@@ -502,6 +502,9 @@ Fiabilité & Confiance
 - migrations de nginx a traefik 
 
 ### X.Y.Z - Date
+Améliorations
+- Ajout de traductions
+
 Chaque future version utilisera ce format simple :
 Sécurité
 - … 
