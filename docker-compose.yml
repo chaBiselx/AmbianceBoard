@@ -1,6 +1,37 @@
 name: ambianceboard
 
 services:
+  traefik:
+    container_name: proxy-traefik
+    image: traefik@sha256:24841fe2de7304c149343d877d2923b4c8800a38ba015dea9174c23b20e344a0 # v3.7
+    restart: unless-stopped
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--accesslog=true"
+    ports:
+      - ${WEB_PORT}:${WEB_PORT}
+      # - "443:443" # need certificate for HTTPS
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-letsencrypt:/letsencrypt
+
+  static:
+    container_name: proxy-caddy
+    image: caddy@sha256:6aeddd44c3078b0f9a35206472a11420648a79c184603ef95957d0a20044cb2b # 2.8-alpine
+    restart: unless-stopped
+    volumes:
+      - ./traefik/Caddyfile:/etc/caddy/Caddyfile:ro
+      - front_build:/srv/static:ro
+      - ./mediafiles:/srv/media:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.static.rule=(Host(`localhost`) || Host(`ambianceboard`)) && (PathPrefix(`/static/`) || PathPrefix(`/media/`))"
+      - "traefik.http.routers.static.entrypoints=web"
+      - "traefik.http.routers.static.priority=20"
+      - "traefik.http.services.static.loadbalancer.server.port=8080"
+
   cronjob:
     build:
       context: ./app
@@ -28,8 +59,6 @@ services:
     volumes:
       - ./app/:/usr/src/app/
       - front_build:/usr/src/app/static/:ro
-    ports:
-      - ${WEB_PORT}:${WEB_PORT}
     env_file:
       - ./.env
     environment:
@@ -39,9 +68,25 @@ services:
       - MUSIC_LABELER_URL=${MUSIC_LABELER_URL}
       - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
     depends_on:
-      - db
-      - redis
-      - front
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      front:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:${WEB_PORT}/healthcheck', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.back.rule=Host(`localhost`) || Host(`ambianceboard`)"
+      - "traefik.http.routers.back.entrypoints=web"
+      - "traefik.http.middlewares.back-buffering.buffering.maxRequestBodyBytes=32505856"
+      - "traefik.http.routers.back.middlewares=back-buffering"
+      - "traefik.http.services.back.loadbalancer.server.port=${WEB_PORT}"
   
   websocket:
     build:
@@ -51,8 +96,6 @@ services:
     volumes:
       - ./app:/usr/src/app/
       - ./mediafiles:/usr/src/app/mediafiles/
-    ports:
-      - ${WS_PORT}:${WS_PORT}
     env_file:
       - ./.env
     environment:
@@ -64,6 +107,12 @@ services:
     depends_on:
       - db
       - redis
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.websocket.rule=(Host(`localhost`) || Host(`ambianceboard`)) && PathPrefix(`/shared/ws/`)"
+      - "traefik.http.routers.websocket.entrypoints=web"
+      - "traefik.http.routers.websocket.priority=30"
+      - "traefik.http.services.websocket.loadbalancer.server.port=${WS_PORT}"
 
   front:
     build:
@@ -79,6 +128,8 @@ services:
     environment:
       - DEBUG=${DEBUG}
 
+
+
   db:
     #postgres:15.8
     image:  postgres@sha256:eb3747f5d0a92195ca486d2f15d9a4ee5e9461b0332fe87fbc59069490a5c659
@@ -90,13 +141,18 @@ services:
       - POSTGRES_DB=${SQL_DATABASE}
     volumes:
        - ./db-data/:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 15s
+      timeout: 5s
+      retries: 10
 
   rabbitmq:
     #rabbitmq:3-management
     image: rabbitmq@sha256:e582c0bc7766f3342496d8485efb5a1df782b5ce3886ad017e2eaae442311f69
     ports:
-      - ${RABBIT_MQ_PORT_AMQP}:${RABBIT_MQ_PORT_AMQP}    # Port pour AMQP
-      - ${RABBIT_MQ_PORT_WEB}:${RABBIT_MQ_PORT_WEB}  # Port pour l'interface web de gestion
+      - "127.0.0.1:${RABBIT_MQ_PORT_AMQP}:${RABBIT_MQ_PORT_AMQP}"
+      - "127.0.0.1:${RABBIT_MQ_PORT_WEB}:${RABBIT_MQ_PORT_WEB}"
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBIT_MQ_USER}     # Utilisateur par défaut
       - RABBITMQ_DEFAULT_PASS=${RABBIT_MQ_PASSWORD}      # Mot de passe par défaut
@@ -206,6 +262,7 @@ volumes:
   graylog-mongodb-data: null
   graylog-opensearch-data: null
   hf-cache: null
+  traefik-letsencrypt: null
   # dev
   front_build: null 
   playwright-node-modules: null

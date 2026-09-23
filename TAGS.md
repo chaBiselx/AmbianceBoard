@@ -498,7 +498,8 @@ Sécurité
 - URL celery 
 
 ### 0.5.8 - 2026/09
-
+Fiabilité & Confiance
+- migrations de nginx a traefik 
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
