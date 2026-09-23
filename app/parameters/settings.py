@@ -436,7 +436,9 @@ DEBUG_TOOLBAR_CONFIG = []
 # debug toolbar
 if(DEBUG_TOOLBAR):
     INSTALLED_APPS.append('debug_toolbar')
-    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    # Doit être le plus haut possible : placé en fin de liste sous ASGI, il force
+    # un aller-retour async -> thread -> async à chaque requête.
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
     
     INTERNAL_IPS.append('127.0.0.1')
     if APP_PORT : 
