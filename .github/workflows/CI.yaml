@@ -11,6 +11,8 @@ concurrency:
 
 jobs:
   GitGuardian:
+    # GitGuardian job to scan for secrets in the repository
+    # for incremment dashboard visibility, add custom source and add GITGUARDIAN_SOURCE_UUID to the repository secrets
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,12 +34,14 @@ jobs:
     - name: GitGuardian scan pushed commits (history)
       env:
         GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+      # --source-uuid : requis pour que les secrets détectés créent des incidents visibles sur le dashboard
       run: ggshield --config-path .github/gitguardian.yaml secret scan ci
 
     - name: GitGuardian scan full repository (working tree)
       shell: bash
       env:
         GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+      # ggshield --config-path .github/gitguardian.yaml secret scan path --recursive --yes --source-uuid ${{ secrets.GITGUARDIAN_SOURCE_UUID }} . 2>&1 | tee ggshield-report.txt
       run: |
         ggshield --config-path .github/gitguardian.yaml secret scan path --recursive --yes . 2>&1 | tee ggshield-report.txt
         exit ${PIPESTATUS[0]}
