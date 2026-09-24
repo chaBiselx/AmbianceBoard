@@ -55,6 +55,12 @@ export default defineConfig(({ mode }) => {
             globals: true,
             environment: 'jsdom',
             exclude: ['tests/E2E/**'],
+            coverage: {
+                provider: 'v8',
+                reporter: ['text', 'html'],
+                include: ['src/**'],
+                exclude: ['tests/**'],
+            },
         },
     };
 });

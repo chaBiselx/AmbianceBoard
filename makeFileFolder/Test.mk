@@ -55,6 +55,10 @@ test-frontend-ti:
 		$(CONTAINER_FRONTEND) npm run test:ti -- --testNamePattern="$(FILTER)"; \
 	fi
 
+test-frontend-coverage:
+	@# Help: lance les tests frontend avec couverture
+	$(CONTAINER_FRONTEND) npm run test:coverage
+
 test-music-labeler: test-music-labeler-tu
 	@# Help: lance l'ensemble des tests music labeler (unitaires et d'intégration)
 
