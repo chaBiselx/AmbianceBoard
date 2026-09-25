@@ -26,8 +26,8 @@ describe('Notification.createClientNotification', () => {
         Notification.createClientNotification({ message: 'second' });
 
         const containers = document.querySelectorAll('#notification-container');
-        expect(containers.length).toBe(1);
-        expect(containers[0].children.length).toBe(2);
+        expect(containers).toHaveLength(1);
+        expect(containers[0].children).toHaveLength(2);
     });
 
     it('should apply custom options', () => {
