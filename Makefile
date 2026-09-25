@@ -16,12 +16,12 @@ CONTAINER_MUSIC_LABELER=docker compose exec music-labeler
 
 
 help:
-	@printf "%-20s %s\n" "Target" "Description"
-	@printf "%-20s %s\n" "------" "-----------"
+	@printf "%-35s %s\n" "Target" "Description"
+	@printf "%-35s %s\n" "------" "-----------"
 	@awk 'BEGIN{target=""} \
 		/^## ——/{print ""; print $$0; next} \
 		/^[a-z][a-z0-9-]*:/{target=$$1; gsub(/:/, "", target)} \
-		/^[[:space:]]*@# Help:/{gsub(/^[[:space:]]*@# Help: /, "", $$0); printf "%-20s %s\n", target, $$0}' \
+		/^[[:space:]]*@# Help:/{gsub(/^[[:space:]]*@# Help: /, "", $$0); printf "%-35s %s\n", target, $$0}' \
 		makeFileFolder/*.mk
 
 
