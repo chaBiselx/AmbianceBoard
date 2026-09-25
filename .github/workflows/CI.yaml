@@ -124,7 +124,7 @@ jobs:
       - name: Run tests with coverage
         id: coverage
         run: |
-          make test-backend-coverage
+          docker compose exec back sh -c "coverage run --source='.' manage.py test --exclude-tag=stress-test && coverage report --fail-under=60"
           PCT=$(docker compose exec back coverage report --format=total)
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
 
@@ -153,7 +153,7 @@ jobs:
       - name: Run tests with coverage
         id: coverage
         run: |
-          make test-frontend-coverage
+          docker compose exec -w /app front npm run test
           PCT=$(docker compose exec -w /app front node -e "console.log(Math.round(require('./coverage/coverage-summary.json').total.lines.pct))")
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
 
@@ -182,7 +182,7 @@ jobs:
       - name: Run tests with coverage
         id: coverage
         run: |
-          make test-music-labeler-coverage
+          docker compose exec music-labeler python -m pytest --cov=. --cov-report=term-missing --cov-report=json --cov-fail-under=60 -q tests
           PCT=$(docker compose exec music-labeler python -c "import json;print(round(json.load(open('coverage.json'))['totals']['percent_covered']))")
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
 
