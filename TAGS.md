@@ -498,8 +498,12 @@ Sécurité
 - URL celery 
 
 ### 0.5.8 - 2026/09
+Modifications
+- Suppression des relicats de python 
+
 Fiabilité & Confiance
-- migrations de nginx a traefik 
+- Migrations de nginx a traefik 
+- Augmentation de la couverture de tests
 
 ### X.Y.Z - Date
 Améliorations
