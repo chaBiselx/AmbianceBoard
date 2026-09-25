@@ -103,6 +103,8 @@ jobs:
     permissions:
       actions: read
       contents: read
+    outputs:
+      pct: ${{ steps.coverage.outputs.pct }}
     steps:
       - uses: actions/checkout@v6
       - name: Download artifact
@@ -119,8 +121,12 @@ jobs:
         run: docker compose up -d
       - name: Compile messages
         run: docker compose exec back sh -c "python manage.py compilemessages"
-      - name: Run tests
-        run: docker compose exec back sh -c "coverage run --source='.' manage.py test --exclude-tag=stress-test && coverage report"
+      - name: Run tests with coverage
+        id: coverage
+        run: |
+          make test-backend-coverage
+          PCT=$(docker compose exec back coverage report --format=total)
+          echo "pct=$PCT" >> "$GITHUB_OUTPUT"
 
   TestDockerFront:
     needs: BuildDockerCompose
@@ -129,6 +135,8 @@ jobs:
     permissions:
       actions: read
       contents: read
+    outputs:
+      pct: ${{ steps.coverage.outputs.pct }}
     steps:
       - uses: actions/checkout@v6
       - name: Download artifact
@@ -142,8 +150,12 @@ jobs:
         run: cp .env.CI .env
       - name: Start services
         run: docker compose up -d
-      - name: Run tests
-        run: docker compose exec -w /app front npm run test
+      - name: Run tests with coverage
+        id: coverage
+        run: |
+          make test-frontend-coverage
+          PCT=$(docker compose exec -w /app front node -e "console.log(Math.round(require('./coverage/coverage-summary.json').total.lines.pct))")
+          echo "pct=$PCT" >> "$GITHUB_OUTPUT"
 
   TestDockerMusicLabeler:
     needs: BuildDockerCompose
@@ -152,6 +164,8 @@ jobs:
     permissions:
       actions: read
       contents: read
+    outputs:
+      pct: ${{ steps.coverage.outputs.pct }}
     steps:
       - uses: actions/checkout@v6
       - name: Download artifact
@@ -165,8 +179,35 @@ jobs:
         run: cp .env.CI .env
       - name: Start services
         run: docker compose up -d
-      - name: Run tests
-        run: docker compose exec music-labeler python -m pytest -q tests
+      - name: Run tests with coverage
+        id: coverage
+        run: |
+          make test-music-labeler-coverage
+          PCT=$(docker compose exec music-labeler python -c "import json;print(round(json.load(open('coverage.json'))['totals']['percent_covered']))")
+          echo "pct=$PCT" >> "$GITHUB_OUTPUT"
+
+  CoverageGlobal:
+    needs:
+      - TestDockerBack
+      - TestDockerFront
+      - TestDockerMusicLabeler
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aggregate coverage
+        run: |
+          BACK=${{ needs.TestDockerBack.outputs.pct }}
+          FRONT=${{ needs.TestDockerFront.outputs.pct }}
+          ML=${{ needs.TestDockerMusicLabeler.outputs.pct }}
+          AVG=$(awk "BEGIN{printf \"%.2f\", ($BACK+$FRONT+$ML)/3}")
+          {
+            echo "### Couverture de code"
+            echo "| Service | Couverture |"
+            echo "|---|---|"
+            echo "| Back | ${BACK}% |"
+            echo "| Front | ${FRONT}% |"
+            echo "| Music-labeler | ${ML}% |"
+            echo "| **Global (moyenne)** | **${AVG}%** |"
+          } >> "$GITHUB_STEP_SUMMARY"
 
   # TODO retry car les issues ne sont pas actualisé dans SonarQube, donc le job échoue même si les issues sont corrigées 
   # TestQualityGate:

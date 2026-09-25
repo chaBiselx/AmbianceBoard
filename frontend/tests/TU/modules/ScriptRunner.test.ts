@@ -10,6 +10,7 @@ vi.mock('@/modules/UpdateVolumePlaylist', () => ({
     UpdateVolumePlaylist: vi.fn().mockImplementation(() => ({ updateVolume: vi.fn() }))
 }));
 
+import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
 import ScriptRunner from '@/modules/Script/ScriptRunner';
@@ -153,6 +154,7 @@ describe('ScriptRunner', () => {
     });
 
     it('keeps running the rest of the script when an action is unknown', () => {
+        const errorSpy = vi.spyOn(ConsoleCustom, 'error').mockImplementation(() => {});
         const runner = new ScriptRunner(buildScript([
             buildStep({ uuid: 'step-1', action_type: 'DOES_NOT_EXIST' }),
             buildStep({ uuid: 'step-2' }),
@@ -162,5 +164,7 @@ describe('ScriptRunner', () => {
         vi.advanceTimersByTime(0);
 
         expect(SoundBoardManager.addPlaylist).toHaveBeenCalledTimes(1);
+        expect(errorSpy).toHaveBeenCalledWith('Unknown script action DOES_NOT_EXIST');
+        errorSpy.mockRestore();
     });
 });

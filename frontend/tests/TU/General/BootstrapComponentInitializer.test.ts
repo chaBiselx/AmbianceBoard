@@ -44,7 +44,7 @@ describe('BootstrapComponentInitializer', () => {
 
     it('should warn and continue when a dropdown fails to initialize', () => {
         document.body.innerHTML = `<div data-bs-toggle="dropdown"></div>`;
-        vi.spyOn(bootstrap, 'Dropdown').mockImplementation(() => {
+        vi.spyOn(bootstrap, 'Dropdown').mockImplementation(function () {
             throw new Error('boom');
         });
 
@@ -55,7 +55,7 @@ describe('BootstrapComponentInitializer', () => {
 
     it('should warn and continue when a tooltip fails to initialize', () => {
         document.body.innerHTML = `<div data-bs-toggle="tooltip"></div>`;
-        vi.spyOn(bootstrap, 'Tooltip').mockImplementation(() => {
+        vi.spyOn(bootstrap, 'Tooltip').mockImplementation(function () {
             throw new Error('boom');
         });
 
@@ -66,7 +66,7 @@ describe('BootstrapComponentInitializer', () => {
 
     it('should warn and continue when a popover fails to initialize', () => {
         document.body.innerHTML = `<div data-bs-toggle="popover"></div>`;
-        vi.spyOn(bootstrap, 'Popover').mockImplementation(() => {
+        vi.spyOn(bootstrap, 'Popover').mockImplementation(function () {
             throw new Error('boom');
         });
 

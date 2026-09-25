@@ -57,9 +57,16 @@ export default defineConfig(({ mode }) => {
             exclude: ['tests/E2E/**'],
             coverage: {
                 provider: 'v8',
-                reporter: ['text', 'html'],
+                reporter: ['text', 'html', 'json-summary'],
                 include: ['src/**'],
                 exclude: ['tests/**'],
+                // seuil aligné sur la couverture réelle actuelle (~22%), à remonter progressivement
+                thresholds: {
+                    lines: 20,
+                    statements: 20,
+                    functions: 20,
+                    branches: 20,
+                },
             },
         },
     };
