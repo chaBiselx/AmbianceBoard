@@ -153,7 +153,7 @@ jobs:
       - name: Run tests with coverage
         id: coverage
         run: |
-          docker compose exec -w /app front npm run test
+          docker compose exec -w /app front npm run test:coverage
           PCT=$(docker compose exec -w /app front node -e "console.log(Math.round(require('./coverage/coverage-summary.json').total.lines.pct))")
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
 
@@ -181,9 +181,10 @@ jobs:
         run: docker compose up -d
       - name: Run tests with coverage
         id: coverage
+        # /app est un bind mount appartenant au runner (uid 1001) : appuser ne peut pas y écrire, d'où l'usage de /tmp
         run: |
-          docker compose exec music-labeler python -m pytest --cov=. --cov-report=term-missing --cov-report=json --cov-fail-under=60 -q tests
-          PCT=$(docker compose exec music-labeler python -c "import json;print(round(json.load(open('coverage.json'))['totals']['percent_covered']))")
+          docker compose exec -e COVERAGE_FILE=/tmp/.coverage music-labeler python -m pytest --cov=. --cov-report=term-missing --cov-report=json:/tmp/coverage.json --cov-fail-under=60 -q tests
+          PCT=$(docker compose exec music-labeler python -c "import json;print(round(json.load(open('/tmp/coverage.json'))['totals']['percent_covered']))")
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
 
   CoverageGlobal:
