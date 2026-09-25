@@ -62,6 +62,10 @@ test-frontend-coverage:
 test-music-labeler: test-music-labeler-tu
 	@# Help: lance l'ensemble des tests music labeler (unitaires et d'intégration)
 
+test-music-labeler-coverage:
+	@# Help: lance les tests music labeler avec couverture
+	$(CONTAINER_MUSIC_LABELER) python -m pytest --cov=. --cov-report=term-missing -q tests
+
 test-music-labeler-tu:
 	@# Help: lance les tests unitaires music labeler
 	@if [ -z "$(FILTER)" ]; then \
