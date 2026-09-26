@@ -498,6 +498,10 @@ Sécurité
 - URL celery 
 
 ### 0.5.8 - 2026/09
+Améliorations
+- Ajout de traductions
+- Ajout d'un boutons pour ajouter le nombre de piste audio lors du mode éditions 
+
 Modifications
 - Suppression des relicats de python 
 
@@ -506,9 +510,6 @@ Fiabilité & Confiance
 - Augmentation de la couverture de tests
 
 ### X.Y.Z - Date
-Améliorations
-- Ajout de traductions
-
 Chaque future version utilisera ce format simple :
 Sécurité
 - … 
