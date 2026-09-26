@@ -60,12 +60,11 @@ export default defineConfig(({ mode }) => {
                 reporter: ['text', 'html', 'json-summary'],
                 include: ['src/**'],
                 exclude: ['tests/**'],
-                // seuil aligné sur la couverture réelle actuelle (~22%), à remonter progressivement
                 thresholds: {
-                    lines: 20,
-                    statements: 20,
-                    functions: 20,
-                    branches: 20,
+                    lines: 60,
+                    statements: 50,
+                    functions: 50,
+                    branches: 50,
                 },
             },
         },
