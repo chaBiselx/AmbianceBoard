@@ -11,6 +11,8 @@ concurrency:
 
 jobs:
   GitGuardian:
+    # GitGuardian job to scan for secrets in the repository
+    # for incremment dashboard visibility, add custom source and add GITGUARDIAN_SOURCE_UUID to the repository secrets
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,12 +34,14 @@ jobs:
     - name: GitGuardian scan pushed commits (history)
       env:
         GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+      # --source-uuid : requis pour que les secrets détectés créent des incidents visibles sur le dashboard
       run: ggshield --config-path .github/gitguardian.yaml secret scan ci
 
     - name: GitGuardian scan full repository (working tree)
       shell: bash
       env:
         GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+      # ggshield --config-path .github/gitguardian.yaml secret scan path --recursive --yes --source-uuid ${{ secrets.GITGUARDIAN_SOURCE_UUID }} . 2>&1 | tee ggshield-report.txt
       run: |
         ggshield --config-path .github/gitguardian.yaml secret scan path --recursive --yes . 2>&1 | tee ggshield-report.txt
         exit ${PIPESTATUS[0]}
@@ -99,6 +103,8 @@ jobs:
     permissions:
       actions: read
       contents: read
+    outputs:
+      pct: ${{ steps.coverage.outputs.pct }}
     steps:
       - uses: actions/checkout@v6
       - name: Download artifact
@@ -115,8 +121,12 @@ jobs:
         run: docker compose up -d
       - name: Compile messages
         run: docker compose exec back sh -c "python manage.py compilemessages"
-      - name: Run tests
-        run: docker compose exec back sh -c "coverage run --source='.' manage.py test --exclude-tag=stress-test && coverage report"
+      - name: Run tests with coverage
+        id: coverage
+        run: |
+          docker compose exec back sh -c "coverage run --source='.' manage.py test --exclude-tag=stress-test && coverage report --fail-under=60"
+          PCT=$(docker compose exec back coverage report --format=total)
+          echo "pct=$PCT" >> "$GITHUB_OUTPUT"
 
   TestDockerFront:
     needs: BuildDockerCompose
@@ -125,6 +135,8 @@ jobs:
     permissions:
       actions: read
       contents: read
+    outputs:
+      pct: ${{ steps.coverage.outputs.pct }}
     steps:
       - uses: actions/checkout@v6
       - name: Download artifact
@@ -138,8 +150,12 @@ jobs:
         run: cp .env.CI .env
       - name: Start services
         run: docker compose up -d
-      - name: Run tests
-        run: docker compose exec -w /app front npm run test
+      - name: Run tests with coverage
+        id: coverage
+        run: |
+          docker compose exec -w /app front npm run test:coverage
+          PCT=$(docker compose exec -w /app front node -e "console.log(Math.round(require('./coverage/coverage-summary.json').total.lines.pct))")
+          echo "pct=$PCT" >> "$GITHUB_OUTPUT"
 
   TestDockerMusicLabeler:
     needs: BuildDockerCompose
@@ -148,6 +164,8 @@ jobs:
     permissions:
       actions: read
       contents: read
+    outputs:
+      pct: ${{ steps.coverage.outputs.pct }}
     steps:
       - uses: actions/checkout@v6
       - name: Download artifact
@@ -161,8 +179,56 @@ jobs:
         run: cp .env.CI .env
       - name: Start services
         run: docker compose up -d
-      - name: Run tests
-        run: docker compose exec music-labeler python -m pytest -q tests
+      - name: Run tests with coverage
+        id: coverage
+        # /app est un bind mount appartenant au runner (uid 1001) : appuser ne peut pas y écrire, d'où l'usage de /tmp
+        run: |
+          docker compose exec -e COVERAGE_FILE=/tmp/.coverage music-labeler python -m pytest --cov=. --cov-report=term-missing --cov-report=json:/tmp/coverage.json --cov-fail-under=60 -q tests
+          PCT=$(docker compose exec music-labeler python -c "import json;print(round(json.load(open('/tmp/coverage.json'))['totals']['percent_covered']))")
+          echo "pct=$PCT" >> "$GITHUB_OUTPUT"
+
+  CoverageGlobal:
+    needs:
+      - TestDockerBack
+      - TestDockerFront
+      - TestDockerMusicLabeler
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aggregate coverage
+        run: |
+          BACK=${{ needs.TestDockerBack.outputs.pct }}
+          FRONT=${{ needs.TestDockerFront.outputs.pct }}
+          ML=${{ needs.TestDockerMusicLabeler.outputs.pct }}
+          AVG=$(awk "BEGIN{printf \"%.2f\", ($BACK+$FRONT+$ML)/3}")
+          {
+            echo "### Couverture de code"
+            echo "| Service | Couverture |"
+            echo "|---|---|"
+            echo "| Back | ${BACK}% |"
+            echo "| Front | ${FRONT}% |"
+            echo "| Music-labeler | ${ML}% |"
+            echo "| **Global (moyenne)** | **${AVG}%** |"
+            echo "| **limit (threshold)** | **60%** |"
+
+          } >> "$GITHUB_STEP_SUMMARY"
+        
+      - name: Post comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Voici le rapport de coverage :\n\n' + require('fs').readFileSync(process.env.GITHUB_STEP_SUMMARY, 'utf8')
+            })
+
+      - name: error handling
+        run: |
+          if [ $(echo "$AVG < 60" | bc) -eq 1 ]; then
+            echo "Global coverage is below the threshold."
+            exit 1
+          fi
 
   # TODO retry car les issues ne sont pas actualisé dans SonarQube, donc le job échoue même si les issues sont corrigées 
   # TestQualityGate:

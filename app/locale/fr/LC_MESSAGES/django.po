@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-17 19:44+0000\n"
+"POT-Creation-Date: 2026-09-23 20:39+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -364,6 +364,91 @@ msgstr "SoundBoard introuvable."
 #: main/interface/ui/controller/public/publicViews.py:214
 msgid "view.favoriteUpdate.error.favorite_not_found"
 msgstr "Favori introuvable."
+
+#: main/interface/ui/forms/private/PlaylistForm.py:56
+msgid "form.playlist.icon.choose_new_file"
+msgstr "Choisissez un nouveau fichier"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:57
+msgid "form.playlist.icon.already_selected"
+msgstr "Image déjà choisie"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:57
+msgid "form.playlist.icon.view"
+msgstr "Voir"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:61
+msgid "form.playlist.name.label"
+msgstr "Nom du bouton"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:66
+msgid "form.playlist.type.label"
+msgstr "Type de playlist"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:70
+msgid "form.playlist.specific_color.label"
+msgstr ""
+"Utiliser une couleur personnaliséeCochez pour personnaliser les couleurs de "
+"cette playlist, sinon les couleurs par défaut de l'utilisateur seront "
+"utilisées"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:72
+msgid "form.playlist.background_color.label"
+msgstr "Couleur du background"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:77
+msgid "form.playlist.text_color.label"
+msgstr "Couleur du texte"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:82
+msgid "form.playlist.volume.label"
+msgstr "Volume"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:89
+msgid "form.playlist.icon.label"
+msgstr "Icône de la playlist"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:93
+msgid "form.playlist.copiable.label"
+msgstr "Copiable par les autres utilisateurs"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:94
+msgid "form.playlist.delete_icon.label"
+msgstr "Supprimer le fichier"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:95
+msgid "form.playlist.specific_delay.label"
+msgstr ""
+"Utiliser un délai aléatoire spécifiqueCochez pour activer un délai "
+"personnalisé entre les pistes (uniquement pour les playlists de type Musique "
+"et Ambiant)"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:97
+msgid "form.playlist.max_delay.label"
+msgstr "Délai maximum (en secondes) avant de jouer la musique suivante"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:103
+msgid "form.playlist.fade_in.label"
+msgstr "Fondu d'entrée (Fade In)"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:109
+msgid "form.playlist.fade_out.label"
+msgstr "Fondu de sortie (Fade Out)"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:118
+msgid "form.playlist.tags.label"
+msgstr "Tags"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:119
+msgid "form.playlist.tags.helptext"
+msgstr ""
+"Sélectionnez si nécessaire des tags pour catégoriser votre playlist pour les "
+"recherchesSélectionnez si necessaires des tags pour catégoriser votre "
+"soundboard pour les recherches"
+
+#: main/interface/ui/forms/private/PlaylistForm.py:128
+msgid "form.playlist.icon.invalid_format"
+msgstr "Seuls les fichiers image (%(extensions)s) sont autorisés."
 
 #: main/interface/ui/forms/private/SoundBoardForm.py:56
 msgid "form.soundboard.name.label"
@@ -1029,6 +1114,61 @@ msgstr "Retour a l'accueil"
 msgid "template.addLinkMusic.form.submit"
 msgstr "Ajouter le lien"
 
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:9
+msgid "template.playlist_describe_type.random_playback"
+msgstr "Lecture aléatoire"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:9
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:14
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:30
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:52
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:62
+msgid "generic.yes"
+msgstr "Oui"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:12
+msgid "template.playlist_describe_type.loop"
+msgstr "Lire en boucle"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:16
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:32
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:52
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:62
+msgid "generic.no"
+msgstr "Non"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:21
+msgid "template.playlist_describe_type.max_delay"
+msgstr "Délai maximum entre deux musiques"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:28
+msgid "template.playlist_describe_type.single_instance"
+msgstr "Une seule instance de ce type de musique"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:37
+msgid "template.playlist_describe_type.volume"
+msgstr "Volume"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:44
+msgid "template.playlist_describe_type.next_track_trigger"
+msgstr "Démarrage du morceau suivant quand il reste"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:51
+msgid "template.playlist_describe_type.fade_in"
+msgstr "Fondu d'entrée (Fade In)"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:56
+msgid "template.playlist_describe_type.fade_in_duration"
+msgstr "Durée du fondu d'entrée (Fade In)"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:61
+msgid "template.playlist_describe_type.fade_out"
+msgstr "Fondu de sortie (Fade Out)"
+
+#: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:66
+msgid "template.playlist_describe_type.fade_out_duration"
+msgstr "Durée du fondu de sortie (Fade Out)"
+
 #: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:22
 msgid "generic.back"
 msgstr "Retour"
@@ -1058,6 +1198,147 @@ msgstr "Dupliquer le bouton"
 #: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:58
 msgid "template.playlist_copiable_preview.already_duplicated"
 msgstr "Le bouton a déjà été dupliqué."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:7
+msgid "template.playlist_create.page_title.update"
+msgstr "Modifier Bouton"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:7
+msgid "template.playlist_create.page_title.create"
+msgstr "Créer Bouton"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:22
+msgid "template.playlist_create.title.update"
+msgstr "Modifier votre Bouton Ambiance"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:24
+msgid "template.playlist_create.title.create"
+msgstr "Créer un nouveau Bouton pour votre Soundboard Ambiance"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:34
+msgid "template.playlist_create.button.delete"
+msgstr "Suppression bouton"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:41
+msgid "template.playlist_create.tooltip.name"
+msgstr "Nom qui sera affiché sur le bouton de la playlist"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:51
+msgid "template.playlist_create.tooltip.is_copiable"
+msgstr "Peut être copié par les autres utilisateurs et modifié de leur côté"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:54
+msgid "template.playlist_create.tooltip.type_playlist"
+msgstr ""
+"Type de contenu : Musique (lecture aléatoire continue), Ambiant (sons "
+"d'ambiance en boucle), Instantané (sons courts déclenchés manuellement)"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:71
+msgid "template.playlist_create.button.show_description"
+msgstr "Afficher description"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:78
+msgid "template.playlist_create.accordion.customization"
+msgstr "Personnalisation"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:86
+msgid "template.playlist_create.tooltip.specific_color"
+msgstr ""
+"Cochez pour personnaliser les couleurs de cette playlist, sinon les couleurs "
+"par défaut de l'utilisateur seront utilisées"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:90
+msgid "template.playlist_create.tooltip.color"
+msgstr "Couleur de fond du bouton de la playlist"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:93
+msgid "template.playlist_create.tooltip.color_text"
+msgstr "Couleur du texte affiché sur le bouton de la playlist"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:96
+msgid "template.playlist_create.button.select_existing_colors"
+msgstr "Sélectionner couleurs existantes"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:100
+msgid "template.playlist_create.tooltip.specific_delay"
+msgstr ""
+"Cochez pour activer un délai personnalisé entre les pistes (uniquement pour "
+"les playlists de type Musique et Ambiant)"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:104
+msgid "template.playlist_create.tooltip.max_delay"
+msgstr "Délai maximum en secondes entre chaque piste (0 = pas de délai)"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:107
+msgid "template.playlist_create.tooltip.fade_in"
+msgstr "Sélectionner le fondu d'entrée pour cette playlist"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:111
+msgid "template.playlist_create.tooltip.fade_out"
+msgstr "Sélectionner le fondu de sortie pour cette playlist"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:131
+msgid "template.playlist_create.tooltip.volume"
+msgstr ""
+"Volume par défaut de la playlist (0-100%). Ce volume sera appliqué lors de "
+"la lecture des pistes"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:141
+msgid "template.playlist_create.tooltip.icon"
+msgstr ""
+"Icône personnalisée qui sera affichée sur le bouton de la playlist "
+"(optionnel)"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:143
+msgid "template.playlist_create.button.clear_icon"
+msgstr "Supprimer le fichier"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:176
+msgid "template.playlist_create.button.update"
+msgstr "Modifier"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:178
+msgid "template.playlist_create.button.create"
+msgstr "Créer"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:205
+msgid "template.playlist_create.tracks.title"
+msgstr "Musiques"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:213
+msgid "template.playlist_create.tooltip.add_local_file"
+msgstr "Ajouter un fichier audio local (MP3, WAV, etc.) à la playlist"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:213
+msgid "template.playlist_create.button.add_file"
+msgstr "Ajouter fichier"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:217
+msgid "template.playlist_create.tooltip.add_external_link"
+msgstr ""
+"Ajouter un lien vers une source audio externe (Fichier, Flux Audio, etc.)"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:217
+msgid "template.playlist_create.button.add_link"
+msgstr "Ajouter lien"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:228
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:234
+msgid "template.playlist_create.button.edit_track"
+msgstr "Modifier"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:229
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:235
+msgid "template.playlist_create.button.delete_track"
+msgstr "Supprimer"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:261
+msgid "template.playlist_create.track_labeling_pending"
+msgstr "Labellisation prochaine"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:282
+msgid "template.playlist_create.button.new_playlist"
+msgstr "Créer une nouvelle playlist"
 
 #: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:56
 msgid "template.playlist_read_all.button.add"
@@ -1253,6 +1534,7 @@ msgstr "Renommer"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:60
 #: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:62
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:119
 #: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:121
 msgid "template.soundboard_organize.section.insert_before"
 msgstr "Insérer une section avant"

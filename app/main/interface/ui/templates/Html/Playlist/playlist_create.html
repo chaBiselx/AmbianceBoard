@@ -2,8 +2,9 @@
 {% load Playlist %}
 {% load FrontJs %}
 {% load static %}
+{% load i18n %}
 
-{% block page_title %}{% if method == 'update' %}Modifier Bouton{% else %}Créer Bouton{% endif %} | AmbianceBoard{% endblock %}
+{% block page_title %}{% if method == 'update' %}{% trans "template.playlist_create.page_title.update" %}{% else %}{% trans "template.playlist_create.page_title.create" %}{% endif %} | AmbianceBoard{% endblock %}
 
 {% block javascript %}
 {{ block.super }}
@@ -18,9 +19,9 @@
     <div class="card-header">
         <h1>
             {% if method == 'update' %}
-            Modifier votre Bouton Ambiance - {{ form.instance.name }}
+            {% trans "template.playlist_create.title.update" %} - {{ form.instance.name }}
             {% else %}
-            Créer un nouveau Bouton pour votre Soundboard Ambiance
+            {% trans "template.playlist_create.title.create" %}
             {% endif %}
         </h1>
     </div>
@@ -30,14 +31,14 @@
                 <div>
                     {% if method == 'update' %}
                     <div>
-                        <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.uuid %}" data-redirecturl="{% url 'playlistsAllList' %}">Suppression bouton</button>
+                        <button class="btn btn-danger" id="btn-delete-playlist" data-deleteurl="{% url 'playlistDelete' form.instance.uuid %}" data-redirecturl="{% url 'playlistsAllList' %}">{% trans "template.playlist_create.button.delete" %}</button>
                     </div>
                     {% endif %}
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-7">
-                                {{ form.name.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Nom qui sera affiché sur le bouton de la playlist">ⓘ</span><br /> {{ form.name }}
+                                {{ form.name.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.name' %}">ⓘ</span><br /> {{ form.name }}
                                 {% if form.name.errors %}
                                 <ul>
                                     {% for error in form.name.errors %}
@@ -47,10 +48,10 @@
                                 {% endif %}
                             </div>
                             <div class="col-12 col-md-6 col-lg-5">
-                                {{ form.is_copiable.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Peut être copié par les autres utilisateurs et pouvant être modifé de leurs coté">ⓘ</span><br /> {{ form.is_copiable }}
+                                {{ form.is_copiable.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.is_copiable' %}">ⓘ</span><br /> {{ form.is_copiable }}
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                {{ form.typePlaylist.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Type de contenu : Musique (lecture aléatoire continue), Ambiant (sons d'ambiance en boucle), Instantané (sons courts déclenchés manuellement)">ⓘ</span><br />
+                                {{ form.typePlaylist.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.type_playlist' %}">ⓘ</span><br />
                                 {{ form.typePlaylist }}
                                 {% if form.typePlaylist.errors %}
                                 <ul>
@@ -67,14 +68,14 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                <button type="button" id="btn-show-description-playlist-type" class="btn btn-info" data-url="{% url 'playlistDescribeType' %}">Afficher description</button>
+                                <button type="button" id="btn-show-description-playlist-type" class="btn btn-info" data-url="{% url 'playlistDescribeType' %}">{% trans "template.playlist_create.button.show_description" %}</button>
                             </div>
                             <div class="col-12 my-2">
                                 <div class="accordion" id="custom-elements-accordion">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="personnalisation-playlist">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#Personnalisation-playlist" aria-expanded="false" aria-controls="Personnalisation-playlist">
-                                                Personnalisation
+                                                {% trans "template.playlist_create.accordion.customization" %}
                                             </button>
                                         </h2>
                                         <div id="Personnalisation-playlist" class="accordion-collapse collapse" aria-labelledby="personnalisation-playlist">
@@ -82,32 +83,32 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         {{ form.useSpecificColor.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip"
-                                                            data-bs-title="Cochez pour personnaliser les couleurs de cette playlist, sinon les couleurs par défaut de l'utilisateur seront utilisées">ⓘ</span><br />
+                                                            data-bs-title="{% trans 'template.playlist_create.tooltip.specific_color' %}">ⓘ</span><br />
                                                         {{ form.useSpecificColor }}
                                                     </div>
                                                     <div class="col-sm-12 col-md-4 color_form">
-                                                        {{ form.color.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Couleur de fond du bouton de la playlist">ⓘ</span><br /> {{ form.color }}
+                                                        {{ form.color.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.color' %}">ⓘ</span><br /> {{ form.color }}
                                                     </div>
                                                     <div class="col-sm-12 col-md-4 color_form">
-                                                        {{ form.colorText.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Couleur du texte affiché sur le bouton de la playlist">ⓘ</span><br />{{ form.colorText }}
+                                                        {{ form.colorText.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.color_text' %}">ⓘ</span><br />{{ form.colorText }}
                                                     </div>
                                                     <div class="col-sm-12 col-md-4 color_form">
-                                                        <button type="button" class="btn btn-info" id="btn-select-other-color" data-url="{% url 'getListingOtherColors' %}">Selectionner couleurs existantes</button>
+                                                        <button type="button" class="btn btn-info" id="btn-select-other-color" data-url="{% url 'getListingOtherColors' %}">{% trans "template.playlist_create.button.select_existing_colors" %}</button>
                                                     </div>
                                                     <div class="col-12">
                                                         {{ form.useSpecificDelay.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip"
-                                                            data-bs-title="Cochez pour activer un délai personnalisé entre les pistes (uniquement pour les playlists de type Musique et Ambiant)">ⓘ</span><br />
+                                                            data-bs-title="{% trans 'template.playlist_create.tooltip.specific_delay' %}">ⓘ</span><br />
                                                         {{ form.useSpecificDelay }}
                                                     </div>
                                                     <div class="col-sm-12 col-md-12 delay_form">
-                                                        {{ form.maxDelay.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Délai maximum en secondes entre chaque piste (0 = pas de délai)">ⓘ</span><br /> {{ form.maxDelay }}
+                                                        {{ form.maxDelay.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.max_delay' %}">ⓘ</span><br /> {{ form.maxDelay }}
                                                     </div>
                                                     <div class="col-sm-12 col-md-6">
-                                                        {{ form.fadeIn.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Selectionner le fondu d'entrée pour cette playlist">ⓘ</span><br />
+                                                        {{ form.fadeIn.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.fade_in' %}">ⓘ</span><br />
                                                         {{ form.fadeIn }}
                                                     </div>
                                                     <div class="col-sm-12 col-md-6">
-                                                        {{ form.fadeOut.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Selectionner le fondu d'entrée pour cette playlist">ⓘ</span><br />
+                                                        {{ form.fadeOut.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.fade_out' %}">ⓘ</span><br />
                                                         {{ form.fadeOut }}
                                                     </div>
                                                     <div class="col-12 mt-2">
@@ -127,7 +128,7 @@
 
 
                             <div class="col-sm-12 col-md-6">
-                                {{ form.volume.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Volume par défaut de la playlist (0-100%). Ce volume sera appliqué lors de la lecture des pistes">ⓘ</span><br /> {{ form.volume }}
+                                {{ form.volume.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.volume' %}">ⓘ</span><br /> {{ form.volume }}
                                 {% if form.volume.errors %}
                                 <ul>
                                     {% for error in form.volume.errors %}
@@ -137,9 +138,9 @@
                                 {% endif %}
                             </div>
                             <div class="col-sm-12 col-md-6">
-                                {{ form.icon.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="Icône personnalisée qui sera affichée sur le bouton de la playlist (optionnel)">ⓘ</span><br />
+                                {{ form.icon.label_tag }} <span class="text-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.icon' %}">ⓘ</span><br />
                                 {% if form.instance.icon %}
-                                {{ form.icon.help_text|safe }} | {{ form.clear_icon }} Supprimer le fichier <br />
+                                {{ form.icon.help_text|safe }} | {{ form.clear_icon }} {% trans "template.playlist_create.button.clear_icon" %}<br />
                                 {% endif %}
                                 {{ form.icon }}
                                 {% if form.icon.errors %}
@@ -172,9 +173,9 @@
                             <div class="col-12">
                                 <button class="btn btn-success btn-block mt-2" type="submit">
                                     {% if method == 'update' %}
-                                    Modifier
+                                    {% trans "template.playlist_create.button.update" %}
                                     {% else %}
-                                    Créer
+                                    {% trans "template.playlist_create.button.create" %}
                                     {% endif %}
                                 </button>
                             </div>
@@ -201,7 +202,7 @@
 {% if method == 'update' %}
 <div class="card mt-2">
     <div class="card-header">
-        <h2>Musiques</h2>
+        <h2>{% trans "template.playlist_create.tracks.title" %}</h2>
     </div>
     <div class="card-body">
         <div class="row ">
@@ -209,11 +210,11 @@
                 <div class="gestion">
                     <div class="row">
                         <div class="col-12 col-sm-6">
-                            <button class="btn btn-primary btn-block btn-add-music" data-bs-toggle="tooltip" data-bs-title="Ajouter un fichier audio local (MP3, WAV, etc.) à la playlist" data-url="{% url 'addMusic' form.instance.uuid %}">Ajouter fichier</button>
+                            <button class="btn btn-primary btn-block btn-add-music" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.add_local_file' %}" data-url="{% url 'addMusic' form.instance.uuid %}">{% trans "template.playlist_create.button.add_file" %}</button>
                         </div>
                         {% if LinkMusicAllowedEnum|length > 0 %}
                         <div class="col-12 col-sm-6">
-                            <button class="btn btn-primary btn-block btn-add-music" data-bs-toggle="tooltip" data-bs-title="Ajouter un lien vers une source audio externe (Fichier, Flux Audio, etc.)" data-url="{% url 'addLink' form.instance.uuid %}">Ajouter lien</button>
+                            <button class="btn btn-primary btn-block btn-add-music" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.tooltip.add_external_link' %}" data-url="{% url 'addLink' form.instance.uuid %}">{% trans "template.playlist_create.button.add_link" %}</button>
                         </div>
                         {% endif %}
 
@@ -224,14 +225,14 @@
                         <div class="music flex-item flex-item-5 border border-secondary rounded p-2">
                             <div class="btn-group float-end">
                                 {% if track.is_music %}
-                                <button class="btn btn-sm btn-warning btn-add-music" title="Edit {{ track.get_name }}" data-url="{% url 'editMusic' form.instance.uuid track.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn btn-sm btn-danger btn-delete-music" title="Delete {{ track.get_name }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid track.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i
+                                <button class="btn btn-sm btn-warning btn-add-music" title="{% trans 'template.playlist_create.button.edit_track' %} {{ track.get_name }}" data-url="{% url 'editMusic' form.instance.uuid track.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger btn-delete-music" title="{% trans 'template.playlist_create.button.delete_track' %} {{ track.get_name }}" data-deleteurl="{% url 'deleteMusic' form.instance.uuid track.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i
                                         class="fa-solid fa-trash-can"></i></button>
 
                                 {% endif %}
                                 {% if track.is_link_music %}
-                                <button class="btn btn-sm btn-warning btn-add-music" title="Edit {{ track.get_name }}" data-url="{% url 'editLink' form.instance.uuid track.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn btn-sm btn-danger btn-delete-music" title="Delete {{ track.get_name }}" data-deleteurl="{% url 'deleteLink' form.instance.uuid track.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i
+                                <button class="btn btn-sm btn-warning btn-add-music" title="{% trans 'template.playlist_create.button.edit_track' %} {{ track.get_name }}" data-url="{% url 'editLink' form.instance.uuid track.id %}"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn btn-sm btn-danger btn-delete-music" title="{% trans 'template.playlist_create.button.delete_track' %} {{ track.get_name }}" data-deleteurl="{% url 'deleteLink' form.instance.uuid track.id %}" data-redirecturl="{% url 'playlistUpdate' form.instance.uuid %}"><i
                                         class="fa-solid fa-trash-can"></i></button>
                                 {% endif %}
                             </div>
@@ -257,7 +258,7 @@
                                 </div>
                                 {% else %}
                                 <div class="track-tags beta-test">
-                                    <span class="badge bg-light text-dark">Labbelisation prochaine</span>
+                                    <span class="badge bg-light text-dark">{% trans "template.playlist_create.track_labeling_pending" %}</span>
                                 </div>
                                 {% endif %}
                                 {% endif %}
@@ -278,7 +279,7 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <a href="{% url 'addPlaylist' %}" class="btn btn-block btn-primary">Creer une nouvelle playlist</a>
+                <a href="{% url 'addPlaylist' %}" class="btn btn-block btn-primary">{% trans "template.playlist_create.button.new_playlist" %}</a>
             </div>
         </div>
     </div>

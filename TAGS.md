@@ -493,6 +493,22 @@ Fiabilité & Confiance
 Sécurité
 - NPM clean install
 
+### 0.5.7 - 2026/09
+Sécurité
+- URL celery 
+
+### 0.5.8 - 2026/09
+Améliorations
+- Ajout de traductions
+- Ajout d'un boutons pour ajouter le nombre de piste audio lors du mode éditions 
+
+Modifications
+- Suppression des relicats de python 
+
+Fiabilité & Confiance
+- Migrations de nginx a traefik 
+- Augmentation de la couverture de tests
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

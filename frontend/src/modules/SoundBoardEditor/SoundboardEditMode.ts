@@ -36,6 +36,7 @@ class SoundboardEditMode {
         });
 
         this.bindAddZones();
+        this.bindAddMusicButtons();
         this.bindAddSectionButton();
         this._startIfEmpty();
     }
@@ -87,6 +88,26 @@ class SoundboardEditMode {
                 this.openPanel();
             });
         }
+    }
+
+    /** Délégation sur le conteneur : couvre aussi les boutons insérés dynamiquement. */
+    private bindAddMusicButtons(): void {
+        this.boardContainer?.addEventListener('click', (event) => {
+            if (!this.isEditModeActive) return;
+            const target = event.target as HTMLElement | null;
+            const button = target?.closest<HTMLButtonElement>('[data-soundboard-edit-add-music-url]');
+            const url = button?.dataset.soundboardEditAddMusicUrl;
+            if (!button || !url) return;
+            event.stopPropagation();
+            if (button.dataset.clicked === 'active') return;
+            button.dataset.clicked = 'active';
+            button.setAttribute("disabled", "true");
+            setTimeout(() => {
+                delete button.dataset.clicked;
+                button.removeAttribute("disabled");
+            }, 300);
+            new PopupAddMusicToSoundboard(url).showIfValue();
+        });
     }
 
     private bindAddSectionButton(): void {
