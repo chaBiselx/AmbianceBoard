@@ -254,7 +254,7 @@ def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_u
             section = int(request.POST.get('section') or 1)
         if section <= 0:
             section = 1
-    except (TypeError, ValueError, json.JSONDecodeError):
+    except (TypeError, ValueError):
         section = 1
         
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
@@ -431,7 +431,7 @@ def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid
             section = int(request.POST.get('section') or 1)
         if section <= 0:
             section = 1
-    except (TypeError, ValueError, json.JSONDecodeError):
+    except (TypeError, ValueError):
         section = 1
 
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
