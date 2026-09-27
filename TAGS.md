@@ -501,9 +501,13 @@ Sécurité
 Améliorations
 - Ajout de traductions
 - Ajout d'un boutons pour ajouter le nombre de piste audio lors du mode éditions 
+- Ajout d'une trace de l'activité pour les boutons dupliqués
 
 Modifications
 - Suppression des relicats de python 
+
+Corrections
+- Corrections d'un bug qui n'ajoutais pas les boutons dans les bonnes sections   
 
 Fiabilité & Confiance
 - Migrations de nginx a traefik 

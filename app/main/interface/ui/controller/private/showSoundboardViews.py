@@ -38,6 +38,8 @@ from main.domain.common.exceptions.PlaylistDuplicationException import (
     PlaylistAlreadyDuplicatedException,
     PlaylistNotCopiableException
 )
+from main.architecture.persistence.repository.UserActivityRepository import UserActivityRepository
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 
 from django.core.paginator import Paginator
@@ -244,6 +246,17 @@ def soundboard_edit_mode_playlist_list(request, soundboard_uuid):
 @require_http_methods(['POST'])
 def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_uuid) -> JsonResponse:
     """Duplique une playlist publique et l'ajoute directement au soundboard cible."""
+    try:
+        if request.content_type == 'application/json':
+            payload = json.loads(request.body or b'{}')
+            section = int(payload.get('section') or 1)
+        else:
+            section = int(request.POST.get('section') or 1)
+        if section <= 0:
+            section = 1
+    except (TypeError, ValueError, json.JSONDecodeError):
+        section = 1
+        
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
         return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
@@ -271,7 +284,7 @@ def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_u
         )
         duplicated_playlist = duplication_service.duplicate()
 
-        SoundboardPlaylistService(soundboard).add_default(duplicated_playlist)
+        SoundboardPlaylistService(soundboard).add_default(duplicated_playlist, section)
 
         playlist_html = render_service.render_playlist_item(duplicated_playlist, soundboard)
 
@@ -281,6 +294,18 @@ def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_u
             'playlist_uuid': str(duplicated_playlist.uuid),
             'playlist_html': playlist_html,
         }
+        
+        try:
+            # Enregistrer l'activité de l'utilisateur pour la duplication de playlist
+            user_activity_repository = UserActivityRepository()
+            user_activity_repository.create(
+                user=request.user,
+                activity_type=UserActivityTypeEnum.PLAYLIST_DUPLICATE,
+                content_object=duplicated_playlist,
+                uri=request.build_absolute_uri()
+            )
+        except Exception as e:
+            logger.error(f"Erreur lors de la trace de duplication de playlist: {e}")
 
         return JsonResponse(response_payload, status=200)
     except PlaylistNotCopiableException:
@@ -398,6 +423,17 @@ def soundboard_edit_mode_my_playlist_list(request, soundboard_uuid):
 @require_http_methods(['POST'])
 def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid) -> JsonResponse:
     """Ajoute une playlist existante de l'utilisateur dans le soundboard cible."""
+    try:
+        if request.content_type == 'application/json':
+            payload = json.loads(request.body or b'{}')
+            section = int(payload.get('section') or 1)
+        else:
+            section = int(request.POST.get('section') or 1)
+        if section <= 0:
+            section = 1
+    except (TypeError, ValueError, json.JSONDecodeError):
+        section = 1
+
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
         return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
@@ -415,7 +451,7 @@ def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid
 
     try:
         render_service = SoundboardPlaylistRenderService(request)
-        SoundboardPlaylistService(soundboard).add_default(playlist)
+        SoundboardPlaylistService(soundboard).add_default(playlist, section)
 
         playlist_html = render_service.render_playlist_item(playlist, soundboard)
 

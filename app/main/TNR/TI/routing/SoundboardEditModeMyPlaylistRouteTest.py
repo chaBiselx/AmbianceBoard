@@ -127,7 +127,28 @@ class SoundboardEditModeAddMyPlaylistRouteTest(TestCase):
         self.client.login(username='owner', password='pw')
         self.client.post(self._url())
         self.assertTrue(
-            SoundboardPlaylist.objects.filter(section__SoundBoard=self.soundboard, Playlist=self.playlist).exists()
+            SoundboardPlaylist.objects.filter(
+                section__SoundBoard=self.soundboard,
+                section__section=1,
+                Playlist=self.playlist,
+            ).exists()
+        )
+
+    def test_add_playlist_uses_section_from_json_payload(self):
+        self.client.login(username='owner', password='pw')
+        response = self.client.post(
+            self._url(),
+            data='{"section": 2}',
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            SoundboardPlaylist.objects.filter(
+                section__SoundBoard=self.soundboard,
+                section__section=2,
+                Playlist=self.playlist,
+            ).exists()
         )
 
     def test_returns_404_for_nonexistent_soundboard(self):

@@ -81,6 +81,27 @@ class SoundboardEditModeDuplicatePlaylistRouteTest(TestCase):
         self.assertTrue(
             SoundboardPlaylist.objects.filter(
                 section__SoundBoard=self.soundboard,
+                section__section=1,
+                Playlist=duplicated_playlist,
+            ).exists()
+        )
+
+    def test_duplicate_playlist_uses_section_from_json_payload(self):
+        self.client.login(username='board-owner', password='testpassOwnser1234')
+
+        response = self.client.post(
+            self._url(),
+            data='{"section": 2}',
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        duplicated_playlist = Playlist.objects.get(uuid=payload['playlist_uuid'])
+        self.assertTrue(
+            SoundboardPlaylist.objects.filter(
+                section__SoundBoard=self.soundboard,
+                section__section=2,
                 Playlist=duplicated_playlist,
             ).exists()
         )

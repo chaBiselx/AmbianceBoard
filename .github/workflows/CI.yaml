@@ -193,6 +193,8 @@ jobs:
       - TestDockerFront
       - TestDockerMusicLabeler
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - name: Aggregate coverage
         run: |

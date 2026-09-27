@@ -358,11 +358,16 @@ class SoundboardEditMode {
 
     private postPlaylistAction(url: string, button: HTMLButtonElement): void {
         button.disabled = true;
+        const section = this.activeAddZone?.dataset.section;
+        let body: { section: number | null } = { section: null };
+        if (section) body.section = Number.parseInt(section);
         fetch(url, {
             method: 'POST',
             headers: {
                 'X-CSRFToken': Csrf.getToken()!,
+                'Content-Type': 'application/json'
             },
+            body: JSON.stringify(body),
         })
             .then(async response => {
                 const data = await response.json();
