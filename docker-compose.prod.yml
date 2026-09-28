@@ -10,7 +10,7 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.amqps.address=:5671"
+      # - "--entrypoints.amqps.address=:5671"
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       - "--certificatesresolvers.le.acme.email=${TRAEFIK_ACME_EMAIL}"
@@ -20,7 +20,7 @@ services:
     ports:
       - ${WEB_PORT}:${WEB_PORT}
       - "443:443"
-      - "5671:5671"
+      # - "5671:5671"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik-letsencrypt:/letsencrypt
