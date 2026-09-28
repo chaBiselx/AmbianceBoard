@@ -113,7 +113,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.websocket.rule=(Host(`localhost`) || Host(`ambianceboard`)) && PathPrefix(`/shared/ws/`)"
       - "traefik.http.routers.websocket.entrypoints=web"
-      - "traefik.http.routers.websocket.priority=30"
+      - "traefik.http.routers.websocket.priority=200"
       - "traefik.http.services.websocket.loadbalancer.server.port=${WS_PORT}"
 
   front:

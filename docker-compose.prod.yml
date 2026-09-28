@@ -135,10 +135,10 @@ services:
       - redis
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.websocket.rule=Host(`ambianceboard.com`) && PathPrefix(`/shared/ws/`)"
+      - "traefik.http.routers.websocket.rule=(Host(`ambianceboard.com`) || Host(`www.ambianceboard.com`)) && PathPrefix(`/shared/ws/`)"
       - "traefik.http.routers.websocket.entrypoints=websecure"
       - "traefik.http.routers.websocket.tls.certresolver=le"
-      - "traefik.http.routers.websocket.priority=30"
+      - "traefik.http.routers.websocket.priority=200"
       - "traefik.http.services.websocket.loadbalancer.server.port=${WS_PORT}"
     deploy:
       resources:
