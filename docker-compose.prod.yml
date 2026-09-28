@@ -181,12 +181,12 @@ services:
       - RABBITMQ_DEFAULT_PASS=${RABBIT_MQ_PASSWORD}      # Mot de passe par défaut
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq # Persistance des données
-    labels:
-      - "traefik.enable=true"
-      - "traefik.tcp.routers.rabbitmq.rule=HostSNI(`${RABBIT_MQ_PUBLIC_HOST:?RABBIT_MQ_PUBLIC_HOST must be set}`)"
-      - "traefik.tcp.routers.rabbitmq.entrypoints=amqps"
-      - "traefik.tcp.routers.rabbitmq.tls.certresolver=le"
-      - "traefik.tcp.services.rabbitmq.loadbalancer.server.port=5672"
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.tcp.routers.rabbitmq.rule=HostSNI(`${RABBIT_MQ_PUBLIC_HOST:?RABBIT_MQ_PUBLIC_HOST must be set}`)"
+    #   - "traefik.tcp.routers.rabbitmq.entrypoints=amqps"
+    #   - "traefik.tcp.routers.rabbitmq.tls.certresolver=le"
+    #   - "traefik.tcp.services.rabbitmq.loadbalancer.server.port=5672"
 
   music-labeler:
     build:
@@ -257,7 +257,7 @@ services:
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.log-monitoring.rule=Host(`logs.ambianceboard.com`)"
+      - "traefik.http.routers.log-monitoring.rule=Host(`graph.ambianceboard.com`)"
       - "traefik.http.routers.log-monitoring.entrypoints=websecure"
       - "traefik.http.routers.log-monitoring.tls.certresolver=le"
       - "traefik.http.services.log-monitoring.loadbalancer.server.port=9000"
