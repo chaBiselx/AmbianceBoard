@@ -38,7 +38,7 @@ services:
       - "traefik.http.routers.static.rule=(Host(`ambianceboard.com`) || Host(`www.ambianceboard.com`)) && (PathPrefix(`/static/`) || PathPrefix(`/media/`))"
       - "traefik.http.routers.static.entrypoints=websecure"
       - "traefik.http.routers.static.tls.certresolver=le"
-      - "traefik.http.routers.static.priority=20"
+      - "traefik.http.routers.static.priority=100"
       - "traefik.http.services.static.loadbalancer.server.port=8080"
 
   cronjob:
