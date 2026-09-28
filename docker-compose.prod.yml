@@ -35,7 +35,7 @@ services:
       - ./mediafiles:/srv/media:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.static.rule=Host(`ambianceboard.com`) || Host(`www.ambianceboard.com`) && (PathPrefix(`/static/`) || PathPrefix(`/media/`))"
+      - "traefik.http.routers.static.rule=(Host(`ambianceboard.com`) || Host(`www.ambianceboard.com`)) && (PathPrefix(`/static/`) || PathPrefix(`/media/`))"
       - "traefik.http.routers.static.entrypoints=websecure"
       - "traefik.http.routers.static.tls.certresolver=le"
       - "traefik.http.routers.static.priority=20"
@@ -93,7 +93,8 @@ services:
       - front
 
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:${WEB_PORT}/healthcheck', timeout=3)"]
+      # X-Forwarded-Proto évite la redirection HTTPS de SECURE_SSL_REDIRECT
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen(u.Request('http://127.0.0.1:${WEB_PORT}/healthcheck', headers={'X-Forwarded-Proto': 'https'}), timeout=3)"]
       interval: 10s
       timeout: 5s
       retries: 5
