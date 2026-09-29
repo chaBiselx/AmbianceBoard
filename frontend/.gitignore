@@ -1,4 +1,5 @@
 ./node_modules
 ./static/*
 ./staticProtected/*
+coverage/
 E2E_result/

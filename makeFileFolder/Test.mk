@@ -5,9 +5,21 @@ FILTER ?=
 test-all: test-backend test-frontend test-music-labeler test-e2e
 	@# Help: lance l'ensemble des tests (backend et frontend)
 
+test-all-coverage: test-backend-coverage test-frontend-coverage test-music-labeler-coverage
+	@# Help: lance la couverture de chaque service (seuils individuels deja appliques) et affiche un agregat global
+	@BACK_PCT=$$($(CONTAINER_BACKEND) coverage report --format=total); \
+	FRONT_PCT=$$($(CONTAINER_FRONTEND) node -e "console.log(Math.round(require('./coverage/coverage-summary.json').total.lines.pct))"); \
+	ML_PCT=$$($(CONTAINER_MUSIC_LABELER) python -c "import json;print(round(json.load(open('coverage.json'))['totals']['percent_covered']))"); \
+	AVG_PCT=$$(awk "BEGIN{printf \"%.2f\", ($$BACK_PCT+$$FRONT_PCT+$$ML_PCT)/3}"); \
+	echo "$(GREEN)--- Couverture de code ---$(NC)"; \
+	echo "Back            : $${BACK_PCT}%"; \
+	echo "Front           : $${FRONT_PCT}%"; \
+	echo "Music-labeler   : $${ML_PCT}%"; \
+	echo "Global (moyenne): $${AVG_PCT}%"
+
 test-backend-coverage:
-	@# Help: lance les tests backend avec couverture
-	$(CONTAINER_BACKEND) sh -c "coverage run --source='.' manage.py test && coverage report"
+	@# Help: lance les tests backend avec couverture (seuil minimum 60%)
+	$(CONTAINER_BACKEND) sh -c "coverage run --source='.' manage.py test --exclude-tag=stress-test && coverage report --fail-under=60"
 
 test-backend: test-backend-tu test-backend-ti test-backend-st
 	@# Help: lance l'ensemble des tests backend (unitaires et d'intégration)
@@ -39,6 +51,10 @@ test-backend-st:
 test-frontend: test-frontend-tu test-frontend-ti
 	@# Help: lance l'ensemble des tests frontend (unitaires et d'intégration)
 
+test-frontend-coverage:
+	@# Help: lance les tests frontend avec couverture
+	$(CONTAINER_FRONTEND) npm run test:coverage
+
 test-frontend-tu:
 	@# Help: lance les tests unitaires frontend
 	@if [ -z "$(FILTER)" ]; then \
@@ -57,6 +73,10 @@ test-frontend-ti:
 
 test-music-labeler: test-music-labeler-tu
 	@# Help: lance l'ensemble des tests music labeler (unitaires et d'intégration)
+
+test-music-labeler-coverage:
+	@# Help: lance les tests music labeler avec couverture (seuil minimum 60%)
+	$(CONTAINER_MUSIC_LABELER) python -m pytest --cov=. --cov-report=term-missing --cov-report=json --cov-fail-under=60 -q tests
 
 test-music-labeler-tu:
 	@# Help: lance les tests unitaires music labeler

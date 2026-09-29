@@ -405,3 +405,16 @@ def callback_oauth_google(request) -> HttpResponse:
 def onboarding_context(request: HttpRequest) -> JsonResponse:
     payload = OnboardingContextService(request).build_payload()
     return JsonResponse(payload, status=200)
+
+@require_http_methods(['GET'])
+def healthcheck(request: HttpRequest) -> JsonResponse:
+    """
+    Vue pour vérifier l'état de santé de l'application.
+    
+    Args:
+        request (HttpRequest): Requête HTTP
+        
+    Returns:
+        JsonResponse: Statut de santé de l'application
+    """
+    return JsonResponse({"status": "healthy"}, status=200)

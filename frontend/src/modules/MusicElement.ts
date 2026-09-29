@@ -453,8 +453,17 @@ class MusicElement {
             const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist) as ButtonPlaylist;
             buttonPlaylist.disactive();
             Notification.createClientNotification({ message: 'Aucune musique n\'est presente dans cette playlist', type: 'danger', duration: 2000 });
+            this.addSuggestEditMode();
             this.audioAdapter.remove();
         }
+    }
+
+    private addSuggestEditMode(): void {
+        const btnEditMode = document.getElementById(`btn-soundboard-edit-mode`);
+        if(btnEditMode) {
+            Notification.createClientNotification({ message: 'Passer en mode édition pour ajouter des sons', type: 'info', duration: 2000 });
+        }
+
     }
 
 }

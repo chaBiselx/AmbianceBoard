@@ -32,6 +32,8 @@ from main.domain.common.exceptions.PlaylistDuplicationException import (
     PlaylistAlreadyDuplicatedException,
     PlaylistNotCopiableException
 )
+from main.architecture.persistence.repository.UserActivityRepository import UserActivityRepository
+from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 
 
 
@@ -123,6 +125,18 @@ def playlist_copiable_duplicate(request, playlist_uuid):
             target_user=request.user
         )
         new_playlist = duplication_service.duplicate()
+        
+        try:
+            # Enregistrer l'activité de l'utilisateur pour la duplication de playlist
+            user_activity_repository = UserActivityRepository()
+            user_activity_repository.create(
+                user=request.user,
+                activity_type=UserActivityTypeEnum.PLAYLIST_DUPLICATE,
+                content_object=new_playlist,
+                uri=request.build_absolute_uri()
+            )
+        except Exception as e:
+            logger.error(f"Erreur lors de la trace de duplication de playlist: {e}")
         
         return JsonResponse(
             {

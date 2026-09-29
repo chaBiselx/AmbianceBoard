@@ -1,67 +1,69 @@
+{% load i18n %}
+
 <ul>
     {% for config in dataFacade %}
     <li class="m-0">
         <h5>{{ config.name }} : </h5>
     </li>
     <ul>
-        <li>Lecture aléatoire : Oui 
+        <li>{% trans "template.playlist_describe_type.random_playback" %} : {% trans "generic.yes" %}
             <small><i class="{{listParam.STATIC.class}}" alt="{{listParam.STATIC.value}}"></i></small>
         <li>
-            Lire en boucle :
+            {% trans "template.playlist_describe_type.loop" %} :
             {% if config.structure.loop.default %}
-            Oui
+            {% trans "generic.yes" %}
             {% else %}
-            Non
+            {% trans "generic.no" %}
             {% endif %}
             <small><i class="{{config.structure.loop.condition.get_icon_class}}" alt="{{config.structure.loop.condition.value}}"></i></small>
         </li>
         <li>
-            délai max entre deux musique :
+            {% trans "template.playlist_describe_type.max_delay" %} :
             {% if config.structure.delay.default is not None %}
             {{ config.structure.delay.default }}s
             {% endif %}
             <small><i class="{{config.structure.delay.condition.get_icon_class}}" alt="{{config.structure.delay.condition.value}}"></i></small>
         </li>
         <li>
-            une seul instance de ce type de musique :
+            {% trans "template.playlist_describe_type.single_instance" %} :
             {% if config.structure.singleConcurrentRead.default %}
-            Oui
+            {% trans "generic.yes" %}
             {% else %}
-            Non
+            {% trans "generic.no" %}
             {% endif %}
             <small><i class="{{config.structure.singleConcurrentRead.condition.get_icon_class}}" alt="{{config.structure.singleConcurrentRead.condition.value}}"></i></small>
         </li>
         <li>
-            volume :
+            {% trans "template.playlist_describe_type.volume" %} :
             {% if config.structure.volume.default %}
             {{ config.structure.volume.default }} %
             {% endif %}
             <small><i class="{{config.structure.volume.condition.get_icon_class}}" alt="{{config.structure.volume.condition.value}}"></i></small>
         </li>
             <li>
-            démarage du morceau suivant quand il reste :
+            {% trans "template.playlist_describe_type.next_track_trigger" %} :
             {% if config.structure.durationRemainingTriggerNextMusic.default is not None %}
             {{ config.structure.durationRemainingTriggerNextMusic.default }}s
             {% endif %}
             <small><i class="{{config.structure.durationRemainingTriggerNextMusic.condition.get_icon_class}}" alt="{{config.structure.durationRemainingTriggerNextMusic.condition.value}}"></i></small>
         </li>
         <li>
-            Fondue d'entrée (Fade In) :
-            {% if config.structure.fadeIn.default %}Oui{% else %}Non{% endif %}
+            {% trans "template.playlist_describe_type.fade_in" %} :
+            {% if config.structure.fadeIn.default %}{% trans "generic.yes" %}{% else %}{% trans "generic.no" %}{% endif %}
             <small><i class="{{config.structure.fadeIn.condition.get_icon_class}}" alt="{{config.structure.fadeIn.condition.value}}"></i></small>
         </li>
         <li>
-            Durée fondue d'entrée (Fade In) :
+            {% trans "template.playlist_describe_type.fade_in_duration" %} :
             {{ config.structure.fadeInDuration.default }}s | {{ config.structure.fadeInType.default }}
             <small><i class="{{config.structure.fadeInDuration.condition.get_icon_class}}" alt="{{config.structure.fadeInDuration.condition.value}}"></i></small>
         </li>
         <li>
-            Fondue de sortie (Fade Out) :
-            {% if config.structure.fadeOut.default %}Oui{% else %}Non{% endif %}
+            {% trans "template.playlist_describe_type.fade_out" %} :
+            {% if config.structure.fadeOut.default %}{% trans "generic.yes" %}{% else %}{% trans "generic.no" %}{% endif %}
             <small><i class="{{config.structure.fadeOut.condition.get_icon_class}}" alt="{{config.structure.fadeOut.condition.value}}"></i></small>
         </li>
          <li>
-            Durée fondue de sortie (Fade Out) :
+            {% trans "template.playlist_describe_type.fade_out_duration" %} :
             {{ config.structure.fadeOutDuration.default }}s | {{ config.structure.fadeOutType.default }}
             <small><i class="{{config.structure.fadeOutDuration.condition.get_icon_class}}" alt="{{config.structure.fadeOutDuration.condition.value}}"></i></small>
         </li>

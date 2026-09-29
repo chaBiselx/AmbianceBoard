@@ -51,7 +51,7 @@ class WebSocketInitializationHelper:
             shared.token, 
             max_age=3600*24*30,  # 30 jours
             httponly=False,
-            secure=True,
+            secure=request.is_secure(),
             samesite='Strict'
         )
         response.set_cookie(
@@ -59,7 +59,7 @@ class WebSocketInitializationHelper:
             base64.urlsafe_b64encode(ws_url.encode('utf-8')).decode('utf-8'),
             max_age=3600*24*30,  # 30 jours
             httponly=False,
-            secure=True,
+            secure=request.is_secure(),
             samesite='Strict'
         )
         

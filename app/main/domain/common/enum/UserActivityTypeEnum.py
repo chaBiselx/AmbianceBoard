@@ -31,6 +31,7 @@ class UserActivityTypeEnum(BaseEnum):
     # Actions sur les playlists
     PLAYLIST_CREATE = "playlist_create"
     PLAYLIST_DELETE = "playlist_delete"
+    PLAYLIST_DUPLICATE = "playlist_duplicate"
 
     # Actions sur les musiques
     MUSIC_UPLOAD = "music_upload"
@@ -86,6 +87,7 @@ class UserActivityTypeEnum(BaseEnum):
             "soundboard_delete": cls.SOUNDBOARD_DELETE,
             "playlist_create": cls.PLAYLIST_CREATE,
             "playlist_delete": cls.PLAYLIST_DELETE,
+            "playlist_duplicate": cls.PLAYLIST_DUPLICATE,
             "music_upload": cls.MUSIC_UPLOAD,
             "music_delete": cls.MUSIC_DELETE,
             "link_upload": cls.LINK_UPLOAD,

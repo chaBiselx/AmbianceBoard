@@ -75,6 +75,10 @@ RABBIT_MQ_HOST = os.environ.get("RABBIT_MQ_HOST")
 RABBIT_MQ_PORT = os.environ.get("RABBIT_MQ_PORT_AMQP")
 RABBIT_MQ_USER = os.environ.get("RABBIT_MQ_USER")
 RABBIT_MQ_PASSWORD = os.environ.get("RABBIT_MQ_PASSWORD")
+RABBIT_MQ_PROTOCOL = os.environ.get("RABBIT_MQ_PROTOCOL", "amqp")
+
+if RABBIT_MQ_PROTOCOL not in {"amqp", "amqps"}:
+    raise ValueError("RABBIT_MQ_PROTOCOL must be 'amqp' or 'amqps'.")
 
 REDIS_HOST = os.environ.get("REDIS_HOST", "redis")
 REDIS_PORT = int(os.environ.get("REDIS_PORT", 6379))
@@ -432,7 +436,9 @@ DEBUG_TOOLBAR_CONFIG = []
 # debug toolbar
 if(DEBUG_TOOLBAR):
     INSTALLED_APPS.append('debug_toolbar')
-    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    # Doit être le plus haut possible : placé en fin de liste sous ASGI, il force
+    # un aller-retour async -> thread -> async à chaque requête.
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
     
     INTERNAL_IPS.append('127.0.0.1')
     if APP_PORT : 
@@ -481,7 +487,7 @@ if RUN_CRONS:
 
 
 CELERY_BROKER_URL = (
-    f"amqp://{quote(RABBIT_MQ_USER, safe='')}:{quote(RABBIT_MQ_PASSWORD, safe='')}"
+    f"{RABBIT_MQ_PROTOCOL}://{quote(RABBIT_MQ_USER, safe='')}:{quote(RABBIT_MQ_PASSWORD, safe='')}"
     f"@{RABBIT_MQ_HOST}:{RABBIT_MQ_PORT}/"
 )  # URL de RabbitMQ
 CELERY_ACCEPT_CONTENT = ['json']

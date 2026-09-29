@@ -55,6 +55,18 @@ export default defineConfig(({ mode }) => {
             globals: true,
             environment: 'jsdom',
             exclude: ['tests/E2E/**'],
+            coverage: {
+                provider: 'v8',
+                reporter: ['text', 'html', 'json-summary'],
+                include: ['src/**'],
+                exclude: ['tests/**'],
+                thresholds: {
+                    lines: 60,
+                    statements: 50,
+                    functions: 50,
+                    branches: 50,
+                },
+            },
         },
     };
 });

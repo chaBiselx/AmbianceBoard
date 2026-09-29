@@ -31,7 +31,7 @@ class PopupAddMusicToSoundboard {
             }
         }).then(response => response.text()).then((body) => {
             ModalCustom.show({
-                title: "Playlist ajoutée",
+                title: "Ajouter des pistes",
                 body: body,
                 footer: "",
                 width: "md",
