@@ -3,7 +3,6 @@
 sudo apt install make
 sudo apt install docker
 sudo apt install ufw
-sudo apt install certbot python3-certbot-nginx
 sudo apt install rsync
 
 cd /srv/www/AmbianceBoard/
@@ -11,8 +10,17 @@ cd /srv/www/AmbianceBoard/
 git clone https://github.com/chaBiselx/AmbianceBoard.git
 git remote set-url --push origin no_push
 
-## confgix nginx 
+# ouverture port : 
+sudo ufw status
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 22/tcp
+sudo ufw allow 8000/tcp
+sudo ufw allow 3100/tcp
+
+## config nginx 
 sudo apt install nginx
+sudo apt install certbot python3-certbot-nginx
 sudo vi /etc/nginx/sites-available/ambianceboard
 
 sudo ln -s /etc/nginx/sites-available/ambianceboard /etc/nginx/sites-enabled/
@@ -21,16 +29,19 @@ sudo nginx -t
 sudo certbot --nginx -d ambianceboard.com -d www.ambianceboard.com
 sudo certbot --nginx -d graph.ambianceboard.com
 
-sudo ufw status
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw allow 22/tcp
-sudo ufw allow 8000/tcp
-sudo ufw allow 3100/tcp
+
 sudo ufw allow 'Nginx Full'
 
 sudo nginx -t
 sudo nginx -s reload
+
+
+edit : 29/09/2026 via 
+
+remplacement de nginx par traefik dans le projet 
+sudo ufw delete allow 'Nginx Full'
+sudo apt remove nginx
+sudo apt remove certbot
 
 # mettre en place le projet 
 
@@ -71,4 +82,5 @@ docker rm -f $(docker ps -aq)
 sudo useradd -M -s /bin/bash ambianceboard-app
 sudo passwd ambianceboard-app
 sudo chown ambianceboard-app:ambianceboard-app /srv/www/AmbianceBoard
+
 

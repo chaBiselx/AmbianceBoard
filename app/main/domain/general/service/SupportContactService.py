@@ -17,7 +17,8 @@ class SupportContactService:
         return EmailSender().send_email(
             subject=f"[Support public] {payload.subject}",
             body=body,
-            from_email=payload.email,
+            from_email=Settings.get('EMAIL_CONTACT'),
+            reply_to_email=payload.email,
             to_emails=[Settings.get('EMAIL_CONTACT')],
             is_html=False,
         )
