@@ -514,6 +514,9 @@ Fiabilité & Confiance
 - Augmentation de la couverture de tests
 
 ### 0.5.9 - 2026/09
+Sécurité
+- Mise a jours des dépendances
+
 Modifications
 - Modification de procédure technique
 
