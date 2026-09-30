@@ -33,7 +33,7 @@ class EmailSender:
         self.use_tls = use_tls
         self.logger = LoggerFactory.get_default_logger('mail')
 
-    def send_email(self, subject: str, body: str, from_email: str, to_emails: List[str], attachments: Optional[List[str]] = None, is_html: bool = True):
+    def send_email(self, subject: str, body: str, from_email: str, to_emails: List[str], attachments: Optional[List[str]] = None, is_html: bool = True, reply_to_email: Optional[str] = None):
         """
         Envoie un email avec les paramètres fournis.
         
@@ -50,12 +50,18 @@ class EmailSender:
         msg['Subject'] = subject
         msg['From'] = from_email
         msg['To'] = to_emails
+        if reply_to_email:
+            msg['Reply-To'] = reply_to_email
         
         # Définit le contenu selon le type (HTML ou texte brut)
         if is_html:
             msg.set_content(body, subtype='html')
         else:
             msg.set_content(body)
+            
+        self.logger.info(f"Préparation de l'email de {from_email} à {to_emails} avec le sujet '{subject}'")
+        if reply_to_email:
+            self.logger.info(f"Réponse à : {reply_to_email}")
 
         # Ajoute les pièces jointes
         if attachments:

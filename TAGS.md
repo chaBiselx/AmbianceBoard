@@ -513,6 +513,13 @@ Fiabilité & Confiance
 - Migrations de nginx a traefik 
 - Augmentation de la couverture de tests
 
+### 0.5.9 - 2026/09
+Modifications
+- Modification de procédure technique
+
+Corrections
+- Corrections de le page support 
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

@@ -52,7 +52,8 @@ class EmailSenderTest(TestCase):
             body="<h1>Test HTML Body</h1>",
             from_email="sender@test.com",
             to_emails=["recipient@test.com"],
-            is_html=True
+            is_html=True,
+            reply_to_email="reply@test.com"
         )
 
         self.assertTrue(result)
@@ -60,6 +61,8 @@ class EmailSenderTest(TestCase):
         mock_server.starttls.assert_called_once()
         mock_server.login.assert_called_once_with(self.username, self.password)
         mock_server.send_message.assert_called_once()
+        sent_message = mock_server.send_message.call_args[0][0]
+        self.assertEqual(sent_message["Reply-To"], "reply@test.com")
 
     @patch('main.domain.common.utils.EmailSender.smtplib.SMTP')
     def test_send_email_plain_text(self, mock_smtp_class):
@@ -85,6 +88,8 @@ class EmailSenderTest(TestCase):
 
         self.assertTrue(result)
         mock_server.send_message.assert_called_once()
+        sent_message = mock_server.send_message.call_args[0][0]
+        self.assertIsNone(sent_message["Reply-To"])
 
     @patch('main.domain.common.utils.EmailSender.smtplib.SMTP')
     def test_send_email_without_tls(self, mock_smtp_class):
