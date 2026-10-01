@@ -30,7 +30,7 @@
         "vitest": "^4.1.11"
     },
     "devDependencies": {
-        "@playwright/test": "1.62.1",
+        "@playwright/test": "1.63.0",
         "@types/bootstrap": "^5.2.10",
         "@types/node": "^26.4.0",
         "@vitest/coverage-v8": "^4.1.11",
