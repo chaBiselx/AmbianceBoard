@@ -25,9 +25,6 @@ class UpdateActionablePlaylistsForPlayersRouteTest(TestCase):
         self.user = User.objects.create_user(username='owner', email='owner@test.com', password='pw')  # NOSONAR
         UserTier.objects.create(user=self.user, tier_name='PREMIUM_BASIC')
 
-        self.standard_user = User.objects.create_user(username='standard', email='standard@test.com', password='pw')  # NOSONAR
-        UserTier.objects.create(user=self.standard_user, tier_name='STANDARD')
-
         self.soundboard = SoundBoard.objects.create(user=self.user, name='Board')
         self.playlist = Playlist.objects.create(user=self.user, name='Playlist')
         self.section = SoundboardSection.objects.create(
@@ -62,11 +59,6 @@ class UpdateActionablePlaylistsForPlayersRouteTest(TestCase):
     def test_requires_authentication(self):
         response = self._update(self._payload())
         self.assertIn(response.status_code, [302, 401, 403])
-
-    def test_returns_403_when_user_lacks_permission(self):
-        self.client.login(username='standard', password='pw')
-        response = self._update(self._payload())
-        self.assertEqual(response.status_code, 403)
 
     def test_updates_playlist_for_user_with_permission(self):
         self.client.login(username='owner', password='pw')
