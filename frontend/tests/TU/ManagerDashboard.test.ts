@@ -171,7 +171,7 @@ describe('ManagerDashboard home share link', () => {
 
         await vi.waitFor(() => expect(dashboardMocks.notify).toHaveBeenCalledWith({
             message: 'Impossible de copier le lien',
-            type: 'error',
+            type: 'danger',
         }));
         expect(urlInput.value).toBe('https://example.test/?utm_source=google');
     });

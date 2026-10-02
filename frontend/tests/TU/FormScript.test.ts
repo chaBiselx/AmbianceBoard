@@ -56,7 +56,7 @@ describe('FormScript page script', () => {
 
         const createForm = document.getElementById('script-create-form')!;
         createForm.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-        await vi.waitFor(() => expect(scriptMocks.notify).toHaveBeenCalledWith({ message: 'Name already used', type: 'error' }));
+        await vi.waitFor(() => expect(scriptMocks.notify).toHaveBeenCalledWith({ message: 'Name already used', type: 'danger' }));
 
         const enabled = document.querySelector<HTMLInputElement>('.script-enabled')!;
         enabled.checked = true;
@@ -90,6 +90,6 @@ describe('FormScript page script', () => {
         document.querySelector<HTMLButtonElement>('.step-delete')!.click();
         await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledWith('/step-delete', expect.objectContaining({ method: 'DELETE' })));
         document.querySelector<HTMLButtonElement>('.script-delete')!.click();
-        await vi.waitFor(() => expect(scriptMocks.notify).toHaveBeenCalledWith({ message: 'Cannot delete', type: 'error' }));
+        await vi.waitFor(() => expect(scriptMocks.notify).toHaveBeenCalledWith({ message: 'Cannot delete', type: 'danger' }));
     });
 });

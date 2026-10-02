@@ -71,7 +71,7 @@ describe('PlaylistCopiable page script', () => {
         copyButton.click();
         await vi.waitFor(() => expect(copyMocks.notify).toHaveBeenCalledWith({
             message: 'Une erreur inattendue est survenue',
-            type: 'error',
+            type: 'danger',
         }));
 
         editionButton.removeAttribute('disabled');
@@ -79,7 +79,7 @@ describe('PlaylistCopiable page script', () => {
         copyButton.click();
         await vi.waitFor(() => expect(copyMocks.notify).toHaveBeenCalledWith({
             message: 'Erreur de communication avec le serveur',
-            type: 'error',
+            type: 'danger',
         }));
         expect(consoleError).toHaveBeenCalled();
     });

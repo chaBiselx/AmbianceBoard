@@ -43,9 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (audioElementDiv) audioElementDiv.style.display = 'block';
     }
     // Activer le Wake Lock au chargement de la page
-    new WakeLock().start().catch((error) => {
-        ConsoleTesteur.error('Failed to start Wake Lock:', error);
-    });
+    void new WakeLock().start()
     const sh = SharedSoundboardCustomVolumeFactory.create('shared-custom-volume-button', 'template-shared-volume');
     if (sh) {
         sh.addEvent();
