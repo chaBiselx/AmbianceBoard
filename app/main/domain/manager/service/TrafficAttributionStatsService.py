@@ -51,6 +51,9 @@ class TrafficAttributionStatsService(BaseActivityStatsService):
     def __init__(self) -> None:
         self.repository = TrafficAttributionVisitRepository()
 
+    def get_existing_utm_sources(self) -> list[str]:
+        return self.repository.get_distinct_utm_sources()
+
     def _normalize_referer_domain(self, referer_domain: str) -> str:
         """Réduit un host au format domaine+extension (ex: l.facebook.com -> facebook.com)."""
         domain = (referer_domain or '').strip().lower()

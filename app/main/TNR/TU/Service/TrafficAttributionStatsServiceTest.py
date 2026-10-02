@@ -1,4 +1,5 @@
 from datetime import date, datetime, timedelta
+from unittest.mock import Mock
 from django.test import SimpleTestCase, tag
 
 from main.domain.manager.service.TrafficAttributionStatsService import TrafficAttributionStatsService
@@ -16,6 +17,13 @@ class FakeTrafficAttributionVisitRepository:
 class TrafficAttributionStatsServiceTest(SimpleTestCase):
     def setUp(self):
         self.service = TrafficAttributionStatsService()
+
+    def test_get_existing_utm_sources_uses_repository(self):
+        self.service.repository = Mock()
+        self.service.repository.get_distinct_utm_sources.return_value = ['google', 'newsletter']
+
+        self.assertEqual(['google', 'newsletter'], self.service.get_existing_utm_sources())
+        self.service.repository.get_distinct_utm_sources.assert_called_once_with()
 
     def test_normalize_referer_domain_keeps_domain_plus_extension(self):
         self.assertEqual('facebook.com', self.service._normalize_referer_domain('l.facebook.com'))

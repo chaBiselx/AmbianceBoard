@@ -37,6 +37,15 @@ class TrafficAttributionVisitRepository:
     def get_visits_before(self, date: datetime) -> QuerySet[TrafficAttributionVisit]:
         return TrafficAttributionVisit.objects.filter(visited_at__lt=date)
 
+    def get_distinct_utm_sources(self) -> list[str]:
+        sources = (
+            TrafficAttributionVisit.objects.exclude(utm_source='')
+            .order_by('utm_source')
+            .values_list('utm_source', flat=True)
+            .distinct()
+        )
+        return sorted(source for source in sources if source.strip())
+
     def get_counts_by_referer_domain(self, start_date: datetime, end_date: datetime):
         return (
             TrafficAttributionVisit.objects.filter(visited_at__gte=start_date, visited_at__lte=end_date)
