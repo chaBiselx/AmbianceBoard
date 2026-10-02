@@ -534,7 +534,8 @@ Améliorations
 - Ajout d'une moyen simple de créer des liens de partages pour la communication
 
 Corrections
-- Corrections des notifications qui était n'avait pas toujours le bon type/couleur
+- Corrections des notifications qui était n'avait pas toujours le bon type/couleur*
+- Rollback Docker digest update
 
 
 ### X.Y.Z - Date
