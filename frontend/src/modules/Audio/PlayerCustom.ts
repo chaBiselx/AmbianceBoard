@@ -107,7 +107,7 @@ class PlayerCustom {
             });
         });
 
-        this.audioPlayer.play();
+        void this.audioPlayer.play();
     }
 
     private loadInstance() {

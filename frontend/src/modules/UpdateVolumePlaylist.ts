@@ -1,4 +1,5 @@
 import Csrf from "@/modules/General/Csrf";
+import ConsoleTraceServeur from "@/modules/General/ConsoleTraceServeur";
 import { ButtonPlaylist } from "./ButtonPlaylist";
 import { SearchMusicElement } from "@/modules/MusicElementSearcher";
 import UpdateVolumeElement from "@/modules/UpdateVolumeElement";
@@ -40,6 +41,8 @@ class UpdateVolumePlaylist {
             body: JSON.stringify({
                 volume: volume
             })
+        }).catch((error) => {
+            ConsoleTraceServeur.error('Failed to fetch popup content:', error);
         });
     }
 

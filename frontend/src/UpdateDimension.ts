@@ -1,5 +1,6 @@
 
 import Csrf from "@/modules/General/Csrf";
+import ConsoleTraceServeur from "@/modules/General/ConsoleTraceServeur";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -72,7 +73,9 @@ class UpdateDimensionElement {
                 'X-CSRFToken': Csrf.getToken()!,
             },
             body: JSON.stringify({ dim: dim })
-        })
+        }).catch((error) => {
+            ConsoleTraceServeur.error('Failed to update dimension:', error);
+        });
     }
 
     private getNewDiemnsion(Type: string): number {

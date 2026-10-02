@@ -1,5 +1,6 @@
 import Csrf from '@/modules/General/Csrf';
 import Notification from '@/modules/General/Notifications';
+import ConsoleTraceServeur from "@/modules/General/ConsoleTraceServeur";
 
 const TRIGGER_WITH_SOURCE = 'ON_STEP_END';
 
@@ -35,13 +36,17 @@ class ScriptEditor {
     private bindScriptListing(): void {
         for (const item of document.querySelectorAll<HTMLElement>('#script-listing [data-script-uuid]')) {
             item.querySelector('.script-select')?.addEventListener('click', () => {
-                this.loadSteps(item.dataset.urlSteps!);
+                this.loadSteps(item.dataset.urlSteps!).catch((error) => {
+                    ConsoleTraceServeur.error('Failed to load steps:', error);
+                });
             });
 
             item.querySelector('.script-enabled')?.addEventListener('change', (event) => {
                 const body = new FormData();
                 body.append('enabled', String((event.target as HTMLInputElement).checked));
-                this.post(item.dataset.urlUpdate!, body);
+                this.post(item.dataset.urlUpdate!, body).catch((error) => {
+                    ConsoleTraceServeur.error('Failed to load steps:', error);
+                });
             });
 
             item.querySelector('.script-delete')?.addEventListener('click', async () => {
@@ -107,7 +112,9 @@ class ScriptEditor {
 
         for (const button of stepsContainer.querySelectorAll<HTMLButtonElement>('.step-move')) {
             button.addEventListener('click', () => {
-                this.moveStep(stepsContainer, button);
+                this.moveStep(stepsContainer, button).catch((error) => {
+                    ConsoleTraceServeur.error('Failed to move step:', error);
+                });
             });
         }
     }

@@ -1,3 +1,5 @@
+import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
+
 class AudioContextManager {
     private static context: AudioContext | null = null;
     private static readonly sourceNodes = new WeakMap<HTMLMediaElement, MediaElementAudioSourceNode>();
@@ -70,7 +72,9 @@ class AudioContextManager {
         this.unlockRegistered = true;
 
         const unlock = () => {
-            this.resumeContext();
+            this.resumeContext().catch((error) => {
+                ConsoleTesteur.error('Failed to resume audio context:', error);
+            });
         };
 
         document.addEventListener('touchstart', unlock, { passive: true });
