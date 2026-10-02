@@ -149,7 +149,7 @@ class ScriptEditor {
         if (response.ok) return true;
 
         const payload = await response.json().catch(() => ({}));
-        Notification.createClientNotification({ message: payload.error ?? 'Error', type: 'error' });
+        Notification.createClientNotification({ message: payload.error ?? 'Error', type: 'danger' });
         return false;
     }
 
@@ -162,7 +162,7 @@ class ScriptEditor {
         if (response.ok) return true;
 
         const payload = await response.json().catch(() => ({}));
-        Notification.createClientNotification({ message: payload.error ?? 'Error', type: 'error' });
+        Notification.createClientNotification({ message: payload.error ?? 'Error', type: 'danger' });
         return false;
     }
 }

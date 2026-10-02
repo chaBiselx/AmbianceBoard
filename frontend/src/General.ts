@@ -121,7 +121,7 @@ class EmailConfirmationAccount {
                     })
                     .catch(error => {
                         console.error(error)
-                        Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' })
+                        Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' })
                     });
             }
 
@@ -225,7 +225,7 @@ class DeleteAccount {
                         if (response.ok) {
                             globalThis.location.href = '/';
                         } else {
-                            Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                            Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' });
                         }
                     })
                     .catch((error) => {

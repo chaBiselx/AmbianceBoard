@@ -180,17 +180,15 @@ export class OnboardingManager {
             } else {
                 ConsoleCustom.warn('Shepherd tour not initialized yet');
                 Notification.createClientNotification({
-                    title: 'En cours de chargement',
-                    body: 'Veuillez attendre le chargement complet de la visite guidée...',
+                    message: 'Veuillez attendre le chargement complet de la visite guidée...',
                     type: 'info',
                 });
             }
         } catch (error) {
             ConsoleCustom.error('Error starting tour:', error);
             Notification.createClientNotification({
-                title: 'Erreur',
-                body: 'Impossible de lancer la visite guidée.',
-                type: 'error',
+                message: 'Impossible de lancer la visite guidée.',
+                type: 'danger',
             });
         }
     }

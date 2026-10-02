@@ -20,17 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
           shepherd.start();
         } else {
           Notification.createClientNotification({
-            title: 'En cours de chargement',
-            body: 'Veuillez attendre le chargement complet de la visite guidée...',
+            message: 'Veuillez attendre le chargement complet de la visite guidée...',
             type: 'info',
           });
         }
       } catch (error) {
         ConsoleTraceServeur.error('Error starting onboarding tour:', error);
         Notification.createClientNotification({
-          title: 'Erreur',
-          body: 'Impossible de lancer la visite guidée.',
-          type: 'error',
+          message: 'Impossible de lancer la visite guidée.',
+          type: 'danger',
         });
       }
     });
@@ -46,9 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch (error) {
         ConsoleTraceServeur.error('Error restarting onboarding tour:', error);
         Notification.createClientNotification({
-          title: 'Erreur',
-          body: 'Impossible de relancer la visite guidée. Veuillez rafraîchir la page.',
-          type: 'error',
+          message: 'Impossible de relancer la visite guidée. Veuillez rafraîchir la page.',
+          type: 'danger',
         });
       }
     });

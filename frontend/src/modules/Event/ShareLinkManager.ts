@@ -24,7 +24,7 @@ class ShareLinkManager {
         if (!url) {
             Notification.createClientNotification({
                 message: 'URL non trouvée',
-                type: 'error'
+                type: 'danger'
             });
             return;
         }
@@ -57,7 +57,7 @@ class ShareLinkManager {
                 function () {
                     Notification.createClientNotification({
                         message: 'Impossible de copier le lien',
-                        type: 'error'
+                        type: 'danger'
                     });
                 });
     }

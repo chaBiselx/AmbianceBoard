@@ -216,7 +216,7 @@ class UpdatePlaylistShortcutKeyboard {
 
             })
             .catch(_ => {
-                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' })
+                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' })
             });
     }
 }
