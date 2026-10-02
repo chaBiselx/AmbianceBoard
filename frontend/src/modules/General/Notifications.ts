@@ -1,12 +1,12 @@
 type NotificationOptions = {
-    message?: string;
+    message: string;
     type?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'danger';
     duration?: number;
     padding?: string;
 };
 
 class Notification {
-    static createClientNotification(options: NotificationOptions = {}) {
+    static createClientNotification(options: NotificationOptions) {
         // Options par défaut
         const defaults = {
             message: 'Notification',
