@@ -588,7 +588,6 @@ USER_TIERS = {
             'music_per_playlist': 5,
             'weight_music_mb': 10,
             'advertising' : AdvertisingEnum.FULL,
-            'shared_playlist_playable_by_shared_user' : False,
             'get_statistics_from_public' : False
         },
         'group_enum': 'USER_STANDARD'
@@ -607,7 +606,6 @@ USER_TIERS = {
             'music_per_playlist': 10,
             'weight_music_mb': 20,
             'advertising' : AdvertisingEnum.PARTIAL,
-            'shared_playlist_playable_by_shared_user' : True,
             'get_statistics_from_public' : True
         },
         'group_enum': 'USER_PREMIUM_BASIC'
@@ -627,7 +625,6 @@ USER_TIERS = {
             'music_per_playlist': 20,
             'weight_music_mb': 25,
             'advertising' : AdvertisingEnum.NONE,
-            'shared_playlist_playable_by_shared_user' : True,
             'get_statistics_from_public' : True
         },
         'group_enum': 'USER_PREMIUM_ADVANCED'  # À ajouter dans GroupEnum
@@ -646,7 +643,6 @@ USER_TIERS = {
             'music_per_playlist': 30,
             'weight_music_mb': 30,
             'advertising' : AdvertisingEnum.NONE,
-            'shared_playlist_playable_by_shared_user' : True,
             'get_statistics_from_public' : True
         },
         'group_enum': 'USER_PREMIUM_PRO'  # À ajouter dans GroupEnum

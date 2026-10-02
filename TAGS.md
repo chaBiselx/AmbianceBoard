@@ -523,6 +523,10 @@ Modifications
 Corrections
 - Corrections de le page support 
 
+### 0.5.10 - 2026/10
+Modifications
+- Le partage de son est accessible pour tout le monde possedant un compte
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

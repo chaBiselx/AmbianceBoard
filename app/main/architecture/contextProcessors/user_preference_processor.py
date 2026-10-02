@@ -13,7 +13,6 @@ def user_preference_processor(request):
     soundboard_dim = None
     playlist_dim = None
     device_type = detect_device_type(request)
-    can_shared_playlist_playable_by_shared_user = False
     
     if request.user.is_authenticated:
         # Récupérer les préférences générales
@@ -32,7 +31,6 @@ def user_preference_processor(request):
                 
         
         # Vérifier si l'utilisateur peut partager des soundboards
-        can_shared_playlist_playable_by_shared_user = UserTierManager.can_boolean(request.user, 'shared_playlist_playable_by_shared_user')
 
     if theme is None:
         theme = ThemeEnum.LIGHT.value
@@ -45,7 +43,6 @@ def user_preference_processor(request):
         'theme': theme,
         'soundboard_dim': soundboard_dim,
         'playlist_dim': playlist_dim,
-        'can_shared_playlist_playable_by_shared_user': can_shared_playlist_playable_by_shared_user,
         'device_type': device_type
     }
     
