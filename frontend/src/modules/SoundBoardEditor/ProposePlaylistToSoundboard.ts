@@ -68,7 +68,7 @@ class ProposePlaylistToSoundboard {
                 }).bind();
             })
             .catch(() => {
-                Notification.createClientNotification({ message: 'Impossible de charger vos playlists', type: 'error' });
+                Notification.createClientNotification({ message: 'Impossible de charger vos playlists', type: 'danger' });
             });
     }
 
@@ -98,12 +98,12 @@ class ProposePlaylistToSoundboard {
                     Notification.createClientNotification({ message: data.message || 'Proposition envoyée', type: 'success' });
                     this.loadList();
                 } else {
-                    Notification.createClientNotification({ message: data.error || 'Une erreur est survenue', type: 'error' });
+                    Notification.createClientNotification({ message: data.error || 'Une erreur est survenue', type: 'danger' });
                     button.removeAttribute('disabled');
                 }
             })
             .catch(() => {
-                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' });
                 button.removeAttribute('disabled');
             });
     }
@@ -134,12 +134,12 @@ class ProposePlaylistToSoundboard {
                     Notification.createClientNotification({ message: data.message || 'Action effectuée', type: 'success' });
                     globalThis.location.reload();
                 } else {
-                    Notification.createClientNotification({ message: data.error || 'Une erreur est survenue', type: 'error' });
+                    Notification.createClientNotification({ message: data.error || 'Une erreur est survenue', type: 'danger' });
                     button.removeAttribute('disabled');
                 }
             })
             .catch(() => {
-                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' });
                 button.removeAttribute('disabled');
             });
     }

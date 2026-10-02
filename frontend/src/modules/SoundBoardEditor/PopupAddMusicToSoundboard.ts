@@ -1,6 +1,7 @@
 import ModalCustom from '@/modules/General/Modal';
 import Csrf from "@/modules/General/Csrf";
 import AddMusicModalHandler from "@/modules/SoundBoardEditor/AddMusicModalHandler";
+import ConsoleTraceServeur from '@/modules/General/ConsoleTraceServeur';
 
 
 
@@ -40,7 +41,9 @@ class PopupAddMusicToSoundboard {
                     handler.initialize();
                 }
             });
-        });
+        }).catch((error) => {
+            ConsoleTraceServeur.error('Failed to fetch popup content:', error);
+        }); 
     }
 
 }

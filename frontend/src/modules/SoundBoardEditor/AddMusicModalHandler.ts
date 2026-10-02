@@ -134,11 +134,11 @@ class AddMusicModalHandler {
                     const bsModal = ModalCustom.getInstance();
                     if (bsModal) bsModal.hide();
                 } else {
-                    Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                    Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' });
                 }
             })
             .catch(_ => {
-                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' });
             })
             .finally(() => {
                 if (submitBtn instanceof HTMLButtonElement) {

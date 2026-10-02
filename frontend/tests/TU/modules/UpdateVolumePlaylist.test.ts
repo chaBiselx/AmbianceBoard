@@ -71,7 +71,7 @@ describe('UpdateVolumePlaylist', () => {
     });
 
     it('posts the volume and CSRF token to the backend', () => {
-        const fetchMock = vi.fn();
+        const fetchMock = vi.fn().mockResolvedValue({});
         vi.stubGlobal('fetch', fetchMock);
 
         new UpdateVolumePlaylist({} as never).updateBackend('/api/volume', 0.4);

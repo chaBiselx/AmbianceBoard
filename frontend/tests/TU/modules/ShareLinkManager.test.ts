@@ -58,7 +58,7 @@ describe('ShareLinkManager', () => {
 
         document.querySelector<HTMLButtonElement>('.share-link-btn')!.click();
 
-        expect(shareMocks.notify).toHaveBeenCalledWith({ message: 'URL non trouvée', type: 'error' });
+        expect(shareMocks.notify).toHaveBeenCalledWith({ message: 'URL non trouvée', type: 'danger' });
         expect(writeText).not.toHaveBeenCalled();
     });
 
@@ -74,7 +74,7 @@ describe('ShareLinkManager', () => {
             expect(shareMocks.warn).toHaveBeenCalledOnce();
             expect(shareMocks.notify).toHaveBeenCalledWith({
                 message: 'Impossible de copier le lien',
-                type: 'error',
+                type: 'danger',
             });
         });
     });

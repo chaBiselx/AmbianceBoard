@@ -13,6 +13,29 @@ class TrafficAttributionVisitRepositoryTest(TestCase):
     def setUp(self):
         self.repository = TrafficAttributionVisitRepository()
 
+    def test_get_distinct_utm_sources_keeps_all_existing_nonblank_values(self):
+        for source in ['newsletter', '', 'google', 'newsletter', '  ', '\t', ' partner + & ']:
+            visit = self.repository.create(
+                path=self.DEFAULT_PATH,
+                uri='https://example.test/',
+                referer_url='',
+                referer_domain='direct',
+                session_key='',
+                utm_data={},
+                utm_source=source,
+            )
+            TrafficAttributionVisit.objects.filter(id=visit.id).update(
+                visited_at=timezone.now() - timedelta(days=365)
+            )
+
+        self.assertEqual(
+            [' partner + & ', 'google', 'newsletter'],
+            self.repository.get_distinct_utm_sources(),
+        )
+
+    def test_get_distinct_utm_sources_without_visits(self):
+        self.assertEqual([], self.repository.get_distinct_utm_sources())
+
     def test_create_visit(self):
         visit = self.repository.create(
             path=self.DEFAULT_PATH,

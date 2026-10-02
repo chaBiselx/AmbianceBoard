@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
+from django.urls import reverse
 from main.domain.manager.service.UserStatsService import UserStatsService
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.domain.manager.service.UserActivityStatsService import UserActivityStatsService
@@ -43,6 +44,8 @@ def manager_dashboard(request) -> HttpResponse:
             'selectPeriods': select_periods,
             'storage': storage_data,
             'top_active_users': top_active_users,
+            'existing_utm_sources': TrafficAttributionStatsService().get_existing_utm_sources(),
+            'home_share_base_url': request.build_absolute_uri(reverse('home')),
         }
     )
 

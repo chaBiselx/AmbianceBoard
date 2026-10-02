@@ -523,6 +523,21 @@ Modifications
 Corrections
 - Corrections de le page support 
 
+### 0.5.10 - 2026/10
+Sécurité
+- Mise a jours des dépendances
+
+Modifications
+- Le partage de son est accessible pour tout le monde possedant un compte
+
+Améliorations
+- Ajout d'une moyen simple de créer des liens de partages pour la communication
+
+Corrections
+- Corrections des notifications qui était n'avait pas toujours le bon type/couleur*
+- Rollback Docker digest update
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

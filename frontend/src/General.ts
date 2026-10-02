@@ -5,6 +5,7 @@ import { TagManager } from '@/modules/TagManager';
 import { SelectManager } from '@/modules/SelectManager';
 import FilterFormHtmlManager from '@/modules/Filter/FilterFormHtmlManager';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
+import ConsoleTraceServeur from "@/modules/General/ConsoleTraceServeur";
 import BootstrapComponentInitializer from "@/modules/General/BootstrapComponentInitializer";
 import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
 import Csrf from "@/modules/General/Csrf";
@@ -55,7 +56,7 @@ globalThis.addEventListener('error', (event) => {
 
 
 // Initialise automatiquement tous les composants Bootstrap disponibles
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     new BootstrapComponentInitializer().initialize();
     new FilterFormHtmlManager().init();
     ConsoleTesteur.log('General Event initialised');
@@ -120,7 +121,7 @@ class EmailConfirmationAccount {
                     })
                     .catch(error => {
                         console.error(error)
-                        Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' })
+                        Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' })
                     });
             }
 
@@ -224,8 +225,11 @@ class DeleteAccount {
                         if (response.ok) {
                             globalThis.location.href = '/';
                         } else {
-                            Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                            Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' });
                         }
+                    })
+                    .catch((error) => {
+                        ConsoleTraceServeur.error('Failed to delete account:', error);
                     });
             }
 

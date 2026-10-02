@@ -181,7 +181,7 @@ class MusicElement {
         });
 
         this.audioAdapter.addEventListener('playing', () => {
-            this.getDurationFromHeaders();
+            void this.getDurationFromHeaders();
         });
 
         if (this.fadeInType !== 'disabled') {
@@ -213,7 +213,7 @@ class MusicElement {
             SoundEventBus.emit('music:ended', { playlistId: this.idPlaylist, token: this.butonPlaylistToken });
         }, { once: true });
 
-        this.audioAdapter.play();
+        void this.audioAdapter.play();
     }
 
     private disactiveButtonPlaylist() {
