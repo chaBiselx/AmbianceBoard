@@ -529,6 +529,7 @@ Sécurité
 
 Modifications
 - Le partage de son est accessible pour tout le monde possedant un compte
+- Mise à jour de la visite guidée
 
 Améliorations
 - Ajout d'une moyen simple de créer des liens de partages pour la communication

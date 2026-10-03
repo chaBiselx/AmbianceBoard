@@ -88,3 +88,25 @@ class SoundBoardRepositoryTest(TestCase):
 
         self.assertIn(self.public_with_track.id, result_ids)
         self.assertNotIn(self.public_without_track.id, result_ids)
+
+    def test_get_public_not_banned_with_min_tracks_can_exclude_owner(self):
+        other_user = User.objects.create_user(username='other-user', password='pw')  # NOSONAR
+        other_playlist = Playlist.objects.create(
+            user=other_user,
+            name='Other playlist with track',
+            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
+        )
+        Track.objects.create(playlist=other_playlist, alternativeName='other-track')
+        other_soundboard = SoundBoard.objects.create(
+            user=other_user,
+            name='Other public soundboard',
+            is_public=True,
+        )
+        other_soundboard.playlists.add(other_playlist)
+
+        result = self.repository.get_public_not_banned_with_min_tracks(
+            minimum_tracks=1,
+            exclude_owner_id=self.allowed_user.id,
+        )
+
+        self.assertEqual(result.id, other_soundboard.id)

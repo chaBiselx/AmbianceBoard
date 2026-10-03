@@ -52,13 +52,21 @@ class SoundBoardRepository:
     def get_all_queryset(self) -> QuerySet[SoundBoard]:
         return SoundBoard.objects.all()
 
-    def get_public_not_banned_with_min_tracks(self, minimum_tracks: int = 5) -> Optional[SoundBoard]:
+    def get_public_not_banned_with_min_tracks(
+        self,
+        minimum_tracks: int = 5,
+        exclude_owner_id: int | None = None,
+    ) -> Optional[SoundBoard]:
         """
         Retourne un soundboard public dont le propriétaire n'est pas banni
         et qui contient au moins `minimum_tracks` sons (tracks cumulés).
         """
+        soundboards = SoundBoard.objects.filter(is_public=True, user__isBan=False)
+        if exclude_owner_id is not None:
+            soundboards = soundboards.exclude(user_id=exclude_owner_id)
+
         return (
-            SoundBoard.objects.filter(is_public=True, user__isBan=False)
+            soundboards
             .annotate(total_tracks=Count('sections__playlists__Playlist__tracks', distinct=True))
             .filter(total_tracks__gte=minimum_tracks)
             .order_by('?')
