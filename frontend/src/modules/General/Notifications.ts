@@ -5,7 +5,73 @@ type NotificationOptions = {
     padding?: string;
 };
 
+type ActionNotificationOptions = {
+    title: string;
+    message: string;
+    actionLabel: string;
+    dismissLabel: string;
+    onAction: () => void;
+    onDismiss?: () => void;
+};
+
 class Notification {
+    static createActionNotification(options: ActionNotificationOptions): { close: () => void } {
+        let container = document.getElementById('action-notification-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'action-notification-container';
+            container.className = 'action-notification-container';
+            document.body.appendChild(container);
+        }
+
+        const notification = document.createElement('section');
+        notification.className = 'action-notification';
+        notification.setAttribute('role', 'status');
+        notification.setAttribute('aria-live', 'polite');
+
+        const title = document.createElement('h2');
+        title.className = 'action-notification-title';
+        title.textContent = options.title;
+        const message = document.createElement('p');
+        message.textContent = options.message;
+
+        const dismiss = document.createElement('button');
+        dismiss.type = 'button';
+        dismiss.className = 'btn action-notification-dismiss';
+        dismiss.setAttribute('aria-label', options.dismissLabel);
+        dismiss.title = options.dismissLabel;
+        const icon = document.createElement('i');
+        icon.className = 'fa-solid fa-xmark';
+        icon.setAttribute('aria-hidden', 'true');
+        dismiss.appendChild(icon);
+
+        const action = document.createElement('button');
+        action.type = 'button';
+        action.className = 'btn btn-primary action-notification-action';
+        action.textContent = options.actionLabel;
+
+        let closed = false;
+        const close = () => {
+            if (closed) return;
+            closed = true;
+            notification.remove();
+            if (!container.hasChildNodes()) container.remove();
+        };
+        action.addEventListener('click', () => {
+            if (closed) return;
+            close();
+            options.onAction();
+        });
+        dismiss.addEventListener('click', () => {
+            if (closed) return;
+            close();
+            options.onDismiss?.();
+        });
+        notification.append(title, dismiss, message, action);
+        container.appendChild(notification);
+        return { close };
+    }
+
     static createClientNotification(options: NotificationOptions) {
         // Options par défaut
         const defaults = {

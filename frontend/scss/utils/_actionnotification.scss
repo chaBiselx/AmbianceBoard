@@ -1,0 +1,52 @@
+
+.action-notification-container {
+	position: fixed;
+	right: max(16px, env(safe-area-inset-right));
+	bottom: max(16px, env(safe-area-inset-bottom));
+	width: min(360px, calc(100vw - 32px));
+	z-index: 1051;
+	display: grid;
+	gap: 12px;
+}
+
+body.modal-open .action-notification-container {
+	visibility: hidden;
+}
+
+.action-notification {
+	position: relative;
+	padding: 20px;
+	border: 1px solid var(--bs-border-color);
+	border-left: 4px solid var(--bs-primary);
+	border-radius: 6px;
+	background: var(--bs-body-bg);
+	color: var(--bs-body-color);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+	overflow-wrap: anywhere;
+
+	p {
+		font-size: 0.9375rem;
+		margin: 0 0 16px;
+	}
+}
+
+.action-notification-title {
+	margin: 0 28px 10px 0;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.action-notification-dismiss {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	color: inherit;
+}
+
+.action-notification-action {
+	max-width: 100%;
+	white-space: normal;
+}
