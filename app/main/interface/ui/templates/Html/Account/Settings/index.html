@@ -2,66 +2,79 @@
 
 {% block content %}
 <div class="container mt-4">
-    <p>Votre tier actuel : <strong>{{ user_tiers }}</strong></p>
+    <section>
+        <h3>Visite guidée</h3>
+    
+        <div class="text-center mt-4 d-grid d-sm-block">
+            <button class="btn btn-info btn-lg fw-semibold shadow-sm px-4" id="start-onboarding-btn">
+                <i class="fa-solid fa-compass me-2" aria-hidden="true"></i>Visite guidée
+            </button>
+        </div>
+    </section>
 
-    <div class="card">
-        <div class="card-header">
-            Vos limites actuelles
+    <hr>
+    <section>
+        <h3>Votre tier actuel : <strong>{{ user_tiers }}</strong></h3>
+        <div class="card">
+            <div class="card-header">
+                Récapitulatif de vos limites actuelles
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Fonctionnalité</th>
+                            <th>Limite</th>
+                            <th>Actuel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Nombre de soundboards</td>
+                            <td>{{ limit.soundboard }}</td>
+                            <td>{{ nb_soundboard }}</td>
+                        </tr>
+                        <tr>
+                            <td>Nombre de boutons</td>
+                            <td>{{ limit.playlist }}</td>
+                            <td>{{ nb_playlist }}</td>
+                        </tr>
+                        <tr>
+                            <td>Musiques par bouton</td>
+                            <td>{{ limit.music_per_playlist }}</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Poids maximum par musique (MB)</td>
+                            <td>{{ limit.weight_music_mb }}</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Fonctionnalité</th>
-                        <th>Limite</th>
-                        <th>Actuel</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Nombre de soundboards</td>
-                        <td>{{ limit.soundboard }}</td>
-                        <td>{{ nb_soundboard }}</td>
-                    </tr>
-                    <tr>
-                        <td>Nombre de boutons</td>
-                        <td>{{ limit.playlist }}</td>
-                        <td>{{ nb_playlist }}</td>
-                    </tr>
-                    <tr>
-                        <td>Musiques par bouton</td>
-                        <td>{{ limit.music_per_playlist }}</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>Poids maximum par musique (MB)</td>
-                        <td>{{ limit.weight_music_mb }}</td>
-                        <td>-</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="card">
+            <div class="card-header">
+                Paramètres de l'application
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Paramètre</th>
+                            <th>Valeur</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Taux de compression audio maximum</td>
+                            <td><strong>{{ app_setting.target_bitrate }} kbps</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-            Paramètres de l'application
-        </div>
-        <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Paramètre</th>
-                        <th>Valeur</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Taux de compression audio maximum</td>
-                        <td><strong>{{ app_setting.target_bitrate }} kbps</strong></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    </section>
+
 </div>
 {% endblock %}

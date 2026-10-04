@@ -533,6 +533,7 @@ Modifications
 
 Améliorations
 - Ajout d'une moyen simple de créer des liens de partages pour la communication
+- De la logique de la visite guidée car peu souple
 
 Corrections
 - Corrections des notifications qui était n'avait pas toujours le bon type/couleur*

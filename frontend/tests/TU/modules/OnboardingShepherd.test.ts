@@ -184,6 +184,16 @@ describe('OnboardingShepherd', () => {
         expect(service.shouldStartTour()).toBe(true);
     });
 
+    it('shows the first step directly when already on its page', () => {
+        const service = OnboardingShepherd.getInstance();
+        service.initialize(makeConfig([makeStep('first', { redirectUrl: '/' })]));
+
+        service.goToStep(0);
+
+        expect(shepherdMocks.show).toHaveBeenCalledWith(0);
+        expect(sessionStore.getItem('ambiance_shepherd_session')).toBeNull();
+    });
+
     it('clears persisted state on reset', () => {
         const service = OnboardingShepherd.getInstance();
         localStore.setItem('ambiance_shepherd_local', '{}');

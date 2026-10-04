@@ -133,7 +133,7 @@ export class OnboardingManager {
                     setTimeout(() => {
                         ConsoleCustom.log('Ready to initialize Onboarding');
                         resolve();
-                    }, 1000);
+                    }, 300);
                 }, { once: true });
             } else {
                 // DOM est déjà prêt, attendre un bit pour que les scripts se chargent
@@ -141,7 +141,7 @@ export class OnboardingManager {
                 setTimeout(() => {
                     ConsoleCustom.log('Ready to initialize Onboarding');
                     resolve();
-                }, 1000);
+                }, 300);
             }
         });
     }
@@ -159,13 +159,6 @@ export class OnboardingManager {
         if (startButton) {
             startButton.addEventListener('click', () => this.startTour());
         }
-
-        // Bouton de relance (page settings)
-        const restartButton = document.getElementById('restart-onboarding-btn');
-        if (restartButton) {
-            restartButton.addEventListener('click', () => this.restartTour());
-        }
-
         this.listenersAttached = true;
     }
 
@@ -176,7 +169,8 @@ export class OnboardingManager {
         try {
             const tour = this.shepherd.getShepherdTour();
             if (tour) {
-                tour.start();
+                this.shepherd.reset();
+                this.shepherd.goToStep(0);
             } else {
                 ConsoleCustom.warn('Shepherd tour not initialized yet');
                 Notification.createClientNotification({
@@ -193,16 +187,7 @@ export class OnboardingManager {
         }
     }
 
-    /**
-     * Redémarrer la visite guidée (depuis les settings utilisateur)
-     */
-    public restartTour(): void {
-        if (!this.isInitialized) return;
 
-        this.shepherd.reset();
-        // Recharger pour relancer la visite
-        globalThis.location.reload();
-    }
 
     /**
      * Récupère le numéro d'étape à reprendre après redirection
