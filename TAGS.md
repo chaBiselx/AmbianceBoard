@@ -532,6 +532,7 @@ Modifications
 - Mise à jour de la visite guidée
 
 Améliorations
+- Ajout de traductions sur les pages des paramètres et sidebar processor
 - Ajout d'une moyen simple de créer des liens de partages pour la communication
 - De la logique de la visite guidée car peu souple
 

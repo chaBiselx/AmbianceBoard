@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from main.domain.common.utils.UserTierManager import UserTierManager
 
 
@@ -11,10 +12,10 @@ def sidebar_processor(request):
         return {
             'show_sidebar': True,
             'sidebar_items': [
-                {'title': 'Index', 'url': reverse("settingsIndex"), 'classIcon':None},
-                {'title': 'Compte', 'url': reverse("account"), 'classIcon':None},
-                {'title': 'Couleurs des boutons', 'url': reverse("defaultPlaylistType"), 'classIcon':None},
-                {'title': 'Dimensions boutons', 'url': reverse("updateDimensions"), 'classIcon':None},
+                {'title': _('Index'), 'url': reverse("settingsIndex"), 'classIcon':None},
+                {'title': _('Compte'), 'url': reverse("account"), 'classIcon':None},
+                {'title': _('Couleurs des boutons'), 'url': reverse("defaultPlaylistType"), 'classIcon':None},
+                {'title': _('Dimensions boutons'), 'url': reverse("updateDimensions"), 'classIcon':None},
             ]
         }
         
@@ -56,12 +57,12 @@ def sidebar_processor(request):
         
         if request.path in sidebar_urls_settings_public or any(request.path.startswith(url) for url in sidebar_urls_settings_public):
             sidebar_items = [
-                {'title': 'Soundboard', 'url': reverse("publicListingSoundboard"), 'classIcon':"fa-solid fa-bars"},
-                {'title': 'Favoris', 'url': reverse("publicFavorite"), 'classIcon':"fa-regular fa-star"},
+                {'title': _('Soundboard'), 'url': reverse("publicListingSoundboard"), 'classIcon':"fa-solid fa-bars"},
+                {'title': _('Favoris'), 'url': reverse("publicFavorite"), 'classIcon':"fa-regular fa-star"},
             ]
             can_show_statistics = UserTierManager.can_boolean(request.user, 'get_statistics_from_public')
             if(can_show_statistics):
-                sidebar_items.append({'title': 'Statistiques', 'url': reverse("ListPublicUserSoundboardsStats"), 'classIcon':"fa-solid fa-chart-line"})
+                sidebar_items.append({'title': _('Statistiques'), 'url': reverse("ListPublicUserSoundboardsStats"), 'classIcon':"fa-solid fa-chart-line"})
             
             return {
                 'show_sidebar': True,
