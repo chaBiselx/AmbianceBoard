@@ -12,73 +12,6 @@ cat /etc/passwd | grep user_ansible
 
 ```
 
-### Activation du MFA (TOTP) pour SSH
-
-Réf : https://ubuntu.com/tutorials/configure-ssh-2fa
-
-> ⚠️ Garder une session SSH ouverte pendant toute la procédure et tester dans un second terminal.
-
-Installer la librairie
-```
-sudo apt install libpam-google-authenticator
-```
-
-Configurer le TOTP avec l'utilisateur cible (avant de modifier sshd)
-```
-google-authenticator
-```
-Réponses :
-- Make tokens "time-based" : `yes`
-- Update the ~/.google_authenticator file : `yes`
-- Disallow multiple uses : `yes`
-- Increase the original generation time window : `no`
-- Enable rate-limiting : `yes`
-
-Scanner le QR code dans l'application TOTP, puis enregistrer la clé secrète
-et les codes de secours dans un coffre-fort numérique.
-
-Configurer PAM
-```
-sudo vi /etc/pam.d/sshd
-```
-Commenter :
-```
-# @include common-auth
-```
-et jouter :
-```
-auth required pam_google_authenticator.so
-```
-(Attention : plus de connexion par mot de passe via PAM pour les autres utilisateurs.)
-
-```
-sudo vi /etc/ssh/sshd_config
-```
-Vérifier / ajouter :
-```
-ChallengeResponseAuthentication no 
-
-Match User user_account
-    PasswordAuthentication no
-    KbdInteractiveAuthentication yes
-    PubkeyAuthentication yes
-    AuthenticationMethods publickey,keyboard-interactive
-```
-
-
-Se connecter avec l'utilisateur cible : 
-```
-google-authenticator
-```
-
-Valider et recharger
-```
-sudo sshd -t && sudo systemctl restart ssh
-```
-
- Tester dans un nouveau terminal
-Attendu : passphrase de la clé, puis code TOTP.
-
 ### création d'un groupe et ajout au groupe 
 
 ```
@@ -90,14 +23,8 @@ Pour voir tous les group `cat /etc/group`
 
 `-aG` permet permet d'ajouter le groupe sans supprimer les autres appartenances de l'utilisateur.
 
-TODO
-
 Pour mettre sudoer `usermod -aG sudo user_ansible`
-### accorder les droits moindre privilège 
 
-https://blog.stephane-robert.info/docs/admin-serveurs/linux/securiser/sudo/
-
-TODO 
 
 ## Mise en place du SSH 
 
@@ -146,6 +73,10 @@ Match User user_admin
     KbdInteractiveAuthentication no
     PubkeyAuthentication yes
     AuthenticationMethods publickey
+    AllowAgentForwarding no
+    AllowTcpForwarding no
+    X11Forwarding no
+    PermitTTY no
 ```
 
 recharger sshd
@@ -161,7 +92,6 @@ ssh -i ~/.ssh/id_ed25519_ambianceboard_ansible user_ansible@X.X.X.X
 ```
 doit fonctionner avec la passphrase
 
-
 ```
 ssh -o PubkeyAuthentication=no user_ansible@X.X.X.X
 ```
@@ -169,3 +99,9 @@ doit être refusé `Permission denied (publickey)`
 
 sinon verifier via `grep -ri "PasswordAuthentication" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/` pour mettre `PasswordAuthentication no`
 puis recharger sshd
+
+### accorder les droits moindre privilège 
+
+https://blog.stephane-robert.info/docs/admin-serveurs/linux/securiser/sudo/
+
+TODO 
