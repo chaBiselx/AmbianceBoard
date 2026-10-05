@@ -105,7 +105,7 @@ describe('ListPlaylistsForSpecificAction page script', () => {
         playlistActionMocks.onCancel!(false);
         await vi.waitFor(() => expect(playlistActionMocks.notify).toHaveBeenCalledWith({
             message: 'Une erreur est survenue',
-            type: 'error',
+            type: 'danger',
         }));
         expect(shortcutButton.textContent).toBe('-');
         expect(playlistActionMocks.stopListening).toHaveBeenCalled();

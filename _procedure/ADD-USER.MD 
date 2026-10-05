@@ -1,0 +1,101 @@
+# Création d'un utilisateur applicatif : 
+
+## Enviroonement cible 
+### création et verification 
+```
+sudo adduser --disabled-password --gecos "" user_ansible
+```
+
+il est possible de voir si un utilisateur est créé via 
+```
+cat /etc/passwd | grep user_ansible
+```
+
+### création d'un groupe et ajout au groupe 
+
+```
+sudo groupadd automaton
+sudo usermod -aG automaton user_ansible 
+```
+
+`-aG` permet permet d'ajouter le groupe sans supprimer les autres appartenances de l'utilisateur.
+
+
+
+
+### accorder les droits moindre privilège 
+
+https://blog.stephane-robert.info/docs/admin-serveurs/linux/securiser/sudo/
+
+TODO
+
+## Mise en place du SSH 
+
+###  Machine locale
+
+###créer une clefs SSH 
+```
+ssh-keygen -t ed25519 -C "ansible" -f ~/.ssh/id_ed25519_ambianceboard_ansible
+```
+et mettre un password fort 
+
+
+### machine distante 
+
+#### Ajout de la clé publique 
+
+pre-requis: l'utilisateur sur la machine distante doit avoir un MDP 
+```
+ssh-copy-id -i ~/.ssh/id_ed25519_ambianceboard_ansible.pub user_ansible@255.255.255.255
+```
+
+Sinon 
+
+Recuperer la clé publiqe : 
+```
+cat ~/.ssh/id_ed25519_ambianceboard_ansible.pub
+```
+
+Ajouter aux clé autorisé
+```
+mkdir -p /home/user_ansible/.ssh 
+echo "##CONTENU_CAT##" >> /home/user_ansible/.ssh/authorized_keys 
+chown -R user_ansible:user_ansible /home/user_ansible/.ssh && chmod 700 /home/user_ansible/.ssh && chmod 600 /home/user_ansible/.ssh/authorized_keys
+```
+
+
+#### sshd_config
+```
+sudo vi /etc/ssh/sshd_config
+```
+
+et ajouter 
+```
+Match User user_ansible
+    PasswordAuthentication no
+    KbdInteractiveAuthentication no
+    PubkeyAuthentication yes
+    AuthenticationMethods publickey
+```
+
+recharger sshd
+```
+sudo sshd -t   
+sudo systemctl restart ssh  
+```
+
+
+## Vérification 
+```
+ssh -i ~/.ssh/id_ed25519_ambianceboard_ansible user_ansible@X.X.X.X
+```
+doit fonctionner avec la passphrase
+
+
+```
+ssh -o PubkeyAuthentication=no user_ansible@X.X.X.X
+```
+doit être refusé `Permission denied (publickey)`
+
+sinon verifier via `grep -ri "PasswordAuthentication" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/` pour mettre `PasswordAuthentication no`
+puis recharger sshd

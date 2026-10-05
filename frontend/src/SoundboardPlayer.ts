@@ -12,6 +12,7 @@ import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil';
 import ShareLinkManager from '@/modules/Event/ShareLinkManager';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
+import ConsoleTraceServeur from "@/modules/General/ConsoleTraceServeur";
 import { SharedSoundboardCustomVolumeFactory } from '@/modules/SharedSoundboardCustomVolume';
 import ShorcutKeyBoardDetector from "@/modules/Control/ShorcutKeyBoardDetector";
 import SoundBoardEventListener from '@/modules/SoundBoardEventListener';
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (audioElementDiv) audioElementDiv.style.display = 'block';
     }
     // Activer le Wake Lock au chargement de la page
-    new WakeLock().start();
+    void new WakeLock().start()
     const sh = SharedSoundboardCustomVolumeFactory.create('shared-custom-volume-button', 'template-shared-volume');
     if (sh) {
         sh.addEvent();
@@ -113,7 +114,9 @@ function publishSoundboard(event: Event) {
         });
         (new ShareLinkManager()).addEvent();
         // Le WebSocket est déjà initialisé au chargement, pas besoin de le recréer
-    })
+    }).catch((error) => {
+        ConsoleTraceServeur.error('Failed to publish soundboard:', error);
+    });
 
 }
 

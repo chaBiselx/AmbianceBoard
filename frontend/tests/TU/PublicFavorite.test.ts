@@ -13,7 +13,7 @@ describe('PublicFavorite page script', () => {
     });
 
     it('sends POST when favoriting and DELETE when unfavoriting', async () => {
-        const fetchMock = vi.fn();
+        const fetchMock = vi.fn().mockResolvedValue({});
         vi.stubGlobal('fetch', fetchMock);
         await import('@/PublicFavorite');
         document.dispatchEvent(new Event('DOMContentLoaded'));

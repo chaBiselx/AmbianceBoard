@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 20:39+0000\n"
+"POT-Creation-Date: 2026-10-04 18:46+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -16,6 +16,34 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: main/architecture/contextProcessors/sidebar_processor.py:15
+msgid "Index"
+msgstr "Overview"
+
+#: main/architecture/contextProcessors/sidebar_processor.py:16
+msgid "Compte"
+msgstr "Account"
+
+#: main/architecture/contextProcessors/sidebar_processor.py:17
+msgid "Couleurs des boutons"
+msgstr "Button colors"
+
+#: main/architecture/contextProcessors/sidebar_processor.py:18
+msgid "Dimensions boutons"
+msgstr "Button dimensions"
+
+#: main/architecture/contextProcessors/sidebar_processor.py:60
+msgid "Soundboard"
+msgstr "Soundboard"
+
+#: main/architecture/contextProcessors/sidebar_processor.py:61
+msgid "Favoris"
+msgstr "Favorites"
+
+#: main/architecture/contextProcessors/sidebar_processor.py:65
+msgid "Statistiques"
+msgstr "Statistics"
 
 #: main/architecture/messaging/email/ModeratorEmail.py:32
 #: main/architecture/messaging/email/ModeratorEmail.py:34
@@ -154,131 +182,159 @@ msgstr "Done"
 
 #: main/domain/general/service/OnboardingContextService.py:67
 msgid "onboarding.public.theme.title"
-msgstr "Light and dark mode"
+msgstr "Choose a light or dark theme"
 
 #: main/domain/general/service/OnboardingContextService.py:68
 msgid "onboarding.public.theme.description"
 msgstr ""
-"Switch between light and dark modes for better reading comfort. Your "
-"preference is saved automatically."
+"Use this button to switch between the light and dark themes. Your preference "
+"is saved automatically."
 
 #: main/domain/general/service/OnboardingContextService.py:75
 msgid "onboarding.public.fullscreen.title"
-msgstr "Fullscreen mode"
+msgstr "Switch to fullscreen"
 
 #: main/domain/general/service/OnboardingContextService.py:76
 msgid "onboarding.public.fullscreen.description"
 msgstr ""
-"Expand the soundboard for better audio immersion. Ideal for your streaming "
-"sessions or creative work."
+"Fullscreen gives the soundboard more space, so you can enjoy its sounds "
+"without distractions."
 
 #: main/domain/general/service/OnboardingContextService.py:83
 msgid "onboarding.public.soundboards.title"
-msgstr "View public soundboards"
+msgstr "Browse public soundboards"
 
 #: main/domain/general/service/OnboardingContextService.py:84
 msgid "onboarding.public.soundboards.description"
 msgstr ""
-"Discover soundboards created by the community. You can listen to them and "
+"Open the selection of soundboards shared by the community to listen to or "
 "preview them."
 
 #: main/domain/general/service/OnboardingContextService.py:91
 msgid "onboarding.public.grid.title"
-msgstr "Public soundboards"
+msgstr "Explore public soundboards"
 
 #: main/domain/general/service/OnboardingContextService.py:92
 msgid "onboarding.public.grid.description"
 msgstr ""
-"Explore soundboards created by the community. You can listen to them, "
-"preview them, and even copy their buttons into your own soundboard."
+"Browse community soundboards, listen to them, and copy the buttons you like "
+"into your collection."
 
 #: main/domain/general/service/OnboardingContextService.py:99
 msgid "onboarding.private.tracks.title"
-msgstr "Use a soundboard's buttons"
+msgstr "Play sounds from the soundboard"
 
 #: main/domain/general/service/OnboardingContextService.py:100
 msgid "onboarding.private.tracks.description"
-msgstr "Click to play one of the sounds linked to these buttons."
+msgstr "Click a button to play its associated sound."
 
 #: main/domain/general/service/OnboardingContextService.py:107
 msgid "onboarding.private.mixer.title"
-msgstr "Soundboard-specific controls"
+msgstr "Adjust the audio mix"
 
 #: main/domain/general/service/OnboardingContextService.py:108
 msgid "onboarding.private.mixer.description"
-msgstr "Control your ambiance: adjust volumes or play specific sounds."
-
-#: main/domain/general/service/OnboardingContextService.py:120
-msgid "onboarding.private.my_soundboards.title"
-msgstr "My private soundboards"
+msgstr "Adjust the volume and use the audio controls for this soundboard."
 
 #: main/domain/general/service/OnboardingContextService.py:121
+msgid "onboarding.private.propose_playlist.title"
+msgstr "Propose a playlist"
+
+#: main/domain/general/service/OnboardingContextService.py:122
+msgid "onboarding.private.propose_playlist.description"
+msgstr ""
+"Send one of your playlists to this public soundboard's owner for "
+"consideration."
+
+#: main/domain/general/service/OnboardingContextService.py:133
+msgid "onboarding.private.share_listening.title"
+msgstr "Share the listening session"
+
+#: main/domain/general/service/OnboardingContextService.py:134
+msgid "onboarding.private.share_listening.description"
+msgstr ""
+"Generate a link for your players. Their page stays synchronized with this "
+"soundboard's playback."
+
+#: main/domain/general/service/OnboardingContextService.py:141
+msgid "onboarding.public.playing_monitor.title"
+msgstr "See what's playing"
+
+#: main/domain/general/service/OnboardingContextService.py:142
+msgid "onboarding.public.playing_monitor.description"
+msgstr "View the buttons currently playing and stop a sound from the monitor."
+
+#: main/domain/general/service/OnboardingContextService.py:154
+msgid "onboarding.private.my_soundboards.title"
+msgstr "Open your soundboards"
+
+#: main/domain/general/service/OnboardingContextService.py:155
 msgid "onboarding.private.my_soundboards.description"
-msgstr "Show your private soundboards."
+msgstr "Open your personal area to find the soundboards you have created."
 
-#: main/domain/general/service/OnboardingContextService.py:128
+#: main/domain/general/service/OnboardingContextService.py:162
 msgid "onboarding.private.my_soundboards_grid.title"
-msgstr "My private soundboards"
+msgstr "Manage your soundboards"
 
-#: main/domain/general/service/OnboardingContextService.py:129
+#: main/domain/general/service/OnboardingContextService.py:163
 msgid "onboarding.private.my_soundboards_grid.description"
 msgstr ""
-"These are your personal soundboards. You can edit, share, or delete them."
+"Find your personal soundboards here. You can edit, share, or delete them."
 
-#: main/domain/general/service/OnboardingContextService.py:136
+#: main/domain/general/service/OnboardingContextService.py:170
 msgid "onboarding.private.create_soundboard.title"
-msgstr "Create a new soundboard"
+msgstr "Create a soundboard"
 
-#: main/domain/general/service/OnboardingContextService.py:137
+#: main/domain/general/service/OnboardingContextService.py:171
 msgid "onboarding.private.create_soundboard.description"
 msgstr ""
-"Create your own soundboard in 3 clicks. Give it a name, a description, and "
-"start adding sounds."
+"Name your soundboard, add a description, then choose the sounds for its "
+"buttons."
 
-#: main/domain/general/service/OnboardingContextService.py:144
+#: main/domain/general/service/OnboardingContextService.py:178
 msgid "onboarding.private.playlist_button.title"
-msgstr "Your custom buttons"
+msgstr "Open your custom buttons"
 
-#: main/domain/general/service/OnboardingContextService.py:145
+#: main/domain/general/service/OnboardingContextService.py:179
 msgid "onboarding.private.playlist_button.description"
-msgstr "Access your custom buttons."
+msgstr "Find the buttons you have saved in your collection."
 
-#: main/domain/general/service/OnboardingContextService.py:152
+#: main/domain/general/service/OnboardingContextService.py:186
 msgid "onboarding.private.playlist_grid.title"
-msgstr "List of your buttons"
+msgstr "Manage your custom buttons"
 
-#: main/domain/general/service/OnboardingContextService.py:153
+#: main/domain/general/service/OnboardingContextService.py:187
 msgid "onboarding.private.playlist_grid.description"
-msgstr ""
-"These are your custom buttons. Click them to edit, share, or delete them."
+msgstr "Find your custom buttons here. You can edit, share, or delete them."
 
-#: main/domain/general/service/OnboardingContextService.py:160
+#: main/domain/general/service/OnboardingContextService.py:194
 msgid "onboarding.private.copiable_buttons.title"
-msgstr "Copiable buttons"
+msgstr "Discover buttons to copy"
 
-#: main/domain/general/service/OnboardingContextService.py:161
+#: main/domain/general/service/OnboardingContextService.py:195
 msgid "onboarding.private.copiable_buttons.description"
-msgstr "Browse community-created buttons that can be copied."
+msgstr ""
+"Browse buttons shared by the community and choose which ones to add to your "
+"collection."
 
-#: main/domain/general/service/OnboardingContextService.py:168
+#: main/domain/general/service/OnboardingContextService.py:202
 msgid "onboarding.private.copy_buttons_grid.title"
-msgstr "Copy buttons"
+msgstr "Add buttons to your collection"
 
-#: main/domain/general/service/OnboardingContextService.py:169
+#: main/domain/general/service/OnboardingContextService.py:203
 msgid "onboarding.private.copy_buttons_grid.description"
 msgstr ""
-"Copy the audio controls from this soundboard to review them and add them to "
-"your custom buttons."
+"Choose the buttons you like to copy them into your personal collection."
 
-#: main/domain/general/service/OnboardingContextService.py:176
+#: main/domain/general/service/OnboardingContextService.py:210
 msgid "onboarding.private.user_settings.title"
-msgstr "User settings"
+msgstr "Manage your account"
 
-#: main/domain/general/service/OnboardingContextService.py:177
+#: main/domain/general/service/OnboardingContextService.py:211
 msgid "onboarding.private.user_settings.description"
 msgstr ""
-"Manage your profile, notification preferences, favorite theme, and "
-"subscription."
+"Update your profile, notification preferences, theme, and subscription "
+"options."
 
 #: main/interface/ui/controller/private/soundboardFromViews.py:30
 msgid "template.soundboard.create.title"
@@ -632,6 +688,109 @@ msgstr ""
 msgid "template.email.user.welcome.body"
 msgstr "Thank you for signing up on our site."
 
+#: main/interface/ui/templates/Html/Account/Settings/account.html:8
+msgid "template.account.delete.title"
+msgstr "Delete your account"
+
+#: main/interface/ui/templates/Html/Account/Settings/account.html:10
+msgid "template.account.delete.confirmation"
+msgstr ""
+"Are you sure you want to delete your account? This action is irreversible "
+"and will delete all your data."
+
+#: main/interface/ui/templates/Html/Account/Settings/account.html:15
+msgid "template.account.delete.submit"
+msgstr "Delete my account"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:7
+msgid "template.account.settings.tour.title"
+msgstr "Guided tour"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:11
+msgid "template.account.settings.tour.button"
+msgstr "Guided tour"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:18
+msgid "template.account.settings.tier.current"
+msgstr "Your current tier:"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:21
+msgid "template.account.settings.limits.title"
+msgstr "Overview of your current limits"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:27
+msgid "template.account.settings.limits.feature"
+msgstr "Feature"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:28
+msgid "template.account.settings.limits.limit"
+msgstr "Limit"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:29
+msgid "template.account.settings.limits.current"
+msgstr "Current"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:34
+msgid "template.account.settings.limits.soundboards"
+msgstr "Number of soundboards"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:39
+msgid "template.account.settings.limits.buttons"
+msgstr "Number of buttons"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:44
+msgid "template.account.settings.limits.music_per_button"
+msgstr "Tracks per button"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:49
+msgid "template.account.settings.limits.max_music_weight"
+msgstr "Maximum track size (MB)"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:59
+msgid "template.account.settings.application.title"
+msgstr "Application settings"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:65
+msgid "template.account.settings.application.parameter"
+msgstr "Setting"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:66
+msgid "template.account.settings.application.value"
+msgstr "Value"
+
+#: main/interface/ui/templates/Html/Account/Settings/index.html:71
+msgid "template.account.settings.application.max_audio_compression"
+msgstr "Maximum audio compression bitrate"
+
+#: main/interface/ui/templates/Html/Account/Settings/update_default_style_playlist.html:13
+msgid "template.account.settings.playlist_style.type"
+msgstr "Button type"
+
+#: main/interface/ui/templates/Html/Account/Settings/update_default_style_playlist.html:14
+msgid "template.account.settings.playlist_style.background_color"
+msgstr "Background color"
+
+#: main/interface/ui/templates/Html/Account/Settings/update_default_style_playlist.html:15
+msgid "template.account.settings.playlist_style.text_color"
+msgstr "Text color"
+
+#: main/interface/ui/templates/Html/Account/Settings/update_default_style_playlist.html:32
+msgid "template.account.settings.playlist_style.save"
+msgstr "Save"
+
+#: main/interface/ui/templates/Html/Account/Settings/update_dimensions.html:19
+msgid "template.account.settings.dimensions.soundboard"
+msgstr "Soundboard"
+
+#: main/interface/ui/templates/Html/Account/Settings/update_dimensions.html:26
+#: main/interface/ui/templates/Html/Account/Settings/update_dimensions.html:55
+msgid "template.account.settings.dimensions.preview"
+msgstr "Preview"
+
+#: main/interface/ui/templates/Html/Account/Settings/update_dimensions.html:49
+msgid "template.account.settings.dimensions.buttons"
+msgstr "Buttons"
+
 #: main/interface/ui/templates/Html/Account/async_download_jobs_recent.html:15
 msgid "Statut"
 msgstr "Status"
@@ -839,27 +998,27 @@ msgstr "of soundboard listening"
 msgid "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip"
 msgstr "Ability to share soundboard listening with your online players."
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:127
+#: main/interface/ui/templates/Html/General/general_pricing.html:126
 msgid "template.pricing.features.player_interactions"
 msgstr "Player"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:127
+#: main/interface/ui/templates/Html/General/general_pricing.html:126
 msgid "template.pricing.features.player_interactions.enabled"
 msgstr "interactions enabled"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:127
+#: main/interface/ui/templates/Html/General/general_pricing.html:126
 msgid "template.pricing.features.player_interactions.on_shared"
 msgstr "on shared soundboards"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:133
+#: main/interface/ui/templates/Html/General/general_pricing.html:131
 msgid "template.pricing.features.public_statistics"
 msgstr "statistics on public soundboards"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:144
+#: main/interface/ui/templates/Html/General/general_pricing.html:142
 msgid "template.pricing.current_plan"
 msgstr "Current plan"
 
-#: main/interface/ui/templates/Html/General/general_pricing.html:148
+#: main/interface/ui/templates/Html/General/general_pricing.html:146
 msgid "template.pricing.choose_plan"
 msgstr "Choose this plan"
 
@@ -1352,6 +1511,10 @@ msgstr "No playlist found."
 msgid "template.filterTagCloud.accordion_title"
 msgstr "Filter by tag"
 
+#: main/interface/ui/templates/Html/Public/listing_soundboard.html:43
+msgid "Favorite"
+msgstr ""
+
 #: main/interface/ui/templates/Html/Public/stats_user_public_soundboard.html:22
 msgid "template.publicStats.section.parameter"
 msgstr "Settings"
@@ -1400,15 +1563,11 @@ msgstr ""
 "background and enjoy the ambience."
 
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:19
-#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:76
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:73
 msgid "template.listePlaylistForSpecificAction.button.back"
 msgstr "Back"
 
-#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:29
-msgid "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
-msgstr "This account cannot access this feature"
-
-#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:33
+#: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:30
 msgid "template.listePlaylistForSpecificAction.table.col.keyboard_shortcut.label"
 msgstr "keyboard shortcut"
 
@@ -1622,23 +1781,23 @@ msgstr "none"
 msgid "template.filterTagCloud.no_description"
 msgstr "No description"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:88
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:93
 msgid "template.soundboard_read.my_proposals.title"
 msgstr "My proposals"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:101
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:106
 msgid "template.soundboard_read.my_proposals.status.pending"
 msgstr "Pending"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:102
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:107
 msgid "template.soundboard_read.my_proposals.action.withdraw"
 msgstr "Withdraw"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:104
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:109
 msgid "template.soundboard_read.my_proposals.status.refused"
 msgstr "Refused"
 
-#: main/interface/ui/templates/Html/partial/soundboard/board.html:105
+#: main/interface/ui/templates/Html/partial/soundboard/board.html:110
 msgid "template.soundboard_read.my_proposals.action.dismiss"
 msgstr "Delete"
 
@@ -1660,11 +1819,11 @@ msgstr ""
 msgid "template.shareSoundboard.button.label"
 msgstr "Share listening"
 
-#: main/interface/ui/templates/Html/partial/soundboard/header.html:29
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:30
 msgid "template.proposePlaylist.button.tooltip"
 msgstr "Propose one of your playlists to the owner of this soundboard."
 
-#: main/interface/ui/templates/Html/partial/soundboard/header.html:30
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:31
 msgid "template.proposePlaylist.button.label"
 msgstr "Propose a playlist"
 
@@ -1871,6 +2030,9 @@ msgstr "Continue"
 msgid "template.social.google.back"
 msgstr "Back"
 
+#~ msgid "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
+#~ msgstr "This account cannot access this feature"
+
 #, python-format
 #~ msgid "Soundboard publique 100%% Gratuit"
 #~ msgstr "Public soundboard"
@@ -1889,9 +2051,6 @@ msgstr "Back"
 
 #~ msgid "Partage public"
 #~ msgstr "Public"
-
-#~ msgid "Copie de boutons"
-#~ msgstr "List of your buttons"
 
 #~ msgid "Niveaux d'utilisateurs"
 #~ msgstr "User settings"
@@ -1934,12 +2093,6 @@ msgstr "Back"
 
 #~ msgid "liste de vos soundboards"
 #~ msgstr "list of your soundboards"
-
-#~ msgid "Soundboards"
-#~ msgstr "Soundboards"
-
-#~ msgid "Liste de vos boutons"
-#~ msgstr "List of your buttons"
 
 #~ msgid "Boutons"
 #~ msgstr "Buttons"

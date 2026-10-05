@@ -6,6 +6,7 @@ const onboardingMocks = vi.hoisted(() => ({
     shouldStartTour: vi.fn(),
     start: vi.fn(),
     reset: vi.fn(),
+    goToStep: vi.fn(),
     tourStart: vi.fn(),
     tourShow: vi.fn(),
     notify: vi.fn(),
@@ -21,6 +22,7 @@ vi.mock('@/modules/OnboardingShepherd', () => ({
             shouldStartTour: onboardingMocks.shouldStartTour,
             start: onboardingMocks.start,
             reset: onboardingMocks.reset,
+            goToStep: onboardingMocks.goToStep,
             getShepherdTour: () => ({ start: onboardingMocks.tourStart, show: onboardingMocks.tourShow }),
         }),
     },
@@ -112,7 +114,7 @@ describe('OnboardingManager', () => {
         expect(onboardingMocks.start).toHaveBeenCalledOnce();
 
         document.getElementById('start-onboarding-btn')!.click();
-        expect(onboardingMocks.tourStart).toHaveBeenCalledOnce();
+        expect(onboardingMocks.goToStep).toHaveBeenCalledWith(0);
     });
 
     it('resumes from session state and clears the resume marker', async () => {
@@ -124,6 +126,17 @@ describe('OnboardingManager', () => {
 
         expect(onboardingMocks.tourShow).toHaveBeenCalledWith(2);
         expect(sessionStore.getItem('ambiance_shepherd_session')).toBeNull();
+        expect(onboardingMocks.start).not.toHaveBeenCalled();
+    });
+
+    it('restarts the tour from its first step', async () => {
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => validContext() }));
+
+        const manager = await initialize();
+        manager.startTour();
+
+        expect(onboardingMocks.reset).toHaveBeenCalledOnce();
+        expect(onboardingMocks.goToStep).toHaveBeenCalledWith(0);
         expect(onboardingMocks.start).not.toHaveBeenCalled();
     });
 });

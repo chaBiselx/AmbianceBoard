@@ -18,7 +18,7 @@ describe('UpdateDimension page script', () => {
     });
 
     it('clamps dimension changes and persists each actual update', async () => {
-        const fetchMock = vi.fn();
+        const fetchMock = vi.fn().mockResolvedValue({});
         vi.stubGlobal('fetch', fetchMock);
         await import('@/UpdateDimension');
         document.dispatchEvent(new Event('DOMContentLoaded'));

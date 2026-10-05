@@ -41,10 +41,6 @@ def list_playlists_for_specific_action(request, soundboard_uuid):
 @require_http_methods(['UPDATE'])
 def update_specific_actionable_playlists(request):
     """Met a jour les playlists actionnables par les joueurs"""
-    shared_playlist_playable_by_shared_user = UserTierManager.can_boolean(request.user, 'shared_playlist_playable_by_shared_user')
-    if not shared_playlist_playable_by_shared_user:
-        return JsonResponse({'error': 'Permission refusée'}, status=403)
-    
     try:
         update_dto = UpdateSoundPlaylistDto.from_request(request)
         update_service = SoundboardPlaylistOptionService([update_dto])

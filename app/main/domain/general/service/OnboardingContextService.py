@@ -58,7 +58,7 @@ class OnboardingContextService:
         return urls
 
     def _build_steps(self, is_authenticated: bool) -> list[dict]:
-        dynamic_url = self._create_dynamic_url()
+        dynamic_url = self._create_dynamic_url(is_authenticated)
         steps = [
             {
                 'id': 'public_theme',
@@ -111,6 +111,40 @@ class OnboardingContextService:
         ]
 
         if is_authenticated:
+            if dynamic_url.get('public_soundboard'):
+                if dynamic_url.get('can_propose_playlist'):
+                    steps.append(
+                        {
+                            'id': 'private_propose_playlist',
+                            'selector': '[data-shepherd="propose-playlist"]',
+                            'position': 'bottom',
+                            'title': _('onboarding.private.propose_playlist.title'),
+                            'description': _('onboarding.private.propose_playlist.description'),
+                            'redirect_url': None,
+                        }
+                    )
+
+                steps.extend(
+                    [
+                        {
+                            'id': 'private_share_listening',
+                            'selector': '[data-shepherd="share-listening"]',
+                            'position': 'bottom',
+                            'title': _('onboarding.private.share_listening.title'),
+                            'description': _('onboarding.private.share_listening.description'),
+                            'redirect_url': None,
+                        },
+                        {
+                            'id': 'public_playing_monitor',
+                            'selector': '[data-shepherd="playing-monitor"]',
+                            'position': 'bottom',
+                            'title': _('onboarding.public.playing_monitor.title'),
+                            'description': _('onboarding.public.playing_monitor.description'),
+                            'redirect_url': None,
+                        },
+                    ]
+                )
+
             steps.extend(
                 [
                     {
@@ -182,12 +216,21 @@ class OnboardingContextService:
 
         return steps
 
-    def _create_dynamic_url(self) -> dict:
-        soundboard = SoundBoardRepository().get_public_not_banned_with_min_tracks(minimum_tracks=5)
+    def _create_dynamic_url(self, is_authenticated: bool) -> dict:
+        repository = SoundBoardRepository()
+        soundboard = repository.get_public_not_banned_with_min_tracks(
+            minimum_tracks=5,
+            exclude_owner_id=self.request.user.id if is_authenticated else None,
+        )
+
+        if not soundboard and is_authenticated:
+            soundboard = repository.get_public_not_banned_with_min_tracks(minimum_tracks=5)
+
         if soundboard:
             public_soundboard = reverse('publicReadSoundboard', kwargs={'soundboard_uuid': soundboard.uuid})
         else:
             public_soundboard = None
         return {
             'public_soundboard': public_soundboard,
+            'can_propose_playlist': bool(soundboard and soundboard.user_id != getattr(self.request.user, 'id', None)),
         }

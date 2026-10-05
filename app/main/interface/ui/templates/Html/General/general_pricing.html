@@ -121,12 +121,10 @@
                             <strong>{% trans "template.pricing.features.share" %}</strong> {% trans "template.pricing.features.shared_listening" %}
                             <span class="tex-info info-bulle" data-bs-toggle="tooltip" data-bs-title="{% trans "template.generalPricing.shared_playlist_playable_by_shared_user.tooltip" %}">ⓘ</span>
                         </li>
-                        {% if tier_data.limits.shared_playlist_playable_by_shared_user %}
                         <li class="mb-1">
                             <i class="fa-solid fa-users text-primary me-2"></i>
                             {% trans "template.pricing.features.player_interactions" %} <strong>{% trans "template.pricing.features.player_interactions.enabled" %}</strong> {% trans "template.pricing.features.player_interactions.on_shared" %}
                         </li>
-                        {% endif %}
                         {% if tier_data.limits.get_statistics_from_public %}
                         <li class="mb-1">
                             <i class="fa-solid fa-chart-line text-primary me-2"></i>

@@ -71,12 +71,12 @@ describe('ProposePlaylistToSoundboard', () => {
 
         const failedProposal = document.querySelector<HTMLButtonElement>('[data-url-propose="/propose-fail"]')!;
         failedProposal.click();
-        await vi.waitFor(() => expect(proposalMocks.notify).toHaveBeenCalledWith({ message: 'Not allowed', type: 'error' }));
+        await vi.waitFor(() => expect(proposalMocks.notify).toHaveBeenCalledWith({ message: 'Not allowed', type: 'danger' }));
         expect(failedProposal.disabled).toBe(false);
 
         const statusButton = document.querySelector<HTMLButtonElement>('.proposal-withdraw-btn')!;
         statusButton.click();
-        await vi.waitFor(() => expect(proposalMocks.notify).toHaveBeenCalledWith({ message: 'Cannot withdraw', type: 'error' }));
+        await vi.waitFor(() => expect(proposalMocks.notify).toHaveBeenCalledWith({ message: 'Cannot withdraw', type: 'danger' }));
         expect(statusButton.disabled).toBe(false);
     });
 });

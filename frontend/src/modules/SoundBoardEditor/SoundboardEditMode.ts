@@ -144,7 +144,7 @@ class SoundboardEditMode {
                 });
             })
             .catch(() => {
-                Notification.createClientNotification({ message: 'Impossible de charger le mode édition', type: 'error' });
+                Notification.createClientNotification({ message: 'Impossible de charger le mode édition', type: 'danger' });
             });
     }
 
@@ -208,14 +208,14 @@ class SoundboardEditMode {
 
                 Notification.createClientNotification({
                     message: data.error || 'Une erreur est survenue',
-                    type: 'error'
+                    type: 'danger'
                 });
                 submitBtn.disabled = false;
             })
             .catch(() => {
                 Notification.createClientNotification({
                     message: 'Erreur de communication avec le serveur',
-                    type: 'error'
+                    type: 'danger'
                 });
                 submitBtn.disabled = false;
             });
@@ -319,7 +319,7 @@ class SoundboardEditMode {
                 this.bindFiltersInContainer(container, onFiltersChange);
             })
             .catch(() => {
-                Notification.createClientNotification({ message: errorMessage, type: 'error' });
+                Notification.createClientNotification({ message: errorMessage, type: 'danger' });
             });
     }
 
@@ -394,14 +394,14 @@ class SoundboardEditMode {
 
                 Notification.createClientNotification({
                     message: data.error || 'Une erreur est survenue',
-                    type: 'error'
+                    type: 'danger'
                 });
                 button.disabled = false;
             })
             .catch(() => {
                 Notification.createClientNotification({
                     message: 'Erreur de communication avec le serveur',
-                    type: 'error'
+                    type: 'danger'
                 });
                 button.disabled = false;
             });

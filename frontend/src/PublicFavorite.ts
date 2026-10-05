@@ -1,4 +1,5 @@
 import Csrf from "./modules/General/Csrf";
+import ConsoleTraceServeur from "@/modules/General/ConsoleTraceServeur";
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -14,9 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 class PublicFavorite {
-    element : HTMLInputElement
-    url : string
-    
+    element: HTMLInputElement
+    url: string
+
     constructor(el: HTMLInputElement) {
         this.element = el
         this.url = el.dataset.url!
@@ -32,16 +33,18 @@ class PublicFavorite {
 
     private saveData() {
         let method = 'POST';
-        if(!this.element.checked){// invert because input already checked before event
+        if (!this.element.checked) {// invert because input already checked before event
             method = 'DELETE';
         }
-        
+
         fetch(this.url, {
             method: method,
             headers: {
                 'X-CSRFToken': Csrf.getToken()!,
             },
-        })
+        }).catch((error) => {
+            ConsoleTraceServeur.error('Failed to toggle favorite:', error);
+        });
 
     }
 

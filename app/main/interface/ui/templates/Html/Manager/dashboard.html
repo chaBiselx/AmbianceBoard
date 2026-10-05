@@ -86,6 +86,29 @@
                     </div>
                 </div>
             </div>
+            <section class="col-12 my-4" aria-labelledby="home-share-title">
+                <h5 id="home-share-title">Lien de partage de l'accueil</h5>
+                <div class="row g-3">
+                    <div class="col-12 col-lg-4">
+                        <label for="home-share-source" class="form-label">Source UTM</label>
+                        <select id="home-share-source" class="form-select" data-home-url="{{ home_share_base_url }}" {% if not existing_utm_sources %}disabled{% endif %}>
+                            <option value="">{% if existing_utm_sources %}Choisir une source{% else %}Aucune source UTM disponible{% endif %}</option>
+                            {% for source in existing_utm_sources %}
+                            <option value="{{ source }}">{{ source }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12 col-lg-8">
+                        <label for="home-share-url" class="form-label">Lien de partage</label>
+                        <div class="input-group">
+                            <input id="home-share-url" type="text" class="form-control" readonly >
+                            <button id="home-share-copy" type="button" class="btn btn-outline-primary share-link-btn" aria-label="Copier le lien" title="Copier le lien" disabled>
+                                <i class="fa-solid fa-copy" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <div class="col-12 col-md-6">
                 <div class="card">
                     <div class="card-header">

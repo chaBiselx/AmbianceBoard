@@ -164,6 +164,12 @@ export class OnboardingShepherd {
         if (this.shepherd && this.config) {
             const currentStep = this.config.steps[stepIndex];
             if (currentStep?.redirectUrl) {
+                const targetUrl = new URL(currentStep.redirectUrl, globalThis.location.href);
+                if (targetUrl.pathname === globalThis.location.pathname) {
+                    this.shepherd.show(stepIndex);
+                    return;
+                }
+
                 // Marquer l'étape précédente comme complétée
                 if (stepIndex > 0) {
                     this.markAsCompleted(this.config.steps[stepIndex - 1].id);

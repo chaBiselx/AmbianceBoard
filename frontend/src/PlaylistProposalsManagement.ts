@@ -38,12 +38,12 @@ class PlaylistProposalsManagement {
                     const card = button.closest('[id^="proposal-card-"]');
                     card?.remove();
                 } else {
-                    Notification.createClientNotification({ message: data.error || 'Une erreur est survenue', type: 'error' });
+                    Notification.createClientNotification({ message: data.error || 'Une erreur est survenue', type: 'danger' });
                     button.removeAttribute('disabled');
                 }
             })
             .catch(() => {
-                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'error' });
+                Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' });
                 button.removeAttribute('disabled');
             });
     }

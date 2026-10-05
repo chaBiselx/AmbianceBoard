@@ -33,7 +33,7 @@ def settings_index(request):
     app_setting = {
         'target_bitrate': Settings.get('AUDIO_BITRATE_REDUCER_TARGET_BITRATE')
     }
-    return render(request, 'Html/Account/Settings/index.html', {'limit': limit, 'user_tiers': user_tiers, 'nb_playlist': nb_playlist, 'nb_soundboard': nb_soundboard, 'app_setting': app_setting, 'title': 'Récapitulatif de votre compte'})
+    return render(request, 'Html/Account/Settings/index.html', {'limit': limit, 'user_tiers': user_tiers, 'nb_playlist': nb_playlist, 'nb_soundboard': nb_soundboard, 'app_setting': app_setting})
 
 @login_required
 @require_http_methods(['POST', 'GET'])

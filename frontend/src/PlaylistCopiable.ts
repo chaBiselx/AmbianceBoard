@@ -90,7 +90,7 @@ class PlaylistCopiable {
                     }
                 } else if (data.error) {
                     // Gérer les différents types d'erreurs selon le status code
-                    let notificationType: 'error' | 'warning' = 'error';
+                    let notificationType: 'danger' | 'warning' = 'danger';
 
                     if (status === 409) { // Playlist déjà dupliquée
                         notificationType = 'warning';
@@ -103,7 +103,7 @@ class PlaylistCopiable {
                 } else {
                     Notification.createClientNotification({
                         message: 'Une erreur inattendue est survenue',
-                        type: 'error'
+                        type: 'danger'
                     });
                 }
             })
@@ -111,7 +111,7 @@ class PlaylistCopiable {
                 console.error('Error duplicating playlist:', error);
                 Notification.createClientNotification({
                     message: 'Erreur de communication avec le serveur',
-                    type: 'error'
+                    type: 'danger'
                 });
             });
     }

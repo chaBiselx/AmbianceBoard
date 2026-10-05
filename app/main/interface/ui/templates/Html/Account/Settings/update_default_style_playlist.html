@@ -1,4 +1,5 @@
 {% extends 'Html/partial/structure/base.html' %}
+{% load i18n %}
 {% load PlaylistEnum %}
 
 {% block content %}
@@ -9,9 +10,9 @@
         <thead>
             <tr>
                 <th class="d-none"> input typePlaylist</th>
-                <th>Type de boutons</th>
-                <th>Couleur</th>
-                <th>Couleur du texte</th>
+                <th>{% trans "template.account.settings.playlist_style.type" %}</th>
+                <th>{% trans "template.account.settings.playlist_style.background_color" %}</th>
+                <th>{% trans "template.account.settings.playlist_style.text_color" %}</th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +29,7 @@
             {% endfor %}
         </tbody>
     </table>
-    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    <button type="submit" class="btn btn-primary">{% trans "template.account.settings.playlist_style.save" %}</button>
 
     {% if formset.errors %}
     <ul>

@@ -1,5 +1,6 @@
 {% extends 'Html/partial/structure/base.html' %}
 
+{% load i18n %}
 {% load FrontJs %}
 {% load static %}
 
@@ -15,14 +16,14 @@
     <div class="col-12 col-sm-6">
         <div class="card">
             <div class="card-header">
-                <h5>Soundboard</h5>
+                <h5>{% trans "template.account.settings.dimensions.soundboard" %}</h5>
 
             </div>
             <div class="card-body">
                 <div class="row block-soundboard block-update" data-url="{% url 'updateSoundboardDim' %}" data-type="soundboard">
                     <div class="col-xl-6 col-lg-8 col-12">
                         <button class="soundboard-element soundboard-dim-{{ soundboard_dim }} m-1 " id="demo-soundboard" style="background-color: red;color: #000;">
-                            lorem
+                            {% trans "template.account.settings.dimensions.preview" %}
                         </button>
                     </div>
                     <div class="col-xl-3 col-lg-2 col-6">
@@ -45,13 +46,13 @@
     <div class="col-12 col-sm-6">
         <div class="card">
             <div class="card-header">
-                <h5>Boutons</h5>
+                <h5>{% trans "template.account.settings.dimensions.buttons" %}</h5>
             </div>
             <div class="card-body">
                 <div class="row block-playlist block-update" data-url="{% url 'updatePlaylistDim' %}" data-type="playlist">
                     <div class="col-xl-6 col-lg-8 col-12">
                         <div class="playlist-element playlist-dim-{{ playlist_dim }} m-1" id="demo-playlist" style="background-color: red;color: #000;">
-                            lorem
+                            {% trans "template.account.settings.dimensions.preview" %}
                         </div>
                     </div>
                     <div class="col-xl-3 col-lg-2 col-6">
