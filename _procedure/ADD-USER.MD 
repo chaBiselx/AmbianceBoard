@@ -9,25 +9,95 @@ sudo adduser --disabled-password --gecos "" user_ansible
 il est possible de voir si un utilisateur est créé via 
 ```
 cat /etc/passwd | grep user_ansible
+
 ```
+
+### Activation du MFA (TOTP) pour SSH
+
+Réf : https://ubuntu.com/tutorials/configure-ssh-2fa
+
+> ⚠️ Garder une session SSH ouverte pendant toute la procédure et tester dans un second terminal.
+
+Installer la librairie
+```
+sudo apt install libpam-google-authenticator
+```
+
+Configurer le TOTP avec l'utilisateur cible (avant de modifier sshd)
+```
+google-authenticator
+```
+Réponses :
+- Make tokens "time-based" : `yes`
+- Update the ~/.google_authenticator file : `yes`
+- Disallow multiple uses : `yes`
+- Increase the original generation time window : `no`
+- Enable rate-limiting : `yes`
+
+Scanner le QR code dans l'application TOTP, puis enregistrer la clé secrète
+et les codes de secours dans un coffre-fort numérique.
+
+Configurer PAM
+```
+sudo vi /etc/pam.d/sshd
+```
+Commenter :
+```
+# @include common-auth
+```
+et jouter :
+```
+auth required pam_google_authenticator.so
+```
+(Attention : plus de connexion par mot de passe via PAM pour les autres utilisateurs.)
+
+```
+sudo vi /etc/ssh/sshd_config
+```
+Vérifier / ajouter :
+```
+ChallengeResponseAuthentication no 
+
+Match User user_account
+    PasswordAuthentication no
+    KbdInteractiveAuthentication yes
+    PubkeyAuthentication yes
+    AuthenticationMethods publickey,keyboard-interactive
+```
+
+
+Se connecter avec l'utilisateur cible : 
+```
+google-authenticator
+```
+
+Valider et recharger
+```
+sudo sshd -t && sudo systemctl restart ssh
+```
+
+ Tester dans un nouveau terminal
+Attendu : passphrase de la clé, puis code TOTP.
 
 ### création d'un groupe et ajout au groupe 
 
 ```
-sudo groupadd automaton
-sudo usermod -aG automaton user_ansible 
+sudo groupadd external_automaton
+sudo usermod -aG external_automaton user_ansible 
 ```
+
+Pour voir tous les group `cat /etc/group`
 
 `-aG` permet permet d'ajouter le groupe sans supprimer les autres appartenances de l'utilisateur.
 
+TODO
 
-
-
+Pour mettre sudoer `usermod -aG sudo user_ansible`
 ### accorder les droits moindre privilège 
 
 https://blog.stephane-robert.info/docs/admin-serveurs/linux/securiser/sudo/
 
-TODO
+TODO 
 
 ## Mise en place du SSH 
 
@@ -56,7 +126,7 @@ Recuperer la clé publiqe :
 cat ~/.ssh/id_ed25519_ambianceboard_ansible.pub
 ```
 
-Ajouter aux clé autorisé
+Ajouter aux clé autorisé sur le serveur cible
 ```
 mkdir -p /home/user_ansible/.ssh 
 echo "##CONTENU_CAT##" >> /home/user_ansible/.ssh/authorized_keys 
@@ -71,7 +141,7 @@ sudo vi /etc/ssh/sshd_config
 
 et ajouter 
 ```
-Match User user_ansible
+Match User user_admin
     PasswordAuthentication no
     KbdInteractiveAuthentication no
     PubkeyAuthentication yes
