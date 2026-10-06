@@ -541,6 +541,10 @@ Corrections
 - Rollback Docker digest update
 
 ### 0.5.11 - 2026/10
+
+Modifications
+- Refonte de la partie de la partie dynamique des formulaires pour les boutons  
+
 Corrections
 - Corrections erreurs 500
 
