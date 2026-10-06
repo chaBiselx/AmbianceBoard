@@ -108,5 +108,5 @@ class LogRequestsMiddleware:
 
         except Exception as e:
             # Gestion des erreurs sans exposer de détails sensibles
-            logging.error(f"Erreur dans le middleware de logging {e}")
+            # logging.error(f"Erreur dans le middleware de logging {e}")
             return self.get_response(request)
