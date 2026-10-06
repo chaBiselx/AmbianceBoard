@@ -25,6 +25,11 @@ Pour voir tous les group `cat /etc/group`
 
 Pour mettre sudoer `usermod -aG sudo user_ansible`
 
+Vérification 
+```
+id user_ansible
+```
+
 
 ## Mise en place du SSH 
 
@@ -76,7 +81,6 @@ Match User user_admin
     AllowAgentForwarding no
     AllowTcpForwarding no
     X11Forwarding no
-    PermitTTY no
 ```
 
 recharger sshd
