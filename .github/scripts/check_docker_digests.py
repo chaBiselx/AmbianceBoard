@@ -91,8 +91,14 @@ def crane_digest(image_tag: str) -> str | None:
 
 
 def update_file(filepath: Path, old_sha: str, new_sha: str) -> None:
-    content = filepath.read_text()
-    filepath.write_text(content.replace(old_sha, new_sha))
+    resolved_path = filepath.resolve()
+    try:
+        resolved_path.relative_to(REPO_ROOT.resolve())
+    except ValueError as exc:
+        raise ValueError(f"Refusing to update file outside repository: {filepath}") from exc
+
+    content = resolved_path.read_text()
+    resolved_path.write_text(content.replace(old_sha, new_sha))
 
 
 def write_output(key: str, value: str) -> None:

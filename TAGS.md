@@ -548,6 +548,8 @@ Modifications
 Corrections
 - Corrections erreurs 500
 
+Fiabilité & Confiance
+- Amélioration de la sécu dans la chaine CI/CD 
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
