@@ -5,6 +5,7 @@ Enregistre toutes les requêtes avec des identifiants uniques
 pour faciliter le débogage et le monitoring de l'application.
 """
 
+import logging
 from typing import Callable, Any, Dict
 from django.http import HttpRequest, HttpResponse
 import uuid
@@ -108,5 +109,5 @@ class LogRequestsMiddleware:
 
         except Exception as e:
             # Gestion des erreurs sans exposer de détails sensibles
-            # logging.error(f"Erreur dans le middleware de logging {e}")
+            logging.error(f"Erreur dans le middleware de logging {e}")
             return self.get_response(request)

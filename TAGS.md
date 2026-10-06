@@ -540,6 +540,10 @@ Corrections
 - Corrections des notifications qui était n'avait pas toujours le bon type/couleur*
 - Rollback Docker digest update
 
+### 0.5.11 - 2026/10
+Corrections
+- Corrections erreurs 500
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
