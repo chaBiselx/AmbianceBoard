@@ -547,6 +547,7 @@ Modifications
 
 Corrections
 - Corrections erreurs 500
+- Lorsque que l'un utilisateur chargait un gros fichier et que l'erreur s'affichais, la modal Wait etait toujours active
 
 Fiabilité & Confiance
 - Amélioration de la sécu dans la chaine CI/CD 

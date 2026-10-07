@@ -25,9 +25,11 @@ export function renderPlaylistPreview(doc: Document = document): void {
     if (iconInput?.files?.[0]) {
         const reader = new FileReader();
         reader.addEventListener('load', () => {
+            if (typeof reader.result !== 'string') return;
+
             const image = doc.createElement('img');
             image.className = 'playlist-img';
-            image.src = reader.result?.toString() || '';
+            image.src = reader.result;
             demo.replaceChildren(image);
         });
         reader.readAsDataURL(iconInput.files[0]);
