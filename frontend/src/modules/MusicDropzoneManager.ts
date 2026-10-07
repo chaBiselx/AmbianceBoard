@@ -53,6 +53,7 @@ export class MusicDropzoneManager {
                 this.handleUploadSuccess(files, response);
             },
             onUploadError: (files: DropZoneFileList, error: any) => {
+                ModalCustom.hide();
                 this.handleUploadError(files, error);
             }
         };
