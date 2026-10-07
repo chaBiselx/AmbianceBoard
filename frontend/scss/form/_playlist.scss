@@ -2,6 +2,16 @@
     width: 40px;
 }
 
+.player-custom-small .btn-group-player button {
+    width: 30px;
+    padding: 0px;
+}
+
+.player-custom-small .timer {
+    font-size: 0.75rem;
+}
+
+
 :root {
     --fade-preview-bg: #f8f9fa;
     --fade-preview-axis: #ced4da;

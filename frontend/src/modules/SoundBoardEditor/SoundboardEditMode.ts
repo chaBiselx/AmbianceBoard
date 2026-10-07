@@ -7,6 +7,7 @@ import { MixerManager } from '@/modules/MixerManager';
 import { PaginationManager } from '@/modules/PaginationManager';
 import FilterFormAjaxManager from '@/modules/Filter/FilterFormAjaxManager';
 import PaginationAjaxManager from '@/modules/Filter/PaginationAjaxManager';
+import { PlayerCustom, PlayerCustomFactory } from '@/modules/Audio/PlayerCustom';
 
 
 class SoundboardEditMode {
@@ -18,6 +19,10 @@ class SoundboardEditMode {
     private buttonAction: HTMLButtonElement | null = null;
     private readonly id_section_add_button: string = 'soundboard-add-section-button';
     private activeAddZone: HTMLElement | null = null;
+    private previewPlayers: PlayerCustom[] = [];
+    private activePreview: PlayerCustom | null = null;
+    private previewListeners: AbortController | null = null;
+    private previewRequestVersion = 0;
 
     public addEvent(): void {
         this.buttonAction = document.getElementById('btn-soundboard-edit-mode') as HTMLButtonElement | null;
@@ -129,7 +134,10 @@ class SoundboardEditMode {
                 'X-CSRFToken': Csrf.getToken()!
             }
         })
-            .then(response => response.text())
+            .then(response => {
+                if (response.redirected || response.ok === false) throw new Error('Panel unavailable');
+                return response.text();
+            })
             .then((body) => {
                 ModalCustom.show({
                     title: "Ajouter un bouton",
@@ -137,6 +145,7 @@ class SoundboardEditMode {
                     footer: "",
                     width: "lg",
                     callback: () => {
+                        this.bindCommunityPreviewLifecycle();
                         this.bindCreateForm();
                         this.loadPlaylistList();
                         this.loadMyPlaylistList();
@@ -255,12 +264,57 @@ class SoundboardEditMode {
         }
     }
 
+    private bindCommunityPreviewLifecycle(): void {
+        this.disposeCommunityPreview();
+        this.previewListeners?.abort();
+        this.previewListeners = new AbortController();
+        const options = { signal: this.previewListeners.signal };
+        const modal = document.getElementById('mainModal');
+        modal?.addEventListener('hide.bs.modal', () => {
+            this.disposeCommunityPreview();
+            this.previewListeners?.abort();
+            this.previewListeners = null;
+        }, options);
+        modal?.addEventListener('hide.bs.tab', () => this.stopCommunityPreview(), options);
+        modal?.addEventListener('hide.bs.collapse', (event) => {
+            if (!(event.target instanceof HTMLElement) || !event.target.matches('.community-track-list')) return;
+            const list = event.target;
+            for (const player of this.previewPlayers) {
+                if (list.contains(player.divPlayer)) player.stop(true);
+            }
+        }, options);
+    }
+
+    private initializeCommunityPreview(): void {
+        const container = document.getElementById('soundboard-edit-playlist-list-container');
+        if (!container) return;
+        this.previewPlayers = PlayerCustomFactory.create(container, (player) => {
+            if (this.activePreview !== player) this.activePreview?.stop(true);
+            this.activePreview = player;
+        });
+    }
+
+    private stopCommunityPreview(): void {
+        for (const player of this.previewPlayers) player.stop(true);
+        this.activePreview = null;
+    }
+
+    private disposeCommunityPreview(): void {
+        this.previewRequestVersion++;
+        for (const player of this.previewPlayers) player.destroy();
+        this.previewPlayers = [];
+        this.activePreview = null;
+    }
+
     private loadPlaylistList(page = 1): void {
         this.loadListInContainer(
             'soundboard-edit-playlist-list-container',
             page,
             this.playlistListFilters,
-            () => this.bindDuplicateButtons(),
+            () => {
+                this.bindDuplicateButtons();
+                this.initializeCommunityPreview();
+            },
             (p) => this.loadPlaylistList(p),
             (filters) => {
                 this.playlistListFilters = filters;
@@ -300,6 +354,10 @@ class SoundboardEditMode {
         const url = container.dataset.urlList;
         if (!url) return;
 
+        const isCommunityList = containerId === 'soundboard-edit-playlist-list-container';
+        if (isCommunityList) this.stopCommunityPreview();
+        const requestVersion = isCommunityList ? ++this.previewRequestVersion : 0;
+
         const fetchUrl = new URL(url, globalThis.location.origin);
         fetchUrl.searchParams.set(PaginationManager.getParameterName(), page.toString());
         for (const [key, value] of Object.entries(filters)) {
@@ -311,8 +369,13 @@ class SoundboardEditMode {
             method: 'GET',
             headers: { 'X-CSRFToken': Csrf.getToken()! },
         })
-            .then(response => response.text())
+            .then(response => {
+                if (response.redirected || response.ok === false) throw new Error('List unavailable');
+                return response.text();
+            })
             .then(html => {
+                if (!container.isConnected || (isCommunityList && requestVersion !== this.previewRequestVersion)) return;
+                if (isCommunityList) this.disposeCommunityPreview();
                 container.innerHTML = html;
                 onLoaded();
                 this.bindPaginationInContainer(container, onPageChange);
@@ -353,6 +416,7 @@ class SoundboardEditMode {
     private duplicatePlaylist(button: HTMLButtonElement): void {
         const url = button.dataset.urlDuplication;
         if (!url) return;
+        this.stopCommunityPreview();
         this.postPlaylistAction(url, button);
     }
 

@@ -21,6 +21,23 @@ class MusicServiceTest(TestCase):
         self.music = self._create_test_music(self.playlist)
         self.other_music = self._create_test_music(self.other_playlist)
 
+    def test_get_community_track_checks_playlist_sharing_and_track_membership(self):
+        request = self.factory.get('/')
+        request.user = self.user
+        service = MusicService(request)
+        self.other_playlist.is_copiable = True
+        self.other_playlist.moderator_ban_copie = False
+        self.other_playlist.save()
+        track = self.other_music[0]
+        self.assertEqual(service.get_community_track(self.other_playlist.uuid, track.id).id, track.id)
+        self.assertIsNone(service.get_community_track(self.other_playlist.uuid, self.music[0].id))
+        self.assertIsNone(service.get_community_track(self.playlist.uuid, self.music[0].id))
+        self.other_playlist.moderator_ban_copie = True
+        self.other_playlist.save()
+        self.assertIsNone(service.get_community_track(self.other_playlist.uuid, track.id))
+        self.other_playlist.delete()
+        self.assertIsNone(service.get_community_track(2, track.id))
+
     def _create_user(self, username):
         return User.objects.create_user(
             username=username, 

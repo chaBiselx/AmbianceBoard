@@ -3,6 +3,8 @@ Test d'intégration pour la route: soundboardEditModePlaylistList (GET /soundBoa
 """
 from django.test import tag
 from django.urls import reverse
+from django.http import StreamingHttpResponse
+from unittest.mock import patch
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.Track import Track
@@ -64,6 +66,31 @@ class SoundboardEditModePlaylistListRouteTest(AuthenticatedTestCase):
         content = response.content.decode('utf-8')
         self.assertNotIn(self.not_copiable_playlist.name, content)
 
+    def test_preview_lists_tracks_collapsed_without_audio_source(self):
+        self.login()
+        response = self.client.get(self._url())
+        self.assertContains(response, 'class="collapse community-track-list"')
+        self.assertContains(response, 'aria-expanded="false"')
+        self.assertContains(response, '<div class="small text-break">Track</div>', html=True)
+        self.assertContains(response, 'data-url="' + self._stream_url() + '"')
+        self.assertContains(response, '<audio preload="none" class="music-player d-none"></audio>', html=True)
+
+    def test_preview_tracks_are_preloaded_with_subtypes(self):
+        from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
+        with self.assertNumQueries(2):
+            playlists = list(PlaylistRepository().get_copiable_playlists_for_soundboard(self.user, {}))
+            self.assertEqual(playlists[0].preview_tracks[0].get_name(), 'Track')
+
+    def test_my_playlists_do_not_get_community_preview(self):
+        self.login()
+        playlist = self.create_playlist(name='My own playlist', typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name)
+        Track.objects.create(playlist=playlist, alternativeName='My own track')
+        url = reverse('soundboardEditModeMyPlaylistList', kwargs={'soundboard_uuid': self.soundboard.uuid})
+        response = self.client.get(url)
+        self.assertContains(response, playlist.name)
+        self.assertNotContains(response, 'community-track-list')
+        self.assertNotContains(response, 'soundboardEditModeCommunityTrackStream')
+
     def test_type_filter_is_applied(self):
         self.login()
         response = self.client.get(self._url(), {'playlistType': PlaylistTypeEnum.PLAYLIST_TYPE_AMBIENT.value})
@@ -74,3 +101,69 @@ class SoundboardEditModePlaylistListRouteTest(AuthenticatedTestCase):
         self.login()
         response = self.client.get(self._url(), {'page': 1})
         self.assertEqual(response.status_code, 200)
+
+    def _stream_url(self, playlist=None, music_id=None, soundboard=None):
+        playlist = playlist or self.copiable_playlist
+        return reverse('soundboardEditModeCommunityTrackStream', kwargs={
+            'soundboard_uuid': (soundboard or self.soundboard).uuid,
+            'playlist_uuid': playlist.uuid,
+            'music_id': music_id or playlist.tracks.first().id,
+        })
+
+    def test_preview_stream_requires_current_authentication(self):
+        for method in (self.client.get, self.client.head):
+            self.assertEqual(method(self._stream_url()).status_code, 302)
+        self.login()
+        self.client.logout()
+        self.assertEqual(self.client.get(self._stream_url()).status_code, 302)
+
+    @patch.object(Track, 'get_reponse_content')
+    def test_preview_stream_returns_audio_for_authenticated_owner(self, mock_content):
+        self.login()
+        mock_content.return_value = StreamingHttpResponse([b'audio'], content_type='audio/mpeg')
+        response = self.client.get(self._stream_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(b''.join(response.streaming_content), b'audio')
+        self.assertEqual(response['Cache-Control'], 'private, no-store')
+        mock_content.assert_called_once()
+
+    @patch.object(Track, 'get_reponse_content')
+    def test_preview_head_does_not_load_audio(self, mock_content):
+        self.login()
+        response = self.client.head(self._stream_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b'')
+        self.assertEqual(response['Cache-Control'], 'private, no-store')
+        mock_content.assert_not_called()
+
+    @patch.object(Track, 'get_reponse_content')
+    def test_preview_rejects_private_banned_and_foreign_tracks(self, mock_content):
+        self.login()
+        self.assertEqual(self.client.get(self._stream_url(self.not_copiable_playlist)).status_code, 404)
+        foreign_track = self.not_copiable_playlist.tracks.first()
+        self.assertEqual(self.client.get(self._stream_url(music_id=foreign_track.id)).status_code, 404)
+        self.copiable_playlist.moderator_ban_copie = True
+        self.copiable_playlist.save()
+        for method in (self.client.get, self.client.head):
+            self.assertEqual(method(self._stream_url()).status_code, 404)
+        mock_content.assert_not_called()
+
+    @patch.object(Track, 'get_reponse_content')
+    def test_preview_rejects_other_users_soundboard_and_missing_resources(self, mock_content):
+        self.login()
+        other_board = self.create_soundboard(user=self.other_user)
+        self.assertEqual(self.client.get(self._stream_url(soundboard=other_board)).status_code, 404)
+        self.assertEqual(self.client.get(self._stream_url(music_id=999999)).status_code, 404)
+        url = self._stream_url()
+        self.copiable_playlist.delete()
+        self.assertEqual(self.client.get(url).status_code, 404)
+        mock_content.assert_not_called()
+
+    @patch.object(Track, 'get_reponse_content', side_effect=ValueError('Unavailable'))
+    def test_preview_handles_unavailable_audio(self, mock_content):
+        self.login()
+        self.assertEqual(self.client.get(self._stream_url()).status_code, 404)
+
+    def test_preview_rejects_post(self):
+        self.login()
+        self.assertEqual(self.client.post(self._stream_url()).status_code, 405)

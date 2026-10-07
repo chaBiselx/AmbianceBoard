@@ -1,10 +1,11 @@
 {% load Playlist %}
 {% load PlaylistEnum %}
+{% load i18n %}
 
 
 <div class="border rounded m-1 h-100 row">
     <div class="col-12">
-        <div class="float-end"><small>{{ playlist.tracks.count}} <i class="fa-solid fa-music"></i></small></div>
+        <div class="float-end"><small>{{ playlist.tracks_count }} <i class="fa-solid fa-music"></i></small></div>
         <div class="fw-bold">{{ playlist.name }}</div>
         <div class="small text-muted"> {{ playlist.typePlaylist|to_value }}</div>
     </div>
@@ -24,4 +25,23 @@
         </button>
         {% endif %}
     </div>
+    {% if type_import == "duplicate" %}
+    <div class="col-12 mt-2 pb-2">
+        <button type="button" class="btn btn-outline-secondary btn-sm btn-block collapsed" data-bs-toggle="collapse" data-bs-target="#community-tracks-{{ playlist.uuid }}" aria-expanded="false" aria-controls="community-tracks-{{ playlist.uuid }}">
+            <i class="fa-solid fa-headphones" aria-hidden="true"></i> {% trans "Sounds" %}
+        </button>
+        <div id="community-tracks-{{ playlist.uuid }}" class="collapse community-track-list">
+            {% for track in playlist.preview_tracks %}
+            <div class="mt-2">
+                <div class="small text-break">{{ track.get_name }}</div>
+                <div class="player-custom player-custom-small" data-url="{% url 'soundboardEditModeCommunityTrackStream' soundboard.uuid playlist.uuid track.id %}" data-play-label="{% trans 'Play / pause' %}" data-restart-label="{% trans 'Restart' %}" data-seek-label="{% trans 'Seek' %}">
+                    <audio preload="none" class="music-player d-none"></audio>
+                </div>
+            </div>
+            {% empty %}
+            <div class="small text-muted mt-2">{% trans "No sounds available" %}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </div>

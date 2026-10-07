@@ -542,6 +542,9 @@ Corrections
 
 ### 0.5.11 - 2026/10
 
+Nouveautés
+- Pouvoir avoir une ecoute des sons en Edit mode pour les boutons partageable par la communauté
+
 Modifications
 - Refonte de la partie de la partie dynamique des formulaires pour les boutons  
 

@@ -169,6 +169,19 @@ class PlaylistRepositoryTest(TestCase):
         self.assertNotIn(self.playlist_music.id, result_ids)
         self.assertIn(self.playlist_ambient.id, result_ids)
 
+    def test_get_user_playlists_not_in_soundboard_counts_and_prefetches_tracks(self):
+        Track.objects.create(playlist=self.playlist_music, alternativeName='Second track')
+        with self.assertNumQueries(2):
+            playlists = list(self.repository.get_user_playlists_not_in_soundboard(
+                self.owner, self.soundboard, {'playlistTagLabel': self.tag_music.label},
+            ))
+            self.assertEqual(len(playlists), 1)
+            self.assertEqual(playlists[0].tracks_count, 2)
+            self.assertEqual(
+                [track.get_name() for track in playlists[0].preview_tracks],
+                ['Track music', 'Second track'],
+            )
+
     def test_get_user_playlists_not_in_soundboard_applies_type_filter(self):
         result = self.repository.get_user_playlists_not_in_soundboard(
             self.owner,
