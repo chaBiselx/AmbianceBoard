@@ -10,6 +10,7 @@ from main.domain.common.factory.UserParametersFactory import UserParametersFacto
 from main.domain.common.service.SoundBoardService import SoundBoardService
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 from main.architecture.persistence.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 
 
 class MusicService:
@@ -25,6 +26,12 @@ class MusicService:
             music_id (int): L'ID de la musique à récupérer.
         """
         return self.track_repository.get(music_id=music_id, playlist_uuid=playlist_uuid)    
+
+    def get_community_track(self, playlist_uuid, music_id):
+        playlist = PlaylistRepository().get(playlist_uuid)
+        if not playlist or not playlist.is_copiable or playlist.moderator_ban_copie:
+            return None
+        return self.track_repository.get(music_id=music_id, playlist_uuid=playlist_uuid)
     
         
     def save_form(self, playlist: Playlist, music: Optional[Music] = None) -> Optional[Music]:

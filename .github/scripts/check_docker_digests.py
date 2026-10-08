@@ -22,9 +22,10 @@ FILES_TO_SCAN = [
 ]
 
 # FROM image@sha256:xxx  [AS stage]
-FROM_RE = re.compile(r"^FROM\s+([^@\s]+)@(sha256:[a-f0-9]+)", re.IGNORECASE)
+SHA256_RE = re.compile(r"sha256:[a-f0-9]{64}", re.IGNORECASE)
+FROM_RE = re.compile(r"^FROM\s+([^@\s]+)@(sha256:[a-f0-9]{64})", re.IGNORECASE)
 # image: image@sha256:xxx
-IMAGE_RE = re.compile(r"^\s+image:\s+([^@\s]+)@(sha256:[a-f0-9]+)")
+IMAGE_RE = re.compile(r"^\s+image:\s+([^@\s]+)@(sha256:[a-f0-9]{64})", re.IGNORECASE)
 # standalone comment line
 COMMENT_RE = re.compile(r"^\s*#\s*(.+?)\s*$")
 
@@ -87,12 +88,30 @@ def crane_digest(image_tag: str) -> str | None:
             file=sys.stderr,
         )
         return None
-    return result.stdout.strip()
+    digest = result.stdout.strip()
+    if not SHA256_RE.fullmatch(digest):
+        print(
+            f"  WARNING: crane returned an invalid SHA-256 digest for {image_tag}",
+            file=sys.stderr,
+        )
+        return None
+    return digest
 
 
 def update_file(filepath: Path, old_sha: str, new_sha: str) -> None:
-    content = filepath.read_text()
-    filepath.write_text(content.replace(old_sha, new_sha))
+    if not SHA256_RE.fullmatch(old_sha):
+        raise ValueError("Refusing to update file with an invalid old SHA-256 digest")
+    if not SHA256_RE.fullmatch(new_sha):
+        raise ValueError("Refusing to update file with an invalid new SHA-256 digest")
+
+    resolved_path = filepath.resolve()
+    try:
+        resolved_path.relative_to(REPO_ROOT.resolve())
+    except ValueError as exc:
+        raise ValueError(f"Refusing to update file outside repository: {filepath}") from exc
+
+    content = resolved_path.read_text()
+    resolved_path.write_text(content.replace(old_sha, new_sha))
 
 
 def write_output(key: str, value: str) -> None:

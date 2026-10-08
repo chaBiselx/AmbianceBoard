@@ -5,6 +5,7 @@ Enregistre toutes les requêtes avec des identifiants uniques
 pour faciliter le débogage et le monitoring de l'application.
 """
 
+import logging
 from typing import Callable, Any, Dict
 from django.http import HttpRequest, HttpResponse
 import uuid

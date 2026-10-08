@@ -17,6 +17,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+msgid "Sounds"
+msgstr "Sons"
+
+msgid "Play / pause"
+msgstr "Lire / mettre en pause"
+
+msgid "Restart"
+msgstr "Recommencer"
+
+msgid "Seek"
+msgstr "Position de lecture"
+
+msgid "No sounds available"
+msgstr "Aucun son disponible"
+
 #: main/architecture/contextProcessors/sidebar_processor.py:15
 msgid "Index"
 msgstr "Index"

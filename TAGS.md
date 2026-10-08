@@ -540,6 +540,21 @@ Corrections
 - Corrections des notifications qui était n'avait pas toujours le bon type/couleur*
 - Rollback Docker digest update
 
+### 0.5.11 - 2026/10
+
+Nouveautés
+- Pouvoir avoir une ecoute des sons en Edit mode pour les boutons partageable par la communauté
+
+Modifications
+- Refonte de la partie de la partie dynamique des formulaires pour les boutons  
+
+Corrections
+- Corrections erreurs 500
+- Lorsque que l'un utilisateur chargait un gros fichier et que l'erreur s'affichais, la modal Wait etait toujours active
+- Correction d'un log en erreur coté soundboard partagé 
+
+Fiabilité & Confiance
+- Amélioration de la sécu dans la chaine CI/CD 
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

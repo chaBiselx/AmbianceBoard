@@ -82,6 +82,19 @@ partagee doivent conserver des contrats compatibles entre maitre et joueurs.
 Le temps reel repose sur Django Channels, Daphne et Redis ; son routage est
 defini dans [routing.py](../app/parameters/routing.py).
 
+En mode edition prive, les playlists communautaires proposent une liste de
+pistes repliee par defaut. `SoundboardEditMode` initialise un groupe local de
+`PlayerCustom` : chargement au clic, un seul son de preecoute a la fois, sans
+fondu ni message WebSocket et sans modifier le mix du soundboard. Le repli,
+le changement d'onglet, de filtre ou de page, la copie et la fermeture arretent
+la preecoute ; les lecteurs sont detruits avant remplacement du contenu.
+La route `soundboardEditModeCommunityTrackStream` exige une session authentifiee,
+le droit sur le soundboard cible et une piste appartenant a une playlist
+copiable non bannie. Elle reutilise le streaming des fichiers et liens
+existants, sans exposer leur URL directe dans le template. Cette protection
+ne rend pas prives les liens externes deja publics et ne modifie pas les
+autres routes audio.
+
 Les traductions Django sont conservees dans [locale](../app/locale/).
 Preserver le mecanisme de traduction existant, y compris pour les templates,
 messages et textes utilises par le frontend ; ne pas introduire un second

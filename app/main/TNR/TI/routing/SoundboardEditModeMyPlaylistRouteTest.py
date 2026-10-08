@@ -79,6 +79,12 @@ class SoundboardEditModeMyPlaylistListRouteTest(TestCase):
         content = response.content.decode('utf-8')
         self.assertIn(self.playlist_not_integrated.name, content)
 
+    def test_response_displays_track_count(self):
+        Track.objects.create(playlist=self.playlist_not_integrated, alternativeName='Second track')
+        self.client.login(username='owner', password='pw')
+        response = self.client.get(self._url())
+        self.assertContains(response, '<small>2 <i class="fa-solid fa-music"></i></small>', html=True)
+
     def test_type_filter_is_applied(self):
         self.client.login(username='owner', password='pw')
         response = self.client.get(self._url(), {'playlistType': PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.value})

@@ -243,6 +243,26 @@ def soundboard_edit_mode_playlist_list(request, soundboard_uuid):
 
 
 @login_required
+@require_http_methods(['GET', 'HEAD'])
+def soundboard_edit_mode_community_track_stream(request, soundboard_uuid, playlist_uuid, music_id):
+    if SoundBoardService(request).get_soundboard(soundboard_uuid):
+        track = MusicService(request).get_community_track(playlist_uuid, music_id)
+        if track:
+            if request.method == 'HEAD':
+                response = HttpResponse(content_type='audio/*')
+                response['Cache-Control'] = 'private, no-store'
+                return response
+            try:
+                response = track.get_reponse_content()
+                if response:
+                    response['Cache-Control'] = 'private, no-store'
+                    return response
+            except Exception as _:
+                pass
+    return HttpResponse(status=404)
+
+
+@login_required
 @require_http_methods(['POST'])
 def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_uuid) -> JsonResponse:
     """Duplique une playlist publique et l'ajoute directement au soundboard cible."""

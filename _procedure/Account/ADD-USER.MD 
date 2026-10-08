@@ -9,25 +9,27 @@ sudo adduser --disabled-password --gecos "" user_ansible
 il est possible de voir si un utilisateur est créé via 
 ```
 cat /etc/passwd | grep user_ansible
+
 ```
 
 ### création d'un groupe et ajout au groupe 
 
 ```
-sudo groupadd automaton
-sudo usermod -aG automaton user_ansible 
+sudo groupadd external_automaton
+sudo usermod -aG external_automaton user_ansible 
 ```
+
+Pour voir tous les group `cat /etc/group`
 
 `-aG` permet permet d'ajouter le groupe sans supprimer les autres appartenances de l'utilisateur.
 
+Pour mettre sudoer `usermod -aG sudo user_ansible`
 
+Vérification 
+```
+id user_ansible
+```
 
-
-### accorder les droits moindre privilège 
-
-https://blog.stephane-robert.info/docs/admin-serveurs/linux/securiser/sudo/
-
-TODO
 
 ## Mise en place du SSH 
 
@@ -56,7 +58,7 @@ Recuperer la clé publiqe :
 cat ~/.ssh/id_ed25519_ambianceboard_ansible.pub
 ```
 
-Ajouter aux clé autorisé
+Ajouter aux clé autorisé sur le serveur cible
 ```
 mkdir -p /home/user_ansible/.ssh 
 echo "##CONTENU_CAT##" >> /home/user_ansible/.ssh/authorized_keys 
@@ -71,11 +73,14 @@ sudo vi /etc/ssh/sshd_config
 
 et ajouter 
 ```
-Match User user_ansible
+Match User user_admin
     PasswordAuthentication no
     KbdInteractiveAuthentication no
     PubkeyAuthentication yes
     AuthenticationMethods publickey
+    AllowAgentForwarding no
+    AllowTcpForwarding no
+    X11Forwarding no
 ```
 
 recharger sshd
@@ -91,7 +96,6 @@ ssh -i ~/.ssh/id_ed25519_ambianceboard_ansible user_ansible@X.X.X.X
 ```
 doit fonctionner avec la passphrase
 
-
 ```
 ssh -o PubkeyAuthentication=no user_ansible@X.X.X.X
 ```
@@ -99,3 +103,9 @@ doit être refusé `Permission denied (publickey)`
 
 sinon verifier via `grep -ri "PasswordAuthentication" /etc/ssh/sshd_config /etc/ssh/sshd_config.d/` pour mettre `PasswordAuthentication no`
 puis recharger sshd
+
+### accorder les droits moindre privilège 
+
+https://blog.stephane-robert.info/docs/admin-serveurs/linux/securiser/sudo/
+
+TODO 

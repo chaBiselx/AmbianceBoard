@@ -4,6 +4,7 @@ sudo apt install make
 sudo apt install docker
 sudo apt install ufw
 sudo apt install rsync
+sudo apt install libpam-google-authenticator
 
 cd /srv/www/AmbianceBoard/
 
@@ -75,12 +76,5 @@ docker compose -f docker-compose.prod.yml up
 
 ### suppression des container
 docker rm -f $(docker ps -aq)
-
-
-
-## creation user app
-sudo useradd -M -s /bin/bash ambianceboard-app
-sudo passwd ambianceboard-app
-sudo chown ambianceboard-app:ambianceboard-app /srv/www/AmbianceBoard
 
 

@@ -10,6 +10,11 @@ const editMocks = vi.hoisted(() => ({
     bindPlaylists: vi.fn(),
     initializeMixer: vi.fn(),
     updateWidths: vi.fn(),
+    createPlayers: vi.fn(),
+}));
+
+vi.mock('@/modules/Audio/PlayerCustom', () => ({
+    PlayerCustomFactory: { create: editMocks.createPlayers },
 }));
 
 vi.mock('@/modules/General/Csrf', () => ({ default: { getToken: editMocks.csrf } }));
@@ -62,6 +67,7 @@ describe('SoundboardEditMode AJAX workflow', () => {
     beforeEach(() => {
         vi.clearAllMocks();
         editMocks.csrf.mockReturnValue('csrf-token');
+        editMocks.createPlayers.mockReturnValue([]);
         document.body.innerHTML = `
             <section class="responsive-sections-container" data-soundboard-editable="true">
                 <div class="flex-container">

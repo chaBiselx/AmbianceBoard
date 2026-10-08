@@ -86,6 +86,7 @@ def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id
     cache_key = f"musicStream:{request.session.session_key}:{soundboard_uuid}:{playlist_uuid}:specific:{music_id}"
     
     try:
+        ret = None 
         if request.headers.get('X-Metadata-Only') == 'true':
             track_id = cache.get(cache_key)
             

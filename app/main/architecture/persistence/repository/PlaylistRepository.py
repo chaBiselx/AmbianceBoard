@@ -1,11 +1,12 @@
 from typing import Any, Optional, List
 
-from django.db.models import Avg, Count
+from django.db.models import Avg, Count, Prefetch
 from django.db import models
 from django.db.models import QuerySet
 
 
 from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.Track import Track
 from main.architecture.persistence.models.SoundBoard import SoundBoard
 from main.architecture.persistence.models.SoundboardPlaylist import SoundboardPlaylist
 from main.architecture.persistence.models.PlaylistDuplicationHistory import PlaylistDuplicationHistory
@@ -121,7 +122,11 @@ class PlaylistRepository:
         return self.get_copiable_playlists_excluding_user(user, filter).exclude(
             uuid__in=source_playlist_uuids_already_duplicated
             
-        )
+        ).prefetch_related(Prefetch(
+            'tracks',
+            queryset=Track.objects.select_related('music', 'linkmusic').order_by('created_at'),
+            to_attr='preview_tracks',
+        ))
 
     def get_user_playlists_not_in_soundboard(self, user: User, soundboard: SoundBoard, filter: dict) -> List[Playlist]:
         """Récupère les playlists de l'utilisateur non encore intégrées dans le soundboard cible."""
@@ -137,6 +142,11 @@ class PlaylistRepository:
             query_set = query_set.filter(typePlaylist=filter['typePlaylist'])
         if 'playlistTagLabel' in filter:
             query_set = query_set.filter(playlist_tags__label=filter['playlistTagLabel'])
+        query_set = query_set.annotate(tracks_count=Count('tracks', distinct=True)).prefetch_related(Prefetch(
+            'tracks',
+            queryset=Track.objects.select_related('music', 'linkmusic').order_by('created_at'),
+            to_attr='preview_tracks',
+        ))
         return query_set.order_by('name')
     
     def get_all_without_playlist_tag_queryset(self) -> QuerySet:
