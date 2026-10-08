@@ -30,6 +30,10 @@ Vérification
 id user_ansible
 ```
 
+passer Sudo sans passord 
+`sudo vi /etc/sudoers.d/user_ansible`
+
+Ajouter `user_ansible ALL=(ALL) NOPASSWD: ALL`
 
 ## Mise en place du SSH 
 

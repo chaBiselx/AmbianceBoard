@@ -1,0 +1,3 @@
+---
+# port SSH utilisé pour se connecter aux hôtes
+ansible_ssh_port: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_PORT') | default('22', true) | int }}"

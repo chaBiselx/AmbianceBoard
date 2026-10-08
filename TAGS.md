@@ -541,7 +541,6 @@ Corrections
 - Rollback Docker digest update
 
 ### 0.5.11 - 2026/10
-
 Nouveautés
 - Pouvoir avoir une ecoute des sons en Edit mode pour les boutons partageable par la communauté
 
@@ -555,6 +554,11 @@ Corrections
 
 Fiabilité & Confiance
 - Amélioration de la sécu dans la chaine CI/CD 
+
+### 0.5.12 - 2026/10
+Nouveautés
+- Mise en place de Ansible pour la mise a jour 
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
