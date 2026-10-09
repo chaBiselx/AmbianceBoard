@@ -559,6 +559,10 @@ Fiabilité & Confiance
 Nouveautés
 - Mise en place de Ansible pour la mise a jour 
 
+Modifications
+- Modification de la structure des envoi de mails 
+- Ajout Token anti-spam sur la page support 
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

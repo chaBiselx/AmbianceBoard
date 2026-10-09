@@ -6,6 +6,7 @@ from django.contrib.auth import login,logout, authenticate
 from django.contrib.auth.models import Group
 from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.utils import translation
+from django.utils.translation import gettext as _
 from django.views.i18n import set_language as django_set_language
 from main.architecture.persistence.models.User import User
 from main.domain.common.enum.GroupEnum import GroupEnum
@@ -37,6 +38,7 @@ from main.domain.common.utils.logger import logger
 
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
+from main.domain.general.helper.TimestampToken import TimestampToken
 from main.interface.ui.forms.general.SupportContactForm import SupportContactForm
 from main.domain.general.dto.SupportContactDto import SupportContactDto
 from main.domain.general.service.SupportContactService import SupportContactService
@@ -114,30 +116,39 @@ def support_contact(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = SupportContactForm(request.POST)
         if form.is_valid():
-            cleaned = form.cleaned_data
-            payload = SupportContactDto(
-                email=cleaned['email'],
-                subject=cleaned['subject'],
-                message=cleaned['message'],
-            )
-
-            try:
-                SupportContactService().send(payload)
-                ServerNotificationBuilder(request).set_message(
-                    "Votre message a bien ete envoye au support."
-                ).set_statut("success").send()
+            if form.cleaned_data['website']:
                 return redirect('supportContact')
-            except Exception as e:
-                logger.error(f"support contact error : {e}")
-                ServerNotificationBuilder(request).set_message(
-                    "Impossible d'envoyer votre message pour le moment. Merci de reessayer plus tard."
-                ).set_statut("error").send()
+
+            if not TimestampToken.is_support_form_token_valid(
+                request.POST.get('support_form_token')
+            ):
+                form.add_error(None, _("views.support_contact.error_too_fast"))
+            else:
+                cleaned = form.cleaned_data
+                payload = SupportContactDto(
+                    email=cleaned['email'],
+                    subject=cleaned['subject'],
+                    message=cleaned['message'],
+                )
+
+                try:
+                    SupportContactService().send(payload)
+                    ServerNotificationBuilder(request).set_message(
+                        "Votre message a bien ete envoye au support."
+                    ).set_statut("success").send()
+                    return redirect('supportContact')
+                except Exception as e:
+                    logger.error(f"support contact error : {e}")
+                    ServerNotificationBuilder(request).set_message(
+                        "Impossible d'envoyer votre message pour le moment. Merci de reessayer plus tard."
+                    ).set_statut("error").send()
     else:
         form = SupportContactForm(initial=initial_data)
 
     return render(request, 'Html/General/support_contact.html', {
         'title': 'Contacter le support',
         'form': form,
+        'support_form_token': TimestampToken.create_support_form_token(),
     })
 
 @require_http_methods(['GET', 'POST'])

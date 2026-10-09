@@ -20,7 +20,7 @@ class UserMail:
         with override(language):
             return render_to_string(template_name, context)
         
-    def send_welcome_email(self) -> None:
+    def send_welcome_email(self) -> bool:
         """
         Sends a welcome email to the user using a predefined HTML template.
 
@@ -37,10 +37,12 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de bienvenue envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de bienvenue à {self.user.email}: {e}")
+        return False
             
-    def send_account_confirmation_email(self, url: str) -> None:
+    def send_account_confirmation_email(self, url: str) -> bool:
         """
         Sends a welcome email to the user using a predefined HTML template.
         
@@ -56,11 +58,13 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de confirmation envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de confirmation à {self.user.email}: {e}")
+        return False
 
 
-    def send_reset_password_email(self, url: str) -> None:
+    def send_reset_password_email(self, url: str) -> bool:
         """
         Sends an email to send a link to reset account
         
@@ -76,10 +80,12 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de reinitialisation envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de reinitialisation à {self.user.email}: {e}")
+        return False
             
-    def send_password_changed_email(self) -> None:
+    def send_password_changed_email(self) -> bool:
         """
         Sends an email to prevent user from changing password
         
@@ -94,10 +100,12 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de modification de mot de passe envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de modification de mot de passe à {self.user.email}: {e}")
+        return False
             
-    def account_auto_deletion(self) -> None:
+    def account_auto_deletion(self) -> bool:
         """
         Sends an account deletion email to the user using a predefined HTML template.
 
@@ -114,10 +122,12 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de suppression automatique envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de suppression  à {self.user.email}: {e}")
+        return False
             
-    def account_auto_deletion_never_login(self) -> None:
+    def account_auto_deletion_never_login(self) -> bool:
         """
         Sends an account deletion email to the user using a predefined HTML template.
 
@@ -135,10 +145,12 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de suppression automatique aucune connexion envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de suppression aucune connexion  à {self.user.email}: {e}")
+        return False
             
-    def prevent_account_deletion(self):
+    def prevent_account_deletion(self) -> bool:
         """
         Sends an account deletion email to the user using a predefined HTML template.
 
@@ -156,10 +168,12 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de prevention de suppression envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de prevention de suppression à {self.user.email}: {e}")
+        return False
             
-    def prevent_account_auto_deletion_never_confirmed(self, url):
+    def prevent_account_auto_deletion_never_confirmed(self, url) -> bool:
         """
         Sends an account deletion email to the user using a predefined HTML template.
 
@@ -180,10 +194,12 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de prevention de suppression envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de prevention de suppression à {self.user.email}: {e}")
+        return False
 
-    def account_auto_deletion_never_confirmed(self):
+    def account_auto_deletion_never_confirmed(self) -> bool:
         """
         Sends an account deletion email to the user using a predefined HTML template.
 
@@ -200,11 +216,13 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de suppression automatique Aucune confirmation {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de suppression Aucune confirmation à {self.user.email}: {e}")
+        return False
         
 
-    def tiers_downgrade_notification(self, new_tier):
+    def tiers_downgrade_notification(self, new_tier) -> bool:
         """
         Sends a notification email to the user when their tier is downgraded.
         
@@ -223,10 +241,12 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de notification de rétrogradation envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de notification de rétrogradation à {self.user.email}: {e}") 
+        return False
             
-    def playlist_proposal_received(self, playlist_proposal) -> None:
+    def playlist_proposal_received(self, playlist_proposal) -> bool:
         """
         Sends an email to the soundboard owner when a playlist proposal is received.
 
@@ -247,10 +267,12 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email de proposition de playlist envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email de proposition de playlist à {self.user.email}: {e}")
+        return False
 
-    def tiers_expiration_warning(self, days_left):
+    def tiers_expiration_warning(self, days_left) -> bool:
         """
         Sends a warning email to the user when their tier is about to expire.
         
@@ -269,6 +291,7 @@ class UserMail:
             mailer = EmailSender()
             mailer.send_email(subject, html_content, self.from_email, [self.user.email])
             self.logger.info(f"Email d'avertissement d'expiration envoyé à {self.user.email}")
+            return True
         except Exception as e:
             self.logger.error(f"Erreur lors de l'envoi de l'email d'avertissement d'expiration à {self.user.email}: {e}")
-                   
+        return False
