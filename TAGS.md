@@ -559,6 +559,9 @@ Fiabilité & Confiance
 Nouveautés
 - Mise en place de Ansible pour la mise a jour 
 
+Modifications
+- Modification de la structure des envoi de mails 
+
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

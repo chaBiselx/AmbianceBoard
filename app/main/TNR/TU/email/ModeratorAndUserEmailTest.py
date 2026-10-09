@@ -160,6 +160,41 @@ class UserMailTest(TestCase):
         self.assertEqual(user_mail.from_email, self.from_email)
         self.assertEqual(user_mail.user, self.user)
 
+    @patch('main.architecture.messaging.email.UserMail.get_full_url', return_value='https://test.com/proposals')
+    @patch('main.architecture.messaging.email.UserMail.render_to_string', return_value='<html>Test</html>')
+    @patch('main.architecture.messaging.email.UserMail.EmailSender')
+    @patch('main.architecture.messaging.email.UserMail.Settings.get')
+    def test_send_methods_return_boolean(self, mock_settings, mock_email_sender, mock_render, mock_url, mock_logger):
+        mock_settings.return_value = self.from_email
+        user_mail = UserMail(self.user)
+        mailer = mock_email_sender.return_value
+        methods = (
+            ('send_welcome_email', ()),
+            ('send_account_confirmation_email', ('https://test.com/confirm',)),
+            ('send_reset_password_email', ('https://test.com/reset',)),
+            ('send_password_changed_email', ()),
+            ('account_auto_deletion', ()),
+            ('account_auto_deletion_never_login', ()),
+            ('prevent_account_deletion', ()),
+            ('prevent_account_auto_deletion_never_confirmed', ('https://test.com/confirm',)),
+            ('account_auto_deletion_never_confirmed', ()),
+            ('tiers_downgrade_notification', ('Free',)),
+            ('playlist_proposal_received', (MagicMock(),)),
+            ('tiers_expiration_warning', (7,)),
+        )
+
+        for method_name, arguments in methods:
+            for success in (True, False):
+                with self.subTest(method=method_name, success=success):
+                    mailer.reset_mock()
+                    mailer.send_email.return_value = True
+                    mailer.send_email.side_effect = None if success else Exception('SMTP Error')
+
+                    result = getattr(user_mail, method_name)(*arguments)
+
+                    self.assertIs(result, success)
+                    mailer.send_email.assert_called_once()
+
     @patch('main.architecture.messaging.email.UserMail.EmailSender')
     @patch('main.architecture.messaging.email.UserMail.render_to_string')
     @patch('main.architecture.messaging.email.UserMail.Settings.get')
