@@ -1,0 +1,17 @@
+---
+- name: Mise à jour des paquets
+  hosts: serveur_web # groupe de machine applicable 
+  become: true # equivalent a sudo 
+
+  vars_files: 
+    - ../group_vars/all.yml # charge les variables globales pour les injecter dans le host cible
+
+  tasks:
+    - name: Mettre à jour le cache APT
+      ansible.builtin.apt: # apt update
+        update_cache: true # utilise un cache pour les paquets
+        cache_valid_time: 86400 # validité du cache
+
+    - name: Mettre à niveau les paquets
+      ansible.builtin.apt:
+        upgrade: yes 

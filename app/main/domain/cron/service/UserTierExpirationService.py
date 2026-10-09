@@ -32,8 +32,8 @@ class UserTierExpirationService:
                 try:
                     logger.info(f"Expiration du tier {user_tier.tier_name} pour l'utilisateur {user_tier.user.username}")
                     user_tier.downgrade_to_standard()
-                    expired_count += 1
-                    self._send_expiration_notification(user_tier.user, user_tier)
+                    if self._send_expiration_notification(user_tier.user, user_tier):
+                        expired_count += 1
                 except Exception as e:
                     logger.error(f"Erreur lors de l'expiration du tier pour {user_tier.user.username}: {str(e)}")
             
@@ -54,8 +54,8 @@ class UserTierExpirationService:
                 try:
                     days_left = (user_tier.tier_expiry_date - timezone.now()).days
                     logger.info(f"Notification d'expiration dans {days_left} jours pour {user_tier.user.username}")
-                    self._send_expiration_warning(user_tier.user, days_left)
-                    warning_count += 1
+                    if self._send_expiration_warning(user_tier.user, days_left):
+                        warning_count += 1
                 except Exception as e:
                     logger.error(f"Erreur lors de l'envoi de l'avertissement pour {user_tier.user.username}: {str(e)}")
 
@@ -64,13 +64,13 @@ class UserTierExpirationService:
             logger.error(f"Erreur lors de l'envoi des avertissements d'expiration: {str(e)}")
         return warning_count
 
-    def _send_expiration_notification(self, user, user_tier):
+    def _send_expiration_notification(self, user, user_tier) -> bool:
         """Envoie un email de notification d'expiration"""
         user_mail = UserMail(user)
-        user_mail.tiers_downgrade_notification(user_tier.tier_name)
+        return user_mail.tiers_downgrade_notification(user_tier.tier_name)
         
         
-    def _send_expiration_warning(self, user, days_left):
+    def _send_expiration_warning(self, user, days_left) -> bool:
         """Envoie un email d'avertissement d'expiration prochaine"""
         user_mail = UserMail(user)
-        user_mail.tiers_expiration_warning(days_left)
+        return user_mail.tiers_expiration_warning(days_left)

@@ -19,6 +19,7 @@
                 <div class="card-body p-4">
                     <form method="post" novalidate>
                         {% csrf_token %}
+                        <input type="hidden" name="support_form_token" value="{{ support_form_token }}">
                         {{ form.as_p }}
 
                         <div class="d-flex flex-wrap gap-2 mt-3">

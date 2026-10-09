@@ -1,0 +1,3 @@
+---
+# Adresse IP ou nom d'hôte de l'hôte cible
+ansible_host_main: "{{ lookup('ansible.builtin.env', 'ANSIBLE_HOST_MAIN', default=undef()) }}"
