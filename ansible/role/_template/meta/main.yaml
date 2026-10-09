@@ -1,0 +1,7 @@
+---
+galaxy_info:
+    author: AmbianceBoard
+    description: "TODO: describe what this role configures."
+    license: "MIT"
+    min_ansible_version: 2.20.1
+dependencies: []
