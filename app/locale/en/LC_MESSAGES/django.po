@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 18:46+0000\n"
+"POT-Creation-Date: 2026-10-09 09:07+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid "Sounds"
-msgstr "Sounds"
-
-msgid "Play / pause"
-msgstr "Play / pause"
-
-msgid "Restart"
-msgstr "Restart"
-
-msgid "Seek"
-msgstr "Playback position"
-
-msgid "No sounds available"
-msgstr "No sounds available"
 
 #: main/architecture/contextProcessors/sidebar_processor.py:15
 msgid "Index"
@@ -72,64 +57,64 @@ msgstr "Reported content"
 msgid "template.email.user.welcome.subject"
 msgstr "Welcome to our site"
 
-#: main/architecture/messaging/email/UserMail.py:48
-#: main/architecture/messaging/email/UserMail.py:52
+#: main/architecture/messaging/email/UserMail.py:50
+#: main/architecture/messaging/email/UserMail.py:54
 #: main/interface/ui/controller/debug/debugEmailViews.py:60
 msgid "template.email.user.confirm.subject"
 msgstr "Confirm your account"
 
-#: main/architecture/messaging/email/UserMail.py:68
 #: main/architecture/messaging/email/UserMail.py:72
+#: main/architecture/messaging/email/UserMail.py:76
 #: main/interface/ui/controller/debug/debugEmailViews.py:78
 msgid "template.email.user.reset_password.subject"
 msgstr "Reset your password"
 
-#: main/architecture/messaging/email/UserMail.py:87
-#: main/architecture/messaging/email/UserMail.py:90
+#: main/architecture/messaging/email/UserMail.py:93
+#: main/architecture/messaging/email/UserMail.py:96
 #: main/interface/ui/controller/debug/debugEmailViews.py:180
 msgid "template.email.user.password_changed.subject"
 msgstr "Password changed"
 
-#: main/architecture/messaging/email/UserMail.py:107
-#: main/architecture/messaging/email/UserMail.py:110
-#: main/architecture/messaging/email/UserMail.py:127
-#: main/architecture/messaging/email/UserMail.py:131
+#: main/architecture/messaging/email/UserMail.py:115
+#: main/architecture/messaging/email/UserMail.py:118
+#: main/architecture/messaging/email/UserMail.py:137
+#: main/architecture/messaging/email/UserMail.py:141
 #: main/interface/ui/controller/debug/debugEmailViews.py:190
 #: main/interface/ui/controller/debug/debugEmailViews.py:200
 msgid "template.email.user.account_deleted.subject"
 msgstr "Your account has been deleted"
 
-#: main/architecture/messaging/email/UserMail.py:148
-#: main/architecture/messaging/email/UserMail.py:152
+#: main/architecture/messaging/email/UserMail.py:160
+#: main/architecture/messaging/email/UserMail.py:164
 #: main/interface/ui/controller/debug/debugEmailViews.py:210
 msgid "template.email.user.prevent_deletion.subject"
 msgstr "Your account will be deleted"
 
-#: main/architecture/messaging/email/UserMail.py:169
-#: main/architecture/messaging/email/UserMail.py:173
+#: main/architecture/messaging/email/UserMail.py:183
+#: main/architecture/messaging/email/UserMail.py:187
 #: main/interface/ui/controller/debug/debugEmailViews.py:220
 msgid "template.email.user.prevent_deletion_unconfirmed.subject"
 msgstr "Your account will be deleted because it is not confirmed"
 
-#: main/architecture/messaging/email/UserMail.py:193
-#: main/architecture/messaging/email/UserMail.py:196
+#: main/architecture/messaging/email/UserMail.py:209
+#: main/architecture/messaging/email/UserMail.py:212
 #: main/interface/ui/controller/debug/debugEmailViews.py:231
 msgid "template.email.user.account_deleted_unconfirmed.subject"
 msgstr "Your account has been deleted because it is not confirmed"
 
-#: main/architecture/messaging/email/UserMail.py:212
-#: main/architecture/messaging/email/UserMail.py:216
+#: main/architecture/messaging/email/UserMail.py:230
+#: main/architecture/messaging/email/UserMail.py:234
 #: main/interface/ui/controller/debug/debugEmailViews.py:241
 msgid "template.email.user.tier_downgrade.subject"
 msgstr "Your tier has been downgraded"
 
-#: main/architecture/messaging/email/UserMail.py:234
-#: main/architecture/messaging/email/UserMail.py:239
+#: main/architecture/messaging/email/UserMail.py:254
+#: main/architecture/messaging/email/UserMail.py:259
 msgid "template.email.user.playlist_proposal_received.subject"
 msgstr "New playlist proposal"
 
-#: main/architecture/messaging/email/UserMail.py:258
-#: main/architecture/messaging/email/UserMail.py:262
+#: main/architecture/messaging/email/UserMail.py:280
+#: main/architecture/messaging/email/UserMail.py:284
 #: main/interface/ui/controller/debug/debugEmailViews.py:252
 msgid "template.email.user.tier_expiration.subject"
 msgstr "Your tier expiration warning"
@@ -350,6 +335,10 @@ msgid "onboarding.private.user_settings.description"
 msgstr ""
 "Update your profile, notification preferences, theme, and subscription "
 "options."
+
+#: main/interface/ui/controller/general/generalViews.py:125
+msgid "views.support_contact.error_too_fast"
+msgstr "Please wait a few seconds before submitting the form."
 
 #: main/interface/ui/controller/private/soundboardFromViews.py:30
 msgid "template.soundboard.create.title"
@@ -1256,11 +1245,11 @@ msgstr "A question, a bug, a suggestion?"
 msgid "template.support.subtitle.line2"
 msgstr "Send us a message, we will receive it at support@ambianceboard.com."
 
-#: main/interface/ui/templates/Html/General/support_contact.html:26
+#: main/interface/ui/templates/Html/General/support_contact.html:27
 msgid "template.support.form.submit"
 msgstr "Send"
 
-#: main/interface/ui/templates/Html/General/support_contact.html:29
+#: main/interface/ui/templates/Html/General/support_contact.html:30
 msgid "template.support.form.back_home"
 msgstr "Back to home"
 
@@ -1795,6 +1784,26 @@ msgstr "none"
 #: main/interface/ui/templates/Html/partial/filter/search/filter_tag_cloud.html:40
 msgid "template.filterTagCloud.no_description"
 msgstr "No description"
+
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:31
+msgid "Sounds"
+msgstr "Sounds"
+
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:37
+msgid "Play / pause"
+msgstr "Play / pause"
+
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:37
+msgid "Restart"
+msgstr "Restart"
+
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:37
+msgid "Seek"
+msgstr "Playback position"
+
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:42
+msgid "No sounds available"
+msgstr "No sounds available"
 
 #: main/interface/ui/templates/Html/partial/soundboard/board.html:93
 msgid "template.soundboard_read.my_proposals.title"

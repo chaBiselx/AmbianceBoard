@@ -3,6 +3,16 @@ from main.domain.common.mixins.BootstrapFormMixin import BootstrapFormMixin
 
 
 class SupportContactForm(BootstrapFormMixin, forms.Form):
+    website = forms.CharField(
+        required=False,
+        label='',
+        widget=forms.TextInput(attrs={
+            'class': 'visually-hidden',
+            'tabindex': '-1',
+            'autocomplete': 'off',
+            'aria-hidden': 'true',
+        }),
+    )
     email = forms.EmailField(
         max_length=254,
         label='Email',

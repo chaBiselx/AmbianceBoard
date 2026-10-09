@@ -561,6 +561,7 @@ Nouveautés
 
 Modifications
 - Modification de la structure des envoi de mails 
+- Ajout Token anti-spam sur la page support 
 
 
 ### X.Y.Z - Date
