@@ -1,5 +1,5 @@
 #node:26
-FROM node@sha256:bde0dae02f2b12d2bce5ee72b2432f0e511767b7b2dc4dd3b064df11ae422fee AS builder
+FROM node@sha256:32fa97f3363975684b08bf4e8a68a47c7905175cc20275b50b974bbd02aba731 AS builder
 
 # Créer un utilisateur non-root pour des raisons de sécurité
 RUN set -eux; \
