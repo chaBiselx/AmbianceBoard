@@ -45,6 +45,9 @@ from main.domain.general.service.SupportContactService import SupportContactServ
 from main.domain.general.service.FAQService import FAQService
 
 
+def error_404(request: HttpRequest, exception: Exception) -> HttpResponse:
+    return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
+
 
 @detect_not_confirmed_account()
 @require_http_methods(['GET'])
