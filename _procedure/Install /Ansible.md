@@ -48,7 +48,7 @@ Cette organisation reprend la séparation courante des rôles Ansible
 
 Les noms `task/` et `template/` sont au singulier dans ce gabarit. Les rôles Ansible utilisent souvent `tasks/` et `templates/` au pluriel ; conserver une seule convention de nommage dans le dépôt et adapter les chemins des playbooks en conséquence.
 
-> Le modèle d'inventaire `host.yaml.j2` n'est pas rendu automatiquement par les fichiers Ansible présents. Avant l'exécution, il faut produire un inventaire utilisable et faire correspondre son chemin à celui configuré dans `ansible.cfg` (`inventory/prd/host.ini` actuellement).
+> L'inventaire `host.yaml.j2` est chargé directement par le plugin YAML grâce à `yaml_valid_extensions` dans `ansible.cfg`. Les expressions Jinja2 de ses variables sont évaluées lors de l'exécution ; aucun fichier `hosts.yml` n'est nécessaire.
 
 ## Installation
 
@@ -79,6 +79,7 @@ sudo apt install -y ansible
 ```bash
 export ANSIBLE_SSH_PORT=22
 export ANSIBLE_HOST_MAIN=X.X.X.X
+export ANSIBLE_CONFIG=./ansible/ansible.cfg
 ```
 
 ### Préparation de l'agent SSH
@@ -92,8 +93,22 @@ ssh-add ~/.ssh/id_ed25519_ambianceboard_ansible
 
 ```bash
 cd ./ansible
-ansible-playbook -i <chemin_vers_inventaire_genere> playbooks/setup.yml
+ansible-playbook ./playbooks/setup.yml
 ```
 
-Depuis la racine du dépôt, se placer dans `ansible/` permet à Ansible de charger `ansible.cfg`. Remplacer `<chemin_vers_inventaire_genere>` par le chemin de l'inventaire produit à partir de `inventory/prd/host.yaml.j2`. Le fichier doit être utilisable par Ansible ; sans option `-i`, Ansible utilisera le chemin déclaré dans `ansible.cfg` (`inventory/prd/host.ini`).
+Depuis la racine du dépôt, se placer dans `ansible/` permet à Ansible de charger `ansible.cfg`, qui configure `host.yaml.j2` comme inventaire YAML. Le suffixe `.j2` est ajouté aux extensions YAML prises en charge. Le rôle `common` est résolu depuis `roles/`.
+
+Pour rester à la racine du dépôt, charger explicitement cette configuration :
+
+```bash
+ansible-playbook ./ansible/playbooks/setup.yml
+```
+
+Les chemins d'inventaire et de rôles sont relatifs à `ansible.cfg`. Sans `ANSIBLE_CONFIG`, Ansible ne recherche pas la configuration dans le sous-répertoire `ansible/`.
+
+Vérifier la syntaxe sans connexion au serveur ni modification distante :
+
+```bash
+ansible-playbook --syntax-check ./ansible/playbooks/setup.yml
+```
 
