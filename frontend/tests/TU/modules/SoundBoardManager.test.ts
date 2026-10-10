@@ -85,11 +85,12 @@ describe('SoundBoardManager', () => {
 
     it('deletes same-type playlists and deactivates their buttons for concurrent playlists', () => {
         const musicElement = { delete: vi.fn() };
-        const otherButton = { disactive: vi.fn() };
+        const otherButton = { idPlaylist: 'other', disactive: vi.fn() };
         managerMocks.listingAudio.mockReturnValue([musicElement]);
         managerMocks.listingPlaylists.mockReturnValue([otherButton]);
 
         SoundBoardManager.deleteSameTypePlaylist({
+            idPlaylist: 'selected',
             singleConcurrentread: true,
             playlistType: 'music',
         } as ButtonPlaylist);
@@ -98,6 +99,36 @@ describe('SoundBoardManager', () => {
         expect(ListingButtonPlaylist.getListingAudioElement).toHaveBeenCalledWith('music');
         expect(musicElement.delete).toHaveBeenCalledOnce();
         expect(otherButton.disactive).toHaveBeenCalledOnce();
+    });
+
+    it('keeps the selected single-concurrent playlist active when switching tracks', () => {
+        const selectedElement = document.createElement('button');
+        selectedElement.classList.add('active-playlist');
+        const button = {
+            idPlaylist: 'selected',
+            playlistType: 'music',
+            singleConcurrentread: true,
+        } as ButtonPlaylist;
+        const selectedButton = {
+            idPlaylist: 'selected',
+            disactive: vi.fn(() => selectedElement.classList.remove('active-playlist')),
+        };
+        const otherButton = { idPlaylist: 'other', disactive: vi.fn() };
+        const previousTrack = { delete: vi.fn() };
+        const nextTrack = {
+            addToDOM: vi.fn(),
+            play: vi.fn(() => expect(selectedElement.classList.contains('active-playlist')).toBe(true)),
+        };
+        managerMocks.listingAudio.mockReturnValue([previousTrack]);
+        managerMocks.listingPlaylists.mockReturnValue([otherButton, selectedButton]);
+        managerMocks.fromButton.mockReturnValue(nextTrack);
+
+        SoundBoardManager.addPlaylist(button);
+
+        expect(previousTrack.delete).toHaveBeenCalledOnce();
+        expect(otherButton.disactive).toHaveBeenCalledOnce();
+        expect(selectedButton.disactive).not.toHaveBeenCalled();
+        expect(nextTrack.play).toHaveBeenCalledOnce();
     });
 
     it('removes every audio element when all playlists are cleared', () => {

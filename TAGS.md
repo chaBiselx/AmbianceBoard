@@ -563,6 +563,12 @@ Modifications
 - Modification de la structure des envoi de mails 
 - Ajout Token anti-spam sur la page support 
 
+### 0.5.13 - 2026/10
+Sécurité
+- Mise a jours des dépendances
+
+Corrections
+- Corrections d'un bug lorsque le l'on démarre un boutons et que l'on arrete tres vite, cela casser l'ensemble du sounboard
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

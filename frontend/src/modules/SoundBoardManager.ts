@@ -53,6 +53,9 @@ class SoundBoardManager {
             }
             const listingButtonPlaylist = ListingButtonPlaylist.getListingAudioElement(ButtonPlaylist.playlistType);
             for (let buttonPlaylist of listingButtonPlaylist) {
+                if (buttonPlaylist.idPlaylist === ButtonPlaylist.idPlaylist) {
+                    continue;
+                }
                 ConsoleCustom.log("disactive", buttonPlaylist);
                 buttonPlaylist.disactive();
             }
