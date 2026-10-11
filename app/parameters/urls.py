@@ -97,6 +97,8 @@ from main.interface.ui.controller.sharedSoundboard.sharedViews import publish_so
 from main.domain.sharedSoundboard.consummers.SharedSoundboardConsummers import SharedSoundboardConsummers
 
 
+handler404 = 'main.interface.ui.controller.general.generalViews.error_404'
+
 urlpatterns = [
     #SEO 
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"), name="robots_txt"),

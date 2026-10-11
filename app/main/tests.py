@@ -103,6 +103,7 @@ from main.TNR.TI.utils.logger.CompositeLoggerIntegrationTestCase import *
 # Tests d'intégration des routes (1 route = 1 fichier = 1 classe)
 # Routes publiques et SEO
 from main.TNR.TI.routing.HomeRouteTest import *
+from main.TNR.TI.routing.NotFoundRouteTest import *
 from main.TNR.TI.routing.PricingRouteTest import *
 from main.TNR.TI.routing.LegalNoticeRouteTest import *
 from main.TNR.TI.routing.SupportContactRouteTest import *

@@ -1,0 +1,7 @@
+---
+galaxy_info:
+    author: AmbianceBoard
+    description: "update APT cache and upgrade packages."
+    license: "MIT"
+    min_ansible_version: 2.20.1
+dependencies: []

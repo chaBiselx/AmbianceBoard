@@ -213,7 +213,12 @@ class MusicElement {
             SoundEventBus.emit('music:ended', { playlistId: this.idPlaylist, token: this.butonPlaylistToken });
         }, { once: true });
 
-        void this.audioAdapter.play();
+        void this.audioAdapter.play().catch((error: unknown) => {
+            if (error && typeof error === 'object' && 'name' in error && error.name === 'AbortError') {
+                return;
+            }
+            ConsoleTraceServeur.error('playAudioError', error, this.idPlaylist);
+        });
     }
 
     private disactiveButtonPlaylist() {

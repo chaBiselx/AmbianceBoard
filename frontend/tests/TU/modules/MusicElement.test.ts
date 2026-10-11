@@ -178,6 +178,41 @@ describe('MusicElement', () => {
         expect(musicMocks.emit).toHaveBeenCalledWith('music:ended', { playlistId: 'playlist-1', token: 'token-1' });
     });
 
+    it('handles an aborted pending play when audio is removed and allows another track to play', async () => {
+        const { adapter } = createAudioAdapter();
+        let rejectPlay!: (reason: unknown) => void;
+        const pendingPlay = new Promise<void>((_resolve, reject) => {
+            rejectPlay = reject;
+        });
+        const catchPlay = vi.spyOn(pendingPlay, 'catch');
+        vi.mocked(adapter.play).mockReturnValue(pendingPlay);
+        const element = new MusicElement(adapter, createDto());
+        element.play();
+        expect(catchPlay).toHaveBeenCalledWith(expect.any(Function));
+        element.delete();
+        rejectPlay(new DOMException('The media was removed from the document', 'AbortError'));
+        await vi.advanceTimersByTimeAsync(0);
+
+        expect(adapter.remove).toHaveBeenCalledOnce();
+        expect(musicMocks.traceError).not.toHaveBeenCalled();
+        expect(musicMocks.notify).not.toHaveBeenCalled();
+
+        const nextTrack = createAudioAdapter();
+        new MusicElement(nextTrack.adapter, createDto()).play();
+        expect(nextTrack.adapter.play).toHaveBeenCalledOnce();
+    });
+
+    it('reports play failures other than cancellation', async () => {
+        const { adapter } = createAudioAdapter();
+        const error = new DOMException('Playback is not allowed', 'NotAllowedError');
+        vi.mocked(adapter.play).mockRejectedValue(error);
+
+        new MusicElement(adapter, createDto()).play();
+        await vi.advanceTimersByTimeAsync(0);
+
+        expect(musicMocks.traceError).toHaveBeenCalledWith('playAudioError', error, 'playlist-1');
+    });
+
     it('starts a fade-out at the configured remaining-time threshold and schedules the next loop', () => {
         const { adapter, trigger } = createAudioAdapter();
         const button = { isActive: () => true, getToken: () => 'token-1' };
