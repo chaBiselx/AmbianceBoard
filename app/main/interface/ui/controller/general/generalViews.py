@@ -46,6 +46,7 @@ from main.domain.general.service.FAQService import FAQService
 
 
 def error_404(request: HttpRequest, exception: Exception) -> HttpResponse:
+    logger.error(f"error_handler_404 called triggered for request: {request.path} with exception: {exception}")
     return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
 
 
