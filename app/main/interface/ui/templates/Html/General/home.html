@@ -3,36 +3,36 @@
 {% load static %}
 {% load FrontJs %}
 
-{% block page_title %}AmbianceBoard - Créez l'ambiance de vos parties de JDR{% endblock %}
+{% block page_title %}{% trans "template.home.page_title" %}{% endblock %}
 
 {% block content %}
 <section class="home-hero mt-3">
     <div class="row align-items-center g-4">
         <div class="col-lg-6">
             <span class="badge rounded-pill text-bg-info mb-3">
-                <i class="fa-solid fa-seedling me-1"></i>Bêta ouverte
+                <i class="fa-solid fa-seedling me-1"></i>{% trans "template.home.badge" %}
             </span>
 
             {% if request.user.is_authenticated %}
-            <h2 class="home-hero__title">Bon retour, MJ !</h2>
-            <p class="home-hero__subtitle">Retrouvez vos ambiances ou découvrez celles de la communauté.</p>
+            <h2 class="home-hero__title">{% trans "template.home.hero.auth.title" %}</h2>
+            <p class="home-hero__subtitle">{% trans "template.home.hero.auth.subtitle" %}</p>
             <div class="d-grid d-sm-flex flex-wrap gap-2 mt-4">
                 <a href="{% url 'soundboardsList' %}" class="btn btn-info btn-lg">
-                    <i class="fa-solid fa-sliders me-2"></i>Mes soundboards
+                    <i class="fa-solid fa-sliders me-2"></i>{% trans "template.home.hero.auth.soundboards" %}
                 </a>
                 <a href="{% url 'publicListingSoundboard' %}" class="btn btn-outline-secondary btn-lg">
-                    <i class="fa-solid fa-compass me-2"></i>Explorer
+                    <i class="fa-solid fa-compass me-2"></i>{% trans "template.home.hero.auth.explore" %}
                 </a>
             </div>
             {% else %}
-            <h2 class="home-hero__title">Donnez vie à vos parties.</h2>
-            <p class="home-hero__subtitle">Superposez des ambiances immersives et partagez-les avec vos joueurs.</p>
+            <h2 class="home-hero__title">{% trans "template.home.hero.guest.title" %}</h2>
+            <p class="home-hero__subtitle">{% trans "template.home.hero.guest.subtitle" %}</p>
             <div class="d-grid d-sm-flex flex-wrap gap-2 mt-4">
                 <a href="#home-demo" class="btn btn-info btn-lg">
-                    <i class="fa-solid fa-play me-2"></i>Essayer la démo
+                    <i class="fa-solid fa-play me-2"></i>{% trans "template.home.hero.guest.demo" %}
                 </a>
                 <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-lg">
-                    <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Créer un soundboard
+                    <i class="fa-solid fa-wand-magic-sparkles me-2"></i>{% trans "template.home.hero.guest.create" %}
                 </a>
             </div>
             {% endif %}
@@ -40,7 +40,7 @@
 
         <div class="col-lg-6 d-none d-lg-block">
             <img class="home-hero__illustration" src="{% static 'img/logo.webp' %}"
-                 alt="Aperçu d'un soundboard AmbianceBoard" loading="eager"
+                 alt="{% trans 'template.home.illustration.alt' %}" loading="eager"
                  style="max-height: 500px;width: auto;">
         </div>
     </div>
@@ -48,8 +48,8 @@
 
 <section id="home-demo" class="mb-5">
     <div class="text-center mb-4">
-        <h3>Essayez une ambiance</h3>
-        <p class="text-muted mb-0">Aucun compte requis.</p>
+        <h3>{% trans "template.home.demo.title" %}</h3>
+        <p class="text-muted mb-0">{% trans "template.home.demo.subtitle" %}</p>
     </div>
 
     <div class="home-demo__grid mx-auto" style="max-width: 720px;">
@@ -62,85 +62,85 @@
             <span class="home-demo__equalizer" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
         </a>
         {% empty %}
-        <output class="alert alert-info mb-0 d-block">Aucune démo disponible pour le moment.</output>
+        <output class="alert alert-info mb-0 d-block">{% trans "template.home.demo.empty" %}</output>
         {% endfor %}
     </div>
 </section>
 
 <section class="mb-5">
     <div class="text-center mb-4">
-        <h3>Prêt en trois étapes</h3>
+        <h3>{% trans "template.home.steps.title" %}</h3>
     </div>
     <div class="row g-3">
         <div class="col-md-4">
             <div class="card home-step p-3 text-center h-100">
                 <div class="mx-auto mb-3"><span class="home-step__number">1</span></div>
-                <h4 class="h5">Créez</h4>
-                <p class="text-muted mb-0">Donnez un nom et une identité à votre soundboard.</p>
+                <h4 class="h5">{% trans "template.home.steps.create.title" %}</h4>
+                <p class="text-muted mb-0">{% trans "template.home.steps.create.description" %}</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card home-step p-3 text-center h-100">
                 <div class="mx-auto mb-3"><span class="home-step__number">2</span></div>
-                <h4 class="h5">Ajoutez</h4>
-                <p class="text-muted mb-0">Importez vos sons, liens ou radios.</p>
+                <h4 class="h5">{% trans "template.home.steps.add.title" %}</h4>
+                <p class="text-muted mb-0">{% trans "template.home.steps.add.description" %}</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card home-step p-3 text-center h-100">
                 <div class="mx-auto mb-3"><span class="home-step__number">3</span></div>
-                <h4 class="h5">Partagez</h4>
-                <p class="text-muted mb-0">Lancez les ambiances et invitez vos joueurs.</p>
+                <h4 class="h5">{% trans "template.home.steps.share.title" %}</h4>
+                <p class="text-muted mb-0">{% trans "template.home.steps.share.description" %}</p>
             </div>
         </div>
     </div>
     <div class="text-center mt-4 d-grid d-sm-block">
         <button class="btn btn-info btn-lg fw-semibold shadow-sm px-4" id="start-onboarding-btn">
-            <i class="fa-solid fa-compass me-2" aria-hidden="true"></i>Visite guidée
+            <i class="fa-solid fa-compass me-2" aria-hidden="true"></i>{% trans "template.home.steps.tour" %}
         </button>
     </div>
 </section>
 
 <section class="mb-5">
     <div class="text-center mb-4">
-        <h3>Tout ce qu'il faut pour vos parties</h3>
-        <p class="text-muted mb-0">Les fonctions essentielles, en un coup d'œil.</p>
+        <h3>{% trans "template.home.features.title" %}</h3>
+        <p class="text-muted mb-0">{% trans "template.home.features.subtitle" %}</p>
     </div>
     <div class="row g-3">
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 p-3">
-                <h4 class="h5"><i class="fa-solid fa-palette text-info me-2"></i>Soundboards sur mesure</h4>
-                <p class="text-muted mb-0">Nom, couleurs, icône, tags et visibilité publique ou privée. Organisez plusieurs playlists dans chaque tableau.</p>
+                <h4 class="h5"><i class="fa-solid fa-palette text-info me-2"></i>{% trans "template.home.features.custom.title" %}</h4>
+                <p class="text-muted mb-0">{% trans "template.home.features.custom.description" %}</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 p-3">
-                <h4 class="h5"><i class="fa-solid fa-music text-info me-2"></i>Trois types de sons</h4>
-                <p class="text-muted mb-0">Ambiances en boucle, effets instantanés et musiques de scène, avec sections et sélection de pistes.</p>
+                <h4 class="h5"><i class="fa-solid fa-music text-info me-2"></i>{% trans "template.home.features.sound_types.title" %}</h4>
+                <p class="text-muted mb-0">{% trans "template.home.features.sound_types.description" %}</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 p-3">
-                <h4 class="h5"><i class="fa-solid fa-file-audio text-info me-2"></i>Vos sources audio</h4>
-                <p class="text-muted mb-0">Importez des fichiers, ajoutez des liens externes ou des radios en streaming. Réglez volume et fondus.</p>
+                <h4 class="h5"><i class="fa-solid fa-file-audio text-info me-2"></i>{% trans "template.home.features.sources.title" %}</h4>
+                <p class="text-muted mb-0">{% trans "template.home.features.sources.description" %}</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 p-3">
-                <h4 class="h5"><i class="fa-solid fa-sliders text-info me-2"></i>Contrôle en jeu</h4>
-                <p class="text-muted mb-0">Mixers par playlist et par bouton, recherche, réorganisation, plein écran, raccourcis clavier et volumes mémorisés.</p>
+                <h4 class="h5"><i class="fa-solid fa-sliders text-info me-2"></i>{% trans "template.home.features.control.title" %}</h4>
+                <p class="text-muted mb-0">{% trans "template.home.features.control.description" %}</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 p-3">
-                <h4 class="h5"><i class="fa-solid fa-users text-info me-2"></i>Partage et communauté</h4>
-                <p class="text-muted mb-0">Synchronisation en temps réel, volume individuel des joueurs, boutons autorisés, découverte et copie de soundboards publics.</p>
+                <h4 class="h5"><i class="fa-solid fa-users text-info me-2"></i>{% trans "template.home.features.community.title" %}</h4>
+                <p class="text-muted mb-0">{% trans "template.home.features.community.description" %}</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 p-3">
-                <h4 class="h5"><i class="fa-solid fa-shield-halved text-info me-2"></i>Compte et confiance</h4>
-                <p class="text-muted mb-0">Connexion Google, signalement, notifications, tiers progressifs et statistiques Premium.</p>
+                <h4 class="h5"><i class="fa-solid fa-shield-halved text-info me-2"></i>{% trans "template.home.features.account.title" %}</h4>
+                <p class="text-muted mb-0">{% trans "template.home.features.account.description" %}</p>
             </div>
         </div>
     </div>
@@ -148,26 +148,26 @@
 
 <section class="mb-5">
     <div class="alert alert-warning mb-0" role="alert">
-        <strong>Compatibilité :</strong> pour une expérience optimale, utilisez Chrome, Edge, Brave ou Firefox. WebKit (notamment certaines versions de Safari et les navigateurs iOS intégrés) peut limiter la lecture audio.
+        <strong>{% trans "template.home.compatibility.label" %}</strong> {% trans "template.home.compatibility.description" %}
     </div>
 </section>
 
 <section class="home-final-cta p-4 p-lg-5 text-center my-5">
-    <h3 class="mb-2">Votre prochaine partie commence ici.</h3>
-    <p class="text-muted mb-4">Créez gratuitement votre premier soundboard.</p>
+    <h3 class="mb-2">{% trans "template.home.final.title" %}</h3>
+    <p class="text-muted mb-4">{% trans "template.home.final.subtitle" %}</p>
     {% if request.user.is_authenticated %}
     <a href="{% url 'soundboardsNew' %}" class="btn btn-info btn-lg">
-        <i class="fa-solid fa-plus me-2"></i>Créer un soundboard
+        <i class="fa-solid fa-plus me-2"></i>{% trans "template.home.final.create_soundboard" %}
     </a>
     {% else %}
     <a href="{% url 'login' %}" class="btn btn-info btn-lg">
-        <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Créer mon compte
+        <i class="fa-solid fa-wand-magic-sparkles me-2"></i>{% trans "template.home.final.create_account" %}
     </a>
     {% endif %}
 </section>
 
 <p class="text-center text-muted small mb-4">
-    Une idée ou un souci ? <a href="{% url 'supportContact' %}">Contactez-nous</a>.
-    <a href="{{ link_donation }}" class="ms-2">Soutenir le projet</a>
+    {% trans "template.home.footer.question" %} <a href="{% url 'supportContact' %}">{% trans "template.home.footer.contact" %}</a>.
+    <a href="{{ link_donation }}" class="ms-2">{% trans "template.home.footer.donate" %}</a>
 </p>
 {% endblock %}

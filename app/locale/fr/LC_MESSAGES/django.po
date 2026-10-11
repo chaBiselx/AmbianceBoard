@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 09:07+0000\n"
+"POT-Creation-Date: 2026-10-11 18:46+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -345,7 +345,7 @@ msgstr ""
 "Modifiez votre profil, vos préférences de notification, votre thème et les "
 "options de votre abonnement."
 
-#: main/interface/ui/controller/general/generalViews.py:125
+#: main/interface/ui/controller/general/generalViews.py:129
 msgid "views.support_contact.error_too_fast"
 msgstr "Veuillez patienter quelques secondes avant d'envoyer le formulaire."
 
@@ -1044,6 +1044,201 @@ msgstr "Formule actuelle"
 #: main/interface/ui/templates/Html/General/general_pricing.html:146
 msgid "template.pricing.choose_plan"
 msgstr "Passer a cette formule"
+
+#: main/interface/ui/templates/Html/General/home.html:6
+msgid "template.home.page_title"
+msgstr "AmbianceBoard - Créez l'ambiance de vos parties de JDR"
+
+#: main/interface/ui/templates/Html/General/home.html:13
+msgid "template.home.badge"
+msgstr "Bêta ouverte"
+
+#: main/interface/ui/templates/Html/General/home.html:17
+msgid "template.home.hero.auth.title"
+msgstr "Bon retour, MJ !"
+
+#: main/interface/ui/templates/Html/General/home.html:18
+msgid "template.home.hero.auth.subtitle"
+msgstr "Retrouvez vos ambiances ou découvrez celles de la communauté."
+
+#: main/interface/ui/templates/Html/General/home.html:21
+msgid "template.home.hero.auth.soundboards"
+msgstr "Mes soundboards"
+
+#: main/interface/ui/templates/Html/General/home.html:24
+msgid "template.home.hero.auth.explore"
+msgstr "Explorer"
+
+#: main/interface/ui/templates/Html/General/home.html:28
+msgid "template.home.hero.guest.title"
+msgstr "Donnez vie à vos parties."
+
+#: main/interface/ui/templates/Html/General/home.html:29
+msgid "template.home.hero.guest.subtitle"
+msgstr "Superposez des ambiances immersives et partagez-les avec vos joueurs."
+
+#: main/interface/ui/templates/Html/General/home.html:32
+msgid "template.home.hero.guest.demo"
+msgstr "Essayer la démo"
+
+#: main/interface/ui/templates/Html/General/home.html:35
+msgid "template.home.hero.guest.create"
+msgstr "Créer un soundboard"
+
+#: main/interface/ui/templates/Html/General/home.html:43
+msgid "template.home.illustration.alt"
+msgstr "Aperçu d'un soundboard AmbianceBoard"
+
+#: main/interface/ui/templates/Html/General/home.html:51
+msgid "template.home.demo.title"
+msgstr "Essayez une ambiance"
+
+#: main/interface/ui/templates/Html/General/home.html:52
+msgid "template.home.demo.subtitle"
+msgstr "Aucun compte requis."
+
+#: main/interface/ui/templates/Html/General/home.html:65
+msgid "template.home.demo.empty"
+msgstr "Aucune démo disponible pour le moment."
+
+#: main/interface/ui/templates/Html/General/home.html:72
+msgid "template.home.steps.title"
+msgstr "Prêt en trois étapes"
+
+#: main/interface/ui/templates/Html/General/home.html:78
+msgid "template.home.steps.create.title"
+msgstr "Créez"
+
+#: main/interface/ui/templates/Html/General/home.html:79
+msgid "template.home.steps.create.description"
+msgstr "Donnez un nom et une identité à votre soundboard."
+
+#: main/interface/ui/templates/Html/General/home.html:85
+msgid "template.home.steps.add.title"
+msgstr "Ajoutez"
+
+#: main/interface/ui/templates/Html/General/home.html:86
+msgid "template.home.steps.add.description"
+msgstr "Importez vos sons, liens ou radios."
+
+#: main/interface/ui/templates/Html/General/home.html:92
+msgid "template.home.steps.share.title"
+msgstr "Partagez"
+
+#: main/interface/ui/templates/Html/General/home.html:93
+msgid "template.home.steps.share.description"
+msgstr "Lancez les ambiances et invitez vos joueurs."
+
+#: main/interface/ui/templates/Html/General/home.html:99
+msgid "template.home.steps.tour"
+msgstr "Visite guidée"
+
+#: main/interface/ui/templates/Html/General/home.html:106
+msgid "template.home.features.title"
+msgstr "Tout ce qu'il faut pour vos parties"
+
+#: main/interface/ui/templates/Html/General/home.html:107
+msgid "template.home.features.subtitle"
+msgstr "Les fonctions essentielles, en un coup d'œil."
+
+#: main/interface/ui/templates/Html/General/home.html:112
+msgid "template.home.features.custom.title"
+msgstr "Soundboards sur mesure"
+
+#: main/interface/ui/templates/Html/General/home.html:113
+msgid "template.home.features.custom.description"
+msgstr ""
+"Nom, couleurs, icône, tags et visibilité publique ou privée. Organisez "
+"plusieurs playlists dans chaque tableau."
+
+#: main/interface/ui/templates/Html/General/home.html:118
+msgid "template.home.features.sound_types.title"
+msgstr "Trois types de sons"
+
+#: main/interface/ui/templates/Html/General/home.html:119
+msgid "template.home.features.sound_types.description"
+msgstr ""
+"Ambiances en boucle, effets instantanés et musiques de scène, avec sections "
+"et sélection de pistes."
+
+#: main/interface/ui/templates/Html/General/home.html:124
+msgid "template.home.features.sources.title"
+msgstr "Vos sources audio"
+
+#: main/interface/ui/templates/Html/General/home.html:125
+msgid "template.home.features.sources.description"
+msgstr ""
+"Importez des fichiers, ajoutez des liens externes ou des radios en "
+"streaming. Réglez volume et fondus."
+
+#: main/interface/ui/templates/Html/General/home.html:130
+msgid "template.home.features.control.title"
+msgstr "Contrôle en jeu"
+
+#: main/interface/ui/templates/Html/General/home.html:131
+msgid "template.home.features.control.description"
+msgstr ""
+"Mixers par playlist et par bouton, recherche, réorganisation, plein écran, "
+"raccourcis clavier et volumes mémorisés."
+
+#: main/interface/ui/templates/Html/General/home.html:136
+msgid "template.home.features.community.title"
+msgstr "Partage et communauté"
+
+#: main/interface/ui/templates/Html/General/home.html:137
+msgid "template.home.features.community.description"
+msgstr ""
+"Synchronisation en temps réel, volume individuel des joueurs, boutons "
+"autorisés, découverte et copie de soundboards publics."
+
+#: main/interface/ui/templates/Html/General/home.html:142
+msgid "template.home.features.account.title"
+msgstr "Compte et confiance"
+
+#: main/interface/ui/templates/Html/General/home.html:143
+msgid "template.home.features.account.description"
+msgstr ""
+"Connexion Google, signalement, notifications, tiers progressifs et "
+"statistiques Premium."
+
+#: main/interface/ui/templates/Html/General/home.html:151
+msgid "template.home.compatibility.label"
+msgstr "Compatibilité :"
+
+#: main/interface/ui/templates/Html/General/home.html:151
+msgid "template.home.compatibility.description"
+msgstr ""
+"Pour une expérience optimale, utilisez Chrome, Edge, Brave ou Firefox. "
+"WebKit (notamment certaines versions de Safari et les navigateurs iOS "
+"intégrés) peut limiter la lecture audio."
+
+#: main/interface/ui/templates/Html/General/home.html:156
+msgid "template.home.final.title"
+msgstr "Votre prochaine partie commence ici."
+
+#: main/interface/ui/templates/Html/General/home.html:157
+msgid "template.home.final.subtitle"
+msgstr "Créez gratuitement votre premier soundboard."
+
+#: main/interface/ui/templates/Html/General/home.html:160
+msgid "template.home.final.create_soundboard"
+msgstr "Créer un soundboard"
+
+#: main/interface/ui/templates/Html/General/home.html:164
+msgid "template.home.final.create_account"
+msgstr "Créer mon compte"
+
+#: main/interface/ui/templates/Html/General/home.html:170
+msgid "template.home.footer.question"
+msgstr "Une idée ou un souci ?"
+
+#: main/interface/ui/templates/Html/General/home.html:170
+msgid "template.home.footer.contact"
+msgstr "Contactez-nous"
+
+#: main/interface/ui/templates/Html/General/home.html:171
+msgid "template.home.footer.donate"
+msgstr "Soutenir le projet"
 
 #: main/interface/ui/templates/Html/General/legal_notice.html:10
 msgid "template.legal.lead"
@@ -1969,7 +2164,11 @@ msgstr "Voir AmbianceBoard sur YouTube"
 msgid "template.footer.social.x"
 msgstr "Suivre AmbianceBoard sur X"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:37
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:35
+msgid "template.footer.social.instagram"
+msgstr "Rejoindre AmbianceBoard sur instagram"
+
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:40
 msgid "template.footer.social.github"
 msgstr "Consulter AmbianceBoard sur GitHub"
 

@@ -22,3 +22,15 @@ class HomeRouteTest(TestCase):
         """Test que la route home retourne du HTML"""
         response = self.client.get(reverse('home'))
         self.assertIn('text/html', response.get('Content-Type', ''))
+
+    def test_home_renders_french_copy(self):
+        response = self.client.get(reverse('home'), HTTP_ACCEPT_LANGUAGE='fr-FR,fr;q=0.9')
+
+        self.assertContains(response, 'Donnez vie à vos parties.')
+        self.assertContains(response, 'Essayez une ambiance')
+
+    def test_home_renders_english_copy(self):
+        response = self.client.get(reverse('home'), HTTP_ACCEPT_LANGUAGE='en-US,en;q=0.9')
+
+        self.assertContains(response, 'Bring your adventures to life.')
+        self.assertContains(response, 'Try a soundscape')

@@ -571,6 +571,14 @@ Corrections
 - Corrections d'un bug lorsque le l'on démarre un boutons et que l'on arrete tres vite, cela casser l'ensemble du sounboard
 - Affichage d'une page d'erreur de base si l'url est mal ecrite (hors path static)
 
+### 0.5.14 - 2026/10
+
+Nouveautés
+- Lien Instagram dans le footer
+
+Améliorations
+- Ajout de traductions 
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
