@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 18:14+0000\n"
+"POT-Creation-Date: 2026-10-13 19:36+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -1796,6 +1796,13 @@ msgid "template.shared.read.info.master"
 msgstr ""
 "C'est lui qui controle la lecture des musiques. vous pouvez mettre cette "
 "page en arrière plan et profiter de l'ambiance sonore."
+
+#: main/interface/ui/templates/Html/Shared/soundboard_read.html:35
+#, python-format
+msgid "template.soundboard_read.shared.info.volume %(volume_icon)s"
+msgstr ""
+"Si le volume d'un son ne vous convient pas, cliquez sur %(volume_icon)s pour "
+"le régler. Visible uniquement si le son a été joué recemment. "
 
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:19
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:73

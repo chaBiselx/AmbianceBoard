@@ -30,7 +30,10 @@
 
         <div class="alert alert-info mt-3 text-sm" role="alert">
             {% trans "template.shared.read.info.sync" %} <br />
-            {% trans "template.shared.read.info.master" %}
+            {% trans "template.shared.read.info.master" %} <br />
+            {% with volume_icon='<i class="fa-solid fa-volume-low"></i>'|safe %}
+            {% blocktrans with volume_icon=volume_icon %}template.soundboard_read.shared.info.volume {{ volume_icon }}{% endblocktrans %}
+            {% endwith %}
         </div>
 
         <div class="responsive-sections-container">

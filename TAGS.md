@@ -572,12 +572,15 @@ Corrections
 - Affichage d'une page d'erreur de base si l'url est mal ecrite (hors path static)
 
 ### 0.5.14 - 2026/10
-
 Nouveautés
 - Lien Instagram dans le footer
 
 Améliorations
 - Ajout de traductions 
+
+Modifications
+- Changement de label pour être plus explicite
+- Changement de visuel pour les slider horizontaux des boutons
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

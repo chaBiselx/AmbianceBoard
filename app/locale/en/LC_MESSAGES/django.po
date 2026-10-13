@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 18:14+0000\n"
+"POT-Creation-Date: 2026-10-13 19:36+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -1767,6 +1767,13 @@ msgid "template.shared.read.info.master"
 msgstr ""
 "The game master controls music playback. You can keep this page in the "
 "background and enjoy the ambience."
+
+#: main/interface/ui/templates/Html/Shared/soundboard_read.html:35
+#, python-format
+msgid "template.soundboard_read.shared.info.volume %(volume_icon)s"
+msgstr ""
+"If a sound is too loud or too quiet, click %(volume_icon)s to adjust its "
+"volume. Visible only if the sound has been played recently."
 
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:19
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:73
