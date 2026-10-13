@@ -11,7 +11,7 @@ type InvitationState = {
 export default class OnboardingInvitation {
     private readonly storageKey = 'ambiance_onboarding_invitation';
     private readonly delay: number;
-    private state: InvitationState | null = null;
+    private readonly state: InvitationState | null = null;
     private timer: ReturnType<typeof setTimeout> | null = null;
     private notification: { close: () => void } | null = null;
     private onStart: (() => void) | null = null;

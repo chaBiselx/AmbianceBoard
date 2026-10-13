@@ -47,7 +47,7 @@ export class OnboardingManager {
                 return;
             }
 
-            // TODO alony auth user afeter 01/01/2027
+            // TODO only not auth user after 01/01/2027
             const isAuthenticated = true;
 
             // Créer la configuration
