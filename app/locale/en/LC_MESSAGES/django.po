@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 20:08+0000\n"
+"POT-Creation-Date: 2026-10-13 20:25+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -1480,6 +1480,7 @@ msgstr "Loop playback"
 #: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:32
 #: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:52
 #: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:62
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:40
 msgid "generic.no"
 msgstr "No"
 
@@ -1515,6 +1516,11 @@ msgstr "Fade-out (Fade Out)"
 msgid "template.playlist_describe_type.fade_out_duration"
 msgstr "Fade-out duration (Fade Out)"
 
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:17
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:6
+msgid "template.playlist_read_all.page_title"
+msgstr "My playlist buttons"
+
 #: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:22
 msgid "generic.back"
 msgstr "Back"
@@ -1529,19 +1535,53 @@ msgstr "Filter by type"
 msgid "generic.filter_by_type.value.all"
 msgstr "All"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:65
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:32
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:17
+msgid "template.playlist.filter_by_tag"
+msgstr "Filter by playlist tag"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:33
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:18
+msgid "template.playlist.filter_by_tag.value.all"
+msgstr "All tags"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:67
 msgid "template.playlist_copiable.preview.instruction"
 msgstr "Click on a button to preview the playlist."
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:55
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:10
+msgid "template.playlist_copiable_preview.field.name"
+msgstr "Name"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:21
+msgid "template.playlist_copiable_preview.field.type"
+msgstr "Type"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:24
+msgid "template.playlist_copiable_preview.type.instant"
+msgstr "Instant sounds"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:26
+msgid "template.playlist_copiable_preview.type.ambient"
+msgstr "Ambient sounds"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:28
+msgid "template.playlist_copiable_preview.type.music"
+msgstr "Music"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:35
+msgid "template.playlist_copiable_preview.field.specific_delay"
+msgstr "Specific delay"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:63
 msgid "template.playlist_copiable_preview.duplicate_playlist_with_edition"
 msgstr "Duplicate the button with edition"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:56
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:64
 msgid "template.playlist_copiable_preview.duplicate_playlist"
 msgstr "Duplicate the button"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:58
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:66
 msgid "template.playlist_copiable_preview.already_duplicated"
 msgstr "The button has already been duplicated."
 
@@ -1683,11 +1723,15 @@ msgstr "Labeling coming soon"
 msgid "template.playlist_create.button.new_playlist"
 msgstr "Create a new playlist"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:56
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:45
+msgid "template.playlist_read_all.copiable_badge"
+msgstr "Copyable"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:58
 msgid "template.playlist_read_all.button.add"
 msgstr "Add a button"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:57
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:59
 msgid "template.playlist_read_all.button.listPublic"
 msgstr "List of copyable buttons from community "
 
@@ -1993,6 +2037,10 @@ msgstr "none"
 #: main/interface/ui/templates/Html/partial/filter/search/filter_tag_cloud.html:40
 msgid "template.filterTagCloud.no_description"
 msgstr "No description"
+
+#: main/interface/ui/templates/Html/partial/filter/search/reset_btn.html:4
+msgid "generic.reset"
+msgstr "Reset"
 
 #: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:31
 msgid "Sounds"

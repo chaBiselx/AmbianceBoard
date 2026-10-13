@@ -3,7 +3,7 @@
 {% load Playlist %}
 {% load Utils %}
 
-{% block page_title %}Mes Boutons Playlist | AmbianceBoard{% endblock %}
+{% block page_title %}{% trans "template.playlist_read_all.page_title" %} | AmbianceBoard{% endblock %}
 
 {% block content %}
 
@@ -14,8 +14,10 @@
             <div class="d-flex align-items-center gap-3 flex-wrap">
                 {% trans "generic.filter_by_type" as filter_label %}
                 {% trans "generic.filter_by_type.value.all" as all_label %}
+                {% trans "template.playlist.filter_by_tag" as tag_filter_label %}
+                {% trans "template.playlist.filter_by_tag.value.all" as all_tags_label %}
                 {% include 'Html/partial/filter/search/filter_select.html' with label=filter_label field_name="playlistType" field_id="playlistType" options=playlistType selected_value=selected_type all_option_label=all_label %}
-                {% include 'Html/partial/filter/search/filter_select.html' with label="Filtre tag playlist" field_name="playlistTag" field_id="playlistTag" options=list_playlist_tags_dict selected_value=selected_playlist_tag all_option_label="Tous les tags" use_key_as_value=True %}
+                {% include 'Html/partial/filter/search/filter_select.html' with label=tag_filter_label field_name="playlistTag" field_id="playlistTag" options=list_playlist_tags_dict selected_value=selected_playlist_tag all_option_label=all_tags_label use_key_as_value=True %}
                 {% include 'Html/partial/filter/search/reset_btn.html' with reset_url=filter_reset_url %}
             </div>
         </form>
@@ -40,7 +42,7 @@
                     </span>
                     {% endwith %}
                     {% if playlist.is_copiable %}
-                    <span class="position-absolute bottom-0 start-100 translate-middle badge rounded-pill bg-success" title="Copiable">
+                    <span class="position-absolute bottom-0 start-100 translate-middle badge rounded-pill bg-success" title="{% trans 'template.playlist_read_all.copiable_badge' %}">
                         <i class="fa-regular fa-copy"></i>
                     </span>
                     {% endif %}

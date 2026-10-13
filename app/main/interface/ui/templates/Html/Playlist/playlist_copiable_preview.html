@@ -7,7 +7,7 @@
 <div class="row preview-text-smaller">
     <div class="col-8">
         <dl>
-            <dt>Nom :</dt>
+            <dt>{% trans "template.playlist_copiable_preview.field.name" %} :</dt>
             <dd>{{ playlist.name}}</dd>
         </dl>
     </div>
@@ -18,18 +18,26 @@
     </div>
     <div class="col-6">
         <dl>
-            <dt class="m-0">Type :</dt>
-            <dd>{{ playlist.typePlaylistStr }}</dd>
+            <dt class="m-0">{% trans "template.playlist_copiable_preview.field.type" %} :</dt>
+            <dd>
+                {% if playlist.typePlaylist == "PLAYLIST_TYPE_INSTANT" %}
+                {% trans "template.playlist_copiable_preview.type.instant" %}
+                {% elif playlist.typePlaylist == "PLAYLIST_TYPE_AMBIENT" %}
+                {% trans "template.playlist_copiable_preview.type.ambient" %}
+                {% elif playlist.typePlaylist == "PLAYLIST_TYPE_MUSIC" %}
+                {% trans "template.playlist_copiable_preview.type.music" %}
+                {% endif %}
+            </dd>
         </dl>
     </div>
     <div class="col-6">
         <dl>
-            <dt class="m-0">Delay spécifique :</dt>
+            <dt class="m-0">{% trans "template.playlist_copiable_preview.field.specific_delay" %} :</dt>
             <dd>
                 {% if playlist.useSpecificDelay %}
                 {{ playlist.specificDelay }} s
                 {% else %}
-                Non
+                {% trans "generic.no" %}
                 {% endif %}
             </dd>
         </dl>
