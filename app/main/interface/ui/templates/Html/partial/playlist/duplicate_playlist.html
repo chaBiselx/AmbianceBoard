@@ -15,13 +15,17 @@
         </div>
     </div>
     <div class="col-6">
-        {% if type_import == "duplicate" %}
+        {% if type_import == "duplicate" or type_import == "copy_to_library" %}
         <button class="btn btn-block btn-outline-primary btn-sm mt-2 btn-edit-mode-duplicate" data-url-duplication="{{url_duplication}}">
             Copier
         </button>
         {% elif type_import == "add" %}
         <button class="btn btn-block btn-outline-success btn-sm mt-2 btn-edit-mode-add-my-playlist" data-url-add="{{url_duplication}}">
             Ajouter
+        </button>
+        {% elif type_import == "copy_to_library" %}
+        <button class="btn btn-block btn-outline-primary btn-sm mt-2 btn-edit-mode-duplicate" data-url-duplication="{{url_duplication}}">
+            {% trans "template.playlist.copiable.add_to_my_playlists" %}
         </button>
         {% endif %}
     </div>

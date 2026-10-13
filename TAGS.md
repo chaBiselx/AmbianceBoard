@@ -574,6 +574,7 @@ Corrections
 ### 0.5.14 - 2026/10
 Nouveautés
 - Lien Instagram dans le footer
+- Pourvoir ajouter un boutons de la communauté depuis la page d'organisation d'un sounboard
 
 Améliorations
 - Ajout de traductions 

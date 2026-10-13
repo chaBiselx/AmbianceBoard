@@ -92,7 +92,6 @@ def playlist_copiable_preview(request):
     if(not playlist or not playlist.is_copiable or playlist.moderator_ban_copie):
         return render(request, HtmlDefaultPageEnum.ERROR_404.value, status=404)
     
-    playlist.typePlaylistStr = PlaylistTypeEnum[playlist.typePlaylist].value
     list_track = TrackRepository().get_tracks_by_playlist(playlist)
     
     check_already_duplicated = PlaylistDuplicationHistoryRepository().find_existing_duplication(

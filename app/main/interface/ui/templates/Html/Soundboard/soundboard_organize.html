@@ -17,8 +17,18 @@
         <a type="button" href="{% url 'soundboardsRead' soundboard.uuid %}" class="btn btn-info float-end">{% trans "template.soundboard_organize.page.back" %}</a>
     </div>
     <div class="col-6 px-sm-2 px-1">
-        <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
             <h3>{% trans "template.soundboard_organize.unassociated.title" %}</h3>
+            <button type="button" class="btn btn-outline-primary" id="add-community-playlist-button"
+                data-url-list="{% url 'soundboardEditModePlaylistList' soundboard.uuid %}?target=library"
+                data-modal-title="{% trans 'template.soundboard_organize.community.modal_title' %}"
+                data-loading-message="{% trans 'template.soundboard_organize.community.loading' %}"
+                data-load-error="{% trans 'template.soundboard_organize.community.load_error' %}"
+                data-add-error="{% trans 'template.soundboard_organize.community.add_error' %}"
+                data-csrf-error="{% trans 'template.soundboard_organize.community.csrf_error' %}">
+                <i class="fa-solid fa-earth-europe" aria-hidden="true"></i>
+                {% trans "template.soundboard_organize.community.add_button" %}
+            </button>
         </div>
         <div class="flex-container zone-dragAndDrop border border-secondary rounded" id="unassociated-playlists">
             <span class="unassociated-playlists-empty " hidden="true">{% trans "template.soundboard_organize.unassociated.empty" %}</span>
