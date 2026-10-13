@@ -572,6 +572,9 @@ Corrections
 - Affichage d'une page d'erreur de base si l'url est mal ecrite (hors path static)
 
 ### 0.5.14 - 2026/10
+Sécurité
+- mise à jour de dépendances 
+
 Nouveautés
 - Lien Instagram dans le footer
 - Pourvoir ajouter un boutons de la communauté depuis la page d'organisation d'un sounboard
