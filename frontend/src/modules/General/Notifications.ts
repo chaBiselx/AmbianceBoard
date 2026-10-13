@@ -10,6 +10,7 @@ type ActionNotificationOptions = {
     message: string;
     actionLabel: string;
     dismissLabel: string;
+    type?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'danger';
     onAction: () => void;
     onDismiss?: () => void;
 };
@@ -25,7 +26,7 @@ class Notification {
         }
 
         const notification = document.createElement('section');
-        notification.className = 'action-notification';
+        notification.classList.add('action-notification', `action-notification-${options.type ?? 'warning'}`);
         notification.setAttribute('role', 'status');
         notification.setAttribute('aria-live', 'polite');
 

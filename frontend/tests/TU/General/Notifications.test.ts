@@ -87,7 +87,9 @@ describe('Notification.createActionNotification', () => {
         Notification.createActionNotification(options());
         const container = document.getElementById('action-notification-container')!;
         expect(container.className).toBe('action-notification-container');
-        expect(container.querySelector('[role="status"]')?.getAttribute('aria-live')).toBe('polite');
+        const notification = container.querySelector('[role="status"]');
+        expect(notification?.getAttribute('aria-live')).toBe('polite');
+        expect(notification?.classList.contains('action-notification-warning')).toBe(true);
         expect(container.querySelector('p')?.textContent).toBe('<b>A guided tour?</b>');
         expect(container.querySelector('b')).toBeNull();
         expect(container.querySelector('[aria-label="Close"]')).not.toBeNull();
@@ -96,6 +98,15 @@ describe('Notification.createActionNotification', () => {
         expect(container.isConnected).toBe(true);
         expect(document.getElementById('notification-container')).not.toBeNull();
     });
+
+        it('applies each supported style when requested', () => {
+            for (const type of ['primary', 'secondary', 'info', 'success', 'warning', 'danger'] as const) {
+                const { close } = Notification.createActionNotification({ ...options(), type });
+            const notification = document.querySelector('.action-notification');
+            expect(notification?.classList.contains(`action-notification-${type}`)).toBe(true);
+                close();
+        }
+        });
 
     it('executes the action only once and removes the empty container', () => {
         const config = options();
@@ -114,6 +125,15 @@ describe('Notification.createActionNotification', () => {
         document.querySelector<HTMLButtonElement>('[aria-label="Close"]')!.click();
         expect(config.onAction).not.toHaveBeenCalled();
         expect(config.onDismiss).toHaveBeenCalledOnce();
+        expect(document.getElementById('action-notification-container')).toBeNull();
+    });
+
+    it('dismisses when the optional onDismiss callback is omitted', () => {
+        const config: Parameters<typeof Notification.createActionNotification>[0] = options();
+        delete config.onDismiss;
+        Notification.createActionNotification(config);
+
+        expect(() => document.querySelector<HTMLButtonElement>('[aria-label="Close"]')!.click()).not.toThrow();
         expect(document.getElementById('action-notification-container')).toBeNull();
     });
 

@@ -158,13 +158,16 @@ describe('OnboardingShepherd', () => {
 
         expect(shepherdMocks.start).toHaveBeenCalledOnce();
         expect(service.getCurrentStep()?.id).toBe('first');
-        expect(JSON.parse(sessionStore.getItem('ambiance_shepherd_session')!).currentStep).toBe(0);
+        expect(JSON.parse(sessionStore.getItem('ambiance_shepherd_session')!)).toMatchObject({
+            currentStep: 0, inProgress: true, redirectPath: null,
+        });
 
         shepherdMocks.steps[1].buttons[0].action();
         expect(shepherdMocks.back).toHaveBeenCalledOnce();
         shepherdMocks.steps[1].buttons[1].action();
 
         expect(shepherdMocks.complete).toHaveBeenCalledOnce();
+        expect(sessionStore.getItem('ambiance_shepherd_session')).toBeNull();
         expect(JSON.parse(localStore.getItem('ambiance_shepherd_local')!).completed).toBe(true);
         expect(service.shouldStartTour()).toBe(false);
     });
@@ -202,5 +205,18 @@ describe('OnboardingShepherd', () => {
 
         expect(localStore.getItem('ambiance_shepherd_local')).toBeNull();
         expect(sessionStore.getItem('ambiance_shepherd_session')).toBeNull();
+    });
+
+    it('records the destination when redirecting an active tour', () => {
+        vi.stubGlobal('location', { href: 'http://localhost/', pathname: '/' });
+        const service = OnboardingShepherd.getInstance();
+        service.initialize(makeConfig([makeStep('first'), makeStep('next', { redirectUrl: '/next-page' })]));
+
+        service.goToStep(1);
+
+        expect(JSON.parse(sessionStore.getItem('ambiance_shepherd_session')!)).toMatchObject({
+            currentStep: 1, inProgress: true, redirectPath: '/next-page',
+        });
+        expect(globalThis.location.href).toBe('/next-page');
     });
 });

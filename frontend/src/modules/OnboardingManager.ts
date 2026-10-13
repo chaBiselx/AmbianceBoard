@@ -1,11 +1,9 @@
-import { OnboardingShepherd, IOnboardingConfig } from './OnboardingShepherd';
-import {
-    buildStepsList,
-    IOnboardingApiStep,
- } from './OnboardingSteps';
-import { IOnboardingContextResponse } from './OnboardingManager.types';
-import ConsoleCustom from './General/ConsoleCustom';
-import Notification from './General/Notifications';
+import { OnboardingShepherd, IOnboardingConfig } from '@/modules/OnboardingShepherd';
+import { buildStepsList } from '@/modules/OnboardingSteps';
+import { IOnboardingContextResponse } from '@/modules/OnboardingManager.types';
+import ConsoleCustom from '@/modules/General/ConsoleCustom';
+import Notification from '@/modules/General/Notifications';
+import OnboardingInvitation from '@/modules/General/OnboardingInvitation';
 
 /**
  * Gestionnaire pour initialiser et contrôler la visite guidée Shepherd
@@ -13,6 +11,7 @@ import Notification from './General/Notifications';
  */
 export class OnboardingManager {
     private readonly shepherd: OnboardingShepherd;
+    private readonly invitation = new OnboardingInvitation(30);
     private readonly storageKeySession = 'ambiance_shepherd_session';
     private isInitialized = false;
     private isInitializing = false;
@@ -48,7 +47,8 @@ export class OnboardingManager {
                 return;
             }
 
-            const isAuthenticated = this.isAuthenticatedFromSteps(apiContext.steps);
+            // TODO alony auth user afeter 01/01/2027
+            const isAuthenticated = true;
 
             // Créer la configuration
             const config: IOnboardingConfig = {
@@ -61,25 +61,24 @@ export class OnboardingManager {
 
             // Initialiser Shepherd
             this.shepherd.initialize(config);
+            const tour = this.shepherd.getShepherdTour();
+            if (!tour || tour.steps.length === 0) return;
             this.isInitialized = true;
 
-            // Attendre que le DOM soit prêt (tous les data-shepherd attrs présents)
-            await this.waitForShepherdTargets(config);
-
-            // Vérifier si on doit relancer la visite
-            const resumeStep = this.getResumeStep();
+            this.attachButtonListeners();
+            const resumeStep = this.consumeResumeStep(tour.steps.length);
             if (resumeStep !== null) {
-                // On reprend depuis une redirection
+                this.invitation.suppress();
+                await this.waitForShepherdTargets(config);
                 ConsoleCustom.log(`Resuming Shepherd at step ${resumeStep}`);
-                this.shepherd.getShepherdTour()?.show(resumeStep);
-                this.clearResumeStep();
-            } else if (this.shepherd.shouldStartTour()) {
-                // Première visite
-                this.shepherd.start();
+                tour.show(resumeStep);
             }
 
-            // Attacher les event listeners des boutons
-            this.attachButtonListeners();
+            else {
+                ConsoleCustom.log(`=== Starting onboarding invitation ===`);
+
+                this.invitation.initialize(() => this.startTour());
+            }
 
             ConsoleCustom.log('Onboarding Shepherd initialized');
         } catch (error) {
@@ -105,7 +104,11 @@ export class OnboardingManager {
             const data = await response.json() as IOnboardingContextResponse;
 
             // Defensive fallback on malformed payload while preserving graceful behavior.
-            if (!data?.steps || !data?.feature_flags) {
+            if (!Array.isArray(data?.steps)
+                || !data.steps.every(step => step && typeof step.id === 'string'
+                    && typeof step.selector === 'string' && typeof step.description === 'string')
+                || typeof data?.feature_flags?.onboarding_enabled !== 'boolean'
+                || ![data?.labels?.next, data?.labels?.prev, data?.labels?.done].every(label => typeof label === 'string')) {
                 throw new Error('Malformed onboarding context payload');
             }
 
@@ -116,34 +119,16 @@ export class OnboardingManager {
         }
     }
 
-    private isAuthenticatedFromSteps(steps: IOnboardingApiStep[]): boolean {
-        // Private step IDs are only present for authenticated users in backend payload.
-        return steps.some((step) => step.id.startsWith('private_'));
-    }
-
     /**
      * Attendre que le DOM soit complètement prêt
      */
     private async waitForDOMReady(): Promise<void> {
-        return new Promise((resolve) => {
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', () => {
-                    // Attendre 1s supplémentaires pour que tous les scripts se chargent
-                    ConsoleCustom.log('DOMContentLoaded fired, waiting for all scripts...');
-                    setTimeout(() => {
-                        ConsoleCustom.log('Ready to initialize Onboarding');
-                        resolve();
-                    }, 300);
-                }, { once: true });
-            } else {
-                // DOM est déjà prêt, attendre un bit pour que les scripts se chargent
-                ConsoleCustom.log('DOM already ready, waiting for scripts...');
-                setTimeout(() => {
-                    ConsoleCustom.log('Ready to initialize Onboarding');
-                    resolve();
-                }, 300);
-            }
-        });
+        if (document.readyState === 'loading') {
+            await new Promise<void>(resolve => {
+                document.addEventListener('DOMContentLoaded', () => resolve(), { once: true });
+            });
+        }
+        await new Promise<void>(resolve => setTimeout(resolve, 300));
     }
 
     /**
@@ -169,6 +154,7 @@ export class OnboardingManager {
         try {
             const tour = this.shepherd.getShepherdTour();
             if (tour) {
+                this.invitation.suppress();
                 this.shepherd.reset();
                 this.shepherd.goToStep(0);
             } else {
@@ -186,30 +172,24 @@ export class OnboardingManager {
             });
         }
     }
-
-
-
     /**
      * Récupère le numéro d'étape à reprendre après redirection
      */
-    private getResumeStep(): number | null {
-        const sessionState = sessionStorage.getItem(this.storageKeySession);
-        if (sessionState) {
-            try {
+    private consumeResumeStep(stepCount: number): number | null {
+        try {
+            const sessionState = sessionStorage.getItem(this.storageKeySession);
+            if (sessionState) {
+                sessionStorage.removeItem(this.storageKeySession);
                 const state = JSON.parse(sessionState);
-                return state.currentStep ?? null;
-            } catch {
-                return null;
+                if (state?.inProgress === true && state.redirectPath === globalThis.location.pathname
+                    && Number.isInteger(state.currentStep) && state.currentStep >= 0 && state.currentStep < stepCount) {
+                    return state.currentStep;
+                }
             }
+        } catch {
+            return null;
         }
         return null;
-    }
-
-    /**
-     * Efface l'état de redirection
-     */
-    private clearResumeStep(): void {
-        sessionStorage.removeItem(this.storageKeySession);
     }
 
     /**
