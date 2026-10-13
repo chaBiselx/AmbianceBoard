@@ -2135,7 +2135,7 @@ msgstr "Afficher/masquer les pistes audio spécifiques"
 
 #: main/interface/ui/templates/Html/partial/soundboard/mixer.html:52
 msgid "template.mixer.toggle.specific_music.label"
-msgstr "Musique"
+msgstr "Musique spécifique"
 
 #: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:7
 msgid "template.playingMonitor.accordion.title"

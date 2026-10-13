@@ -2107,7 +2107,7 @@ msgstr "Show/hide specific audio tracks"
 
 #: main/interface/ui/templates/Html/partial/soundboard/mixer.html:52
 msgid "template.mixer.toggle.specific_music.label"
-msgstr "Music"
+msgstr "Specific music"
 
 #: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:7
 msgid "template.playingMonitor.accordion.title"
