@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 16:25+0000\n"
+"POT-Creation-Date: 2026-10-13 18:14+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -188,157 +188,157 @@ msgstr "Social network"
 msgid "onboarding.social_network.description"
 msgstr "Feel free to follow me on social media to keep up with the progress."
 
-#: main/domain/general/service/OnboardingContextService.py:74
+#: main/domain/general/service/OnboardingContextService.py:75
 msgid "onboarding.public.theme.title"
 msgstr "Choose a light or dark theme"
 
-#: main/domain/general/service/OnboardingContextService.py:75
+#: main/domain/general/service/OnboardingContextService.py:76
 msgid "onboarding.public.theme.description"
 msgstr ""
 "Use this button to switch between the light and dark themes. Your preference "
 "is saved automatically."
 
-#: main/domain/general/service/OnboardingContextService.py:82
+#: main/domain/general/service/OnboardingContextService.py:83
 msgid "onboarding.public.fullscreen.title"
 msgstr "Switch to fullscreen"
 
-#: main/domain/general/service/OnboardingContextService.py:83
+#: main/domain/general/service/OnboardingContextService.py:84
 msgid "onboarding.public.fullscreen.description"
 msgstr ""
 "Fullscreen gives the soundboard more space, so you can enjoy its sounds "
 "without distractions."
 
-#: main/domain/general/service/OnboardingContextService.py:90
+#: main/domain/general/service/OnboardingContextService.py:91
 msgid "onboarding.public.soundboards.title"
 msgstr "Browse public soundboards"
 
-#: main/domain/general/service/OnboardingContextService.py:91
+#: main/domain/general/service/OnboardingContextService.py:92
 msgid "onboarding.public.soundboards.description"
 msgstr ""
 "Open the selection of soundboards shared by the community to listen to or "
 "preview them."
 
-#: main/domain/general/service/OnboardingContextService.py:98
+#: main/domain/general/service/OnboardingContextService.py:99
 msgid "onboarding.public.grid.title"
 msgstr "Explore public soundboards"
 
-#: main/domain/general/service/OnboardingContextService.py:99
+#: main/domain/general/service/OnboardingContextService.py:100
 msgid "onboarding.public.grid.description"
 msgstr ""
 "Browse community soundboards, listen to them, and copy the buttons you like "
 "into your collection."
 
-#: main/domain/general/service/OnboardingContextService.py:106
+#: main/domain/general/service/OnboardingContextService.py:107
 msgid "onboarding.private.tracks.title"
 msgstr "Play sounds from the soundboard"
 
-#: main/domain/general/service/OnboardingContextService.py:107
+#: main/domain/general/service/OnboardingContextService.py:108
 msgid "onboarding.private.tracks.description"
 msgstr "Click a button to play its associated sound."
 
-#: main/domain/general/service/OnboardingContextService.py:114
+#: main/domain/general/service/OnboardingContextService.py:115
 msgid "onboarding.private.mixer.title"
 msgstr "Adjust the audio mix"
 
-#: main/domain/general/service/OnboardingContextService.py:115
+#: main/domain/general/service/OnboardingContextService.py:116
 msgid "onboarding.private.mixer.description"
 msgstr "Adjust the volume and use the audio controls for this soundboard."
 
-#: main/domain/general/service/OnboardingContextService.py:128
+#: main/domain/general/service/OnboardingContextService.py:129
 msgid "onboarding.private.propose_playlist.title"
 msgstr "Propose a playlist"
 
-#: main/domain/general/service/OnboardingContextService.py:129
+#: main/domain/general/service/OnboardingContextService.py:130
 msgid "onboarding.private.propose_playlist.description"
 msgstr ""
 "Send one of your playlists to this public soundboard's owner for "
 "consideration."
 
-#: main/domain/general/service/OnboardingContextService.py:140
+#: main/domain/general/service/OnboardingContextService.py:141
 msgid "onboarding.private.share_listening.title"
 msgstr "Share the listening session"
 
-#: main/domain/general/service/OnboardingContextService.py:141
+#: main/domain/general/service/OnboardingContextService.py:142
 msgid "onboarding.private.share_listening.description"
 msgstr ""
 "Generate a link for your players. Their page stays synchronized with this "
 "soundboard's playback."
 
-#: main/domain/general/service/OnboardingContextService.py:148
+#: main/domain/general/service/OnboardingContextService.py:149
 msgid "onboarding.public.playing_monitor.title"
 msgstr "See what's playing"
 
-#: main/domain/general/service/OnboardingContextService.py:149
+#: main/domain/general/service/OnboardingContextService.py:150
 msgid "onboarding.public.playing_monitor.description"
 msgstr "View the buttons currently playing and stop a sound from the monitor."
 
-#: main/domain/general/service/OnboardingContextService.py:161
+#: main/domain/general/service/OnboardingContextService.py:162
 msgid "onboarding.private.my_soundboards.title"
 msgstr "Open your soundboards"
 
-#: main/domain/general/service/OnboardingContextService.py:162
+#: main/domain/general/service/OnboardingContextService.py:163
 msgid "onboarding.private.my_soundboards.description"
 msgstr "Open your personal area to find the soundboards you have created."
 
-#: main/domain/general/service/OnboardingContextService.py:169
+#: main/domain/general/service/OnboardingContextService.py:170
 msgid "onboarding.private.my_soundboards_grid.title"
 msgstr "Manage your soundboards"
 
-#: main/domain/general/service/OnboardingContextService.py:170
+#: main/domain/general/service/OnboardingContextService.py:171
 msgid "onboarding.private.my_soundboards_grid.description"
 msgstr ""
 "Find your personal soundboards here. You can edit, share, or delete them."
 
-#: main/domain/general/service/OnboardingContextService.py:177
+#: main/domain/general/service/OnboardingContextService.py:178
 msgid "onboarding.private.create_soundboard.title"
 msgstr "Create a soundboard"
 
-#: main/domain/general/service/OnboardingContextService.py:178
+#: main/domain/general/service/OnboardingContextService.py:179
 msgid "onboarding.private.create_soundboard.description"
 msgstr ""
 "Name your soundboard, add a description, then choose the sounds for its "
 "buttons."
 
-#: main/domain/general/service/OnboardingContextService.py:185
+#: main/domain/general/service/OnboardingContextService.py:186
 msgid "onboarding.private.playlist_button.title"
 msgstr "Open your custom buttons"
 
-#: main/domain/general/service/OnboardingContextService.py:186
+#: main/domain/general/service/OnboardingContextService.py:187
 msgid "onboarding.private.playlist_button.description"
 msgstr "Find the buttons you have saved in your collection."
 
-#: main/domain/general/service/OnboardingContextService.py:193
+#: main/domain/general/service/OnboardingContextService.py:194
 msgid "onboarding.private.playlist_grid.title"
 msgstr "Manage your custom buttons"
 
-#: main/domain/general/service/OnboardingContextService.py:194
+#: main/domain/general/service/OnboardingContextService.py:195
 msgid "onboarding.private.playlist_grid.description"
 msgstr "Find your custom buttons here. You can edit, share, or delete them."
 
-#: main/domain/general/service/OnboardingContextService.py:201
+#: main/domain/general/service/OnboardingContextService.py:202
 msgid "onboarding.private.copiable_buttons.title"
 msgstr "Discover buttons to copy"
 
-#: main/domain/general/service/OnboardingContextService.py:202
+#: main/domain/general/service/OnboardingContextService.py:203
 msgid "onboarding.private.copiable_buttons.description"
 msgstr ""
 "Browse buttons shared by the community and choose which ones to add to your "
 "collection."
 
-#: main/domain/general/service/OnboardingContextService.py:209
+#: main/domain/general/service/OnboardingContextService.py:210
 msgid "onboarding.private.copy_buttons_grid.title"
 msgstr "Add buttons to your collection"
 
-#: main/domain/general/service/OnboardingContextService.py:210
+#: main/domain/general/service/OnboardingContextService.py:211
 msgid "onboarding.private.copy_buttons_grid.description"
 msgstr ""
 "Choose the buttons you like to copy them into your personal collection."
 
-#: main/domain/general/service/OnboardingContextService.py:217
+#: main/domain/general/service/OnboardingContextService.py:218
 msgid "onboarding.private.user_settings.title"
 msgstr "Manage your account"
 
-#: main/domain/general/service/OnboardingContextService.py:218
+#: main/domain/general/service/OnboardingContextService.py:219
 msgid "onboarding.private.user_settings.description"
 msgstr ""
 "Update your profile, notification preferences, theme, and subscription "
@@ -1907,7 +1907,7 @@ msgstr "Edit mode"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:31
 msgid "template.soundboard_read.button.organize"
-msgstr "Organize"
+msgstr "Advanced options"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:39
 msgid "template.soundboard_read.button.edit_soundboard"
@@ -2034,6 +2034,10 @@ msgstr "Private"
 #: main/interface/ui/templates/Html/partial/soundboard/header.html:13
 msgid "template.publicSoundboard.badge.public"
 msgstr "Public"
+
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:19
+msgid "template.soundboard_read.shared.button.volume"
+msgstr "Adjust volume"
 
 #: main/interface/ui/templates/Html/partial/soundboard/header.html:22
 msgid "template.shareSoundboard.button.tooltip"
