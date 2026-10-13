@@ -61,12 +61,20 @@ class OnboardingContextService:
         dynamic_url = self._create_dynamic_url(is_authenticated)
         steps = [
             {
+                'id': "social_network",
+                'selector': '[data-shepherd="footer-social-network"] ',
+                'position': 'top',
+                'title': _('onboarding.social_network.title'),
+                'description': _('onboarding.social_network.description'),
+                'redirect_url': reverse('home'),
+            },
+            {
                 'id': 'public_theme',
                 'selector': '[data-shepherd="theme-toggle"]',
                 'position': 'bottom',
                 'title': _('onboarding.public.theme.title'),
                 'description': _('onboarding.public.theme.description'),
-                'redirect_url': reverse('home'),
+                'redirect_url': None,
             },
             {
                 'id': 'public_fullscreen',

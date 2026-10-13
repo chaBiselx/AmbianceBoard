@@ -17,7 +17,7 @@
                 <a href="{% url 'supportContact' %}" class="footer-link url_link">{% trans "template.footer.support" %}</a>
             </div>
             <div class="col-12 col-md-3 text-center text-md-end mb-1 mb-md-3">
-                <div class="d-flex justify-content-center justify-content-md-end gap-3">
+                <div class="d-flex justify-content-center justify-content-md-end gap-3" data-shepherd="footer-social-network">
                     {% if request.user.isBetaTester %}
                     <button id="showLoggerBetaTest" class="footer-link url_link beta-test">
                         <i class="fa-solid fa-bug"></i>
