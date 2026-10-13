@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 19:36+0000\n"
+"POT-Creation-Date: 2026-10-13 20:08+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -2096,6 +2096,47 @@ msgstr "Proposer une playlist"
 msgid "template.mixer.setting.accordion.title"
 msgstr "Paramètres audio"
 
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+msgid "template.mixer.tooltip.volume.instant"
+msgstr "Volume des sons instantanés"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+msgid "template.mixer.tooltip.volume.ambient"
+msgstr "Volume des sons d'ambiance"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+msgid "template.mixer.tooltip.volume.music"
+msgstr "Volume de la musique"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:25
+msgid "template.mixer.tooltip.volume.general"
+msgstr "Volume général"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:32
+msgid "template.mixer.toggle.playlist_volumes.tooltip"
+msgstr "Afficher/masquer les niveaux sonores des boutons"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:36
+msgid "template.mixer.toggle.playlist_volumes.label"
+msgstr "Volume individuel"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:40
+msgid "template.mixer.save_volume.tooltip"
+msgstr "Modifier le volume de manière permanente"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:42
+msgid "template.mixer.save_volume.label"
+msgstr "Sauvegarder le volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:48
+msgid "template.mixer.toggle.specific_music.tooltip"
+msgstr "Afficher/masquer les pistes audio spécifiques"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:52
+msgid "template.mixer.toggle.specific_music.label"
+msgstr "Musique"
+
 #: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:7
 msgid "template.playingMonitor.accordion.title"
 msgstr "En cours de lecture"
@@ -2148,6 +2189,10 @@ msgstr "Ajouter l'étape"
 msgid "template.scripts.accordion.title"
 msgstr "Scripts"
 
+#: main/interface/ui/templates/Html/partial/soundboard/shortcutSoundboard.html:11
+msgid "template.shortcutSoundboard.accordion.title"
+msgstr "Afficher les raccourcis clavier"
+
 #: main/interface/ui/templates/Html/partial/structure/base.html:15
 msgid "template.base.default_page_title"
 msgstr "AmbianceBoard - Click here, play anywhere"
@@ -2181,14 +2226,10 @@ msgid "template.footer.social.youtube"
 msgstr "Voir AmbianceBoard sur YouTube"
 
 #: main/interface/ui/templates/Html/partial/structure/footer/footer.html:32
-msgid "template.footer.social.x"
-msgstr "Suivre AmbianceBoard sur X"
-
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:35
 msgid "template.footer.social.instagram"
 msgstr "Rejoindre AmbianceBoard sur instagram"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:40
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:37
 msgid "template.footer.social.github"
 msgstr "Consulter AmbianceBoard sur GitHub"
 
@@ -2300,80 +2341,3 @@ msgstr "Continuer"
 #: main/interface/ui/templates/socialaccount/login.html:20
 msgid "template.social.google.back"
 msgstr "Retour"
-
-#~ msgid "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
-#~ msgstr "Ce compte ne peux pas avoir accès a cette fonctionnalité :"
-
-#, python-format
-#~ msgid "Soundboard publique 100%% Gratuit"
-#~ msgstr "Soundboard publique"
-
-#~ msgid "Créer un soundboard pour vos ambiances de jeu de rôle"
-#~ msgstr "Soundboard publique"
-
-#~ msgid "Ambiance Continue"
-#~ msgstr "Continuer"
-
-#~ msgid "Partage public"
-#~ msgstr "Public"
-
-#~ msgid "boutons"
-#~ msgstr "Boutons"
-
-#~ msgid "Publicité"
-#~ msgstr "Public"
-
-#~ msgid "de l'écoute des soundboards"
-#~ msgstr "Liste de vos soundboards"
-
-#~ msgid "Masquer tout"
-#~ msgstr "Masquer tout"
-
-#~ msgid "Soundboard publique"
-#~ msgstr "Soundboard publique"
-
-#~ msgid "Public"
-#~ msgstr "Public"
-
-#~ msgid "Signaler un problème"
-#~ msgstr "Signaler un problème"
-
-#~ msgid "Report"
-#~ msgstr "Signaler"
-
-#~ msgid "Boutons"
-#~ msgstr "Boutons"
-
-#~ msgid "Téléchargements des dernières 24h"
-#~ msgstr "Téléchargements des dernières 24h"
-
-#~ msgid "Téléchargements"
-#~ msgstr "Téléchargements"
-
-#~ msgid "Login"
-#~ msgstr "Connexion"
-
-#~ msgid "Connexion via Google"
-#~ msgstr "Connexion via Google"
-
-#~ msgid ""
-#~ "Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
-#~ "Google."
-#~ msgstr ""
-#~ "Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
-#~ "Google."
-
-#~ msgid "Continuer"
-#~ msgstr "Continuer"
-
-#~ msgid "Retour"
-#~ msgstr "Retour"
-
-#~ msgid "Soundboard pour jeux de rôle"
-#~ msgstr "Soundboard publique"
-
-#~ msgid "Chargement"
-#~ msgstr "Téléchargements"
-
-#~ msgid "enum.fade_playlist.off"
-#~ msgstr "Désactivé"

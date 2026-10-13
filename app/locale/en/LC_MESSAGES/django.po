@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 19:36+0000\n"
+"POT-Creation-Date: 2026-10-13 20:08+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -2068,6 +2068,47 @@ msgstr "Propose a playlist"
 msgid "template.mixer.setting.accordion.title"
 msgstr "Audio settings"
 
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+msgid "template.mixer.tooltip.volume.instant"
+msgstr "Instant sounds volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+msgid "template.mixer.tooltip.volume.ambient"
+msgstr "Ambient sounds volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+msgid "template.mixer.tooltip.volume.music"
+msgstr "Music volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:25
+msgid "template.mixer.tooltip.volume.general"
+msgstr "General volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:32
+msgid "template.mixer.toggle.playlist_volumes.tooltip"
+msgstr "Show/hide the volume levels of the buttons"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:36
+msgid "template.mixer.toggle.playlist_volumes.label"
+msgstr "Individual volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:40
+msgid "template.mixer.save_volume.tooltip"
+msgstr "Change the volume permanently"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:42
+msgid "template.mixer.save_volume.label"
+msgstr "Save volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:48
+msgid "template.mixer.toggle.specific_music.tooltip"
+msgstr "Show/hide specific audio tracks"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:52
+msgid "template.mixer.toggle.specific_music.label"
+msgstr "Music"
+
 #: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:7
 msgid "template.playingMonitor.accordion.title"
 msgstr "Now playing"
@@ -2120,6 +2161,10 @@ msgstr "Add step"
 msgid "template.scripts.accordion.title"
 msgstr "Scripts"
 
+#: main/interface/ui/templates/Html/partial/soundboard/shortcutSoundboard.html:11
+msgid "template.shortcutSoundboard.accordion.title"
+msgstr "Show keyboard shortcuts"
+
 #: main/interface/ui/templates/Html/partial/structure/base.html:15
 msgid "template.base.default_page_title"
 msgstr "AmbianceBoard - Click here, play anywhere"
@@ -2153,14 +2198,10 @@ msgid "template.footer.social.youtube"
 msgstr "Watch AmbianceBoard on YouTube"
 
 #: main/interface/ui/templates/Html/partial/structure/footer/footer.html:32
-msgid "template.footer.social.x"
-msgstr "Follow AmbianceBoard on X"
-
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:35
 msgid "template.footer.social.instagram"
 msgstr "Join AmbianceBoard on Instagram"
 
-#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:40
+#: main/interface/ui/templates/Html/partial/structure/footer/footer.html:37
 msgid "template.footer.social.github"
 msgstr "Browse AmbianceBoard on GitHub"
 
@@ -2270,279 +2311,3 @@ msgstr "Continue"
 #: main/interface/ui/templates/socialaccount/login.html:20
 msgid "template.social.google.back"
 msgstr "Back"
-
-#~ msgid "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
-#~ msgstr "This account cannot access this feature"
-
-#, python-format
-#~ msgid "Soundboard publique 100%% Gratuit"
-#~ msgstr "Public soundboard"
-
-#~ msgid "Créer un soundboard pour vos ambiances de jeu de rôle"
-#~ msgstr "Public soundboard"
-
-#~ msgid "Soundboards personnalisés :"
-#~ msgstr "My private soundboards"
-
-#~ msgid "Ambiance Continue"
-#~ msgstr "Continue"
-
-#~ msgid "Mode plein écran"
-#~ msgstr "Fullscreen mode"
-
-#~ msgid "Partage public"
-#~ msgstr "Public"
-
-#~ msgid "Niveaux d'utilisateurs"
-#~ msgstr "User settings"
-
-#~ msgid "Créer mon premier soundboard"
-#~ msgstr "Create a new soundboard"
-
-#~ msgid "boutons"
-#~ msgstr "Buttons"
-
-#~ msgid "Publicité"
-#~ msgstr "Public"
-
-#~ msgid "de l'écoute des soundboards"
-#~ msgstr "list of your soundboards"
-
-#~ msgid "sur les soundboards partagées"
-#~ msgstr "My private soundboards"
-
-#~ msgid "Email :"
-#~ msgstr "Email:"
-
-#~ msgid "L'utilisateur s'engage à :"
-#~ msgstr "User settings"
-
-#~ msgid "Masquer tout"
-#~ msgstr "Hide all"
-
-#~ msgid "Soundboard publique"
-#~ msgstr "Public soundboard"
-
-#~ msgid "Public"
-#~ msgstr "Public"
-
-#~ msgid "Signaler un problème"
-#~ msgstr "Report an issue"
-
-#~ msgid "Report"
-#~ msgstr "Report"
-
-#~ msgid "liste de vos soundboards"
-#~ msgstr "list of your soundboards"
-
-#~ msgid "Boutons"
-#~ msgstr "Buttons"
-
-#~ msgid "Téléchargements des dernières 24h"
-#~ msgstr "Downloads in the last 24h"
-
-#~ msgid "Téléchargements"
-#~ msgstr "Downloads"
-
-#~ msgid "Login"
-#~ msgstr "Login"
-
-#~ msgid "Connexion via Google"
-#~ msgstr "Sign in with Google"
-
-#~ msgid ""
-#~ "Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
-#~ "Google."
-#~ msgstr "You are about to sign in using a third-party Google account."
-
-#~ msgid "Continuer"
-#~ msgstr "Continue"
-
-#~ msgid "Retour"
-#~ msgstr "Back"
-
-#~ msgid "Soundboard pour jeux de rôle"
-#~ msgstr "Public soundboard"
-
-#~ msgid "Cet email a été envoyé automatiquement, merci de ne pas y répondre."
-#~ msgstr "This email was sent automatically, please do not reply."
-
-#~ msgid "Contenu signalé"
-#~ msgstr "Reported content"
-
-#~ msgid "Détails du contenu signalé :"
-#~ msgstr "Reported content details:"
-
-#~ msgid "Element :"
-#~ msgstr "Item:"
-
-#~ msgid "Precision :"
-#~ msgstr "Details:"
-
-#~ msgid "Description :"
-#~ msgstr "Description:"
-
-#~ msgid "Date de signalement :"
-#~ msgstr "Reported on:"
-
-#~ msgid "Informations sur l'utilisateur :"
-#~ msgstr "User information:"
-
-#~ msgid "Nom d'utilisateur :"
-#~ msgstr "User settings"
-
-#~ msgid "Date d'inscription :"
-#~ msgstr "Registration date:"
-
-#~ msgid ""
-#~ "Suite à une inactivité de 24 mois, votre compte est supprimé de notre "
-#~ "site."
-#~ msgstr ""
-#~ "Following 24 months of inactivity, your account has been deleted from our "
-#~ "site."
-
-#~ msgid ""
-#~ "Après 2 mois sans confirmation de votre email, votre compte est supprimé."
-#~ msgstr ""
-#~ "After 2 months without confirming your email, your account has been "
-#~ "deleted."
-
-#, python-format
-#~ msgid ""
-#~ "Merci de confirmer votre compte. <a "
-#~ "href=\"%(confirmation_url)s\">Confirmation</a>"
-#~ msgstr ""
-#~ "Please confirm your account. <a href=\"%(confirmation_url)s\">Confirm</a>"
-
-#~ msgid "Votre mot de passe a bien été changé."
-#~ msgstr "Your password has been successfully changed."
-
-#~ msgid ""
-#~ "Suite à une inactivité de plus de 22 mois, votre compte sera supprimé de "
-#~ "notre site."
-#~ msgstr ""
-#~ "After more than 22 months of inactivity, your account will be deleted "
-#~ "from our site."
-
-#, python-format
-#~ msgid ""
-#~ "Votre compte n'est pas confirmé, veuillez confirmer votre compte via le "
-#~ "lien suivant : <a href=\"%(confirmation_url)s\">Confirmation</a>."
-#~ msgstr ""
-#~ "Your account is not confirmed. Please confirm your account using the "
-#~ "following link: <a href=\"%(confirmation_url)s\">Confirm</a>."
-
-#, python-format
-#~ msgid ""
-#~ "Voici votre demande de réinitialisation de mot de passe. <a "
-#~ "href=\"%(reset_url)s\">Réinitialiser</a>"
-#~ msgstr ""
-#~ "Here is your password reset request. <a href=\"%(reset_url)s\">Reset</a>"
-
-#, python-format
-#~ msgid "Votre compte a été rétrogradé vers le niveau %(tier_label)s."
-#~ msgstr "Your account has been downgraded to the %(tier_label)s tier."
-
-#~ msgid ""
-#~ "Si vous avez des questions ou des préoccupations, n'hésitez pas à nous "
-#~ "contacter."
-#~ msgstr "If you have any questions or concerns, feel free to contact us."
-
-#~ msgid "Merci de votre compréhension."
-#~ msgstr "Thank you for your understanding."
-
-#, python-format
-#~ msgid "Votre compte arrive à expiration dans %(remaining_days)s jours."
-#~ msgstr "Your account will expire in %(remaining_days)s days."
-
-#~ msgid ""
-#~ "Pour éviter toute diminution de service, veuillez renouveler votre "
-#~ "abonnement dès que possible."
-#~ msgstr ""
-#~ "To avoid any service downgrade, please renew your subscription as soon as "
-#~ "possible."
-
-#, python-format
-#~ msgid "Bienvenue %(username)s !"
-#~ msgstr "Welcome %(username)s!"
-
-#~ msgid "Merci de vous être inscrit sur notre site."
-#~ msgstr "Thank you for signing up on our site."
-
-#~ msgid "Paramètres"
-#~ msgstr "User settings"
-
-#~ msgid "Chargement"
-#~ msgstr "Downloads"
-
-#~ msgid "enum.fade_playlist.off"
-#~ msgstr "Off"
-
-#~ msgid "Suivant"
-#~ msgstr "Next"
-
-#~ msgid "Précédent"
-#~ msgstr "Previous"
-
-#~ msgid "Terminé"
-#~ msgstr "Done"
-
-#~ msgid "Mode clair/sombre"
-#~ msgstr "Light and dark mode"
-
-#~ msgid ""
-#~ "Basculez entre les modes clair et sombre pour plus de confort de lecture. "
-#~ "Votre préférence est sauvegardée automatiquement."
-#~ msgstr ""
-#~ "Switch between light and dark modes for better reading comfort. Your "
-#~ "preference is saved automatically."
-
-#~ msgid ""
-#~ "Agrandissez le soundboard pour une meilleure immersion audio. Idéal pour "
-#~ "vos sessions de streaming ou de travail créatif."
-#~ msgstr ""
-#~ "Expand the soundboard for better audio immersion. Perfect for your "
-#~ "streaming sessions or creative work."
-
-#~ msgid ""
-#~ "Explorez les soundboards créés par la communauté. Vous pouvez les "
-#~ "écouter, les prévisualiser et même copier leurs boutons pour votre propre "
-#~ "soundboard."
-#~ msgstr ""
-#~ "Explore community-created soundboards. You can listen to them, preview "
-#~ "them, and even copy their buttons into your own soundboard."
-
-#~ msgid ""
-#~ "Voici vos soundboards personnels. Vous pouvez les éditer, les partager ou "
-#~ "les supprimer. Chaque soundboard peut contenir jusqu'à 100 boutons audio."
-#~ msgstr ""
-#~ "These are your personal soundboards. You can edit, share, or delete them. "
-#~ "Each soundboard can contain up to 100 audio buttons."
-
-#~ msgid ""
-#~ "Créez votre propre soundboard en 3 clics. Donnez-lui un nom, une "
-#~ "description et commencez à ajouter des sons."
-#~ msgstr ""
-#~ "Create your own soundboard in 3 clicks. Give it a name, a description, "
-#~ "and start adding sounds."
-
-#~ msgid ""
-#~ "Contrôlez votre ambiance : Play/Pause, Volume, Partage. Tous les sons "
-#~ "jouent dans le même contexte audio."
-#~ msgstr ""
-#~ "Control your ambience: Play/Pause, Volume, Share. All sounds play in the "
-#~ "same audio context."
-
-#~ msgid ""
-#~ "Copiez les contrôles audio de ce soundboard pour les intégrer à votre "
-#~ "site web ou application personnelle."
-#~ msgstr ""
-#~ "Copy this soundboard audio controls to integrate them into your website "
-#~ "or personal app."
-
-#~ msgid ""
-#~ "Gérez votre profil, vos préférences de notification, votre thème préféré "
-#~ "et votre abonnement."
-#~ msgstr ""
-#~ "Manage your profile, notification preferences, your preferred theme, and "
-#~ "your subscription."

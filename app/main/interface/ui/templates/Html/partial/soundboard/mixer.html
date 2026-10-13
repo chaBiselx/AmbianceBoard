@@ -14,7 +14,7 @@
                 <div class="mixer-container">
                     {% for playlistTypeObj in PlaylistTypeMixer %}
                     <div class="mixer-container-item">
-                        <label for="mixer-{{ playlistTypeObj.typePlaylist }}" class="mixer-container-item-label text-stroke" data-bs-toggle="tooltip" data-bs-title="Volume par des {{ playlistTypeObj.typePlaylist}}" style="color:{{playlistTypeObj.color}}">
+                        <label for="mixer-{{ playlistTypeObj.typePlaylist }}" class="mixer-container-item-label text-stroke" data-bs-toggle="tooltip" data-bs-title="{% if playlistTypeObj.typePlaylist.name == 'PLAYLIST_TYPE_INSTANT' %}{% trans 'template.mixer.tooltip.volume.instant' %}{% elif playlistTypeObj.typePlaylist.name == 'PLAYLIST_TYPE_AMBIENT' %}{% trans 'template.mixer.tooltip.volume.ambient' %}{% elif playlistTypeObj.typePlaylist.name == 'PLAYLIST_TYPE_MUSIC' %}{% trans 'template.mixer.tooltip.volume.music' %}{% else %}{% trans 'template.mixer.tooltip.volume.general' %}{% endif %}" style="color:{{playlistTypeObj.color}}">
                             <i class="{{ playlistTypeObj.typePlaylist.get_icon_class }}" alt="{{ playlistTypeObj.typePlaylist}}"></i>
                         </label>
                         <input type="range" id="mixer-{{ playlistTypeObj.typePlaylist }}" data-type="{{ playlistTypeObj.typePlaylist }}" class="mixer-playlist mixer-playlist-type vertical-mixer" min="0" max="1" value="0.90" step="0.05">
@@ -22,34 +22,34 @@
                     {% endfor %}
                     <div class="mixer-container-item">
                         <label for="mixer-general" class="mixer-container-item-label text-stroke">
-                            <i class="fa-solid fa-sliders" alt="general" data-bs-toggle="tooltip" data-bs-title="Volume Général"></i>
+                            <i class="fa-solid fa-sliders" alt="general" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.mixer.tooltip.volume.general' %}"></i>
                         </label>
                         <input type="range" id="mixer-general" data-type="General" class="mixer-playlist vertical-mixer" min="0" max="1" value="0.75" step="0.05">
                     </div>
                     {% if master == True %}
                     <div class="mixer-container-item">
                         <input type="checkbox" class="btn-check" id="inputShowMixerPlaylist" autocomplete="off">
-                        <label class="btn btn-outline-primary btn-block px-0 py-1 my-1 text-sm" for="inputShowMixerPlaylist" data-bs-toggle="tooltip" data-bs-title="Afficher/masquer les niveaux sonores des boutons">
+                        <label class="btn btn-outline-primary btn-block px-0 py-1 my-1 text-sm" for="inputShowMixerPlaylist" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.mixer.toggle.playlist_volumes.tooltip' %}">
                             <small class="lh-1">
                                 <span id="inputShowMixerPlaylist-show"><i class="fa-solid fa-eye"></i></span>
                                 <span id="inputShowMixerPlaylist-hide" class="d-none"><i class="fa-solid fa-eye-slash"></i></span>
-                                <i class="fa-solid fa-sliders" alt="general"></i> Volume individuel
+                                <i class="fa-solid fa-sliders" alt="general"></i> {% trans "template.mixer.toggle.playlist_volumes.label" %}
                             </small>
                         </label>
                         {% if owner == True %}
-                        <div id="saveVolumePlaylistMixer-div" class="form-check form-switch d-none" data-bs-toggle="tooltip" data-bs-title="Modifier le volume de manière permanente">
+                        <div id="saveVolumePlaylistMixer-div" class="form-check form-switch d-none" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.mixer.save_volume.tooltip' %}">
                             <input class="form-check-input" type="checkbox" aria-checked="true" role="switch" id="saveVolumePlaylistMixer">
-                            <label class="form-check-label" for="saveVolumePlaylistMixer"><small>Sauvegarder le volume</small></label>
+                            <label class="form-check-label" for="saveVolumePlaylistMixer"><small>{% trans "template.mixer.save_volume.label" %}</small></label>
                         </div>
                         {% endif %}
 
                         <input type="checkbox" class="btn-check" id="inputShowSpecificMusic" autocomplete="off">
                         {% if request.user.isBetaTester %}
-                        <label class="btn btn-outline-primary btn-block px-0 py-1 my-1 text-sm beta-test" for="inputShowSpecificMusic" data-bs-toggle="tooltip" data-bs-title="Afficher/masquer piste audios spécifiques">
+                        <label class="btn btn-outline-primary btn-block px-0 py-1 my-1 text-sm beta-test" for="inputShowSpecificMusic" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.mixer.toggle.specific_music.tooltip' %}">
                             <small class="lh-1">
                                 <span id="inputShowSpecificMusic-show"><i class="fa-solid fa-eye"></i></span>
                                 <span id="inputShowSpecificMusic-hide" class="d-none"><i class="fa-solid fa-eye-slash"></i></span>
-                                <i class="fa-brands fa-itunes-note"></i> Musique
+                                <i class="fa-brands fa-itunes-note"></i> {% trans "template.mixer.toggle.specific_music.label" %}
                             </small>
                         </label>
                         {% endif %}
