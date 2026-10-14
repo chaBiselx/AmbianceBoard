@@ -207,9 +207,9 @@ class SectionSwapper {
             if (!await new SendBackendAction().swapSections(sectionA, sectionB)) return;
 
             if (sectionA < sectionB) {
-                parent.insertBefore(accordionB, accordionA);
+                accordionA.before(accordionB);
             } else {
-                parent.insertBefore(accordionA, accordionB);
+                accordionB.before(accordionA);
             }
             this.sectionDomManager.updateAccordionNode(accordionA, sectionB);
             this.sectionDomManager.updateAccordionNode(accordionB, sectionA);
