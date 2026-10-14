@@ -573,12 +573,12 @@ Corrections
 
 ### 0.5.14 - 2026/10
 Sécurité
-- mise à jour de dépendances 
+- Mise à jour de dépendances
 
 Nouveautés
 - Lien Instagram dans le footer
-- Pouvoir ajouter un boutons de la communauté depuis la page d'organisation d'un sounboard
-- Pouvoir intervertir 2 sections depuis la page d'organisation d'un sounboard
+- Pouvoir ajouter un boutons de la communauté depuis la page d'organisation d'un soundboard
+- Pouvoir intervertir 2 sections depuis la page d'organisation d'un soundboard
 
 Améliorations
 - Ajout de traductions 
@@ -587,6 +587,25 @@ Améliorations
 Modifications
 - Changement de label pour être plus explicite
 - Changement de visuel pour les slider horizontaux des boutons
+
+### 0.5.15 - 2026/10
+Sécurité
+- … 
+
+Nouveautés
+- …
+
+Améliorations
+- …
+
+Modifications
+- …
+
+Corrections
+- …
+
+Fiabilité & Confiance
+- …
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
