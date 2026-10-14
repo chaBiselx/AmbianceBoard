@@ -12,6 +12,7 @@ from abc import ABC, abstractmethod
 
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import Group
 from django.core.files import File
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
@@ -25,6 +26,7 @@ from main.architecture.persistence.models.SoundboardSection import SoundboardSec
 from main.architecture.persistence.models.User import User
 from main.architecture.persistence.models.UserPreference import UserPreference
 from main.domain.common.enum.LinkMusicTypeEnum import LinkMusicTypeEnum
+from main.domain.common.enum.GroupEnum import GroupEnum
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 
@@ -143,6 +145,9 @@ class BaseSoundboardSeedCommand(BaseCommand):
                 "isConfirmed": fixture_user["isConfirmed"],
             },
         )
+        standard_group, _ = Group.objects.get_or_create(name=GroupEnum.USER_STANDARD.name)
+        user.groups.add(standard_group)
+
         if user_created:
             UserPreference.objects.get_or_create(user=user)
         return user, user_created
