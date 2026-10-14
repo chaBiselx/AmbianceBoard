@@ -582,6 +582,7 @@ Nouveautés
 
 Améliorations
 - Ajout de traductions 
+- Ajout du SEO pour la page pricing 
 
 Modifications
 - Changement de label pour être plus explicite
