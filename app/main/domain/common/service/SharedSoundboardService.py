@@ -94,7 +94,7 @@ class SharedSoundboardService():
             )
 
             if not shared_soundboard:
-                logger.error(f"Soundboard introuvable: {self.soundboard_uuid} {self.token}")
+                logger.debug(f"shared_soundboard Soundboard introuvable: soundboard : {self.soundboard_uuid} token : {self.token}")
                 return False
 
             self.cache.set(cache_key, shared_soundboard)
