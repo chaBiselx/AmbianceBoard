@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-09 09:07+0000\n"
+"POT-Creation-Date: 2026-10-13 20:25+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -181,162 +181,170 @@ msgid "onboarding.labels.done"
 msgstr "Done"
 
 #: main/domain/general/service/OnboardingContextService.py:67
+msgid "onboarding.social_network.title"
+msgstr "Social network"
+
+#: main/domain/general/service/OnboardingContextService.py:68
+msgid "onboarding.social_network.description"
+msgstr "Feel free to follow me on social media to keep up with the progress."
+
+#: main/domain/general/service/OnboardingContextService.py:75
 msgid "onboarding.public.theme.title"
 msgstr "Choose a light or dark theme"
 
-#: main/domain/general/service/OnboardingContextService.py:68
+#: main/domain/general/service/OnboardingContextService.py:76
 msgid "onboarding.public.theme.description"
 msgstr ""
 "Use this button to switch between the light and dark themes. Your preference "
 "is saved automatically."
 
-#: main/domain/general/service/OnboardingContextService.py:75
+#: main/domain/general/service/OnboardingContextService.py:83
 msgid "onboarding.public.fullscreen.title"
 msgstr "Switch to fullscreen"
 
-#: main/domain/general/service/OnboardingContextService.py:76
+#: main/domain/general/service/OnboardingContextService.py:84
 msgid "onboarding.public.fullscreen.description"
 msgstr ""
 "Fullscreen gives the soundboard more space, so you can enjoy its sounds "
 "without distractions."
 
-#: main/domain/general/service/OnboardingContextService.py:83
+#: main/domain/general/service/OnboardingContextService.py:91
 msgid "onboarding.public.soundboards.title"
 msgstr "Browse public soundboards"
 
-#: main/domain/general/service/OnboardingContextService.py:84
+#: main/domain/general/service/OnboardingContextService.py:92
 msgid "onboarding.public.soundboards.description"
 msgstr ""
 "Open the selection of soundboards shared by the community to listen to or "
 "preview them."
 
-#: main/domain/general/service/OnboardingContextService.py:91
+#: main/domain/general/service/OnboardingContextService.py:99
 msgid "onboarding.public.grid.title"
 msgstr "Explore public soundboards"
 
-#: main/domain/general/service/OnboardingContextService.py:92
+#: main/domain/general/service/OnboardingContextService.py:100
 msgid "onboarding.public.grid.description"
 msgstr ""
 "Browse community soundboards, listen to them, and copy the buttons you like "
 "into your collection."
 
-#: main/domain/general/service/OnboardingContextService.py:99
+#: main/domain/general/service/OnboardingContextService.py:107
 msgid "onboarding.private.tracks.title"
 msgstr "Play sounds from the soundboard"
 
-#: main/domain/general/service/OnboardingContextService.py:100
+#: main/domain/general/service/OnboardingContextService.py:108
 msgid "onboarding.private.tracks.description"
 msgstr "Click a button to play its associated sound."
 
-#: main/domain/general/service/OnboardingContextService.py:107
+#: main/domain/general/service/OnboardingContextService.py:115
 msgid "onboarding.private.mixer.title"
 msgstr "Adjust the audio mix"
 
-#: main/domain/general/service/OnboardingContextService.py:108
+#: main/domain/general/service/OnboardingContextService.py:116
 msgid "onboarding.private.mixer.description"
 msgstr "Adjust the volume and use the audio controls for this soundboard."
 
-#: main/domain/general/service/OnboardingContextService.py:121
+#: main/domain/general/service/OnboardingContextService.py:129
 msgid "onboarding.private.propose_playlist.title"
 msgstr "Propose a playlist"
 
-#: main/domain/general/service/OnboardingContextService.py:122
+#: main/domain/general/service/OnboardingContextService.py:130
 msgid "onboarding.private.propose_playlist.description"
 msgstr ""
 "Send one of your playlists to this public soundboard's owner for "
 "consideration."
 
-#: main/domain/general/service/OnboardingContextService.py:133
+#: main/domain/general/service/OnboardingContextService.py:141
 msgid "onboarding.private.share_listening.title"
 msgstr "Share the listening session"
 
-#: main/domain/general/service/OnboardingContextService.py:134
+#: main/domain/general/service/OnboardingContextService.py:142
 msgid "onboarding.private.share_listening.description"
 msgstr ""
 "Generate a link for your players. Their page stays synchronized with this "
 "soundboard's playback."
 
-#: main/domain/general/service/OnboardingContextService.py:141
+#: main/domain/general/service/OnboardingContextService.py:149
 msgid "onboarding.public.playing_monitor.title"
 msgstr "See what's playing"
 
-#: main/domain/general/service/OnboardingContextService.py:142
+#: main/domain/general/service/OnboardingContextService.py:150
 msgid "onboarding.public.playing_monitor.description"
 msgstr "View the buttons currently playing and stop a sound from the monitor."
 
-#: main/domain/general/service/OnboardingContextService.py:154
+#: main/domain/general/service/OnboardingContextService.py:162
 msgid "onboarding.private.my_soundboards.title"
 msgstr "Open your soundboards"
 
-#: main/domain/general/service/OnboardingContextService.py:155
+#: main/domain/general/service/OnboardingContextService.py:163
 msgid "onboarding.private.my_soundboards.description"
 msgstr "Open your personal area to find the soundboards you have created."
 
-#: main/domain/general/service/OnboardingContextService.py:162
+#: main/domain/general/service/OnboardingContextService.py:170
 msgid "onboarding.private.my_soundboards_grid.title"
 msgstr "Manage your soundboards"
 
-#: main/domain/general/service/OnboardingContextService.py:163
+#: main/domain/general/service/OnboardingContextService.py:171
 msgid "onboarding.private.my_soundboards_grid.description"
 msgstr ""
 "Find your personal soundboards here. You can edit, share, or delete them."
 
-#: main/domain/general/service/OnboardingContextService.py:170
+#: main/domain/general/service/OnboardingContextService.py:178
 msgid "onboarding.private.create_soundboard.title"
 msgstr "Create a soundboard"
 
-#: main/domain/general/service/OnboardingContextService.py:171
+#: main/domain/general/service/OnboardingContextService.py:179
 msgid "onboarding.private.create_soundboard.description"
 msgstr ""
 "Name your soundboard, add a description, then choose the sounds for its "
 "buttons."
 
-#: main/domain/general/service/OnboardingContextService.py:178
+#: main/domain/general/service/OnboardingContextService.py:186
 msgid "onboarding.private.playlist_button.title"
 msgstr "Open your custom buttons"
 
-#: main/domain/general/service/OnboardingContextService.py:179
+#: main/domain/general/service/OnboardingContextService.py:187
 msgid "onboarding.private.playlist_button.description"
 msgstr "Find the buttons you have saved in your collection."
 
-#: main/domain/general/service/OnboardingContextService.py:186
+#: main/domain/general/service/OnboardingContextService.py:194
 msgid "onboarding.private.playlist_grid.title"
 msgstr "Manage your custom buttons"
 
-#: main/domain/general/service/OnboardingContextService.py:187
+#: main/domain/general/service/OnboardingContextService.py:195
 msgid "onboarding.private.playlist_grid.description"
 msgstr "Find your custom buttons here. You can edit, share, or delete them."
 
-#: main/domain/general/service/OnboardingContextService.py:194
+#: main/domain/general/service/OnboardingContextService.py:202
 msgid "onboarding.private.copiable_buttons.title"
 msgstr "Discover buttons to copy"
 
-#: main/domain/general/service/OnboardingContextService.py:195
+#: main/domain/general/service/OnboardingContextService.py:203
 msgid "onboarding.private.copiable_buttons.description"
 msgstr ""
 "Browse buttons shared by the community and choose which ones to add to your "
 "collection."
 
-#: main/domain/general/service/OnboardingContextService.py:202
+#: main/domain/general/service/OnboardingContextService.py:210
 msgid "onboarding.private.copy_buttons_grid.title"
 msgstr "Add buttons to your collection"
 
-#: main/domain/general/service/OnboardingContextService.py:203
+#: main/domain/general/service/OnboardingContextService.py:211
 msgid "onboarding.private.copy_buttons_grid.description"
 msgstr ""
 "Choose the buttons you like to copy them into your personal collection."
 
-#: main/domain/general/service/OnboardingContextService.py:210
+#: main/domain/general/service/OnboardingContextService.py:218
 msgid "onboarding.private.user_settings.title"
 msgstr "Manage your account"
 
-#: main/domain/general/service/OnboardingContextService.py:211
+#: main/domain/general/service/OnboardingContextService.py:219
 msgid "onboarding.private.user_settings.description"
 msgstr ""
 "Update your profile, notification preferences, theme, and subscription "
 "options."
 
-#: main/interface/ui/controller/general/generalViews.py:125
+#: main/interface/ui/controller/general/generalViews.py:129
 msgid "views.support_contact.error_too_fast"
 msgstr "Please wait a few seconds before submitting the form."
 
@@ -1026,6 +1034,200 @@ msgstr "Current plan"
 msgid "template.pricing.choose_plan"
 msgstr "Choose this plan"
 
+#: main/interface/ui/templates/Html/General/home.html:6
+msgid "template.home.page_title"
+msgstr "AmbianceBoard - Create the atmosphere for your tabletop RPG sessions"
+
+#: main/interface/ui/templates/Html/General/home.html:13
+msgid "template.home.badge"
+msgstr "Open beta"
+
+#: main/interface/ui/templates/Html/General/home.html:17
+msgid "template.home.hero.auth.title"
+msgstr "Welcome back, Game Master!"
+
+#: main/interface/ui/templates/Html/General/home.html:18
+msgid "template.home.hero.auth.subtitle"
+msgstr "Find your soundscapes or discover what the community has made."
+
+#: main/interface/ui/templates/Html/General/home.html:21
+msgid "template.home.hero.auth.soundboards"
+msgstr "My soundboards"
+
+#: main/interface/ui/templates/Html/General/home.html:24
+msgid "template.home.hero.auth.explore"
+msgstr "Explore"
+
+#: main/interface/ui/templates/Html/General/home.html:28
+msgid "template.home.hero.guest.title"
+msgstr "Bring your adventures to life."
+
+#: main/interface/ui/templates/Html/General/home.html:29
+msgid "template.home.hero.guest.subtitle"
+msgstr "Layer immersive soundscapes and share them with your players."
+
+#: main/interface/ui/templates/Html/General/home.html:32
+msgid "template.home.hero.guest.demo"
+msgstr "Try the demo"
+
+#: main/interface/ui/templates/Html/General/home.html:35
+msgid "template.home.hero.guest.create"
+msgstr "Create a soundboard"
+
+#: main/interface/ui/templates/Html/General/home.html:43
+msgid "template.home.illustration.alt"
+msgstr "Preview of an AmbianceBoard soundboard"
+
+#: main/interface/ui/templates/Html/General/home.html:51
+msgid "template.home.demo.title"
+msgstr "Try a soundscape"
+
+#: main/interface/ui/templates/Html/General/home.html:52
+msgid "template.home.demo.subtitle"
+msgstr "No account required."
+
+#: main/interface/ui/templates/Html/General/home.html:65
+msgid "template.home.demo.empty"
+msgstr "No demos are available right now."
+
+#: main/interface/ui/templates/Html/General/home.html:72
+msgid "template.home.steps.title"
+msgstr "Ready in three steps"
+
+#: main/interface/ui/templates/Html/General/home.html:78
+msgid "template.home.steps.create.title"
+msgstr "Create"
+
+#: main/interface/ui/templates/Html/General/home.html:79
+msgid "template.home.steps.create.description"
+msgstr "Give your soundboard a name and an identity."
+
+#: main/interface/ui/templates/Html/General/home.html:85
+msgid "template.home.steps.add.title"
+msgstr "Add"
+
+#: main/interface/ui/templates/Html/General/home.html:86
+msgid "template.home.steps.add.description"
+msgstr "Upload sounds, add links, or tune in to radio streams."
+
+#: main/interface/ui/templates/Html/General/home.html:92
+msgid "template.home.steps.share.title"
+msgstr "Share"
+
+#: main/interface/ui/templates/Html/General/home.html:93
+msgid "template.home.steps.share.description"
+msgstr "Play your soundscapes and invite your players."
+
+#: main/interface/ui/templates/Html/General/home.html:99
+msgid "template.home.steps.tour"
+msgstr "Guided tour"
+
+#: main/interface/ui/templates/Html/General/home.html:106
+msgid "template.home.features.title"
+msgstr "Everything you need for your games"
+
+#: main/interface/ui/templates/Html/General/home.html:107
+msgid "template.home.features.subtitle"
+msgstr "The essential tools, at a glance."
+
+#: main/interface/ui/templates/Html/General/home.html:112
+msgid "template.home.features.custom.title"
+msgstr "Custom soundboards"
+
+#: main/interface/ui/templates/Html/General/home.html:113
+msgid "template.home.features.custom.description"
+msgstr ""
+"Choose a name, colors, icon, tags, and public or private access. Organize "
+"multiple playlists in each board."
+
+#: main/interface/ui/templates/Html/General/home.html:118
+msgid "template.home.features.sound_types.title"
+msgstr "Three types of sounds"
+
+#: main/interface/ui/templates/Html/General/home.html:119
+msgid "template.home.features.sound_types.description"
+msgstr ""
+"Looping atmospheres, instant sound effects, and scene music, with sections "
+"and track selection."
+
+#: main/interface/ui/templates/Html/General/home.html:124
+msgid "template.home.features.sources.title"
+msgstr "Your audio sources"
+
+#: main/interface/ui/templates/Html/General/home.html:125
+msgid "template.home.features.sources.description"
+msgstr ""
+"Upload files, add external links, or stream radio. Adjust volume and fades."
+
+#: main/interface/ui/templates/Html/General/home.html:130
+msgid "template.home.features.control.title"
+msgstr "Control during play"
+
+#: main/interface/ui/templates/Html/General/home.html:131
+msgid "template.home.features.control.description"
+msgstr ""
+"Mixers for each playlist and button, search, reordering, fullscreen, "
+"keyboard shortcuts, and saved volume levels."
+
+#: main/interface/ui/templates/Html/General/home.html:136
+msgid "template.home.features.community.title"
+msgstr "Sharing and community"
+
+#: main/interface/ui/templates/Html/General/home.html:137
+msgid "template.home.features.community.description"
+msgstr ""
+"Real-time sync, individual player volume, permitted buttons, and discover "
+"and copy public soundboards."
+
+#: main/interface/ui/templates/Html/General/home.html:142
+msgid "template.home.features.account.title"
+msgstr "Account and trust"
+
+#: main/interface/ui/templates/Html/General/home.html:143
+msgid "template.home.features.account.description"
+msgstr ""
+"Google sign-in, reporting, notifications, progressive tiers, and Premium "
+"statistics."
+
+#: main/interface/ui/templates/Html/General/home.html:151
+msgid "template.home.compatibility.label"
+msgstr "Compatibility:"
+
+#: main/interface/ui/templates/Html/General/home.html:151
+msgid "template.home.compatibility.description"
+msgstr ""
+"For the best experience, use Chrome, Edge, Brave, or Firefox. WebKit "
+"(including some versions of Safari and embedded iOS browsers) may limit "
+"audio playback."
+
+#: main/interface/ui/templates/Html/General/home.html:156
+msgid "template.home.final.title"
+msgstr "Your next game starts here."
+
+#: main/interface/ui/templates/Html/General/home.html:157
+msgid "template.home.final.subtitle"
+msgstr "Create your first soundboard for free."
+
+#: main/interface/ui/templates/Html/General/home.html:160
+msgid "template.home.final.create_soundboard"
+msgstr "Create a soundboard"
+
+#: main/interface/ui/templates/Html/General/home.html:164
+msgid "template.home.final.create_account"
+msgstr "Create my account"
+
+#: main/interface/ui/templates/Html/General/home.html:170
+msgid "template.home.footer.question"
+msgstr "An idea or an issue?"
+
+#: main/interface/ui/templates/Html/General/home.html:170
+msgid "template.home.footer.contact"
+msgstr "Contact us"
+
+#: main/interface/ui/templates/Html/General/home.html:171
+msgid "template.home.footer.donate"
+msgstr "Support the project"
+
 #: main/interface/ui/templates/Html/General/legal_notice.html:10
 msgid "template.legal.lead"
 msgstr "Legal information related to the Ambiance Soundboard application"
@@ -1278,6 +1480,7 @@ msgstr "Loop playback"
 #: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:32
 #: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:52
 #: main/interface/ui/templates/Html/Playlist/modal/describe_type.html:62
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:40
 msgid "generic.no"
 msgstr "No"
 
@@ -1313,6 +1516,11 @@ msgstr "Fade-out (Fade Out)"
 msgid "template.playlist_describe_type.fade_out_duration"
 msgstr "Fade-out duration (Fade Out)"
 
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:17
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:6
+msgid "template.playlist_read_all.page_title"
+msgstr "My playlist buttons"
+
 #: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:22
 msgid "generic.back"
 msgstr "Back"
@@ -1327,19 +1535,53 @@ msgstr "Filter by type"
 msgid "generic.filter_by_type.value.all"
 msgstr "All"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:65
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:32
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:17
+msgid "template.playlist.filter_by_tag"
+msgstr "Filter by playlist tag"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:33
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:18
+msgid "template.playlist.filter_by_tag.value.all"
+msgstr "All tags"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable.html:67
 msgid "template.playlist_copiable.preview.instruction"
 msgstr "Click on a button to preview the playlist."
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:55
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:10
+msgid "template.playlist_copiable_preview.field.name"
+msgstr "Name"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:21
+msgid "template.playlist_copiable_preview.field.type"
+msgstr "Type"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:24
+msgid "template.playlist_copiable_preview.type.instant"
+msgstr "Instant sounds"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:26
+msgid "template.playlist_copiable_preview.type.ambient"
+msgstr "Ambient sounds"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:28
+msgid "template.playlist_copiable_preview.type.music"
+msgstr "Music"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:35
+msgid "template.playlist_copiable_preview.field.specific_delay"
+msgstr "Specific delay"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:63
 msgid "template.playlist_copiable_preview.duplicate_playlist_with_edition"
 msgstr "Duplicate the button with edition"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:56
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:64
 msgid "template.playlist_copiable_preview.duplicate_playlist"
 msgstr "Duplicate the button"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:58
+#: main/interface/ui/templates/Html/Playlist/playlist_copiable_preview.html:66
 msgid "template.playlist_copiable_preview.already_duplicated"
 msgstr "The button has already been duplicated."
 
@@ -1481,11 +1723,15 @@ msgstr "Labeling coming soon"
 msgid "template.playlist_create.button.new_playlist"
 msgstr "Create a new playlist"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:56
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:45
+msgid "template.playlist_read_all.copiable_badge"
+msgstr "Copyable"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:58
 msgid "template.playlist_read_all.button.add"
 msgstr "Add a button"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:57
+#: main/interface/ui/templates/Html/Playlist/playlist_read_all.html:59
 msgid "template.playlist_read_all.button.listPublic"
 msgstr "List of copyable buttons from community "
 
@@ -1566,6 +1812,13 @@ msgstr ""
 "The game master controls music playback. You can keep this page in the "
 "background and enjoy the ambience."
 
+#: main/interface/ui/templates/Html/Shared/soundboard_read.html:35
+#, python-format
+msgid "template.soundboard_read.shared.info.volume %(volume_icon)s"
+msgstr ""
+"If a sound is too loud or too quiet, click %(volume_icon)s to adjust its "
+"volume. Visible only if the sound has been played recently."
+
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:19
 #: main/interface/ui/templates/Html/Soundboard/list_playlists_for_specific_action.html:73
 msgid "template.listePlaylistForSpecificAction.button.back"
@@ -1638,60 +1891,93 @@ msgid "template.soundboard_organize.unassociated.title"
 msgstr "Unassociated buttons"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:24
+msgid "template.soundboard_organize.community.modal_title"
+msgstr "Add a community button"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:25
+msgid "template.soundboard_organize.community.loading"
+msgstr "Loading community playlists…"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:26
+msgid "template.soundboard_organize.community.load_error"
+msgstr "Unable to load community playlists"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:27
+msgid "template.soundboard_organize.community.add_error"
+msgstr "Unable to add this playlist"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:28
+msgid "template.soundboard_organize.community.csrf_error"
+msgstr "Unable to verify the request. Please reload the page."
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:30
+msgid "template.soundboard_organize.community.add_button"
+msgstr "Add a community button"
+
+msgid "template.playlist.copiable.add_to_my_playlists"
+msgstr "Add to my playlists"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:34
 msgid "template.soundboard_organize.unassociated.empty"
 msgstr "No unassociated buttons"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:39
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:49
 msgid "template.soundboard_organize.associated.title"
 msgstr "Associated buttons"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:42
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:111
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:52
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:121
 msgid "template.soundboard_organize.section.default_title"
 msgstr "Section"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:43
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:53
 msgid "template.soundboard_organize.section.delete_confirmation"
 msgstr "Delete this section and all its associated buttons?"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:44
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:54
 msgid "template.soundboard_organize.section.rename_cancel"
 msgstr "Cancel"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:45
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:55
 msgid "template.soundboard_organize.section.rename_save"
 msgstr "Save"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:56
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:115
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:66
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:125
 msgid "template.soundboard_organize.title.tooltip"
 msgstr "Rename section"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:58
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:101
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:117
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:68
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:111
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:127
 msgid "template.soundboard_organize.title.rename"
 msgstr "Rename"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:60
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:62
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:119
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:121
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:70
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:72
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:129
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:131
 msgid "template.soundboard_organize.section.insert_before"
 msgstr "Insert section before"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:68
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:127
+msgid "template.soundboard_organize.section.swap_previous"
+msgstr "Swap with previous section"
+
+msgid "template.soundboard_organize.section.swap_next"
+msgstr "Swap with next section"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:78
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:137
 msgid "template.soundboard_organize.section.empty"
 msgstr "No buttons in this section"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:84
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:134
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:94
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:144
 msgid "template.soundboard_organize.section.delete"
 msgstr "Delete section"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:93
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:94
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:103
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:104
 msgid "template.soundboard_organize.section.add_end"
 msgstr "Add section at end"
 
@@ -1705,7 +1991,7 @@ msgstr "Edit mode"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:31
 msgid "template.soundboard_read.button.organize"
-msgstr "Organize"
+msgstr "Advanced options"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:39
 msgid "template.soundboard_read.button.edit_soundboard"
@@ -1785,6 +2071,10 @@ msgstr "none"
 msgid "template.filterTagCloud.no_description"
 msgstr "No description"
 
+#: main/interface/ui/templates/Html/partial/filter/search/reset_btn.html:4
+msgid "generic.reset"
+msgstr "Reset"
+
 #: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:31
 msgid "Sounds"
 msgstr "Sounds"
@@ -1833,6 +2123,10 @@ msgstr "Private"
 msgid "template.publicSoundboard.badge.public"
 msgstr "Public"
 
+#: main/interface/ui/templates/Html/partial/soundboard/header.html:19
+msgid "template.soundboard_read.shared.button.volume"
+msgstr "Adjust volume"
+
 #: main/interface/ui/templates/Html/partial/soundboard/header.html:22
 msgid "template.shareSoundboard.button.tooltip"
 msgstr ""
@@ -1854,6 +2148,47 @@ msgstr "Propose a playlist"
 #: main/interface/ui/templates/Html/partial/soundboard/mixer.html:9
 msgid "template.mixer.setting.accordion.title"
 msgstr "Audio settings"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+msgid "template.mixer.tooltip.volume.instant"
+msgstr "Instant sounds volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+msgid "template.mixer.tooltip.volume.ambient"
+msgstr "Ambient sounds volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+msgid "template.mixer.tooltip.volume.music"
+msgstr "Music volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:17
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:25
+msgid "template.mixer.tooltip.volume.general"
+msgstr "General volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:32
+msgid "template.mixer.toggle.playlist_volumes.tooltip"
+msgstr "Show/hide the volume levels of the buttons"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:36
+msgid "template.mixer.toggle.playlist_volumes.label"
+msgstr "Individual volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:40
+msgid "template.mixer.save_volume.tooltip"
+msgstr "Change the volume permanently"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:42
+msgid "template.mixer.save_volume.label"
+msgstr "Save volume"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:48
+msgid "template.mixer.toggle.specific_music.tooltip"
+msgstr "Show/hide specific audio tracks"
+
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:52
+msgid "template.mixer.toggle.specific_music.label"
+msgstr "Specific music"
 
 #: main/interface/ui/templates/Html/partial/soundboard/playing_monitor.html:7
 msgid "template.playingMonitor.accordion.title"
@@ -1907,6 +2242,10 @@ msgstr "Add step"
 msgid "template.scripts.accordion.title"
 msgstr "Scripts"
 
+#: main/interface/ui/templates/Html/partial/soundboard/shortcutSoundboard.html:11
+msgid "template.shortcutSoundboard.accordion.title"
+msgstr "Show keyboard shortcuts"
+
 #: main/interface/ui/templates/Html/partial/structure/base.html:15
 msgid "template.base.default_page_title"
 msgstr "AmbianceBoard - Click here, play anywhere"
@@ -1940,8 +2279,8 @@ msgid "template.footer.social.youtube"
 msgstr "Watch AmbianceBoard on YouTube"
 
 #: main/interface/ui/templates/Html/partial/structure/footer/footer.html:32
-msgid "template.footer.social.x"
-msgstr "Follow AmbianceBoard on X"
+msgid "template.footer.social.instagram"
+msgstr "Join AmbianceBoard on Instagram"
 
 #: main/interface/ui/templates/Html/partial/structure/footer/footer.html:37
 msgid "template.footer.social.github"
@@ -2053,279 +2392,3 @@ msgstr "Continue"
 #: main/interface/ui/templates/socialaccount/login.html:20
 msgid "template.social.google.back"
 msgstr "Back"
-
-#~ msgid "template.listePlaylistForSpecificAction.table.col.playable_by_players.tooltip"
-#~ msgstr "This account cannot access this feature"
-
-#, python-format
-#~ msgid "Soundboard publique 100%% Gratuit"
-#~ msgstr "Public soundboard"
-
-#~ msgid "Créer un soundboard pour vos ambiances de jeu de rôle"
-#~ msgstr "Public soundboard"
-
-#~ msgid "Soundboards personnalisés :"
-#~ msgstr "My private soundboards"
-
-#~ msgid "Ambiance Continue"
-#~ msgstr "Continue"
-
-#~ msgid "Mode plein écran"
-#~ msgstr "Fullscreen mode"
-
-#~ msgid "Partage public"
-#~ msgstr "Public"
-
-#~ msgid "Niveaux d'utilisateurs"
-#~ msgstr "User settings"
-
-#~ msgid "Créer mon premier soundboard"
-#~ msgstr "Create a new soundboard"
-
-#~ msgid "boutons"
-#~ msgstr "Buttons"
-
-#~ msgid "Publicité"
-#~ msgstr "Public"
-
-#~ msgid "de l'écoute des soundboards"
-#~ msgstr "list of your soundboards"
-
-#~ msgid "sur les soundboards partagées"
-#~ msgstr "My private soundboards"
-
-#~ msgid "Email :"
-#~ msgstr "Email:"
-
-#~ msgid "L'utilisateur s'engage à :"
-#~ msgstr "User settings"
-
-#~ msgid "Masquer tout"
-#~ msgstr "Hide all"
-
-#~ msgid "Soundboard publique"
-#~ msgstr "Public soundboard"
-
-#~ msgid "Public"
-#~ msgstr "Public"
-
-#~ msgid "Signaler un problème"
-#~ msgstr "Report an issue"
-
-#~ msgid "Report"
-#~ msgstr "Report"
-
-#~ msgid "liste de vos soundboards"
-#~ msgstr "list of your soundboards"
-
-#~ msgid "Boutons"
-#~ msgstr "Buttons"
-
-#~ msgid "Téléchargements des dernières 24h"
-#~ msgstr "Downloads in the last 24h"
-
-#~ msgid "Téléchargements"
-#~ msgstr "Downloads"
-
-#~ msgid "Login"
-#~ msgstr "Login"
-
-#~ msgid "Connexion via Google"
-#~ msgstr "Sign in with Google"
-
-#~ msgid ""
-#~ "Vous êtes sur le point de vous connecter en utilisant un compte tiers de "
-#~ "Google."
-#~ msgstr "You are about to sign in using a third-party Google account."
-
-#~ msgid "Continuer"
-#~ msgstr "Continue"
-
-#~ msgid "Retour"
-#~ msgstr "Back"
-
-#~ msgid "Soundboard pour jeux de rôle"
-#~ msgstr "Public soundboard"
-
-#~ msgid "Cet email a été envoyé automatiquement, merci de ne pas y répondre."
-#~ msgstr "This email was sent automatically, please do not reply."
-
-#~ msgid "Contenu signalé"
-#~ msgstr "Reported content"
-
-#~ msgid "Détails du contenu signalé :"
-#~ msgstr "Reported content details:"
-
-#~ msgid "Element :"
-#~ msgstr "Item:"
-
-#~ msgid "Precision :"
-#~ msgstr "Details:"
-
-#~ msgid "Description :"
-#~ msgstr "Description:"
-
-#~ msgid "Date de signalement :"
-#~ msgstr "Reported on:"
-
-#~ msgid "Informations sur l'utilisateur :"
-#~ msgstr "User information:"
-
-#~ msgid "Nom d'utilisateur :"
-#~ msgstr "User settings"
-
-#~ msgid "Date d'inscription :"
-#~ msgstr "Registration date:"
-
-#~ msgid ""
-#~ "Suite à une inactivité de 24 mois, votre compte est supprimé de notre "
-#~ "site."
-#~ msgstr ""
-#~ "Following 24 months of inactivity, your account has been deleted from our "
-#~ "site."
-
-#~ msgid ""
-#~ "Après 2 mois sans confirmation de votre email, votre compte est supprimé."
-#~ msgstr ""
-#~ "After 2 months without confirming your email, your account has been "
-#~ "deleted."
-
-#, python-format
-#~ msgid ""
-#~ "Merci de confirmer votre compte. <a "
-#~ "href=\"%(confirmation_url)s\">Confirmation</a>"
-#~ msgstr ""
-#~ "Please confirm your account. <a href=\"%(confirmation_url)s\">Confirm</a>"
-
-#~ msgid "Votre mot de passe a bien été changé."
-#~ msgstr "Your password has been successfully changed."
-
-#~ msgid ""
-#~ "Suite à une inactivité de plus de 22 mois, votre compte sera supprimé de "
-#~ "notre site."
-#~ msgstr ""
-#~ "After more than 22 months of inactivity, your account will be deleted "
-#~ "from our site."
-
-#, python-format
-#~ msgid ""
-#~ "Votre compte n'est pas confirmé, veuillez confirmer votre compte via le "
-#~ "lien suivant : <a href=\"%(confirmation_url)s\">Confirmation</a>."
-#~ msgstr ""
-#~ "Your account is not confirmed. Please confirm your account using the "
-#~ "following link: <a href=\"%(confirmation_url)s\">Confirm</a>."
-
-#, python-format
-#~ msgid ""
-#~ "Voici votre demande de réinitialisation de mot de passe. <a "
-#~ "href=\"%(reset_url)s\">Réinitialiser</a>"
-#~ msgstr ""
-#~ "Here is your password reset request. <a href=\"%(reset_url)s\">Reset</a>"
-
-#, python-format
-#~ msgid "Votre compte a été rétrogradé vers le niveau %(tier_label)s."
-#~ msgstr "Your account has been downgraded to the %(tier_label)s tier."
-
-#~ msgid ""
-#~ "Si vous avez des questions ou des préoccupations, n'hésitez pas à nous "
-#~ "contacter."
-#~ msgstr "If you have any questions or concerns, feel free to contact us."
-
-#~ msgid "Merci de votre compréhension."
-#~ msgstr "Thank you for your understanding."
-
-#, python-format
-#~ msgid "Votre compte arrive à expiration dans %(remaining_days)s jours."
-#~ msgstr "Your account will expire in %(remaining_days)s days."
-
-#~ msgid ""
-#~ "Pour éviter toute diminution de service, veuillez renouveler votre "
-#~ "abonnement dès que possible."
-#~ msgstr ""
-#~ "To avoid any service downgrade, please renew your subscription as soon as "
-#~ "possible."
-
-#, python-format
-#~ msgid "Bienvenue %(username)s !"
-#~ msgstr "Welcome %(username)s!"
-
-#~ msgid "Merci de vous être inscrit sur notre site."
-#~ msgstr "Thank you for signing up on our site."
-
-#~ msgid "Paramètres"
-#~ msgstr "User settings"
-
-#~ msgid "Chargement"
-#~ msgstr "Downloads"
-
-#~ msgid "enum.fade_playlist.off"
-#~ msgstr "Off"
-
-#~ msgid "Suivant"
-#~ msgstr "Next"
-
-#~ msgid "Précédent"
-#~ msgstr "Previous"
-
-#~ msgid "Terminé"
-#~ msgstr "Done"
-
-#~ msgid "Mode clair/sombre"
-#~ msgstr "Light and dark mode"
-
-#~ msgid ""
-#~ "Basculez entre les modes clair et sombre pour plus de confort de lecture. "
-#~ "Votre préférence est sauvegardée automatiquement."
-#~ msgstr ""
-#~ "Switch between light and dark modes for better reading comfort. Your "
-#~ "preference is saved automatically."
-
-#~ msgid ""
-#~ "Agrandissez le soundboard pour une meilleure immersion audio. Idéal pour "
-#~ "vos sessions de streaming ou de travail créatif."
-#~ msgstr ""
-#~ "Expand the soundboard for better audio immersion. Perfect for your "
-#~ "streaming sessions or creative work."
-
-#~ msgid ""
-#~ "Explorez les soundboards créés par la communauté. Vous pouvez les "
-#~ "écouter, les prévisualiser et même copier leurs boutons pour votre propre "
-#~ "soundboard."
-#~ msgstr ""
-#~ "Explore community-created soundboards. You can listen to them, preview "
-#~ "them, and even copy their buttons into your own soundboard."
-
-#~ msgid ""
-#~ "Voici vos soundboards personnels. Vous pouvez les éditer, les partager ou "
-#~ "les supprimer. Chaque soundboard peut contenir jusqu'à 100 boutons audio."
-#~ msgstr ""
-#~ "These are your personal soundboards. You can edit, share, or delete them. "
-#~ "Each soundboard can contain up to 100 audio buttons."
-
-#~ msgid ""
-#~ "Créez votre propre soundboard en 3 clics. Donnez-lui un nom, une "
-#~ "description et commencez à ajouter des sons."
-#~ msgstr ""
-#~ "Create your own soundboard in 3 clicks. Give it a name, a description, "
-#~ "and start adding sounds."
-
-#~ msgid ""
-#~ "Contrôlez votre ambiance : Play/Pause, Volume, Partage. Tous les sons "
-#~ "jouent dans le même contexte audio."
-#~ msgstr ""
-#~ "Control your ambience: Play/Pause, Volume, Share. All sounds play in the "
-#~ "same audio context."
-
-#~ msgid ""
-#~ "Copiez les contrôles audio de ce soundboard pour les intégrer à votre "
-#~ "site web ou application personnelle."
-#~ msgstr ""
-#~ "Copy this soundboard audio controls to integrate them into your website "
-#~ "or personal app."
-
-#~ msgid ""
-#~ "Gérez votre profil, vos préférences de notification, votre thème préféré "
-#~ "et votre abonnement."
-#~ msgstr ""
-#~ "Manage your profile, notification preferences, your preferred theme, and "
-#~ "your subscription."

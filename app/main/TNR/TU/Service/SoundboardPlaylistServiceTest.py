@@ -156,3 +156,33 @@ class SoundboardPlaylistServiceTest(TestCase):
         self.assertEqual(self.sp_1.get_section(), 1)
         self.assertEqual(self.sp_2.get_section(), 2)
         self.assertEqual(self.sp_3.get_section(), 3)
+
+    def test_swap_sections_exchanges_section_numbers_and_keeps_their_contents(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        result = service.swap_sections(1, 3)
+
+        self.assertTrue(result)
+        self.sp_1.refresh_from_db()
+        self.sp_3.refresh_from_db()
+        self.assertEqual(self.sp_1.get_section(), 3)
+        self.assertEqual(self.sp_3.get_section(), 1)
+        self.assertEqual(
+            SoundboardSection.objects.get(SoundBoard=self.soundboard, section=1).name,
+            'Section 3',
+        )
+        self.assertEqual(
+            SoundboardSection.objects.get(SoundBoard=self.soundboard, section=3).name,
+            'Section 1',
+        )
+
+    def test_swap_sections_rejects_invalid_or_missing_sections(self):
+        service = SoundboardPlaylistService(self.soundboard)
+
+        self.assertFalse(service.swap_sections(0, 2))
+        self.assertFalse(service.swap_sections(2, 2))
+        self.assertFalse(service.swap_sections(2, 4))
+        self.assertEqual(
+            list(SoundboardSection.objects.filter(SoundBoard=self.soundboard).values_list('section', flat=True)),
+            [1, 2, 3],
+        )

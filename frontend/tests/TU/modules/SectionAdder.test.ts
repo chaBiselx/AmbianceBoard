@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { SectionAdder, SectionDeleter, SectionRenamer } from '@/modules/SoundboardOrganizer/SectionAdder';
+import { SectionAdder, SectionDeleter, SectionRenamer, SectionSwapper } from '@/modules/SoundboardOrganizer/SectionAdder';
 
 const sectionMocks = vi.hoisted(() => ({
     insert: vi.fn(),
+    swap: vi.fn(),
     delete: vi.fn(),
     rename: vi.fn(),
     getMaxSections: vi.fn(),
@@ -21,6 +22,7 @@ const sectionMocks = vi.hoisted(() => ({
 vi.mock('@/modules/SoundboardOrganizer/OrganizerApi', () => ({
     SendBackendAction: class {
         insertSection(position: number) { return sectionMocks.insert(position); }
+        swapSections(sectionA: number, sectionB: number) { return sectionMocks.swap(sectionA, sectionB); }
         deleteSection(position: number) { return sectionMocks.delete(position); }
         renameSection(position: number, name: string) { return sectionMocks.rename(position, name); }
     },
@@ -68,6 +70,8 @@ const accordion = (section: number, title = `Section ${section}`) => `
         <span class="section-title">${title}</span>
         <button class="section-edit-button" data-num-section="${section}"></button>
         <button class="section-insert-before-button" data-num-section="${section}"></button>
+        <button class="section-swap-up-button" data-num-section="${section}"></button>
+        <button class="section-swap-down-button" data-num-section="${section}"></button>
         <button class="section-delete-button" data-num-section="${section}"></button>
     </div>
 `;
@@ -91,10 +95,12 @@ describe('soundboard section controls', () => {
         sectionMocks.getMaxSections.mockReturnValue(1);
         sectionMocks.getNextSectionNumber.mockReturnValue(2);
         sectionMocks.getSectionNumbers.mockReturnValue([1]);
+        sectionMocks.getMaxSections.mockReturnValue(1);
         sectionMocks.associatedSection.mockImplementation((section: number) =>
             document.getElementById(`associated-playlists-section-${section}`)
         );
         sectionMocks.insert.mockResolvedValue(true);
+        sectionMocks.swap.mockResolvedValue(true);
         sectionMocks.delete.mockResolvedValue(true);
         sectionMocks.rename.mockResolvedValue(true);
     });
@@ -159,5 +165,27 @@ describe('soundboard section controls', () => {
         await vi.waitFor(() => expect(sectionMocks.rename).toHaveBeenCalledWith(1, 'New title'));
         expect(document.querySelector('.section-title')!.textContent).toBe(' New title');
         expect(sectionMocks.modalHide).toHaveBeenCalledOnce();
+    });
+
+    it('swaps adjacent sections and refreshes their numbers and movement controls', async () => {
+        setupContainer(accordion(1, 'First') + accordion(2, 'Second'));
+        sectionMocks.getMaxSections.mockReturnValue(2);
+        const swapper = new SectionSwapper();
+        swapper.addEvent();
+
+        const upButton = document.querySelector<HTMLButtonElement>('.section-swap-up-button[data-num-section="1"]')!;
+        const downButton = document.querySelector<HTMLButtonElement>('.section-swap-down-button[data-num-section="2"]')!;
+        expect(upButton.disabled).toBe(true);
+        expect(downButton.disabled).toBe(true);
+
+        document.querySelector<HTMLButtonElement>('.section-swap-down-button[data-num-section="1"]')!.click();
+
+        await vi.waitFor(() => expect(sectionMocks.swap).toHaveBeenCalledWith(1, 2));
+        const accordions = Array.from(document.querySelectorAll('#associated-playlists-container > .accordion'));
+        expect(accordions[0].querySelector('.section-title')!.textContent).toBe('Second');
+        expect(accordions[0].querySelector('.num-section')!.textContent).toBe('1');
+        expect(accordions[1].querySelector('.section-title')!.textContent).toBe('First');
+        expect(accordions[1].querySelector('.num-section')!.textContent).toBe('2');
+        expect(accordions[1].querySelector('.section-swap-up-button')!.getAttribute('data-num-section')).toBe('2');
     });
 });

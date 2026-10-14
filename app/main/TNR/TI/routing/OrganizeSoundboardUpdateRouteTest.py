@@ -96,6 +96,38 @@ class OrganizeSoundboardUpdateRouteTest(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    def test_organize_update_swaps_two_sections(self):
+        self.client.login(username='organize-user', password='testpass123')
+
+        response = self.client.generic(
+            method='UPDATE',
+            path=reverse('organizeSoundboardUpdate', kwargs={'soundboard_uuid': self.soundboard.uuid}),
+            data=json.dumps({'swapSections': [1, 3]}),
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.sp_1.refresh_from_db()
+        self.sp_3.refresh_from_db()
+        self.assertEqual(self.sp_1.get_section(), 3)
+        self.assertEqual(self.sp_3.get_section(), 1)
+        self.assertEqual(
+            SoundboardSection.objects.get(SoundBoard=self.soundboard, section=1).name,
+            'Section 3',
+        )
+
+    def test_organize_update_swap_sections_rejects_missing_section(self):
+        self.client.login(username='organize-user', password='testpass123')
+
+        response = self.client.generic(
+            method='UPDATE',
+            path=reverse('organizeSoundboardUpdate', kwargs={'soundboard_uuid': self.soundboard.uuid}),
+            data=json.dumps({'swapSections': [1, 4]}),
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, 400)
+
     def _rename_section(self, soundboard, payload):
         return self.client.patch(
             reverse('organizeSoundboardUpdate', kwargs={'soundboard_uuid': soundboard.uuid}),

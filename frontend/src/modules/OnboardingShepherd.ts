@@ -234,6 +234,8 @@ export class OnboardingShepherd {
             // Événement de fin de tour
             this.shepherd.on('complete', () => {
                 ConsoleCustom.log('Tour completed');
+                localStorage.removeItem(this.storageKeyLocal);
+                sessionStorage.removeItem(this.storageKeySession);
                 document
                     .querySelectorAll('.onboarding-target-active')
                     .forEach((el) => el.classList.remove('onboarding-target-active'));
@@ -391,9 +393,12 @@ export class OnboardingShepherd {
      * Sauvegarde l'état de session (étape actuelle, page cible)
      */
     private saveSessionState(nextStepIndex?: number): void {
+        const redirectUrl = nextStepIndex === undefined ? null : this.config?.steps[nextStepIndex]?.redirectUrl;
         const sessionState = {
             currentStep: nextStepIndex ?? this.shepherd?.steps.indexOf(this.shepherd.getCurrentStep()) ?? 0,
             timestamp: new Date().toISOString(),
+            inProgress: true,
+            redirectPath: redirectUrl ? new URL(redirectUrl, globalThis.location.href).pathname : null,
         };
         sessionStorage.setItem(this.storageKeySession, JSON.stringify(sessionState));
     }

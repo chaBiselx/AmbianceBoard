@@ -223,7 +223,8 @@ services:
     restart: unless-stopped
 
   graylog:
-    image: graylog/graylog:7.1
+    # graylog/graylog:7.2
+    image: graylog/graylog@sha256:2050193da1292533df09c2d9252444f31655adf4b86b65b1d4d1cdc854969e1b
 
     ports:
       - "${GRAYLOG_PORT}:9000"

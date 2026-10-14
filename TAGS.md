@@ -571,6 +571,23 @@ Corrections
 - Corrections d'un bug lorsque le l'on démarre un boutons et que l'on arrete tres vite, cela casser l'ensemble du sounboard
 - Affichage d'une page d'erreur de base si l'url est mal ecrite (hors path static)
 
+### 0.5.14 - 2026/10
+Sécurité
+- mise à jour de dépendances 
+
+Nouveautés
+- Lien Instagram dans le footer
+- Pouvoir ajouter un boutons de la communauté depuis la page d'organisation d'un sounboard
+- Pouvoir intervertir 2 sections depuis la page d'organisation d'un sounboard
+
+Améliorations
+- Ajout de traductions 
+- Ajout du SEO pour la page pricing 
+
+Modifications
+- Changement de label pour être plus explicite
+- Changement de visuel pour les slider horizontaux des boutons
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

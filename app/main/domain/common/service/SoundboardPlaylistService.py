@@ -119,6 +119,12 @@ class SoundboardPlaylistService:
         return self
 
     @transaction.atomic
+    def swap_sections(self, section_a: int, section_b: int):
+        if section_a <= 0 or section_b <= 0 or section_a == section_b:
+            return False
+        return self.soundboard_playlist_repository.swap_sections(self.soundboard, section_a, section_b)
+
+    @transaction.atomic
     def delete_section(self, section: int):
         if section <= 0:
             return self

@@ -10,6 +10,8 @@ const onboardingMocks = vi.hoisted(() => ({
     tourStart: vi.fn(),
     tourShow: vi.fn(),
     notify: vi.fn(),
+    invitationInitialize: vi.fn(),
+    invitationSuppress: vi.fn(),
     log: vi.fn(),
     warn: vi.fn(),
     error: vi.fn(),
@@ -23,7 +25,7 @@ vi.mock('@/modules/OnboardingShepherd', () => ({
             start: onboardingMocks.start,
             reset: onboardingMocks.reset,
             goToStep: onboardingMocks.goToStep,
-            getShepherdTour: () => ({ start: onboardingMocks.tourStart, show: onboardingMocks.tourShow }),
+            getShepherdTour: () => ({ start: onboardingMocks.tourStart, show: onboardingMocks.tourShow, steps: [{}] }),
         }),
     },
 }));
@@ -37,6 +39,13 @@ vi.mock('@/modules/General/ConsoleCustom', () => ({
 }));
 
 vi.mock('@/modules/General/Notifications', () => ({ default: { createClientNotification: onboardingMocks.notify } }));
+
+vi.mock('@/modules/General/OnboardingInvitation', () => ({
+    default: class {
+        initialize = onboardingMocks.invitationInitialize;
+        suppress = onboardingMocks.invitationSuppress;
+    },
+}));
 
 const validContext = (overrides: Record<string, unknown> = {}) => ({
     locale: 'en',
@@ -64,10 +73,12 @@ describe('OnboardingManager', () => {
         vi.clearAllMocks();
         onboardingMocks.shouldStartTour.mockReturnValue(false);
         vi.stubGlobal('sessionStorage', createStorage());
+        document.documentElement.dataset.userAuthenticated = 'true';
         document.body.innerHTML = '<button id="start-onboarding-btn"></button><button id="restart-onboarding-btn"></button><div id="profile"></div>';
     });
 
     afterEach(() => {
+        delete document.documentElement.dataset.userAuthenticated;
         vi.useRealTimers();
         vi.unstubAllGlobals();
     });
@@ -86,6 +97,7 @@ describe('OnboardingManager', () => {
         await initialize();
 
         expect(onboardingMocks.initialize).not.toHaveBeenCalled();
+        expect(onboardingMocks.invitationInitialize).not.toHaveBeenCalled();
         expect(onboardingMocks.warn).toHaveBeenCalledWith(expect.stringContaining('Onboarding API unavailable'));
     });
 
@@ -99,9 +111,10 @@ describe('OnboardingManager', () => {
 
         expect(onboardingMocks.initialize).not.toHaveBeenCalled();
         expect(onboardingMocks.start).not.toHaveBeenCalled();
+        expect(onboardingMocks.invitationInitialize).not.toHaveBeenCalled();
     });
 
-    it('initializes authenticated steps, starts when needed, and attaches both button actions', async () => {
+    it('initializes authenticated steps without automatically starting an incomplete tour', async () => {
         vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => validContext() }));
         onboardingMocks.shouldStartTour.mockReturnValue(true);
 
@@ -111,21 +124,71 @@ describe('OnboardingManager', () => {
             isAuthenticated: true,
             steps: [expect.objectContaining({ id: 'private_profile', position: 'bottom' })],
         }));
-        expect(onboardingMocks.start).toHaveBeenCalledOnce();
-
+        expect(onboardingMocks.start).not.toHaveBeenCalled();
+        expect(onboardingMocks.tourShow).not.toHaveBeenCalled();
         document.getElementById('start-onboarding-btn')!.click();
         expect(onboardingMocks.goToStep).toHaveBeenCalledWith(0);
     });
 
-    it('resumes from session state and clears the resume marker', async () => {
-        const sessionStore = globalThis.sessionStorage;
-        sessionStore.setItem('ambiance_shepherd_session', JSON.stringify({ currentStep: 2 }));
+    it('does not automatically start anonymous tours even with private steps', async () => {
+        document.documentElement.dataset.userAuthenticated = 'false';
+        onboardingMocks.shouldStartTour.mockReturnValue(true);
         vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => validContext() }));
 
         await initialize();
 
-        expect(onboardingMocks.tourShow).toHaveBeenCalledWith(2);
+        expect(onboardingMocks.initialize).toHaveBeenCalledWith(expect.objectContaining({ isAuthenticated: true }));
+        expect(onboardingMocks.start).not.toHaveBeenCalled();
+        expect(onboardingMocks.invitationInitialize).toHaveBeenCalledOnce();
+        document.getElementById('start-onboarding-btn')!.click();
+        expect(onboardingMocks.goToStep).toHaveBeenCalledWith(0);
+        expect(onboardingMocks.invitationSuppress).toHaveBeenCalledOnce();
+    });
+
+    it('resumes from session state and clears the resume marker', async () => {
+        const sessionStore = globalThis.sessionStorage;
+        sessionStore.setItem('ambiance_shepherd_session', JSON.stringify({
+            currentStep: 0, inProgress: true, redirectPath: globalThis.location.pathname,
+        }));
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => validContext() }));
+
+        await initialize();
+
+        expect(onboardingMocks.tourShow).toHaveBeenCalledWith(0);
         expect(sessionStore.getItem('ambiance_shepherd_session')).toBeNull();
+        expect(onboardingMocks.start).not.toHaveBeenCalled();
+        expect(onboardingMocks.invitationSuppress).toHaveBeenCalledOnce();
+    });
+
+    it.each([
+        { currentStep: 0 },
+        { currentStep: 0, inProgress: true, redirectPath: null },
+        { currentStep: 0, inProgress: false, redirectPath: '/' },
+        { currentStep: 0, inProgress: true, redirectPath: '/another-page' },
+        { currentStep: -1, inProgress: true, redirectPath: '/' },
+        { currentStep: 9, inProgress: true, redirectPath: '/' },
+    ])('does not automatically resume without a valid active redirect: %j', async state => {
+        sessionStorage.setItem('ambiance_shepherd_session', JSON.stringify(state));
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => validContext() }));
+
+        await initialize();
+
+        expect(onboardingMocks.tourShow).not.toHaveBeenCalled();
+        expect(onboardingMocks.start).not.toHaveBeenCalled();
+        expect(sessionStorage.getItem('ambiance_shepherd_session')).toBeNull();
+    });
+
+    it('consumes a redirect only once across initialization and reload', async () => {
+        sessionStorage.setItem('ambiance_shepherd_session', JSON.stringify({
+            currentStep: 0, inProgress: true, redirectPath: globalThis.location.pathname,
+        }));
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => validContext() }));
+
+        const manager = await initialize();
+        await manager.initialize();
+        await initialize();
+
+        expect(onboardingMocks.tourShow).toHaveBeenCalledExactlyOnceWith(0);
         expect(onboardingMocks.start).not.toHaveBeenCalled();
     });
 

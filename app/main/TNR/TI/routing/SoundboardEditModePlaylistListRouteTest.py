@@ -60,6 +60,16 @@ class SoundboardEditModePlaylistListRouteTest(AuthenticatedTestCase):
         content = response.content.decode('utf-8')
         self.assertIn(self.copiable_playlist.name, content)
 
+    def test_library_target_uses_personal_playlist_duplication_route(self):
+        self.login()
+        response = self.client.get(self._url(), {'target': 'library'})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            f'data-url-duplication="{reverse("playlistDuplicate", kwargs={"playlist_uuid": self.copiable_playlist.uuid})}"',
+        )
+        self.assertNotContains(response, 'soundboardEditModeDuplicatePlaylist')
+
     def test_response_excludes_non_copiable_playlist(self):
         self.login()
         response = self.client.get(self._url())

@@ -239,6 +239,7 @@ def soundboard_edit_mode_playlist_list(request, soundboard_uuid):
         'selected_type': playlist_type_filter,
         'list_playlist_tags_dict': {t.label: t.name for t in tags},
         'selected_playlist_tag': playlist_tag_filter,
+        'duplicate_to_library': request.GET.get('target') == 'library',
     })
 
 
@@ -484,4 +485,3 @@ def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid
     except Exception as e:
         logger.error(f"Erreur ajout playlist mode édition pour soundboard {soundboard_uuid}: {e}")
         return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
-

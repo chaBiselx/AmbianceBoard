@@ -100,6 +100,42 @@ Preserver le mecanisme de traduction existant, y compris pour les templates,
 messages et textes utilises par le frontend ; ne pas introduire un second
 systeme i18n sans besoin explicite.
 
+La visite guidee est initialisee par
+[OnboardingManager](../frontend/src/modules/OnboardingManager.ts) dans le point
+d'entree global. L'attribut `data-user-authenticated` du
+[template commun](../app/main/interface/ui/templates/Html/partial/structure/base.html)
+est rendu depuis `request.user.is_authenticated` ; les noms des etapes ne
+permettent pas de deduire l'authentification. Cet indicateur frontend ne
+remplace pas les controles d'autorisation backend.
+
+[OnboardingInvitation](../frontend/src/modules/General/OnboardingInvitation.ts)
+propose aux visiteurs anonymes une notification d'action apres le delai defini
+par le gestionnaire (actuellement 30 secondes). Le temps ecoule est cumule
+entre les pages chargeant le point d'entree global. La cle
+`ambiance_onboarding_invitation` de `sessionStorage` conserve l'horodatage initial
+et distingue une proposition affichee (`prompted`) d'une proposition traitee
+(`dismissed`), independamment de l'etat Shepherd. Une notification en attente
+reapparait apres rechargement ou navigation, sans recommencer le delai. Seules
+sa fermeture explicite ou une visite lancee/acceptee/reprise empechent son
+retour dans cette session d'onglet. Le delai mesure
+le temps ecoule, pas l'inactivite ; le navigateur peut differer le timer dans
+un onglet masque. Sans acces au stockage, le delai fonctionne localement,
+mais l'unicite entre pages ne peut pas etre garantie.
+
+L'action de la notification et le bouton `start-onboarding-btn` appellent le
+meme lancement de visite. Aucun utilisateur ne demarre automatiquement une
+visite inachevee depuis l'etat local. La seule reprise automatique consomme
+le marqueur `ambiance_shepherd_session` si `inProgress` vaut `true`, si
+`redirectPath` correspond a la page courante et si `currentStep` designe une
+etape existante. Shepherd enregistre la destination lors d'une redirection ;
+un simple demarrage enregistre une destination nulle et ne permet donc pas
+de reprise au rechargement. Le marqueur est consomme une seule fois et efface
+a la fin de la visite ou lors d'une annulation. Aucune
+invitation n'est affichee si le contexte API est indisponible/invalide, si la
+fonctionnalite est desactivee ou si la visite n'est pas utilisable. Les textes
+FR/EN de cette notification utilisent le module frontend
+[Translation](../frontend/src/modules/Util/Translation.ts).
+
 ## Labellisation et infrastructure
 
 Le [service music-labeler](../music-labeler/) expose une API FastAPI de

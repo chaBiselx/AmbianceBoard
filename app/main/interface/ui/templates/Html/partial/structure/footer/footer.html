@@ -17,7 +17,7 @@
                 <a href="{% url 'supportContact' %}" class="footer-link url_link">{% trans "template.footer.support" %}</a>
             </div>
             <div class="col-12 col-md-3 text-center text-md-end mb-1 mb-md-3">
-                <div class="d-flex justify-content-center justify-content-md-end gap-3">
+                <div class="d-flex justify-content-center justify-content-md-end gap-3" data-shepherd="footer-social-network">
                     {% if request.user.isBetaTester %}
                     <button id="showLoggerBetaTest" class="footer-link url_link beta-test">
                         <i class="fa-solid fa-bug"></i>
@@ -29,8 +29,8 @@
                     <a href="https://www.youtube.com/channel/UCusaCGqBd_3hIa-7S0JQdCw" class="footer-link url_link" aria-label="{% trans 'template.footer.social.youtube' %}">
                         <i class="fa-brands fa-youtube"></i>
                     </a>
-                    <a href="https://x.com/AmbianceBoard" class="footer-link url_link" aria-label="{% trans 'template.footer.social.x' %}">
-                        <i class="fa-brands fa-x-twitter"></i>
+                    <a href="https://www.instagram.com/ambiance_board/" class="footer-link url_link" aria-label="{% trans 'template.footer.social.instagram' %}">
+                        <i class="fa-brands fa-instagram"></i>
                     </a>
 
 

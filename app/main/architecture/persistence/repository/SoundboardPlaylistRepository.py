@@ -152,6 +152,46 @@ class SoundboardPlaylistRepository:
 
         return SoundboardSection.objects.filter(SoundBoard=soundboard).count()
 
+    def swap_sections(self, soundboard: "SoundBoard", section_a: int, section_b: int) -> bool:
+        from django.db import transaction
+        from main.architecture.persistence.models.SoundboardSection import SoundboardSection
+
+        if section_a == section_b or section_a <= 0 or section_b <= 0:
+            return False
+
+        sections = SoundboardSection.objects.filter(
+            SoundBoard=soundboard,
+            section__in=(section_a, section_b),
+        )
+        if sections.count() != 2:
+            return False
+
+        section_a_obj = sections.get(section=section_a)
+        section_b_obj = sections.get(section=section_b)
+
+        with transaction.atomic():
+            temporary_section = (
+                SoundboardSection.objects.filter(SoundBoard=soundboard)
+                .order_by('-section')
+                .values_list('section', flat=True)
+                .first()
+                or 0
+            ) + 1
+
+            original_section_a = section_a_obj.section
+            original_section_b = section_b_obj.section
+
+            section_a_obj.section = temporary_section
+            section_a_obj.save(update_fields=['section'])
+
+            section_b_obj.section = original_section_a
+            section_b_obj.save(update_fields=['section'])
+
+            section_a_obj.section = original_section_b
+            section_a_obj.save(update_fields=['section'])
+
+        return True
+
     def delete_section(self, soundboard: "SoundBoard", section: int) -> None:
         from main.architecture.persistence.models.SoundboardSection import SoundboardSection
 
@@ -166,4 +206,3 @@ class SoundboardPlaylistRepository:
 
     def get_list_shortcut_keyboard(self, soundboard: "SoundBoard") -> List[SoundboardPlaylist]:
         return SoundboardPlaylist.objects.filter(section__SoundBoard=soundboard).exclude(shortcut_keyboard__isnull=True).exclude(shortcut_keyboard__exact='').order_by('section__section', 'order')
-

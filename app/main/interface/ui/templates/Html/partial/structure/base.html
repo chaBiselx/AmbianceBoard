@@ -8,7 +8,7 @@
 {% get_current_language as CURRENT_LANGUAGE %}
 
 
-<html lang="{{ CURRENT_LANGUAGE }}" {% include 'Html/partial/structure/theme/theme.html' %} data-bs-theme="{% get_user_theme %}">
+<html lang="{{ CURRENT_LANGUAGE }}" {% include 'Html/partial/structure/theme/theme.html' %} data-bs-theme="{% get_user_theme %}" data-user-authenticated="{{ request.user.is_authenticated|yesno:'true,false' }}">
 {% resolve_page_seo as resolved_seo %}
 
 <head>

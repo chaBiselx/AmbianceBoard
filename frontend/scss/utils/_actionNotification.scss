@@ -17,7 +17,6 @@ body.modal-open .action-notification-container {
 	position: relative;
 	padding: 20px;
 	border: 1px solid var(--bs-border-color);
-	border-left: 4px solid var(--bs-primary);
 	border-radius: 6px;
 	background: var(--bs-body-bg);
 	color: var(--bs-body-color);
@@ -28,6 +27,36 @@ body.modal-open .action-notification-container {
 		font-size: 0.9375rem;
 		margin: 0 0 16px;
 	}
+}
+
+.action-notification-warning {
+	border-top: 4px solid var(--bs-warning);
+	border-left: 4px solid var(--bs-warning);
+}
+
+.action-notification-primary {
+	border-top: 4px solid var(--bs-primary);
+	border-left: 4px solid var(--bs-primary);
+}
+
+.action-notification-secondary {
+	border-top: 4px solid var(--bs-secondary);
+	border-left: 4px solid var(--bs-secondary);
+}
+
+.action-notification-info {
+	border-top: 4px solid var(--bs-info);
+	border-left: 4px solid var(--bs-info);
+}
+
+.action-notification-success {
+	border-top: 4px solid var(--bs-success);
+	border-left: 4px solid var(--bs-success);
+}
+
+.action-notification-danger {
+	border-top: 4px solid var(--bs-danger);
+	border-left: 4px solid var(--bs-danger);
 }
 
 .action-notification-title {
@@ -50,4 +79,27 @@ body.modal-open .action-notification-container {
 .action-notification-action {
 	max-width: 100%;
 	white-space: normal;
+}
+
+@media (min-width: 768px) {
+	.action-notification-container {
+		right: 24px;
+		bottom: 24px;
+		width: min(420px, calc(100vw - 48px));
+	}
+
+	.action-notification {
+		padding: 24px;
+		border-top-width: 5px;
+		border-left-width: 5px;
+		box-shadow: 0 8px 28px rgba(0, 0, 0, 0.24);
+
+        h2 {
+            font-size: 1.55rem;
+        }
+
+		p {
+			font-size: 1.35rem;
+		}
+	}
 }

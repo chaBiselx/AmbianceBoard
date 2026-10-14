@@ -16,7 +16,7 @@
     </div>
     <div class="col-md-6 col-12">
         {% if type_header == "shared" %}
-        <div class="float-end"><button class="btn btn-sm btn-secondary" id="shared-custom-volume-button"><i class="fa-solid fa-volume-low"></i></button></div>
+        <div class="float-end"><button class="btn btn-sm btn-secondary" id="shared-custom-volume-button"><span>{% trans "template.soundboard_read.shared.button.volume" %}</span> <i class="fa-solid fa-volume-low"></i></button></div>
         {% endif %}
         {% if type_header == "private" or type_header == "public" %}
         <button class="btn btn-outline-secondary float-end" id="btn-publish-soundboard" data-shepherd="share-listening" data-url="{% url 'publish_soundboard' soundboard.uuid %}" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="{% trans "template.shareSoundboard.button.tooltip" %}">

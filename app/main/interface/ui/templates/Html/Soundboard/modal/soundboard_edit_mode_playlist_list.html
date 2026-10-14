@@ -11,8 +11,13 @@
 <div class="row g-2" id="soundboard-edit-playlist-list">
     {% for playlist in page_objects %}
     <div class="col-12 col-md-6">
+        {% if duplicate_to_library %}
+        {% url 'playlistDuplicate' playlist.uuid as url_duplication %}
+        {% include 'Html/partial/playlist/duplicate_playlist.html' with playlist=playlist url_duplication=url_duplication type_import="copy_to_library" %}
+        {% else %}
         {% url 'soundboardEditModeDuplicatePlaylist' soundboard.uuid playlist.uuid as url_duplication %}
         {% include 'Html/partial/playlist/duplicate_playlist.html' with playlist=playlist url_duplication=url_duplication type_import="duplicate" %}
+        {% endif %}
 
     </div>
     {% endfor %}
