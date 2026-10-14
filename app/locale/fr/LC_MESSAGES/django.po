@@ -1989,6 +1989,12 @@ msgstr "Renommer"
 msgid "template.soundboard_organize.section.insert_before"
 msgstr "Insérer une section avant"
 
+msgid "template.soundboard_organize.section.swap_previous"
+msgstr "Inverser avec la section précédente"
+
+msgid "template.soundboard_organize.section.swap_next"
+msgstr "Inverser avec la section suivante"
+
 #: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:78
 #: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:137
 msgid "template.soundboard_organize.section.empty"

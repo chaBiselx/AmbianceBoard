@@ -577,7 +577,8 @@ Sécurité
 
 Nouveautés
 - Lien Instagram dans le footer
-- Pourvoir ajouter un boutons de la communauté depuis la page d'organisation d'un sounboard
+- Pouvoir ajouter un boutons de la communauté depuis la page d'organisation d'un sounboard
+- Pouvoir intervertir 2 sections depuis la page d'organisation d'un sounboard
 
 Améliorations
 - Ajout de traductions 

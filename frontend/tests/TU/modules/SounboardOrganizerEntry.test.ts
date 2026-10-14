@@ -16,6 +16,7 @@ vi.mock('@/modules/SoundboardOrganizer/SectionAdder', () => ({
     SectionAdder: class { addEvent() {} },
     SectionDeleter: class { addEvent() {} },
     SectionRenamer: class { addEvent() {} },
+    SectionSwapper: class { addEvent() {} },
 }));
 vi.mock('@/modules/SoundboardOrganizer/PointerDragManager', () => ({
     PointerDragManager: class { setupEvents() {} },

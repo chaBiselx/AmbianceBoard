@@ -77,6 +77,13 @@ def soundboard_organize_update(request, soundboard_uuid):
             soundboard_playlist_service.insert_section(insert_section)
             return JsonResponse({'success': 'section inserted', 'section': insert_section}, status=200)
 
+        if request.method == 'UPDATE' and 'swapSections' in data.keys():
+            section_a = int(data['swapSections'][0])
+            section_b = int(data['swapSections'][1])
+            if not soundboard_playlist_service.swap_sections(section_a, section_b):
+                return JsonResponse({'error': 'invalid sections'}, status=400)
+            return JsonResponse({'success': 'sections swapped', 'sections': [section_a, section_b]}, status=200)
+
         if request.method == 'DELETE' and 'deleteSection' in data.keys():
             delete_section = int(data['deleteSection'])
             soundboard_playlist_service.delete_section(delete_section)

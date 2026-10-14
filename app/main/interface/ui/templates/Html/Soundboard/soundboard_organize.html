@@ -71,6 +71,12 @@
                             <i class="fa-solid fa-plus"></i>
                             <span>{% trans "template.soundboard_organize.section.insert_before" %}</span>
                         </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary section-swap-up-button" data-num-section="{{ section_num }}" aria-label="{% trans 'template.soundboard_organize.section.swap_previous' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.section.swap_previous' %}">
+                            <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary section-swap-down-button" data-num-section="{{ section_num }}" aria-label="{% trans 'template.soundboard_organize.section.swap_next' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.section.swap_next' %}">
+                            <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+                        </button>
                     </div>
                     <div id="panelsStayOpen-{{ section_num }}" class="accordion-collapse collapse show" aria-labelledby="panelsSection-{{ section_num }}">
                         <div class="accordion-body p-0">
@@ -129,6 +135,12 @@
                 <button type="button" class="btn btn-sm btn-outline-info section-insert-before-button" data-num-section="##SECTION##" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.section.insert_before' %}">
                     <i class="fa-solid fa-plus"></i>
                     <span>{% trans "template.soundboard_organize.section.insert_before" %}</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary section-swap-up-button" data-num-section="##SECTION##" aria-label="{% trans 'template.soundboard_organize.section.swap_previous' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.section.swap_previous' %}">
+                    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-secondary section-swap-down-button" data-num-section="##SECTION##" aria-label="{% trans 'template.soundboard_organize.section.swap_next' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.section.swap_next' %}">
+                    <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
                 </button>
             </div>
             <div id="panelsStayOpen-##SECTION##" class="accordion-collapse collapse show" aria-labelledby="panelsSection-##SECTION##">

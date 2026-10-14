@@ -11,6 +11,11 @@ export class OrganizerApiClient {
         return response.ok;
     }
 
+    public async swapSections(sectionA: number, sectionB: number, url?: string): Promise<boolean> {
+        const response = await this.request('UPDATE', { swapSections: [sectionA, sectionB] }, url);
+        return response.ok;
+    }
+
     public async deleteSection(deleteSection: number, url?: string): Promise<boolean> {
         const response = await this.request('DELETE', { deleteSection }, url);
         return response.ok;
@@ -51,6 +56,15 @@ export class SendBackendAction {
     public async insertSection(insertSection: number, url?: string): Promise<boolean> {
         try {
             return await this.apiClient.insertSection(insertSection, url);
+        } catch (error) {
+            ConsoleCustom.error(error);
+            return false;
+        }
+    }
+
+    public async swapSections(sectionA: number, sectionB: number, url?: string): Promise<boolean> {
+        try {
+            return await this.apiClient.swapSections(sectionA, sectionB, url);
         } catch (error) {
             ConsoleCustom.error(error);
             return false;

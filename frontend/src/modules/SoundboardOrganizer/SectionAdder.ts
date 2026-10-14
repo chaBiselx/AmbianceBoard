@@ -4,6 +4,8 @@ import ModalCustom from '@/modules/General/Modal';
 import { SendBackendAction } from './OrganizerApi';
 import { EmptyPlaylistChecker, OrganizerDragAndDropZone, SectionConfig } from './OrganizerDom';
 import { CleanOrderHandler } from './PlaylistOrder';
+import BootstrapComponentInitializer from "@/modules/General/BootstrapComponentInitializer";
+
 
 class SectionDomManager {
     // resetTitle uniquement pour une nouvelle section : un décalage doit conserver le nom saisi
@@ -33,8 +35,22 @@ class SectionDomManager {
         if (editButton) editButton.dataset.numSection = sectionNumber.toString();
         const insertButton = accordionNode.querySelector('.section-insert-before-button') as HTMLButtonElement | null;
         if (insertButton) insertButton.dataset.numSection = sectionNumber.toString();
+        const swapUpButton = accordionNode.querySelector('.section-swap-up-button') as HTMLButtonElement | null;
+        if (swapUpButton) swapUpButton.dataset.numSection = sectionNumber.toString();
+        const swapDownButton = accordionNode.querySelector('.section-swap-down-button') as HTMLButtonElement | null;
+        if (swapDownButton) swapDownButton.dataset.numSection = sectionNumber.toString();
         const deleteButton = accordionNode.querySelector('.section-delete-button') as HTMLButtonElement | null;
         if (deleteButton) deleteButton.dataset.numSection = sectionNumber.toString();
+    }
+
+    public refreshSwapButtons(): void {
+        const maxSections = SectionConfig.getMaxSections();
+        for (const button of document.querySelectorAll<HTMLButtonElement>('.section-swap-up-button')) {
+            button.disabled = Number.parseInt(button.dataset.numSection || '') <= 1;
+        }
+        for (const button of document.querySelectorAll<HTMLButtonElement>('.section-swap-down-button')) {
+            button.disabled = Number.parseInt(button.dataset.numSection || '') >= maxSections;
+        }
     }
 
     public buildSectionNode(template: HTMLTemplateElement, sectionNumber: number): HTMLElement | null {
@@ -112,6 +128,7 @@ class SectionAdder {
             this.setupDragEvents();
             EmptyPlaylistChecker.check();
             new CleanOrderHandler().resetBadge();
+            this.sectionDomManager.refreshSwapButtons();
         } catch (error) {
             ConsoleCustom.error('Failed to insert section', error);
         }
@@ -151,8 +168,55 @@ class SectionDeleter {
             this.setupDragEvents();
             EmptyPlaylistChecker.check();
             new CleanOrderHandler().resetBadge();
+            this.sectionDomManager.refreshSwapButtons();
         } catch (error) {
             ConsoleCustom.error('Failed to delete section', error);
+        }
+    }
+}
+
+class SectionSwapper {
+    private readonly sectionDomManager = new SectionDomManager();
+    private readonly bootstrapComponentInitializer = new BootstrapComponentInitializer();
+
+    public addEvent(): void {
+        const parent = document.getElementById('associated-playlists-container');
+        if (!parent || parent.dataset.swapSectionBound) return;
+        parent.addEventListener('click', event => {
+            const button = (event.target as HTMLElement).closest<HTMLButtonElement>(
+                '.section-swap-up-button, .section-swap-down-button'
+            );
+            if (!button || button.disabled) return;
+            const section = Number.parseInt(button.dataset.numSection || '');
+            const direction = button.matches('.section-swap-up-button') ? -1 : 1;
+            if (section > 0) void this.swap(section, section + direction);
+        });
+        parent.dataset.swapSectionBound = 'true';
+        SectionConfig.refreshMaxSections();
+        this.sectionDomManager.refreshSwapButtons();
+    }
+
+    private async swap(sectionA: number, sectionB: number): Promise<void> {
+        try {
+            SectionConfig.refreshMaxSections();
+            if (sectionB < 1 || sectionB > SectionConfig.getMaxSections()) return;
+            const parent = document.getElementById('associated-playlists-container');
+            const accordionA = OrganizerDragAndDropZone.associatedPlaylistsSection(sectionA)?.closest('.accordion') as HTMLElement | null;
+            const accordionB = OrganizerDragAndDropZone.associatedPlaylistsSection(sectionB)?.closest('.accordion') as HTMLElement | null;
+            if (!parent || !accordionA || !accordionB) return;
+            if (!await new SendBackendAction().swapSections(sectionA, sectionB)) return;
+
+            if (sectionA < sectionB) {
+                parent.insertBefore(accordionB, accordionA);
+            } else {
+                parent.insertBefore(accordionA, accordionB);
+            }
+            this.sectionDomManager.updateAccordionNode(accordionA, sectionB);
+            this.sectionDomManager.updateAccordionNode(accordionB, sectionA);
+            this.sectionDomManager.refreshSwapButtons();
+            BootstrapComponentInitializer.hideAllTooltips()
+        } catch (error) {
+            ConsoleCustom.error('Failed to swap sections', error);
         }
     }
 }
@@ -214,4 +278,4 @@ class SectionRenamer {
     }
 }
 
-export { SectionAdder, SectionDeleter, SectionRenamer };
+export { SectionAdder, SectionDeleter, SectionRenamer, SectionSwapper };
