@@ -20,13 +20,11 @@ export default class OnboardingInvitation {
 
     constructor(delayInSeconds: number = 10) {
         this.delay = Time.get_seconds(delayInSeconds);
-        console.log('Saved onboarding invitation constructor:');
         
         const now = Date.now();
         this.state = { startedAt: now, prompted: false, dismissed: false };
         try {
             const saved: unknown = JSON.parse(localStorage.getItem(this.storageKey) ?? 'null');
-            console.log('Saved onboarding invitation state:', saved);
     
             if (saved && typeof saved === 'object' && 'startedAt' in saved && 'prompted' in saved
                 && typeof saved.startedAt === 'number' && Number.isFinite(saved.startedAt)
