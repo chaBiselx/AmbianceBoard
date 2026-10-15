@@ -22,7 +22,7 @@ class BoardSectionConfig {
             sectionCount = currentSection++;
         }
 
-        return Math.max(sectionCount, 1);
+        return sectionCount;
     }
 }
 

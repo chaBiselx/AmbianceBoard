@@ -121,6 +121,21 @@ describe('soundboard section controls', () => {
         expect(sectionMocks.resetBadge).toHaveBeenCalledOnce();
     });
 
+    it('adds section 1 when the organizer has no sections', async () => {
+        setupContainer('');
+        sectionMocks.getMaxSections.mockReturnValue(0);
+        sectionMocks.getNextSectionNumber.mockReturnValue(1);
+        sectionMocks.getSectionNumbers.mockReturnValue([]);
+        const setupDragEvents = vi.fn();
+        new SectionAdder(setupDragEvents).addEvent();
+
+        document.getElementById('add-section-button')!.click();
+
+        await vi.waitFor(() => expect(sectionMocks.insert).toHaveBeenCalledWith(1));
+        expect(document.getElementById('associated-playlists-section-1')).not.toBeNull();
+        expect(setupDragEvents).toHaveBeenCalledOnce();
+    });
+
     it('deletes a confirmed section and shifts the remaining accordion identifiers', async () => {
         setupContainer(accordion(1) + accordion(2, 'Keep this title'));
         sectionMocks.getMaxSections.mockReturnValue(2);
