@@ -589,23 +589,14 @@ Modifications
 - Changement de visuel pour les slider horizontaux des boutons
 
 ### 0.5.15 - 2026/10
-Sécurité
-- … 
-
-Nouveautés
-- …
-
 Améliorations
-- …
+- Rendre la page d'organisation avancsé responsive
 
 Modifications
-- …
+- Modification de la page avancer de soundboard pour un visuel sur téléphone
 
 Corrections
 - Permet d'ajouter une sections si aucune n'est presente (par default)
-
-Fiabilité & Confiance
-- …
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

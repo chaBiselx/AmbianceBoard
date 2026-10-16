@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 20:25+0000\n"
+"POT-Creation-Date: 2026-10-15 13:45+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -1878,106 +1878,111 @@ msgid "template.soundboard.list.new_soundbaord"
 msgstr "Add a soundboard"
 
 #: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:16
+msgid "template.soundboard_organize.community.modal_title"
+msgstr "Add a community button"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:17
+msgid "template.soundboard_organize.community.loading"
+msgstr "Loading community playlists…"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:17
+msgid "template.soundboard_organize.community.load_error"
+msgstr "Unable to load community playlists"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:17
+msgid "template.soundboard_organize.community.add_error"
+msgstr "Unable to add this playlist"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:18
+msgid "template.soundboard_organize.community.csrf_error"
+msgstr "Unable to verify the request. Please reload the page."
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:20
+msgid "template.soundboard_organize.community.add_button"
+msgstr "Add a community button"
+
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:24
 #: main/interface/ui/templates/Html/Soundboard/soundboard_read.html:38
 msgid "template.soundboard_organize._personalized_actions"
 msgstr "Other personnalised action"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:17
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:25
 msgid "template.soundboard_organize.page.back"
 msgstr "Back to soundboard"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:21
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:29
 msgid "template.soundboard_organize.unassociated.title"
 msgstr "Unassociated buttons"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:24
-msgid "template.soundboard_organize.community.modal_title"
-msgstr "Add a community button"
-
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:25
-msgid "template.soundboard_organize.community.loading"
-msgstr "Loading community playlists…"
-
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:26
-msgid "template.soundboard_organize.community.load_error"
-msgstr "Unable to load community playlists"
-
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:27
-msgid "template.soundboard_organize.community.add_error"
-msgstr "Unable to add this playlist"
-
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:28
-msgid "template.soundboard_organize.community.csrf_error"
-msgstr "Unable to verify the request. Please reload the page."
-
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:30
-msgid "template.soundboard_organize.community.add_button"
-msgstr "Add a community button"
-
-msgid "template.playlist.copiable.add_to_my_playlists"
-msgstr "Add to my playlists"
-
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:34
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:32
 msgid "template.soundboard_organize.unassociated.empty"
 msgstr "No unassociated buttons"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:49
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:47
 msgid "template.soundboard_organize.associated.title"
 msgstr "Associated buttons"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:52
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:121
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:49
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:126
 msgid "template.soundboard_organize.section.default_title"
 msgstr "Section"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:53
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:50
 msgid "template.soundboard_organize.section.delete_confirmation"
 msgstr "Delete this section and all its associated buttons?"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:54
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:50
 msgid "template.soundboard_organize.section.rename_cancel"
 msgstr "Cancel"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:55
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:51
 msgid "template.soundboard_organize.section.rename_save"
 msgstr "Save"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:66
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:125
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:62
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:130
 msgid "template.soundboard_organize.title.tooltip"
 msgstr "Rename section"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:68
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:111
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:127
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:64
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:116
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:132
 msgid "template.soundboard_organize.title.rename"
 msgstr "Rename"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:70
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:72
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:129
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:131
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:66
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:68
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:134
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:136
 msgid "template.soundboard_organize.section.insert_before"
-msgstr "Insert section before"
+msgstr "Insert before"
 
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:71
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:72
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:138
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:139
 msgid "template.soundboard_organize.section.swap_previous"
 msgstr "Swap with previous section"
 
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:75
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:76
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:142
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:143
 msgid "template.soundboard_organize.section.swap_next"
 msgstr "Swap with next section"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:78
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:137
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:83
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:150
 msgid "template.soundboard_organize.section.empty"
 msgstr "No buttons in this section"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:94
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:144
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:99
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:157
 msgid "template.soundboard_organize.section.delete"
 msgstr "Delete section"
 
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:103
-#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:104
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:108
+#: main/interface/ui/templates/Html/Soundboard/soundboard_organize.html:109
 msgid "template.soundboard_organize.section.add_end"
 msgstr "Add section at end"
 
@@ -2075,23 +2080,27 @@ msgstr "No description"
 msgid "generic.reset"
 msgstr "Reset"
 
-#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:31
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:28
+msgid "template.playlist.copiable.add_to_my_playlists"
+msgstr "Add to my playlists"
+
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:35
 msgid "Sounds"
 msgstr "Sounds"
 
-#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:37
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:41
 msgid "Play / pause"
 msgstr "Play / pause"
 
-#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:37
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:41
 msgid "Restart"
 msgstr "Restart"
 
-#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:37
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:41
 msgid "Seek"
 msgstr "Playback position"
 
-#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:42
+#: main/interface/ui/templates/Html/partial/playlist/duplicate_playlist.html:46
 msgid "No sounds available"
 msgstr "No sounds available"
 
