@@ -1,4 +1,7 @@
-from django.test import TestCase, tag
+from pathlib import Path
+from tempfile import TemporaryDirectory
+
+from django.test import TestCase, override_settings, tag
 from django.utils import timezone
 from unittest.mock import patch, MagicMock
 from datetime import timedelta
@@ -15,6 +18,7 @@ from main.domain.cron.service.UserTierExpirationService import UserTierExpiratio
 from main.domain.cron.service.PurgeOldStatsService import PurgeOldStatsService
 from main.domain.cron.service.DomainBlacklistCronService import DomainBlacklistCronService
 from main.domain.cron.service.SharedSoundboardService import SharedSoundboardService
+from main.domain.cron.service.MediaFileStructureService import MediaFileStructureService
 
 User = get_user_model()
 
@@ -66,3 +70,44 @@ class CronServicesTest(TestCase):
         service = SharedSoundboardService()
         service.purge_expired_shared_soundboard()
         self.assertFalse(SharedSoundboard.objects.filter(id=shared.id).exists())
+
+
+@tag('unitaire')
+class MediaFileStructureServiceTest(TestCase):
+    def test_normalize_music_files_moves_files_and_updates_database_paths(self):
+        with TemporaryDirectory() as temp_dir:
+            media_root = Path(temp_dir)
+            nested_file = media_root / 'musics' / 'musics' / 'nested' / 'track.mp3'
+            nested_file.parent.mkdir(parents=True)
+            nested_file.write_bytes(b'audio')
+
+            with override_settings(MEDIA_ROOT=media_root), patch(
+                'main.domain.cron.service.MediaFileStructureService.Music.objects.filter'
+            ) as filter_musics:
+                moved, conflicts = MediaFileStructureService().normalize_music_files()
+
+            destination = media_root / 'musics' / 'track.mp3'
+            self.assertEqual((moved, conflicts), (1, 0))
+            self.assertEqual(destination.read_bytes(), b'audio')
+            self.assertFalse(nested_file.exists())
+            filter_musics.assert_called_once_with(file='musics/musics/nested/track.mp3')
+            filter_musics.return_value.update.assert_called_once_with(file='musics/track.mp3')
+
+    def test_normalize_music_files_leaves_existing_destination_untouched(self):
+        with TemporaryDirectory() as temp_dir:
+            media_root = Path(temp_dir)
+            nested_file = media_root / 'musics' / 'musics' / 'track.mp3'
+            destination = media_root / 'musics' / 'track.mp3'
+            nested_file.parent.mkdir(parents=True)
+            nested_file.write_bytes(b'nested')
+            destination.write_bytes(b'existing')
+
+            with override_settings(MEDIA_ROOT=media_root), patch(
+                'main.domain.cron.service.MediaFileStructureService.Music.objects.filter'
+            ) as filter_musics:
+                moved, conflicts = MediaFileStructureService().normalize_music_files()
+
+            self.assertEqual((moved, conflicts), (0, 1))
+            self.assertEqual(nested_file.read_bytes(), b'nested')
+            self.assertEqual(destination.read_bytes(), b'existing')
+            filter_musics.assert_not_called()

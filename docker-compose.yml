@@ -24,7 +24,7 @@ services:
     volumes:
       - ./traefik/Caddyfile:/etc/caddy/Caddyfile:ro
       - front_build:/srv/static:ro
-      - ./mediafiles:/srv/media:ro
+      - ./app/mediafiles:/srv/media:ro
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.static.rule=(Host(`localhost`) || Host(`ambianceboard`)) && (PathPrefix(`/static/`) || PathPrefix(`/media/`))"
@@ -40,6 +40,7 @@ services:
     command: cron -f
     volumes:
       - ./app/:/usr/src/app/
+      - ./app/mediafiles:/usr/src/app/mediafiles/
     env_file:
       - ./.env
     environment:
@@ -60,6 +61,7 @@ services:
     volumes:
       - ./app/:/usr/src/app/
       - front_build:/usr/src/app/static/:ro
+      - ./app/mediafiles:/usr/src/app/mediafiles/
     env_file:
       - ./.env
     environment:
@@ -97,7 +99,7 @@ services:
     command: daphne -b 0.0.0.0 -p ${WS_PORT} parameters.asgi:application
     volumes:
       - ./app:/usr/src/app/
-      - ./mediafiles:/usr/src/app/mediafiles/
+      - ./app/mediafiles:/usr/src/app/mediafiles/
     env_file:
       - ./.env
     environment:
@@ -246,7 +248,7 @@ services:
 
   playwright:
     # mcr.microsoft.com/playwright:latest — Node.js + Chromium/Firefox/WebKit pré-installés
-    image: mcr.microsoft.com/playwright:v1.62.1-jammy
+    image: mcr.microsoft.com/playwright:v1.63.0-jammy
     working_dir: /app
     volumes:
       - ./frontend:/app
