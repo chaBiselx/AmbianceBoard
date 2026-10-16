@@ -598,6 +598,11 @@ Modifications
 Corrections
 - Permet d'ajouter une sections si aucune n'est presente (par default)
 
+### NEXT-version : 
+
+Corrections
+- Corrections de l'icone d'ajout après avoir créer un boutons depuis un sounboard en direct 
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
