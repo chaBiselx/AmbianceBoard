@@ -598,9 +598,10 @@ Modifications
 Corrections
 - Permet d'ajouter une sections si aucune n'est presente (par default)
 
-### 0.5.16 - 2026/10
+### NEXT-version : 
+
 Corrections
-- Restructuration pour une meilleur des dossiers contenant les musics 
+- Corrections de l'icone d'ajout après avoir créer un boutons depuis un sounboard en direct 
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
