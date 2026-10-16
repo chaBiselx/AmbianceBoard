@@ -12,23 +12,21 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-12 mb-2">
+    <div class="col-6 mb-2">
+        <button type="button" class="btn btn-outline-primary" id="add-community-playlist-button" data-url-list="{% url 'soundboardEditModePlaylistList' soundboard.uuid %}?target=library" data-modal-title="{% trans 'template.soundboard_organize.community.modal_title' %}"
+            data-loading-message="{% trans 'template.soundboard_organize.community.loading' %}" data-load-error="{% trans 'template.soundboard_organize.community.load_error' %}" data-add-error="{% trans 'template.soundboard_organize.community.add_error' %}"
+            data-csrf-error="{% trans 'template.soundboard_organize.community.csrf_error' %}">
+            <i class="fa-solid fa-earth-europe" aria-hidden="true"></i>
+            {% trans "template.soundboard_organize.community.add_button" %}
+        </button>
+    </div>
+    <div class="col-6 mb-2">
         <a type="button" href="{% url 'listSoundboardPlaylistsSpecific' soundboard.uuid %}?back=organize" class="btn btn-primary float-end">{% trans "template.soundboard_organize._personalized_actions" %}</a>
         <a type="button" href="{% url 'soundboardsRead' soundboard.uuid %}" class="btn btn-info float-end">{% trans "template.soundboard_organize.page.back" %}</a>
     </div>
     <div class="col-6 px-sm-2 px-1">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h3>{% trans "template.soundboard_organize.unassociated.title" %}</h3>
-            <button type="button" class="btn btn-outline-primary" id="add-community-playlist-button"
-                data-url-list="{% url 'soundboardEditModePlaylistList' soundboard.uuid %}?target=library"
-                data-modal-title="{% trans 'template.soundboard_organize.community.modal_title' %}"
-                data-loading-message="{% trans 'template.soundboard_organize.community.loading' %}"
-                data-load-error="{% trans 'template.soundboard_organize.community.load_error' %}"
-                data-add-error="{% trans 'template.soundboard_organize.community.add_error' %}"
-                data-csrf-error="{% trans 'template.soundboard_organize.community.csrf_error' %}">
-                <i class="fa-solid fa-earth-europe" aria-hidden="true"></i>
-                {% trans "template.soundboard_organize.community.add_button" %}
-            </button>
         </div>
         <div class="flex-container zone-dragAndDrop border border-secondary rounded" id="unassociated-playlists">
             <span class="unassociated-playlists-empty " hidden="true">{% trans "template.soundboard_organize.unassociated.empty" %}</span>
@@ -48,10 +46,8 @@
 
             <h3>{% trans "template.soundboard_organize.associated.title" %}</h3>
         </div>
-        <div data-url="{% url 'organizeSoundboardUpdate' soundboard.uuid %}" id="associated-playlists-container"
-            data-section-default-title="{% trans 'template.soundboard_organize.section.default_title' %}"
-            data-section-delete-confirmation="{% trans 'template.soundboard_organize.section.delete_confirmation' %}"
-            data-section-rename-cancel="{% trans 'template.soundboard_organize.section.rename_cancel' %}"
+        <div data-url="{% url 'organizeSoundboardUpdate' soundboard.uuid %}" id="associated-playlists-container" data-section-default-title="{% trans 'template.soundboard_organize.section.default_title' %}"
+            data-section-delete-confirmation="{% trans 'template.soundboard_organize.section.delete_confirmation' %}" data-section-rename-cancel="{% trans 'template.soundboard_organize.section.rename_cancel' %}"
             data-section-rename-save="{% trans 'template.soundboard_organize.section.rename_save' %}">
             {% for soundboard_section in soundboard.sections.all %}
             {% with section_num=soundboard_section.section %}
@@ -62,7 +58,7 @@
                             <strong><span class="num-section">{{ section_num }}</span></strong> - <i class="section-title"> {{ soundboard_section.name }}</i>
                         </button>
                     </h2>
-                    <div class="d-flex justify-content-end pe-2 pt-2">
+                    <div class="d-flex flex-wrap justify-content-end pe-2 pt-2">
                         <button type="button" class="btn btn-sm btn-outline-secondary section-edit-button" data-num-section="{{ section_num }}" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.title.tooltip' %}">
                             <i class="fa-solid fa-pen"></i>
                             <span>{% trans 'template.soundboard_organize.title.rename' %}</span>
@@ -71,10 +67,12 @@
                             <i class="fa-solid fa-plus"></i>
                             <span>{% trans "template.soundboard_organize.section.insert_before" %}</span>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary section-swap-up-button" data-num-section="{{ section_num }}" aria-label="{% trans 'template.soundboard_organize.section.swap_previous' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.section.swap_previous' %}">
+                        <button type="button" class="btn btn-sm btn-outline-secondary section-swap-up-button" data-num-section="{{ section_num }}" aria-label="{% trans 'template.soundboard_organize.section.swap_previous' %}" data-bs-toggle="tooltip"
+                            data-bs-title="{% trans 'template.soundboard_organize.section.swap_previous' %}">
                             <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
                         </button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary section-swap-down-button" data-num-section="{{ section_num }}" aria-label="{% trans 'template.soundboard_organize.section.swap_next' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.section.swap_next' %}">
+                        <button type="button" class="btn btn-sm btn-outline-secondary section-swap-down-button" data-num-section="{{ section_num }}" aria-label="{% trans 'template.soundboard_organize.section.swap_next' %}" data-bs-toggle="tooltip"
+                            data-bs-title="{% trans 'template.soundboard_organize.section.swap_next' %}">
                             <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -127,7 +125,7 @@
                     <strong><span class="num-section">##SECTION##</span></strong> - <i class="section-title">{% trans 'template.soundboard_organize.section.default_title' %} ##SECTION##</i>
                 </button>
             </h2>
-            <div class="d-flex justify-content-end pe-2 pt-2">
+            <div class="d-flex flex-wrap justify-content-end pe-2 pt-2">
                 <button type="button" class="btn btn-sm btn-outline-secondary section-edit-button" data-num-section="##SECTION##" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.title.tooltip' %}">
                     <i class="fa-solid fa-pen"></i>
                     <span>{% trans 'template.soundboard_organize.title.rename' %}</span>
@@ -136,10 +134,12 @@
                     <i class="fa-solid fa-plus"></i>
                     <span>{% trans "template.soundboard_organize.section.insert_before" %}</span>
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary section-swap-up-button" data-num-section="##SECTION##" aria-label="{% trans 'template.soundboard_organize.section.swap_previous' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.section.swap_previous' %}">
+                <button type="button" class="btn btn-sm btn-outline-secondary section-swap-up-button" data-num-section="##SECTION##" aria-label="{% trans 'template.soundboard_organize.section.swap_previous' %}" data-bs-toggle="tooltip"
+                    data-bs-title="{% trans 'template.soundboard_organize.section.swap_previous' %}">
                     <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary section-swap-down-button" data-num-section="##SECTION##" aria-label="{% trans 'template.soundboard_organize.section.swap_next' %}" data-bs-toggle="tooltip" data-bs-title="{% trans 'template.soundboard_organize.section.swap_next' %}">
+                <button type="button" class="btn btn-sm btn-outline-secondary section-swap-down-button" data-num-section="##SECTION##" aria-label="{% trans 'template.soundboard_organize.section.swap_next' %}" data-bs-toggle="tooltip"
+                    data-bs-title="{% trans 'template.soundboard_organize.section.swap_next' %}">
                     <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
                 </button>
             </div>

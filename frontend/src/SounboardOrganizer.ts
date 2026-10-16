@@ -13,12 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
         new PointerDragManager().setupEvents();
         EmptyPlaylistChecker.check()
         initOrderBadge()
-        new SectionAdder(() => new PointerDragManager().setupEvents()).addEvent();
-        new SectionDeleter(() => new PointerDragManager().setupEvents()).addEvent();
-        new SectionSwapper().addEvent();
-        new SectionRenamer().addEvent();
         new ScrollManager().addEvent();
     }
+    new SectionAdder(() => new PointerDragManager().setupEvents()).addEvent();
+    new SectionDeleter(() => new PointerDragManager().setupEvents()).addEvent();
+    new SectionSwapper().addEvent();
+    new SectionRenamer().addEvent();
 });
 
 function initOrderBadge() {

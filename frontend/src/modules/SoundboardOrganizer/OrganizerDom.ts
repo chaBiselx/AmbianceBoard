@@ -22,7 +22,7 @@ export class SectionConfig {
             sectionCount = currentSection++;
         }
 
-        return Math.max(sectionCount, 1);
+        return sectionCount;
     }
 
     public static getSectionNumbers(): number[] {
@@ -58,12 +58,15 @@ export class OrganizerDragAndDropZone {
             return false;
         }
         const expectedSections = SectionConfig.getMaxSections();
-        return this.getAllSections().length === expectedSections && expectedSections > 0;
+        const actualSections = this.getAllSections().length;
+        return actualSections === expectedSections && expectedSections > 0 || actualSections === 0;
     }
 
     public static getUrlFromAnySection(): string {
         const firstSection = this.associatedPlaylistsSection(1);
-        return (firstSection.closest('[data-url]') as HTMLElement)?.dataset.url || '';
+        const urlElement = firstSection?.closest('[data-url]')
+            ?? document.getElementById('associated-playlists-container');
+        return (urlElement as HTMLElement | null)?.dataset.url ?? '';
     }
 }
 

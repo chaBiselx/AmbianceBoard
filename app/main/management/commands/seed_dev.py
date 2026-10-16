@@ -12,7 +12,10 @@ Playlists créées  : 20 réparties sur les 3 types (Instant, Ambient, Music)
 from uuid import uuid4
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand, CommandError
+
+from main.domain.common.enum.GroupEnum import GroupEnum
 
 
 _DEV_USER = {
@@ -83,6 +86,8 @@ class Command(BaseCommand):
                 "betaTester": _DEV_USER["isBetaTester"],
             },
         )
+        standard_group, _ = Group.objects.get_or_create(name=GroupEnum.USER_STANDARD.name)
+        user.groups.add(standard_group)
 
         if user_created:
             UserPreference.objects.get_or_create(user=user)
