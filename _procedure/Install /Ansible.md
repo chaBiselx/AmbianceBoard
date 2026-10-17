@@ -112,3 +112,25 @@ Vérifier la syntaxe sans connexion au serveur ni modification distante :
 ansible-playbook --syntax-check ./ansible/playbooks/setup.yml
 ```
 
+### Priorité variable
+
+| Priorité | Emplacement (depuis la racine du dépôt) | Exemple / remarque |
+|:--:|---|---|
+| 1 (faible) | `roles/_template/defaults/main.yaml` | Valeurs par défaut, faites pour être écrasées. Après copie du gabarit, remplacer `_template` par le nom du rôle. |
+| 2 | `inventory/prd/group_vars/all.yml` | Variables de tous les hôtes de l'inventaire de production. |
+| 3 | `playbooks/group_vars/all.yml` | Variables communes, placées à côté du playbook. |
+| 4 | `inventory/prd/group_vars/<groupe>.yml` | Variables du groupe d'inventaire, plus précises que `all`. |
+| 5 | `playbooks/group_vars/<groupe>.yml` | Variables de groupe placées à côté du playbook. |
+| 6 | `inventory/prd/host_vars/<hôte>.yml` | Variables de l'hôte, plus précises que celles du groupe. |
+| 7 | `playbooks/host_vars/<hôte>.yml` | Variables d'hôte placées à côté du playbook. |
+| 8 | Facts de l'hôte | `ansible_facts`, découverts à l'exécution |
+| 9 | `vars:` dans `playbooks/setup.yml` | Variables définies dans le playbook |
+| 10 | `vars_prompt:` dans `playbooks/setup.yml` | Saisie interactive |
+| 11 | `vars_files:` dans `playbooks/setup.yml` | Fichiers référencés par le playbook |
+| 12 | `roles/_template/vars/main.yaml` | Variables internes, difficiles à écraser. Après copie du gabarit, remplacer `_template` par le nom du rôle. |
+| 13 | `vars:` d'un bloc, par exemple dans `roles/_template/tasks/main.yml` | `block:` |
+| 14 | `vars:` d'une tâche, par exemple dans `roles/_template/tasks/main.yml` | Très local |
+| 15 | `include_vars` dans une tâche, par exemple dans `roles/_template/tasks/main.yml` | Chargement pendant l'exécution |
+| 16 | `set_fact` / `register` dans une tâche, par exemple dans `roles/_template/tasks/main.yml` | Variables définies pendant l'exécution |
+| 17 | `vars:` sur un rôle dans `playbooks/setup.yml` | Paramètres transmis au rôle (`roles: - role: x` avec `vars:`) |
+| 18 (fort) | `-e` / `--extra-vars` | Gagne toujours |

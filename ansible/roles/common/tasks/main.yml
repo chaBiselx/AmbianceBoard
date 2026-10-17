@@ -7,3 +7,4 @@
 - name: Mettre à niveau les paquets
   ansible.builtin.apt:
     upgrade: "{{ common_apt_upgrade }}"
+  notify: restart_project # fait appel au restart_project -> check handler ou listener 

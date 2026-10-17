@@ -1,0 +1,7 @@
+---
+- name: Ensure Docker is installed
+  ansible.builtin.package:
+    name: docker
+    state: present
+    update_cache: yes
+    become: yes
