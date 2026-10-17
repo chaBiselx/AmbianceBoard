@@ -602,6 +602,7 @@ Corrections
 
 Corrections
 - Corrections de l'icone d'ajout après avoir créer un boutons depuis un sounboard en direct 
+- Corrections des fadeout lorsqu'il est désactivé, le son commence désormais à la fin de la piste au lieu de commencer à la durée théorique du fondu de sortie
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
