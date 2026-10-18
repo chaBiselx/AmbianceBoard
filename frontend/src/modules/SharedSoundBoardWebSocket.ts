@@ -260,16 +260,41 @@ class SharedSoundBoardWebSocket {
         }
     }
 
+    /**
+     * Rafraîchit le panneau partagé du soundboard après une remise à zéro des volumes.
+     *
+     * Why: quand le serveur renvoie une liste de playlists masquées/volumes par défaut,
+     * le DOM doit être rechargé pour refléter le nouvel état sans perdre les derniers
+     * états d'activation enregistrés côté client.
+     *
+     * How: on récupère l'élément de refresh (`#shared-board-refresh`), on charge le HTML
+     * du board via un GET AJAX, on rebranche les écouteurs DOM, puis on réapplique les
+     * `data-last-activation` conservés avant le remplacement du fragment HTML. Enfin, on
+     * initialise le warmup des connexions de streaming pour les nouvelles sources.
+     */
     private resetBoardHiddenPlaylist(): void {
-        const html = document.getElementById('shared-board-refresh');
-        if (html?.dataset?.urlRefreshBoard) {
-            fetch(html.dataset.urlRefreshBoard, {
+        const refreshElement = document.getElementById('shared-board-refresh');
+        const board = document.getElementById('template-shared-volume');
+        const refreshUrl = refreshElement?.dataset.urlRefreshBoard;
+        if (refreshUrl && board) {
+            fetch(refreshUrl, {
                 method: 'GET',
             })
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Échec du rafraîchissement du soundboard: ${response.status}`);
+                    }
+                    return response.text();
+                })
                 .then((body) => {
                     const list = SharedSoundBoardWebSocket.getLastActivationList();
-                    html.innerHTML = body;
+                    const refreshedBoard = new DOMParser()
+                        .parseFromString(body, 'text/html')
+                        .getElementById('template-shared-volume');
+                    if (!refreshedBoard) {
+                        throw new Error('Le tableau actualisé est absent de la réponse.');
+                    }
+                    board.replaceWith(refreshedBoard);
                     new SoundBoardEventListener().addEventListenerDom();
                     for (const [id, lastActivation] of Object.entries(list)) {
                         const buttonPlaylist = ButtonPlaylistFinder.search(id);
@@ -282,6 +307,8 @@ class SharedSoundBoardWebSocket {
                 .catch(error => {
                     ConsoleCustom.error('Erreur lors de la requête AJAX:', error);
                 });
+        } else if (!board) {
+            ConsoleCustom.error('Impossible de rafraîchir le soundboard partagé: tableau introuvable.');
         }
     }
 
