@@ -13,6 +13,10 @@ vi.mock('@/modules/SoundBoardEventListener', () => ({ default: class { addEventL
 vi.mock('@/modules/MixerManager', () => ({
     MixerManager: class {
         initializeEventListeners() {}
+    },
+}));
+vi.mock('@/modules/MixerPlaylist', () => ({
+    MixerPlaylist: class {
         static updatePlaylistVolumeWidths() {}
     },
 }));

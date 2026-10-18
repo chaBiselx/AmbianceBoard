@@ -4,6 +4,7 @@ import ModalCustom from '@/modules/General/Modal';
 import PopupAddMusicToSoundboard from '@/modules/SoundBoardEditor/PopupAddMusicToSoundboard';
 import SoundBoardEventListener from '@/modules/SoundBoardEventListener';
 import { MixerManager } from '@/modules/MixerManager';
+import { MixerPlaylist } from '@/modules/MixerPlaylist';
 import { PaginationManager } from '@/modules/PaginationManager';
 import FilterFormAjaxManager from '@/modules/Filter/FilterFormAjaxManager';
 import PaginationAjaxManager from '@/modules/Filter/PaginationAjaxManager';
@@ -251,7 +252,7 @@ class SoundboardEditMode {
         // Rebind event listeners for the new playlist
         new SoundBoardEventListener().addEventListenerDom();
         new MixerManager().initializeEventListeners();
-        MixerManager.updatePlaylistVolumeWidths();
+        MixerPlaylist.updatePlaylistVolumeWidths();
     }
 
     private bindDuplicateButtons(): void {

@@ -3,118 +3,64 @@ import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { MusicElementFactory } from '@/modules/MusicElementFactory';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket'
 import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
-import { MixerPlaylist } from "@/modules/MixerPlaylist";
-
-type mixer = {
-    id: string,
-    type: string
-    input: HTMLInputElement
-}
-
-class MixerBuilder {
-    private readonly mixer: mixer;
-
-    constructor(input: HTMLInputElement) {
-        this.mixer = {
-            input: input,
-            type: input.dataset.type!,
-            id: input.id
-        }
-    }
-
-    getMixer(): mixer {
-        return this.mixer;
-    }
-}
-
-class MixerElement {
-    private readonly DOMMixerElement: HTMLInputElement | null = null;
-
-    constructor(typeMixer: string) {
-        const domElementMixer = document.querySelector(`.mixer-playlist[data-type="${typeMixer}"]`);
-        if (domElementMixer) {
-            this.DOMMixerElement = domElementMixer as HTMLInputElement
-        }
-    }
-
-    update(value: number): void {
-        if (!this.DOMMixerElement) return
-        this.DOMMixerElement.value = value.toString();
-        this.DOMMixerElement.dispatchEvent(new Event(MixerManager.EventTrigger));
-    }
-}
+export { MixerElement } from '@/modules/MixerElement';
 
 class MixerManager {
-    private readonly listMixer: HTMLCollectionOf<Element>;
-    private sharedSoundBoardWebSocket: SharedSoundBoardWebSocket | null = null
     static readonly EventTrigger: string = 'input';
-
-
-    constructor() {
-        this.listMixer = document.getElementsByClassName('mixer-playlist');
-    }
+    private static readonly initializedMixers = new WeakSet<HTMLInputElement>();
+    private static readonly mixerChangeHandler: EventListener = (event) => {
+        MixerManager.eventChangeVolume(event);
+    };
 
     public initializeEventListeners(): void {
-        for (let mixer of this.listMixer) {
-            // update volume when the user slide the mixer
-            mixer.addEventListener(MixerManager.EventTrigger, this.eventChangeVolume.bind(this));
+        for (const mixer of document.querySelectorAll('.mixer-playlist')) {
+            if (!(mixer instanceof HTMLInputElement)) continue;
+            if (MixerManager.initializedMixers.has(mixer)) continue;
+            mixer.addEventListener(MixerManager.EventTrigger, MixerManager.mixerChangeHandler);
+            MixerManager.initializedMixers.add(mixer);
         }
     }
 
-    private eventChangeVolume(event: Event): void {
-        // Récupérer l'instance WebSocket si disponible (auto-initialisée au chargement)
-        if (!SharedSoundBoardUtil.isSlavePage() && !this.sharedSoundBoardWebSocket) {
-            this.sharedSoundBoardWebSocket = SharedSoundBoardWebSocket.getMasterInstance();
-        }
+    private static eventChangeVolume(event: Event): void {
+        if (!(event.target instanceof HTMLInputElement)) return;
 
-        const mixer = new MixerBuilder(event.target as HTMLInputElement).getMixer();
+        const mixer = event.target;
         if (mixer.id === 'mixer-general') {
-            this.sharedSoundBoardWebSocket?.sendMessage({ type: 'send_mixer_update', data: { type: 'General', value: MixerManager.getMixerValue('general') } });
-            const listType = document.getElementsByClassName('mixer-playlist-type');
-            for (let typeMixer of listType) {
-                const m = new MixerBuilder(typeMixer as HTMLInputElement).getMixer();
-                this.changeSpecifiqueVolume(m.type);
+            this.sendMixerUpdate('General', 'general');
+            for (const typeMixer of document.querySelectorAll('.mixer-playlist-type[data-type]')) {
+                if (!(typeMixer instanceof HTMLInputElement)) continue;
+                const type = typeMixer.dataset.type;
+                if (type) this.changeSpecificVolume(type);
             }
         } else {
-            this.sharedSoundBoardWebSocket?.sendMessage({ type: 'send_mixer_update', data: { type: mixer.type, value: MixerManager.getMixerValue(mixer.type) } });
-            this.changeSpecifiqueVolume(mixer.type);
+            const type = mixer.dataset.type;
+            if (!type) return;
+            this.sendMixerUpdate(type, type);
+            this.changeSpecificVolume(type);
         }
     }
 
-    private changeSpecifiqueVolume(type: string): void {
-        const listAudio = document.getElementsByClassName('audio-' + type);
-        for (let audio of listAudio) {
+    private static sendMixerUpdate(type: string, mixerValueType: string): void {
+        if (SharedSoundBoardUtil.isSlavePage()) return;
+        SharedSoundBoardWebSocket.getMasterInstance().sendMessage({
+            type: 'send_mixer_update',
+            data: { type, value: this.getMixerValue(mixerValueType) },
+        });
+    }
 
-            const musicElement = MusicElementFactory.fromAudioElement(audio as HTMLAudioElement);
+    private static changeSpecificVolume(type: string): void {
+        for (const audio of document.querySelectorAll<HTMLAudioElement>(`.audio-${type}`)) {
+            const musicElement = MusicElementFactory.fromAudioElement(audio);
             new UpdateVolumeElement(musicElement).clearCache(type).update();
         }
     }
 
     static getMixerValue(type: string): number {
-        let input = document.getElementById(`mixer-${type}`) as HTMLInputElement;
-        if (input) return Number.parseFloat(input.value);
+        const input = document.getElementById(`mixer-${type}`);
+        if (input instanceof HTMLInputElement) return Number.parseFloat(input.value);
         return 1;
-    }
-
-    static updatePlaylistVolumeWidths(): void {
-        const formElements = document.getElementsByClassName('playlist-link') as HTMLCollectionOf<HTMLAudioElement>;
-        for (const element of formElements) {
-            const elementDest = document.getElementById(`range_volume_${element.dataset.playlistId!}`);
-            if (elementDest) {
-                elementDest.style.width = `${element.offsetWidth}px`;
-            }
-        }
-    }
-
-    /**
-     * Initializes the mixer playlist and attaches necessary event listeners.
-     * @returns {void}
-     */
-    static setUpMixerPlaylist() {
-        const mixerPlaylist = new MixerPlaylist();
-        mixerPlaylist.addEventListener();
     }
 }
 
 
-export { MixerManager, MixerElement };
+export { MixerManager };

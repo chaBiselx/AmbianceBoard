@@ -38,7 +38,11 @@ vi.mock('@/modules/ButtonPlaylist', () => ({ ButtonPlaylistFinder: { search: pla
 vi.mock('@/modules/MixerManager', () => ({
     MixerManager: class {
         initializeEventListeners() { playerMocks.mixerEvents(); }
-        static setUpMixerPlaylist() { playerMocks.mixerSetup(); }
+    },
+}));
+vi.mock('@/modules/MixerPlaylist', () => ({
+    MixerPlaylist: class {
+        addEventListener() { playerMocks.mixerSetup(); }
         static updatePlaylistVolumeWidths() { playerMocks.mixerWidths(); }
     },
 }));

@@ -599,6 +599,8 @@ Corrections
 - Permet d'ajouter une sections si aucune n'est presente (par default)
 
 ### NEXT-version : 
+Améliorations
+- Amélioration de la gestion des mixers verticaux et couverture de tests 
 
 Corrections
 - Corrections de l'icone d'ajout après avoir créer un boutons depuis un sounboard en direct 

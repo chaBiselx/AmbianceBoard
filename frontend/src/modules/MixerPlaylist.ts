@@ -198,6 +198,18 @@ class MixerPlaylist {
         this.addEventSpecificMusicButtonToggle();
     }
 
+    static updatePlaylistVolumeWidths(): void {
+        for (const element of document.querySelectorAll<HTMLElement>('.playlist-link[data-playlist-id]')) {
+            const playlistId = element.dataset.playlistId;
+            if (!playlistId) continue;
+
+            const elementDest = document.getElementById(`range_volume_${playlistId}`);
+            if (elementDest) {
+                elementDest.style.width = `${element.offsetWidth}px`;
+            }
+        }
+    }
+
     private addEventMixerButtonToggle() {
         const inputShowMixerPlaylist = document.getElementById('inputShowMixerPlaylist');
         if (inputShowMixerPlaylist) {

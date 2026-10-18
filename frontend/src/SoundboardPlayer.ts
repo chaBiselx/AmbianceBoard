@@ -5,6 +5,7 @@ import Cookie from '@/modules/General/Cookie';
 
 import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MixerManager } from '@/modules/MixerManager';
+import { MixerPlaylist } from '@/modules/MixerPlaylist';
 import WakeLock from '@/modules/General/WakeLock';
 import ModalCustom from '@/modules/General/Modal';
 import SharedSoundBoardWebSocket from '@/modules/SharedSoundBoardWebSocket';
@@ -34,8 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
     new SoundBoardEventListener().addEventListenerDom();
     new PlayingMonitor().init();
     new ScriptManager().init();
-    MixerManager.setUpMixerPlaylist();
-    MixerManager.updatePlaylistVolumeWidths();
+    new MixerPlaylist().addEventListener();
+    MixerPlaylist.updatePlaylistVolumeWidths();
     addEventPublishEvent();
     new MixerManager().initializeEventListeners();
     if (Config.DEBUG) {
@@ -229,5 +230,4 @@ class ShortcutKeyboardSoundboard {
         this.recoardedShortcuts.set(shortcut, uuidPlaylist);
     }
 }
-
 

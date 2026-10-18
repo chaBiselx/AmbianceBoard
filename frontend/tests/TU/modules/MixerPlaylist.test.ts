@@ -168,6 +168,19 @@ describe('MixerPlaylist', () => {
         expect(document.querySelector('.specific-music-empty')!.textContent).toContain('Aucune piste');
     });
 
+    it('matches playlist volume control widths to their playlist links', () => {
+        document.body.innerHTML = `
+            <a class="playlist-link" data-playlist-id="playlist-1"></a>
+            <input id="range_volume_playlist-1">
+        `;
+        const playlistLink = document.querySelector<HTMLElement>('.playlist-link')!;
+        Object.defineProperty(playlistLink, 'offsetWidth', { configurable: true, value: 120 });
+
+        MixerPlaylist.updatePlaylistVolumeWidths();
+
+        expect(document.getElementById('range_volume_playlist-1')!.style.width).toBe('120px');
+    });
+
     it('does not fetch tracks when the response is unsuccessful', async () => {
         document.body.innerHTML = `
             <div class="responsive-sections-container" data-soundboard-tracks-uri="/api/tracks"></div>

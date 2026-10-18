@@ -3,7 +3,7 @@ import { ButtonPlaylistFinder } from '@/modules/ButtonPlaylist';
 import { MusicElementFactory } from '@/modules/MusicElementFactory';
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import { SoundBoardManager } from '@/modules/SoundBoardManager';
-import { MixerElement } from "@/modules/MixerManager";
+import { MixerElement } from "@/modules/MixerElement";
 import { UpdateVolumePlaylist } from '@/modules/UpdateVolumePlaylist';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
