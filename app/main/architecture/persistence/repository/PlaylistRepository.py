@@ -1,4 +1,4 @@
-from typing import Any, Optional, List
+from typing import Any, Optional, List, Dict
 
 from django.db.models import Avg, Count, Prefetch
 from django.db import models
@@ -16,6 +16,17 @@ from main.architecture.persistence.models.PlaylistTag import PlaylistTag
 from main.architecture.persistence.repository.filters.PlaylistFilter import PlaylistFilter
 
 class PlaylistRepository:
+
+    def get_community_copiable_stats(self) -> Dict[str, int]:
+        stats = Playlist.objects.filter(
+            is_copiable=True,
+            moderator_ban_copie=False,
+            tracks__isnull=False,
+        ).aggregate(
+            playlists=Count('id', distinct=True),
+            tracks=Count('tracks', distinct=True),
+        )
+        return stats
 
     def get(self, playlist_uuid) -> Optional[Playlist]:
         try:

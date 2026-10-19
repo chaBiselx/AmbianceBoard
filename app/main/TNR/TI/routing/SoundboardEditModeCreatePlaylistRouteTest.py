@@ -4,6 +4,7 @@ Test d'intégration pour la route: soundboardEditModeCreatePlaylist (POST /sound
 from django.test import TestCase, Client, tag
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from unittest.mock import patch
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
@@ -20,6 +21,12 @@ class SoundboardEditModeCreatePlaylistRouteTest(TestCase):
     """Tests pour la route soundboardEditModeCreatePlaylist (POST)."""
 
     def setUp(self):
+        patcher = patch(
+            'main.interface.ui.controller.private.showSoundboardViews.SharedSoundboardService'
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
         self.client = Client()
         self.user = User.objects.create_user(username='owner', email='owner@test.com', password='pw')  # NOSONAR
         self.other_user = User.objects.create_user(username='other', email='other@test.com', password='pw')  # NOSONAR

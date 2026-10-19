@@ -7,6 +7,7 @@ import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
 import { SoundBoardManager } from '@/modules/SoundBoardManager'
 import { MusicElementFactory } from '@/modules/MusicElementFactory'
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement'
+import { initializeHorizontalSliderOutputs } from '@/modules/HorizontalSliderOutput'
 import Time from './Util/Time';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 
@@ -193,9 +194,22 @@ class MixerPlaylist {
     }
 
     public addEventListener() {
+        initializeHorizontalSliderOutputs();
         this.addEventUpdateVolume();
         this.addEventMixerButtonToggle();
         this.addEventSpecificMusicButtonToggle();
+    }
+
+    static updatePlaylistVolumeWidths(): void {
+        for (const element of document.querySelectorAll<HTMLElement>('.playlist-link[data-playlist-id]')) {
+            const playlistId = element.dataset.playlistId;
+            if (!playlistId) continue;
+
+            const elementDest = document.getElementById(`range_volume_${playlistId}`);
+            if (elementDest) {
+                elementDest.style.width = `${element.offsetWidth}px`;
+            }
+        }
     }
 
     private addEventMixerButtonToggle() {

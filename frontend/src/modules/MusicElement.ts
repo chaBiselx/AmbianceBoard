@@ -307,9 +307,9 @@ class MusicElement {
                 this.audioAdapter.removeEventListener('timeupdate', this.boundEventEnd);
             }
 
-            if (this.shouldDeferFadeOutToEnded()) {
+            if (this.fadeOutType === 'disabled' || this.shouldDeferFadeOutToEnded()) {
                 this.fadeOutDeferredToEnded = true;
-                ConsoleTesteur.info('defer fade out to ended because track is shorter than trigger + fade out durations');
+                ConsoleTesteur.info('defer playlist transition until ended');
                 return;
             }
 
@@ -475,4 +475,3 @@ class MusicElement {
 
 
 export { MusicElement };
-

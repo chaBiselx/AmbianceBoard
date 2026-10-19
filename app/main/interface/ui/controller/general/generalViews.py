@@ -26,6 +26,7 @@ from main.architecture.persistence.repository.GeneralNotificationRepository impo
 from main.architecture.persistence.repository.UserTiersRepository import UserTiersRepository
 from main.architecture.persistence.repository.UserRepository import UserRepository
 from main.architecture.persistence.repository.HomeDemoItemRepository import HomeDemoItemRepository
+from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 
 from django_ratelimit.decorators import ratelimit
 from main.domain.general.service.ResetPasswordService import ResetPasswordService
@@ -70,6 +71,7 @@ def home(request: HttpRequest) -> HttpResponse:
         "title": "Accueil",
         "link_donation": Settings.get("LINK_DONATION"),
         "home_demo_items": home_demo_items,
+        "home_community_stats": PlaylistRepository().get_community_copiable_stats(),
     })
 
 

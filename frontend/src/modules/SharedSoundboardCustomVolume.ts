@@ -4,6 +4,7 @@ import { SearchMusicElement } from "@/modules/MusicElementSearcher";
 import { ButtonPlaylistFinder } from "@/modules/ButtonPlaylist";
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement';
 import Time from '@/modules/Util/Time';
+import { initializeHorizontalSliderOutputs } from '@/modules/HorizontalSliderOutput';
 
 class SharedSoundboardCustomVolumeFactory {
     static create(idButton: string, idElement: string): SharedSoundboardCustomVolume | null {
@@ -129,6 +130,7 @@ class SharedSoundboardCustomVolume {
                         }
                     )
                 }
+                initializeHorizontalSliderOutputs(document.getElementById('mainModalBody') ?? document);
             }
         })
 
@@ -170,4 +172,3 @@ class SharedSoundboardCustomVolume {
 
 
 export { SharedSoundboardCustomVolumeFactory, SharedSoundboardIdFinder };
-

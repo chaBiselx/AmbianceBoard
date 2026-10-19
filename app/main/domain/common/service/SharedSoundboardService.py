@@ -63,6 +63,15 @@ class SharedSoundboardService():
                     "update_volume_after_reset" : False
                 }
             )
+            
+    def update_board_soundboard(self):
+        self._diffuser_message(
+            {
+                "type": "reset_volume_and_hidden_board_playlist",
+                "list_volume": self.playlist_repository.get_default_volume_by_playlist(self.soundboard_uuid),
+                "update_volume_after_reset" : False
+            }
+        )
 
     def _diffuser_message(self, message):
         channel_layer = get_channel_layer()

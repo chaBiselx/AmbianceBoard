@@ -44,7 +44,10 @@ vi.mock('@/modules/MixerManager', () => ({
         initializeEventListeners() {
             editMocks.initializeMixer();
         }
-
+    },
+}));
+vi.mock('@/modules/MixerPlaylist', () => ({
+    MixerPlaylist: class {
         static updatePlaylistVolumeWidths() {
             editMocks.updateWidths();
         }

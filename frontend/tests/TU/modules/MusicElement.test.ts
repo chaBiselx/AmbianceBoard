@@ -230,6 +230,29 @@ describe('MusicElement', () => {
         expect(adapter.removeEventListener).toHaveBeenCalledWith('timeupdate', expect.any(Function));
     });
 
+    it('waits until the current track ends before starting the next loop when fade-out is disabled', () => {
+        const { adapter, trigger } = createAudioAdapter();
+        const button = { isActive: () => true, getToken: () => 'token-1' };
+        musicMocks.searchPlaylist.mockReturnValue(button);
+        const element = new MusicElement(adapter, createDto({
+            durationRemainingTriggerNextMusic: 5,
+            fadeOutType: 'disabled',
+            playlistLoop: true,
+        }));
+        element.play();
+        trigger('loadedmetadata');
+        trigger('timeupdate');
+
+        expect(musicMocks.fadeStart).not.toHaveBeenCalled();
+        expect(musicMocks.createPlaylistLink).not.toHaveBeenCalled();
+
+        trigger('ended');
+        vi.advanceTimersByTime(35);
+
+        expect(adapter.remove).toHaveBeenCalledOnce();
+        expect(musicMocks.createPlaylistLink).toHaveBeenCalledWith(button);
+    });
+
     it('defers fade-out for short tracks until the ended event', () => {
         const { adapter, trigger } = createAudioAdapter();
         adapter.getDuration = vi.fn(() => 6);

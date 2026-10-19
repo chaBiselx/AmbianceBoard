@@ -45,7 +45,9 @@ class ButtonPlaylist {
     }
 
     public active() {
-        this.dataset.tokenPlaylistActive = this.dataset.lastActivation = Date.now().toString();
+        const now = Date.now().toString();
+        this.dataset.tokenPlaylistActive = now;
+        this.dataset.lastActivation = now;
         this.buttonElement.classList.add("active-playlist")
     }
 

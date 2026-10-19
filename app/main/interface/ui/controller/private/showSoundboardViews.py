@@ -380,6 +380,9 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
         SoundboardPlaylistService(soundboard).add_default(playlist, section)
 
         playlist_html = render_service.render_playlist_item(playlist, soundboard)
+        
+        # Met à jour le soundboard partagé après l'ajout de la playlist
+        SharedSoundboardService(request, soundboard_uuid).update_board_soundboard()
 
         return JsonResponse({
             'success': True,
@@ -429,6 +432,10 @@ def soundboard_edit_mode_my_playlist_list(request, soundboard_uuid):
     context = extract_context_to_paginator(paginator, page_number)
 
     tags = PlaylistTagRepository().get_list_active_tags()
+    
+    # Met à jour le soundboard partagé après l'ajout de la playlist
+    SharedSoundboardService(request, soundboard_uuid).update_board_soundboard()
+    
     return render(request, 'Html/Soundboard/modal/soundboard_edit_mode_my_playlist_list.html', {
         'soundboard': soundboard,
         'page_objects': context['page_objects'],
@@ -476,6 +483,9 @@ def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid
 
         playlist_html = render_service.render_playlist_item(playlist, soundboard)
 
+        # Met à jour le soundboard partagé après l'ajout de la playlist
+        SharedSoundboardService(request, soundboard_uuid).update_board_soundboard()
+        
         return JsonResponse({
             'success': True,
             'message': "Playlist ajoutée au soundboard",

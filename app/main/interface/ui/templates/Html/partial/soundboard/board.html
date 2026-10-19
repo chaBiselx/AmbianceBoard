@@ -14,13 +14,13 @@
 
 
 {% block content %}
-<div class="responsive-sections-container {% if master == False %} d-none {% endif %}" {% if master == True and owner == True %}data-soundboard-tracks-uri="{% url 'soundboardTracksList' soundboard.uuid %}" data-soundboard-editable="true"
+<div id="template-shared-volume" data-shared-volume-soundboard-id="{{ soundboard.uuid }}" class="responsive-sections-container {% if master == False %} d-none {% endif %}" {% if master == True and owner == True %}data-soundboard-tracks-uri="{% url 'soundboardTracksList' soundboard.uuid %}" data-soundboard-editable="true"
     data-soundboard-organize-uri="{% url 'organizeSoundboardUpdate' soundboard.uuid %}" {% endif %} {% if master == True and owner == False %}data-soundboard-tracks-uri="{% url 'publicSoundboardTracksList' soundboard.uuid %}" {% endif %} data-shepherd="soundboard-tracks">
     {% for section, soundboard_playlists in soundboard|get_ordered_playlists:owner %}
     <section class="section-{{ section.section }} position-relative border rounded mt-2 {% if owner == False %}border-success{%else%}border-primary{% endif %}" id="board-section-{{ section.section }}">
         <div class="float-start mx-2 position-absolute section-header">{{section.name}}</div>
         <div class="section-content">
-            <div class="flex-container" {% if master == False %} id="template-shared-volume" data-shared-volume-soundboard-id="{{ soundboard.uuid }}" {% endif %}>
+            <div class="flex-container">
                 {% for soundboard_playlist in soundboard_playlists %}
                 {% with playlist=soundboard_playlist.Playlist %}
                 <div class="flex-item">

@@ -602,6 +602,20 @@ Corrections
 Corrections
 - Restructuration pour une meilleur des dossiers contenant les musics 
 
+### 0.5.17 - 2026/10 : 
+Nouveautés
+- Ajout d'un indicateur de stats sur la page d'acceuil
+
+Améliorations
+- Amélioration de la gestion des mixers verticaux et couverture de tests 
+
+Corrections
+- Corrections de l'icone d'ajout après avoir créer un boutons depuis un sounboard en direct 
+- Corrections des fadeout lorsqu'il est désactivé, le son commence désormais à la fin de la piste au lieu de commencer à la durée théorique du fondu de sortie
+- Corrections des soundboard partagé qui n'était pas actualisé si on ajoutais un nouveau son via le mode édition. 
+- Correction de l'affichage des buttons pour modifier le volume coté soundboard partagées  
+- Corrections des slider horisontaux a cayuse du visuel sous firefox
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

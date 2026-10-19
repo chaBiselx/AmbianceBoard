@@ -91,7 +91,8 @@ class SoundboardEditModePlaylistListRouteTest(AuthenticatedTestCase):
             playlists = list(PlaylistRepository().get_copiable_playlists_for_soundboard(self.user, {}))
             self.assertEqual(playlists[0].preview_tracks[0].get_name(), 'Track')
 
-    def test_my_playlists_do_not_get_community_preview(self):
+    @patch('main.interface.ui.controller.private.showSoundboardViews.SharedSoundboardService')
+    def test_my_playlists_do_not_get_community_preview(self, mock_shared_soundboard_service):
         self.login()
         playlist = self.create_playlist(name='My own playlist', typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name)
         Track.objects.create(playlist=playlist, alternativeName='My own track')
@@ -100,6 +101,7 @@ class SoundboardEditModePlaylistListRouteTest(AuthenticatedTestCase):
         self.assertContains(response, playlist.name)
         self.assertNotContains(response, 'community-track-list')
         self.assertNotContains(response, 'soundboardEditModeCommunityTrackStream')
+        mock_shared_soundboard_service.return_value.update_board_soundboard.assert_called_once_with()
 
     def test_type_filter_is_applied(self):
         self.login()

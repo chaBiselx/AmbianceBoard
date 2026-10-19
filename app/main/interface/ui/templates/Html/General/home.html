@@ -36,12 +36,26 @@
                 </a>
             </div>
             {% endif %}
+            <div class="row">
+                <div class="row justify-content-center g-3">
+                    <div class="col-12 col-md-6">
+                        <div class="home-community__stat  p-2 px-3">
+                            <div class="home-community__count">{{ home_community_stats.playlists }}</div>
+                            <div class="fw-semibold">{% trans "template.home.community.buttons" %}</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="home-community__stat p-2 px-3 ">
+                            <div class="home-community__count">{{ home_community_stats.tracks }}</div>
+                            <div class="fw-semibold">{% trans "template.home.community.tracks" %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="col-lg-6 d-none d-lg-block">
-            <img class="home-hero__illustration" src="{% static 'img/logo.webp' %}"
-                 alt="{% trans 'template.home.illustration.alt' %}" loading="eager"
-                 style="max-height: 500px;width: auto;">
+            <img class="home-hero__illustration" src="{% static 'img/logo.webp' %}" alt="{% trans 'template.home.illustration.alt' %}" loading="eager" style="max-height: 500px;width: auto;">
         </div>
     </div>
 </section>
@@ -54,8 +68,7 @@
 
     <div class="home-demo__grid mx-auto" style="max-width: 720px;">
         {% for home_demo_item in home_demo_items %}
-        <a href="{% url 'publicReadSoundboard' home_demo_item.soundboard.uuid %}"
-           class="home-demo__btn" aria-label="{{ home_demo_item.get_aria_label }}">
+        <a href="{% url 'publicReadSoundboard' home_demo_item.soundboard.uuid %}" class="home-demo__btn" aria-label="{{ home_demo_item.get_aria_label }}">
             <span class="home-demo__icon">{{ home_demo_item.icon }}</span>
             <span class="home-demo__label">{{ home_demo_item.title }}</span>
             <span class="home-demo__state">{{ home_demo_item.state_text }}</span>

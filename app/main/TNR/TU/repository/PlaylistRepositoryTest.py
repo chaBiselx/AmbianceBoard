@@ -94,6 +94,13 @@ class PlaylistRepositoryTest(TestCase):
         self.assertIn(self.playlist_ambient.id, result_ids)
         self.assertNotIn(self.playlist_empty.id, result_ids)
 
+    def test_get_community_copiable_stats_counts_only_available_playlists_and_tracks(self):
+        Track.objects.create(playlist=self.playlist_music, alternativeName='Second music track')
+
+        stats = self.repository.get_community_copiable_stats()
+
+        self.assertEqual(stats, {'playlists': 2, 'tracks': 3})
+
     def test_get_copiable_playlists_excluding_user_filters_non_copiable_banned_and_user_owned(self):
         result = self.repository.get_copiable_playlists_excluding_user(self.target_user, {})
         result_ids = {playlist.id for playlist in result}
