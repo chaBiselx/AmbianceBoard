@@ -1,4 +1,5 @@
 import os
+import uuid
 from pathlib import Path
 
 from django.conf import settings
@@ -26,11 +27,11 @@ class MediaFileStructureService:
         for source in sorted(path for path in duplicated_dir.rglob("*") if path.is_file()):
             destination = music_dir / source.name
             if destination.exists():
-                conflict_count += 1
-                self.logger.error(
-                    f"Cannot normalize media file {source}: destination already exists at {destination}"
+                self.logger.info(
+                    f"Destination already exists at {destination}; assigning a UUID to {source}"
                 )
-                continue
+                while destination.exists():
+                    destination = music_dir / f"{uuid.uuid4()}{source.suffix}"
 
             old_name = source.relative_to(media_root).as_posix()
             new_name = destination.relative_to(media_root).as_posix()
