@@ -239,7 +239,7 @@ services:
 
   graylog:
     # graylog/graylog:7.2
-    image: graylog/graylog@sha256:2050193da1292533df09c2d9252444f31655adf4b86b65b1d4d1cdc854969e1b
+    image: graylog/graylog@sha256:ed3f6008881f16315d16b0c8d3c6abe689ebe647e14fb5f3ba8bc034fa424776
     ports:
       - "${GRAYLOG_PORT}:9000"
       - "${GRAYLOG_GELF_PORT}:12201/udp"
