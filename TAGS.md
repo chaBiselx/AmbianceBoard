@@ -598,7 +598,10 @@ Modifications
 Corrections
 - Permet d'ajouter une sections si aucune n'est presente (par default)
 
-### NEXT-version : 
+### 0.5.17 - 2026/10 : 
+Nouveautés
+- Ajout d'un indicateur de stats sur la page d'acceuil
+
 Améliorations
 - Amélioration de la gestion des mixers verticaux et couverture de tests 
 

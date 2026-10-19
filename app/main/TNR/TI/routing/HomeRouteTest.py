@@ -4,6 +4,11 @@ Test d'intégration pour la route: home (/)
 from django.test import TestCase, Client, tag
 from django.urls import reverse
 
+from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.Track import Track
+from main.architecture.persistence.models.User import User
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
+
 
 @tag('integration')
 class HomeRouteTest(TestCase):
@@ -34,3 +39,17 @@ class HomeRouteTest(TestCase):
 
         self.assertContains(response, 'Bring your adventures to life.')
         self.assertContains(response, 'Try a soundscape')
+
+    def test_home_exposes_community_copyable_playlist_and_track_counts(self):
+        owner = User.objects.create_user(username='community-owner', password='pw')
+        playlist = Playlist.objects.create(
+            user=owner,
+            name='Community playlist',
+            typePlaylist=PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name,
+            is_copiable=True,
+        )
+        Track.objects.create(playlist=playlist, alternativeName='Community track')
+
+        response = self.client.get(reverse('home'))
+
+        self.assertEqual(response.context['home_community_stats'], {'playlists': 1, 'tracks': 1})
