@@ -6,6 +6,7 @@ Tests d'intégration pour les routes :
 from django.test import TestCase, Client, tag
 from django.urls import reverse
 from django.contrib.auth import get_user_model
+from unittest.mock import patch
 
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.SoundBoard import SoundBoard
@@ -23,6 +24,12 @@ class SoundboardEditModeMyPlaylistListRouteTest(TestCase):
     """Tests pour la route soundboardEditModeMyPlaylistList (GET)."""
 
     def setUp(self):
+        patcher = patch(
+            'main.interface.ui.controller.private.showSoundboardViews.SharedSoundboardService'
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
         self.client = Client()
         self.user = User.objects.create_user(username='owner', email='owner@test.com', password='pw')  # NOSONAR
         self.other_user = User.objects.create_user(username='other', email='other@test.com', password='pw')  # NOSONAR
@@ -97,6 +104,12 @@ class SoundboardEditModeAddMyPlaylistRouteTest(TestCase):
     """Tests pour la route soundboardEditModeAddMyPlaylist (POST)."""
 
     def setUp(self):
+        patcher = patch(
+            'main.interface.ui.controller.private.showSoundboardViews.SharedSoundboardService'
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
         self.client = Client()
         self.user = User.objects.create_user(username='owner', email='owner@test.com', password='pw')  # NOSONAR
         self.other_user = User.objects.create_user(username='other', email='other@test.com', password='pw')  # NOSONAR
