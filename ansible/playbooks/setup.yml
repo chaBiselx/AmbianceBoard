@@ -8,3 +8,5 @@
 
   roles:
     - common
+    - role: docker
+      tasks_from: install.yml # utilise le fichier install.yml du rôle docker

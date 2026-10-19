@@ -472,6 +472,7 @@ if RUN_CRONS:
     CRON_CLASSES.append('main.domain.cron.cronFile.SyncDomainBlacklistCronJob.run')
     CRON_CLASSES.append('main.domain.cron.cronFile.MusicLabelerCron.run')
     CRON_CLASSES.append('main.domain.cron.cronFile.PurgeOldStatsCron.run')
+    CRON_CLASSES.append('main.domain.cron.cronFile.MediaFileStructureCron.run')
 
 
     CRONJOBS.append(('0 10 * * *', 'main.domain.cron.cronFile.CleanMediaFolderCron.run'))
@@ -481,6 +482,7 @@ if RUN_CRONS:
     CRONJOBS.append(('0 12 1,7,14,21,28 * *', 'main.domain.cron.cronFile.SyncDomainBlacklistCronJob.run'))  # Tous les jours à 12h
     CRONJOBS.append(('*/20 * * * *', 'main.domain.cron.cronFile.MusicLabelerCron.run'))  # Toutes les 20 minutes
     CRONJOBS.append(('0 2 1 * *', 'main.domain.cron.cronFile.PurgeOldStatsCron.run'))  # Tous les 1 du mois
+    CRONJOBS.append(('30 2 * * *', 'main.domain.cron.cronFile.MediaFileStructureCron.run'))  # Toutes les heures
 
 
 # message brokers 

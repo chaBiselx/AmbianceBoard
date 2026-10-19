@@ -19,6 +19,15 @@ class Music(Track):
     REDUCE_BIT_RATE_DELAY_SECONDS = 4 * 60 * 60
     fileName = models.CharField(max_length=255)
     file = models.FileField(upload_to=MUSIC_FOLDER)
+    
+    def __str__(self) -> str:
+        """
+        Retourne une représentation en chaîne de caractères de l'objet Music.
+        
+        Returns:
+            str: Le nom du fichier musical sans extension
+        """
+        return self.get_name()
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """

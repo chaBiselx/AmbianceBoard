@@ -48,6 +48,7 @@ services:
     command: cron -f
     volumes:
       - ./app:/usr/src/app/
+      - ./mediafiles:/usr/src/app/mediafiles/
     env_file:
       - ./.env
     environment:
@@ -275,4 +276,3 @@ volumes:
   grafana-provisioning: null
   hf-cache: null
   traefik-letsencrypt: null
-

@@ -1,0 +1,17 @@
+---
+- name: "Verifier la presence du projet Docker Compose"
+  ansible.builtin.stat:
+    path: "{{ path_project }}/{{ docker_compose_file }}"
+  register: docker_compose_file
+  listen: restart_project # Écoute l'événement via le notify
+
+- name: "Fail if Docker Compose file is missing"
+  ansible.builtin.fail:
+    msg: "Le fichier {{ docker_compose_file }} est introuvable dans {{ path_project }}"
+  when: not docker_compose_file.stat.exists
+
+- name: Redémarrer le projet Docker Compose
+  ansible.builtin.command:
+    cmd: docker compose -f "{{ docker_compose_file }}" restart
+    chdir: "{{ path_project  }}"
+  changed_when: true

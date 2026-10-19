@@ -78,7 +78,7 @@ from main.interface.ui.controller.moderator.moderatorViews import (
 from main.interface.ui.controller.manager.managerUserTierViews import admin_user_tiers_dashboard, admin_user_tiers_listing, manager_user_tier_edit, manager_user_tier_bulk_action, manager_user_tiers_expiring
 from main.interface.ui.controller.manager.managerViews import manager_dashboard, user_account_dashboard, user_activity_dashboard, error_activity_dashboard, manager_user_activity_details, referer_activity_dashboard, utm_source_activity_dashboard
 from main.interface.ui.controller.manager.managerCronViews import (
-    listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity, music_labeler_cron_service
+    listing_cron_views, clean_media_folder, expire_account, sync_domain_blacklist, purge_expired_shared_soundboard, purge_old_user_activity, music_labeler_cron_service, media_file_structure_cron_service
     )
 from main.interface.ui.controller.manager.managerNotificationsViews import listing_notifications, manage_notification
 from main.interface.ui.controller.manager.managerSendEmailViews import manager_send_email
@@ -280,6 +280,7 @@ urlpatterns = [
     path("manager/cron/purge-expired-shared-soundboard", purge_expired_shared_soundboard, name="managerPurgeExpiredSharedSoundboard"),
     path("manager/cron/purge-old-user-activity", purge_old_user_activity, name="managerPurgeOldUserActivity"),
     path("manager/cron/music-labeler", music_labeler_cron_service, name="managerMusicLabelerCronService"),
+    path("manager/cron/media-file-structure", media_file_structure_cron_service, name="managerMediaFileStructureCronService"),
     
 
     path("manager/dashboard/user-account/", user_account_dashboard, name="managerUserAccountDashboard"),

@@ -12,6 +12,7 @@ from main.domain.cron.service.DomainBlacklistCronService import DomainBlacklistC
 from main.domain.cron.service.SharedSoundboardService import SharedSoundboardService
 from main.domain.cron.service.PurgeOldStatsService import PurgeOldStatsService
 from main.domain.cron.service.MusicLabelerCronService import MusicLabelerCronService
+from main.domain.cron.service.MediaFileStructureService import MediaFileStructureService
 from main.domain.common.utils.logger import logger
 
 @login_required
@@ -104,3 +105,17 @@ def music_labeler_cron_service(request) -> JsonResponse:
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
         return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+    
+    
+@login_required
+@require_http_methods(['GET'])
+@permission_required('auth.' + PermissionEnum.MANAGER_EXECUTE_BATCHS.name, login_url='login')
+def media_file_structure_cron_service(request) -> JsonResponse:
+    try:
+        logger.warning("Starting MediaFileStructureCronService View")
+        (MediaFileStructureService()).normalize_music_files()
+        logger.warning("Ending MediaFileStructureCronService View")
+        return JsonResponse({"message": "OK"}, status=200)
+    except Exception as e:
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+    
