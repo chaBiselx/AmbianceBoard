@@ -607,6 +607,7 @@ Corrections
 - Corrections des fadeout lorsqu'il est désactivé, le son commence désormais à la fin de la piste au lieu de commencer à la durée théorique du fondu de sortie
 - Corrections des soundboard partagé qui n'était pas actualisé si on ajoutais un nouveau son via le mode édition. 
 - Correction de l'affichage des buttons pour modifier le volume coté soundboard partagées  
+- Corrections des slider horisontaux a cayuse du visuel sous firefox
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

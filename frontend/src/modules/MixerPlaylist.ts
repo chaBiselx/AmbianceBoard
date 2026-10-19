@@ -7,6 +7,7 @@ import SharedSoundBoardUtil from '@/modules/SharedSoundBoardUtil'
 import { SoundBoardManager } from '@/modules/SoundBoardManager'
 import { MusicElementFactory } from '@/modules/MusicElementFactory'
 import UpdateVolumeElement from '@/modules/UpdateVolumeElement'
+import { initializeHorizontalSliderOutputs } from '@/modules/HorizontalSliderOutput'
 import Time from './Util/Time';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 
@@ -193,6 +194,7 @@ class MixerPlaylist {
     }
 
     public addEventListener() {
+        initializeHorizontalSliderOutputs();
         this.addEventUpdateVolume();
         this.addEventMixerButtonToggle();
         this.addEventSpecificMusicButtonToggle();
