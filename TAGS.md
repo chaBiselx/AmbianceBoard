@@ -598,6 +598,10 @@ Modifications
 Corrections
 - Permet d'ajouter une sections si aucune n'est presente (par default)
 
+### 0.5.16 - 2026/10
+Corrections
+- Restructuration pour une meilleur des dossiers contenant les musics 
+
 ### 0.5.17 - 2026/10 : 
 Nouveautés
 - Ajout d'un indicateur de stats sur la page d'acceuil
