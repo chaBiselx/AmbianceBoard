@@ -1,0 +1,13 @@
+---
+- name: Ensure Docker is installed
+  ansible.builtin.command:
+    cmd: docker --version
+  register: docker_version
+  changed_when: false
+  become: true
+
+- name: Install Docker if not present
+  ansible.builtin.command:
+    cmd: apt install -y docker.io
+  when: "docker_version.rc != 0"
+  become: true

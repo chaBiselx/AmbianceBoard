@@ -1,10 +1,9 @@
 ---
-- name: Mettre à jour le cache APT
-  ansible.builtin.apt:
-    update_cache: "{{ common_apt_update_cache }}"
-    cache_valid_time: "{{ common_apt_cache_valid_time }}"
-
-- name: Mettre à niveau les paquets
-  ansible.builtin.apt:
-    upgrade: "{{ common_apt_upgrade }}"
-  notify: restart_project # fait appel au restart_project -> check handler ou listener 
+- name : Include common package installation tasks
+  import_tasks: package.yml
+- name : Include common Docker installation tasks
+  import_tasks: docker.yml
+- name : Include common port configuration tasks
+  import_tasks: port.yml
+- name : Include common rsync installation tasks
+  import_tasks: rsync.yml

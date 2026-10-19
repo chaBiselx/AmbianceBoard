@@ -19,7 +19,7 @@ sudo ufw allow 22/tcp
 sudo ufw allow 8000/tcp
 sudo ufw allow 3100/tcp
 
-## config nginx 
+## config nginx (Deprecated)
 sudo apt install nginx
 sudo apt install certbot python3-certbot-nginx
 sudo vi /etc/nginx/sites-available/ambianceboard

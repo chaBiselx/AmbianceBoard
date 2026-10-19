@@ -1,7 +1,7 @@
 ---
 galaxy_info:
     author: AmbianceBoard
-    description: "update APT cache and upgrade packages."
+    description: "Install common packages and dependencies for AmbianceBoard"
     license: "MIT"
     min_ansible_version: 2.20.1
 dependencies: []
