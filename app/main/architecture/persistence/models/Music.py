@@ -27,7 +27,7 @@ class Music(Track):
         Returns:
             str: Le nom du fichier musical sans extension
         """
-        return self.get_name() + ' - ' + self.fileName
+        return self.get_name() + ' - ' + str(self.file)
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """
