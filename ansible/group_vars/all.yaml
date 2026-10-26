@@ -3,3 +3,4 @@
 ansible_ssh_port: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_PORT') | default('22', true) | int }}"
 path_project: /srv/www/AmbianceBoard
 docker_compose_file: "docker-compose.prod.yml"
+repository_url : https://github.com/chaBiselx/AmbianceBoard
