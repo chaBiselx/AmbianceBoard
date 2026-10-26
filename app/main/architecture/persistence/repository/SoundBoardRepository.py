@@ -52,6 +52,9 @@ class SoundBoardRepository:
     def get_all_queryset(self) -> QuerySet[SoundBoard]:
         return SoundBoard.objects.all()
 
+    def get_list_by_ids(self, soundboard_ids) -> List[SoundBoard]:
+        return list(SoundBoard.objects.filter(pk__in=soundboard_ids))
+
     def get_public_not_banned_with_min_tracks(
         self,
         minimum_tracks: int = 5,

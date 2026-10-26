@@ -617,7 +617,8 @@ Corrections
 - Corrections des slider horizontaux a cause du visuel sous Firefox
 
 ### 0.5.18 - 2026/10 : 
-
+Nouveautés
+- Nouveau indicateur pour la modération
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
