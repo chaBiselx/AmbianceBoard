@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsndfile1 \
     && rm -rf /var/lib/apt/lists/* && \
     python -m venv /opt/venv && \
-    /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}"
-  
+    /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}" "unearth<0.19"
+# TODO remove unearth
 
 COPY pyproject.toml pdm.lock ./
 ENV VIRTUAL_ENV="/opt/venv"

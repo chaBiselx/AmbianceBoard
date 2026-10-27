@@ -26,9 +26,9 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
     && apt-get clean \
     # PDM
     && python -m venv /opt/pdm-venv \
-    && /opt/pdm-venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}" \
+    && /opt/pdm-venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}" "unearth<0.19" \
     && python -m venv /opt/venv
-
+# TODO remove unearth
 COPY pyproject.toml pdm.lock ./
 ENV VIRTUAL_ENV="/opt/venv"
 ENV PATH="/opt/venv/bin:$PATH"

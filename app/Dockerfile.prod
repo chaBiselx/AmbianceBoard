@@ -29,8 +29,8 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
     && useradd --uid 1000 --gid appuser --shell /bin/bash --create-home appuser \
     # PDM
     && python -m venv /opt/venv \
-    && /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}"
-
+    && /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}" "unearth<0.19"
+# TODO remove unearth
 COPY pyproject.toml pdm.lock ./
 ENV VIRTUAL_ENV="/opt/venv"
 ENV PATH="/opt/venv/bin:$PATH"
