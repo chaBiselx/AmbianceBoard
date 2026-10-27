@@ -80,6 +80,8 @@ sudo apt install -y ansible
 export ANSIBLE_SSH_PORT=22
 export ANSIBLE_HOST_MAIN=X.X.X.X
 export ANSIBLE_CONFIG=./ansible/ansible.cfg
+export PROJECT_GIT_USER=user_git
+export PROJECT_APP_USER=user_app
 ```
 
 ### Préparation de l'agent SSH
