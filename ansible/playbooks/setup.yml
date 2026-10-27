@@ -1,5 +1,7 @@
 ---
 - name: Mise à jour des paquets
+  # Description: Mise à jour des paquets du serveur web, 
+  # installation des dépendances et configuration initiale du projet
   hosts: serveur_web # groupe de machine applicable 
   become: true # equivalent a sudo 
 

@@ -20,7 +20,7 @@
   ansible.builtin.file:
     path: "{{ path_project }}"
     state: directory
-    owner: "{{ project_git_user | default(ansible_user) }}"
+    owner: "{{ project_git_user }}"
   become: true
   become_user: root
 
@@ -52,6 +52,8 @@
     suffix: _temp
   register: temp_folder
   when: git_validity.rc != 0
+  become: true
+  become_user: "{{ project_git_user }}"
 
 - name: Create a backup directory for invalid Git metadata
   ansible.builtin.tempfile:
@@ -77,6 +79,7 @@
     cmd: git clone --no-checkout "{{ repository_url }}" "{{ temp_folder.path }}"
   when: git_validity.rc != 0
   become: true
+  become_user: "{{ project_git_user }}"
 
 
 - name: recreate .git if invalid
@@ -95,7 +98,7 @@
 - name: Give the deployment user ownership of Git metadata
   ansible.builtin.file:
     path: "{{ path_project }}/.git"
-    owner: "{{ project_git_user | default(ansible_user) }}"
+    owner: "{{ project_git_user }}"
     mode: u+rwX
     recurse: true
     follow: false
@@ -136,7 +139,7 @@
     chdir: "{{ path_project }}"
   when: git_validity.rc != 0
   become: true
-  become_user: "{{ project_git_user | default(ansible_user) }}"
+  become_user: "{{ project_git_user }}"
 
 - name: create project if invalid
   ansible.builtin.command:
@@ -145,7 +148,7 @@
     chdir: "{{ path_project }}"
   when: git_validity.rc != 0
   become: true
-  become_user: "{{ project_git_user | default(ansible_user) }}"
+  become_user: "{{ project_git_user }}"
 
 - name: Remove invalid Git metadata backup after recovery
   ansible.builtin.file:
@@ -160,7 +163,7 @@
   register: git_identity
   changed_when: false
   become: true
-  become_user: "{{ project_git_user | default(ansible_user) }}"
+  become_user: "{{ project_git_user }}"
 
 - name: Afficher le resultat
   ansible.builtin.debug:
@@ -179,7 +182,7 @@
   register: git_no_push
   changed_when: false
   become: true
-  become_user: "{{ project_git_user | default(ansible_user) }}"
+  become_user: "{{ project_git_user }}"
 
 - name: Set Git push URL to no_push
   ansible.builtin.command:
@@ -188,7 +191,7 @@
     chdir: "{{ path_project }}"
   when: git_no_push.stdout != "no_push"
   become: true
-  become_user: "{{ project_git_user | default(ansible_user) }}"
+  become_user: "{{ project_git_user }}"
 
 # ----------------------------------------------------
 # Start  Env verification
@@ -205,3 +208,11 @@
     path: "{{ path_project }}/.env"
     state: touch
   when: not env_file.stat.exists
+
+- name: Restrict project environment file to the application account
+  ansible.builtin.file:
+    path: "{{ path_project }}/.env"
+    state: file
+    owner: "{{ project_app_user }}"
+    group: "{{ project_app_user }}"
+    mode: "0600"
