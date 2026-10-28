@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ARG PDM_VERSION=2.28.2
+ARG PDM_VERSION=2.29.4
 
 # install system dependencies and create app user and group
 RUN apt-get update && apt-get --no-install-recommends install -y build-essential --purge cron \
@@ -29,8 +29,8 @@ RUN apt-get update && apt-get --no-install-recommends install -y build-essential
     && useradd --uid 1000 --gid appuser --shell /bin/bash --create-home appuser \
     # PDM
     && python -m venv /opt/venv \
-    && /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}" "unearth<0.19"
-# TODO remove unearth
+    && /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}" 
+
 COPY pyproject.toml pdm.lock ./
 ENV VIRTUAL_ENV="/opt/venv"
 ENV PATH="/opt/venv/bin:$PATH"
