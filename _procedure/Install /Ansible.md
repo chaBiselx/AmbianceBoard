@@ -79,7 +79,9 @@ sudo apt install -y ansible
 ```bash
 export ANSIBLE_SSH_PORT=22
 export ANSIBLE_HOST_MAIN=X.X.X.X
-export ANSIBLE_CONFIG=./ansible/ansible.cfg
+export ANSIBLE_CONFIG=./infra/ansible/ansible.cfg
+export PROJECT_GIT_USER=user_git
+export PROJECT_APP_USER=user_app
 ```
 
 ### Préparation de l'agent SSH
@@ -92,7 +94,7 @@ ssh-add ~/.ssh/id_ed25519_ambianceboard_ansible
 ### Exécution du playbook
 
 ```bash
-cd ./ansible
+cd ./infra/ansible
 ansible-playbook ./playbooks/setup.yml
 ```
 
@@ -101,7 +103,7 @@ Depuis la racine du dépôt, se placer dans `ansible/` permet à Ansible de char
 Pour rester à la racine du dépôt, charger explicitement cette configuration :
 
 ```bash
-ansible-playbook ./ansible/playbooks/setup.yml
+ansible-playbook ./infra/ansible/playbooks/setup.yml
 ```
 
 Les chemins d'inventaire et de rôles sont relatifs à `ansible.cfg`. Sans `ANSIBLE_CONFIG`, Ansible ne recherche pas la configuration dans le sous-répertoire `ansible/`.

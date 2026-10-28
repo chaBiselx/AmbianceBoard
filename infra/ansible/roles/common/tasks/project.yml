@@ -1,0 +1,218 @@
+---
+# ----------------------------------------------------
+# START Folder verification
+# ----------------------------------------------------
+- name: Install project
+  command: echo "Installing project..."
+
+- name: Verify project installation
+  ansible.builtin.stat:
+    path: "{{ path_project }}"
+  register: project_folder
+
+- name: Creates directory
+  ansible.builtin.file:
+    path: "{{ path_project }}"
+    state: directory
+  when: not project_folder.stat.exists
+
+- name: give ownership to user
+  ansible.builtin.file:
+    path: "{{ path_project }}"
+    state: directory
+    owner: "{{ project_git_user }}"
+  become: true
+  become_user: root
+
+# ----------------------------------------------------
+# START Git verification
+# ----------------------------------------------------
+- name: check .git
+  ansible.builtin.stat:
+    path: "{{ path_project }}/.git"
+  register: git_folder
+
+- name: debug git folder existence
+  debug:
+    msg: "Git folder exists: {{ git_folder.stat.exists }}"
+
+- name: check .git validity
+  ansible.builtin.command:
+    cmd: git -c safe.directory="{{ path_project }}" -C "{{ path_project }}" rev-parse --is-inside-work-tree
+  register: git_validity
+  changed_when: false
+  failed_when: false
+
+# ----------------------------------------------------
+# START Restore Git if invalid
+# ----------------------------------------------------
+- name: Créer un DOSSIER temporaire unique (state=directory)
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: _temp
+  register: temp_folder
+  when: git_validity.rc != 0
+  become: true
+  become_user: "{{ project_git_user }}"
+
+- name: Create a backup directory for invalid Git metadata
+  ansible.builtin.tempfile:
+    state: directory
+    path: "{{ path_project | dirname }}"
+    prefix: .git-invalid-
+  register: git_backup
+  when:
+    - git_validity.rc != 0
+    - git_folder.stat.exists
+  become: true
+
+- name: Preserve invalid Git metadata
+  ansible.builtin.command:
+    cmd: mv "{{ path_project }}/.git" "{{ git_backup.path }}/.git"
+  when:
+    - git_validity.rc != 0
+    - git_folder.stat.exists
+  become: true
+
+- name: recreate .git if invalid
+  ansible.builtin.command:
+    cmd: git clone --no-checkout "{{ repository_url }}" "{{ temp_folder.path }}"
+  when: git_validity.rc != 0
+  become: true
+  become_user: "{{ project_git_user }}"
+
+
+- name: recreate .git if invalid
+  ansible.builtin.command:
+    cmd: mv "{{ temp_folder.path }}/.git" "{{ path_project }}/.git"
+  when: git_validity.rc != 0
+  become: true
+
+- name: Toujours supprimer le DOSSIER et son contenu à la fin
+  ansible.builtin.file:
+    path: "{{ temp_folder.path }}"
+    state: absent
+  when: git_validity.rc != 0
+  become: true
+
+- name: Give the deployment user ownership of Git metadata
+  ansible.builtin.file:
+    path: "{{ path_project }}/.git"
+    owner: "{{ project_git_user }}"
+    mode: u+rwX
+    recurse: true
+    follow: false
+  become: true
+
+- name: Check safe directory setting for Git
+  ansible.builtin.command:
+    argv:
+      - git
+      - config
+      - --get-all
+      - safe.directory
+  register: safe_directory
+  changed_when: false
+  failed_when: safe_directory.rc not in [0, 1]
+  become: true
+
+- name: debug safe directory
+  ansible.builtin.debug:
+    var: safe_directory
+
+- name: List tracked files and directories
+  ansible.builtin.command:
+    argv:
+      - git
+      - "-c"
+      - "safe.directory={{ path_project }}"
+      - "-C"
+      - "{{ path_project }}"
+  when: path_project not in safe_directory.stdout_lines
+  changed_when: false
+  become: true
+
+- name: create project if invalid
+  ansible.builtin.command:
+    cmd: git fetch
+  args:
+    chdir: "{{ path_project }}"
+  when: git_validity.rc != 0
+  become: true
+  become_user: "{{ project_git_user }}"
+
+- name: create project if invalid
+  ansible.builtin.command:
+    cmd: git pull
+  args:
+    chdir: "{{ path_project }}"
+  when: git_validity.rc != 0
+  become: true
+  become_user: "{{ project_git_user }}"
+
+- name: Remove invalid Git metadata backup after recovery
+  ansible.builtin.file:
+    path: "{{ git_backup.path }}"
+    state: absent
+  when: git_backup.path is defined
+  become: true
+
+  
+- name: Afficher l'utilisateur qui execute Git
+  ansible.builtin.command: whoami
+  register: git_identity
+  changed_when: false
+  become: true
+  become_user: "{{ project_git_user }}"
+
+- name: Afficher le resultat
+  ansible.builtin.debug:
+    var: git_identity.stdout
+
+- name: Check no push
+  ansible.builtin.command:
+    argv:
+      - git
+      - remote
+      - get-url
+      - --push
+      - origin
+  args:
+    chdir: "{{ path_project }}"
+  register: git_no_push
+  changed_when: false
+  become: true
+  become_user: "{{ project_git_user }}"
+
+- name: Set Git push URL to no_push
+  ansible.builtin.command:
+    cmd: git remote set-url --push origin no_push
+  args:
+    chdir: "{{ path_project }}"
+  when: git_no_push.stdout != "no_push"
+  become: true
+  become_user: "{{ project_git_user }}"
+
+# ----------------------------------------------------
+# Start  Env verification
+# ----------------------------------------------------
+
+
+- name: Verify .env file
+  ansible.builtin.stat:
+    path: "{{ path_project }}/.env"
+  register: env_file
+
+- name: Create .env file if it does not exist
+  ansible.builtin.file:
+    path: "{{ path_project }}/.env"
+    state: touch
+  when: not env_file.stat.exists
+
+- name: Restrict project environment file to the application account
+  ansible.builtin.file:
+    path: "{{ path_project }}/.env"
+    state: file
+    owner: "{{ project_app_user }}"
+    group: "{{ project_app_user }}"
+    mode: "0600"

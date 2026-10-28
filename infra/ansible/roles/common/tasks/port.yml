@@ -1,0 +1,47 @@
+---
+- name: Ensure Ufw is installed
+  ansible.builtin.package:
+    name: ufw
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Check UFW status
+  ansible.builtin.command:
+    cmd: ufw status
+  register: ufw_status
+  changed_when: false
+  become: true
+
+- name: Check numbered UFW rules
+  ansible.builtin.command:
+    cmd: ufw status numbered
+  register: ufw_numbered_status
+  changed_when: false
+  become: true
+
+- name: Remove TCP allow rules not in the configured port list
+  ansible.builtin.command:
+    # Delete the UFW rule corresponding to the current loop item
+    cmd: "ufw --force delete {{ ufw_rule.split(']')[0].split('[')[1] | trim }}"
+  # Loop through the numbered UFW rules in reverse order to safely delete rules without affecting the numbering of subsequent rules
+  loop: "{{ ufw_numbered_status.stdout_lines | select('search', '[0-9]+/tcp.*ALLOW IN') | reverse | list }}"
+  loop_control:
+    loop_var: ufw_rule
+  # Only remove rules for TCP ports not in the configured list
+  when: "(ufw_rule.split(']')[1].split('/')[0] | trim) not in (common_ufw_tcp_ports | map('string') | list)"
+  become: true
+
+- name: Allow configured TCP ports
+  ansible.builtin.command:
+    cmd: "ufw allow {{ ufw_port }}/tcp"
+  loop: "{{ common_ufw_tcp_ports }}"
+  loop_control:
+    loop_var: ufw_port
+  when: "(ufw_port ~ '/tcp') not in ufw_status.stdout"
+  become: true
+
+- name: Ensure UFW is enabled
+  community.general.ufw:
+    state: enabled
+  become: true

@@ -39,6 +39,7 @@ from main.TNR.TU.Service.PlaylistDataServiceTest import *
 from main.TNR.TU.Service.DefaultColorPlaylistServiceTest import *
 from main.TNR.TU.Service.SoundboardPlaylistServiceTest import *
 from main.TNR.TU.Service.SoundboardScriptServiceTest import *
+from main.TNR.TU.Service.ModeratorSoundboardStatsServiceTest import *
 
 from main.TNR.TU.UserParametersFactoryTest import *
 from main.TNR.TU.UserTierManagerTest import *
@@ -87,6 +88,7 @@ from main.TNR.TU.reporting.ReportingModerationTest import *
 
 # Helper
 from main.TNR.TU.helper.PricingHelperTest import *
+from main.TNR.TU.helper.DurationHelperTest import *
 
 # mailing
 from main.TNR.TU.email.EmailSenderTest import *
@@ -235,4 +237,3 @@ from main.TNR.TI.websocket.SharedSoundboardConsumerTest import *
 # =======================================================================
 # ======================== STRESS TEST =============================
 # =======================================================================
-

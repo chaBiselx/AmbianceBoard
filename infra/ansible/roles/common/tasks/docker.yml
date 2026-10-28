@@ -1,0 +1,15 @@
+---
+- name: Install Docker Engine and Docker Compose V2
+  ansible.builtin.apt:
+    name:
+      - docker.io
+      - docker-compose-v2
+    state: present
+  become: true
+
+- name: Ensure Docker daemon is enabled and running
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+  become: true
