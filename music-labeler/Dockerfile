@@ -4,7 +4,7 @@ FROM python@sha256:7bec7ddcddeff7975d6ba9b4be7dd6f6b2f55e7491539145e2978f7f97ce9
 WORKDIR /app
 
 # Dépendances système pour le traitement audio
-ARG PDM_VERSION=2.29.4
+ARG PDM_VERSION=2.29.5
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
