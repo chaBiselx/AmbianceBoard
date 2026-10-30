@@ -33,3 +33,5 @@ staticfiles/*
 mediafiles/*
 logs/*
 frontend/.npm-cache
+# Configuration locale des sauvegardes homelab
+infra/homelab/backup/backup.env
