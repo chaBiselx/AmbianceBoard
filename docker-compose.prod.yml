@@ -148,6 +148,54 @@ services:
         reservations:
           memory: 512m
 
+  celery:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    command: celery -A main worker --queues=default --concurrency=4 --loglevel=info --hostname=default@%h
+    volumes:
+      - ./app:/usr/src/app/
+      - ./mediafiles:/usr/src/app/mediafiles/
+    env_file:
+      - ./.env
+    environment:
+      - RUNCRON=0
+      - DAPHNE=0
+      - TRANSLATION=0
+      - RUN_MIGRATIONS=0
+      - MUSIC_LABELER_URL=${MUSIC_LABELER_URL}
+      - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
+    depends_on:
+      back:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
+  celery-music-labeler:
+    build:
+      context: ./app
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    command: celery -A main worker --queues=music_labeler --concurrency=${MUSIC_LABELER_CONCURRENCY:-1} --loglevel=info --hostname=music-labeler@%h
+    volumes:
+      - ./app:/usr/src/app/
+      - ./mediafiles:/usr/src/app/mediafiles/
+    env_file:
+      - ./.env
+    environment:
+      - RUNCRON=0
+      - DAPHNE=0
+      - TRANSLATION=0
+      - RUN_MIGRATIONS=0
+      - MUSIC_LABELER_URL=${MUSIC_LABELER_URL}
+      - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
+    depends_on:
+      back:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
   front:
     build:
       context: ./frontend

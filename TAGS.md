@@ -620,6 +620,9 @@ Corrections
 Nouveautés
 - Nouveau indicateur pour la modération
 
+Améliorations
+- Séparation du service Celery pour un redemarrage automatique
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
