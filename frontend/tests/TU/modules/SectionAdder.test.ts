@@ -41,9 +41,9 @@ vi.mock('@/modules/SoundboardOrganizer/OrganizerDom', () => ({
     EmptyPlaylistChecker: { check: sectionMocks.checkEmpty },
 }));
 
-vi.mock('@/modules/SoundboardOrganizer/PlaylistOrder', () => ({
-    CleanOrderHandler: class {
-        resetBadge() { sectionMocks.resetBadge(); return this; }
+vi.mock('@/modules/SoundboardOrganizer/PlaylistBadgeHandler', () => ({
+    PlaylistBadgeHandler: class {
+        refresh() { sectionMocks.resetBadge(); }
     },
 }));
 

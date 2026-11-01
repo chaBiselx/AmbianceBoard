@@ -616,12 +616,18 @@ Corrections
 - Correction de l'affichage des buttons pour modifier le volume coté soundboard partagées  
 - Corrections des slider horizontaux a cause du visuel sous Firefox
 
-### 0.5.18 - 2026/10 : 
+### 0.5.18 - 2026/11 : 
+Sécurité
+- Mise à jour de dépendances
+
 Nouveautés
 - Nouveau indicateur pour la modération
 
 Améliorations
 - Séparation du service Celery pour un redemarrage automatique
+
+Fiabilité & Confiance
+- Augmentations de la couverture de tests
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

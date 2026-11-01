@@ -4,7 +4,8 @@ import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import { EmptyPlaylistChecker } from './OrganizerDom';
 import { SendBackendAction } from './OrganizerApi';
-import { CleanOrderHandler } from './PlaylistOrder';
+import { PlaylistBadgeHandler } from './PlaylistBadgeHandler';
+import { PlaylistOrderNormalizer } from './PlaylistOrder';
 
 type DragInfo = {
     id: string;
@@ -86,7 +87,8 @@ export class PlaylistDropHandler {
             fromSection ? backend.updateMusic(button, order, sectionNumber) : backend.addMusic(button, order, sectionNumber);
         }
         EmptyPlaylistChecker.check();
-        new CleanOrderHandler().trueReorder().resetBadge();
+        new PlaylistOrderNormalizer().normalizeAll();
+        new PlaylistBadgeHandler().refresh();
     }
 
     public handleUnassociatedDrop(_: PointerEvent, unassociatedPlaylists: HTMLDivElement, dragInfo: DragInfo): void {
@@ -101,7 +103,8 @@ export class PlaylistDropHandler {
         unassociatedPlaylists.appendChild(playlist);
         EmptyPlaylistChecker.check();
         new SendBackendAction().removeMusic(new OrganizerButtonPlaylist(dragInfo.id), Number.parseInt(playlist.dataset.section || '0'));
-        new CleanOrderHandler().trueReorder().resetBadge();
+        new PlaylistOrderNormalizer().normalizeAll();
+        new PlaylistBadgeHandler().refresh();
     }
 
     private insertPlaylist(event: PointerEvent, playlist: HTMLDivElement, playlists: HTMLElement[], section: HTMLDivElement, sameSection: boolean): number {
