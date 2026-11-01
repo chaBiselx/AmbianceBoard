@@ -195,7 +195,7 @@ services:
 
   redis:
     # redis:7-alpine
-    image: redis@sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499
+    image: redis@sha256:8da19c7399dca900c6822a1cf30f9d2285585e2c4b457ff4095b0f4500054d3f
     restart: unless-stopped
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
@@ -226,7 +226,7 @@ services:
 
   graylog:
     # graylog/graylog:7.2
-    image: graylog/graylog@sha256:2050193da1292533df09c2d9252444f31655adf4b86b65b1d4d1cdc854969e1b
+    image: graylog/graylog@sha256:ed3f6008881f16315d16b0c8d3c6abe689ebe647e14fb5f3ba8bc034fa424776
 
     ports:
       - "${GRAYLOG_PORT}:9000"
