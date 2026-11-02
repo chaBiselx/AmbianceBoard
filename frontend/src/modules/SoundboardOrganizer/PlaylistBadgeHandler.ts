@@ -4,7 +4,7 @@ import { OrganizerDragAndDropZone } from './OrganizerDom';
 export class PlaylistBadgeHandler {
     private readonly sections: HTMLDivElement[];
     private readonly unassociatedPlaylists: HTMLDivElement;
-    private readonly badgeClassName = 'playlist-badge';
+    private readonly playlistClassName = 'playlist-dragAndDrop';
 
     constructor() {
         this.sections = OrganizerDragAndDropZone.getAllSections();
@@ -18,7 +18,7 @@ export class PlaylistBadgeHandler {
 
     private refreshSectionBadges(): void {
         for (const section of this.sections) {
-            const playlists = section.getElementsByClassName(this.badgeClassName) as HTMLCollectionOf<HTMLDivElement>;
+            const playlists = section.getElementsByClassName(this.playlistClassName) as HTMLCollectionOf<HTMLDivElement>;
             for (const playlist of playlists) {
                 if (!playlist.id) continue;
                 const button = new OrganizerButtonPlaylist(playlist.id);
@@ -29,7 +29,7 @@ export class PlaylistBadgeHandler {
     }
 
     private clearUnassociatedBadges(): void {
-        const playlists = this.unassociatedPlaylists.getElementsByClassName(this.badgeClassName) as HTMLCollectionOf<HTMLDivElement>;
+        const playlists = this.unassociatedPlaylists.getElementsByClassName(this.playlistClassName) as HTMLCollectionOf<HTMLDivElement>;
         for (const playlist of playlists) {
             if (playlist.id) new OrganizerButtonPlaylist(playlist.id).removeBadge(true);
         }
