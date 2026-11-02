@@ -636,6 +636,7 @@ Corrections
 ### 0.5.20 - 2026/11 : 
 Améliorations
 - Ajout de page pour suivre les téléchargement Asynchrone pour le manager
+- Améliore l'affichage pour l'ajout de tag pour la modération
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
