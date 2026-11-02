@@ -638,6 +638,9 @@ Améliorations
 - Ajout de page pour suivre les téléchargement Asynchrone pour le manager
 - Améliore l'affichage pour l'ajout de tag pour la modération
 
+Corrections
+- Fix du contaniner Playwright pour les test E2E
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
