@@ -635,6 +635,7 @@ Corrections
 
 ### 0.5.20 - 2026/11 : 
 Améliorations
+- Ajouts de traductions
 - Ajout de page pour suivre les téléchargement Asynchrone pour le manager
 - Améliore l'affichage pour l'ajout de tag pour la modération
 

@@ -51,7 +51,7 @@ class SharedStreamMusicRouteTest(TestCase):
                     )
 
                     self.assertEqual(response.status_code, 404)
-                    self.assertEqual(response.content.decode(), ErrorMessageEnum.ELEMENT_NOT_FOUND.value)
+                    self.assertEqual(response.content.decode(), ErrorMessageEnum.ELEMENT_NOT_FOUND.trad())
                     log_error.assert_not_called()
                     if metadata_only:
                         randomize_service.assert_not_called()

@@ -86,7 +86,7 @@ def update_theme(request):
         except Exception as e:
             logger.error(f"update theme error : {e}")
             return JsonResponse({'error': 'Failed to update theme.'}, status=500)
-    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.value}, status=400)
+    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.trad()}, status=400)
 
 @login_required
 @require_http_methods(['GET'])
@@ -111,7 +111,7 @@ def update_playlist_dim(request):
         except Exception as e:
             logger.error(f"update dimensions playlist error : {e}")
             return JsonResponse({'error': 'Failed to update dimensions.'}, status=500)
-    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.value}, status=400)
+    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.trad()}, status=400)
 
 @login_required
 @require_http_methods(['UPDATE'])
@@ -131,7 +131,7 @@ def update_soundboard_dim(request):
         except Exception as e:
             logger.error(f"update dimensions soundboard error : {e}")
             return JsonResponse({'error': 'Failed to update dimensions.'}, status=500)
-    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.value}, status=400)
+    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.trad()}, status=400)
 
 @login_required
 @require_http_methods(['GET'])
@@ -152,4 +152,4 @@ def delete_account(request):
         except Exception as e:
             logger.error(f"delete account error : {e}")
             return JsonResponse({'error': 'Failed to delete account.'}, status=500)
-    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.value}, status=400)
+    return JsonResponse({'error': ErrorMessageEnum.INVALID_REQUEST_METHOD.trad()}, status=400)

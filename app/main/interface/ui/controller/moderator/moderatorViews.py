@@ -225,7 +225,7 @@ def moderator_soundboard_listening_time_stats(request, soundboard_uuid) -> JsonR
     except Exception as e:
         logger.exception("Failed to retrieve soundboard listening time stats", exc_info=e)
         return JsonResponse({
-            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'error': ErrorMessageEnum.DATA_RECUPERATION.trad(),
             'message': "Une erreur interne est survenue."
         }, status=500)
     

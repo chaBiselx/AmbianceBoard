@@ -296,7 +296,7 @@ def resend_email_confirmation(request) -> JsonResponse:
         except Exception as e:
             logger.error(f"resend confirmation error : {e}")
             return JsonResponse({"error": "Cannot send email"}, status=500)
-    return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.value}, status=406)
+    return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.trad()}, status=406)
 
 @login_required
 @require_http_methods(['POST'])
@@ -312,7 +312,7 @@ def dismiss_general_notification(request, notification_uuid: uuid.UUID) -> JsonR
         except Exception as e:
             logger.error(f"dismiss notification error : {e}")
             return JsonResponse({"error": "Cannot dismiss notification"}, status=500)
-    return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.value}, status=406)
+    return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.trad()}, status=406)
             
 
 @require_http_methods(['GET', 'POST'])
@@ -395,11 +395,11 @@ def dismiss_trace_user_activity(request, trace_user_activity_uuid: uuid.UUID, ty
             if activity:
                 activity.set_end_time()
                 return JsonResponse({"message": "Trace user activity dismissed"}, status=200)
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
         except Exception as e:
             logger.error(f"dismiss trace user activity error : {e}")
             return JsonResponse({"error": "Cannot dismiss trace user activity"}, status=500)
-    return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.value}, status=406)
+    return JsonResponse({"error": ErrorMessageEnum.NOT_ACCEPTABLE.trad()}, status=406)
 
 
 @require_http_methods(['GET'])

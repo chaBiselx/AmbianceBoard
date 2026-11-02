@@ -201,7 +201,7 @@ def playlist_create_track_stream(request, playlist_uuid, music_id) -> HttpRespon
             return ret
     except Exception as e:
         logger.error(f"Error in playlist_create_track_stream: {e}")
-    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), status=404)
 
 
 
@@ -211,10 +211,10 @@ def playlist_delete(request, playlist_uuid) -> JsonResponse:
     if request.method == 'DELETE':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
         else :
             ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.PLAYLIST_DELETE, user=request.user, content_object=playlist)
             PlaylistRepository().delete(playlist)
 
             return JsonResponse({'success': 'Suppression playlist réussie'}, status=200)
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.trad()}, status=405)

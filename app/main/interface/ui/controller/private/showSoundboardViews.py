@@ -101,7 +101,7 @@ def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse|JsonRe
             return ret
     except Exception:
         logger.error(f"[music_stream] failed cache_key={cache_key}")
-    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), status=404)
 
 
 
@@ -111,7 +111,7 @@ def playlist_tracks_list(request, soundboard_uuid) -> JsonResponse:
     """Liste des tracks de toutes les playlists d'un soundboard en JSON"""
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
-        return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     track_repository = TrackRepository()
     result = {}
@@ -159,7 +159,7 @@ def private_specific_track_stream(request, soundboard_uuid, playlist_uuid, music
             f"[private_specific_track_stream] failed request_id={request_id} "
             f"soundboard_uuid={soundboard_uuid} playlist_uuid={playlist_uuid} music_id={music_id}"
         )
-    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), status=404)
 
 
 @login_required
@@ -169,7 +169,7 @@ def update_direct_volume(request, playlist_uuid) -> JsonResponse:
     if request.method == 'POST':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
         else:
             data = json.loads(request.body)
             volume = data.get('volume')
@@ -178,7 +178,7 @@ def update_direct_volume(request, playlist_uuid) -> JsonResponse:
                 playlist.save()
                 return JsonResponse({"message": "volume updated"}, status=200)
         
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.trad()}, status=405)
 
 
 @login_required
@@ -280,11 +280,11 @@ def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_u
         
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
-        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     playlist = PlaylistRepository().get(playlist_uuid)
     if not playlist:
-        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     if not playlist.is_copiable or playlist.moderator_ban_copie:
         return JsonResponse({'error': "Cette playlist n'est pas disponible à la duplication"}, status=403)
@@ -295,7 +295,7 @@ def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_u
         target_soundboard=soundboard
     )
     if existing:
-        return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.value}, status=409)
+        return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.trad()}, status=409)
 
     try:
         render_service = SoundboardPlaylistRenderService(request)
@@ -332,10 +332,10 @@ def soundboard_edit_mode_duplicate_playlist(request, soundboard_uuid, playlist_u
     except PlaylistNotCopiableException:
         return JsonResponse({'error': "Cette playlist n'est pas disponible à la duplication"}, status=403)
     except PlaylistAlreadyDuplicatedException:
-        return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.value}, status=409)
+        return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.trad()}, status=409)
     except Exception as e:
         logger.error(f"Erreur duplication mode édition pour soundboard {soundboard_uuid}: {e}")
-        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
+        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad()}, status=500)
 
 
 @login_required
@@ -344,7 +344,7 @@ def soundboard_edit_mode_create_playlist(request, soundboard_uuid) -> JsonRespon
     """Crée une playlist depuis la modal mode édition et l'ajoute au soundboard cible."""
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
-        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     playlist_name = (request.POST.get('name') or '').strip()
     playlist_type = request.POST.get('typePlaylist')
@@ -464,18 +464,18 @@ def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid
 
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if not soundboard:
-        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     playlist = PlaylistRepository().get(playlist_uuid)
     if not playlist:
-        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     if playlist.user != request.user:
         return JsonResponse({'error': "Vous n'êtes pas propriétaire de cette playlist"}, status=403)
 
     existing = SoundboardPlaylistRepository().get(soundboard, playlist)
     if existing:
-        return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.value}, status=409)
+        return JsonResponse({'error': ErrorMessageEnum.PLAYLIST_ALREADY_EXISTS_IN_SOUNDBOARD.trad()}, status=409)
 
     try:
         render_service = SoundboardPlaylistRenderService(request)
@@ -494,4 +494,4 @@ def soundboard_edit_mode_add_my_playlist(request, soundboard_uuid, playlist_uuid
         }, status=200)
     except Exception as e:
         logger.error(f"Erreur ajout playlist mode édition pour soundboard {soundboard_uuid}: {e}")
-        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
+        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad()}, status=500)

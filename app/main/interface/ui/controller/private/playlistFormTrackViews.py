@@ -28,7 +28,7 @@ def upload_multiple_music(request, playlist_uuid) -> JsonResponse:
     """Upload multiple de fichiers musicaux via DragAndDrop"""
     playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
     if not playlist:
-        return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
     
     if request.method == 'POST':
         if len(request.FILES) == 0:
@@ -42,7 +42,7 @@ def upload_multiple_music(request, playlist_uuid) -> JsonResponse:
 
         return JsonResponse({"success": True, "uploaded_files": results}, status=200)
 
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.trad()}, status=405)
 
 @login_required
 @require_http_methods(['POST', 'GET'])
@@ -109,11 +109,11 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
     if request.method == 'DELETE':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
         music = MusicRepository().get_music(id_music=music_id)
         if not music:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
         ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.MUSIC_DELETE, user=request.user, content_object=music)
         
         # Vérifier si le fichier audio est utilisé ailleurs
@@ -122,7 +122,7 @@ def music_delete(request, playlist_uuid, music_id) -> JsonResponse:
         
         music.delete()
         return JsonResponse({'success': 'Suppression musique réussie'}, status=200)
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.trad()}, status=405)
 
 
 
@@ -194,7 +194,7 @@ def link_create_ajax(request, playlist_uuid) -> JsonResponse:
     if request.method == 'POST':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"success": False, "message": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+            return JsonResponse({"success": False, "message": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
         try:
             link_service = LinkService(request)
             link = link_service.save_form(playlist)
@@ -213,10 +213,10 @@ def link_create_ajax(request, playlist_uuid) -> JsonResponse:
             logger.error(f"Validation error while creating link via AJAX: {str(e)}", exc_info=e)
             return JsonResponse({
                 'success': False,
-                'message': ErrorMessageEnum.INTERNAL_ERROR.value
+                'message': ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad()
             }, status=500)
             
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.trad()}, status=405)
 
 
 @login_required
@@ -226,13 +226,13 @@ def link_delete(request, playlist_uuid, link_id) -> JsonResponse:
     if request.method == 'DELETE':
         playlist = (PlaylistService(request)).get_playlist(playlist_uuid)
         if not playlist:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
         
         link = LinkMusicRepository().get_link(link_id)
         if not link:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
         ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.LINK_DELETE, user=request.user, content_object=link)
         link.delete()
         return JsonResponse({'success': 'Suppression lien musical réussie'}, status=200)
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.trad()}, status=405)
