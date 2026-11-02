@@ -634,6 +634,9 @@ Corrections
 - Corrections deploiement HS
 
 ### 0.5.20 - 2026/11 : 
+Sécurité
+- Mise à jour de dépendances
+
 Améliorations
 - Ajouts de traductions
 - Ajout de page pour suivre les téléchargement Asynchrone pour le manager
