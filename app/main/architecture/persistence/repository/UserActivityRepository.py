@@ -82,6 +82,29 @@ class UserActivityRepository:
         return UserActivity.objects.filter(
             user=user
         ).select_related('user', 'content_type').order_by('-start_date')
+
+    def get_soundboard_listening_sessions(self, start_date, end_date):
+        return UserActivity.objects.filter(
+            activity_type=UserActivityTypeEnum.SOUNDBOARD_VIEW.value,
+            content_type__app_label='main',
+            content_type__model='soundboard',
+            start_date__gte=start_date,
+            start_date__lte=end_date,
+            end_date__gte=F('start_date'),
+        )
+
+    def get_soundboard_listening_summary(self, start_date, end_date):
+        return self.get_soundboard_listening_sessions(start_date, end_date).values(
+            'object_id'
+        ).annotate(
+            total_duration=Sum(F('end_date') - F('start_date'), output_field=DurationField()),
+            average_duration=Avg(F('end_date') - F('start_date'), output_field=DurationField()),
+        ).order_by('-total_duration', 'object_id')
+
+    def get_soundboard_listeners(self, start_date, end_date):
+        return self.get_soundboard_listening_sessions(start_date, end_date).values(
+            'object_id', 'user__username'
+        ).order_by('object_id', 'user__username').distinct()
         
     def get_frequentation(self, soundboard, start_date, end_date, activities):
         return UserActivity.objects.filter( 

@@ -1,0 +1,8 @@
+---
+# port SSH utilisé pour se connecter aux hôtes
+ansible_ssh_port: "{{ lookup('ansible.builtin.env', 'ANSIBLE_SSH_PORT') | default('22', true) | int }}"
+path_project: /srv/www/AmbianceBoard
+docker_compose_file: "docker-compose.prod.yml"
+repository_url : https://github.com/chaBiselx/AmbianceBoard
+project_git_user: "{{ lookup('ansible.builtin.env', 'PROJECT_GIT_USER') | default(ansible_user) }}"
+project_app_user: "{{ lookup('ansible.builtin.env', 'PROJECT_APP_USER') | default(ansible_user) }}"

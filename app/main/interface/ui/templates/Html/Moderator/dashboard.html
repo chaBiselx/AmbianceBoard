@@ -1,4 +1,5 @@
 {% extends 'Html/partial/structure/base_moderator.html' %}
+{% load i18n %}
 
 
 {% block content %}
@@ -20,6 +21,53 @@
                 </dl>
             </div>
         </div>
+
+        <section class="mt-4" aria-labelledby="listening-title">
+            <h2 id="listening-title" class="h5">{% trans "moderator.listening.title" %}</h2>
+            <form method="get" action="{% url 'moderatorDashboard' %}" class="d-flex align-items-end gap-2 flex-wrap mb-3" data-filter-form>
+                <div>
+                    <label for="listening-period" class="form-label">{% trans "moderator.listening.period" %}</label>
+                    <select id="listening-period" name="period" class="form-select">
+                        {% for value, label in listening_period_choices.items %}
+                        <option value="{{ value }}"{% if value == listening_period %} selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">{% trans "moderator.listening.filter" %}</button>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">{% trans "moderator.listening.position" %}</th>
+                            <th scope="col">{% trans "Soundboard" %}</th>
+                            <th scope="col">{% trans "moderator.listening.total" %}</th>
+                            <th scope="col">{% trans "moderator.listening.average" %}</th>
+                            <th scope="col">{% trans "moderator.listening.listeners" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in listening_rows %}
+                        <tr>
+                            <td>{{ row.position }}</td>
+                            <th scope="row">
+                                <button type="button" class="btn btn-link text-start text-break p-0 popup-data-soundboard" data-title="{{ row.soundboard.name }}" data-url="{% url 'moderatorGetDataSoundboard' row.soundboard.uuid %}">
+                                    {% if row.soundboard.icon %}<img src="{{ row.soundboard.icon.url }}" alt="" width="32" height="32" class="me-2 object-fit-contain" loading="lazy">{% endif %}{{ row.soundboard.name }}
+                                </button>
+                            </th>
+                            <td class="text-nowrap">{{ row.total_duration }}</td>
+                            <td class="text-nowrap">{{ row.average_duration }}</td>
+                            <td class="text-break">
+                                {{ row.listeners|join:", " }}{% if row.has_anonymous_listeners %}{% if row.listeners %}, {% endif %}{% trans "moderator.listening.anonymous" %}{% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" class="text-center">{% trans "moderator.listening.empty" %}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
         
     </div>
    

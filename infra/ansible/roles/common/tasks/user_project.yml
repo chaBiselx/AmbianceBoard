@@ -1,0 +1,48 @@
+---
+- name: Validate dedicated project users
+  ansible.builtin.assert:
+    that:
+      - project_git_user | length > 0
+      - project_app_user | length > 0
+      - project_git_user != project_app_user
+      - project_git_user != 'root'
+      - project_app_user != 'root'
+    fail_msg: >-
+      Configure distinct, non-root PROJECT_GIT_USER and PROJECT_APP_USER
+      values before running this playbook.
+
+- name: Ensure Docker group exists
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: Ensure Git deployment account primary group exists
+  ansible.builtin.group:
+    name: "{{ project_git_user }}"
+    state: present
+
+- name: Ensure application account primary group exists
+  ansible.builtin.group:
+    name: "{{ project_app_user }}"
+    state: present
+
+- name: Ensure Git deployment account exists without supplementary privileges
+  ansible.builtin.user:
+    name: "{{ project_git_user }}"
+    state: present
+    create_home: true
+    group: "{{ project_git_user }}"
+    groups: ""
+    append: false
+    shell: /usr/sbin/nologin
+
+- name: Ensure application account exists with Docker access
+  ansible.builtin.user:
+    name: "{{ project_app_user }}"
+    state: present
+    create_home: true
+    group: "{{ project_app_user }}"
+    groups:
+      - docker
+    append: false
+    shell: /bin/bash

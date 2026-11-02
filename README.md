@@ -28,6 +28,18 @@ Suivi du projet
 
 Le projet se lance principalement avec Docker Compose.
 
+### pre-requis 
+
+install docker 
+Install makefile 
+
+bien penser a donner les droits à l'user pour docker 
+```
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+
 ```sh
 make init
 make build

@@ -1,0 +1,13 @@
+---
+- name : Include common package installation tasks
+  import_tasks: package.yml
+- name : Include common Docker installation tasks
+  import_tasks: docker.yml
+- name : Include common port configuration tasks
+  import_tasks: port.yml
+- name : Include common rsync installation tasks
+  import_tasks: rsync.yml
+- name : Include common user project tasks
+  import_tasks: user_project.yml
+- name : install project
+  import_tasks: project.yml

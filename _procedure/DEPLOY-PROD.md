@@ -19,7 +19,7 @@ sudo ufw allow 22/tcp
 sudo ufw allow 8000/tcp
 sudo ufw allow 3100/tcp
 
-## config nginx 
+## config nginx (Deprecated)
 sudo apt install nginx
 sudo apt install certbot python3-certbot-nginx
 sudo vi /etc/nginx/sites-available/ambianceboard
@@ -74,7 +74,11 @@ mettre les roles et les tiers utilisateur a l'admin
 docker compose -f docker-compose.prod.yml build --no-cache
 docker compose -f docker-compose.prod.yml up
 
+Les workers Celery `celery` et `celery-music-labeler` sont des services
+independants avec redemarrage automatique (`restart: unless-stopped`). Ils
+sont demarres avec le reste de la stack ; surveiller ou consulter leurs logs
+avec `docker compose -f docker-compose.prod.yml logs -f celery celery-music-labeler`.
+
 ### suppression des container
 docker rm -f $(docker ps -aq)
-
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-19 15:06+0000\n"
+"POT-Creation-Date: 2026-10-26 14:45+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -34,6 +34,7 @@ msgid "Dimensions boutons"
 msgstr "Button dimensions"
 
 #: main/architecture/contextProcessors/sidebar_processor.py:60
+#: main/interface/ui/templates/Html/Moderator/dashboard.html:43
 msgid "Soundboard"
 msgstr "Soundboard"
 
@@ -1082,157 +1083,157 @@ msgstr "reusable buttons"
 msgid "template.home.community.tracks"
 msgstr "shareable audio tracks"
 
-#: main/interface/ui/templates/Html/General/home.html:59
+#: main/interface/ui/templates/Html/General/home.html:58
 msgid "template.home.illustration.alt"
 msgstr "Preview of an AmbianceBoard soundboard"
 
-#: main/interface/ui/templates/Html/General/home.html:67
+#: main/interface/ui/templates/Html/General/home.html:65
 msgid "template.home.demo.title"
 msgstr "Try a soundscape"
 
-#: main/interface/ui/templates/Html/General/home.html:68
+#: main/interface/ui/templates/Html/General/home.html:66
 msgid "template.home.demo.subtitle"
 msgstr "No account required."
 
-#: main/interface/ui/templates/Html/General/home.html:81
+#: main/interface/ui/templates/Html/General/home.html:78
 msgid "template.home.demo.empty"
 msgstr "No demos are available right now."
 
-#: main/interface/ui/templates/Html/General/home.html:88
+#: main/interface/ui/templates/Html/General/home.html:85
 msgid "template.home.steps.title"
 msgstr "Ready in three steps"
 
-#: main/interface/ui/templates/Html/General/home.html:94
+#: main/interface/ui/templates/Html/General/home.html:91
 msgid "template.home.steps.create.title"
 msgstr "Create"
 
-#: main/interface/ui/templates/Html/General/home.html:95
+#: main/interface/ui/templates/Html/General/home.html:92
 msgid "template.home.steps.create.description"
 msgstr "Give your soundboard a name and an identity."
 
-#: main/interface/ui/templates/Html/General/home.html:101
+#: main/interface/ui/templates/Html/General/home.html:98
 msgid "template.home.steps.add.title"
 msgstr "Add"
 
-#: main/interface/ui/templates/Html/General/home.html:102
+#: main/interface/ui/templates/Html/General/home.html:99
 msgid "template.home.steps.add.description"
 msgstr "Upload sounds, add links, or tune in to radio streams."
 
-#: main/interface/ui/templates/Html/General/home.html:108
+#: main/interface/ui/templates/Html/General/home.html:105
 msgid "template.home.steps.share.title"
 msgstr "Share"
 
-#: main/interface/ui/templates/Html/General/home.html:109
+#: main/interface/ui/templates/Html/General/home.html:106
 msgid "template.home.steps.share.description"
 msgstr "Play your soundscapes and invite your players."
 
-#: main/interface/ui/templates/Html/General/home.html:115
+#: main/interface/ui/templates/Html/General/home.html:112
 msgid "template.home.steps.tour"
 msgstr "Guided tour"
 
-#: main/interface/ui/templates/Html/General/home.html:122
+#: main/interface/ui/templates/Html/General/home.html:119
 msgid "template.home.features.title"
 msgstr "Everything you need for your games"
 
-#: main/interface/ui/templates/Html/General/home.html:123
+#: main/interface/ui/templates/Html/General/home.html:120
 msgid "template.home.features.subtitle"
 msgstr "The essential tools, at a glance."
 
-#: main/interface/ui/templates/Html/General/home.html:128
+#: main/interface/ui/templates/Html/General/home.html:125
 msgid "template.home.features.custom.title"
 msgstr "Custom soundboards"
 
-#: main/interface/ui/templates/Html/General/home.html:129
+#: main/interface/ui/templates/Html/General/home.html:126
 msgid "template.home.features.custom.description"
 msgstr ""
 "Choose a name, colors, icon, tags, and public or private access. Organize "
 "multiple playlists in each board."
 
-#: main/interface/ui/templates/Html/General/home.html:134
+#: main/interface/ui/templates/Html/General/home.html:131
 msgid "template.home.features.sound_types.title"
 msgstr "Three types of sounds"
 
-#: main/interface/ui/templates/Html/General/home.html:135
+#: main/interface/ui/templates/Html/General/home.html:132
 msgid "template.home.features.sound_types.description"
 msgstr ""
 "Looping atmospheres, instant sound effects, and scene music, with sections "
 "and track selection."
 
-#: main/interface/ui/templates/Html/General/home.html:140
+#: main/interface/ui/templates/Html/General/home.html:137
 msgid "template.home.features.sources.title"
 msgstr "Your audio sources"
 
-#: main/interface/ui/templates/Html/General/home.html:141
+#: main/interface/ui/templates/Html/General/home.html:138
 msgid "template.home.features.sources.description"
 msgstr ""
 "Upload files, add external links, or stream radio. Adjust volume and fades."
 
-#: main/interface/ui/templates/Html/General/home.html:146
+#: main/interface/ui/templates/Html/General/home.html:143
 msgid "template.home.features.control.title"
 msgstr "Control during play"
 
-#: main/interface/ui/templates/Html/General/home.html:147
+#: main/interface/ui/templates/Html/General/home.html:144
 msgid "template.home.features.control.description"
 msgstr ""
 "Mixers for each playlist and button, search, reordering, fullscreen, "
 "keyboard shortcuts, and saved volume levels."
 
-#: main/interface/ui/templates/Html/General/home.html:152
+#: main/interface/ui/templates/Html/General/home.html:149
 msgid "template.home.features.community.title"
 msgstr "Sharing and community"
 
-#: main/interface/ui/templates/Html/General/home.html:153
+#: main/interface/ui/templates/Html/General/home.html:150
 msgid "template.home.features.community.description"
 msgstr ""
 "Real-time sync, individual player volume, permitted buttons, and discover "
 "and copy public soundboards."
 
-#: main/interface/ui/templates/Html/General/home.html:158
+#: main/interface/ui/templates/Html/General/home.html:155
 msgid "template.home.features.account.title"
 msgstr "Account and trust"
 
-#: main/interface/ui/templates/Html/General/home.html:159
+#: main/interface/ui/templates/Html/General/home.html:156
 msgid "template.home.features.account.description"
 msgstr ""
 "Google sign-in, reporting, notifications, progressive tiers, and Premium "
 "statistics."
 
-#: main/interface/ui/templates/Html/General/home.html:167
+#: main/interface/ui/templates/Html/General/home.html:164
 msgid "template.home.compatibility.label"
 msgstr "Compatibility:"
 
-#: main/interface/ui/templates/Html/General/home.html:167
+#: main/interface/ui/templates/Html/General/home.html:164
 msgid "template.home.compatibility.description"
 msgstr ""
 "For the best experience, use Chrome, Edge, Brave, or Firefox. WebKit "
 "(including some versions of Safari and embedded iOS browsers) may limit "
 "audio playback."
 
-#: main/interface/ui/templates/Html/General/home.html:172
+#: main/interface/ui/templates/Html/General/home.html:169
 msgid "template.home.final.title"
 msgstr "Your next game starts here."
 
-#: main/interface/ui/templates/Html/General/home.html:173
+#: main/interface/ui/templates/Html/General/home.html:170
 msgid "template.home.final.subtitle"
 msgstr "Create your first soundboard for free."
 
-#: main/interface/ui/templates/Html/General/home.html:176
+#: main/interface/ui/templates/Html/General/home.html:173
 msgid "template.home.final.create_soundboard"
 msgstr "Create a soundboard"
 
-#: main/interface/ui/templates/Html/General/home.html:180
+#: main/interface/ui/templates/Html/General/home.html:177
 msgid "template.home.final.create_account"
 msgstr "Create my account"
 
-#: main/interface/ui/templates/Html/General/home.html:186
+#: main/interface/ui/templates/Html/General/home.html:183
 msgid "template.home.footer.question"
 msgstr "An idea or an issue?"
 
-#: main/interface/ui/templates/Html/General/home.html:186
+#: main/interface/ui/templates/Html/General/home.html:183
 msgid "template.home.footer.contact"
 msgstr "Contact us"
 
-#: main/interface/ui/templates/Html/General/home.html:187
+#: main/interface/ui/templates/Html/General/home.html:184
 msgid "template.home.footer.donate"
 msgstr "Support the project"
 
@@ -1462,6 +1463,42 @@ msgstr "Send"
 #: main/interface/ui/templates/Html/General/support_contact.html:30
 msgid "template.support.form.back_home"
 msgstr "Back to home"
+
+#: main/interface/ui/templates/Html/Moderator/dashboard.html:26
+msgid "moderator.listening.title"
+msgstr "Recently listened soundboards"
+
+#: main/interface/ui/templates/Html/Moderator/dashboard.html:29
+msgid "moderator.listening.period"
+msgstr "Period"
+
+#: main/interface/ui/templates/Html/Moderator/dashboard.html:36
+msgid "moderator.listening.filter"
+msgstr "Filter"
+
+#: main/interface/ui/templates/Html/Moderator/dashboard.html:42
+msgid "moderator.listening.position"
+msgstr "Position"
+
+#: main/interface/ui/templates/Html/Moderator/dashboard.html:44
+msgid "moderator.listening.total"
+msgstr "Total listening time (h:min:s)"
+
+#: main/interface/ui/templates/Html/Moderator/dashboard.html:45
+msgid "moderator.listening.average"
+msgstr "Average listening time per session (h:min:s)"
+
+#: main/interface/ui/templates/Html/Moderator/dashboard.html:46
+msgid "moderator.listening.listeners"
+msgstr "Listeners"
+
+#: main/interface/ui/templates/Html/Moderator/dashboard.html:61
+msgid "moderator.listening.anonymous"
+msgstr "Anonymous visitors"
+
+#: main/interface/ui/templates/Html/Moderator/dashboard.html:65
+msgid "moderator.listening.empty"
+msgstr "No listening sessions during this period."
 
 #: main/interface/ui/templates/Html/Music/add_link_music.html:7
 #: main/interface/ui/templates/Html/Music/add_link_music_ajax.html:7

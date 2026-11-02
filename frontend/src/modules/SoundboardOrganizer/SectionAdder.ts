@@ -3,7 +3,7 @@ import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import ModalCustom from '@/modules/General/Modal';
 import { SendBackendAction } from './OrganizerApi';
 import { EmptyPlaylistChecker, OrganizerDragAndDropZone, SectionConfig } from './OrganizerDom';
-import { CleanOrderHandler } from './PlaylistOrder';
+import { PlaylistBadgeHandler } from './PlaylistBadgeHandler';
 import BootstrapComponentInitializer from "@/modules/General/BootstrapComponentInitializer";
 
 
@@ -127,7 +127,7 @@ class SectionAdder {
             SectionConfig.refreshMaxSections();
             this.setupDragEvents();
             EmptyPlaylistChecker.check();
-            new CleanOrderHandler().resetBadge();
+            new PlaylistBadgeHandler().refresh();
             this.sectionDomManager.refreshSwapButtons();
         } catch (error) {
             ConsoleCustom.error('Failed to insert section', error);
@@ -167,7 +167,7 @@ class SectionDeleter {
             SectionConfig.refreshMaxSections();
             this.setupDragEvents();
             EmptyPlaylistChecker.check();
-            new CleanOrderHandler().resetBadge();
+            new PlaylistBadgeHandler().refresh();
             this.sectionDomManager.refreshSwapButtons();
         } catch (error) {
             ConsoleCustom.error('Failed to delete section', error);

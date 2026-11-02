@@ -90,7 +90,55 @@ services:
       - "traefik.http.middlewares.back-buffering.buffering.maxRequestBodyBytes=32505856"
       - "traefik.http.routers.back.middlewares=back-buffering"
       - "traefik.http.services.back.loadbalancer.server.port=${WEB_PORT}"
-  
+
+  celery:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: celery -A main worker --queues=default,celery --concurrency=4 --loglevel=info --hostname=default@%h
+    volumes:
+      - ./app/:/usr/src/app/
+      - ./app/mediafiles:/usr/src/app/mediafiles/
+    env_file:
+      - ./.env
+    environment:
+      - RUNCRON=0
+      - DAPHNE=0
+      - TRANSLATION=0
+      - RUN_MIGRATIONS=0
+      - MUSIC_LABELER_URL=${MUSIC_LABELER_URL}
+      - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
+    depends_on:
+      back:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
+  celery-music-labeler:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: celery -A main worker --queues=music_labeler --concurrency=${MUSIC_LABELER_CONCURRENCY:-1} --loglevel=info --hostname=music-labeler@%h
+    volumes:
+      - ./app/:/usr/src/app/
+      - ./app/mediafiles:/usr/src/app/mediafiles/
+    env_file:
+      - ./.env
+    environment:
+      - RUNCRON=0
+      - DAPHNE=0
+      - TRANSLATION=0
+      - RUN_MIGRATIONS=0
+      - MUSIC_LABELER_URL=${MUSIC_LABELER_URL}
+      - MUSIC_LABELER_TOKEN=${MUSIC_LABELER_TOKEN}
+    depends_on:
+      back:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+
   websocket:
     build:
       context: ./app
@@ -195,7 +243,7 @@ services:
 
   redis:
     # redis:7-alpine
-    image: redis@sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499
+    image: redis@sha256:8da19c7399dca900c6822a1cf30f9d2285585e2c4b457ff4095b0f4500054d3f
     restart: unless-stopped
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
@@ -226,7 +274,7 @@ services:
 
   graylog:
     # graylog/graylog:7.2
-    image: graylog/graylog@sha256:2050193da1292533df09c2d9252444f31655adf4b86b65b1d4d1cdc854969e1b
+    image: graylog/graylog@sha256:ed3f6008881f16315d16b0c8d3c6abe689ebe647e14fb5f3ba8bc034fa424776
 
     ports:
       - "${GRAYLOG_PORT}:9000"

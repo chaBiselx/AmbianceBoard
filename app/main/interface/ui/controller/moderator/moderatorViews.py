@@ -56,7 +56,8 @@ def moderator_dashboard(request) -> HttpResponse:
             'nb_users': nb_users, 
             'moy_playlist_per_user': moy_playlist_per_user, 
             'moy_music_per_user': moy_music_per_user, 
-            'moy_music_per_playlist': moy_music_per_playlist
+            'moy_music_per_playlist': moy_music_per_playlist,
+            **ModeratorSoundboardStatsService().get_dashboard_listening_data(request.GET.get('period', '7')),
     })
     
 @login_required

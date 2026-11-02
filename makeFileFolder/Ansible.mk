@@ -1,4 +1,4 @@
-ANSIBLE_CONFIG=ansible/ansible.cfg
+ANSIBLE_CONFIG=infra/ansible/ansible.cfg
 
 ## —— Ansible ————————————————————————————————————————————————————————————————
 ansible-check: ansible-check-setup
