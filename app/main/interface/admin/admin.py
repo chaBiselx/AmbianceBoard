@@ -34,6 +34,7 @@ from main.architecture.persistence.models.PlaylistProposal import PlaylistPropos
 from main.architecture.persistence.models.SoundboardScript import SoundboardScript
 from main.architecture.persistence.models.SoundboardScriptStep import SoundboardScriptStep
 from main.architecture.persistence.models.SoundboardSection import SoundboardSection
+from main.architecture.persistence.models.AsyncDownloadJob import AsyncDownloadJob
 
 admin.site.register(User)
 admin.site.register(UserModerationLog)
@@ -65,3 +66,4 @@ admin.site.register(PlaylistProposal)
 admin.site.register(SoundboardScript)
 admin.site.register(SoundboardScriptStep)
 admin.site.register(SoundboardSection)
+admin.site.register(AsyncDownloadJob)

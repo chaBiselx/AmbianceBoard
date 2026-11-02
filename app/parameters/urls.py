@@ -83,6 +83,7 @@ from main.interface.ui.controller.manager.managerCronViews import (
 from main.interface.ui.controller.manager.managerNotificationsViews import listing_notifications, manage_notification
 from main.interface.ui.controller.manager.managerSendEmailViews import manager_send_email
 from main.interface.ui.controller.manager.managerMusicLabelerViews import music_labeler_index, music_labeler_analyze, music_labeler_stream
+from main.interface.ui.controller.manager.managerAsyncDownloadJobViews import manager_async_download_jobs, manager_async_download_job_retry
 from main.interface.ui.controller.manager.managerHomeDemoViews import listing_home_demo_items, select_home_demo_soundboard, manage_home_demo_item
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_playlist_tracks_list, favorite_update, reporting_content, public_favorite, public_specific_track_stream
 from main.interface.ui.controller.public.playlistProposalViews import (
@@ -296,6 +297,8 @@ urlpatterns = [
     path("manager/notifications/<uuid:uuid>/edit/", manage_notification, name="manager_notifications_update"),
 
     path("manager/send-email/", manager_send_email, name="managerSendEmail"),
+    path("manager/async-download-jobs/", manager_async_download_jobs, name="managerAsyncDownloadJobs"),
+    path("manager/async-download-jobs/<uuid:job_uuid>/retry/", manager_async_download_job_retry, name="managerAsyncDownloadJobRetry"),
 
     path("manager/home-demo/", listing_home_demo_items, name="managerHomeDemoItems"),
     path("manager/home-demo/create/", select_home_demo_soundboard, name="managerHomeDemoSelectSoundboard"),
