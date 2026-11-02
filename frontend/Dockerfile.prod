@@ -17,7 +17,7 @@ WORKDIR /app
 RUN chown -R nodeuser:nodeuser /app
 
 # Copier les fichiers de configuration en tant que root
-COPY --chown=nodeuser:nodeuser package*.json tsconfig.json ./
+COPY --chown=nodeuser:nodeuser package.json package-lock.json tsconfig.json ./
 COPY --chown=nodeuser:nodeuser vite.config.ts ./
 
 # Changer le propriétaire des fichiers copiés

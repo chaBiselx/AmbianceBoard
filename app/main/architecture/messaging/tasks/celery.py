@@ -1,10 +1,11 @@
 import os
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "parameters.settings")
+
 from kombu import Queue, Exchange
 from celery import Celery
 from celery.signals import worker_ready, worker_shutdown
 from main.domain.common.utils.logger.LoggerFactory import LoggerFactory
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "parameters.settings")
 
 
 def log_worker_started(sender=None, **kwargs):
