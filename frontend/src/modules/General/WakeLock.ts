@@ -24,7 +24,7 @@ class WakeLock {
     }
 
     // Gestion de la visibilité de la page
-    private readonly handleVisibilityChange = async (): Promise<void> => {
+    private readonly handleVisibilityChange = (): void => {
         if (this.wakeLock !== null && document.visibilityState === "visible") {
             void this.start();
         }

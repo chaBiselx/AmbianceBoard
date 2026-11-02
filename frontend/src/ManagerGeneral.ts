@@ -18,7 +18,7 @@ class CronExecuter {
         }
     }
 
-    private async executeCron(event: Event) {
+    private executeCron(event: Event) {
         const target = event.target as HTMLElement;
         const cronUrl = target.dataset.url;
         const cronTitle = target.dataset.title;
