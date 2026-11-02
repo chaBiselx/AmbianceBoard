@@ -27,7 +27,7 @@ FROM_RE = re.compile(r"^FROM\s+([^@\s]+)@(sha256:[a-f0-9]{64})", re.IGNORECASE)
 # image: image@sha256:xxx
 IMAGE_RE = re.compile(r"^\s+image:\s+([^@\s]+)@(sha256:[a-f0-9]{64})", re.IGNORECASE)
 # standalone comment line
-COMMENT_RE = re.compile(r"^\s*#\s*(.+?)\s*$")
+COMMENT_RE = re.compile(r"^\s*#\s*(.+)$")
 
 
 def resolve_tag(comment: str, image_base: str) -> str:
