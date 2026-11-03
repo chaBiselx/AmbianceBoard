@@ -649,6 +649,9 @@ Corrections
 Sécurité
 - Mise à jour de dépendances
 
+Corrections
+- Fix de la tentative de retélécharger une piste audio via un lien pour un manager 
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
