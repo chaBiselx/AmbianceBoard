@@ -649,6 +649,9 @@ Corrections
 Sécurité
 - Mise à jour de dépendances
 
+Améliorations
+- Ajouts de traductions
+
 Nouveautés
 - Accessibilité de la labellisation à tout les utilisateurs
 

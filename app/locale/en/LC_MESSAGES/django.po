@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-02 20:18+0000\n"
+"POT-Creation-Date: 2026-11-03 11:34+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -120,35 +120,35 @@ msgstr "New playlist proposal"
 msgid "template.email.user.tier_expiration.subject"
 msgstr "Your tier expiration warning"
 
-#: main/domain/common/enum/ErrorMessageEnum.py
+#: main/domain/common/enum/ErrorMessageEnum.py:22
 msgid "error.method_not_supported"
 msgstr "Method not supported."
 
-#: main/domain/common/enum/ErrorMessageEnum.py
+#: main/domain/common/enum/ErrorMessageEnum.py:23
 msgid "error.not_acceptable"
 msgstr "Not acceptable."
 
-#: main/domain/common/enum/ErrorMessageEnum.py
+#: main/domain/common/enum/ErrorMessageEnum.py:24
 msgid "error.internal_server_error"
 msgstr "An error occurred."
 
-#: main/domain/common/enum/ErrorMessageEnum.py
+#: main/domain/common/enum/ErrorMessageEnum.py:25
 msgid "error.invalid_request_method"
 msgstr "Invalid request method."
 
-#: main/domain/common/enum/ErrorMessageEnum.py
+#: main/domain/common/enum/ErrorMessageEnum.py:26
 msgid "error.element_not_found"
 msgstr "Element not found."
 
-#: main/domain/common/enum/ErrorMessageEnum.py
+#: main/domain/common/enum/ErrorMessageEnum.py:27
 msgid "error.data_retrieval"
 msgstr "Error retrieving data."
 
-#: main/domain/common/enum/ErrorMessageEnum.py
+#: main/domain/common/enum/ErrorMessageEnum.py:29
 msgid "error.playlist_already_exists_in_soundboard"
 msgstr "This playlist is already in this soundboard."
 
-#: main/domain/common/enum/ErrorMessageEnum.py
+#: main/domain/common/enum/ErrorMessageEnum.py:31
 msgid "error.script_not_found"
 msgstr "Script not found."
 
@@ -200,6 +200,34 @@ msgstr "Ease in (Exponential)"
 #: main/domain/common/enum/FadePlaylistEnum.py:37
 msgid "enum.fade_curve.ease_out_exponential"
 msgstr "Ease out (Exponential)"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:7
+msgid "faq.category.presentation"
+msgstr "Presentation & pricing"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:8
+msgid "faq.category.game_master"
+msgstr "Game Master & immersion"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:9
+msgid "faq.category.comparison"
+msgstr "Comparisons & alternatives"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:10
+msgid "faq.category.copyright"
+msgstr "Copyright & licences"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:11
+msgid "faq.category.participation"
+msgstr "Participation & contributions"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:12
+msgid "faq.category.technical"
+msgstr "Technical"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:13
+msgid "faq.category.other"
+msgstr "Other questions"
 
 #: main/domain/general/service/OnboardingContextService.py:38
 msgid "onboarding.labels.next"
@@ -935,6 +963,34 @@ msgstr ""
 #: main/interface/ui/templates/Html/General/429.html:10
 msgid "template.429.hint"
 msgstr "Please wait a few moments before trying again."
+
+#: main/interface/ui/templates/Html/General/faq.html:4
+msgid "faq.page_title"
+msgstr "FAQ — TTRPG soundboard & GM tools | AmbianceBoard"
+
+#: main/interface/ui/templates/Html/General/faq.html:12
+msgid "faq.title"
+msgstr "Frequently Asked Questions"
+
+#: main/interface/ui/templates/Html/General/faq.html:14
+msgid "faq.subtitle"
+msgstr "Everything you need to know about AmbianceBoard"
+
+#: main/interface/ui/templates/Html/General/faq.html:46
+msgid "faq.cta.ready"
+msgstr "Ready to create your first atmosphere?"
+
+#: main/interface/ui/templates/Html/General/faq.html:50
+msgid "faq.cta.create_soundboard"
+msgstr "Create my soundboard for free"
+
+#: main/interface/ui/templates/Html/General/faq.html:54
+msgid "faq.cta.create_account"
+msgstr "Create an account for free"
+
+#: main/interface/ui/templates/Html/General/faq.html:58
+msgid "faq.cta.ask_question"
+msgstr "Ask a question"
 
 #: main/interface/ui/templates/Html/General/general_pricing.html:10
 msgid "template.pricing.title"
@@ -1786,11 +1842,11 @@ msgstr "Edit"
 msgid "template.playlist_create.button.delete_track"
 msgstr "Delete"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:261
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:260
 msgid "template.playlist_create.track_labeling_pending"
 msgstr "Labeling coming soon"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:282
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:280
 msgid "template.playlist_create.button.new_playlist"
 msgstr "Create a new playlist"
 
