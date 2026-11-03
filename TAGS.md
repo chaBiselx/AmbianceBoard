@@ -649,6 +649,9 @@ Corrections
 Sécurité
 - Mise à jour de dépendances
 
+Nouveautés
+- Accessibilité de la labellisation à tout les utilisateurs
+
 Corrections
 - Fix de la tentative de retélécharger une piste audio via un lien pour un manager 
 

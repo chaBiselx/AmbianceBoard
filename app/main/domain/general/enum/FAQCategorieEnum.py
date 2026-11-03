@@ -6,4 +6,5 @@ class FAQCategorieEnum(BaseEnum):
     COMPARAISON = "Comparaisons & alternatives"
     DROITS = "Droits d'auteur & licences"
     PARTICIPATION = "Participation & contributions"
+    TECHNICAL = "Technique"
     OTHER = "Autres questions"

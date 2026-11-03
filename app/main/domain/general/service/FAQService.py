@@ -140,7 +140,16 @@ class FAQService:
                 'Si vous êtes développeur, vous pouvez également contribuer directement sur GitHub. '
             ),
         },
-
+        # ── Technique ──────────────────────────────────────
+        {
+            'theme': FAQCategorieEnum.TECHNICAL.value,
+            'question': 'Comment fonctionne la labellisation des sons ?',
+            'answer': (
+                'La labellisation des sons est un processus automatisé qui analyse les pistes audio via une IA multi-modal en local. '
+                'Ce n\'est pas un LLM, mais un modèle de classification audio qui identifie les types de sons pour les labeliser. '  
+                'Les labels seront ensuite utilisés pour m\'aider a faciliter la mise les tags sur les boutons. '
+            ),
+        },
         # ── Autres ──────────────────────────────────────
         {
             'theme': FAQCategorieEnum.OTHER.value,
