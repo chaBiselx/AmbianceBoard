@@ -103,7 +103,7 @@ def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id
             return ret
     except Exception as e:
         logger.error(f"Error in shared_music_stream: {e}")
-    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), status=404)
 
 
 @require_http_methods(['GET'])
@@ -117,4 +117,4 @@ def shared_proposal_music_stream(request, soundboard_uuid, token, proposal_uuid,
             return track.get_reponse_content()
     except Exception as e:
         logger.error(f"Error in shared_proposal_music_stream: {e}")
-    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), status=404)

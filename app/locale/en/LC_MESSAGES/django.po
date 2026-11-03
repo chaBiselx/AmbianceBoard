@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 14:45+0000\n"
+"POT-Creation-Date: 2026-11-02 20:18+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -33,16 +33,16 @@ msgstr "Button colors"
 msgid "Dimensions boutons"
 msgstr "Button dimensions"
 
-#: main/architecture/contextProcessors/sidebar_processor.py:60
+#: main/architecture/contextProcessors/sidebar_processor.py:61
 #: main/interface/ui/templates/Html/Moderator/dashboard.html:43
 msgid "Soundboard"
 msgstr "Soundboard"
 
-#: main/architecture/contextProcessors/sidebar_processor.py:61
+#: main/architecture/contextProcessors/sidebar_processor.py:62
 msgid "Favoris"
 msgstr "Favorites"
 
-#: main/architecture/contextProcessors/sidebar_processor.py:65
+#: main/architecture/contextProcessors/sidebar_processor.py:66
 msgid "Statistiques"
 msgstr "Statistics"
 
@@ -119,6 +119,38 @@ msgstr "New playlist proposal"
 #: main/interface/ui/controller/debug/debugEmailViews.py:252
 msgid "template.email.user.tier_expiration.subject"
 msgstr "Your tier expiration warning"
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.method_not_supported"
+msgstr "Method not supported."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.not_acceptable"
+msgstr "Not acceptable."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.internal_server_error"
+msgstr "An error occurred."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.invalid_request_method"
+msgstr "Invalid request method."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.element_not_found"
+msgstr "Element not found."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.data_retrieval"
+msgstr "Error retrieving data."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.playlist_already_exists_in_soundboard"
+msgstr "This playlist is already in this soundboard."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.script_not_found"
+msgstr "Script not found."
 
 #: main/domain/common/enum/FadePlaylistEnum.py:26
 #: main/domain/common/enum/FadePlaylistEnum.py:60
@@ -368,12 +400,6 @@ msgstr "Soundboard not found"
 #: main/interface/ui/controller/private/soundboardScriptViews.py:68
 msgid "template.scripts.error.name_required"
 msgstr "The script name is required"
-
-#: main/interface/ui/controller/private/soundboardScriptViews.py:145
-#: main/interface/ui/controller/private/soundboardScriptViews.py:196
-#: main/interface/ui/controller/private/soundboardScriptViews.py:221
-msgid "template.scripts.error.script_not_found"
-msgstr "Script not found"
 
 #: main/interface/ui/controller/private/soundboardScriptViews.py:173
 #: main/interface/ui/controller/private/soundboardScriptViews.py:206

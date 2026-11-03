@@ -73,6 +73,7 @@ class GraylogLogger(ILogger):
         return {'debug': 7, 'info': 6, 'warning': 4, 'error': 3, 'critical': 2}.get(level, 6)
 
     def flush(self) -> None:
+        # Each event is sent directly by _log; there is no logger-side buffer to flush.
         pass
 
     def shutdown(self) -> None:

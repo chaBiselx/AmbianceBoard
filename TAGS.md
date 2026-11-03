@@ -629,6 +629,22 @@ Améliorations
 Fiabilité & Confiance
 - Augmentations de la couverture de tests
 
+### 0.5.19 - 2026/11 : 
+Corrections
+- Corrections deploiement HS
+
+### 0.5.20 - 2026/11 : 
+Sécurité
+- Mise à jour de dépendances
+
+Améliorations
+- Ajouts de traductions
+- Ajout de page pour suivre les téléchargement Asynchrone pour le manager
+- Améliore l'affichage pour l'ajout de tag pour la modération
+
+Corrections
+- Fix du contaniner Playwright pour les test E2E
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

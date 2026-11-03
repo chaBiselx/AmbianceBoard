@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 14:45+0000\n"
+"POT-Creation-Date: 2026-11-02 20:18+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -33,16 +33,16 @@ msgstr "Couleurs des boutons"
 msgid "Dimensions boutons"
 msgstr "Dimensions des boutons"
 
-#: main/architecture/contextProcessors/sidebar_processor.py:60
+#: main/architecture/contextProcessors/sidebar_processor.py:61
 #: main/interface/ui/templates/Html/Moderator/dashboard.html:43
 msgid "Soundboard"
 msgstr "Soundboard"
 
-#: main/architecture/contextProcessors/sidebar_processor.py:61
+#: main/architecture/contextProcessors/sidebar_processor.py:62
 msgid "Favoris"
 msgstr "Favoris"
 
-#: main/architecture/contextProcessors/sidebar_processor.py:65
+#: main/architecture/contextProcessors/sidebar_processor.py:66
 msgid "Statistiques"
 msgstr "Statistiques"
 
@@ -119,6 +119,38 @@ msgstr "Nouvelle proposition de playlist"
 #: main/interface/ui/controller/debug/debugEmailViews.py:252
 msgid "template.email.user.tier_expiration.subject"
 msgstr "Avertissement d'expiration de votre tier"
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.method_not_supported"
+msgstr "Méthode non prise en charge."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.not_acceptable"
+msgstr "Non acceptable."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.internal_server_error"
+msgstr "Une erreur est survenue."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.invalid_request_method"
+msgstr "Méthode de requête invalide."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.element_not_found"
+msgstr "Élément introuvable."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.data_retrieval"
+msgstr "Erreur lors de la récupération des données."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.playlist_already_exists_in_soundboard"
+msgstr "Cette playlist est déjà présente dans ce soundboard."
+
+#: main/domain/common/enum/ErrorMessageEnum.py
+msgid "error.script_not_found"
+msgstr "Script introuvable."
 
 #: main/domain/common/enum/FadePlaylistEnum.py:26
 #: main/domain/common/enum/FadePlaylistEnum.py:60
@@ -378,12 +410,6 @@ msgstr "Soundboard introuvable"
 #: main/interface/ui/controller/private/soundboardScriptViews.py:68
 msgid "template.scripts.error.name_required"
 msgstr "Le nom du script est obligatoire"
-
-#: main/interface/ui/controller/private/soundboardScriptViews.py:145
-#: main/interface/ui/controller/private/soundboardScriptViews.py:196
-#: main/interface/ui/controller/private/soundboardScriptViews.py:221
-msgid "template.scripts.error.script_not_found"
-msgstr "Script introuvable"
 
 #: main/interface/ui/controller/private/soundboardScriptViews.py:173
 #: main/interface/ui/controller/private/soundboardScriptViews.py:206

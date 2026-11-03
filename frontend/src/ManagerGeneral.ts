@@ -1,11 +1,13 @@
 import ConsoleCustom from "./modules/General/ConsoleCustom";
 import ModalCustom from '@/modules/General/Modal';
 import FilterFormHtmlManager from '@/modules/Filter/FilterFormHtmlManager';
+import FilterFormDate from '@/modules/Filter/FilterFormDate';
 
 
 document.addEventListener('DOMContentLoaded', () => {
     new CronExecuter().addEvent();
     new FilterFormHtmlManager().init();
+    new FilterFormDate().init();
 })
 
 class CronExecuter {
@@ -16,7 +18,7 @@ class CronExecuter {
         }
     }
 
-    private async executeCron(event: Event) {
+    private executeCron(event: Event) {
         const target = event.target as HTMLElement;
         const cronUrl = target.dataset.url;
         const cronTitle = target.dataset.title;

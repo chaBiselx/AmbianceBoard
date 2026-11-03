@@ -59,11 +59,11 @@ def soundboard_delete(request, soundboard_uuid) -> JsonResponse:
     soundboard = (SoundBoardService(request)).get_soundboard(soundboard_uuid)
     if request.method == 'DELETE':
         if not soundboard:
-            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+            return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
         else:
             ActivityContextHelper.set_action(request, activity_type=UserActivityTypeEnum.SOUNDBOARD_DELETE, user=request.user, content_object=soundboard)
             soundboard.delete()
             return JsonResponse({'success': 'Suppression soundboard réussie'}, status=200)
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.trad()}, status=405)
 
 
