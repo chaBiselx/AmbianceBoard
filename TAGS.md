@@ -645,6 +645,10 @@ Améliorations
 Corrections
 - Fix du contaniner Playwright pour les test E2E
 
+### 0.5.21 - 2026/11 : 
+Sécurité
+- Mise à jour de dépendances
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
