@@ -175,7 +175,24 @@ class ManagerAsyncDownloadJobsRouteTest(TestCase):
         self.assertEqual(job.error_message, "")
 
     @patch("main.interface.ui.controller.manager.managerAsyncDownloadJobViews.process_async_download_job.apply_async")
-    def test_non_pending_job_cannot_be_retried(self, mock_apply_async):
+    def test_failed_job_can_be_retried(self, mock_apply_async):
+        self.client.force_login(self.manager)
+        job = self.create_job(AsyncDownloadJobStatusEnum.FAILED.name)
+        mock_apply_async.return_value = SimpleNamespace(id="new-celery-task-id")
+
+        response = self.client.post(
+            reverse("managerAsyncDownloadJobRetry", args=[job.uuid])
+        )
+
+        self.assertRedirects(response, reverse("managerAsyncDownloadJobs"))
+        mock_apply_async.assert_called_once_with(
+            args=[str(job.uuid)],
+            queue="default",
+            priority=1,
+        )
+
+    @patch("main.interface.ui.controller.manager.managerAsyncDownloadJobViews.process_async_download_job.apply_async")
+    def test_successful_job_cannot_be_retried(self, mock_apply_async):
         self.client.login(username=self.manager.username, password="testpass123")
         job = self.create_job(AsyncDownloadJobStatusEnum.SUCCESS.name)
 

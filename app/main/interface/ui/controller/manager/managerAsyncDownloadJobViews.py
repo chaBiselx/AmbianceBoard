@@ -59,8 +59,8 @@ def manager_async_download_job_retry(request, job_uuid):
     if job is None:
         raise Http404("Téléchargement introuvable.")
 
-    if job.status != AsyncDownloadJobStatusEnum.PENDING.name:
-        messages.error(request, "Seuls les téléchargements en attente peuvent être relancés.")
+    if not AsyncDownloadJobStatusEnum.can_retry(job.status):
+        messages.error(request, "Seuls les téléchargements en attente ou en échec peuvent être relancés.")
         return redirect("managerAsyncDownloadJobs")
 
     result = process_async_download_job.apply_async(

@@ -645,6 +645,19 @@ Améliorations
 Corrections
 - Fix du contaniner Playwright pour les test E2E
 
+### 0.5.21 - 2026/11 : 
+Sécurité
+- Mise à jour de dépendances
+
+Améliorations
+- Ajouts de traductions
+
+Nouveautés
+- Accessibilité de la labellisation à tout les utilisateurs
+
+Corrections
+- Fix de la tentative de retélécharger une piste audio via un lien pour un manager 
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

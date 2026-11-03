@@ -137,18 +137,28 @@
                             </div>
                         </div>
                         <hr>
-                        <div class="col-12">
                             {% for track in playlist.tracks.all %}
-                            <small>
-                                {% if track.is_music %}
-                                    <a class="btn btn-link" href="{{ track.get_download_url }}" download><i>{{ track.get_source }}</i></a>
-                                {% else %}
-                                    <i>{{ track.get_source }}</i>
-                                {% endif %}
-                            </small><br/>
-                            <audio src="{{ track.get_stream_url }}" controls></audio><br/>
+                            <div class="row m-0 p-0">
+                                <div class="col-md-8 col-12">
+                                    <small>
+                                        {% if track.is_music %}
+                                        <a class="btn btn-link" href="{{ track.get_download_url }}" download><i>{{ track.get_source }}</i></a>
+                                        {% else %}
+                                        <i>{{ track.get_source }}</i>
+                                        {% endif %}
+                                    </small><br/>
+                                    <audio src="{{ track.get_stream_url }}" controls></audio>
+                                </div>
+                                
+                                <div class="col-md-4 col-12">
+                                    <small>Labels:</small><br/>
+                                    {% for trackLabel in track.labels.all %}
+                                    <span class="badge bg-secondary">{{ trackLabel.label }} - {{ trackLabel.confidence }} </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
                             {% endfor %}
-                        </div>
                     </div>
                 </div>
             </div>

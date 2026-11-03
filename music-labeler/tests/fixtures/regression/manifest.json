@@ -1,0 +1,13 @@
+{
+  "cases": [
+    {
+         "id": "coq",
+         "audio": "audio/coq.wav",
+         "expected_labels": {
+           "creature": ["animal"],
+           "music_style": ["generic"]
+         },
+         "top_k_per_category": 3
+       }
+  ]
+}

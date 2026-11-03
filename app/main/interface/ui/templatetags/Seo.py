@@ -334,8 +334,8 @@ def _build_faq_seo_context(request, _context) -> dict:
     faq_entities = [
         {
             '@type': 'Question',
-            'name': item['question'],
-            'acceptedAnswer': {'@type': 'Answer', 'text': item['answer']},
+            'name': item['question_fr'],
+            'acceptedAnswer': {'@type': 'Answer', 'text': item['answer_fr']},
         }
         for item in HOME_FAQ
     ]

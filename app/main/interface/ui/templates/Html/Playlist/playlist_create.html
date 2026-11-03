@@ -243,9 +243,8 @@
                                     {{ track.get_source }}
                                 </small>
                                 {% endif %}
-                                {% if request.user.isBetaTester %}
                                 {% if track.labels.all %}
-                                <div class="track-tags beta-test">
+                                <div class="track-tags">
                                     {% for label in track.labels.all %}
                                     {% if label.confidence >= 0.4 %}
                                     <span class="badge bg-success">{{ label.label }}</span>
@@ -257,10 +256,9 @@
                                     {% endfor %}
                                 </div>
                                 {% else %}
-                                <div class="track-tags beta-test">
+                                <div class="track-tags">
                                     <span class="badge bg-light text-dark">{% trans "template.playlist_create.track_labeling_pending" %}</span>
                                 </div>
-                                {% endif %}
                                 {% endif %}
 
                             </div>

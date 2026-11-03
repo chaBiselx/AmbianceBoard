@@ -79,7 +79,7 @@ def home(request: HttpRequest) -> HttpResponse:
 def faq(request: HttpRequest) -> HttpResponse:
     return render(request, "Html/General/faq.html", {
         "title": "FAQ",
-        "faq_groups": FAQService().get_faqs(),
+        "faq_groups": FAQService().get_faqs(request.LANGUAGE_CODE),
     })
 
 

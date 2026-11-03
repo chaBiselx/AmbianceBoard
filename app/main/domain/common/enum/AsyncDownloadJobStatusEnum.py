@@ -14,3 +14,16 @@ class AsyncDownloadJobStatusEnum(BaseEnum):
     DOWNLOADING = "DOWNLOADING"
     SUCCESS = "SUCCESS"
     FAILED = "FAILED"
+
+    @classmethod
+    def can_retry(cls, status: str) -> bool:
+        """
+        Indique si le job peut être relancé.
+
+        Args:
+            status: Statut stocké sur le job.
+
+        Returns:
+            bool: True si le job est en échec ou en attente, False sinon
+        """
+        return status in (cls.PENDING.name, cls.FAILED.name)
