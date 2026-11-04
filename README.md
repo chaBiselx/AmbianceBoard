@@ -60,3 +60,6 @@ ajouter dans le dns 127.0.0.1 ambianceboard
 - Grafana: http://localhost:3000/
 
 
+## set-up Greylogs 
+
+aller `System → Inputs` puis créer un iput de type `GELF UDP`

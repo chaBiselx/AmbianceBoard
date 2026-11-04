@@ -1,18 +1,20 @@
-import Notification from '@/modules/General/Notifications';
 import ReportingContent from '@/modules/ReportingContent'
 import { PaginationManager } from '@/modules/PaginationManager';
 import { TagManager } from '@/modules/TagManager';
 import { SelectManager } from '@/modules/SelectManager';
 import FilterFormHtmlManager from '@/modules/Filter/FilterFormHtmlManager';
 import ConsoleCustom from "@/modules/General/ConsoleCustom";
-import ConsoleTraceServeur from "@/modules/General/ConsoleTraceServeur";
 import BootstrapComponentInitializer from "@/modules/General/BootstrapComponentInitializer";
 import ConsoleTesteur from "@/modules/General/ConsoleTesteur";
-import Csrf from "@/modules/General/Csrf";
 import GeneralTheme from "@/modules/General/GeneralTheme";
 import NotificationGeneral from "@/modules/General/NotificationGeneral";
-import Time from "@/modules/Util/Time";
 import OnboardingManager from "@/modules/OnboardingManager";
+import EmailConfirmationAccount from "@/modules/General/EmailConfirmationAccount";
+import FullScreen from "@/modules/General/FullScreen";
+import Sidebar from "@/modules/General/Sidebar";
+import DeleteAccount from "@/modules/General/DeleteAccount";
+import UserActivityLog from "@/modules/General/UserActivityLog";
+import ShowConsoleBetaTester from "@/modules/General/ShowConsoleBetaTester";
 
 // Gestionnaire global pour les erreurs de promesses non gérées
 globalThis.addEventListener('unhandledrejection', (event) => {
@@ -86,220 +88,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
-
-class EmailConfirmationAccount {
-    element: HTMLButtonElement | null = null
-
-    constructor(idBtn: string) {
-        const element = document.getElementById(idBtn)
-        if (element) {
-            this.element = element as HTMLButtonElement;
-        }
-    }
-
-    public addEvent() {
-        if (this.element) {
-            this.element.addEventListener('click', this.resentEmailConfirmation.bind(this));
-        }
-
-    }
-    private resentEmailConfirmation() {
-        if (this.element) {
-            this.element.style.display = 'none'
-            const url = this.element.dataset.url
-            const csrfToken = Csrf.getToken();
-            if (url && csrfToken) {
-                fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': csrfToken
-                    },
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        Notification.createClientNotification({ message: 'Email envoyé avec success', type: 'success' })
-                    })
-                    .catch(error => {
-                        console.error(error)
-                        Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' })
-                    });
-            }
-
-        }
-
-
-    }
-}
-
-
-class FullScreen {
-    hideAll: HTMLElement | null = null;
-    showBaseLayoutButton: HTMLElement | null = null;
-
-    constructor() {
-        this.hideAll = document.getElementById('hideAll')
-        this.showBaseLayoutButton = document.getElementById('showBaseLayoutButton');
-
-    }
-
-    public addEvent() {
-        if (this.hideAll && this.showBaseLayoutButton) {
-
-            this.hideAll.addEventListener('click', this.toggle);
-            this.showBaseLayoutButton.addEventListener('click', this.toggle);
-        }
-
-    }
-    private toggle() {
-        const elementToToggles = document.getElementsByClassName('fullScreen-element');
-        for (const element of Array.from(elementToToggles)) {
-            element.classList.toggle('d-none');
-        }
-        const elementToTogglesInline = document.getElementsByClassName('fullScreen-element-inline');
-        for (const element of Array.from(elementToTogglesInline)) {
-            element.classList.toggle('d-inline');
-        }
-        const mainBody = document.getElementById('mainBody')
-        if (mainBody) mainBody.classList.toggle('p-0');
-        const mainContent = document.getElementById('main-content');
-        if (mainContent) mainContent.classList.toggle('py-lg-5');
-
-        setTimeout(() => {
-            BootstrapComponentInitializer.hideAllTooltips();
-        }, 30);
-        setTimeout(() => {
-            BootstrapComponentInitializer.hideAllTooltips();
-        }, 50);
-    }
-}
-
-class Sidebar {
-    sidebarToggle: HTMLButtonElement | null = null
-    sidebar: HTMLDivElement | null = null
-
-    constructor() {
-        // Mobile sidebar toggle
-        this.sidebarToggle = document.querySelector('.navbar-toggler');
-        this.sidebar = document.querySelector('.sidebar');
-    }
-
-    public addEvent() {
-        if (this.sidebarToggle && this.sidebar) {
-            this.sidebarToggle.addEventListener('click', this.toggle.bind(this));
-        }
-    }
-    public toggle() {
-        if (this.sidebar) {
-            this.sidebar.classList.toggle('d-block');
-        }
-    }
-
-}
-
-class DeleteAccount {
-    private readonly deleteAccountButton: HTMLButtonElement | null = null;
-
-    constructor() {
-        this.deleteAccountButton = document.getElementById('delete-account') as HTMLButtonElement;
-    }
-
-    public addEvent() {
-        if (this.deleteAccountButton) {
-            this.deleteAccountButton.addEventListener('click', this.confirmDelete.bind(this));
-        }
-    }
-
-    private confirmDelete(event: Event) {
-        event.preventDefault();
-        if (confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.")) {
-            const method = this.deleteAccountButton?.closest('form')?.attributes.getNamedItem('method')?.value;
-            const url = this.deleteAccountButton?.closest('form')?.action;
-            if (method && url) {
-                fetch(url, {
-                    method: method,
-                    headers: {
-                        'X-CSRFToken': Csrf.getToken()!
-                    }
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            globalThis.location.href = '/';
-                        } else {
-                            Notification.createClientNotification({ message: 'Une erreur est survenue', type: 'danger' });
-                        }
-                    })
-                    .catch((error) => {
-                        ConsoleTraceServeur.error('Failed to delete account:', error);
-                    });
-            }
-
-        }
-    }
-}
-
-class UserActivityLog {
-    url: string | null = null;
-    element: HTMLElement | null = null;
-    constructor() {
-        this.element = document.getElementById('trace_user_activity') || null;
-    }
-
-    private getUrl() {
-        return this.element?.dataset.url || null;
-    }
-
-    public addEvent() {
-        if (this.element) {
-            // Détection de la fermeture volontaire de la page (fermeture onglet, navigation, rafraîchissement)
-            window.addEventListener('beforeunload', () => {
-                this.postActivityLog();
-            });
-
-            //envoyer toutes les 15 min en cas de coupure
-            setInterval(() => {
-                this.postActivityLog();
-            }, Time.get_minutes(15));
-        }
-    }
-
-    private postActivityLog() {
-        const url = this.getUrl();
-        if (url) {
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': Csrf.getToken()!
-                },
-            })
-                .then(_response => {
-                    // Log envoyé avec succès
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
-        }
-    }
-}
-
-class ShowConsoleBetaTester {
-    buttonShow: HTMLButtonElement | null = null;
-    consoleElement: HTMLElement | null = null;
-
-    constructor() {
-        this.buttonShow = document.getElementById('showLoggerBetaTest') as HTMLButtonElement;
-        this.consoleElement = document.getElementById('betaTestConsole');
-    }
-
-    public addEvent() {
-        if (this.buttonShow && this.consoleElement) {
-            this.buttonShow.addEventListener('click', this.toggleConsole.bind(this));
-        }
-    }
-
-    private toggleConsole() {
-        if (this.consoleElement) {
-            this.consoleElement.classList.toggle('d-none');
-        }
-    }
-}

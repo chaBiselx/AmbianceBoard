@@ -2,6 +2,7 @@ from typing import Optional, List
 from django.http import HttpRequest
 from main.domain.common.enum.PermissionEnum import PermissionEnum
 from main.architecture.persistence.models.Playlist import Playlist
+from main.architecture.persistence.models.User import User
 from main.architecture.persistence.repository.PlaylistRepository import PlaylistRepository
 from main.interface.ui.forms.private.PlaylistForm import PlaylistForm
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
@@ -14,9 +15,14 @@ class PlaylistService:
         self.request = request
         self.playlist_repository = PlaylistRepository()
 
+    # deprecated use get_playlist_for_user instead
     def get_playlist(self, playlist_uuid: int) -> Optional[Playlist]:
-        playlist = self.playlist_repository.get(playlist_uuid=playlist_uuid)
-        if not playlist or playlist.user != self.request.user:
+        return self.get_playlist_for_user(playlist_uuid, self.request.user)
+
+    @staticmethod
+    def get_playlist_for_user(playlist_uuid: int, user: User) -> Optional[Playlist]:
+        playlist = PlaylistRepository().get(playlist_uuid=playlist_uuid)
+        if not playlist or playlist.user != user:
             return None
 
         return playlist
