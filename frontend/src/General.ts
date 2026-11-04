@@ -299,6 +299,9 @@ class ShowConsoleBetaTester {
 
     private toggleConsole() {
         if (this.consoleElement) {
+            if(this.consoleElement.classList.contains('d-none')) {
+                ConsoleTraceServeur.log('Set console beta tester visible');
+            }
             this.consoleElement.classList.toggle('d-none');
         }
     }
