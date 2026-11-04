@@ -248,7 +248,7 @@ def soundboard_edit_mode_playlist_list(request, soundboard_uuid):
 def soundboard_edit_mode_community_track_stream(request, soundboard_uuid, playlist_uuid, music_id):
     soundboard = SoundBoardService(request).get_soundboard(soundboard_uuid)
     track = MusicService(request).get_community_track(playlist_uuid, music_id)
-    if not track and not soundboard:
+    if not soundboard or not track:
         return HttpResponse(status=404)
 
     if request.method == 'HEAD':
