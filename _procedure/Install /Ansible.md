@@ -1,5 +1,11 @@
 # Installation d'Ansible
 
+## pre-requis sur le serveur emmeteur  : 
+
+```
+sudo apt install ansible-core
+```
+
 ## Structure du projet
 
 ```text
