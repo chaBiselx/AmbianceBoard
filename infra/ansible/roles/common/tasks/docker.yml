@@ -2,8 +2,11 @@
 - name: Install Docker Engine and Docker Compose V2
   ansible.builtin.apt:
     name:
-      - docker.io
-      - docker-compose-v2
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
     state: present
   become: true
 
