@@ -4,9 +4,11 @@
     that:
       - project_git_user | length > 0
       - project_app_user | length > 0
+      - project_docker_stat_user | length > 0
       - project_git_user != project_app_user
       - project_git_user != 'root'
       - project_app_user != 'root'
+      - project_docker_stat_user != 'root'
     fail_msg: >-
       Configure distinct, non-root PROJECT_GIT_USER and PROJECT_APP_USER
       values before running this playbook.
@@ -43,6 +45,18 @@
     create_home: true
     group: "{{ project_app_user }}"
     groups:
+      - docker
+    append: false
+    shell: /bin/bash
+
+- name: Ensure application account exists with Docker access
+  ansible.builtin.user:
+    name: "{{ project_docker_stat_user }}"
+    state: present
+    create_home: true
+    group: "{{ project_docker_stat_user }}"
+    groups:
+      - external_automaton
       - docker
     append: false
     shell: /bin/bash

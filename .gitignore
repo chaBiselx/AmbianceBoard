@@ -33,3 +33,6 @@ staticfiles/*
 mediafiles/*
 logs/*
 frontend/.npm-cache
+
+# ansible
+/infra/ansible/.wireguard_public_key
