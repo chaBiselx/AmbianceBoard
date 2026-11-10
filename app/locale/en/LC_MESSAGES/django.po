@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 11:34+0000\n"
+"POT-Creation-Date: 2026-11-10 19:55+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -1843,10 +1843,42 @@ msgid "template.playlist_create.button.delete_track"
 msgstr "Delete"
 
 #: main/interface/ui/templates/Html/Playlist/playlist_create.html:260
+msgid "template.playlist_create.report_labels.title"
+msgstr "Report incorrect labels"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:261
+msgid "template.playlist_create.report_labels.description"
+msgstr "Select the labels that do not match this track."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:262
+msgid "template.playlist_create.report_labels.submit"
+msgstr "Send report"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:263
+msgid "template.playlist_create.report_labels.cancel"
+msgstr "Cancel"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:264
+msgid "template.playlist_create.report_labels.select_one"
+msgstr "Select at least one label."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:265
+msgid "template.playlist_create.report_labels.success"
+msgstr "Thanks, your report was sent to support."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:266
+msgid "template.playlist_create.report_labels.error"
+msgstr "Unable to send the report. Please try again later."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:267
+msgid "template.playlist_create.report_labels.button"
+msgstr "Report"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:273
 msgid "template.playlist_create.track_labeling_pending"
 msgstr "Labeling coming soon"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:280
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:293
 msgid "template.playlist_create.button.new_playlist"
 msgstr "Create a new playlist"
 

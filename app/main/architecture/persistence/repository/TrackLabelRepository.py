@@ -10,6 +10,9 @@ class TrackLabelRepository:
     def get_labels_for_track(self, track: Track) -> QuerySet[TrackLabel]:
         return TrackLabel.objects.filter(track=track)
 
+    def get_labels_by_ids_for_track(self, track: Track, label_ids: list[int]) -> QuerySet[TrackLabel]:
+        return TrackLabel.objects.filter(track=track, id__in=label_ids)
+
     def save_labels(self, track: Track, labels: list[dict]) -> list[TrackLabel]:
         """
         Sauvegarde les labels pour une track (remplace les existants).
