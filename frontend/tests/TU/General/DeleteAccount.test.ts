@@ -1,8 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import DeleteAccount from '../../../src/modules/General/DeleteAccount';
 import Notification from '../../../src/modules/General/Notifications';
 import ConsoleTraceServeur from '../../../src/modules/General/ConsoleTraceServeur';
 import Csrf from '../../../src/modules/General/Csrf';
+import { setupAccountTestHooks } from './accountTestSetup';
 
 vi.mock('@/modules/General/Notifications', () => ({
     default: { createClientNotification: vi.fn() },
@@ -17,14 +18,8 @@ vi.mock('@/modules/General/Csrf', () => ({
 describe('DeleteAccount', () => {
     beforeEach(() => {
         document.body.innerHTML = '<form method="DELETE" action="/delete"><button id="delete-account"></button></form>';
-        vi.clearAllMocks();
-        vi.mocked(Csrf.getToken).mockReturnValue('csrf-token');
     });
-
-    afterEach(() => {
-        vi.unstubAllGlobals();
-        vi.restoreAllMocks();
-    });
+    setupAccountTestHooks();
 
     it('asks for confirmation and redirects after a successful deletion', async () => {
         const confirmMock = vi.fn().mockReturnValue(true);

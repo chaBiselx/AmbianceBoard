@@ -1,7 +1,8 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import EmailConfirmationAccount from '../../../src/modules/General/EmailConfirmationAccount';
 import Notification from '../../../src/modules/General/Notifications';
 import Csrf from '../../../src/modules/General/Csrf';
+import { setupAccountTestHooks } from './accountTestSetup';
 
 vi.mock('@/modules/General/Notifications', () => ({
     default: { createClientNotification: vi.fn() },
@@ -13,14 +14,8 @@ vi.mock('@/modules/General/Csrf', () => ({
 describe('EmailConfirmationAccount', () => {
     beforeEach(() => {
         document.body.innerHTML = '';
-        vi.clearAllMocks();
-        vi.mocked(Csrf.getToken).mockReturnValue('csrf-token');
     });
-
-    afterEach(() => {
-        vi.unstubAllGlobals();
-        vi.restoreAllMocks();
-    });
+    setupAccountTestHooks();
 
     it('sends a confirmation email and displays a success notification', async () => {
         document.body.innerHTML = '<button id="resend" data-url="/resend"></button>';
