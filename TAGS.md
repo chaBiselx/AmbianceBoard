@@ -665,6 +665,9 @@ Nouveautés
 Améliorations
 - Rendu visuel pour le declenchement des pistes en particulier.
 
+Modifications
+- Changement des icones de soundboard et de boutons
+
 Corrections
 - Fix d'un effet "aléatoire" sur le déclenchement d'une piste en particulier.
 
