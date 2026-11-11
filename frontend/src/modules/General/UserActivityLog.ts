@@ -16,7 +16,7 @@ class UserActivityLog {
     public addEvent() {
         if (this.element) {
             window.addEventListener('beforeunload', () => {
-                this.postActivityLog();
+                this.postActivityLog(true);
             });
 
             setInterval(() => {
@@ -25,11 +25,12 @@ class UserActivityLog {
         }
     }
 
-    private postActivityLog() {
+    private postActivityLog(keepalive = false) {
         const url = this.getUrl();
         if (url) {
             fetch(url, {
                 method: 'POST',
+                keepalive,
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': Csrf.getToken()!

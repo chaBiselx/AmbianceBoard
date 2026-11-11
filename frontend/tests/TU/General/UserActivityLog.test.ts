@@ -29,10 +29,16 @@ describe('UserActivityLog', () => {
         window.dispatchEvent(new Event('beforeunload'));
         expect(fetchMock).toHaveBeenCalledWith('/activity', {
             method: 'POST',
+            keepalive: true,
             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': 'csrf-token' },
         });
 
         vi.advanceTimersByTime(Time.get_minutes(15));
         expect(fetchMock).toHaveBeenCalledTimes(2);
+        expect(fetchMock).toHaveBeenLastCalledWith('/activity', {
+            method: 'POST',
+            keepalive: false,
+            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': 'csrf-token' },
+        });
     });
 });
