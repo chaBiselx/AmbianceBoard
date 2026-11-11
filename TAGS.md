@@ -662,6 +662,9 @@ Corrections
 Nouveautés
 - Ajout d'un boutons pour signalier la mauvaise labellisation 
 
+Améliorations
+- Rendu visuel pour le declenchement des pistes en particulier.
+
 Corrections
 - Fix d'un effet "aléatoire" sur le déclenchement d'une piste en particulier.
 
