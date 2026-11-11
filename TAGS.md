@@ -662,6 +662,9 @@ Corrections
 Nouveautés
 - Ajout d'un boutons pour signalier la mauvaise labellisation 
 
+Corrections
+- Fix d'un effet "aléatoire" sur le déclenchement d'une piste en particulier.
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
