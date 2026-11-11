@@ -15,6 +15,7 @@ import Sidebar from "@/modules/General/Sidebar";
 import DeleteAccount from "@/modules/General/DeleteAccount";
 import UserActivityLog from "@/modules/General/UserActivityLog";
 import ShowConsoleBetaTester from "@/modules/General/ShowConsoleBetaTester";
+import TooltipTrigger from "@/modules/General/TooltipTrigger";
 
 // Gestionnaire global pour les erreurs de promesses non gérées
 globalThis.addEventListener('unhandledrejection', (event) => {
@@ -60,6 +61,7 @@ globalThis.addEventListener('error', (event) => {
 // Initialise automatiquement tous les composants Bootstrap disponibles
 document.addEventListener('DOMContentLoaded', () => {
     new BootstrapComponentInitializer().initialize();
+    new TooltipTrigger().addEventListener();
     new FilterFormHtmlManager().init();
     ConsoleTesteur.log('General Event initialised');
 });
