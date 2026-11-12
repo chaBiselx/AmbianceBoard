@@ -129,7 +129,7 @@ jobs:
           PCT=$(docker compose exec back coverage report --format=total)
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
       - name: Upload backend coverage to Codecov
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 #  7.1.1
         with:
           files: ./coverage-back.xml
           flags: backend
@@ -168,7 +168,7 @@ jobs:
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
           docker compose cp front:/app/coverage/lcov.info ./coverage-front.lcov
       - name: Upload frontend coverage to Codecov
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 #  7.1.1
         with:
           files: ./coverage-front.lcov
           flags: frontend
@@ -208,7 +208,7 @@ jobs:
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
           docker compose cp music-labeler:/tmp/coverage-music-labeler.xml ./coverage-music-labeler.xml
       - name: Upload music-labeler coverage to Codecov
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 #  7.1.1
         with:
           files: ./coverage-music-labeler.xml
           flags: music-labeler
