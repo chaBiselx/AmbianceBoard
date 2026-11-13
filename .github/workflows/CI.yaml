@@ -278,7 +278,7 @@ jobs:
 
       - name: Run OWASP ZAP scan
         id: zap-scan
-        run: docker compose --profile security run --rm zap zap.sh -cmd -autorun /zap/wrk/.github/zap.yaml
+        run: docker compose --profile security run --rm zap zap.sh -cmd -autorun /zap/wrk/zap.yaml
 
       - name: Publish ZAP summary
         id: zap-summary
