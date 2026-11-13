@@ -302,7 +302,7 @@ services:
       back:
         condition: service_healthy
     volumes:
-      - ./zap.yaml:/zap/zap.yaml:ro
+      - ./.github/zap.yaml:/zap/zap.yaml:ro
       - ./zap-reports:/zap/wrk:rw
     user: root
     command: ["zap.sh", "-cmd", "-autorun", "/zap/zap.yaml"]
