@@ -96,6 +96,42 @@ class OrganizeSoundboardUpdateRouteTest(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    def test_organize_update_adds_playlist_to_soundboard(self):
+        self.client.login(username='organize-user', password='testpass123')
+        playlist = Playlist.objects.create(name='Playlist to add', user=self.user)
+
+        response = self.client.post(
+            reverse('organizeSoundboardUpdate', kwargs={'soundboard_uuid': self.soundboard.uuid}),
+            data=json.dumps({'idPlaylist': str(playlist.uuid), 'section': 1}),
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            SoundboardPlaylist.objects.filter(
+                Playlist=playlist,
+                section__SoundBoard=self.soundboard,
+            ).exists()
+        )
+
+    def test_organize_update_rejects_another_users_playlist(self):
+        self.client.login(username='organize-user', password='testpass123')
+        playlist = Playlist.objects.create(name='Other user playlist', user=self.other_user)
+
+        response = self.client.post(
+            reverse('organizeSoundboardUpdate', kwargs={'soundboard_uuid': self.soundboard.uuid}),
+            data=json.dumps({'idPlaylist': str(playlist.uuid), 'section': 1}),
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, 404)
+        self.assertFalse(
+            SoundboardPlaylist.objects.filter(
+                Playlist=playlist,
+                section__SoundBoard=self.soundboard,
+            ).exists()
+        )
+
     def test_organize_update_swaps_two_sections(self):
         self.client.login(username='organize-user', password='testpass123')
 
@@ -115,6 +151,18 @@ class OrganizeSoundboardUpdateRouteTest(TestCase):
             SoundboardSection.objects.get(SoundBoard=self.soundboard, section=1).name,
             'Section 3',
         )
+
+    def test_organize_update_deletes_section(self):
+        self.client.login(username='organize-user', password='testpass123')
+
+        response = self.client.delete(
+            reverse('organizeSoundboardUpdate', kwargs={'soundboard_uuid': self.soundboard.uuid}),
+            data=json.dumps({'deleteSection': 2}),
+            content_type='application/json',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'success': 'section deleted', 'section': 2})
 
     def test_organize_update_swap_sections_rejects_missing_section(self):
         self.client.login(username='organize-user', password='testpass123')

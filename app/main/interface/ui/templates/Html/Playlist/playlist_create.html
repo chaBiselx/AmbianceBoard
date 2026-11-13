@@ -246,15 +246,27 @@
                                 {% if track.labels.all %}
                                 <div class="track-tags">
                                     {% for label in track.labels.all %}
-                                    {% if label.confidence >= 0.4 %}
-                                    <span class="badge bg-success">{{ label.label }}</span>
-                                    {% elif label.confidence >= 0.3 %}
-                                    <span class="badge bg-info">{{ label.label }}</span>
-                                    {% else %}
-                                    <span class="badge bg-light text-dark">{{ label.label }}</span>
-                                    {% endif %}
+                                    <span class="badge 
+                                        {% if label.confidence >= 0.4 %}bg-success{% elif label.confidence >= 0.3 %}bg-info{% else %}bg-light text-dark{% endif %}
+                                        track-label" data-label-id="{{ label.pk }}" data-label="{{ label.label }}" data-confidence="{{ label.confidence }}">
+                                        {{ label.label }}
+                                    </span>
+                                    
                                     {% endfor %}
                                 </div>
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-report-track-labels mt-2"
+                                    data-url="{% url 'reportTrackLabels' form.instance.uuid track.id %}"
+                                    data-modal-title="{% trans 'template.playlist_create.report_labels.title' %}"
+                                    data-modal-description="{% trans 'template.playlist_create.report_labels.description' %}"
+                                    data-modal-submit="{% trans 'template.playlist_create.report_labels.submit' %}"
+                                    data-modal-cancel="{% trans 'template.playlist_create.report_labels.cancel' %}"
+                                    data-modal-empty="{% trans 'template.playlist_create.report_labels.select_one' %}"
+                                    data-modal-success="{% trans 'template.playlist_create.report_labels.success' %}"
+                                    data-modal-error="{% trans 'template.playlist_create.report_labels.error' %}"
+                                    data-bs-toggle="tooltip" data-bs-title="{% trans 'template.playlist_create.report_labels.button' %}"
+                                    >
+                                    <i class="fa-solid fa-flag" aria-hidden="true"></i>
+                                </button>
                                 {% else %}
                                 <div class="track-tags">
                                     <span class="badge bg-light text-dark">{% trans "template.playlist_create.track_labeling_pending" %}</span>

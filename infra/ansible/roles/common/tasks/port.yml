@@ -29,16 +29,17 @@
   loop_control:
     loop_var: ufw_rule
   # Only remove rules for TCP ports not in the configured list
-  when: "(ufw_rule.split(']')[1].split('/')[0] | trim) not in (common_ufw_tcp_ports | map('string') | list)"
+  when: "(ufw_rule.split(']')[1].split()[0]) not in common_ufw_tcp_ports"
   become: true
 
 - name: Allow configured TCP ports
   ansible.builtin.command:
-    cmd: "ufw allow {{ ufw_port }}/tcp"
+    cmd: "ufw allow {{ ufw_port }}"
+  register: ufw_allow_result
+  changed_when: "'Rule added' in ufw_allow_result.stdout"
   loop: "{{ common_ufw_tcp_ports }}"
   loop_control:
     loop_var: ufw_port
-  when: "(ufw_port ~ '/tcp') not in ufw_status.stdout"
   become: true
 
 - name: Ensure UFW is enabled

@@ -1,5 +1,11 @@
 # Installation d'Ansible
 
+## pre-requis sur le serveur emmeteur  : 
+
+```
+sudo apt install ansible-core
+```
+
 ## Structure du projet
 
 ```text
@@ -82,6 +88,16 @@ export ANSIBLE_HOST_MAIN=X.X.X.X
 export ANSIBLE_CONFIG=./infra/ansible/ansible.cfg
 export PROJECT_GIT_USER=user_git
 export PROJECT_APP_USER=user_app
+export PROJECT_DOCKER_STAT_USER=user_docker_stat
+export WIREGUARD_LOCAL_PUBLIC_KEY=...
+```
+
+`infra/ansible/group_vars/all.yaml` associe `WIREGUARD_LOCAL_PUBLIC_KEY` à la variable Ansible `wireguard_local_public_key`. Elle contient la clé publique de la machine locale, à fournir dans l'environnement avant de lancer le playbook.
+
+Quand le playbook crée les clés WireGuard du VPS, sa clé publique (différente de la clé locale) est enregistrée dans `infra/ansible/.wireguard_public_key`, un fichier ignoré par Git. Pour la consulter :
+
+```bash
+cat infra/ansible/.wireguard_public_key
 ```
 
 ### Préparation de l'agent SSH

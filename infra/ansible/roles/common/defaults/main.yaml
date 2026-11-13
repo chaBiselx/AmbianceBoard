@@ -4,8 +4,8 @@ common_apt_cache_valid_time: 86400
 common_apt_upgrade: "yes"
 # Incoming TCP allow rules not listed here are removed.
 common_ufw_tcp_ports:
-  - 22
-  - 80
-  - 443
-  - 8000
-  - 3100
+  - "22/tcp"
+  - "80/tcp"
+  - "443/tcp"
+  - "8000/tcp"
+  - "3100/tcp"

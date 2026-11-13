@@ -90,6 +90,9 @@ def soundboard_organize_update(request, soundboard_uuid):
             return JsonResponse({'success': 'section deleted', 'section': delete_section}, status=200)
 
         playlist = (PlaylistService(request)).get_playlist(data['idPlaylist'])
+        if not playlist:
+            return JsonResponse({"error": "playslist non trouvé."}, status=404)
+
         new_order = None
         
         if 'newOrder' in data.keys():

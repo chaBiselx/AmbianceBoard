@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-03 11:34+0000\n"
+"POT-Creation-Date: 2026-11-10 19:55+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -1872,10 +1872,42 @@ msgid "template.playlist_create.button.delete_track"
 msgstr "Supprimer"
 
 #: main/interface/ui/templates/Html/Playlist/playlist_create.html:260
+msgid "template.playlist_create.report_labels.title"
+msgstr "Signaler des labels incorrects"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:261
+msgid "template.playlist_create.report_labels.description"
+msgstr "Sélectionnez les labels qui ne correspondent pas à cette piste."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:262
+msgid "template.playlist_create.report_labels.submit"
+msgstr "Envoyer le signalement"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:263
+msgid "template.playlist_create.report_labels.cancel"
+msgstr "Annuler"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:264
+msgid "template.playlist_create.report_labels.select_one"
+msgstr "Sélectionnez au moins un label."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:265
+msgid "template.playlist_create.report_labels.success"
+msgstr "Merci, votre signalement a été envoyé au support."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:266
+msgid "template.playlist_create.report_labels.error"
+msgstr "Impossible d’envoyer le signalement. Réessayez plus tard."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:267
+msgid "template.playlist_create.report_labels.button"
+msgstr "Signaler"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:273
 msgid "template.playlist_create.track_labeling_pending"
 msgstr "Labellisation prochaine"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:280
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:293
 msgid "template.playlist_create.button.new_playlist"
 msgstr "Créer une nouvelle playlist"
 

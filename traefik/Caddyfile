@@ -5,7 +5,8 @@
 :8080 {
     handle_path /static/* {
         root * /srv/static
-        file_server
+        header Content-Security-Policy "default-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self'; form-action 'self'"
+       file_server
     }
 
     handle_path /media/* {

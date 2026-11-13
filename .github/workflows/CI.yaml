@@ -124,9 +124,19 @@ jobs:
       - name: Run tests with coverage
         id: coverage
         run: |
-          docker compose exec back sh -c "coverage run --source='.' manage.py test --exclude-tag=stress-test && coverage report --fail-under=60"
+          docker compose exec back sh -c "coverage run --source='.' manage.py test --exclude-tag=stress-test && coverage report --fail-under=60 && coverage xml -o /tmp/coverage-back.xml"
+          docker compose cp back:/tmp/coverage-back.xml ./coverage-back.xml
           PCT=$(docker compose exec back coverage report --format=total)
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
+      - name: Upload backend coverage to Codecov
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 #  7.1.1
+        with:
+          files: ./coverage-back.xml
+          flags: backend
+          name: backend
+          root_dir: app
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
 
   TestDockerFront:
     needs: BuildDockerCompose
@@ -156,6 +166,16 @@ jobs:
           docker compose exec -w /app front npm run test:coverage
           PCT=$(docker compose exec -w /app front node -e "console.log(Math.round(require('./coverage/coverage-summary.json').total.lines.pct))")
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
+          docker compose cp front:/app/coverage/lcov.info ./coverage-front.lcov
+      - name: Upload frontend coverage to Codecov
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 #  7.1.1
+        with:
+          files: ./coverage-front.lcov
+          flags: frontend
+          name: frontend
+          root_dir: frontend
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
 
   TestDockerMusicLabeler:
     needs: BuildDockerCompose
@@ -183,9 +203,19 @@ jobs:
         id: coverage
         # /app est un bind mount appartenant au runner (uid 1001) : appuser ne peut pas y écrire, d'où l'usage de /tmp
         run: |
-          docker compose exec -e COVERAGE_FILE=/tmp/.coverage music-labeler python -m pytest --cov=. --cov-report=term-missing --cov-report=json:/tmp/coverage.json --cov-fail-under=60 -q tests
+          docker compose exec -e COVERAGE_FILE=/tmp/.coverage music-labeler python -m pytest --cov=. --cov-report=term-missing --cov-report=json:/tmp/coverage.json --cov-report=xml:/tmp/coverage-music-labeler.xml --cov-fail-under=60 -q tests
           PCT=$(docker compose exec music-labeler python -c "import json;print(round(json.load(open('/tmp/coverage.json'))['totals']['percent_covered']))")
           echo "pct=$PCT" >> "$GITHUB_OUTPUT"
+          docker compose cp music-labeler:/tmp/coverage-music-labeler.xml ./coverage-music-labeler.xml
+      - name: Upload music-labeler coverage to Codecov
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 #  7.1.1
+        with:
+          files: ./coverage-music-labeler.xml
+          flags: music-labeler
+          name: music-labeler
+          root_dir: music-labeler
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
 
   CoverageGlobal:
     needs:
@@ -193,8 +223,6 @@ jobs:
       - TestDockerFront
       - TestDockerMusicLabeler
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
       - name: Aggregate coverage
         run: |
@@ -214,13 +242,62 @@ jobs:
             echo "| **limit (threshold)** | **60%** |"
 
           } >> "$GITHUB_STEP_SUMMARY"
-        
-     
 
       - name: error handling
         run: |
           if [ $(echo "$AVG < 60" | bc) -eq 1 ]; then
             echo "Global coverage is below the threshold."
+            exit 1
+          fi
+
+  ZapScan:
+    needs: BuildDockerCompose
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download Docker images
+        uses: actions/download-artifact@v8
+        with:
+          name: docker-image
+
+      - name: Load Docker images
+        run: |
+          docker load -i ambianceboard-back_ci.tar
+          docker load -i ambianceboard-front_ci.tar
+          docker load -i ambianceboard-music-labeler_ci.tar
+
+      - name: Initialize CI environment
+        run: cp .env.CI .env
+
+      - name: Start application services
+        run: docker compose up -d --wait --wait-timeout 180
+
+      - name: Run OWASP ZAP scan
+        id: zap-scan
+        run: docker compose --profile security run --rm zap zap.sh -cmd -autorun .github/zap.yaml
+
+      - name: Publish ZAP summary
+        id: zap-summary
+        if: always()
+        run: python3 .github/scripts/summarize_zap.py
+
+      - name: Enforce ZAP gate
+        if: always()
+        env:
+          SCAN_OUTCOME: ${{ steps.zap-scan.outcome }}
+          REPORT_VALID: ${{ steps.zap-summary.outputs.report_valid }}
+          HAS_HIGH: ${{ steps.zap-summary.outputs.has_high }}
+        run: |
+          if [[ "$SCAN_OUTCOME" != "success" || "$REPORT_VALID" != "true" ]]; then
+            echo "::error::OWASP ZAP scan failed or did not produce a readable report."
+            exit 1
+          fi
+          if [[ "$HAS_HIGH" == "true" ]]; then
+            echo "::error::OWASP ZAP found one or more High-risk alerts."
             exit 1
           fi
 
