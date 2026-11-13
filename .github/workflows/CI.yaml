@@ -251,7 +251,7 @@ jobs:
           fi
 
   ZapScan:
-    needs: CoverageGlobal
+    needs: GitGuardian
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -278,7 +278,7 @@ jobs:
 
       - name: Run OWASP ZAP scan
         id: zap-scan
-        run: docker compose --profile security run --rm zap zap.sh -cmd -autorun /zap/wrk/zap.yaml
+        run: docker compose --profile security run --rm zap zap.sh -cmd -autorun .github/zap.yaml
 
       - name: Publish ZAP summary
         id: zap-summary
