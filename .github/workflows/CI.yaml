@@ -251,7 +251,7 @@ jobs:
           fi
 
   ZapScan:
-    needs: GitGuardian
+    needs: BuildDockerCompose
     runs-on: ubuntu-latest
     permissions:
       actions: read
