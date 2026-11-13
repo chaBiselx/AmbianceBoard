@@ -250,6 +250,57 @@ jobs:
             exit 1
           fi
 
+  ZapScan:
+    needs: CoverageGlobal
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Download Docker images
+        uses: actions/download-artifact@v8
+        with:
+          name: docker-image
+
+      - name: Load Docker images
+        run: |
+          docker load -i ambianceboard-back_ci.tar
+          docker load -i ambianceboard-front_ci.tar
+          docker load -i ambianceboard-music-labeler_ci.tar
+
+      - name: Initialize CI environment
+        run: cp .env.CI .env
+
+      - name: Start application services
+        run: docker compose up -d --wait --wait-timeout 180
+
+      - name: Run OWASP ZAP scan
+        id: zap-scan
+        run: docker compose --profile security run --rm zap scan -c .github/zap.yaml -r zap-reports
+
+      - name: Publish ZAP summary
+        id: zap-summary
+        if: always()
+        run: python3 .github/scripts/summarize_zap.py
+
+      - name: Enforce ZAP gate
+        if: always()
+        env:
+          SCAN_OUTCOME: ${{ steps.zap-scan.outcome }}
+          REPORT_VALID: ${{ steps.zap-summary.outputs.report_valid }}
+          HAS_HIGH: ${{ steps.zap-summary.outputs.has_high }}
+        run: |
+          if [[ "$SCAN_OUTCOME" != "success" || "$REPORT_VALID" != "true" ]]; then
+            echo "::error::OWASP ZAP scan failed or did not produce a readable report."
+            exit 1
+          fi
+          if [[ "$HAS_HIGH" == "true" ]]; then
+            echo "::error::OWASP ZAP found one or more High-risk alerts."
+            exit 1
+          fi
+
   # TODO retry car les issues ne sont pas actualisé dans SonarQube, donc le job échoue même si les issues sont corrigées 
   # TestQualityGate:
   #   needs:
