@@ -21,6 +21,7 @@ app/logs/*
 app/backup/*
 db-data/*
 tmp/*
+/zap-reports/
 
 
 # traductions

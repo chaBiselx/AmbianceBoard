@@ -1,0 +1,92 @@
+env:
+  contexts:
+    - name: anonymous
+      urls:
+        - http://back/
+    - name: authenticated
+      urls:
+        - http://back/
+      authentication:
+        method: form
+        parameters:
+          loginPageUrl: http://back/login/
+          loginRequestUrl: http://back/login/post
+          loginRequestBody: identifiant={%username%}&password={%password%}
+        verification:
+          method: response
+          loggedInRegex: 'href="/logout/"'
+          loggedOutRegex: 'name="identifiant"'
+      sessionManagement:
+        method: cookie
+      users:
+        - name: scanner
+          credentials: # fixtures User
+            username: E2E_public_owner
+            password: fixturepassword
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    progressToStdout: true
+
+jobs:
+  # Configure les règles passives et limite le nombre d'alertes par règle.
+  - type: passiveScan-config
+    parameters:
+      enableTags: false
+      maxAlertsPerRule: 10
+    rules: []
+
+  # Explore les liens HTML accessibles sans session pour couvrir le parcours public.
+  - type: spider
+    parameters:
+      context: anonymous
+      url: http://back/
+      maxDuration: 2
+      maxDepth: 8
+      logoutAvoidance: true
+
+  # Explore les interactions rendues par le navigateur dans le parcours public.
+  - type: spiderClient
+    parameters:
+      context: anonymous
+      url: http://back/
+      maxDuration: 2
+      maxCrawlDepth: 8
+
+  # Explore les liens HTML après connexion pour découvrir les pages privées.
+  - type: spider
+    parameters:
+      context: authenticated
+      user: scanner
+      url: http://back/
+      maxDuration: 2
+      maxDepth: 8
+      logoutAvoidance: true
+
+  # Explore les interactions navigateur après connexion pour découvrir les vues privées dynamiques.
+  - type: spiderClient
+    parameters:
+      context: authenticated
+      user: scanner
+      url: http://back/
+      maxDuration: 2
+      maxCrawlDepth: 8
+
+  # Attend la fin de l'analyse passive des requêtes capturées par les spiders.
+  - type: passiveScan-wait
+
+  # Génère le rapport détaillé au format HTML pour consultation humaine.
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk
+      reportFile: zap-report.html
+      reportTitle: AmbianceBoard ZAP scan
+
+  # Génère le rapport structuré au format JSON pour traitement automatisé.
+  - type: report
+    parameters:
+      template: traditional-json
+      reportDir: /zap/wrk
+      reportFile: zap-report.json
+      reportTitle: AmbianceBoard ZAP scan

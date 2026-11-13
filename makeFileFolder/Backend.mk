@@ -70,6 +70,12 @@ db-reset:
 	make db-update
 	make fixtures
 
+## —— Security  ————————————————————————————————————————————————————————————————
+zap-scan: fixtures
+	@# Help: explorer les parcours public et authentifié avec la fixture E2E
+	@mkdir -p zap-reports
+	docker compose --profile security run --rm zap
+
 ## —— Fixtures  ————————————————————————————————————————————————————————————————
 fixtures: fixture-create-root fixture-seed-dev fixture-seed-soundboard fixture-tag-playlist fixture-tag-soundboard fixture-seed-e2e
 	@# Help: Lance l'ensemble des fixtures de développement 

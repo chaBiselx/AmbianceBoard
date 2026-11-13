@@ -294,6 +294,19 @@ services:
       - opensearch
     restart: unless-stopped
 
+  zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    profiles:
+      - security
+    depends_on:
+      back:
+        condition: service_healthy
+    volumes:
+      - ./zap.yaml:/zap/zap.yaml:ro
+      - ./zap-reports:/zap/wrk:rw
+    user: root
+    command: ["zap.sh", "-cmd", "-autorun", "/zap/zap.yaml"]
+
   playwright:
     # mcr.microsoft.com/playwright:latest — Node.js + Chromium/Firefox/WebKit pré-installés
     image: mcr.microsoft.com/playwright:v1.64.1-jammy

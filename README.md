@@ -69,6 +69,20 @@ ajouter dans le dns 127.0.0.1 ambianceboard
 - MailHog: http://localhost:8025/
 - Grafana: http://localhost:3000/
 
+### Analyse OWASP ZAP
+
+Le plan [zap.yaml](zap.yaml) explore l'application sans connexion puis avec un
+utilisateur, via les spiders HTML et navigateur, avant le scan passif. Pour le
+parcours authentifié, il utilise par défaut le compte fixture E2E
+
+```sh
+
+make zap-scan
+```
+
+Les rapports HTML et JSON sont écrits dans `zap-reports/`. Aucun scan actif
+n'est lancé par ce plan.
+
 
 ## set-up Greylogs 
 
