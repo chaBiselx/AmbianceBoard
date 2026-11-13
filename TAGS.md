@@ -659,6 +659,9 @@ Corrections
 - Fix de la tentative de retélécharger une piste audio via un lien pour un manager 
 
 ### 0.5.22 - 2026/11 : 
+Sécurité
+- Renforcement sécurité CSP
+
 Nouveautés
 - Ajout d'un boutons pour signalier la mauvaise labellisation 
 

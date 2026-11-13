@@ -15,6 +15,7 @@ import sys
 import importlib.util
 from pathlib import Path
 from urllib.parse import quote
+from django.utils.csp import CSP
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -266,6 +267,7 @@ LOGGING = {
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django.middleware.csp.ContentSecurityPolicyMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -279,6 +281,34 @@ MIDDLEWARE = [
     "main.architecture.middleware.PublicVisitTrackingMiddleware.PublicVisitTrackingMiddleware",
     "main.architecture.middleware.ErrorTrackingMiddleware.ErrorTrackingMiddleware",
 ]
+
+SECURE_CSP = {
+    "default-src": [CSP.SELF],
+    "base-uri": [CSP.SELF],
+    "connect-src": [
+        CSP.SELF,
+        *([f"{'wss' if ACTIVE_SSL else 'ws'}://{APP_HOST}"] if APP_HOST else []),
+        *(["ws://back"] if APP_ENV != 'prod' else []),
+        "https://www.google-analytics.com",
+        "https://analytics.google.com",
+        "https://www.googletagmanager.com",
+    ],
+    "font-src": [CSP.SELF, "data:"],
+    "form-action": [CSP.SELF],
+    "frame-ancestors": [CSP.SELF],
+    "frame-src": [
+        CSP.SELF,
+        "https://www.googletagmanager.com",
+        "https://www.youtube.com",
+        "https://www.youtube-nocookie.com",
+    ],
+    "img-src": [CSP.SELF, "data:"],
+    "media-src": [CSP.SELF, "blob:", "https:"],
+    "object-src": [CSP.NONE],
+    "script-src": [CSP.SELF, CSP.NONCE, "https://www.googletagmanager.com"],
+    "style-src": [CSP.SELF, CSP.NONCE],
+    "style-src-attr": [CSP.UNSAFE_INLINE],
+}
 
 ROOT_URLCONF = "parameters.urls"
 
@@ -294,6 +324,7 @@ TEMPLATES = [
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
+                "django.template.context_processors.csp",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 'main.architecture.contextProcessors.sidebar_processor.sidebar_processor',
