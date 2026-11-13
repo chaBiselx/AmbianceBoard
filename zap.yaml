@@ -3,9 +3,13 @@ env:
     - name: anonymous
       urls:
         - http://back/
+      excludePaths:
+        - '.*debug_toolbar.*'
     - name: authenticated
       urls:
         - http://back/
+      excludePaths:
+        - '.*debug_toolbar.*'
       authentication:
         method: form
         parameters:

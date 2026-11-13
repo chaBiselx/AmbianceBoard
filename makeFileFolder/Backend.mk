@@ -4,6 +4,7 @@ MEDIA_FOLDER=./mediafiles
 MEDIA_BACKUP=$(BACKUP_DIR)/media_backup.tar.gz
 DATA_BACKUP=$(BACKUP_DIR)/data.json
 LOG_DIR=./logs
+FIXTURES_CACHE=/tmp/ambianceboard-fixtures.cache
 
 ## —— Dumbs/Load BDD  ————————————————————————————————————————————————————————————————
 # Dump des données et des fichiers médias
@@ -77,8 +78,13 @@ zap-scan: fixtures
 	docker compose --profile security run --rm zap
 
 ## —— Fixtures  ————————————————————————————————————————————————————————————————
-fixtures: fixture-create-root fixture-seed-dev fixture-seed-soundboard fixture-tag-playlist fixture-tag-soundboard fixture-seed-e2e
-	@# Help: Lance l'ensemble des fixtures de développement 
+fixtures:
+	@# Help: Lance l'ensemble des fixtures de développement (cache d'une journée)
+	@if [ -f "$(FIXTURES_CACHE)" ] && [ -n "$$(find "$(FIXTURES_CACHE)" -mmin -1440 -print -quit)" ]; then \
+		echo "$(GREEN)Fixtures déjà chargées depuis moins d'une journée.$(NC)"; \
+	else \
+		$(MAKE) fixture-create-root fixture-seed-dev fixture-seed-soundboard fixture-tag-playlist fixture-tag-soundboard fixture-seed-e2e && touch "$(FIXTURES_CACHE)"; \
+	fi
 
 fixture-create-root:
 	@# Help: Crée l'utilisateur root — DEBUG=1 requis
