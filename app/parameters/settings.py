@@ -282,30 +282,32 @@ MIDDLEWARE = [
     "main.architecture.middleware.ErrorTrackingMiddleware.ErrorTrackingMiddleware",
 ]
 
+GOOGLE_TAG_MANAGER = "https://www.googletagmanager.com"
+WEBSOCKET_SCHEME = "wss" if ACTIVE_SSL else "ws"
 SECURE_CSP = {
     "default-src": [CSP.SELF],
     "base-uri": [CSP.SELF],
     "connect-src": [
         CSP.SELF,
-        *([f"{'wss' if ACTIVE_SSL else 'ws'}://{APP_HOST}"] if APP_HOST else []),
+        *([f"{WEBSOCKET_SCHEME}://{APP_HOST}"] if APP_HOST else []),
         *(["ws://back"] if APP_ENV != 'prod' else []),
         "https://www.google-analytics.com",
         "https://analytics.google.com",
-        "https://www.googletagmanager.com",
+        GOOGLE_TAG_MANAGER,
     ],
     "font-src": [CSP.SELF, "data:"],
     "form-action": [CSP.SELF],
     "frame-ancestors": [CSP.SELF],
     "frame-src": [
         CSP.SELF,
-        "https://www.googletagmanager.com",
+        GOOGLE_TAG_MANAGER,
         "https://www.youtube.com",
         "https://www.youtube-nocookie.com",
     ],
     "img-src": [CSP.SELF, "data:"],
     "media-src": [CSP.SELF, "blob:", "https:"],
     "object-src": [CSP.NONE],
-    "script-src": [CSP.SELF, CSP.NONCE, "https://www.googletagmanager.com"],
+    "script-src": [CSP.SELF, CSP.NONCE, GOOGLE_TAG_MANAGER],
     "style-src": [CSP.SELF, CSP.NONCE],
     "style-src-attr": [CSP.UNSAFE_INLINE],
 }
@@ -496,24 +498,27 @@ MUSIC_LABELER_TOKEN = os.getenv("MUSIC_LABELER_TOKEN")
 CRON_CLASSES = []
 CRONJOBS = []
 if RUN_CRONS:
-    CRON_CLASSES.append('main.domain.cron.cronFile.CleanMediaFolderCron.run')
-    CRON_CLASSES.append('main.domain.cron.cronFile.DeleteAccountCron.run')
-    CRON_CLASSES.append('main.domain.cron.cronFile.DeleteSharedSoundboardExpiredCron.run')
-    CRON_CLASSES.append('main.domain.cron.cronFile.UserTierExpirationCron.run')
-    CRON_CLASSES.append('main.domain.cron.cronFile.SyncDomainBlacklistCronJob.run')
-    CRON_CLASSES.append('main.domain.cron.cronFile.MusicLabelerCron.run')
-    CRON_CLASSES.append('main.domain.cron.cronFile.PurgeOldStatsCron.run')
-    CRON_CLASSES.append('main.domain.cron.cronFile.MediaFileStructureCron.run')
+    CRON_CLASSES.extend([
+        'main.domain.cron.cronFile.CleanMediaFolderCron.run',
+        'main.domain.cron.cronFile.DeleteAccountCron.run',
+        'main.domain.cron.cronFile.DeleteSharedSoundboardExpiredCron.run',
+        'main.domain.cron.cronFile.UserTierExpirationCron.run',
+        'main.domain.cron.cronFile.SyncDomainBlacklistCronJob.run',
+        'main.domain.cron.cronFile.MusicLabelerCron.run',
+        'main.domain.cron.cronFile.PurgeOldStatsCron.run',
+        'main.domain.cron.cronFile.MediaFileStructureCron.run',
+    ])
 
-
-    CRONJOBS.append(('0 10 * * *', 'main.domain.cron.cronFile.CleanMediaFolderCron.run'))
-    CRONJOBS.append(('0 10 * * *', 'main.domain.cron.cronFile.DeleteAccountCron.run'))
-    CRONJOBS.append(('0 18 * * *', 'main.domain.cron.cronFile.DeleteSharedSoundboardExpiredCron.run'))
-    CRONJOBS.append(('0 6 * * *', 'main.domain.cron.cronFile.UserTierExpirationCron.run'))  # Tous les jours à 6h
-    CRONJOBS.append(('0 12 1,7,14,21,28 * *', 'main.domain.cron.cronFile.SyncDomainBlacklistCronJob.run'))  # Tous les jours à 12h
-    CRONJOBS.append(('*/20 * * * *', 'main.domain.cron.cronFile.MusicLabelerCron.run'))  # Toutes les 20 minutes
-    CRONJOBS.append(('0 2 1 * *', 'main.domain.cron.cronFile.PurgeOldStatsCron.run'))  # Tous les 1 du mois
-    CRONJOBS.append(('30 2 * * *', 'main.domain.cron.cronFile.MediaFileStructureCron.run'))  # Toutes les heures
+    CRONJOBS.extend([
+        ('0 10 * * *', 'main.domain.cron.cronFile.CleanMediaFolderCron.run'),
+        ('0 10 * * *', 'main.domain.cron.cronFile.DeleteAccountCron.run'),
+        ('0 18 * * *', 'main.domain.cron.cronFile.DeleteSharedSoundboardExpiredCron.run'),
+        ('0 6 * * *', 'main.domain.cron.cronFile.UserTierExpirationCron.run'),  # Tous les jours à 6h
+        ('0 12 1,7,14,21,28 * *', 'main.domain.cron.cronFile.SyncDomainBlacklistCronJob.run'),  # Tous les jours à 12h
+        ('*/20 * * * *', 'main.domain.cron.cronFile.MusicLabelerCron.run'),  # Toutes les 20 minutes
+        ('0 2 1 * *', 'main.domain.cron.cronFile.PurgeOldStatsCron.run'),  # Tous les 1 du mois
+        ('30 2 * * *', 'main.domain.cron.cronFile.MediaFileStructureCron.run'),  # Toutes les heures
+    ])
 
 
 # message brokers 
