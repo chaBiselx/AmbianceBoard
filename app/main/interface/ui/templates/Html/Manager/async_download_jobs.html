@@ -1,0 +1,86 @@
+{% extends 'Html/partial/structure/base_manager.html' %}
+{% load PaginationLinks %}
+
+{% block content %}
+
+<div class="row mb-3">
+    <div class="col-12">
+        {% url 'managerAsyncDownloadJobs' as filter_reset_url %}
+        <form method="get" action="{{ filter_reset_url }}" class="d-flex align-items-end gap-3 flex-wrap" data-filter-form>
+            {% include 'Html/partial/filter/search/filter_select.html' with label="Statut" field_name="status" field_id="status-filter" options=status_list selected_value=status all_option_label="Tous les statuts" use_key_as_value=True %}
+            {% include 'Html/partial/filter/search/filter_date.html' with field_name="date_from" value=date_from label="Date de début" %}
+            {% include 'Html/partial/filter/search/filter_date.html' with field_name="date_to" value=date_to label="Date de fin" %}
+            {% include 'Html/partial/filter/search/reset_btn.html' with reset_url=filter_reset_url %}
+        </form>
+        {% for error in filter_form.non_field_errors %}
+        <div class="alert alert-danger mt-2">{{ error }}</div>
+        {% endfor %}
+        {% for field in filter_form %}
+            {% for error in field.errors %}
+            <div class="alert alert-danger mt-2">{{ error }}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
+{% if page_objects %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Statut</th>
+                                <th>Créé le</th>
+                                <th>Utilisateur</th>
+                                <th>Playlist</th>
+                                <th>Source / nom</th>
+                                <th>URL</th>
+                                <th>Erreur</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job in page_objects %}
+                            <tr>
+                                <td>
+                                    <span class="badge {% if job.status == 'SUCCESS' %}text-bg-success{% elif job.status == 'FAILED' %}text-bg-danger{% elif job.status == 'DOWNLOADING' %}text-bg-info{% else %}text-bg-warning{% endif %}">
+                                        {{ job.status }}
+                                    </span>
+                                </td>
+                                <td>{{ job.created_at|date:"d/m/Y H:i" }}</td>
+                                <td>{{ job.user.username }}</td>
+                                <td>{{ job.playlist.name }}</td>
+                                <td>{{ job.source }}{% if job.alternative_name %}<br>{{ job.alternative_name }}{% endif %}</td>
+                                <td><a href="{{ job.url }}" target="_blank" rel="noopener noreferrer">{{ job.url|truncatechars:60 }}</a></td>
+                                <td>{{ job.error_message|default:"-"|truncatechars:100 }}</td>
+                                <td>
+                                    {% if job.status == 'PENDING' or job.status == 'FAILED' %}
+                                    <form method="post" action="{% url 'managerAsyncDownloadJobRetry' job.uuid %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-redo"></i> Relancer
+                                        </button>
+                                    </form>
+                                    {% else %}
+                                    -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% applys_pagination paginator %}
+{% else %}
+<div class="alert alert-info">
+    <i class="fas fa-info-circle"></i> Aucun téléchargement asynchrone.
+</div>
+{% endif %}
+{% endblock %}

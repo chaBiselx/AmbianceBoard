@@ -141,16 +141,26 @@ FR/EN de cette notification utilisent le module frontend
 Le [service music-labeler](../music-labeler/) expose une API FastAPI de
 classification audio basee sur CLAP. Le backend lui transmet les pistes via
 une integration HTTP ; des traitements asynchrones et crons participent a
-l'orchestration. Distinguer transport HTTP, preparation audio et inference.
-Les tests doivent isoler les integrations lourdes lorsque le comportement
-verifie ne necessite pas un modele reel.
+l'orchestration. Les workers Celery sont des services Compose independants :
+`celery` traite les files par defaut et `celery-music-labeler` traite la file
+de labellisation sequentiellement par defaut. Leur politique
+`restart: unless-stopped` permet a Docker de relancer un worker dont le
+processus s'arrete, sans redemarrer le backend. Les migrations restent gerees
+par le backend ; les workers les ignorent au demarrage. Distinguer transport
+HTTP, preparation audio et inference. Les tests doivent isoler les integrations
+lourdes lorsque le comportement verifie ne necessite pas un modele reel.
+Le demarrage (worker pret) et l'arret gracieux sont egalement journalises via
+le logger applicatif sous le logger `celery`, avec le nom du worker pour
+faciliter la recherche dans Graylog. Un arret brutal peut ne pas emettre
+l'evenement d'arret ; le demarrage suivant signale alors la reprise.
 
-[docker-compose.yml](../docker-compose.yml) definit l'environnement local :
-backend, frontend, serveur WebSocket, PostgreSQL, Redis, RabbitMQ, traitements
-asynchrones, labeler, proxy et services auxiliaires. Le nom du service ne suffit
-pas a identifier son executable : consulter sa commande et sa configuration.
-[docker-compose.prod.yml](../docker-compose.prod.yml) decrit la production.
-Les medias, donnees persistantes et sorties de build ne sont pas du code source.
+[docker-compose.yml](../docker-compose.yml) et
+[docker-compose.prod.yml](../docker-compose.prod.yml) definissent les services
+d'execution locaux et de production : backend, frontend, service WebSocket,
+PostgreSQL, Redis, RabbitMQ, workers Celery, labeler, proxy et services
+auxiliaires. Le nom du service ne suffit pas a identifier son executable :
+consulter sa commande et sa configuration. Les medias, donnees persistantes et
+sorties de build ne sont pas du code source.
 
 ## Analyse et principes d'evolution
 

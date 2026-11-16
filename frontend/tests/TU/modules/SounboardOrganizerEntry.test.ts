@@ -9,8 +9,8 @@ vi.mock('@/modules/SoundboardOrganizer/OrganizerDom', () => ({
     EmptyPlaylistChecker: { check: vi.fn() },
     OrganizerDragAndDropZone: { valid: organizerEntryMocks.valid },
 }));
-vi.mock('@/modules/SoundboardOrganizer/PlaylistOrder', () => ({
-    CleanOrderHandler: class { resetBadge() {} },
+vi.mock('@/modules/SoundboardOrganizer/PlaylistBadgeHandler', () => ({
+    PlaylistBadgeHandler: class { refresh() {} },
 }));
 vi.mock('@/modules/SoundboardOrganizer/SectionAdder', () => ({
     SectionAdder: class { addEvent() {} },

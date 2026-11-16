@@ -1,5 +1,5 @@
 import { EmptyPlaylistChecker, OrganizerDragAndDropZone } from '@/modules/SoundboardOrganizer/OrganizerDom';
-import { CleanOrderHandler } from '@/modules/SoundboardOrganizer/PlaylistOrder';
+import { PlaylistBadgeHandler } from '@/modules/SoundboardOrganizer/PlaylistBadgeHandler';
 import { SectionAdder, SectionDeleter, SectionRenamer, SectionSwapper } from '@/modules/SoundboardOrganizer/SectionAdder';
 import { PointerDragManager } from '@/modules/SoundboardOrganizer/PointerDragManager';
 import { ScrollManager } from '@/modules/SoundboardOrganizer/ScrollManager';
@@ -22,7 +22,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initOrderBadge() {
-    const cleanorder = new CleanOrderHandler()
-    cleanorder.resetBadge()
+    new PlaylistBadgeHandler().refresh();
 }
-

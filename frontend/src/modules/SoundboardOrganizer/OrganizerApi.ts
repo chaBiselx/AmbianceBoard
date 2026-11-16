@@ -3,7 +3,7 @@ import { OrganizerButtonPlaylist } from '@/modules/OrganizerButtonPlaylist';
 import ConsoleCustom from '@/modules/General/ConsoleCustom';
 import ConsoleTesteur from '@/modules/General/ConsoleTesteur';
 import { OrganizerDragAndDropZone } from './OrganizerDom';
-import { CleanOrderHandler } from './PlaylistOrder';
+import { PlaylistBadgeHandler } from './PlaylistBadgeHandler';
 
 export class OrganizerApiClient {
     public async insertSection(insertSection: number, url?: string): Promise<boolean> {
@@ -92,7 +92,7 @@ export class SendBackendAction {
     private send(method: string, body: object, section?: number): void {
         ConsoleTesteur.info(`Fetch called with method: ${method}, body: ${JSON.stringify(body)}, section: ${section}`);
         this.apiClient.request(method, body)
-            .then(() => new CleanOrderHandler().resetBadge())
+            .then(() => new PlaylistBadgeHandler().refresh())
             .catch(error => ConsoleCustom.error(error));
     }
 }

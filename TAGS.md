@@ -616,9 +616,63 @@ Corrections
 - Correction de l'affichage des buttons pour modifier le volume coté soundboard partagées  
 - Corrections des slider horizontaux a cause du visuel sous Firefox
 
-### 0.5.18 - 2026/10 : 
+### 0.5.18 - 2026/11 : 
+Sécurité
+- Mise à jour de dépendances
+
 Nouveautés
 - Nouveau indicateur pour la modération
+
+Améliorations
+- Séparation du service Celery pour un redemarrage automatique
+
+Fiabilité & Confiance
+- Augmentations de la couverture de tests
+
+### 0.5.19 - 2026/11 : 
+Corrections
+- Corrections deploiement HS
+
+### 0.5.20 - 2026/11 : 
+Sécurité
+- Mise à jour de dépendances
+
+Améliorations
+- Ajouts de traductions
+- Ajout de page pour suivre les téléchargement Asynchrone pour le manager
+- Améliore l'affichage pour l'ajout de tag pour la modération
+
+Corrections
+- Fix du contaniner Playwright pour les test E2E
+
+### 0.5.21 - 2026/11 : 
+Sécurité
+- Mise à jour de dépendances
+
+Améliorations
+- Ajouts de traductions
+
+Nouveautés
+- Accessibilité de la labellisation à tout les utilisateurs
+
+Corrections
+- Fix de la tentative de retélécharger une piste audio via un lien pour un manager 
+
+### 0.5.22 - 2026/11 : 
+Sécurité
+- Renforcement sécurité CSP
+
+Nouveautés
+- Ajout d'un boutons pour signalier la mauvaise labellisation 
+
+Améliorations
+- Rendu visuel pour le declenchement des pistes en particulier.
+
+Modifications
+- Changement des icones de soundboard et de boutons
+
+Corrections
+- Fix d'un effet "aléatoire" sur le déclenchement d'une piste en particulier.
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :

@@ -106,7 +106,7 @@ def playlist_copiable_preview(request):
 def playlist_copiable_duplicate(request, playlist_uuid):
     if not playlist_uuid:
         return JsonResponse(
-            {"error": ErrorMessageEnum.ELEMENT_NOT_FOUND, "message": "Playlist not found or not copiable 1"}, 
+            {"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), "message": "Playlist not found or not copiable 1"},
             status=404
         )
     

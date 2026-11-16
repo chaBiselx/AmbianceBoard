@@ -48,7 +48,7 @@ from main.interface.ui.controller.private.playlistProposalManagementViews import
 from main.interface.ui.controller.private.playlistFormViews import (
     playlist_read_all, playlist_create,  playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
-from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
+from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete, report_track_labels
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, account, delete_account
 from main.interface.ui.controller.private.asyncDownloadJobViews import recent_async_download_jobs
 from main.interface.ui.controller.moderator.moderatorViews import (
@@ -83,6 +83,7 @@ from main.interface.ui.controller.manager.managerCronViews import (
 from main.interface.ui.controller.manager.managerNotificationsViews import listing_notifications, manage_notification
 from main.interface.ui.controller.manager.managerSendEmailViews import manager_send_email
 from main.interface.ui.controller.manager.managerMusicLabelerViews import music_labeler_index, music_labeler_analyze, music_labeler_stream
+from main.interface.ui.controller.manager.managerAsyncDownloadJobViews import manager_async_download_jobs, manager_async_download_job_retry
 from main.interface.ui.controller.manager.managerHomeDemoViews import listing_home_demo_items, select_home_demo_soundboard, manage_home_demo_item
 from main.interface.ui.controller.public.publicViews import public_index, public_listing_soundboard, public_soundboard_read_playlist, public_music_stream, public_playlist_tracks_list, favorite_update, reporting_content, public_favorite, public_specific_track_stream
 from main.interface.ui.controller.public.playlistProposalViews import (
@@ -204,6 +205,7 @@ urlpatterns = [
     path("playlist/<uuid:playlist_uuid>/link/create-ajax", link_create_ajax, name="addLinkAjax"),
     path("playlist/<uuid:playlist_uuid>/link/edit/<int:link_id>", link_update, name="editLink"),
     path("playlist/<uuid:playlist_uuid>/link/delete/<int:link_id>", link_delete, name="deleteLink"),
+    path("playlist/<uuid:playlist_uuid>/track/<int:track_id>/report-labels", report_track_labels, name="reportTrackLabels"),
 
     path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", music_stream, name="streamMusic"),
     path("playlist/<uuid:soundboard_uuid>/fetch/tracks", playlist_tracks_list, name="soundboardTracksList"),
@@ -296,6 +298,8 @@ urlpatterns = [
     path("manager/notifications/<uuid:uuid>/edit/", manage_notification, name="manager_notifications_update"),
 
     path("manager/send-email/", manager_send_email, name="managerSendEmail"),
+    path("manager/async-download-jobs/", manager_async_download_jobs, name="managerAsyncDownloadJobs"),
+    path("manager/async-download-jobs/<uuid:job_uuid>/retry/", manager_async_download_job_retry, name="managerAsyncDownloadJobRetry"),
 
     path("manager/home-demo/", listing_home_demo_items, name="managerHomeDemoItems"),
     path("manager/home-demo/create/", select_home_demo_soundboard, name="managerHomeDemoSelectSoundboard"),

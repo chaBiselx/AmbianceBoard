@@ -33,11 +33,11 @@ build-prod:
 up: clear-old-containers
 	@# Help: Demarrer les ressources de l'application
 	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose up -d
-	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose logs -f back front db cronjob
+	@FRONT_UID=$$(id -u) FRONT_GID=$$(id -g) docker compose logs -f back front db cronjob celery celery-music-labeler
 
 log:
 	@# Help: Afficher les logs des conteneurs Docker
-	@docker compose logs -f back cronjob music-labeler
+	@docker compose logs -f back cronjob celery celery-music-labeler music-labeler
 
 log-all:
 	@# Help: Afficher les logs de tous les conteneurs Docker
@@ -85,4 +85,3 @@ debug-fix-front-perms:
 	@echo "Réparation des permissions frontend..."
 	@docker compose exec -u root front sh -lc 'chown -R node:node /app 2>/dev/null || true'
 	@docker compose exec front sh -lc 'id && ls -ld /app /app/node_modules 2>/dev/null || true'
-

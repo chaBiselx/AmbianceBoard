@@ -138,9 +138,8 @@ class MusicElement {
 
     /**
      * Récupère la durée de la musique à partir des en-têtes HTTP
-     * @return {Promise<void>}
      */
-    private async getDurationFromHeaders(): Promise<void> {
+    private getDurationFromHeaders(): void {
         ConsoleTesteur.log('getDurationFromHeaders');
 
         setTimeout(async () => {// délai pour s'assurer de la generation du cache serveur car Firefox envoi trop vite la requete
@@ -181,7 +180,7 @@ class MusicElement {
         });
 
         this.audioAdapter.addEventListener('playing', () => {
-            void this.getDurationFromHeaders();
+            this.getDurationFromHeaders();
         });
 
         if (this.fadeInType !== 'disabled') {

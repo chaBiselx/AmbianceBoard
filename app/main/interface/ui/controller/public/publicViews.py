@@ -132,7 +132,7 @@ def public_music_stream(request, soundboard_uuid, playlist_uuid) ->  HttpRespons
             return ret
     except Exception as e:
         logger.error(f"Error in public_music_stream: {e}")
-    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), status=404)
 
 
 @require_http_methods(['GET'])
@@ -141,7 +141,7 @@ def public_playlist_tracks_list(request, soundboard_uuid) -> JsonResponse:
     """Liste des tracks de toutes les playlists d'un soundboard public en JSON"""
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
     if not soundboard:
-        return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({"error": ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     track_repository = TrackRepository()
     result = {}
@@ -186,7 +186,7 @@ def public_specific_track_stream(request, soundboard_uuid, playlist_uuid, music_
             return ret
     except Exception as e:
         logger.error(f"Error in public_specific_track_stream: {e}")
-    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), status=404)
 
 
 @login_required
@@ -203,7 +203,7 @@ def favorite_update(request, soundboard_uuid) -> JsonResponse:
 
         except Exception as e:
             logger.error(f"favorite_update : {e}")
-            return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
+            return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad()}, status=500)
             
     if request.method == 'DELETE':
         try:
@@ -214,9 +214,9 @@ def favorite_update(request, soundboard_uuid) -> JsonResponse:
             return JsonResponse({"error": _("view.favoriteUpdate.error.favorite_not_found")}, status=404)
         except Exception as e:
             logger.error(f"favorite_update : {e}")
-            return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
+            return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad()}, status=500)
         
-    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.value}, status=405)
+    return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.trad()}, status=405)
    
 @require_http_methods(['POST'])
 def reporting_content(request):

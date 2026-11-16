@@ -48,6 +48,7 @@ def sidebar_processor(request):
                 {'title': 'Home Demo', 'url': reverse("managerHomeDemoItems"), 'classIcon':"fa-solid fa-shuffle"},
                 {'title': 'Email', 'url': reverse("managerSendEmail"), 'classIcon':"fa-solid fa-envelope"},
                 {'title': 'Label', 'url': reverse("managerMusicLabeler"), 'classIcon':"fa-solid fa-tag"},
+                {'title': 'Téléchargements', 'url': reverse("managerAsyncDownloadJobs"), 'classIcon':"fa-solid fa-download"},
             ]
         }
         
@@ -69,4 +70,3 @@ def sidebar_processor(request):
                 'sidebar_items': sidebar_items
             }
     return {'show_sidebar': False}
-

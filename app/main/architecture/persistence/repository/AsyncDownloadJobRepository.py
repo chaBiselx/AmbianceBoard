@@ -42,6 +42,10 @@ class AsyncDownloadJobRepository:
         except AsyncDownloadJob.DoesNotExist:
             return None
 
+    def get_all_jobs(self) -> QuerySet[AsyncDownloadJob]:
+        """Récupère tous les jobs avec leurs relations pour l'interface Manager."""
+        return AsyncDownloadJob.objects.select_related("playlist", "user").order_by("-created_at")
+
     def count_active(self, playlist: Playlist) -> int:
         """Retourne le nombre de jobs actifs (PENDING ou DOWNLOADING) pour une playlist."""
         return AsyncDownloadJob.objects.filter(
@@ -52,7 +56,8 @@ class AsyncDownloadJobRepository:
     def set_task_id(self, job: AsyncDownloadJob, task_id: str) -> None:
         """Associe l'identifiant de tâche Celery au job après apply_async."""
         job.celery_task_id = task_id
-        job.save(update_fields=["celery_task_id", "updated_at"])
+        job.error_message = ""
+        job.save(update_fields=["celery_task_id", "error_message", "updated_at"])
 
     def mark_downloading(self, job: AsyncDownloadJob) -> None:
         """Passe le job en DOWNLOADING au début de l'exécution de la tâche Celery."""

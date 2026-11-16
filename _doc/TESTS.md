@@ -27,8 +27,9 @@ pour preparer une validation : voir les precautions ci-dessous.
 | `make test-frontend-tu` | Vitest, `tests/TU` |
 | `make test-frontend-ti` | Vitest, `tests/TI` |
 | `make test-frontend` | TU + TI frontend |
-| `make test-music-labeler-tu` | pytest, `tests` |
-| `make test-music-labeler` | Actuellement alias de la suite TU labeler |
+| `make test-music-labeler-tu` | pytest, `tests` hors marqueur `integration` |
+| `make test-music-labeler-ti` | pytest, tests d'intégration de labellisation audio |
+| `make test-music-labeler` | TU + TI music-labeler |
 | `make test-e2e` | Preparation backend et Playwright dans le profil `test` |
 | `make test-all` | Backend (dont stress), frontend, labeler et E2E |
 
@@ -51,6 +52,14 @@ Utiliser `FILTER`, pas `TEST`. Les cibles filtrees ne partagent pas le meme sens
   ou de test existant : `make test-frontend-tu FILTER=Onboarding`.
 - Labeler TU : chemin ou identifiant pytest relatif au conteneur, remplace
   le repertoire `tests` : `make test-music-labeler-tu FILTER=tests`.
+- Labeler TI : `FILTER` filtre les noms pytest (`-k`) :
+  `make test-music-labeler-ti FILTER=ambiance-foret-nocturne`.
+
+Les tests de non-régression du labeler passent par l'API réelle et le modèle
+configuré. Les fichiers de référence et leurs labels manuels sont décrits dans
+[le guide des fixtures audio](../music-labeler/tests/fixtures/regression/README.md).
+Le manifeste peut rester vide ; dans ce cas, le test TI est signalé comme
+ignoré et ne charge pas de modèle.
 
 Confirmer qu'au moins un test attendu a ete execute : un filtre sans
 correspondance ne constitue pas une verification du comportement.

@@ -33,7 +33,7 @@ def cron_view(view_name: str) -> Callable:
             except Exception as e:
                 logger.error(f"Error in {view_name} View: {str(e)}")
                 return JsonResponse(
-                    {"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, 
+                    {"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad(), "message": str(e)},
                     status=500
                 )
         return wrapper

@@ -85,10 +85,11 @@
                                     <div class="tags-container">
                                         <div class="d-flex flex-wrap gap-1 p-1" id="tags-selection" data-url-update="{{ url_update }}">
                                             {% for tag in list_tag %}
-                                            <div class="form-check-custom">
+
+                                            <div class="form-check-custom p-0 {% if tag in is_copied_from.source_playlist.playlist_tags.all %}border rounded bg-info{% endif %}">
                                                 <input type="checkbox" class="form-check-input d-none" name="playlist_tags" value="{{ tag.pk }}" id="tag_{{ tag.pk }}" {% if tag in playlist.playlist_tags.all %}checked{% endif %}>
                                                 <label for="tag_{{ tag.pk }}" class="badge tag-badge {% if tag in playlist.playlist_tags.all %}badge-selected{% else %}badge-unselected{% endif %}" data-tag-id="{{ tag.pk }}" data-tag-label="{{ tag.label }}" data-bs-toggle="tooltip"
-                                                    data-bs-title="{{ tag.description|default:"Aucun description" }}">
+                                                    data-bs-title="{{ tag.description|default:'Aucun description' }}">
                                                     <small><i class="fas fa-tag me-1"></i></small>{{ tag.name }}
                                                 </label>
                                             </div>

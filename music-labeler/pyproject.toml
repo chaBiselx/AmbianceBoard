@@ -39,3 +39,6 @@ url = "https://download.pytorch.org/whl/cpu"
 verify_ssl = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "integration: tests the real audio-labeling pipeline with manually curated samples",
+]

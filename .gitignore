@@ -21,6 +21,7 @@ app/logs/*
 app/backup/*
 db-data/*
 tmp/*
+/zap-reports/
 
 
 # traductions
@@ -35,3 +36,6 @@ logs/*
 frontend/.npm-cache
 # Configuration locale des sauvegardes homelab
 infra/homelab/backup/backup.env
+
+# ansible
+/infra/ansible/.wireguard_public_key

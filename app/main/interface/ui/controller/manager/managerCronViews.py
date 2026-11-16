@@ -37,7 +37,7 @@ def clean_media_folder(request) -> JsonResponse:
         logger.warning("Ending ClearMediaFolder View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
-        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad(), "message": str(e)}, status=500)
     
 @login_required
 @require_http_methods(['GET'])
@@ -52,7 +52,7 @@ def expire_account(request) -> JsonResponse:
         logger.warning("Ending ExpireAccount View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
-        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad(), "message": str(e)}, status=500)
     
 
     
@@ -67,7 +67,7 @@ def sync_domain_blacklist(request) -> JsonResponse:
         logger.warning("Ending SyncDomainBlacklist View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
-        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad(), "message": str(e)}, status=500)
     
 
 @login_required
@@ -80,7 +80,7 @@ def purge_expired_shared_soundboard(request) -> JsonResponse:
         logger.warning("Ending PurgeExpiredSharedSoundboard View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
-        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad(), "message": str(e)}, status=500)
 
 @login_required
 @require_http_methods(['GET'])
@@ -92,7 +92,7 @@ def purge_old_user_activity(request) -> JsonResponse:
         logger.warning("Ending PurgeOldUserActivity View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
-        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad(), "message": str(e)}, status=500)
     
 @login_required
 @require_http_methods(['GET'])
@@ -104,7 +104,7 @@ def music_labeler_cron_service(request) -> JsonResponse:
         logger.warning("Ending MusicLabelerCronService View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
-        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad(), "message": str(e)}, status=500)
     
     
 @login_required
@@ -117,5 +117,5 @@ def media_file_structure_cron_service(request) -> JsonResponse:
         logger.warning("Ending MediaFileStructureCronService View")
         return JsonResponse({"message": "OK"}, status=200)
     except Exception as e:
-        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.value, "message": str(e)}, status=500)
+        return JsonResponse({"error": ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad(), "message": str(e)}, status=500)
     

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 14:45+0000\n"
+"POT-Creation-Date: 2026-11-10 19:55+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: English\n"
@@ -33,16 +33,16 @@ msgstr "Button colors"
 msgid "Dimensions boutons"
 msgstr "Button dimensions"
 
-#: main/architecture/contextProcessors/sidebar_processor.py:60
+#: main/architecture/contextProcessors/sidebar_processor.py:61
 #: main/interface/ui/templates/Html/Moderator/dashboard.html:43
 msgid "Soundboard"
 msgstr "Soundboard"
 
-#: main/architecture/contextProcessors/sidebar_processor.py:61
+#: main/architecture/contextProcessors/sidebar_processor.py:62
 msgid "Favoris"
 msgstr "Favorites"
 
-#: main/architecture/contextProcessors/sidebar_processor.py:65
+#: main/architecture/contextProcessors/sidebar_processor.py:66
 msgid "Statistiques"
 msgstr "Statistics"
 
@@ -120,6 +120,38 @@ msgstr "New playlist proposal"
 msgid "template.email.user.tier_expiration.subject"
 msgstr "Your tier expiration warning"
 
+#: main/domain/common/enum/ErrorMessageEnum.py:22
+msgid "error.method_not_supported"
+msgstr "Method not supported."
+
+#: main/domain/common/enum/ErrorMessageEnum.py:23
+msgid "error.not_acceptable"
+msgstr "Not acceptable."
+
+#: main/domain/common/enum/ErrorMessageEnum.py:24
+msgid "error.internal_server_error"
+msgstr "An error occurred."
+
+#: main/domain/common/enum/ErrorMessageEnum.py:25
+msgid "error.invalid_request_method"
+msgstr "Invalid request method."
+
+#: main/domain/common/enum/ErrorMessageEnum.py:26
+msgid "error.element_not_found"
+msgstr "Element not found."
+
+#: main/domain/common/enum/ErrorMessageEnum.py:27
+msgid "error.data_retrieval"
+msgstr "Error retrieving data."
+
+#: main/domain/common/enum/ErrorMessageEnum.py:29
+msgid "error.playlist_already_exists_in_soundboard"
+msgstr "This playlist is already in this soundboard."
+
+#: main/domain/common/enum/ErrorMessageEnum.py:31
+msgid "error.script_not_found"
+msgstr "Script not found."
+
 #: main/domain/common/enum/FadePlaylistEnum.py:26
 #: main/domain/common/enum/FadePlaylistEnum.py:60
 msgid "enum.fade_playlist.default"
@@ -168,6 +200,34 @@ msgstr "Ease in (Exponential)"
 #: main/domain/common/enum/FadePlaylistEnum.py:37
 msgid "enum.fade_curve.ease_out_exponential"
 msgstr "Ease out (Exponential)"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:7
+msgid "faq.category.presentation"
+msgstr "Presentation & pricing"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:8
+msgid "faq.category.game_master"
+msgstr "Game Master & immersion"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:9
+msgid "faq.category.comparison"
+msgstr "Comparisons & alternatives"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:10
+msgid "faq.category.copyright"
+msgstr "Copyright & licences"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:11
+msgid "faq.category.participation"
+msgstr "Participation & contributions"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:12
+msgid "faq.category.technical"
+msgstr "Technical"
+
+#: main/domain/general/enum/FAQCategorieEnum.py:13
+msgid "faq.category.other"
+msgstr "Other questions"
 
 #: main/domain/general/service/OnboardingContextService.py:38
 msgid "onboarding.labels.next"
@@ -368,12 +428,6 @@ msgstr "Soundboard not found"
 #: main/interface/ui/controller/private/soundboardScriptViews.py:68
 msgid "template.scripts.error.name_required"
 msgstr "The script name is required"
-
-#: main/interface/ui/controller/private/soundboardScriptViews.py:145
-#: main/interface/ui/controller/private/soundboardScriptViews.py:196
-#: main/interface/ui/controller/private/soundboardScriptViews.py:221
-msgid "template.scripts.error.script_not_found"
-msgstr "Script not found"
 
 #: main/interface/ui/controller/private/soundboardScriptViews.py:173
 #: main/interface/ui/controller/private/soundboardScriptViews.py:206
@@ -909,6 +963,34 @@ msgstr ""
 #: main/interface/ui/templates/Html/General/429.html:10
 msgid "template.429.hint"
 msgstr "Please wait a few moments before trying again."
+
+#: main/interface/ui/templates/Html/General/faq.html:4
+msgid "faq.page_title"
+msgstr "FAQ — TTRPG soundboard & GM tools | AmbianceBoard"
+
+#: main/interface/ui/templates/Html/General/faq.html:12
+msgid "faq.title"
+msgstr "Frequently Asked Questions"
+
+#: main/interface/ui/templates/Html/General/faq.html:14
+msgid "faq.subtitle"
+msgstr "Everything you need to know about AmbianceBoard"
+
+#: main/interface/ui/templates/Html/General/faq.html:46
+msgid "faq.cta.ready"
+msgstr "Ready to create your first atmosphere?"
+
+#: main/interface/ui/templates/Html/General/faq.html:50
+msgid "faq.cta.create_soundboard"
+msgstr "Create my soundboard for free"
+
+#: main/interface/ui/templates/Html/General/faq.html:54
+msgid "faq.cta.create_account"
+msgstr "Create an account for free"
+
+#: main/interface/ui/templates/Html/General/faq.html:58
+msgid "faq.cta.ask_question"
+msgstr "Ask a question"
 
 #: main/interface/ui/templates/Html/General/general_pricing.html:10
 msgid "template.pricing.title"
@@ -1760,11 +1842,43 @@ msgstr "Edit"
 msgid "template.playlist_create.button.delete_track"
 msgstr "Delete"
 
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:260
+msgid "template.playlist_create.report_labels.title"
+msgstr "Report incorrect labels"
+
 #: main/interface/ui/templates/Html/Playlist/playlist_create.html:261
+msgid "template.playlist_create.report_labels.description"
+msgstr "Select the labels that do not match this track."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:262
+msgid "template.playlist_create.report_labels.submit"
+msgstr "Send report"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:263
+msgid "template.playlist_create.report_labels.cancel"
+msgstr "Cancel"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:264
+msgid "template.playlist_create.report_labels.select_one"
+msgstr "Select at least one label."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:265
+msgid "template.playlist_create.report_labels.success"
+msgstr "Thanks, your report was sent to support."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:266
+msgid "template.playlist_create.report_labels.error"
+msgstr "Unable to send the report. Please try again later."
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:267
+msgid "template.playlist_create.report_labels.button"
+msgstr "Report"
+
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:273
 msgid "template.playlist_create.track_labeling_pending"
 msgstr "Labeling coming soon"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:282
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:293
 msgid "template.playlist_create.button.new_playlist"
 msgstr "Create a new playlist"
 

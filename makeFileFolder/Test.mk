@@ -71,8 +71,8 @@ test-frontend-ti:
 		$(CONTAINER_FRONTEND) npm run test:ti -- --testNamePattern="$(FILTER)"; \
 	fi
 
-test-music-labeler: test-music-labeler-tu
-	@# Help: lance l'ensemble des tests music labeler (unitaires et d'intégration)
+test-music-labeler: test-music-labeler-tu test-music-labeler-ti
+	@# Help: lance les tests unitaires et d'intégration music labeler
 
 test-music-labeler-coverage:
 	@# Help: lance les tests music labeler avec couverture (seuil minimum 60%)
@@ -81,9 +81,17 @@ test-music-labeler-coverage:
 test-music-labeler-tu:
 	@# Help: lance les tests unitaires music labeler
 	@if [ -z "$(FILTER)" ]; then \
-		$(CONTAINER_MUSIC_LABELER) python -m pytest -q tests; \
+		$(CONTAINER_MUSIC_LABELER) python -m pytest -q -m "not integration" tests; \
 	else \
-		$(CONTAINER_MUSIC_LABELER) python -m pytest -q $(FILTER); \
+		$(CONTAINER_MUSIC_LABELER) python -m pytest -q -m "not integration" $(FILTER); \
+	fi
+
+test-music-labeler-ti:
+	@# Help: lance les tests de non-régression d'intégration sur les échantillons audio réels
+	@if [ -z "$(FILTER)" ]; then \
+		$(CONTAINER_MUSIC_LABELER) python -m pytest -q -m integration tests/integration; \
+	else \
+		$(CONTAINER_MUSIC_LABELER) python -m pytest -q -m integration -k "$(FILTER)" tests/integration; \
 	fi
 
 test-e2e:

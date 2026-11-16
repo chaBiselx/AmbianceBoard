@@ -79,7 +79,7 @@ def user_account_dashboard(request) -> JsonResponse:
         
     except Exception as e:
         return JsonResponse({
-            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'error': ErrorMessageEnum.DATA_RECUPERATION.trad(),
             'message': str(e)
         }, status=500)
     
@@ -106,7 +106,7 @@ def user_activity_dashboard(request) -> JsonResponse:
         
     except Exception as e:
         return JsonResponse({
-            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'error': ErrorMessageEnum.DATA_RECUPERATION.trad(),
             'message': str(e)
         }, status=500)
 
@@ -133,7 +133,7 @@ def error_activity_dashboard(request) -> JsonResponse:
 
     except Exception as e:
         return JsonResponse({
-            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'error': ErrorMessageEnum.DATA_RECUPERATION.trad(),
             'message': str(e)
         }, status=500)
 
@@ -160,7 +160,7 @@ def referer_activity_dashboard(request) -> JsonResponse:
 
     except Exception as e:
         return JsonResponse({
-            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'error': ErrorMessageEnum.DATA_RECUPERATION.trad(),
             'message': str(e)
         }, status=500)
 
@@ -187,7 +187,7 @@ def utm_source_activity_dashboard(request) -> JsonResponse:
 
     except Exception as e:
         return JsonResponse({
-            'error': ErrorMessageEnum.DATA_RECUPERATION,
+            'error': ErrorMessageEnum.DATA_RECUPERATION.trad(),
             'message': str(e)
         }, status=500)
 

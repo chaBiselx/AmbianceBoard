@@ -79,11 +79,11 @@ def public_soundboard_propose_playlist(request, soundboard_uuid, playlist_uuid) 
     """Propose une playlist de l'utilisateur au propriétaire d'un soundboard public."""
     soundboard = (SoundBoardService(request)).get_public_soundboard(soundboard_uuid)
     if not soundboard:
-        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     playlist = PlaylistRepository().get(playlist_uuid)
     if not playlist:
-        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     try:
         PlaylistProposalService().propose(playlist, soundboard, request.user)
@@ -99,7 +99,7 @@ def public_soundboard_propose_playlist(request, soundboard_uuid, playlist_uuid) 
         return JsonResponse({'error': str(e)}, status=403)
     except Exception as e:
         logger.error(f"Erreur lors de la proposition de playlist pour soundboard {soundboard_uuid}: {e}")
-        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
+        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad()}, status=500)
 
 
 @login_required
@@ -108,7 +108,7 @@ def public_soundboard_withdraw_proposal(request, soundboard_uuid, proposal_uuid)
     """Retire une proposition en attente, à l'initiative de son auteur."""
     proposal = PlaylistProposalRepository().get(proposal_uuid)
     if not proposal or str(proposal.soundboard.uuid) != str(soundboard_uuid):
-        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     try:
         PlaylistProposalService().withdraw(proposal, request.user)
@@ -119,7 +119,7 @@ def public_soundboard_withdraw_proposal(request, soundboard_uuid, proposal_uuid)
         return JsonResponse({'error': str(e)}, status=409)
     except Exception as e:
         logger.error(f"Erreur lors du retrait de la proposition {proposal_uuid}: {e}")
-        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
+        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad()}, status=500)
 
 
 @login_required
@@ -128,7 +128,7 @@ def public_soundboard_dismiss_proposal(request, soundboard_uuid, proposal_uuid) 
     """Supprime définitivement une proposition refusée, à l'initiative de son auteur."""
     proposal = PlaylistProposalRepository().get(proposal_uuid)
     if not proposal or str(proposal.soundboard.uuid) != str(soundboard_uuid):
-        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.value}, status=404)
+        return JsonResponse({'error': ErrorMessageEnum.ELEMENT_NOT_FOUND.trad()}, status=404)
 
     try:
         PlaylistProposalService().dismiss(proposal, request.user)
@@ -139,7 +139,7 @@ def public_soundboard_dismiss_proposal(request, soundboard_uuid, proposal_uuid) 
         return JsonResponse({'error': str(e)}, status=409)
     except Exception as e:
         logger.error(f"Erreur lors de la suppression de la proposition {proposal_uuid}: {e}")
-        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.value}, status=500)
+        return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad()}, status=500)
 
 
 @login_required
@@ -166,4 +166,4 @@ def public_soundboard_proposal_stream(request, soundboard_uuid, proposal_uuid) -
                 return track.get_reponse_content()
     except Exception as e:
         logger.error(f"Error in public_soundboard_proposal_stream: {e}")
-    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.value, status=404)
+    return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), status=404)
