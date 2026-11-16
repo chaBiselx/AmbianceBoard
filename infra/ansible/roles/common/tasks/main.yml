@@ -9,5 +9,7 @@
   import_tasks: rsync.yml
 - name : Include common user project tasks
   import_tasks: user_project.yml
+- name : Install VPN for monitoring
+  import_tasks: vpn.yml
 - name : install project
   import_tasks: project.yml

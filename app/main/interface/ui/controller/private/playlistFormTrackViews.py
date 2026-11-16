@@ -3,8 +3,10 @@ from django.contrib.auth.decorators import login_required
 from main.domain.common.exceptions.PlaylistLimitException import PlaylistLimitException
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from django_ratelimit.decorators import ratelimit
 from main.domain.common.service.PlaylistService import PlaylistService
 from main.domain.common.service.MusicService import MusicService
+from main.architecture.messaging.email.TrackLabelReportEmail import TrackLabelReportEmail
 from main.domain.private.service.MultipleMusicUploadService import MultipleMusicUploadService
 from main.interface.ui.forms.private.MusicForm import MusicForm
 from main.domain.common.enum.HtmlDefaultPageEnum import HtmlDefaultPageEnum
@@ -19,6 +21,8 @@ from main.architecture.persistence.repository.LinkMusicRepository import LinkMus
 from main.domain.common.enum.UserActivityTypeEnum import UserActivityTypeEnum
 from main.domain.common.helper.ActivityContextHelper import ActivityContextHelper
 from main.architecture.persistence.repository.MusicRepository import MusicRepository
+from main.architecture.persistence.repository.TrackRepository import TrackRepository
+from main.architecture.persistence.repository.TrackLabelRepository import TrackLabelRepository
 
 from main.domain.common.utils.logger import logger
 
@@ -236,3 +240,33 @@ def link_delete(request, playlist_uuid, link_id) -> JsonResponse:
         link.delete()
         return JsonResponse({'success': 'Suppression lien musical réussie'}, status=200)
     return JsonResponse({"error": ErrorMessageEnum.METHOD_NOT_SUPPORTED.trad()}, status=405)
+
+
+@login_required
+@require_http_methods(['POST'])
+@ratelimit(key='user', rate='5/m', method='POST', block=True)
+def report_track_labels(request, playlist_uuid, track_id) -> JsonResponse:
+    status_code = 404
+    success = False
+    playlist = PlaylistService.get_playlist_for_user(playlist_uuid, request.user)
+    if playlist:
+        track = TrackRepository().get(track_id, playlist.uuid)
+        if track:
+            status_code = 400
+            try:
+                label_ids = list(dict.fromkeys(int(value) for value in request.POST.getlist('label_ids')))
+            except (TypeError, ValueError):
+                label_ids = []
+
+            if label_ids and all(label_id > 0 for label_id in label_ids):
+                labels = list(TrackLabelRepository().get_labels_by_ids_for_track(track, label_ids))
+                if len(labels) == len(label_ids):
+                    status_code = 500
+                    try:
+                        success = bool(TrackLabelReportEmail().send_report(track, labels, request.user))
+                    except Exception as error:
+                        logger.error(f"Track label report email failed: {error} track : {track.id}", exc_info=error)
+                    if success:
+                        status_code = 200
+
+    return JsonResponse({'success': success}, status=status_code)

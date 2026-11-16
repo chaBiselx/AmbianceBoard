@@ -37,21 +37,21 @@
         {% get_playlist_type_short_description 'PLAYLIST_TYPE_AMBIENT' as ambient_description %}
         {% get_playlist_type_style 'PLAYLIST_TYPE_MUSIC' as music_style %}
         {% get_playlist_type_short_description 'PLAYLIST_TYPE_MUSIC' as music_description %}
-        <div class="soundboard-type-legend small text-body-secondary me-2 float-md-end float-start">
-            <span class="soundboard-type-legend__item d-inline-flex align-items-center">
+        <div class="soundboard-type-legend small text-body-secondary me-0 me-md-2 float-md-end float-start">
+            <span class="soundboard-type-legend__item d-inline-flex align-items-center js-tooltip-trigger" data-tooltip-target="soundboard-type-tooltip-instant">
                 <span class="soundboard-type-legend__swatch" style="{{ instant_style }};"></span>
-                <span><strong>Instant</strong></span>
-                <span class="text-info" data-bs-toggle="tooltip" data-bs-title="{{ instant_description }}" data-bs-placement="bottom"><i class="fa-solid fa-circle-info"></i></span>
+                <small><strong>Instant</strong></small>
+                <span id="soundboard-type-tooltip-instant" class="text-info" data-bs-toggle="tooltip" data-bs-title="{{ instant_description }}" data-bs-placement="bottom"><i class="fa-solid fa-circle-info"></i></span>
             </span>
-            <span class="soundboard-type-legend__item d-inline-flex align-items-center">
+            <span class="soundboard-type-legend__item d-inline-flex align-items-center js-tooltip-trigger" data-tooltip-target="soundboard-type-tooltip-ambient">
                 <span class="soundboard-type-legend__swatch" style="{{ ambient_style }};"></span>
-                <span><strong>Ambiance</strong></span>
-                <span class="text-info" data-bs-toggle="tooltip" data-bs-title="{{ ambient_description }}" data-bs-placement="bottom"><i class="fa-solid fa-circle-info"></i></span>
+                <small><strong>Ambiance</strong></small>
+                <span id="soundboard-type-tooltip-ambient" class="text-info" data-bs-toggle="tooltip" data-bs-title="{{ ambient_description }}" data-bs-placement="bottom"><i class="fa-solid fa-circle-info"></i></span>
             </span>
-            <span class="soundboard-type-legend__item d-inline-flex align-items-center">
+            <span class="soundboard-type-legend__item d-inline-flex align-items-center js-tooltip-trigger" data-tooltip-target="soundboard-type-tooltip-music">
                 <span class="soundboard-type-legend__swatch" style="{{ music_style }};"></span>
-                <span><strong>Musique</strong></span>
-                <span class="text-info" data-bs-toggle="tooltip" data-bs-title="{{ music_description }}" data-bs-placement="bottom"><i class="fa-solid fa-circle-info"></i></span>
+                <small><strong>Musique</strong></small>
+                <span id="soundboard-type-tooltip-music" class="text-info" data-bs-toggle="tooltip" data-bs-title="{{ music_description }}" data-bs-placement="bottom"><i class="fa-solid fa-circle-info"></i></span>
             </span>
         </div>
     </div>

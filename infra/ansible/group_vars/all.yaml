@@ -6,3 +6,6 @@ docker_compose_file: "docker-compose.prod.yml"
 repository_url : https://github.com/chaBiselx/AmbianceBoard
 project_git_user: "{{ lookup('ansible.builtin.env', 'PROJECT_GIT_USER') | default(ansible_user) }}"
 project_app_user: "{{ lookup('ansible.builtin.env', 'PROJECT_APP_USER') | default(ansible_user) }}"
+project_docker_stat_user: "{{ lookup('ansible.builtin.env', 'PROJECT_DOCKER_STAT_USER') | default('user_docker_stat') }}"
+project_docker_vpn_ip : "{{ lookup('ansible.builtin.env', 'PROJECT_DOCKER_VPN_IP') | default('10.10.10.2') }}"
+wireguard_local_public_key: "{{ lookup('ansible.builtin.env', 'WIREGUARD_LOCAL_PUBLIC_KEY') | default('') }}"

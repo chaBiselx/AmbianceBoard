@@ -1,0 +1,137 @@
+---
+- name: Install WireGuard VPN
+  ansible.builtin.apt:
+    name: wireguard
+    state: present
+  become: true
+
+- name: Ensure WireGuard configuration directory exists
+  ansible.builtin.file:
+    path: /etc/wireguard
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+  become: true
+
+- name: Check whether the WireGuard configuration exists
+  ansible.builtin.stat:
+    path: /etc/wireguard/wg0.conf
+  register: wireguard_config
+
+- name: Check whether the VPS private key exists
+  ansible.builtin.stat:
+    path: /etc/wireguard/privatekey
+  register: wireguard_private_key
+  when: not wireguard_config.stat.exists
+
+- name: Validate the local WireGuard public key
+  ansible.builtin.assert:
+    that:
+      - wireguard_local_public_key | length > 0
+    fail_msg: >-
+      Set WIREGUARD_LOCAL_PUBLIC_KEY in the Ansible environment before
+      creating the VPS WireGuard configuration.
+  when: not wireguard_config.stat.exists
+
+- name: Generate the VPS private key
+  ansible.builtin.command:
+    argv:
+      - wg
+      - genkey
+  register: generated_wireguard_private_key
+  changed_when: true
+  no_log: true
+  when:
+    - not wireguard_config.stat.exists
+    - not wireguard_private_key.stat.exists
+  become: true
+
+- name: Save the VPS private key
+  ansible.builtin.copy:
+    content: "{{ generated_wireguard_private_key.stdout }}\n"
+    dest: /etc/wireguard/privatekey
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+  when:
+    - not wireguard_config.stat.exists
+    - not wireguard_private_key.stat.exists
+  become: true
+
+- name: Protect the existing VPS private key
+  ansible.builtin.file:
+    path: /etc/wireguard/privatekey
+    state: file
+    owner: root
+    group: root
+    mode: "0600"
+  when:
+    - not wireguard_config.stat.exists
+    - wireguard_private_key.stat.exists
+  become: true
+
+- name: Read the VPS private key for public key derivation
+  ansible.builtin.slurp:
+    src: /etc/wireguard/privatekey
+  register: wireguard_private_key_content
+  no_log: true
+  when: not wireguard_config.stat.exists
+  become: true
+
+- name: Derive the VPS public key
+  ansible.builtin.command:
+    argv:
+      - wg
+      - pubkey
+    stdin: "{{ wireguard_private_key_content.content | b64decode }}"
+  register: wireguard_public_key
+  changed_when: false
+  no_log: true
+  when: not wireguard_config.stat.exists
+  become: true
+
+- name: Create the VPS WireGuard configuration
+  ansible.builtin.copy:
+    content: |
+      [Interface]
+      Address = 10.10.10.1/24
+      ListenPort = 51820
+      PrivateKey = {{ wireguard_private_key_content.content | b64decode | trim }}
+
+      [Peer]
+      # Serveur maison
+      PublicKey = {{ wireguard_local_public_key }}
+      AllowedIPs = 10.10.10.2/24
+    dest: /etc/wireguard/wg0.conf
+    owner: root
+    group: root
+    mode: "0600"
+  no_log: true
+  when: not wireguard_config.stat.exists
+  become: true
+
+- name: Save the VPS public key in the local project
+  ansible.builtin.copy:
+    content: "{{ wireguard_public_key.stdout }}\n"
+    dest: "{{ playbook_dir }}/../.wireguard_public_key"
+    mode: "0600"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not wireguard_config.stat.exists
+
+- name: Allow WireGuard traffic through UFW
+  community.general.ufw:
+    rule: allow
+    port: "51820"
+    proto: udp
+  become: true
+
+- name: Enable and start the WireGuard interface
+  ansible.builtin.systemd_service:
+    name: wg-quick@wg0
+    enabled: true
+    state: started
+  become: true

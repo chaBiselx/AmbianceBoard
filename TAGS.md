@@ -658,6 +658,22 @@ Nouveautés
 Corrections
 - Fix de la tentative de retélécharger une piste audio via un lien pour un manager 
 
+### 0.5.22 - 2026/11 : 
+Sécurité
+- Renforcement sécurité CSP
+
+Nouveautés
+- Ajout d'un boutons pour signalier la mauvaise labellisation 
+
+Améliorations
+- Rendu visuel pour le declenchement des pistes en particulier.
+
+Modifications
+- Changement des icones de soundboard et de boutons
+
+Corrections
+- Fix d'un effet "aléatoire" sur le déclenchement d'une piste en particulier.
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

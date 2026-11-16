@@ -57,7 +57,7 @@ export default defineConfig(({ mode }) => {
             exclude: ['tests/E2E/**'],
             coverage: {
                 provider: 'v8',
-                reporter: ['text', 'html', 'json-summary'],
+                reporter: ['text', 'html', 'json-summary', 'lcov'],
                 include: ['src/**'],
                 exclude: ['tests/**'],
                 thresholds: {

@@ -48,7 +48,7 @@ from main.interface.ui.controller.private.playlistProposalManagementViews import
 from main.interface.ui.controller.private.playlistFormViews import (
     playlist_read_all, playlist_create,  playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
-from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete
+from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete, report_track_labels
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, account, delete_account
 from main.interface.ui.controller.private.asyncDownloadJobViews import recent_async_download_jobs
 from main.interface.ui.controller.moderator.moderatorViews import (
@@ -205,6 +205,7 @@ urlpatterns = [
     path("playlist/<uuid:playlist_uuid>/link/create-ajax", link_create_ajax, name="addLinkAjax"),
     path("playlist/<uuid:playlist_uuid>/link/edit/<int:link_id>", link_update, name="editLink"),
     path("playlist/<uuid:playlist_uuid>/link/delete/<int:link_id>", link_delete, name="deleteLink"),
+    path("playlist/<uuid:playlist_uuid>/track/<int:track_id>/report-labels", report_track_labels, name="reportTrackLabels"),
 
     path("playlist/<uuid:soundboard_uuid>/<uuid:playlist_uuid>/stream", music_stream, name="streamMusic"),
     path("playlist/<uuid:soundboard_uuid>/fetch/tracks", playlist_tracks_list, name="soundboardTracksList"),

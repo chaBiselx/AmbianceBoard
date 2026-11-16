@@ -17,6 +17,16 @@ Elle permet de preparer des ambiances sonores, d organiser des playlists et de p
 ![Duplication](https://sonarcloud.io/api/project_badges/measure?project=chaBiselx_AmbianceBoard&metric=duplicated_lines_density)  
 👉 [Voir le rapport SonarCloud](https://sonarcloud.io/project/overview?id=chaBiselx_AmbianceBoard)  
 
+## 📊 Couverture de code
+
+[![Back](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg?flag=backend)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
+[![Front](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg?flag=frontend)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
+[![Music-labeler](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg?flag=music-labeler)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
+[![Global](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
+
+Les rapports sont publies par la CI. Le badge global correspond a l'agregat Codecov et peut differer de la moyenne arithmetique affichee dans le resume GitHub Actions.
+Pour activer l'envoi, ajouter le secret GitHub Actions `CODECOV_TOKEN` apres avoir active le depot sur Codecov.
+
 ## 📊 Score  
 [![Plumber Score](https://score.getplumber.io/github.com/chabiselx/ambianceboard.svg)](https://score.getplumber.io/github.com/chabiselx/ambianceboard)
 
@@ -59,4 +69,21 @@ ajouter dans le dns 127.0.0.1 ambianceboard
 - MailHog: http://localhost:8025/
 - Grafana: http://localhost:3000/
 
+### Analyse OWASP ZAP
 
+Le plan [zap.yaml](zap.yaml) explore l'application sans connexion puis avec un
+utilisateur, via les spiders HTML et navigateur, avant le scan passif. Pour le
+parcours authentifié, il utilise par défaut le compte fixture E2E
+
+```sh
+
+make zap-scan
+```
+
+Les rapports HTML et JSON sont écrits dans `zap-reports/`. Aucun scan actif
+n'est lancé par ce plan.
+
+
+## set-up Greylogs 
+
+aller `System → Inputs` puis créer un iput de type `GELF UDP`

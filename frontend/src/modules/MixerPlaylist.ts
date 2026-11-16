@@ -168,11 +168,11 @@ class MixerPlaylist {
         SoundBoardManager.deleteSameTypePlaylist(buttonPlaylist)
 
         const musicElement = MusicElementFactory.fromButtonPlaylist(buttonPlaylist)
+        buttonPlaylist.active()
         musicElement.setSpecificMusic(trackUri);
         (new UpdateVolumeElement(musicElement)).update()
         musicElement.addToDOM()
         musicElement.play()
-        buttonPlaylist.active()
 
         // Fermer le toggle des tracks
         this.closeSpecificMusicToggle()

@@ -1,6 +1,7 @@
 # Création d'un utilisateur applicatif : 
 
 ## Enviroonement cible 
+
 ### création et verification 
 ```
 sudo adduser --disabled-password --gecos "" user_ansible

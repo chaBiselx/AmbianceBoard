@@ -21,6 +21,7 @@ app/logs/*
 app/backup/*
 db-data/*
 tmp/*
+/zap-reports/
 
 
 # traductions
@@ -33,3 +34,6 @@ staticfiles/*
 mediafiles/*
 logs/*
 frontend/.npm-cache
+
+# ansible
+/infra/ansible/.wireguard_public_key
