@@ -60,3 +60,27 @@
       - docker
     append: false
     shell: /bin/bash
+
+# Cron USER
+- name: Validate backup cron account name
+  ansible.builtin.assert:
+    that:
+      - project_backup_cron_user | length > 0
+      - project_backup_cron_user != 'root'
+
+- name: Ensure backup cron account primary group exists
+  ansible.builtin.group:
+    name: "{{ project_backup_cron_user }}"
+    state: present
+
+- name: Ensure backup cron account exists
+  ansible.builtin.user:
+    name: "{{ project_backup_cron_user }}"
+    state: present
+    create_home: true
+    group: "{{ project_backup_cron_user }}"
+    groups:
+      - external_automaton
+      - docker
+    append: false
+    shell: /bin/sh

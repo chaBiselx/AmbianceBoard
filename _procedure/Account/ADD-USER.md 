@@ -36,12 +36,20 @@ passer Sudo sans passord
 
 Ajouter `user_ansible ALL=(ALL) NOPASSWD: ALL`
 
+### changer d'utilisateur 
+
+```bash
+sudo -i -u user_ansible
+```
+
+verifier via `id`
+
 ## Mise en place du SSH 
 
 ###  Machine locale
 
-###créer une clefs SSH 
-```
+créer une clefs SSH 
+```bash
 ssh-keygen -t ed25519 -C "ansible" -f ~/.ssh/id_ed25519_ambianceboard_ansible
 ```
 et mettre un password fort 
@@ -52,26 +60,26 @@ et mettre un password fort
 #### Ajout de la clé publique 
 
 pre-requis: l'utilisateur sur la machine distante doit avoir un MDP 
-```
+```bash
 ssh-copy-id -i ~/.ssh/id_ed25519_ambianceboard_ansible.pub user_ansible@255.255.255.255
 ```
 
 Sinon 
 
 Recuperer la clé publiqe : 
-```
+```bash
 cat ~/.ssh/id_ed25519_ambianceboard_ansible.pub
 ```
 
 Ajouter aux clé autorisé sur le serveur cible
-```
+```bash
 sudo mkdir -p /home/user_ansible/.ssh 
 echo "##CONTENU_CAT##" | sudo tee -a /home/user_ansible/.ssh/authorized_keys > /dev/null
 sudo chown -R user_ansible:user_ansible /home/user_ansible/.ssh && sudo chmod 700 /home/user_ansible/.ssh && sudo chmod 600 /home/user_ansible/.ssh/authorized_keys
 ```
 
 ou en root/su
-```
+```bash
 mkdir -p /home/user_ansible/.ssh 
 echo "##CONTENU_CAT##" >> /home/user_ansible/.ssh/authorized_keys 
 chown -R user_ansible:user_ansible /home/user_ansible/.ssh && chmod 700 /home/user_ansible/.ssh && chmod 600 /home/user_ansible/.ssh/authorized_keys
@@ -79,7 +87,7 @@ chown -R user_ansible:user_ansible /home/user_ansible/.ssh && chmod 700 /home/us
 
 
 #### sshd_config
-```
+```bash
 sudo vi /etc/ssh/sshd_config
 ```
 
@@ -96,19 +104,42 @@ Match User user_admin
 ```
 
 recharger sshd
-```
+```bash
 sudo sshd -t   
 sudo systemctl restart ssh  
 ```
 
+#### limiter l'accès 
+ pour sécuriser l'accès pour une liste d'IP 
+
+```
+# Utilisateur user backup : autorisé uniquement depuis X.X.X.X
+Match User user_backup_cron Address 10.10.10.2,X.X.X.X
+    PubkeyAuthentication yes
+    AuthenticationMethods publickey
+    PasswordAuthentication no
+    KbdInteractiveAuthentication no
+    AllowTcpForwarding no
+    X11Forwarding no
+    AllowAgentForwarding no
+    PermitTunnel no
+    PermitTTY no
+
+
+# Toute autre origine pour ce même utilisateur : refusé
+Match User user_backup_cron Address *,!10.10.10.2,!X.X.X.X
+    DenyUsers user_backup_cron
+```
+
+
 
 ## Vérification 
-```
+```bash
 ssh -i ~/.ssh/id_ed25519_ambianceboard_ansible user_ansible@X.X.X.X
 ```
 doit fonctionner avec la passphrase
 
-```
+```bash
 ssh -o PubkeyAuthentication=no user_ansible@X.X.X.X
 ```
 doit être refusé `Permission denied (publickey)`

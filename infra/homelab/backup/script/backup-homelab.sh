@@ -2,6 +2,10 @@
 # Recupere la base PostgreSQL et les mediafiles de production vers le homelab.
 # Usage et configuration : infra/homelab/backup/README.md
 
+if [ -z "${BASH_VERSION:-}" ]; then
+    exec bash "$0" "$@"
+fi
+
 set -Eeuo pipefail
 
 # =============================================================================
@@ -11,12 +15,6 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LIB_DIR="$SCRIPT_DIR/lib"
 
-# Fichier de configuration optionnel, jamais versionne (voir backup.env.example).
-ENV_FILE="${BACKUP_ENV_FILE:-$SCRIPT_DIR/../backup.env}"
-if [[ -f "$ENV_FILE" ]]; then
-    # shellcheck disable=SC1090
-    source "$ENV_FILE"
-fi
 
 # Connexion au serveur
 TRANSPORT="${TRANSPORT:-ssh}"
