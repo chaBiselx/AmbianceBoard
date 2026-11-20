@@ -84,4 +84,5 @@ jobs:
         run: |
           gh workflow run "Docker-digest-update.yml" \
             --repo ${{ github.repository }} \
-            --ref ${{ needs.CreateVersionBranch.outputs.new_version }}
+            --ref ${{ needs.CreateVersionBranch.outputs.new_version }} \
+            --field target_branch=${{ needs.CreateVersionBranch.outputs.new_version }}
