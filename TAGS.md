@@ -674,6 +674,10 @@ Modifications
 Corrections
 - Fix d'un effet "aléatoire" sur le déclenchement d'une piste en particulier.
 
+### 0.5.23 - 2026/11 : 
+Corrections
+- Corrections des droits des fichiers audio qui ne sont pas recuperable via un script pour le backup automatique
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité

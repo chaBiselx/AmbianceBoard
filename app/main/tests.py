@@ -8,12 +8,14 @@ from main.TNR.TU.auth.AuthBackendTest import *
 from main.TNR.TU.signals.GroupsPermissionsSignalsTest import *
 
 from main.TNR.TU.models.MusicModelTest import *
+from main.TNR.TU.models.MediaPermissionsTest import *
 from main.TNR.TU.models.SoundBoardModelTest import *
 from main.TNR.TU.models.PlaylistModelTest import *
 from main.TNR.TU.models.UserModelTest import *
 
 
 from main.TNR.TU.utils.ImageResizerTest import *
+from main.TNR.TU.utils.AudioBitrateReducerTest import *
 from main.TNR.TU.utils.ExtractPaginatorTest import *
 from main.TNR.TU.utils.EmailSenderTest import *
 from main.TNR.TU.utils.SettingsTest import *

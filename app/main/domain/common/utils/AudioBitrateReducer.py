@@ -1,6 +1,7 @@
 import os
 import subprocess
 import tempfile
+from django.conf import settings
 from mutagen import File
 from main.domain.common.utils.settings import Settings
 from main.domain.common.utils.logger import LoggerFactory
@@ -82,6 +83,7 @@ class AudioBitrateReducer:
             if result.returncode != 0:
                 raise RuntimeError(result.stderr.strip() or "conversion ffmpeg impossible")
 
+            os.chmod(ffmpeg_output_file, settings.FILE_UPLOAD_PERMISSIONS)
             if temporary_output_file is not None:
                 os.replace(temporary_output_file, output_file)
 
