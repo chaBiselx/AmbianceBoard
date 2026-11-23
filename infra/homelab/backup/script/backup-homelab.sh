@@ -2,7 +2,7 @@
 # Recupere la base PostgreSQL et les mediafiles de production vers le homelab.
 # Usage et configuration : infra/homelab/backup/README.md
 
-if [ -z "${BASH_VERSION:-}" ]; then
+if [[ -z "${BASH_VERSION:-}" ]]; then
     exec bash "$0" "$@"
 fi
 
@@ -70,14 +70,15 @@ USAGE
 
 parse_args() {
     while [[ $# -gt 0 ]]; do
-        case "$1" in
+        local option="$1"
+        case "$option" in
             --db-only) DO_MEDIA=0 ;;
             --media-only) DO_DB=0 ;;
             --dry-run) DRY_RUN=1 ;;
             --delete) MIRROR=1 ;;
             --verify) VERIFY=1 ;;
             -h | --help) usage; exit 0 ;;
-            *) usage >&2; die "option inconnue : $1" ;;
+            *) usage >&2; die "option inconnue : $option" ;;
         esac
         shift
     done
