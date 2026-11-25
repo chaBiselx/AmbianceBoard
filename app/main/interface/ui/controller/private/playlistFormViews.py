@@ -196,7 +196,7 @@ def playlist_create_track_stream(request, playlist_uuid, music_id) -> HttpRespon
             ret = HttpResponse()
             ret ['Content-Duration'] = track.get_duration()
         else:
-            ret = track.get_reponse_content()
+            ret = track.get_reponse_content(request.headers.get('Range'))
         if ret:
             return ret
     except Exception as e:

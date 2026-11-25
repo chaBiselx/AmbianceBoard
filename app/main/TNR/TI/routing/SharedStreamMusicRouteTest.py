@@ -11,6 +11,8 @@ import uuid
 
 from main.domain.common.enum.ErrorMessageEnum import ErrorMessageEnum
 from main.interface.ui.controller.sharedSoundboard import sharedViews
+from main.interface.ui.controller.private import showSoundboardViews
+from main.interface.ui.controller.public import publicViews
 
 User = get_user_model()
 
@@ -89,6 +91,80 @@ class SharedStreamMusicRouteTest(TestCase):
                     else:
                         self.assertIs(response, track.get_reponse_content.return_value)
                         cache_factory.return_value.set.assert_called_once_with(cache_key, 123, timeout=60)
+
+    def test_range_request_reuses_the_randomly_selected_track(self):
+        request = RequestFactory().get('/', HTTP_RANGE='bytes=20-')
+        cached_track = Mock(id=123)
+
+        for view_module, helper_name in (
+            (showSoundboardViews, '_get_private_stream_track'),
+            (publicViews, '_get_public_stream_track'),
+        ):
+            with self.subTest(view=view_module.__name__):
+                cache = Mock()
+                cache.get.return_value = cached_track.id
+                with patch.object(view_module, 'TrackRepository') as track_repository, \
+                     patch.object(view_module, 'RandomizeTrackService') as randomize_service:
+                    track_repository.return_value.get.return_value = cached_track
+
+                    track, is_new_track = getattr(view_module, helper_name)(
+                        request,
+                        cache,
+                        'playback-cache-key',
+                        self.test_uuid1,
+                        self.test_uuid2,
+                    )
+
+                    self.assertIs(track, cached_track)
+                    self.assertFalse(is_new_track)
+                    track_repository.return_value.get.assert_called_once_with(123, self.test_uuid2)
+                    randomize_service.assert_not_called()
+
+    def test_specific_track_range_request_reuses_cached_track(self):
+        request = RequestFactory().get('/', HTTP_RANGE='bytes=20-')
+        cached_track = Mock(id=123)
+
+        for view_module, helper_name in (
+            (showSoundboardViews, '_get_private_specific_stream_track'),
+            (publicViews, '_get_public_specific_stream_track'),
+        ):
+            with self.subTest(view=view_module.__name__):
+                cache = Mock()
+                cache.get.return_value = cached_track.id
+                with patch.object(view_module, 'TrackRepository') as track_repository, \
+                     patch.object(view_module, 'RandomizeTrackService') as randomize_service:
+                    track_repository.return_value.get.return_value = cached_track
+
+                    track, is_new_track = getattr(view_module, helper_name)(
+                        request,
+                        cache,
+                        'playback-cache-key',
+                        self.test_uuid1,
+                        self.test_uuid2,
+                        1,
+                    )
+
+                    self.assertIs(track, cached_track)
+                    self.assertFalse(is_new_track)
+                    track_repository.return_value.get.assert_called_once_with(123, self.test_uuid2)
+                    randomize_service.assert_not_called()
+
+    def test_range_header_is_forwarded_to_shared_track_response(self):
+        request = RequestFactory().get('/', HTTP_RANGE='bytes=20-29')
+        request.session = SimpleNamespace(session_key='test-session')
+        track = Mock(id=123)
+        track.get_reponse_content.return_value = HttpResponse(b'audio')
+
+        with patch.object(sharedViews.CacheFactory, 'get_default_cache') as cache_factory, \
+             patch.object(sharedViews, 'RandomizeTrackService') as randomize_service:
+            randomize_service.return_value.get_shared.return_value = track
+
+            response = sharedViews.shared_music_stream(
+                request, self.test_uuid1, self.test_uuid2, self.test_token, 1
+            )
+
+        self.assertEqual(response.status_code, 200)
+        track.get_reponse_content.assert_called_once_with('bytes=20-29')
     
     def test_shared_stream_music_accessible_without_auth(self):
         """Test que la route est accessible sans authentification"""

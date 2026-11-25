@@ -13,6 +13,7 @@ class ConfigMusic(AbstractConfig):
             "fadeInType": FadeEnum.EASE.value,
             "fadeOutDuration": 5,
             "fadeOutType": FadeEnum.EASE.value,
+            "startPositionSeconds": 0,
             "loop": True,
             "singleConcurrentRead":True,
             "fadeOffOnStopDuration":2,

@@ -44,6 +44,7 @@ class MusicElement {
     playlistLoop: boolean = false;
     fadeOutDuration: number = 0;
     delay: number = 0;
+    private startPositionSeconds: number = 0;
     butonPlaylistToken: string | null = null;
     fadeInGoing: boolean = false;
     baseUrl: string = ''; // url of playlist to stream music
@@ -124,6 +125,7 @@ class MusicElement {
         this.idPlaylist = dto.idPlaylist;
         this.playlistLoop = dto.playlistLoop;
         this.delay = dto.delay;
+        this.startPositionSeconds = dto.startPositionSeconds;
         this.baseUrl = dto.baseUrl;
         this.durationRemainingTriggerNextMusic = dto.durationRemainingTriggerNextMusic;
         this.fadeOffOnStopDuration = dto.fadeOffOnStopDuration;
@@ -237,6 +239,7 @@ class MusicElement {
         }
 
         this.nextLoopStarted = false;
+        this.applyStartPosition();
 
         this.listen('error', (e) => {
             this.handleAudioError(e);
@@ -286,6 +289,28 @@ class MusicElement {
             }
             ConsoleTraceServeur.error('playAudioError', error, this.idPlaylist);
         });
+    }
+
+    private applyStartPosition(): void {
+        if (this.startPositionSeconds <= 0) {
+            return;
+        }
+
+        const seekToStartPosition = () => {
+            const duration = this.audioAdapter.getDuration();
+            if (!Number.isFinite(duration)) {
+                return;
+            }
+            const position = duration <= this.startPositionSeconds ? 0 : this.startPositionSeconds;
+            this.audioAdapter.setCurrentTime(position);
+        };
+
+        if (this.audioAdapter.getReadyState() >= 1) {
+            seekToStartPosition();
+            return;
+        }
+
+        this.audioAdapter.addEventListener('loadedmetadata', seekToStartPosition, { once: true });
     }
 
     private disactiveButtonPlaylist() {

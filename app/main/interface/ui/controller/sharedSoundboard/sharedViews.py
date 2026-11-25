@@ -98,7 +98,7 @@ def shared_music_stream(request, soundboard_uuid, playlist_uuid, token, music_id
             track = (RandomizeTrackService(request)).get_shared(soundboard_uuid, playlist_uuid, token, music_id )
             if track:
                 cache.set(cache_key, track.id, timeout=60)
-                ret = track.get_reponse_content()
+                ret = track.get_reponse_content(request.headers.get('Range'))
         if ret:
             return ret
     except Exception as e:
@@ -114,7 +114,7 @@ def shared_proposal_music_stream(request, soundboard_uuid, token, proposal_uuid,
         if track:
             if request.headers.get('X-Metadata-Only') == 'true':
                 return JsonResponse({"duration": track.get_duration()}, status=200)
-            return track.get_reponse_content()
+            return track.get_reponse_content(request.headers.get('Range'))
     except Exception as e:
         logger.error(f"Error in shared_proposal_music_stream: {e}")
     return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), status=404)

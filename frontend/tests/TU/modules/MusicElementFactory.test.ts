@@ -58,6 +58,8 @@ describe('MusicElementFactory', () => {
             audioElement.dataset.playlistid = 'playlist-456';
             audioElement.dataset.playlistloop = 'true';
             audioElement.dataset.playlistdelay = '5.0';
+            audioElement.dataset.startPositionEnabled = 'true';
+            audioElement.dataset.startPositionSeconds = '30';
             audioElement.dataset.baseurl = 'https://example.com/music.mp3';
             audioElement.dataset.durationremainingtriggernextmusic = '10.0';
         });
@@ -81,6 +83,8 @@ describe('MusicElementFactory', () => {
                     idPlaylist: 'playlist-456',
                     playlistLoop: true,
                     delay: 5,
+                    startPositionEnabled: true,
+                    startPositionSeconds: 30,
                     baseUrl: 'https://example.com/music.mp3',
                     durationRemainingTriggerNextMusic: 10
                 })
@@ -167,6 +171,8 @@ describe('MusicElementFactory', () => {
             buttonElement.dataset.playlistFadeoutduration = '4.0';
             buttonElement.dataset.playlistLoop = 'true';
             buttonElement.dataset.playlistDelay = '7.5';
+            buttonElement.dataset.playlistStartPositionEnabled = 'true';
+            buttonElement.dataset.playlistStartPositionSeconds = '30';
             buttonElement.dataset.playlistUri = 'https://example.com/ambient.mp3';
             buttonElement.dataset.playlistDurationremainingtriggernextmusic = '12.0';
             buttonElement.dataset.tokenPlaylistActive = 'active-token-456';
@@ -205,6 +211,8 @@ describe('MusicElementFactory', () => {
                     idPlaylist: '789',
                     playlistLoop: true,
                     delay: 7.5,
+                    startPositionEnabled: true,
+                    startPositionSeconds: 30,
                     baseUrl: 'https://example.com/ambient.mp3',
                     durationRemainingTriggerNextMusic: 12
                 })
@@ -269,6 +277,8 @@ describe('MusicElementFactory', () => {
             expect(audioElement.dataset.playlistid).toBe('789');
             expect(audioElement.dataset.playlistloop).toBe('true');
             expect(audioElement.dataset.playlistdelay).toBe('7.5');
+            expect(audioElement.dataset.startPositionEnabled).toBe('true');
+            expect(audioElement.dataset.startPositionSeconds).toBe('30');
             expect(audioElement.dataset.baseurl).toBe('https://example.com/ambient.mp3');
             expect(audioElement.dataset.durationremainingtriggernextmusic).toBe('12');
         });
@@ -298,6 +308,8 @@ describe('MusicElementFactory', () => {
                     idPlaylist: '999',
                     playlistLoop: false,
                     delay: 0,
+                    startPositionEnabled: false,
+                    startPositionSeconds: 0,
                     baseUrl: 'https://example.com/sfx.mp3',
                     durationRemainingTriggerNextMusic: 0
                 })

@@ -24,6 +24,7 @@ export interface MusicElementDTO {
     idPlaylist: string;
     playlistLoop: boolean;
     delay: number;
+    startPositionSeconds: number;
     baseUrl: string;
     durationRemainingTriggerNextMusic: number;
     fadeOffOnStop: boolean;
@@ -93,6 +94,9 @@ export class MusicElementFactory {
             delay: adapter.getDatasetValue('playlistdelay')
                 ? Number.parseFloat(adapter.getDatasetValue('playlistdelay')!)
                 : 0,
+            startPositionSeconds: adapter.getDatasetValue('startPositionSeconds')
+                ? Number.parseFloat(adapter.getDatasetValue('startPositionSeconds')!)
+                : 0,
             baseUrl: adapter.getDatasetValue('baseurl') || '',
             durationRemainingTriggerNextMusic: adapter.getDatasetValue('durationremainingtriggernextmusic')
                 ? Number.parseFloat(adapter.getDatasetValue('durationremainingtriggernextmusic')!)
@@ -136,6 +140,9 @@ export class MusicElementFactory {
                 : false,
             delay: buttonPlaylist.dataset.playlistDelay
                 ? Number.parseFloat(buttonPlaylist.dataset.playlistDelay)
+                : 0,
+            startPositionSeconds: buttonPlaylist.dataset.playlistStartPositionSeconds
+                ? Number.parseFloat(buttonPlaylist.dataset.playlistStartPositionSeconds)
                 : 0,
             baseUrl: buttonPlaylist.dataset.playlistUri || '',
             durationRemainingTriggerNextMusic: buttonPlaylist.dataset.playlistDurationremainingtriggernextmusic
@@ -200,6 +207,7 @@ export class MusicElementFactory {
         audioAdapter.setDatasetValue('playlistid', dto.idPlaylist);
         audioAdapter.setDatasetValue('playlistloop', dto.playlistLoop.toString());
         audioAdapter.setDatasetValue('playlistdelay', dto.delay.toString());
+        audioAdapter.setDatasetValue('startPositionSeconds', dto.startPositionSeconds.toString());
         audioAdapter.setDatasetValue('baseurl', dto.baseUrl);
         audioAdapter.setDatasetValue('durationremainingtriggernextmusic', dto.durationRemainingTriggerNextMusic.toString());
         audioAdapter.setDatasetValue('fadeoffonstop', dto.fadeOffOnStop.toString());

@@ -9,6 +9,7 @@ from typing import Any, Dict
 from main.domain.common.strategy.PlaylistStrategy import PlaylistStrategy
 from main.domain.common.enum.FadePlaylistEnum import FadePlaylistEnum
 from main.domain.common.enum.FadeEnum import FadeEnum
+from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
 
 
 class PlaylistDataService:
@@ -40,10 +41,39 @@ class PlaylistDataService:
         """
         strategy = self.strategy_factory.get_strategy(playlist.typePlaylist)
         data = strategy.get_data(playlist)
+        data = self._apply_start_position(data, playlist)
         
         data = self._apply_fade_override(data, playlist, 'fadeIn')
         data = self._apply_fade_override(data, playlist, 'fadeOut')
         
+        return data
+
+    def _apply_start_position(self, data: Dict[str, Any], playlist: Any) -> Dict[str, Any]:
+        """
+        Applique la configuration du démarrage décalé à une playlist.
+
+        Les positions sont actuellement exprimées en secondes. Cette méthode
+        centralise les règles d'activation afin de pouvoir faire évoluer ensuite
+        le format de position sans modifier get_playlist_data.
+
+        Args:
+            data: Dictionnaire de données actuel
+            playlist: Instance du modèle Playlist
+
+        Returns:
+            Dict[str, Any]: Dictionnaire avec le démarrage décalé configuré
+        """
+        if(playlist.typePlaylist == PlaylistTypeEnum.PLAYLIST_TYPE_INSTANT.name):
+            return data
+
+
+        # start_position_enabled = getattr(playlist, 'startPositionEnabled', FadePlaylistEnum.DEFAULT.name)
+        # start_position_seconds = getattr(playlist, 'startPositionSeconds', FadePlaylistEnum.DEFAULT.name)
+        start_position_enabled = True
+        start_position_seconds = 30
+
+        start_position_seconds = 0 if not start_position_enabled else start_position_seconds
+        data['start-position-seconds'] = start_position_seconds
         return data
     
     def _apply_fade_override(self, data: Dict[str, Any], playlist: Any, fade_type: str) -> Dict[str, Any]:

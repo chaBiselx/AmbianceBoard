@@ -110,6 +110,7 @@ const createDto = (overrides: Partial<MusicElementDTO> = {}): MusicElementDTO =>
     idPlaylist: 'playlist-1',
     playlistLoop: false,
     delay: 0,
+    startPositionSeconds: 0,
     baseUrl: '/audio/current',
     durationRemainingTriggerNextMusic: 0,
     fadeOffOnStop: false,
@@ -195,6 +196,54 @@ describe('MusicElement', () => {
 
         expect(adapter.remove).toHaveBeenCalledOnce();
         expect(musicMocks.emit).toHaveBeenCalledWith('music:ended', { playlistId: 'playlist-1', token: 'token-1' });
+    });
+
+    it('starts at the configured position before playback', () => {
+        const { adapter } = createAudioAdapter();
+        adapter.getDuration = vi.fn(() => 200);
+        const element = new MusicElement(adapter, createDto({ startPositionSeconds: 30 }));
+
+        element.play();
+
+        expect(adapter.setCurrentTime).toHaveBeenCalledWith(30);
+        expect(adapter.setCurrentTime.mock.invocationCallOrder[0]).toBeLessThan(adapter.play.mock.invocationCallOrder[0]);
+    });
+
+    it('starts short tracks from the beginning', () => {
+        const { adapter } = createAudioAdapter();
+        adapter.getDuration = vi.fn(() => 90);
+        const element = new MusicElement(adapter, createDto({ startPositionSeconds: 135 }));
+
+        element.play();
+
+        expect(adapter.setCurrentTime).toHaveBeenCalledWith(0);
+    });
+
+    it('clamps the start position after metadata loads for a short track', () => {
+        const { adapter, trigger } = createAudioAdapter();
+        adapter.getReadyState = vi.fn(() => 0);
+        adapter.getDuration = vi.fn(() => 90);
+        const element = new MusicElement(adapter, createDto({ startPositionSeconds: 135 }));
+
+        element.play();
+        expect(adapter.setCurrentTime).not.toHaveBeenCalled();
+        trigger('loadedmetadata');
+
+        expect(adapter.setCurrentTime).toHaveBeenCalledOnce();
+        expect(adapter.setCurrentTime).toHaveBeenCalledWith(0);
+    });
+
+    it('does not seek when the track duration is unknown', () => {
+        const { adapter, trigger } = createAudioAdapter();
+        adapter.getReadyState = vi.fn(() => 0);
+        adapter.getDuration = vi.fn(() => Number.POSITIVE_INFINITY);
+        const element = new MusicElement(adapter, createDto({ startPositionSeconds: 135 }));
+
+        element.play();
+        trigger('loadedmetadata');
+
+        expect(adapter.setCurrentTime).not.toHaveBeenCalled();
+        expect(adapter.play).toHaveBeenCalledOnce();
     });
 
     it('handles an aborted pending play when audio is removed and allows another track to play', async () => {

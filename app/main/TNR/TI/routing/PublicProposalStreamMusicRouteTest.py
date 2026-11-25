@@ -2,6 +2,9 @@
 Test d'intégration pour la route: Streaming d'une musique de proposition en attente
 (/public/soundboards/<uuid:soundboard_uuid>/proposal/<uuid:proposal_uuid>/stream)
 """
+from unittest.mock import Mock, patch
+
+from django.http import HttpResponse
 from django.test import TestCase, Client, tag
 from django.urls import reverse
 from django.contrib.auth import get_user_model
@@ -78,3 +81,38 @@ class PublicProposalStreamMusicRouteTest(TestCase):
             HTTP_X_METADATA_ONLY='true',
         )
         self.assertEqual(response.status_code, 404)
+
+    def test_range_request_reuses_cached_track_without_restarting_proposal(self):
+        self.client.login(username='proposal_stream_proposer', password='Test1234!')
+        track = Mock(id=123)
+        track.get_reponse_content.return_value = HttpResponse(b'audio')
+
+        with patch(
+            'main.interface.ui.controller.public.playlistProposalViews.CacheFactory.get_default_cache'
+        ) as cache_factory, patch(
+            'main.interface.ui.controller.public.playlistProposalViews.PlaylistProposalRepository'
+        ) as proposal_repository, patch(
+            'main.interface.ui.controller.public.playlistProposalViews.TrackRepository'
+        ) as track_repository, patch(
+            'main.interface.ui.controller.public.playlistProposalViews.RandomizeTrackService'
+        ) as randomize_service, patch(
+            'main.interface.ui.controller.public.playlistProposalViews.SharedSoundboardService'
+        ) as shared_service:
+            cache = Mock()
+            cache.get.return_value = track.id
+            cache_factory.return_value = cache
+            proposal_repository.return_value.get.return_value = self.proposal
+            track_repository.return_value.get.return_value = track
+
+            response = self.client.get(
+                reverse('publicProposalStreamMusic', kwargs={
+                    'soundboard_uuid': self.soundboard.uuid,
+                    'proposal_uuid': self.proposal.uuid,
+                }),
+                HTTP_RANGE='bytes=10-19',
+            )
+
+        self.assertEqual(response.status_code, 200)
+        track.get_reponse_content.assert_called_once_with('bytes=10-19')
+        randomize_service.assert_not_called()
+        shared_service.assert_not_called()

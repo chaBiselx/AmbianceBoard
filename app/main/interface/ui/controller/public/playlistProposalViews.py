@@ -142,6 +142,44 @@ def public_soundboard_dismiss_proposal(request, soundboard_uuid, proposal_uuid) 
         return JsonResponse({'error': ErrorMessageEnum.INTERNAL_SERVER_ERROR.trad()}, status=500)
 
 
+def _get_public_proposal_stream_track(request, cache, cache_key, soundboard_uuid, proposal_uuid):
+    if request.headers.get('Range'):
+        proposal = PlaylistProposalRepository().get(proposal_uuid)
+        track_id = cache.get(cache_key)
+        if proposal and track_id:
+            track = TrackRepository().get(track_id, proposal.playlist.uuid)
+            if track:
+                return track, False
+    track = RandomizeTrackService(request).generate_public_proposal(soundboard_uuid, proposal_uuid)
+    return track, True
+
+
+def _get_public_proposal_metadata(cache, cache_key, proposal_uuid):
+    proposal = PlaylistProposalRepository().get(proposal_uuid)
+    track_id = cache.get(cache_key)
+    if not proposal or not track_id:
+        return None
+    track = TrackRepository().get(track_id, proposal.playlist.uuid)
+    if not track:
+        return None
+    return JsonResponse({"duration": track.get_duration()}, status=200)
+
+
+def _stream_public_proposal_track(request, cache, cache_key, soundboard_uuid, proposal_uuid):
+    track, is_new_track = _get_public_proposal_stream_track(
+        request, cache, cache_key, soundboard_uuid, proposal_uuid
+    )
+    if not track:
+        return None
+    if is_new_track:
+        proposal = PlaylistProposalRepository().get(proposal_uuid)
+        SharedSoundboardService(request, soundboard_uuid).proposal_music_start(
+            str(proposal.uuid), str(proposal.playlist.uuid), track
+        )
+    cache.set(cache_key, track.id, timeout=60)
+    return track.get_reponse_content(request.headers.get('Range'))
+
+
 @login_required
 @require_http_methods(['GET'])
 def public_soundboard_proposal_stream(request, soundboard_uuid, proposal_uuid) -> HttpResponse | JsonResponse:
@@ -150,20 +188,13 @@ def public_soundboard_proposal_stream(request, soundboard_uuid, proposal_uuid) -
     cache_key = f"musicStream:{request.session.session_key}:{soundboard_uuid}:proposal:{proposal_uuid}"
     try:
         if request.headers.get('X-Metadata-Only') == 'true':
-            # Requête de suivi pour la durée uniquement : ne doit pas relancer la diffusion partagée.
-            proposal = PlaylistProposalRepository().get(proposal_uuid)
-            track_id = cache.get(cache_key)
-            if proposal and track_id:
-                track = TrackRepository().get(track_id, proposal.playlist.uuid)
-                if track:
-                    return JsonResponse({"duration": track.get_duration()}, status=200)
+            response = _get_public_proposal_metadata(cache, cache_key, proposal_uuid)
         else:
-            track = (RandomizeTrackService(request)).generate_public_proposal(soundboard_uuid, proposal_uuid)
-            if track:
-                proposal = PlaylistProposalRepository().get(proposal_uuid)
-                SharedSoundboardService(request, soundboard_uuid).proposal_music_start(str(proposal.uuid), str(proposal.playlist.uuid), track)
-                cache.set(cache_key, track.id, timeout=60)
-                return track.get_reponse_content()
+            response = _stream_public_proposal_track(
+                request, cache, cache_key, soundboard_uuid, proposal_uuid
+            )
+        if response:
+            return response
     except Exception as e:
         logger.error(f"Error in public_soundboard_proposal_stream: {e}")
     return HttpResponse(ErrorMessageEnum.ELEMENT_NOT_FOUND.trad(), status=404)

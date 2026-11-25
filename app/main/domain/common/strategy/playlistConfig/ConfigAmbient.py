@@ -13,6 +13,7 @@ class ConfigAmbient(AbstractConfig):
             "fadeInType": FadeEnum.EASE_IN.value,
             "fadeOutDuration": 3,
             "fadeOutType": FadeEnum.EASE_OUT.value,
+            "startPositionSeconds": 0,
             "loop": True,
             "singleConcurrentRead":False,
             "fadeOffOnStopDuration":0.5,

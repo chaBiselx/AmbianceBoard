@@ -13,6 +13,7 @@ class ConfigInstant(AbstractConfig):
             "fadeInType": FadeEnum.DISABLED.value,
             "fadeOutDuration": 0,
             "fadeOutType": FadeEnum.DISABLED.value,
+            "startPositionSeconds": 0,
             "loop": False,
             "singleConcurrentRead" : False,
             "fadeOffOnStopDuration":0,

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: AmbianceBoard\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-10 19:55+0000\n"
+"POT-Creation-Date: 2026-11-24 20:01+0000\n"
 "PO-Revision-Date: 2025-11-17 15:45+0000\n"
 "Last-Translator: AmbianceBoard Team\n"
 "Language-Team: French\n"
@@ -507,11 +507,11 @@ msgstr "Soundboard publiques"
 msgid "view.publicFavorite.title"
 msgstr "Soundboard favorites"
 
-#: main/interface/ui/controller/public/publicViews.py:197
+#: main/interface/ui/controller/public/publicViews.py:219
 msgid "view.favoriteUpdate.error.not_found"
 msgstr "SoundBoard introuvable."
 
-#: main/interface/ui/controller/public/publicViews.py:214
+#: main/interface/ui/controller/public/publicViews.py:236
 msgid "view.favoriteUpdate.error.favorite_not_found"
 msgstr "Favori introuvable."
 
@@ -1892,43 +1892,43 @@ msgstr "Modifier"
 msgid "template.playlist_create.button.delete_track"
 msgstr "Supprimer"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:260
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:259
 msgid "template.playlist_create.report_labels.title"
 msgstr "Signaler des labels incorrects"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:261
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:260
 msgid "template.playlist_create.report_labels.description"
 msgstr "Sélectionnez les labels qui ne correspondent pas à cette piste."
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:262
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:261
 msgid "template.playlist_create.report_labels.submit"
 msgstr "Envoyer le signalement"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:263
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:262
 msgid "template.playlist_create.report_labels.cancel"
 msgstr "Annuler"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:264
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:263
 msgid "template.playlist_create.report_labels.select_one"
 msgstr "Sélectionnez au moins un label."
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:265
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:264
 msgid "template.playlist_create.report_labels.success"
 msgstr "Merci, votre signalement a été envoyé au support."
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:266
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:265
 msgid "template.playlist_create.report_labels.error"
 msgstr "Impossible d’envoyer le signalement. Réessayez plus tard."
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:267
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:266
 msgid "template.playlist_create.report_labels.button"
 msgstr "Signaler"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:273
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:272
 msgid "template.playlist_create.track_labeling_pending"
 msgstr "Labellisation prochaine"
 
-#: main/interface/ui/templates/Html/Playlist/playlist_create.html:293
+#: main/interface/ui/templates/Html/Playlist/playlist_create.html:292
 msgid "template.playlist_create.button.new_playlist"
 msgstr "Créer une nouvelle playlist"
 
@@ -2399,11 +2399,11 @@ msgstr "Modifier le volume de manière permanente"
 msgid "template.mixer.save_volume.label"
 msgstr "Sauvegarder le volume"
 
-#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:48
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:47
 msgid "template.mixer.toggle.specific_music.tooltip"
 msgstr "Afficher/masquer les pistes audio spécifiques"
 
-#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:52
+#: main/interface/ui/templates/Html/partial/soundboard/mixer.html:51
 msgid "template.mixer.toggle.specific_music.label"
 msgstr "Musique spécifique"
 
@@ -2527,33 +2527,33 @@ msgstr "Report"
 msgid "template.nav.main.my_soundboards"
 msgstr "liste de vos soundboards"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:23
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:27
 msgid "template.nav.main.soundboards"
 msgstr "Soundboards"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:25
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:29
 msgid "template.nav.main.my_buttons"
 msgstr "Liste de vos boutons"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:27
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:36
 msgid "template.nav.main.buttons"
 msgstr "Boutons"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:30
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:39
 msgid "template.nav.main.recent_downloads"
 msgstr "Téléchargements des dernières 24h"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:32
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:41
 msgid "template.nav.main.downloads"
 msgstr "Téléchargements"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:36
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:38
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:45
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:47
 msgid "template.nav.main.playlist_proposals"
 msgstr "Propositions"
 
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:52
-#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:54
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:61
+#: main/interface/ui/templates/Html/partial/structure/navbar/navbar.html:63
 msgid "template.nav.main.login"
 msgstr "Login"
 

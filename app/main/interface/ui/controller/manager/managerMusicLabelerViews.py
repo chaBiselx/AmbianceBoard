@@ -85,4 +85,4 @@ def music_labeler_stream(request, music_id: int) -> HttpResponse:
     if not music.file or not os.path.exists(music.file.path):
         return HttpResponse(status=404)
 
-    return music.get_reponse_content()
+    return music.get_reponse_content(request.headers.get('Range'))

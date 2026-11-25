@@ -43,7 +43,7 @@ def playlist_proposal_track_stream(request, proposal_uuid, music_id) -> HttpResp
             response = HttpResponse()
             response['Content-Duration'] = track.get_duration()
             return response
-        response = track.get_reponse_content()
+        response = track.get_reponse_content(request.headers.get('Range'))
         if response:
             return response
     except Exception as e:

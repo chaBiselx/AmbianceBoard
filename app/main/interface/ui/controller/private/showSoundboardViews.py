@@ -76,6 +76,26 @@ def soundboard_show(request, soundboard_uuid):
         # Auto-initialisation WebSocket
         return WebSocketInitializationHelper.setup_websocket_board_cookies(response, request, soundboard_uuid)
 
+def _get_private_stream_track(request, cache, cache_key, soundboard_uuid, playlist_uuid):
+    if request.headers.get('Range'):
+        track_id = cache.get(cache_key)
+        if track_id:
+            track = TrackRepository().get(track_id, playlist_uuid)
+            if track:
+                return track, False
+    return RandomizeTrackService(request).generate_private(soundboard_uuid, playlist_uuid), True
+
+
+def _get_private_specific_stream_track(request, cache, cache_key, soundboard_uuid, playlist_uuid, music_id):
+    if request.headers.get('Range'):
+        track_id = cache.get(cache_key)
+        if track_id:
+            track = TrackRepository().get(track_id, playlist_uuid)
+            if track:
+                return track, False
+    return RandomizeTrackService(request).get_specific_private(soundboard_uuid, playlist_uuid, music_id), True
+
+
 @login_required
 @require_http_methods(['GET'])
 def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse|JsonResponse:
@@ -91,12 +111,12 @@ def music_stream(request, soundboard_uuid, playlist_uuid) -> HttpResponse|JsonRe
                 if track:
                     ret = JsonResponse({"duration":  track.get_duration()}, status=200)
         else:
-            track = (RandomizeTrackService(request)).generate_private(soundboard_uuid, playlist_uuid)
+            track, is_new_track = _get_private_stream_track(request, cache, cache_key, soundboard_uuid, playlist_uuid)
             if track:
-                # Utilisation du service de soundboard partagé pour gérer le stream
-                SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
+                if is_new_track:
+                    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
                 cache.set(cache_key, track.id, timeout=60)
-                ret = track.get_reponse_content()
+                ret = track.get_reponse_content(request.headers.get('Range'))
         if ret:
             return ret
     except Exception:
@@ -146,12 +166,14 @@ def private_specific_track_stream(request, soundboard_uuid, playlist_uuid, music
                 if track:
                     ret = JsonResponse({"duration":  track.get_duration()}, status=200)
         else:
-            track = (RandomizeTrackService(request)).get_specific_private(soundboard_uuid, playlist_uuid, music_id)
+            track, is_new_track = _get_private_specific_stream_track(
+                request, cache, cache_key, soundboard_uuid, playlist_uuid, music_id
+            )
             if track:
-                # Utilisation du service de soundboard partagé pour gérer le stream
-                SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
+                if is_new_track:
+                    SharedSoundboardService(request, soundboard_uuid).music_start(playlist_uuid, track)
                 cache.set(cache_key, track.id, timeout=60)
-                ret = track.get_reponse_content()
+                ret = track.get_reponse_content(request.headers.get('Range'))
         if ret:
             return ret
     except Exception:
@@ -257,7 +279,7 @@ def soundboard_edit_mode_community_track_stream(request, soundboard_uuid, playli
         return response
 
     try:
-        response = track.get_reponse_content()
+        response = track.get_reponse_content(request.headers.get('Range'))
         if response:
             response['Cache-Control'] = 'private, no-store'
             return response

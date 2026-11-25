@@ -3,6 +3,7 @@ Tests unitaires pour le service PlaylistDataService.
 """
 
 from types import SimpleNamespace
+from unittest.mock import Mock, patch
 from uuid import uuid4
 from django.test import SimpleTestCase, tag
 
@@ -39,6 +40,18 @@ class PlaylistDataServiceTest(SimpleTestCase):
         self.assertEqual(data['fadeInDuration'], 5)
         self.assertEqual(data['fadeOutType'], FadeEnum.EASE.value)
         self.assertEqual(data['fadeOutDuration'], 5)
+        self.assertEqual(data['start-position-seconds'], 0)
+    def test_get_playlist_data_exposes_configured_position_when_enabled(self):
+        playlist = self._playlist(PlaylistTypeEnum.PLAYLIST_TYPE_MUSIC.name)
+        strategy = Mock()
+        strategy.get_data.return_value = {
+            'startPositionSeconds': 45,
+        }
+
+        with patch.object(self.service.strategy_factory, 'get_strategy', return_value=strategy):
+            data = self.service.get_playlist_data(playlist)
+
+        self.assertEqual(data['start-position-seconds'], 45)
 
     def test_get_playlist_data_off_disables_fade_and_sets_duration_zero(self):
         playlist = self._playlist(
@@ -53,6 +66,7 @@ class PlaylistDataServiceTest(SimpleTestCase):
         self.assertEqual(data['fadeInDuration'], 3)
         self.assertEqual(data['fadeOutType'], FadeEnum.DISABLED.value)
         self.assertEqual(data['fadeOutDuration'], 3)
+        self.assertEqual(data['start-position-seconds'], 0)
 
     def test_get_playlist_data_fade_enum_forces_curve_and_enables_fade(self):
         playlist = self._playlist(
@@ -65,6 +79,7 @@ class PlaylistDataServiceTest(SimpleTestCase):
 
         self.assertEqual(data['fadeInType'], FadeEnum.EASE_OUT.value)
         self.assertEqual(data['fadeOutType'], FadeEnum.EASE_IN_OUT_QUAD.value)
+        self.assertEqual(data['start-position-seconds'], 0)
 
     def test_get_playlist_data_unknown_fade_value_keeps_strategy_defaults(self):
         playlist = self._playlist(
