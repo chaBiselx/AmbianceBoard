@@ -178,6 +178,31 @@ describe('MusicElementFactory', () => {
             document.body.innerHTML = '';
         });
 
+        it('propagates preview isolation with a unique source even on a slave page', () => {
+            buttonElement.dataset.playlistPreview = 'true';
+            MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
+            const audio = getAudioElementFromCall();
+            expect(audio.dataset.preview).toBe('true');
+            expect(audio.src).toMatch(/\?i=[a-f0-9-]+$/);
+            expect(MusicElement).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ preview: true }));
+        });
+
+        it('uses a compatible playback id when crypto.randomUUID is unavailable', () => {
+            vi.stubGlobal('crypto', {
+                getRandomValues: (bytes: Uint8Array) => {
+                    bytes.forEach((_, index) => { bytes[index] = index + 1; });
+                    return bytes;
+                },
+            });
+            buttonElement.dataset.playlistPreview = 'true';
+
+            MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
+
+            const audio = getAudioElementFromCall();
+            expect(audio.src).toMatch(/\?i=[a-f0-9-]+$/);
+            vi.unstubAllGlobals();
+        });
+
         it('should create a MusicElement from a ButtonPlaylist with all properties', () => {
             MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
 

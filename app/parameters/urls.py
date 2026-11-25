@@ -48,6 +48,7 @@ from main.interface.ui.controller.private.playlistProposalManagementViews import
 from main.interface.ui.controller.private.playlistFormViews import (
     playlist_read_all, playlist_create,  playlist_update, playlist_describe_type, playlist_listing_colors, playlist_create_track_stream, playlist_delete, add_music_from_soundboard)
 from main.interface.ui.controller.private.playlistPublicViews import playlist_read_copiable, playlist_copiable_preview, playlist_copiable_duplicate
+from main.interface.ui.controller.private.playlistPreviewViews import playlist_preview_modal, playlist_preview_stream
 from main.interface.ui.controller.private.playlistFormTrackViews import link_create, link_create_ajax, link_update, link_delete, music_create, upload_multiple_music, music_update, music_delete, report_track_labels
 from main.interface.ui.controller.private.settingsViews import settings_index, settings_update_default_style, update_theme , update_playlist_dim, update_soundboard_dim, update_dimensions, account, delete_account
 from main.interface.ui.controller.private.asyncDownloadJobViews import recent_async_download_jobs
@@ -192,6 +193,8 @@ urlpatterns = [
     path("playlist/public/copiable", playlist_copiable_preview, name="playlistPreview"),
     path("playlist/public/copiable/<uuid:playlist_uuid>/duplicate", playlist_copiable_duplicate, name="playlistDuplicate"),
     path("playlist/<uuid:playlist_uuid>/update", playlist_update, name="playlistUpdate"),
+    path("playlist/<uuid:playlist_uuid>/preview", playlist_preview_modal, name="playlistPreviewModal"),
+    path("playlist/<uuid:playlist_uuid>/preview/stream", playlist_preview_stream, name="playlistPreviewStream"),
     path("playlist/<uuid:playlist_uuid>/delete", playlist_delete, name="playlistDelete"),
     path("playlist/<uuid:playlist_uuid>/<int:music_id>", playlist_create_track_stream, name="playlistCreateTrackStream"),
     path("playlist/type/describe", playlist_describe_type, name="playlistDescribeType"),

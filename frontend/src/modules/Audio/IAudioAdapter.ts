@@ -23,6 +23,7 @@ export interface IAudioAdapter {
 
     appendTo(parent: HTMLElement): void;
     remove(): void;
+    stop?(): void;
 
     play(): Promise<void>;
 

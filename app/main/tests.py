@@ -172,6 +172,7 @@ from main.TNR.TI.routing.PlaylistCreateTrackStreamRouteTest import *
 from main.TNR.TI.routing.AsyncDownloadJobsRecentRouteTest import *
 from main.TNR.TI.routing.PlaylistsAllCopiableListRouteTest import *
 from main.TNR.TI.routing.PlaylistPreviewRouteTest import *
+from main.TNR.TI.routing.PlaylistPlaybackPreviewRouteTest import *
 from main.TNR.TI.routing.PlaylistDuplicateRouteTest import *
 from main.TNR.TI.routing.PlaylistUpdateRouteTest import *
 from main.TNR.TI.routing.PlaylistDeleteRouteTest import *

@@ -134,6 +134,7 @@ describe('MusicElement', () => {
     });
 
     afterEach(() => {
+        MusicElement.disposePreview();
         vi.useRealTimers();
     });
 
@@ -163,6 +164,24 @@ describe('MusicElement', () => {
 
         expect(adapter.remove).toHaveBeenCalledOnce();
         expect(adapter.play).not.toHaveBeenCalled();
+    });
+
+    it('isolates preview playback from websocket cookies and cancels delayed work on disposal', () => {
+        musicMocks.cookieGet.mockReturnValue('existing-shared-session');
+        const { adapter, trigger } = createAudioAdapter();
+        adapter.stop = vi.fn();
+        const element = new MusicElement(adapter, createDto({ preview: true, playlistLoop: true, delay: 5 }));
+        element.play();
+        trigger('ended');
+        expect(element.WebSocketActive).toBe(false);
+        expect(MusicElement.getPreviewElements()).toContain(element);
+        MusicElement.disposePreview();
+        vi.runAllTimers();
+        expect(adapter.stop).toHaveBeenCalledOnce();
+        expect(musicMocks.createPlaylistLink).not.toHaveBeenCalled();
+        expect(musicMocks.sendMessage).not.toHaveBeenCalled();
+        expect(musicMocks.emit).not.toHaveBeenCalled();
+        expect(MusicElement.getPreviewElements()).toEqual([]);
     });
 
     it('plays active playlists and cleans up after the ended event', () => {

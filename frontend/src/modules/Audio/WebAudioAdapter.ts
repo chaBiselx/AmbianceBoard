@@ -25,6 +25,7 @@ class WebAudioAdapter extends BaseAudioAdapter {
 
     async play(): Promise<void> {
         await AudioContextManager.resumeContext();
+        if (!this.audioElement.getAttribute('src')) return;
         await this.audioElement.play();
     }
 }

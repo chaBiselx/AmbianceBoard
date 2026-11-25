@@ -75,6 +75,12 @@ abstract class BaseAudioAdapter implements IAudioAdapter {
         this.audioElement.remove();
     }
 
+    stop(): void {
+        this.audioElement.pause();
+        this.audioElement.removeAttribute('src');
+        this.audioElement.load();
+    }
+
     abstract play(): Promise<void>;
 
     getError(): MediaError | null {

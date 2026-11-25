@@ -34,6 +34,21 @@ class RandomizeTrackServiceTest(TestCase):
         service = RandomizeTrackService(self.request)
         self.assertEqual(service.request, self.request)
 
+    @patch('main.domain.common.service.RandomizeTrackService.PlaylistService')
+    def test_generate_playlist_preview_uses_owned_playlist(self, playlist_service):
+        playlist_service.return_value.get_playlist.return_value.uuid = self.playlist_uuid
+        self.service.track_repository = Mock()
+        track = self.service.generate_playlist_preview(self.playlist_uuid)
+        self.assertEqual(track, self.service.track_repository.get_random_private.return_value)
+        self.service.track_repository.get_random_private.assert_called_once_with(self.playlist_uuid, self.user)
+
+    @patch('main.domain.common.service.RandomizeTrackService.PlaylistService')
+    def test_generate_playlist_preview_refuses_unavailable_playlist(self, playlist_service):
+        playlist_service.return_value.get_playlist.return_value = None
+        self.service.track_repository = Mock()
+        self.assertIsNone(self.service.generate_playlist_preview(self.playlist_uuid))
+        self.service.track_repository.get_random_private.assert_not_called()
+
     @patch('main.domain.common.service.RandomizeTrackService.SoundBoardService')
     @patch('main.architecture.persistence.repository.TrackRepository.TrackRepository.get_random_private')
     def test_generate_private_success(self, mock_get_random_private, mock_soundboard_service):

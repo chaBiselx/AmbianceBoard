@@ -13,6 +13,10 @@ class UpdateVolumeElement {
     }
 
     update() {
+        if (this.musicElement.preview) {
+            this.musicElement.setVolume(Math.min(1, Math.max(0, (this.musicElement.defaultVolume ?? 1) * this.musicElement.levelFade)));
+            return;
+        }
         let VolumeDefault = this.getVolumeDefault();
         let VolumeFade = this.musicElement.levelFade
         let VolumeMixerGeneral = this.getVolumeMixerValue('general')

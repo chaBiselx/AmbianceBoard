@@ -17,6 +17,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+msgid "template.playlist_preview.button"
+msgstr "Tester la playlist"
+
+msgid "template.playlist_preview.title"
+msgstr "Test de la playlist"
+
+msgid "template.playlist_preview.unavailable"
+msgstr "Enregistrez la playlist et ajoutez au moins une piste."
+
+msgid "template.playlist_preview.idle"
+msgstr "À l'arrêt"
+
+msgid "template.playlist_preview.waiting"
+msgstr "En attente de la piste suivante…"
+
+msgid "template.playlist_preview.error"
+msgstr "La prévisualisation est indisponible. Réessayez."
+
+msgid "template.playlist_preview.volume"
+msgstr "Volume"
+
 #: main/architecture/contextProcessors/sidebar_processor.py:15
 msgid "Index"
 msgstr "Index"
