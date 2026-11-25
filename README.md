@@ -19,10 +19,10 @@ Elle permet de preparer des ambiances sonores, d organiser des playlists et de p
 
 ## 📊 Couverture de code
 
-[![Back](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg?flag=backend)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
-[![Front](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg?flag=frontend)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
-[![Music-labeler](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg?flag=music-labeler)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
-[![Global](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
+BACK : [![Back](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg?flag=backend)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
+FRONT : [![Front](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg?flag=frontend)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
+MUSIC-LABELER : [![Music-labeler](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg?flag=music-labeler)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
+GOLBAL : [![Global](https://codecov.io/gh/chaBiselx/AmbianceBoard/branch/master/graph/badge.svg)](https://app.codecov.io/gh/chaBiselx/AmbianceBoard)
 
 Les rapports sont publies par la CI. Le badge global correspond a l'agregat Codecov et peut differer de la moyenne arithmetique affichee dans le resume GitHub Actions.
 Pour activer l'envoi, ajouter le secret GitHub Actions `CODECOV_TOKEN` apres avoir active le depot sur Codecov.
