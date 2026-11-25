@@ -675,6 +675,9 @@ Corrections
 - Fix d'un effet "aléatoire" sur le déclenchement d'une piste en particulier.
 
 ### 0.5.23 - 2026/11 : 
+Nouveautés
+- Ajout d'un boutons de preview sur la page de création de boutons 
+
 Corrections
 - Corrections des droits des fichiers audio qui ne sont pas recuperable via un script pour le backup automatique
 

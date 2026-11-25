@@ -191,18 +191,7 @@
                     {{ form.instance | applys_playlist_content}}
                     {% endif %}
                 </div>
-                <button type="button" id="btn-test-playlist" class="btn btn-outline-primary mt-2 w-100"
-                    {% if method == 'update' and listTrack %}data-url="{% url 'playlistPreviewModal' form.instance.uuid %}" {% else %}disabled{% endif %}
-                    data-modal-title="{% trans 'template.playlist_preview.title' %}"
-                    data-error="{% trans 'template.playlist_preview.error' %}"
-                    {% if method != 'update' or not listTrack %}title="{% trans 'template.playlist_preview.unavailable' %}" {% endif %}>
-                    <span
-                        class="fa-custom-icon"
-                        aria-hidden="true"
-                        style="-webkit-mask-image: url('{% static 'img/icon/playlist-test-gear-icon.svg' %}'); mask-image: url('{% static 'img/icon/playlist-test-gear-icon.svg' %}');">
-                    </span>
-                    {% trans 'template.playlist_preview.button' %}
-                </button>
+                
             </div>
         </div>
 
@@ -214,6 +203,19 @@
 {% if method == 'update' %}
 <div class="card mt-2">
     <div class="card-header">
+        <div class="float-end">
+            <button type="button" id="btn-test-playlist" class="btn btn-info mt-2 w-100"
+            data-url="{% url 'playlistPreviewModal' form.instance.uuid %}"
+            data-modal-title="{% trans 'template.playlist_preview.title' %}"
+            data-error="{% trans 'template.playlist_preview.error' %}">
+                <span
+                    class="fa-custom-icon"
+                    aria-hidden="true"
+                    style="-webkit-mask-image: url('{% static 'img/icon/playlist-test-gear-icon.svg' %}'); mask-image: url('{% static 'img/icon/playlist-test-gear-icon.svg' %}');">
+                </span>
+                {% trans 'template.playlist_preview.button' %}
+            </button>
+        </div>
         <h2>{% trans "template.playlist_create.tracks.title" %}</h2>
     </div>
     <div class="card-body">
