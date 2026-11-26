@@ -680,6 +680,7 @@ Nouveautés
 
 Corrections
 - Corrections des droits des fichiers audio qui ne sont pas recuperable via un script pour le backup automatique
+- Corrections des notifications qui se cumule lors de l'utilisation et s'affiche en masse après sur une nouvelle page
 
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
