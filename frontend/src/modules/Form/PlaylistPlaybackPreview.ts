@@ -59,8 +59,17 @@ export class PlaylistPlaybackPreview {
         const active = this.button.isActive();
         this.button.buttonElement.setAttribute('aria-pressed', String(active));
         const status = this.root.querySelector<HTMLElement>('[data-preview-status]')!;
-        status.textContent = this.button.dataset.previewError === 'true' ? this.root.dataset.error! :
-            elements.length ? '' : active ? this.root.dataset.waiting! : this.root.dataset.idle!;
+        let statusText: string;
+        if (this.button.dataset.previewError === 'true') {
+            statusText = this.root.dataset.error!;
+        } else if (elements.length) {
+            statusText = '';
+        } else if (active) {
+            statusText = this.root.dataset.waiting!;
+        } else {
+            statusText = this.root.dataset.idle!;
+        }
+        status.textContent = statusText;
 
         for (const [element, { row }] of this.rows) {
             if (!elements.includes(element)) {

@@ -72,7 +72,7 @@ class MusicElement {
     }
 
     static disposePreview(): void {
-        for (const element of [...this.previewInstances]) element.dispose();
+        for (const element of this.previewInstances) element.dispose();
     }
 
     getPlaybackState(): { name: string; currentTime: number; duration: number | null } {
