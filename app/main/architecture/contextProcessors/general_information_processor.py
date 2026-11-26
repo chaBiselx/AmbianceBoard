@@ -3,6 +3,7 @@ import json
 from django.contrib import messages
 from django.contrib.messages.storage.base import Message
 from django.utils.safestring import mark_safe
+from django.utils.translation import get_language
 from main.domain.common.service.GeneralNotificationService import GeneralNotificationService
 from django.urls import reverse
 from main.domain.common.utils.settings import Settings
@@ -50,13 +51,14 @@ def __get_pending_playlist_proposals_count(request) -> int:
 
 def general_information_processor(request):
     general_notifications = []
+    language = get_language() or 'fr'
     for notification in GeneralNotificationService(request.user).get_list_notifications():
         meta = {"uuid": str(notification.uuid)}
         if request.user.is_authenticated:
             meta["url_dismiss"] = reverse("dismissGeneralNotification", args=[notification.uuid])
         general_notifications.append(Message(
             getattr(messages, notification.class_name.upper()),
-            mark_safe(notification.message),
+            mark_safe(notification.get_trans_message(language)),
             extra_tags=json.dumps(meta),
         ))
 

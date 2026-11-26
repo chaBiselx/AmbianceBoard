@@ -4,10 +4,12 @@ Tests d'intégration pour les routes manager notifications (/manager/notificatio
 from django.test import TestCase, Client, tag
 from django.urls import reverse
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
 from main.architecture.persistence.models.GeneralNotification import GeneralNotification
+from main.domain.common.enum.PermissionEnum import PermissionEnum
 
 User = get_user_model()
 
@@ -77,3 +79,39 @@ class ManagerNotificationsRouteTest(TestCase):
         self.client.login(username='normaluser', password='normalpass123')
         response = self.client.get(reverse('manager_notifications_update', kwargs={'uuid': self.notification.uuid}))
         self.assertIn(response.status_code, [302, 403, 404])
+
+    def test_manager_can_create_and_edit_english_message(self):
+        permission, _ = Permission.objects.get_or_create(
+            codename=PermissionEnum.MANAGER_EXECUTE_BATCHS.name,
+            content_type=ContentType.objects.get_for_model(Group),
+            defaults={'name': 'Manager execute batchs'},
+        )
+        self.user.user_permissions.add(permission)
+        self.client.force_login(self.user)
+        create_url = reverse('manager_notifications_create')
+        response = self.client.get(create_url)
+        self.assertContains(response, 'name="message_en"')
+        self.assertContains(response, 'data-editor="simple"', count=2)
+
+        data = {
+            'message': '<p>Bonjour</p>',
+            'message_en': '<p>Hello</p>',
+            'class_name': 'info',
+            'start_date': '2026-01-01T00:00',
+            'end_date': '2026-12-31T00:00',
+            'is_active': 'on',
+        }
+        response = self.client.post(create_url, data)
+        self.assertRedirects(response, reverse('managerNotifications'))
+        notification = GeneralNotification.objects.get(message=data['message'])
+        self.assertEqual(notification.message_en, data['message_en'])
+
+        update_url = reverse('manager_notifications_update', kwargs={'uuid': notification.uuid})
+        response = self.client.get(update_url)
+        self.assertContains(response, '&lt;p&gt;Hello&lt;/p&gt;')
+        data['message_en'] = '<p>Updated</p>'
+        response = self.client.post(update_url, data)
+        self.assertRedirects(response, reverse('managerNotifications'))
+        notification.refresh_from_db()
+        self.assertEqual(notification.message, data['message'])
+        self.assertEqual(notification.message_en, data['message_en'])

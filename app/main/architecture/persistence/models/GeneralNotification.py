@@ -22,6 +22,11 @@ class GeneralNotification(models.Model):
         verbose_name="Message (HTML)",
         help_text="Message de la notification en HTML"
     )
+    message_en = models.TextField(
+        verbose_name="Message anglais (HTML)",
+        help_text="Message de la notification en anglais, en HTML",
+        blank=True,
+    )
     class_name = models.CharField(
         max_length=64,
         verbose_name="Type de notification",
@@ -87,6 +92,11 @@ class GeneralNotification(models.Model):
         """Appelle la validation avant la sauvegarde."""
         self.full_clean()
         super().save(*args, **kwargs)
+
+    def get_trans_message(self, translation = 'fr' ) -> str :
+        if translation == 'en' and self.message_en:
+            return self.message_en
+        return self.message
     
     def is_currently_active(self):
         """

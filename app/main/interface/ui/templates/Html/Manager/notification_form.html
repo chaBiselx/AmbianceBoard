@@ -54,6 +54,19 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="{{ form.message_en.id_for_label }}">{{ form.message_en.label }}</label>
+                            {{ form.message_en }}
+                            {% if form.message_en.errors %}
+                            <div class="invalid-feedback d-block">
+                                {{ form.message_en.errors }}
+                            </div>
+                            {% endif %}
+                            <small class="form-text text-muted">
+                                Vous pouvez utiliser du HTML pour formater le message en anglais.
+                            </small>
+                        </div>
+
+                        <div class="form-group">
                             <label for="{{ form.class_name.id_for_label }}">{{ form.class_name.label }}</label>
                             {{ form.class_name }}
                             {% if form.class_name.errors %}

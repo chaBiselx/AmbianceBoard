@@ -9,6 +9,7 @@ from django.template import Context, Engine
 from django.test import RequestFactory, SimpleTestCase, tag
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import override
 
 from main.architecture.contextProcessors import general_information_processor as processor
 from main.architecture.persistence.models.GeneralNotification import GeneralNotification
@@ -100,3 +101,32 @@ class GeneralInformationProcessorTest(SimpleTestCase):
             dismiss_url = reverse('dismissGeneralNotification', args=[notification.uuid])
             self.assertIn(f'data-meta-url_dismiss="{dismiss_url}"', html)
         self.assertIn('alert-danger', html)
+
+    def test_notification_message_uses_request_language(self):
+        self.notifications[0].message_en = '<strong>English maintenance</strong>'
+        request = self.make_request(True)
+        for language, expected, unexpected in (
+            ('en', self.notifications[0].message_en, self.notifications[0].message),
+            ('en-us', self.notifications[0].message_en, self.notifications[0].message),
+            ('fr', self.notifications[0].message, self.notifications[0].message_en),
+        ):
+            with self.subTest(language=language):
+                request.LANGUAGE_CODE = language
+                html = self.render_notifications(request)
+                self.assertIn(expected, html)
+                self.assertNotIn(unexpected, html)
+                self.assertIn(f'data-meta-uuid="{self.notifications[0].uuid}"', html)
+                self.assertIn('alert-warning', html)
+
+    def test_english_message_falls_back_to_french_when_empty(self):
+        request = self.make_request(False)
+        request.LANGUAGE_CODE = 'en'
+
+        self.assertIn(self.notifications[0].message, self.render_notifications(request))
+
+    def test_notification_uses_active_language_without_request_language(self):
+        self.notifications[0].message_en = '<strong>English maintenance</strong>'
+        with override('en'):
+            html = self.render_notifications(self.make_request(False))
+
+        self.assertIn(self.notifications[0].message_en, html)

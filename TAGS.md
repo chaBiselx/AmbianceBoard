@@ -678,6 +678,9 @@ Corrections
 Nouveautés
 - Ajout d'un boutons de preview sur la page de création de boutons 
 
+Améliorations
+- Amélioration des notifications pour avoir une version anglaise
+
 Corrections
 - Corrections des droits des fichiers audio qui ne sont pas recuperable via un script pour le backup automatique
 - Corrections des notifications qui se cumule lors de l'utilisation et s'affiche en masse après sur une nouvelle page

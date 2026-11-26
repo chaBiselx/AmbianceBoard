@@ -100,6 +100,7 @@ from main.TNR.TU.email.ModeratorAndUserEmailTest import *
 # =======================================================================
 # ======================== TEST INTEGRATION =============================
 # =======================================================================
+from main.TNR.TI.GeneralNotificationMigrationTest import *
 from main.TNR.TI.utils.UrlsUtilsTest import *
 
 from main.TNR.TI.utils.logger.LoggerFactoryIntegrationTestCase import *
