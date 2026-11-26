@@ -3,25 +3,15 @@
 {% load i18n %}
 
 
-{% if messages %}
+{% if messages or general_notifications %}
 <div class="row">
     <div class="col-12">
         <section class="pt-0 pb-0" id="notifications-general">
             {% for message in messages %}
-            {% with meta_data=message.extra_tags|parse_meta_json %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags|applys_boostrap_class }}{% endif %} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button class="btn-close close-notification" data-dismiss="alert" aria-label="{% trans 'template.common.close' %}"
-                {% if meta_data %}
-                    {% for key, value in meta_data.items %}
-                        data-meta-{{ key }}="{{ value }}"
-                    {% endfor %}
-                {% endif %}>
-                </button>
-            </div>
-            {% endwith %}
-
-            
+                {% include 'Html/partial/structure/utils/notification.html' %}
+            {% endfor %}
+            {% for message in general_notifications %}
+                {% include 'Html/partial/structure/utils/notification.html' %}
             {% endfor %}
         </section>
     </div>

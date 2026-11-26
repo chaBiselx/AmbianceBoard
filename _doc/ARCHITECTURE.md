@@ -70,6 +70,14 @@ des tests d'integration adaptes.
 
 ## Frontend et temps reel
 
+Les notifications generales actives sont fournies par le
+[context processor](../app/main/architecture/contextProcessors/general_information_processor.py)
+au [template des notifications](../app/main/interface/ui/templates/Html/partial/structure/utils/message.html),
+sans ajout au stockage des messages Django. Les rendus de fragments AJAX ne
+les accumulent donc pas pour la navigation suivante. Les messages ponctuels
+continuent d'utiliser le stockage Django ; les UUID et liens de fermeture des
+notifications generales conservent leur contrat frontend.
+
 Les pages sont rendues par Django puis enrichies par des points d'entree
 TypeScript. Ce n'est pas une SPA React. Les entrees et le build sont definis
 dans [vite.config.ts](../frontend/vite.config.ts) ; les composants reutilisables

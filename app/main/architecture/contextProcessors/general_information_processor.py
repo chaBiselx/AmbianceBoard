@@ -1,6 +1,9 @@
-from django.http import HttpRequest, HttpResponse
+import json
+
+from django.contrib import messages
+from django.contrib.messages.storage.base import Message
+from django.utils.safestring import mark_safe
 from main.domain.common.service.GeneralNotificationService import GeneralNotificationService
-from main.domain.common.utils.ServerNotificationBuilder import ServerNotificationBuilder
 from django.urls import reverse
 from main.domain.common.utils.settings import Settings
 from main.architecture.persistence.repository.AsyncDownloadJobRepository import AsyncDownloadJobRepository
@@ -46,23 +49,22 @@ def __get_pending_playlist_proposals_count(request) -> int:
 
 
 def general_information_processor(request):
-    # Liste des URLs où la sidebar doit apparaître
-    general_notifications = GeneralNotificationService(request.user).get_list_notifications()
-    for notification in general_notifications:
-        server_notification = ServerNotificationBuilder(request)\
-            .set_message(notification.message)\
-            .set_statut(notification.class_name)\
-            .add_meta("uuid", str(notification.uuid))
+    general_notifications = []
+    for notification in GeneralNotificationService(request.user).get_list_notifications():
+        meta = {"uuid": str(notification.uuid)}
         if request.user.is_authenticated:
-            server_notification.add_meta("url_dismiss", reverse("dismissGeneralNotification", args=[notification.uuid]))
-
-        server_notification.send()
-
+            meta["url_dismiss"] = reverse("dismissGeneralNotification", args=[notification.uuid])
+        general_notifications.append(Message(
+            getattr(messages, notification.class_name.upper()),
+            mark_safe(notification.message),
+            extra_tags=json.dumps(meta),
+        ))
 
     has_recent_async_download_jobs = __get_has_recent_async_download_jobs(request)
     pending_playlist_proposals_count = __get_pending_playlist_proposals_count(request)
     
     return {
+        'general_notifications': general_notifications,
         'APP_ENV': Settings.get('APP_ENV'),
         'DEBUG': Settings.get('DEBUG', False),
         'GRAYLOG_URL': Settings.get('GRAYLOG_URL', ''),

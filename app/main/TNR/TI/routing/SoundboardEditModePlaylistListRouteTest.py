@@ -4,8 +4,11 @@ Test d'intégration pour la route: soundboardEditModePlaylistList (GET /soundBoa
 from django.test import tag
 from django.urls import reverse
 from django.http import StreamingHttpResponse
+from django.utils import timezone
+from datetime import timedelta
 from unittest.mock import patch
 
+from main.architecture.persistence.models.GeneralNotification import GeneralNotification
 from main.architecture.persistence.models.Playlist import Playlist
 from main.architecture.persistence.models.Track import Track
 from main.domain.common.enum.PlaylistTypeEnum import PlaylistTypeEnum
@@ -48,6 +51,26 @@ class SoundboardEditModePlaylistListRouteTest(AuthenticatedTestCase):
         self.login()
         response = self.client.get(self._url())
         self.assertEqual(response.status_code, 200)
+
+    def test_ajax_fragments_do_not_duplicate_general_notifications_on_next_page(self):
+        notification = GeneralNotification.objects.create(
+            message='Maintenance notification regression',
+            class_name='warning',
+            end_date=timezone.now() + timedelta(days=1),
+        )
+        self.login()
+
+        for _ in range(3):
+            response = self.client.get(self._url(), HTTP_X_REQUESTED_WITH='XMLHttpRequest')
+            self.assertEqual(response.status_code, 200)
+            self.assertNotContains(response, notification.message)
+
+        for _ in range(2):
+            response = self.client.get(reverse('home'))
+            self.assertContains(response, notification.message, count=1)
+            self.assertContains(response, f'data-meta-uuid="{notification.uuid}"', count=1)
+            dismiss_url = reverse('dismissGeneralNotification', args=[notification.uuid])
+            self.assertContains(response, f'data-meta-url_dismiss="{dismiss_url}"', count=1)
 
     def test_returns_404_for_nonexistent_soundboard(self):
         self.login()
