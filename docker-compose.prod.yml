@@ -211,8 +211,9 @@ services:
 
 
   db:
-    #postgres:15.8
+    #postgres:19.0
     image:  postgres@sha256:eb3747f5d0a92195ca486d2f15d9a4ee5e9461b0332fe87fbc59069490a5c659
+    # image: postgres:19.0-trixie@sha256:4ea94de574c17f0372722806c949757050fbb1cd7648410fe45d6bba275cc00e
     ports:
       - ${SQL_PORT}:${SQL_PORT}
     environment:
@@ -220,7 +221,7 @@ services:
       - POSTGRES_PASSWORD=${SQL_PASSWORD}
       - POSTGRES_DB=${SQL_DATABASE}
     volumes:
-      - ./db-data/:/var/lib/postgresql/data/
+       - ./db-data-pg19:/var/lib/postgresql
 
   rabbitmq:
     # rabbitmq:3-management
@@ -314,7 +315,7 @@ services:
 
 
 volumes:
-  db-data: null
+  db-data-pg19: null
   rabbitmq-data: null
   redis-data: null
   graylog-data:

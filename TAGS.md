@@ -685,6 +685,11 @@ Corrections
 - Corrections des droits des fichiers audio qui ne sont pas recuperable via un script pour le backup automatique
 - Corrections des notifications qui se cumule lors de l'utilisation et s'affiche en masse après sur une nouvelle page
 
+### 0.6.0 - 2026/12 :
+Fiabilité & Confiance
+- Montée de version de la base de données pour des raison de performance et de sécurité
+
+
 ### X.Y.Z - Date
 Chaque future version utilisera ce format simple :
 Sécurité
