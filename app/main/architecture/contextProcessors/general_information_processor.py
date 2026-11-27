@@ -51,7 +51,7 @@ def __get_pending_playlist_proposals_count(request) -> int:
 
 def general_information_processor(request):
     general_notifications = []
-    language = get_language() or 'fr'
+    language = (getattr(request, 'LANGUAGE_CODE', None) or get_language() or 'fr').lower().split('-')[0]
     for notification in GeneralNotificationService(request.user).get_list_notifications():
         meta = {"uuid": str(notification.uuid)}
         if request.user.is_authenticated:

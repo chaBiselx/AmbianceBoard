@@ -110,7 +110,7 @@ class GeneralInformationProcessorTest(SimpleTestCase):
             ('en-us', self.notifications[0].message_en, self.notifications[0].message),
             ('fr', self.notifications[0].message, self.notifications[0].message_en),
         ):
-            with self.subTest(language=language):
+            with self.subTest(language=language), override('en' if language == 'fr' else 'fr'):
                 request.LANGUAGE_CODE = language
                 html = self.render_notifications(request)
                 self.assertIn(expected, html)
