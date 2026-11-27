@@ -274,7 +274,7 @@ services:
 
   graylog:
     # graylog/graylog:7.2
-    image: graylog/graylog@sha256:d4cf618fa0b1d44f639e5fe37c77a1b332f74ae69bd6d77f2b9b94bb2f2e067d
+    image: graylog/graylog@sha256:ab6bff1cb38d3aeee5273d71af76a453fcd2884035d417c0b2012551818f21dc
 
     ports:
       - "${GRAYLOG_PORT}:9000"
