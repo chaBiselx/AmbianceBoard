@@ -21,6 +21,15 @@ import SoundEventBus from '@/modules/Script/SoundEventBus';
 
 
 class MusicElement {
+    private static readonly previewInstances = new Set<MusicElement>();
+    readonly preview: boolean;
+    private disposed = false;
+    private removed = false;
+    private trackName = '';
+    private readonly previewTimers = new Set<ReturnType<typeof setTimeout>>();
+    private readonly previewFades = new Set<AudioFadeManager>();
+    private readonly previewListeners: Array<{ type: string; listener: EventListener }> = [];
+    private readonly metadataAbort = new AbortController();
     private static readonly ENDED_CLEANUP_DELAY_MS = 35;
     private readonly audioAdapter: IAudioAdapter;
     idPlaylist: string = '';
@@ -49,11 +58,56 @@ class MusicElement {
 
     constructor(audioAdapter: IAudioAdapter, dto: MusicElementDTO) {
         this.audioAdapter = audioAdapter;
+        this.preview = dto.preview === true;
+        if (this.preview) MusicElement.previewInstances.add(this);
         this.initializeFromDTO(dto);
 
-        if (Cookie.get('WebSocketToken') != null) {
+        if (!this.preview && Cookie.get('WebSocketToken') != null) {
             this.WebSocketActive = true;
         }
+    }
+
+    static getPreviewElements(): MusicElement[] {
+        return [...this.previewInstances].filter(element => !element.removed);
+    }
+
+    static disposePreview(): void {
+        for (const element of this.previewInstances) element.dispose();
+    }
+
+    getPlaybackState(): { name: string; currentTime: number; duration: number | null } {
+        return { name: this.trackName, currentTime: this.audioAdapter.getCurrentTime(), duration: this.getTrackDuration() };
+    }
+
+    dispose(): void {
+        if (this.disposed) return;
+        this.disposed = true;
+        this.metadataAbort.abort();
+        for (const timer of this.previewTimers) clearTimeout(timer);
+        for (const fade of this.previewFades) fade.cancel();
+        for (const { type, listener } of this.previewListeners) this.audioAdapter.removeEventListener(type, listener);
+        this.previewTimers.clear();
+        this.previewFades.clear();
+        this.previewListeners.length = 0;
+        this.audioAdapter.stop?.();
+        this.audioAdapter.remove();
+        MusicElement.previewInstances.delete(this);
+    }
+
+    private defer(callback: () => void, milliseconds: number): void {
+        const timer = globalThis.setTimeout(() => {
+            this.previewTimers.delete(timer);
+            if (!this.disposed) {
+                callback();
+                if (this.preview && this.removed && this.previewTimers.size === 0) this.dispose();
+            }
+        }, milliseconds);
+        if (this.preview) this.previewTimers.add(timer);
+    }
+
+    private listen(type: string, listener: EventListener, options?: AddEventListenerOptions): void {
+        this.audioAdapter.addEventListener(type, listener, options);
+        if (this.preview) this.previewListeners.push({ type, listener });
     }
 
     /**
@@ -98,7 +152,7 @@ class MusicElement {
             this.removeDomElement();
         });
         this.callAPIToStop();
-        SoundEventBus.emit('music:stopped', { playlistId: this.idPlaylist, token: this.butonPlaylistToken });
+        if (!this.preview) SoundEventBus.emit('music:stopped', { playlistId: this.idPlaylist, token: this.butonPlaylistToken });
     }
 
     private addFadeOutOnStop(callback: () => void) {
@@ -117,15 +171,19 @@ class MusicElement {
         ConsoleCustom.log(`start fade off on stop ${this.fadeOffOnStopType} ${this.fadeOffOnStopDuration}`);
         const typeFade = Model.default.FadeSelector.selectTypeFade(this.fadeOffOnStopType)
         const audioFade = new AudioFadeManager(this, typeFade, false, callback);
+        if (this.preview) this.previewFades.add(audioFade);
         audioFade.setDuration(this.fadeOffOnStopDuration);
         audioFade.start();
     }
 
     private removeDomElement() {
+        this.removed = true;
+        if (this.preview) this.audioAdapter.stop?.();
         if (this.boundEventEnd) {
             this.audioAdapter.removeEventListener('timeupdate', this.boundEventEnd);
         }
         this.audioAdapter.remove();
+        if (this.preview && !ButtonPlaylistFinder.search(this.idPlaylist)?.isActive()) this.dispose();
     }
 
 
@@ -142,20 +200,24 @@ class MusicElement {
     private getDurationFromHeaders(): void {
         ConsoleTesteur.log('getDurationFromHeaders');
 
-        setTimeout(async () => {// délai pour s'assurer de la generation du cache serveur car Firefox envoi trop vite la requete
+        this.defer(async () => {
             try {
-                const response = await fetch(this.audioAdapter.getSource(), { method: 'GET', headers: { 'X-Metadata-Only': 'true' } });
+            const response = await fetch(this.audioAdapter.getSource(), { method: 'GET', headers: { 'X-Metadata-Only': 'true' }, ...(this.preview ? { signal: this.metadataAbort.signal } : {}) });
                 if (!response.ok) {
                     console.error('Failed to fetch metadata:', response.statusText);
                     return;
                 }
 
-                const contentDuration = (await response.json()).duration;
+                const metadata = await response.json();
+                if (this.disposed) return;
+                const contentDuration = metadata.duration;
+                if (this.preview) this.trackName = metadata.name ?? '';
                 ConsoleTesteur.log('Content-Duration from headers:', contentDuration);
                 if (contentDuration) {
                     this.duration = Number.parseFloat(contentDuration);
                 }
             } catch (error) {
+                if (this.disposed) return;
                 console.error('Error fetching Content-Duration:', error);
             }
         }, 500);
@@ -164,6 +226,7 @@ class MusicElement {
     }
 
     public play() {
+        if (this.disposed) return;
         ConsoleTesteur.log('play_action');
 
         const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist);
@@ -175,11 +238,11 @@ class MusicElement {
 
         this.nextLoopStarted = false;
 
-        this.audioAdapter.addEventListener('error', (e) => {
+        this.listen('error', (e) => {
             this.handleAudioError(e);
         });
 
-        this.audioAdapter.addEventListener('playing', () => {
+        this.listen('playing', () => {
             this.getDurationFromHeaders();
         });
 
@@ -189,30 +252,35 @@ class MusicElement {
 
         if (this.durationRemainingTriggerNextMusic > 0) {
             this.boundEventEnd = this.eventFadeOut.bind(this);
-            this.audioAdapter.addEventListener('loadedmetadata', () => {
-                this.audioAdapter.addEventListener('timeupdate', this.boundEventEnd!);
+            this.listen('loadedmetadata', () => {
+                this.listen('timeupdate', this.boundEventEnd!);
             });
-            this.audioAdapter.addEventListener('ended', () => {
+            this.listen('ended', () => {
                 // Slightly defer cleanup to avoid cutting the very end on some browsers/codecs.
-                globalThis.setTimeout(() => this.eventDeleteFadeOut(), MusicElement.ENDED_CLEANUP_DELAY_MS);
+                this.defer(() => this.eventDeleteFadeOut(), MusicElement.ENDED_CLEANUP_DELAY_MS);
             }, { once: true });
         } else {
             this.boundEventEnd = () => {
                 this.eventDeleteNoFadeOut.bind(this)();
                 this.disactiveButtonPlaylist.bind(this)();
             };
-            this.audioAdapter.addEventListener('ended', () => {
+            this.listen('ended', () => {
                 // Slightly defer cleanup to avoid cutting the very end on some browsers/codecs.
-                globalThis.setTimeout(() => this.boundEventEnd!(), MusicElement.ENDED_CLEANUP_DELAY_MS);
+                this.defer(() => this.boundEventEnd!(), MusicElement.ENDED_CLEANUP_DELAY_MS);
             }, { once: true });
         }
         ConsoleTesteur.info(`▶️ Play ${this.idPlaylist} ${this.isSlave()}`);
 
-        this.audioAdapter.addEventListener('ended', () => {
-            SoundEventBus.emit('music:ended', { playlistId: this.idPlaylist, token: this.butonPlaylistToken });
+        this.listen('ended', () => {
+            if (!this.preview) SoundEventBus.emit('music:ended', { playlistId: this.idPlaylist, token: this.butonPlaylistToken });
         }, { once: true });
 
         void this.audioAdapter.play().catch((error: unknown) => {
+            if (this.disposed) return;
+            if (this.preview) {
+                this.failPreview();
+                return;
+            }
             if (error && typeof error === 'object' && 'name' in error && error.name === 'AbortError') {
                 return;
             }
@@ -254,8 +322,9 @@ class MusicElement {
             this.levelFade = 1;
             this.fadeInGoing = false;
         });
+        if (this.preview) this.previewFades.add(audioFade);
         audioFade.setDuration(this.fadeInDuration);
-        this.audioAdapter.addEventListener('playing', () => {
+        this.listen('playing', () => {
             const duration = this.getTrackDuration() || 0;
             if (this.fadeInDuration * 2 > duration) { // fade in duration is too long for the track duration, so we skip the fade in
                 ConsoleTesteur.info('addFadeIn skipped because fade in duration is too long for the track duration');
@@ -287,6 +356,7 @@ class MusicElement {
         let audioFade = new AudioFadeManager(this, typeFade, false, () => {
             this.levelFade = 1;
         });
+        if (this.preview) this.previewFades.add(audioFade);
         audioFade.setDuration(this.fadeOutDuration);
         audioFade.start();
 
@@ -294,6 +364,7 @@ class MusicElement {
     }
 
     private isSlave(): boolean {
+        if (this.preview) return false;
         return SharedSoundBoardUtil.isSlavePage()
     }
 
@@ -325,6 +396,7 @@ class MusicElement {
      * @returns void
      */
     private startIfLooped() {
+        if (this.disposed) return;
         ConsoleTesteur.log('startIfLooped');
         if (this.nextLoopStarted) {
             return;
@@ -377,7 +449,7 @@ class MusicElement {
             const delay = this.getTimeDelay();
             const delaiAjusted = delay + timeFadeOff;
             ConsoleTesteur.log("delay: " + delay + " delaiAjusted: " + delaiAjusted);
-            setTimeout(() => {
+            this.defer(() => {
                 ConsoleTesteur.log("applyDelay callback: ");
                 const buttonPlaylist = ButtonPlaylistFinder.search(this.idPlaylist);
                 if (buttonPlaylist && buttonPlaylist.isActive() && this.butonPlaylistToken == buttonPlaylist.getToken()) {
@@ -432,6 +504,7 @@ class MusicElement {
     }
 
     private callAPIToStop() {
+        if (this.preview) return;
         ConsoleTesteur.log(`enter MusicElement.callAPIToStop ${this.WebSocketActive} ${this.isSlave()}`);
         if (this.WebSocketActive && !this.isSlave()) {
             ConsoleTesteur.log("WebSocket Master call from MusicElement.callAPIToStop");
@@ -449,6 +522,11 @@ class MusicElement {
     }
 
     private handleAudioError(_: Event) {
+        if (this.disposed) return;
+        if (this.preview) {
+            this.failPreview();
+            return;
+        }
         const audioError = this.audioAdapter.getError();
         if (audioError?.code === 4) { // => ERROR 404
             // Log toutes les informations disponibles
@@ -468,6 +546,15 @@ class MusicElement {
             Notification.createClientNotification({ message: 'Passer en mode édition pour ajouter des sons', type: 'info', duration: 2000 });
         }
 
+    }
+
+    private failPreview(): void {
+        const button = ButtonPlaylistFinder.search(this.idPlaylist);
+        if (button) {
+            button.dataset.previewError = 'true';
+            button.disactive();
+        }
+        this.dispose();
     }
 
 }

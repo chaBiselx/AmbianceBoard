@@ -14,6 +14,7 @@ class AudioFadeManager {
     startVolume: number;
     endVolume: number;
     updateVolumeElement: UpdateVolumeElement;
+    private intervalId: ReturnType<typeof setInterval> | null = null;
 
     constructor(MusicElement: MusicElement, fadeStrategy = new Model.default.LinearFade(), isFadeIn = true, onComplete: null | Function = null) {
         this.musicElement = MusicElement;
@@ -40,6 +41,7 @@ class AudioFadeManager {
     }
 
     public start() {
+        this.cancel();
         const startTime = Date.now();
         let lastLevelFade = this.musicElement.levelFade;
 
@@ -66,6 +68,12 @@ class AudioFadeManager {
                 this.onComplete?.();
             }
         }, this.interval);
+        this.intervalId = intervalId;
+    }
+
+    public cancel(): void {
+        if (this.intervalId !== null) clearInterval(this.intervalId);
+        this.intervalId = null;
     }
 
     /**

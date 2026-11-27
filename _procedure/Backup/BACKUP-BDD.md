@@ -23,7 +23,7 @@ export PROD_KEY="$HOME/.ssh/<nom_de_la_cle>"
 export PROD_BASE_PATH="<path_du_projet>"
 export DB_SERVICE="db"                 # nom du service dans docker-compose.prod.yml
 export DB_USER="<user_pg>"
-export DB_NAME="<nom_de_la_base>"
+export DB_NAME='<nom_de_la_base>'
 export LOCAL_BACKUPS="/mnt/f/AmbianceBoard/backups-bdd"   # F:\AmbianceBoard\backups-bdd
 ```
 

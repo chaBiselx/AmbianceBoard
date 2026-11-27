@@ -456,6 +456,7 @@ LOGIN_URL = '/login'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "mediafiles"
+FILE_UPLOAD_PERMISSIONS = 0o644
 
 
 # Default primary key field type

@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libsndfile1 \
     && rm -rf /var/lib/apt/lists/* && \
     python -m venv /opt/venv && \
-    /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}"
+    /opt/venv/bin/pip install --only-binary :all: --no-cache-dir "pdm==${PDM_VERSION}" 
   
 
 COPY pyproject.toml pdm.lock ./

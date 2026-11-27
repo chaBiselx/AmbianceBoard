@@ -13,6 +13,7 @@ class GeneralNotificationForm(BootstrapFormMixin, forms.ModelForm):
         model = GeneralNotification
         fields = (
             'message',
+            'message_en',
             'class_name',
             'start_date',
             'end_date',
@@ -23,6 +24,10 @@ class GeneralNotificationForm(BootstrapFormMixin, forms.ModelForm):
             'message': forms.Textarea(attrs={
                 'rows': 5,
                 'placeholder': 'Contenu HTML de la notification'
+            }),
+            'message_en': forms.Textarea(attrs={
+                'rows': 5,
+                'placeholder': 'Contenu HTML de la notification en anglais'
             }),
             'start_date': forms.DateTimeInput(attrs={
                 'type': 'datetime-local',
@@ -35,8 +40,10 @@ class GeneralNotificationForm(BootstrapFormMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
-        self.fields['message'].widget.attrs['class'] = self.fields['message'].widget.attrs.get('class', '') + ' editor-container'
-        self.fields['message'].widget.attrs['data-editor'] = 'simple'
+        for field_name in ('message', 'message_en'):
+            attrs = self.fields[field_name].widget.attrs
+            attrs['class'] = attrs.get('class', '') + ' editor-container'
+            attrs['data-editor'] = 'simple'
         
         # Valeurs par défaut pour une nouvelle notification
         if not self.instance.pk:

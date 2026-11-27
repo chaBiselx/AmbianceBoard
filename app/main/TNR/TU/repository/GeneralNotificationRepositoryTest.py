@@ -49,6 +49,15 @@ class GeneralNotificationRepositoryTest(TestCase):
         self.assertGreaterEqual(len(values), 4)
         self.assertGreaterEqual(values[0].start_date, values[-1].start_date)
 
+    def test_english_message_can_be_saved_independently(self):
+        self.active_public.message_en = '<p>English message</p>'
+        self.active_public.save()
+        self.active_public.refresh_from_db()
+
+        self.assertEqual(self.active_public.message, 'active public')
+        self.assertEqual(self.active_public.message_en, '<p>English message</p>')
+        self.assertEqual(self.inactive.message_en, '')
+
     def test_get_list_notifications_actives_for_anonymous_filters_on_public_only(self):
         result = list(self.repository.get_list_notifications_actives(user=None))
         result_ids = {n.id for n in result}

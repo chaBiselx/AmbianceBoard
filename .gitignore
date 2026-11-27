@@ -34,6 +34,8 @@ staticfiles/*
 mediafiles/*
 logs/*
 frontend/.npm-cache
+# Configuration locale des sauvegardes homelab
+infra/homelab/backup/backup.env
 
 # ansible
 /infra/ansible/.wireguard_public_key

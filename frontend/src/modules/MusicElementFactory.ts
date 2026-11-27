@@ -11,6 +11,7 @@ import WebAudioAdapter from '@/modules/Audio/WebAudioAdapter';
  * DTO pour la configuration d'un MusicElement
  */
 export interface MusicElementDTO {
+    preview?: boolean;
     butonPlaylistToken: string | null;
     defaultVolume: number;
     fadeIn: boolean;
@@ -34,10 +35,13 @@ export interface MusicElementDTO {
  * Factory pour créer des instances de MusicElement
  */
 export class MusicElementFactory {
+    private static readonly previewInstances = new WeakMap<HTMLAudioElement, MusicElement>();
     /**
      * Crée un MusicElement à partir d'un HTMLAudioElement existant
      */
     static fromAudioElement(element: HTMLAudioElement): MusicElement {
+        const preview = this.previewInstances.get(element);
+        if (preview) return preview;
         const adapter = this.createAdapter(element);
         const dto = this.extractDTOFromAudioAdapter(adapter);
         return this.createFromDTO(dto, adapter);
@@ -48,8 +52,11 @@ export class MusicElementFactory {
      */
     static fromButtonPlaylist(buttonPlaylist: ButtonPlaylist): MusicElement {
         const dto = this.extractDTOFromButtonPlaylist(buttonPlaylist);
-        const audioAdapter = this.createAudioAdapter(buttonPlaylist, dto);
-        return this.createFromDTO(dto, audioAdapter);
+        const audioElement = new Audio();
+        const audioAdapter = this.createAudioAdapter(buttonPlaylist, dto, audioElement);
+        const musicElement = this.createFromDTO(dto, audioAdapter);
+        if (dto.preview) this.previewInstances.set(audioElement, musicElement);
+        return musicElement;
     }
 
     /**
@@ -65,6 +72,7 @@ export class MusicElementFactory {
      */
     private static extractDTOFromAudioAdapter(adapter: IAudioAdapter): MusicElementDTO {
         return {
+            preview: adapter.getDatasetValue('preview') === 'true',
             butonPlaylistToken: adapter.getDatasetValue('butonPlaylistToken') || null,
             defaultVolume: adapter.getDatasetValue('defaultvolume')
                 ? Number.parseFloat(adapter.getDatasetValue('defaultvolume')!)
@@ -102,6 +110,7 @@ export class MusicElementFactory {
      */
     private static extractDTOFromButtonPlaylist(buttonPlaylist: ButtonPlaylist): MusicElementDTO {
         return {
+            preview: buttonPlaylist.dataset.playlistPreview === 'true',
             butonPlaylistToken: buttonPlaylist.getToken(),
             defaultVolume: buttonPlaylist.dataset.playlistVolume
                 ? buttonPlaylist.getVolume()
@@ -145,15 +154,14 @@ export class MusicElementFactory {
     /**
      * Crée un élément audio HTML à partir d'un ButtonPlaylist
      */
-    private static createAudioAdapter(buttonPlaylist: ButtonPlaylist, dto: MusicElementDTO): IAudioAdapter {
-        const audioElement = new Audio();
+    private static createAudioAdapter(buttonPlaylist: ButtonPlaylist, dto: MusicElementDTO, audioElement = new Audio()): IAudioAdapter {
         const audioAdapter = this.createAdapter(audioElement);
         audioAdapter.setClassName(`playlist-audio-${buttonPlaylist.idPlaylist}`);
         audioAdapter.addClass('audio-' + buttonPlaylist.dataset.playlistType);
 
         // Configurer la source
         let src = dto.baseUrl;
-        if (!this.isSlave()) {
+        if (dto.preview || !this.isSlave()) {
             src += "?i=" + Date.now();
         }
         audioAdapter.setSource(src);
@@ -177,6 +185,7 @@ export class MusicElementFactory {
      * Définit les attributs data-* sur l'élément audio
      */
     private static setDataAttributes(audioAdapter: IAudioAdapter, dto: MusicElementDTO): void {
+        if (dto.preview) audioAdapter.setDatasetValue('preview', 'true');
         if (dto.butonPlaylistToken) {
             audioAdapter.setDatasetValue('butonPlaylistToken', dto.butonPlaylistToken);
         }

@@ -8,16 +8,19 @@ from main.TNR.TU.auth.AuthBackendTest import *
 from main.TNR.TU.signals.GroupsPermissionsSignalsTest import *
 
 from main.TNR.TU.models.MusicModelTest import *
+from main.TNR.TU.models.MediaPermissionsTest import *
 from main.TNR.TU.models.SoundBoardModelTest import *
 from main.TNR.TU.models.PlaylistModelTest import *
 from main.TNR.TU.models.UserModelTest import *
 
 
 from main.TNR.TU.utils.ImageResizerTest import *
+from main.TNR.TU.utils.AudioBitrateReducerTest import *
 from main.TNR.TU.utils.ExtractPaginatorTest import *
 from main.TNR.TU.utils.EmailSenderTest import *
 from main.TNR.TU.utils.SettingsTest import *
 from main.TNR.TU.utils.SoundBoardTemplateTagTest import *
+from main.TNR.TU.utils.GeneralInformationProcessorTest import *
 from main.TNR.TU.utils.logger.GraylogLoggerTest import *
 
 from main.TNR.TU.utils.logger.LoggerFactoryTest import *
@@ -97,6 +100,7 @@ from main.TNR.TU.email.ModeratorAndUserEmailTest import *
 # =======================================================================
 # ======================== TEST INTEGRATION =============================
 # =======================================================================
+from main.TNR.TI.GeneralNotificationMigrationTest import *
 from main.TNR.TI.utils.UrlsUtilsTest import *
 
 from main.TNR.TI.utils.logger.LoggerFactoryIntegrationTestCase import *
@@ -170,6 +174,7 @@ from main.TNR.TI.routing.PlaylistCreateTrackStreamRouteTest import *
 from main.TNR.TI.routing.AsyncDownloadJobsRecentRouteTest import *
 from main.TNR.TI.routing.PlaylistsAllCopiableListRouteTest import *
 from main.TNR.TI.routing.PlaylistPreviewRouteTest import *
+from main.TNR.TI.routing.PlaylistPlaybackPreviewRouteTest import *
 from main.TNR.TI.routing.PlaylistDuplicateRouteTest import *
 from main.TNR.TI.routing.PlaylistUpdateRouteTest import *
 from main.TNR.TI.routing.PlaylistDeleteRouteTest import *

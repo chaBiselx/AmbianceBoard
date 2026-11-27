@@ -10,6 +10,7 @@ import { initializePlaylistFormControls } from '@/modules/Form/PlaylistFormContr
 import { initializePlaylistColorSelector } from '@/modules/Form/PlaylistColorSelector';
 import { initializePlaylistEntityActions } from '@/modules/Form/PlaylistEntityActions';
 import { initializeTrackLabelReport } from '@/modules/Form/TrackLabelReport';
+import { initializePlaylistPlaybackPreview } from '@/modules/Form/PlaylistPlaybackPreview';
 import Notification from '@/modules/General/Notifications';
 
 
@@ -30,6 +31,11 @@ initializePlaylistFormControls(document, renderPlaylistPreview);
 
 document.addEventListener("DOMContentLoaded", () => {
     addMusicEvent();
+    initializePlaylistPlaybackPreview({
+        fetch: (input, init) => fetch(input, init),
+        showModal: options => ModalCustom.show(options),
+        notify: message => Notification.createClientNotification({ message, type: 'danger' }),
+    });
     initializeTrackLabelReport({
         fetch: (input, init) => fetch(input, init),
         getCsrfToken: () => Csrf.getToken(),

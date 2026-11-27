@@ -178,6 +178,15 @@ describe('MusicElementFactory', () => {
             document.body.innerHTML = '';
         });
 
+        it('adds a timestamp to the preview source even on a slave page', () => {
+            buttonElement.dataset.playlistPreview = 'true';
+            MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
+            const audio = getAudioElementFromCall();
+            expect(audio.dataset.preview).toBe('true');
+            expect(audio.src).toMatch(/\?i=\d+$/);
+            expect(MusicElement).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ preview: true }));
+        });
+
         it('should create a MusicElement from a ButtonPlaylist with all properties', () => {
             MusicElementFactory.fromButtonPlaylist(buttonPlaylist);
 

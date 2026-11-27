@@ -9,6 +9,7 @@ from main.architecture.persistence.repository.SoundboardPlaylistRepository impor
 from main.interface.ui.forms.private.MusicForm import MusicForm
 from main.domain.common.factory.UserParametersFactory import UserParametersFactory
 from main.domain.common.service.SoundBoardService import SoundBoardService
+from main.domain.common.service.PlaylistService import PlaylistService
 from main.domain.common.enum.MusicFormatEnum import MusicFormatEnum
 from main.architecture.persistence.repository.PlaylistProposalRepository import PlaylistProposalRepository
 from main.domain.common.enum.PlaylistProposalStatusEnum import PlaylistProposalStatusEnum
@@ -35,6 +36,12 @@ class RandomizeTrackService:
         if not soundboard or not self._is_playlist_in_soundboard(soundboard, playlist_uuid):
             return None
         return self.track_repository.get_random_private(playlist_uuid, self.request.user)
+
+    def generate_playlist_preview(self, playlist_uuid):
+        playlist = PlaylistService(self.request).get_playlist(playlist_uuid)
+        if not playlist:
+            return None
+        return self.track_repository.get_random_private(playlist.uuid, self.request.user)
     
     def get_specific_public(self, soundboard_uuid:uuid, playlist_uuid:int, music_id: int) -> Music|None :
         soundboard = (SoundBoardService(self.request)).get_public_soundboard(soundboard_uuid)
